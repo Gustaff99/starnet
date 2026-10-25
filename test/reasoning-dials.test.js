@@ -70,10 +70,10 @@ module.exports = (async () => {
     const item = id => I.asModel(publicModel(m[id]), 'openai');
     A.eq(I.effortOptionsFor(item('gpt-5.5')), ['none', 'low', 'medium', 'high', 'xhigh'], 'dock: gpt-5.5 dial');
     A.eq(I.reasoningPresetsFor(item('gpt-5.5')).map(x => x.effort), ['low', 'medium', 'high', 'xhigh'], 'dock: MAX reaches xhigh');
-    A.eq(I.effortShown('none', item('gpt-5.5')).label, 'OFF', 'dock: gpt-5.5 OFF is real');
+    A.eq(I.effortShown('none', item('gpt-5.5')).label, 'DES', 'dock: gpt-5.5 OFF is real');
     A.eq(I.clampEffortForModel('none', item('gpt-5')), 'medium', 'dock: gpt-5 has no OFF — lands on its default');
-    A.eq(I.effortShown('none', item('gpt-5.6-sol')).label, 'OFF', 'dock: gpt-5.6 says OFF (StarNet sends none), not AUTO');
-    A.eq(I.effortShown('none', item('gpt-4.1')).label, 'OFF', 'dock: gpt-4.1 says OFF (it does not reason)');
+    A.eq(I.effortShown('none', item('gpt-5.6-sol')).label, 'DES', 'dock: gpt-5.6 says OFF (StarNet sends none), not AUTO');
+    A.eq(I.effortShown('none', item('gpt-4.1')).label, 'DES', 'dock: gpt-4.1 says OFF (it does not reason)');
     A.eq(I.effortShown('none', item('gpt-5.5-pro')).label, 'AUTO', 'dock: an unknown model is AUTO');
     A.ok(/can't combine/.test(publicModel(m['gpt-5.6-sol']).reasoningNote), 'the note reaches the listing');
 
@@ -124,7 +124,7 @@ module.exports = (async () => {
     A.eq(m['deepseek-chat'].reasoningEffortsDeclared, false, 'the legacy non-thinking alias declares nothing');
     const item = I.asModel(publicModel(m['deepseek-flash']), 'deepseek');
     A.eq(I.effortOptionsFor(item), ['none', 'low', 'high', 'max'], 'dock: deepseek dial');
-    A.eq(I.effortShown('none', item).label, 'OFF', 'dock: OFF is real (thinking disabled)');
+    A.eq(I.effortShown('none', item).label, 'DES', 'dock: OFF is real (thinking disabled)');
     A.eq(I.clampEffortForModel('medium', item), 'high', 'dock: an unlisted medium lands on the default');
     const cases = [['medium', 'high'], ['xhigh', 'high'], ['minimal', 'low'], ['max', 'max'], ['none', 'none']];
     for (const [effort, want] of cases) {

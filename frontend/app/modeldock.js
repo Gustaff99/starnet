@@ -31,13 +31,13 @@ const ModelDock = (() => {
     'x-ai/grok-4'
   ];
   const EFFORTS = [
-    { id: 'none', label: 'OFF', title: 'Reasoning off' },
-    { id: 'minimal', label: 'MIN', title: 'Minimal reasoning' },
-    { id: 'low', label: 'LOW', title: 'Low reasoning' },
-    { id: 'medium', label: 'MED', title: 'Medium reasoning' },
-    { id: 'high', label: 'HIGH', title: 'High reasoning' },
+    { id: 'none', label: 'DES', title: 'Razonamiento desactivado' },
+    { id: 'minimal', label: 'MÍN', title: 'Razonamiento mínimo' },
+    { id: 'low', label: 'BAJO', title: 'Razonamiento bajo' },
+    { id: 'medium', label: 'MED', title: 'Razonamiento medio' },
+    { id: 'high', label: 'ALTO', title: 'Razonamiento alto' },
     { id: 'xhigh', label: 'XHIGH', title: 'Extra-high reasoning' },
-    { id: 'max', label: 'MAX', title: 'Maximum reasoning' }
+    { id: 'max', label: 'MÁX', title: 'Razonamiento máximo' }
   ];
   // Codex fallback when a catalog omits per-model levels. Declared metadata takes precedence below.
   const CODEX_EFFORTS = ['low', 'medium', 'high', 'xhigh'];
@@ -225,13 +225,13 @@ const ModelDock = (() => {
   // plain-language gloss of what the effort tier MEANS — surfaced in the chip tooltip so a
   // beginner learns "MED" is a reasoning dial, not a mystery button.
   const EFFORT_MEANING = {
-    none: 'no extra reasoning — fastest, cheapest',
+    none: 'sin razonamiento extra — más rápido y barato',
     minimal: 'a touch of reasoning',
-    low: 'light reasoning — quick answers',
-    medium: 'balanced reasoning — the default',
-    high: 'deep reasoning — slower, more careful',
-    xhigh: 'very deep reasoning',
-    max: 'maximum reasoning — slowest, most thorough'
+    low: 'razonamiento ligero — respuestas rápidas',
+    medium: 'razonamiento equilibrado — el predeterminado',
+    high: 'razonamiento profundo — más lento y cuidadoso',
+    xhigh: 'razonamiento muy profundo',
+    max: 'razonamiento máximo — el más lento y exhaustivo'
   };
   function effortMeaning(id) { return EFFORT_MEANING[normalizeEffort(id)] || EFFORT_MEANING.medium; }
 
@@ -240,7 +240,7 @@ const ModelDock = (() => {
      for most modern models means it reasons anyway. Unless the catalog says the model does not reason
      (supportsReasoning === false), the honest label for that state is AUTO, not OFF. Display only: the stored
      and transported value stays 'none'. */
-  const MODEL_DEFAULT_EFFORT = { id: 'none', label: 'AUTO', title: 'Model default (no reasoning dial)' };
+  const MODEL_DEFAULT_EFFORT = { id: 'none', label: 'AUTO', title: 'Predeterminado del modelo (sin dial de razonamiento)' };
   function dialLess(item) {
     if (!item || item.supportsReasoning === false) return false;
     const opts = effortOptionsFor(item);
@@ -268,13 +268,13 @@ const ModelDock = (() => {
 
   function modelLabel(item) {
     const id = String((item && item.id) || '');
-    const raw = String((item && item.name) || id.split('/').pop() || id || 'no model');
+    const raw = String((item && item.name) || id.split('/').pop() || id || 'sin modelo');
     return raw.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
   }
 
   function selectorLabel(model, effort, item) {
-    const name = model ? modelLabel({ id: model }) : 'no model selected';
-    return 'Model selector: ' + name + ', ' + (item ? effortShown(effort, item) : effortDef(effort)).title;
+    const name = model ? modelLabel({ id: model }) : 'sin modelo seleccionado';
+    return 'Selector de modelo: ' + name + ', ' + (item ? effortShown(effort, item) : effortDef(effort)).title;
   }
 
   function groupOf(item) {
@@ -580,7 +580,7 @@ const ModelDock = (() => {
     } catch (_) {}
     if (!isCurrent()) return (cache[p] || []).slice();
     cacheRevisions[p] = revision;
-    catalogState[p] = { confirmed: confirmed, reason: confirmed ? '' : 'catalog unavailable' };
+    catalogState[p] = { confirmed: confirmed, reason: confirmed ? '' : 'catálogo no disponible' };
     if (!confirmed) list.forEach(m => { m.fallback = true; });
     if (!list.length && !confirmed && (p === 'codex' || p === 'openrouter' || p === 'anthropic' || p === 'gemini' || HOSTED_FALLBACKS[p])) {
       // E4: the live catalog fetch found nothing (sidecar/provider unreachable) — fall back to the
@@ -670,7 +670,7 @@ const ModelDock = (() => {
       const track = document.createElement('div');
       track.className = 'model-dock-presets';
       track.setAttribute('role', 'group');
-      track.setAttribute('aria-label', 'Reasoning presets');
+      track.setAttribute('aria-label', 'Preajustes de razonamiento');
       for (const p of presets) {
         const active = !!selectedPreset && selectedPreset.id === p.id;
         const b = button(p.label, active ? selected : p.effort, active, 'preset-' + p.id, () => {
@@ -685,8 +685,8 @@ const ModelDock = (() => {
       const note = document.createElement('div');
       note.className = 'model-dock-reasoning-note';
       note.textContent = item.reasoningNote ? item.reasoningNote
-        : dialLess(item) ? 'No reasoning dial for this model — it runs at its own default.'
-        : 'This model has no adjustable reasoning.';
+        : dialLess(item) ? 'Este modelo no tiene dial de razonamiento — funciona con su predeterminado.'
+        : 'Este modelo no tiene razonamiento ajustable.';
       wrap.appendChild(note);
     }
     // Off and provider-specific fine control stay available without crowding the main row.
@@ -701,12 +701,12 @@ const ModelDock = (() => {
       exact.className = 'model-dock-exact-value';
       exact.textContent = effortDef(selected).label;
       summary.appendChild(exact);
-      summary.setAttribute('aria-label', 'Advanced reasoning, ' + description(selected));
+      summary.setAttribute('aria-label', 'Razonamiento avanzado, ' + description(selected));
       details.appendChild(summary);
       const track = document.createElement('div');
       track.className = 'model-dock-exact';
       track.setAttribute('role', 'group');
-      track.setAttribute('aria-label', 'Exact reasoning levels');
+      track.setAttribute('aria-label', 'Niveles exactos de razonamiento');
       for (const e of available) {
         const b = button(e.label, e.id, e.id === selected, 'exact-' + e.id, () => {
           if (e.id !== currentEffort()) applyEffort(e.id);
@@ -746,7 +746,7 @@ const ModelDock = (() => {
     if (!list.length) {
       const div = document.createElement('div');
       div.className = 'model-dock-empty';
-      div.textContent = 'NO MATCHES';
+      div.textContent = 'SIN COINCIDENCIAS';
       wrap.appendChild(div);
       return;
     }
@@ -766,16 +766,16 @@ const ModelDock = (() => {
         if (normalizeProvider(m.provider) === 'starnet' && starnetDry()) {
           const dry = document.createElement('i');
           dry.className = 'model-dock-group-offline';
-          dry.textContent = ' · NO CREDITS';
+          dry.textContent = ' · SIN CRÉDITOS';
           head.appendChild(dry);
           head.title = 'your StarNet balance is ' + (starnetBalanceUsd < 0 ? '-$' : '$') + Math.abs(starnetBalanceUsd).toFixed(2) + ' — these models run on managed credits; pick one under your own sign-in or key, or add credits in the STORE';
         }
         if (groupFallback) {
           const off = document.createElement('i');
           off.className = 'model-dock-group-offline';
-          off.textContent = ' (catalog offline)';
+          off.textContent = ' (catálogo sin conexión)';
           head.appendChild(off);
-          head.title = 'live catalog unreachable — showing a built-in fallback list; type a slug to use an unlisted model';
+          head.title = 'catálogo en vivo inaccesible — mostrando una lista de respaldo integrada; escribe un slug para usar un modelo no listado';
         }
         frag.appendChild(head);
       }
@@ -874,13 +874,13 @@ const ModelDock = (() => {
     const p = provider();
     const effort = currentEffort();
     const def = effortShown(effort, currentModelItem());
-    const model = current ? modelLabel({ id: current }) : 'no model selected';
+    const model = current ? modelLabel({ id: current }) : 'sin modelo seleccionado';
     tip.innerHTML =
       '<div class="mdt-row mdt-model">' + esc(model) + '</div>' +
       '<div class="mdt-row mdt-prov">' + esc(providerLabel(p)) + '</div>' +
       '<div class="mdt-sep"></div>' +
       '<div class="mdt-row mdt-tier"><b>' + esc(def.label) + '</b> · reasoning effort</div>' +
-      '<div class="mdt-row mdt-mean">' + esc(def === MODEL_DEFAULT_EFFORT ? 'no dial — the model uses its own reasoning default' : effortMeaning(effort)) + '</div>' +
+      '<div class="mdt-row mdt-mean">' + esc(def === MODEL_DEFAULT_EFFORT ? 'sin dial — el modelo usa su predeterminado de razonamiento' : effortMeaning(effort)) + '</div>' +
       '<div class="mdt-hint">click to change model &amp; effort</div>';
   }
 
@@ -995,7 +995,7 @@ const ModelDock = (() => {
     Promise.resolve().then(() => invoke('open_external_url', { url: 'https://www.starnetos.com/pricing' }))
       .catch(() => {
         if (typeof StationUI !== 'undefined' && StationUI.notify) {
-          StationUI.notify('Could not open your browser. Visit www.starnetos.com/pricing for your StarNet subscription.', 'warn');
+          StationUI.notify('No se pudo abrir tu navegador. Visita www.starnetos.com/pricing para tu suscripción de StarNet.', 'warn');
         }
       });
   }

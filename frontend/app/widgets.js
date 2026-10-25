@@ -100,8 +100,8 @@ const Widgets = (() => {
   // Arm intent and runnable state are separate: E-STOP deliberately preserves `enabled` while freezing the timer.
   function cronStateLabel(c) {
     if (!c) return '';
-    if (c.halted) return 'stopped · E-STOP';
-    return c.enabled ? 'armed' : 'disarmed';
+    if (c.halted) return 'detenido · E-STOP';
+    return c.enabled ? 'armado' : 'desarmado';
   }
 
   // compact count: 950 → "950", 12400 → "12.4K", 3200000 → "3.2M" (tabular, no locale surprises)
@@ -157,17 +157,17 @@ const Widgets = (() => {
     try { const u = new URL(raw); return ['http:', 'https:'].includes(u.protocol) && !u.username && !u.password ? u.href : null; } catch (_) { return null; }
   }
   function feedStatus(rec) {
-    if (!rec) return 'no signal';
+    if (!rec) return 'sin señal';
     if (rec.sourceState && !['up', 'cached', 'configured', 'available'].includes(rec.sourceState)) return 'app ' + rec.sourceState;
-    if (rec.config && typeof Channels !== 'undefined' && Channels.isBusy('widget-' + rec.slug)) return Channels.runIdOf('widget-' + rec.slug) ? 'updating' : 'connecting';
-    if (rec.error) return 'update failed';
-    return rec.updatedAt ? 'updated ' + fmtAge(Date.now(), rec.updatedAt) : 'no reading yet';
+    if (rec.config && typeof Channels !== 'undefined' && Channels.isBusy('widget-' + rec.slug)) return Channels.runIdOf('widget-' + rec.slug) ? 'actualizando' : 'conectando';
+    if (rec.error) return 'falló la actualización';
+    return rec.updatedAt ? 'actualizado ' + fmtAge(Date.now(), rec.updatedAt) : 'aún sin lectura';
   }
 
   // provenance age: how long since the agent set it. Coarse on purpose — it's a trust cue, not a stopwatch.
   function fmtAge(nowMs, ts) {
     const d = Math.max(0, (Number(nowMs) || 0) - (Number(ts) || 0));
-    if (d < 45000) return 'now';
+    if (d < 45000) return 'ahora';
     if (d < 90 * 60000) return Math.max(1, Math.round(d / 60000)) + 'm';
     if (d < 36 * 3600000) return Math.round(d / 3600000) + 'h';
     return Math.round(d / 86400000) + 'd';
@@ -178,17 +178,17 @@ const Widgets = (() => {
     if (c.halted || !c.enabled) return { val: null, sub: cronStateLabel(c) };
     const jobs = (c.jobs || []).filter(j => j.enabled && Number.isFinite(Date.parse(j.nextRunAt)))
       .sort((a, b) => Date.parse(a.nextRunAt) - Date.parse(b.nextRunAt));
-    if (!jobs.length) return { val: null, sub: 'nothing scheduled' };
+    if (!jobs.length) return { val: null, sub: 'nada programado' };
     const mins = Math.ceil((Date.parse(jobs[0].nextRunAt) - now) / 60000);
     return { val: mins <= 0 ? 'due' : mins < 60 ? mins + 'm' : mins < 1440 ? Math.ceil(mins / 60) + 'h' : Math.ceil(mins / 1440) + 'd', sub: jobs[0].name || jobs[0].id };
   }
 
   function commsReadout(approvals) {
-    if (typeof Channels === 'undefined') return { val: null, sub: 'waiting for COMMS' };
+    if (typeof Channels === 'undefined') return { val: null, sub: 'esperando COMMS' };
     const ids = Channels.busyIds();
     const confirmed = ids.filter(id => Channels.runIdOf(id));
     const n = approvals ? Channels.pendingIds().length : confirmed.length;
-    return { val: String(n), sub: approvals ? 'awaiting you' : (ids.length > confirmed.length ? (ids.length - confirmed.length) + ' connecting' : 'confirmed runs') };
+    return { val: String(n), sub: approvals ? 'te espera' : (ids.length > confirmed.length ? (ids.length - confirmed.length) + ' conectando' : 'ejecuciones confirmadas') };
   }
 
   /* ================= the catalog ================= */
@@ -196,16 +196,16 @@ const Widgets = (() => {
   const CATALOG = {
     crew: {
       stats: true,
-      lbl: 'CREW', tip: 'Agents in your current station roster, including the overseer.',
-      paint() { return { val: typeof App !== 'undefined' && App.crewCount ? String(App.crewCount()) : null, sub: 'station roster' }; }
+      lbl: 'CREW', tip: 'Agentes en el roster actual de la estación, incluido el supervisor.',
+      paint() { return { val: typeof App !== 'undefined' && App.crewCount ? String(App.crewCount()) : null, sub: 'roster de la estación' }; }
     },
-    active: { stats: true, lbl: 'ACTIVE COMMS', tip: 'Confirmed running conversations in COMMS. Connecting requests are shown separately; background jobs are not included.', paint: () => commsReadout(false) },
-    approvals: { lbl: 'NEEDS YOU', action: 'Review waiting conversation', tip: 'Conversations waiting for your approval or answer. Use the arrow to open the first waiting conversation.', paint: () => ({ ...commsReadout(true), tone: typeof Channels !== 'undefined' && Channels.pendingIds().length ? 'warn' : null }) },
-    next: { lbl: 'NEXT ROUTINE', action: 'Open scheduled routines', tip: 'The next enabled routine on the scheduler. Use the arrow to view or change your schedule. A due time does not mean the job has started.', paint: () => nextRoutine(cron, Date.now()) },
+    active: { stats: true, lbl: 'ACTIVE COMMS', tip: 'Conversaciones en marcha confirmadas en COMMS. Las peticiones de conexión se muestran por separado; no incluye trabajos en segundo plano.', paint: () => commsReadout(false) },
+    approvals: { lbl: 'NEEDS YOU', action: 'Revisar conversación pendiente', tip: 'Conversaciones esperando tu aprobación o respuesta. Usa la flecha para abrir la primera conversación pendiente.', paint: () => ({ ...commsReadout(true), tone: typeof Channels !== 'undefined' && Channels.pendingIds().length ? 'warn' : null }) },
+    next: { lbl: 'NEXT ROUTINE', action: 'Abrir rutinas programadas', tip: 'La siguiente rutina habilitada en el programador. Usa la flecha para ver o cambiar tu horario. Una hora vencida no significa que el trabajo haya empezado.', paint: () => nextRoutine(cron, Date.now()) },
     runs24: {
       stats: true,
       lbl: 'RUNS · 24H',
-      tip: 'Runs across the whole station in the last 24h — folded from the real run history (/api/insights), ticking live on each run end.',
+      tip: 'Ejecuciones de toda la estación en las últimas 24h — agregadas del historial real de ejecuciones (/api/insights), actualizado en vivo al terminar cada una.',
       paint() {
         if (!insights) return { val: null, sub: '' };
         const f = foldRuns(insights);
@@ -215,17 +215,17 @@ const Widgets = (() => {
     queue: {
       stats: true,
       lbl: 'QUEUE',
-      tip: 'Inbound work items waiting across all agents — live queue.status backpressure events. Shows — until the first event arrives.',
+      tip: 'Trabajos entrantes esperando entre todos los agentes — eventos en vivo queue.status de backpressure. Muestra — hasta que llegue el primer evento.',
       paint() {
         if (!queueSeen) return { val: null, sub: '' };
         let d = 0; for (const v of queueMap.values()) d += v;
-        return { val: String(d), sub: d === 1 ? 'item' : 'items' };
+        return { val: String(d), sub: d === 1 ? 'elemento' : 'elementos' };
       }
     },
     cron: {
       stats: true,
       lbl: 'ROUTINES',
-      tip: 'Scheduled routines on the sidecar (/api/cron) — count + whether the scheduler is armed. The value pulses when a routine fires.',
+      tip: 'Rutinas programadas en el sidecar (/api/cron) — cantidad + si el programador está armado. El valor pulsa cuando una rutina dispara.',
       paint() {
         if (!cron) return { val: null, sub: '' };
         const n = Array.isArray(cron.jobs) ? cron.jobs.length : 0;
@@ -235,10 +235,10 @@ const Widgets = (() => {
     tokens: {
       stats: true,
       lbl: 'TOKENS',
-      tip: 'Recorded tokens across station run history, including subscription runs — from the real usage fold.',
+      tip: 'Tokens registrados en todo el historial de ejecuciones de la estación, incluidas las de suscripción — del agregado real de uso.',
       paint() {
         if (!insights) return { val: null, sub: '' };
-        return { val: fmtCount(foldTokens(insights)), sub: 'all-time' };
+        return { val: fmtCount(foldTokens(insights)), sub: 'histórico' };
       }
     }
   };
@@ -283,15 +283,15 @@ const Widgets = (() => {
       lbl: (feed.get(slug) || {}).label || slug.toUpperCase(),
       fed: true,
       configured: !!feed.get(slug)?.config,
-      action: feed.get(slug)?.config ? 'View ' + feed.get(slug).label : null,
-      tip: 'Agent-fed readout "' + slug + '" — an agent publishes this via widget.set. The station only asserts WHO reported it and WHEN (the name · age line), never that the figure itself is true.',
+      action: feed.get(slug)?.config ? 'Ver ' + feed.get(slug).label : null,
+      tip: 'Lectura publicada por un agente "' + slug + '" — un agente la publica con widget.set. La estación solo afirma QUIÉN la reportó y CUÁNDO (la línea nombre · edad), nunca que la cifra en sí sea cierta.',
       paint() {
         const rec = feed.get(slug);
-        if (!rec) return { val: null, sub: 'no signal', prov: null };
+        if (!rec) return { val: null, sub: 'sin señal', prov: null };
         const status = feedStatus(rec);
         const prov = rec.config ? rec.config.source.label + ' · ' + (rec.updatedAt ? agentNameOf(rec.agentId) + ' · ' + fmtAge(Date.now(), rec.updatedAt) + (status.startsWith('updated') ? '' : ' · ' + status) : status)
           : agentNameOf(rec.agentId) + ' · ' + fmtAge(Date.now(), rec.updatedAt);
-        if (!rec.updatedAt && rec.config) return { val: null, sub: 'no reading yet', prov };
+        if (!rec.updatedAt && rec.config) return { val: null, sub: 'aún sin lectura', prov };
         if (rec.list.length) return { tick: rec.list[tickerStep % rec.list.length], prov: prov, tone: rec.tone };
         return { val: rec.value, sub: rec.sub || '', prov: prov, tone: rec.tone, series: rec.spark || undefined, prog: rec.progress };
       }
@@ -352,7 +352,7 @@ const Widgets = (() => {
       + '<span class="wg-src"><i class="wg-dot' + (def.fed ? ' wg-dot-fed' : '') + '" aria-hidden="true"></i><span class="wg-srctext"></span></span></span>'
       + '<b class="wg-val">—</b><span class="wg-sub"></span><span class="wg-sparkslot"></span>'
       + (def.action ? '<button class="wg-open">↗</button>' : '')
-      + '<button class="wg-x" title="remove widget" aria-label="Remove widget">✕</button>';
+      + '<button class="wg-x" title="quitar widget" aria-label="Quitar widget">✕</button>';
     const open = el.querySelector('.wg-open');
     if (open) {
       open.setAttribute('aria-label', def.action); open.title = def.action;
@@ -419,7 +419,7 @@ const Widgets = (() => {
     if (!def.fed) {
       const stale = staleFor(id);
       el.setAttribute('data-stale', stale ? '1' : '0');
-      if (srct) srct.textContent = stale ? 'stale' : p.val == null ? 'no reading' : id === 'crew' ? 'roster' : (SRC_OF[id] === 'insights' || SRC_OF[id] === 'cron') ? 'synced' : 'live';
+      if (srct) srct.textContent = stale ? 'rancio' : p.val == null ? 'sin lectura' : id === 'crew' ? 'roster' : (SRC_OF[id] === 'insights' || SRC_OF[id] === 'cron') ? 'sincronizado' : 'en vivo';
     }
   }
 
@@ -437,7 +437,7 @@ const Widgets = (() => {
     const b = document.createElement('button');
     b.className = 'wg-add';
     b.title = 'add a widget';
-    b.setAttribute('aria-label', 'Add a widget to this rail');
+    b.setAttribute('aria-label', 'Añadir un widget a este riel');
     b.setAttribute('aria-haspopup', 'dialog');
     b.setAttribute('aria-expanded', 'false');
     b.textContent = '＋';
@@ -484,9 +484,9 @@ const Widgets = (() => {
   const refreshes = new Set();
   let sourceRows = null, sourcesRequest = null, studioEpoch = 0, selectedPreset = null;
   const PRESETS = [
-    { label: 'Revenue snapshot', display: 'metric', request: 'Show revenue for this month so far, with the currency and reporting period. Use the connected app’s actual revenue definition and explain it in the update conversation.' },
-    { label: 'Tasks due', display: 'list', request: 'Show up to five open tasks due today or overdue, including their due dates. If none are due, report that explicitly.' },
-    { label: 'Daily brief', display: 'list', request: 'Show up to five important recent updates from this app that need my attention, with enough context to act. If there are none, say so.' }
+    { label: 'Ingresos del mes', display: 'metric', request: 'Muestra los ingresos de este mes hasta ahora, con la moneda y el periodo de reporte. Usa la definición real de ingresos de la app conectada y explícala en la conversación de actualización.' },
+    { label: 'Tareas vencidas', display: 'list', request: 'Muestra hasta cinco tareas abiertas que venzan hoy o estén vencidas, con sus fechas. Si ninguna vence, repórtalo explícitamente.' },
+    { label: 'Briefing diario', display: 'list', request: 'Muestra hasta cinco actualizaciones recientes importantes de esta app que requieran mi atención, con contexto suficiente para actuar. Si no hay ninguna, dilo.' }
   ];
   function studioText(parent, tag, text, cls) {
     const el = document.createElement(tag); el.textContent = text; if (cls) el.className = cls; parent.appendChild(el); return el;
@@ -500,14 +500,14 @@ const Widgets = (() => {
       headers: body ? { 'Content-Type': 'application/json' } : undefined,
       body: body ? JSON.stringify(body) : undefined, signal: U.timeoutSignal(12000) });
     const data = await r.json();
-    if (!r.ok || data.error) throw new Error(data.error || 'Could not reach the widget service.');
+    if (!r.ok || data.error) throw new Error(data.error || 'No se pudo alcanzar el servicio de widgets.');
     return data;
   }
   function selectWidgetTab(key) {
     if (!popEl) return;
     studioEpoch++; popMode = 'list'; detailId = null; popFilter = key; popSearch = '';
     const input = popEl.querySelector('.wg-library-search'); input.hidden = false; input.value = '';
-    input.placeholder = key === 'apps' ? 'Find a connected app…' : 'Search widgets…';
+    input.placeholder = key === 'apps' ? 'Buscar una app conectada…' : 'Buscar widgets…';
     for (const b of popEl.querySelectorAll('[data-widget-tab]')) b.setAttribute('aria-pressed', String(b.dataset.widgetTab === key));
     libraryCards();
   }
@@ -520,17 +520,17 @@ const Widgets = (() => {
   async function sourceCards(force = false) {
     if (!popEl || popMode !== 'list' || popFilter !== 'apps') return;
     const root = popEl, epoch = ++studioEpoch, list = root.querySelector('.wg-library-list'); list.replaceChildren();
-    studioText(list, 'p', selectedPreset ? 'Choose the app for ' + selectedPreset.label + '.' : 'Choose an app, then tell StarNet what to display.', 'wg-studio-note');
+    studioText(list, 'p', selectedPreset ? 'Elige la app para ' + selectedPreset.label + '.' : 'Elige una app y luego dile a StarNet qué mostrar.', 'wg-studio-note');
     if (!sourceRows || force) {
-      const loading = studioText(list, 'p', 'Loading connected apps…', 'wg-studio-note');
+      const loading = studioText(list, 'p', 'Cargando apps conectadas…', 'wg-studio-note');
       try {
         if (!sourcesRequest) sourcesRequest = widgetApi('/sources').then(d => d.sources).finally(() => { sourcesRequest = null; });
         const rows = await sourcesRequest;
-        if (!Array.isArray(rows)) throw new Error('The app list was unavailable.');
+        if (!Array.isArray(rows)) throw new Error('La lista de apps no estaba disponible.');
         sourceRows = rows;
       } catch (e) {
         if (popEl !== root || studioEpoch !== epoch) return;
-        loading.textContent = e.message; addStudioButton(list, 'Retry app list', () => sourceCards(true)); return;
+        loading.textContent = e.message; addStudioButton(list, 'Reintentar lista de apps', () => sourceCards(true)); return;
       }
       if (popEl !== root || studioEpoch !== epoch) return;
       loading.remove();
@@ -542,17 +542,17 @@ const Widgets = (() => {
       const row = studioText(list, 'div', '', 'wg-app-row');
       const caption = studioText(row, 'div', '', 'wg-app-caption');
       studioText(caption, 'strong', s.label);
-      studioText(caption, 'small', s.kind === 'agent' ? 'Information StarNet manages' : s.kind === 'servicekey' && s.available ? 'API key configured' : s.available ? 'Connected' : s.state);
-      const b = addStudioButton(row, s.available ? 'Choose' : 'Reconnect', () => {
+      studioText(caption, 'small', s.kind === 'agent' ? 'Información que StarNet gestiona' : s.kind === 'servicekey' && s.available ? 'API key configurada' : s.available ? 'Conectada' : s.state);
+      const b = addStudioButton(row, s.available ? 'Elegir' : 'Reconectar', () => {
         if (s.available) showWidgetForm(s, null, selectedPreset);
         else { closePop(); if (typeof StationUI !== 'undefined') StationUI.openTerm('connectors', s.kind === 'servicekey' ? 'keys' : 'mcp'); }
       });
-      b.setAttribute('aria-label', (s.available ? 'Choose ' : 'Reconnect ') + s.label);
+      b.setAttribute('aria-label', (s.available ? 'Elegir ' : 'Reconectar ') + s.label);
     }
-    if (!matches) studioText(list, 'p', 'No apps match this search.', 'wg-studio-note');
+    if (!matches) studioText(list, 'p', 'Ninguna app coincide con esta búsqueda.', 'wg-studio-note');
     const foot = studioText(list, 'div', '', 'wg-studio-actions');
-    addStudioButton(foot, 'Connect another app', () => { closePop(); if (typeof StationUI !== 'undefined') StationUI.openTerm('connectors', 'catalog'); });
-    addStudioButton(foot, 'Reload apps', () => sourceCards(true));
+    addStudioButton(foot, 'Conectar otra app', () => { closePop(); if (typeof StationUI !== 'undefined') StationUI.openTerm('connectors', 'catalog'); });
+    addStudioButton(foot, 'Recargar apps', () => sourceCards(true));
   }
   function presetButtons(parent, onPick) {
     const strip = studioText(parent, 'div', '', 'wg-presets');
@@ -562,7 +562,7 @@ const Widgets = (() => {
     if (!popEl) return;
     const root = popEl, list = studioBody('form'); detailId = null;
     addStudioButton(list, '← Back', () => record ? showWidgetDetail(record.slug) : selectWidgetTab('apps'));
-    studioText(list, 'h3', (record ? 'Edit widget · ' : 'New widget · ') + source.label, 'wg-studio-heading');
+    studioText(list, 'h3', (record ? 'Editar widget · ' : 'Nuevo widget · ') + source.label, 'wg-studio-heading');
     const form = document.createElement('form'); form.className = 'wg-studio-form'; list.appendChild(form);
     const field = (label, tag, name, value, max) => {
       const wrap = studioText(form, 'div', '', 'wg-studio-field');
@@ -572,25 +572,25 @@ const Widgets = (() => {
       if (max) input.maxLength = max; input.value = value || ''; wrap.appendChild(input); return input;
     };
     const title = field('Name', 'input', 'label', record?.label || preset?.label, 28); title.required = true;
-    const request = field('What should it show?', 'textarea', 'request', record?.config.request || preset?.request, 1200); request.required = true;
-    request.placeholder = 'For example: monthly revenue for my app, in USD'; request.rows = 3;
-    const display = field('Display', 'select', 'display', '');
-    for (const [value, label] of [['metric','Number'],['list','List'],['trend','Trend'],['progress','Progress']]) {
+    const request = field('¿Qué debería mostrar?', 'textarea', 'request', record?.config.request || preset?.request, 1200); request.required = true;
+    request.placeholder = 'Por ejemplo: ingresos mensuales de mi app, en USD'; request.rows = 3;
+    const display = field('Visualización', 'select', 'display', '');
+    for (const [value, label] of [['metric','Número'],['list','Lista'],['trend','Tendencia'],['progress','Progreso']]) {
       const option = studioText(display, 'option', label); option.value = value;
     }
     display.value = record?.config.display || preset?.display || 'metric';
     if (!record) presetButtons(form, p => { title.value = p.label; request.value = p.request; display.value = p.display; });
     studioText(form, 'p', 'Your agent reads this source and publishes the result. Refresh on demand, or add a schedule after creation.', 'wg-studio-note');
     const message = studioText(form, 'p', '', 'wg-studio-message'); message.setAttribute('role','status');
-    const save = studioText(form, 'button', record ? 'Save & refresh' : 'Create & fetch', 'wg-studio-button wg-studio-primary'); save.type = 'submit';
+    const save = studioText(form, 'button', record ? 'Guardar y actualizar' : 'Crear y obtener', 'wg-studio-button wg-studio-primary'); save.type = 'submit';
     // A stable id makes an uncertain create response retryable without duplicating the widget.
     const id = record?.slug || ('w-' + crypto.randomUUID().replaceAll('-', '').slice(0,20));
     form.addEventListener('submit', async e => {
-      e.preventDefault(); if (save.disabled) return; save.disabled = true; message.textContent = 'Saving widget…';
+      e.preventDefault(); if (save.disabled) return; save.disabled = true; message.textContent = 'Guardando widget…';
       try {
         const d = await widgetApi('/configure', { id, label: title.value, request: request.value, display: display.value,
           source: { kind: source.kind, id: source.id }, version: record?.config.version });
-        const rec = sanitizeFeedRecord(d.widget); if (!rec) throw new Error('The widget could not be loaded.');
+        const rec = sanitizeFeedRecord(d.widget); if (!rec) throw new Error('No se pudo cargar el widget.');
         feed.set(rec.slug, rec); if (!record) placeWidget('feed:' + rec.slug, popRail); else render();
         selectedPreset = null;
         if (popEl !== root || popMode !== 'form' || !form.isConnected) return;
@@ -604,7 +604,7 @@ const Widgets = (() => {
     const id = 'widget-' + rec.slug;
     const existing = Workstreams.get(id);
     const ws = existing || Workstreams.adopt({ id, title: rec.label, agentId: typeof App.heroId === 'function' ? App.heroId() : 'agent', kind: 'chat', revive: true });
-    if (!ws) throw new Error('Could not open this widget’s update conversation.');
+    if (!ws) throw new Error('No se pudo abrir la conversación de actualización de este widget.');
     App.openWorkstream(ws.id); Chat.load(ws); App.persist();
     if (typeof StationUI !== 'undefined' && StationUI.h?.workConversation) StationUI.h.workConversation('widgets');
     return ws;
@@ -613,9 +613,9 @@ const Widgets = (() => {
     if (refreshes.has(id)) return;
     const rec = feed.get(id); if (!rec?.config) return;
     const report = text => { if (popEl && detailId === id) popEl.querySelector('.wg-studio-message').textContent = text; };
-    refreshes.add(id); report('Opening update…');
+    refreshes.add(id); report('Abriendo actualización…');
     try {
-      if (typeof Workstreams === 'undefined' || typeof Chat === 'undefined' || typeof App === 'undefined') throw new Error('The agent conversation is unavailable.');
+      if (typeof Workstreams === 'undefined' || typeof Chat === 'undefined' || typeof App === 'undefined') throw new Error('La conversación del agente no está disponible.');
       if (typeof Channels !== 'undefined' && Channels.isBusy('widget-' + id)) { closePop(); openWidgetTask(rec); return; }
       const root = popEl, d = await widgetApi('/request', { id });
       if (popEl !== root || detailId !== id) return; // cancellation/navigation never sends a delayed task
@@ -634,15 +634,15 @@ const Widgets = (() => {
       if (rec.list.length) { const ul = document.createElement('ul'); for (const line of rec.list) studioText(ul, 'li', line); box.appendChild(ul); }
       else { studioText(box, 'strong', rec.value || '—', 'wg-detail-value'); studioText(box, 'p', rec.sub || '', 'wg-studio-note'); }
       if (rec.spark) { const chart = document.createElement('div'); chart.className = 'wg-detail-chart'; chart.innerHTML = sparkSvg(rec.spark); box.appendChild(chart); }
-      if (rec.progress != null) { const p = document.createElement('progress'); p.max = 100; p.value = rec.progress; p.setAttribute('aria-label','Progress'); box.appendChild(p); studioText(box, 'span', rec.progress + '%'); }
-      studioText(box, 'p', 'Reported by ' + agentNameOf(rec.agentId) + ' · ' + new Date(rec.updatedAt).toLocaleString(), 'wg-studio-note');
-      if (rec.sourceUrl) { const a = studioText(box, 'a', 'Open source'); a.href = rec.sourceUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+      if (rec.progress != null) { const p = document.createElement('progress'); p.max = 100; p.value = rec.progress; p.setAttribute('aria-label','Progreso'); box.appendChild(p); studioText(box, 'span', rec.progress + '%'); }
+      studioText(box, 'p', 'Reportado por ' + agentNameOf(rec.agentId) + ' · ' + new Date(rec.updatedAt).toLocaleString(), 'wg-studio-note');
+      if (rec.sourceUrl) { const a = studioText(box, 'a', 'Abrir fuente'); a.href = rec.sourceUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
     } else studioText(box, 'p', 'No reading yet. Open the update conversation for progress or questions.', 'wg-studio-note');
     if (rec.error) studioText(box, 'p', rec.error, 'wg-studio-error');
     const jobs = (cron?.jobs || []).filter(j => j.meta?.widgetId === rec.slug);
     const next = jobs.find(j => j.enabled && j.nextRunAt);
-    studioText(box, 'p', jobs.length ? (!cron.enabled || cron.halted ? 'Scheduled updates paused' : next ? 'Next update: ' + new Date(next.nextRunAt).toLocaleString() : 'Update schedule disabled') : 'Refresh on demand', 'wg-studio-note');
-    if (pollFail.feed || linkDownNow()) studioText(box, 'p', 'Station offline · showing the last saved reading.', 'wg-studio-error');
+    studioText(box, 'p', jobs.length ? (!cron.enabled || cron.halted ? 'Actualizaciones programadas en pausa' : next ? 'Próxima actualización: ' + new Date(next.nextRunAt).toLocaleString() : 'Horario de actualización desactivado') : 'Actualizar bajo demanda', 'wg-studio-note');
+    if (pollFail.feed || linkDownNow()) studioText(box, 'p', 'Estación sin conexión · mostrando la última lectura guardada.', 'wg-studio-error');
   }
   function showWidgetDetail(id) {
     const rec = feed.get(id); if (!popEl || !rec?.config) return;
@@ -653,17 +653,17 @@ const Widgets = (() => {
     studioText(list, 'p', rec.config.request, 'wg-studio-note');
     const msg = studioText(list, 'p', '', 'wg-studio-message'); msg.setAttribute('role','status');
     const actions = studioText(list, 'div', '', 'wg-studio-actions');
-    addStudioButton(actions, 'Refresh now', () => refreshWidget(id), 'wg-studio-primary');
-    addStudioButton(actions, 'Open update', () => { closePop(); openWidgetTask(rec); });
+    addStudioButton(actions, 'Actualizar ahora', () => refreshWidget(id), 'wg-studio-primary');
+    addStudioButton(actions, 'Abrir actualización', () => { closePop(); openWidgetTask(rec); });
     addStudioButton(actions, 'Edit', () => showWidgetForm(rec.config.source, rec));
-    addStudioButton(actions, 'Schedule updates', async () => {
-      if (typeof AutomationWindow === 'undefined' || !AutomationWindow.openDraft) { msg.textContent = 'Automation is unavailable.'; return; }
+    addStudioButton(actions, 'Programar actualizaciones', async () => {
+      if (typeof AutomationWindow === 'undefined' || !AutomationWindow.openDraft) { msg.textContent = 'La automatización no está disponible.'; return; }
       if ((cron?.jobs || []).some(j => j.meta?.widgetId === id)) { closePop(); StationUI.openTerm('routines'); return; }
       closePop(); AutomationWindow.openDraft({ name: rec.label + ' widget', agentId: typeof App !== 'undefined' && App.heroId ? App.heroId() : 'agent',
         widgetId: rec.slug,
         prompt: 'Update my saved widget ' + JSON.stringify(rec.slug) + '. First call widget.get with that id for the CURRENT source, display and version. If it was deleted, stop without fetching or recreating it. Follow its refresh instructions, use the existing source access, and publish with widget.set. Do not modify data in the source app.' });
     });
-    addStudioButton(actions, 'Delete widget', async e => {
+    addStudioButton(actions, 'Borrar widget', async e => {
       const b = e.currentTarget; b.disabled = true;
       try { await widgetApi('/remove', { id }); feed.delete(id); removeWidget('feed:' + id); if (typeof QuerySpine !== 'undefined') QuerySpine.refresh('cron'); if (detailId === id && popEl) selectWidgetTab('main'); }
       catch (err) { if (msg.isConnected) { msg.textContent = err.message; b.disabled = false; } }
@@ -707,19 +707,19 @@ const Widgets = (() => {
         b.addEventListener('click', () => { fn(); libraryCards(); }); actions.appendChild(b);
       };
       action('TOP', 'top', () => placeWidget(id, 'top'), rail === 'top', false, 'Top');
-      action('BTM', 'bot', () => placeWidget(id, 'bot'), rail === 'bot', false, 'Bottom');
+      action('BTM', 'bot', () => placeWidget(id, 'bot'), rail === 'bot', false, 'Abajo');
       action('×', 'hidden', () => placeWidget(id, 'hidden'), undefined, rail === 'hidden', 'Hide');
-      if (def.configured) action('…', 'details', () => showWidgetDetail(id.slice(5)), undefined, false, 'Manage');
+      if (def.configured) action('…', 'details', () => showWidgetDetail(id.slice(5)), undefined, false, 'Gestionar');
       card.append(preview, actions); list.appendChild(card);
     }
     if (!count) {
       const empty = document.createElement('p'); empty.className = 'wg-library-empty';
-      empty.textContent = popSearch ? 'No matching widgets.' : popFilter === 'pinned' ? 'No pinned widgets. Choose one from Your widgets.' : 'Your apps, at a glance. Choose a connected app to create your first widget.';
+      empty.textContent = popSearch ? 'Sin widgets coincidentes.' : popFilter === 'pinned' ? 'Sin widgets fijados. Elige uno de Tus widgets.' : 'Tus apps de un vistazo. Elige una app conectada para crear tu primer widget.';
       list.appendChild(empty);
-      if (!popSearch && popFilter === 'main') addStudioButton(list, 'Choose an app', () => selectWidgetTab('apps'));
+      if (!popSearch && popFilter === 'main') addStudioButton(list, 'Elegir una app', () => selectWidgetTab('apps'));
     }
     if (popFilter === 'main' && !popSearch) {
-      studioText(list, 'p', 'Start from a preset', 'wg-studio-note');
+      studioText(list, 'p', 'Empezar desde una plantilla', 'wg-studio-note');
       presetButtons(list, preset => { selectedPreset = preset; selectWidgetTab('apps'); });
     }
     popEl.querySelector('.wg-library-count').textContent = (layout.top.length + layout.bot.length) + ' pinned';
@@ -733,11 +733,11 @@ const Widgets = (() => {
     popReturn = btn; popRail = rail; popSearch = ''; popFilter = 'main'; popMode = 'list'; detailId = null; sourceRows = null; selectedPreset = null;
     popEl = document.createElement('div');
     popEl.className = 'wg-pop wg-library';
-    popEl.setAttribute('role', 'dialog'); popEl.setAttribute('aria-modal', 'true'); popEl.setAttribute('aria-label', 'Widget library');
-    popEl.innerHTML = '<header class="wg-library-header"><h2>WIDGETS</h2><span class="wg-library-count" role="status"></span><button class="wg-library-close" aria-label="Close widget library">✕</button></header>'
-      + '<input class="wg-library-search" type="search" aria-label="Search widgets" placeholder="Search widgets…">'
-      + '<div class="wg-library-filters" role="group" aria-label="Widget category"></div><div class="wg-library-list"></div>';
-    for (const [key, label] of [['main', 'Your widgets'], ['apps', 'Connected apps'], ['pinned', 'Pinned']]) {
+    popEl.setAttribute('role', 'dialog'); popEl.setAttribute('aria-modal', 'true'); popEl.setAttribute('aria-label', 'Biblioteca de widgets');
+    popEl.innerHTML = '<header class="wg-library-header"><h2>WIDGETS</h2><span class="wg-library-count" role="status"></span><button class="wg-library-close" aria-label="Cerrar biblioteca de widgets">✕</button></header>'
+      + '<input class="wg-library-search" type="search" aria-label="Buscar widgets" placeholder="Buscar widgets…">'
+      + '<div class="wg-library-filters" role="group" aria-label="Categoría de widget"></div><div class="wg-library-list"></div>';
+    for (const [key, label] of [['main', 'Tus widgets'], ['apps', 'Apps conectadas'], ['pinned', 'Fijados']]) {
       const b = document.createElement('button'); b.textContent = label; b.setAttribute('aria-pressed', String(key === popFilter));
       b.dataset.widgetTab = key;
       b.addEventListener('click', () => selectWidgetTab(key)); popEl.querySelector('.wg-library-filters').appendChild(b);
@@ -895,7 +895,7 @@ const Widgets = (() => {
     feedRequest = fetch('/api/widgets', { cache: 'no-store', signal: U.timeoutSignal(10000) })
       .then(r => (r && r.ok) ? r.json() : null)
       .then(st => {
-        if (!st || !Array.isArray(st.widgets)) throw new Error('Widget feed unavailable');
+        if (!st || !Array.isArray(st.widgets)) throw new Error('Feed de widgets no disponible');
         const catalogSignature = () => JSON.stringify(Array.from(feed.values(), rec => [rec.slug, rec.label, rec.config?.version || null]));
         const oldCatalog = catalogSignature();
         feed.clear();

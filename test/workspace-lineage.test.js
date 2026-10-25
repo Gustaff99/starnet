@@ -93,7 +93,7 @@ try {
   A.ok(fn.includes("show('screen-lineage')"), 'prior-state evidence renders the dedicated recovery screen');
   const html = fs.readFileSync(path.join(__dirname, '../frontend/index.html'), 'utf8');
   const screen = html.slice(html.indexOf('<section id="screen-lineage"'), html.indexOf('<!-- ============ GAME', html.indexOf('<section id="screen-lineage"')));
-  A.ok(screen.includes('READ ONLY') && screen.includes('btn-lineage-restore') && screen.includes('btn-lineage-retry'), 'Recovery Mode offers restore/retry and declares read-only posture');
+  A.ok(screen.includes('SOLO LECTURA') && screen.includes('btn-lineage-restore') && screen.includes('btn-lineage-retry'), 'Recovery Mode offers restore/retry and declares read-only posture');
   A.ok(screen.includes('btn-lineage-recover') && screen.includes('btn-lineage-report'), 'Recovery Mode offers verified candidate recovery and a redacted report without Terminal work');
   A.ok(fn.includes('/api/lineage/recover') && fn.includes('/api/lineage/report'), 'Recovery Mode wires both actions to authenticated sidecar truth');
   // START FRESH is NOT a bypass: it is sidecar-backed (quarantine + marker, never a delete) and the page still

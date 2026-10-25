@@ -98,7 +98,7 @@ const textReply = (status, text) => async () => ({ ok: status === 200, status, t
     const sigCls = new Set();
     const bars = { textContent: '' };
     const sig = {
-      title: '', childNodes: [{ nodeValue: 'UPLINK ' }], querySelector: () => bars,
+      title: '', childNodes: [{ nodeValue: 'ENLACE ' }], querySelector: () => bars,
       classList: { add: c => sigCls.add(c), remove: (...c) => c.forEach(x => sigCls.delete(x)) },
       closest: () => box
     };
@@ -128,46 +128,46 @@ const textReply = (status, text) => async () => ({ ok: status === 200, status, t
   {
     const m = mountTopbar({ desktop: true, engine: { state: 'degraded', reason: DEGRADED } });
     m.T._paintSig();
-    A.eq(m.sig.childNodes[0].nodeValue, 'LINK DOWN ', 'a fresh drop paints the plain LINK DOWN');
+    A.eq(m.sig.childNodes[0].nodeValue, 'ENLACE CAÍDO ', 'a fresh drop paints the plain LINK DOWN');
     A.ok(!m.cls.has('recoverable'), 'no restart door before the link has stayed down');
     m.advance(15000); m.T._paintSig(); await m.settle(); await m.settle();
     A.ok(m.sig.title.indexOf(DEGRADED) === 0, 'after 15s the tip carries the service\'s own reason verbatim: ' + m.sig.title);
-    A.ok(/click to restart the station service/.test(m.sig.title), 'and, on the desktop, the way out');
-    A.eq(m.sig.childNodes[0].nodeValue, 'LINK DOWN · RESTART ', 'the label itself shows the door (a tip alone is undiscoverable)');
+    A.ok(/clic para reiniciar el servicio de la estación/.test(m.sig.title), 'and, on the desktop, the way out');
+    A.eq(m.sig.childNodes[0].nodeValue, 'ENLACE CAÍDO · REINICIAR ', 'the label itself shows the door (a tip alone is undiscoverable)');
     A.ok(m.cls.has('recoverable') && m.attrs.role === 'button', 'the connection box becomes a keyboard-reachable button');
     m.listeners.click[0](); m.listeners.click[0]();
     await m.settle(); await m.settle(); await m.settle();
     A.eq(m.restarts.length, 1, 'a double click restarts once');
-    A.ok(m.notes.some(n => /restarting the station service/.test(n[0])), 'the restart is announced');
-    A.ok(m.notes.some(n => /still reports: degraded: crash-loop/.test(n[0])), 'a respawn that comes back degraded is not claimed as healed');
+    A.ok(m.notes.some(n => /reiniciando el servicio de la estación/.test(n[0])), 'the restart is announced');
+    A.ok(m.notes.some(n => /sigue reportando: degraded: crash-loop/.test(n[0])), 'a respawn that comes back degraded is not claimed as healed');
     m.setEngine({ state: 'ok', reason: '' });
     m.setLink({ bridged: true, down: false, paused: false }); m.T._paintSig();
     A.ok(!m.cls.has('recoverable') && !m.attrs.role, 'a recovered link drops the door');
-    A.eq(m.sig.childNodes[0].nodeValue, 'UPLINK ', 'and paints UPLINK');
+    A.eq(m.sig.childNodes[0].nodeValue, 'ENLACE ', 'and paints UPLINK');
   }
   {
     // a hung service: no reason came back, the door is still offered (the restart is not gated on a reason)
     const m = mountTopbar({ desktop: true, engine: { state: 'silent', reason: '' } });
     m.T._paintSig(); m.advance(16000); m.T._paintSig(); await m.settle(); await m.settle();
-    A.ok(/isn’t answering \(it may be stuck\)/.test(m.sig.title) && m.cls.has('recoverable'), 'a hung service gets an honest tip and the restart door');
+    A.ok(/no responde \(puede estar atascado\)/.test(m.sig.title) && m.cls.has('recoverable'), 'a hung service gets an honest tip and the restart door');
     const r = mountTopbar({ desktop: true, engine: { state: 'down', reason: '' }, restartOk: false });
     r.T._paintSig(); r.advance(16000); r.T._paintSig(); await r.settle(); await r.settle();
     r.listeners.click[0](); await r.settle(); await r.settle();
-    A.ok(r.notes.some(n => /could not be restarted — quit StarNet fully/.test(n[0])), 'a failed restart names the last-resort step');
+    A.ok(r.notes.some(n => /no se pudo reiniciar el servicio de la estación — cierra StarNet por completo/.test(n[0])), 'a failed restart names the last-resort step');
   }
   {
     // the service answers 200: the engine is fine, restarting it would kill live work — no door, a truthful tip
     const m = mountTopbar({ desktop: true, engine: { state: 'ok', reason: '' } });
     m.T._paintSig(); m.advance(16000); m.T._paintSig(); await m.settle(); await m.settle();
     A.ok(!m.cls.has('recoverable'), 'a healthy service is never offered for restart');
-    A.ok(/service itself is answering/.test(m.sig.title), 'the tip says the service answered (measured), not "is the app running?"');
+    A.ok(/el servicio sí responde/.test(m.sig.title), 'the tip says the service answered (measured), not "is the app running?"');
   }
   {
     // browser mode: nothing to restart — no button, the tip names where the service lives
     const m = mountTopbar({ desktop: false, engine: { state: 'down', reason: '' } });
     m.T._paintSig(); m.advance(16000); m.T._paintSig(); await m.settle(); await m.settle();
     A.ok(!m.cls.has('recoverable') && !m.attrs.role, 'browser mode never shows a restart door');
-    A.ok(/npm start/.test(m.sig.title) && !/click to restart/.test(m.sig.title), 'browser mode names the honest next step');
+    A.ok(/npm start/.test(m.sig.title) && !/clic para reiniciar/.test(m.sig.title), 'browser mode names the honest next step');
     m.listeners.click[0](); await m.settle();
     A.eq(m.restarts.length, 0, 'a click in browser mode restarts nothing');
   }
@@ -176,7 +176,7 @@ const textReply = (status, text) => async () => ({ ok: status === 200, status, t
     const m = mountTopbar({ desktop: true, engine: { state: 'down', reason: '' } });
     m.setLink({ bridged: true, down: true, paused: true });
     m.T._paintSig(); m.advance(20000); m.T._paintSig(); await m.settle();
-    A.ok(!m.cls.has('recoverable') && m.sig.childNodes[0].nodeValue === 'STANDBY ', 'paused reads STANDBY with no door');
+    A.ok(!m.cls.has('recoverable') && m.sig.childNodes[0].nodeValue === 'EN ESPERA ', 'paused reads STANDBY with no door');
   }
 
   /* ---- COMMS names a degraded reason once instead of polling silently; the boot screen shares the door ---- */

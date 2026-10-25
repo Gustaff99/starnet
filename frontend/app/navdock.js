@@ -237,7 +237,7 @@
       if (sysBadge) {
         if (sysBadge.textContent !== n) sysBadge.textContent = n;
         if (sysBadge.hidden === !!n) sysBadge.hidden = !n;
-        const label = notifs ? 'unread notifications' : (update ? 'a StarNet update is ready' : 'unread notifications');
+        const label = notifs ? 'notificaciones sin leer' : (update ? 'una actualización de StarNet está lista' : 'notificaciones sin leer');
         if (sysBadge.getAttribute('aria-label') !== label) sysBadge.setAttribute('aria-label', label);
       }
     }

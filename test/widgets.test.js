@@ -35,10 +35,10 @@ A.eq(Widgets._fmtCount('junk'), '0', 'garbage → 0, never NaN');
 
 /* ============================ 3b. routines state (arm intent != runnable) ============================ */
 
-A.eq(Widgets._cronStateLabel({ enabled: true, halted: true }), 'stopped · E-STOP',
+A.eq(Widgets._cronStateLabel({ enabled: true, halted: true }), 'detenido · E-STOP',
   'the routines widget never reports armed while the durable E-STOP is engaged');
-A.eq(Widgets._cronStateLabel({ enabled: true, halted: false }), 'armed', 'a genuinely runnable scheduler reports armed');
-A.eq(Widgets._cronStateLabel({ enabled: false, halted: false }), 'disarmed', 'a disabled scheduler reports disarmed');
+A.eq(Widgets._cronStateLabel({ enabled: true, halted: false }), 'armado', 'a genuinely runnable scheduler reports armed');
+A.eq(Widgets._cronStateLabel({ enabled: false, halted: false }), 'desarmado', 'a disabled scheduler reports disarmed');
 
 /* ============================ 4. sanitizeLayout (a corrupt store never renders) ============================ */
 
@@ -112,11 +112,11 @@ A.eq(Widgets._sparkSvg([7]), '', 'a 1-point series draws nothing');
 
 /* ============================ 7. fmtAge (a trust cue, coarse on purpose) ============================ */
 
-A.eq(Widgets._fmtAge(10000, 0), 'now', 'under 45s reads "now"');
+A.eq(Widgets._fmtAge(10000, 0), 'ahora', 'under 45s reads "now"');
 A.eq(Widgets._fmtAge(3 * 60000, 0), '3m', 'minutes');
 A.eq(Widgets._fmtAge(2 * 3600000, 0), '2h', 'hours');
 A.eq(Widgets._fmtAge(4 * 86400000, 0), '4d', 'days');
-A.eq(Widgets._fmtAge(0, 999999), 'now', 'a future timestamp clamps to "now", never negative');
+A.eq(Widgets._fmtAge(0, 999999), 'ahora', 'a future timestamp clamps to "now", never negative');
 
 // report() LAST — it is what calls process.exit(fail?1:0). This file used to end in a bare
 // console.log, so every assertion failure printed FAIL and STILL exited 0: the fast gate scored
@@ -132,8 +132,8 @@ const scheduled = { enabled: true, jobs: [
 A.eq(Widgets._nextRoutine(scheduled, now).val, '5m', 'next routine skips paused jobs and sorts actual due times');
 A.eq(Widgets._nextRoutine(scheduled, now).sub, 'Morning brief', 'next routine names the scheduled job');
 A.eq(Widgets._nextRoutine({ ...scheduled, halted: true }, now).val, null, 'E-STOP suppresses countdown');
-A.eq(Widgets._nextRoutine({ ...scheduled, enabled: false }, now).sub, 'disarmed', 'disarmed scheduler is explicit');
-A.eq(Widgets._nextRoutine({ enabled: true, jobs: [] }, now).sub, 'nothing scheduled', 'empty scheduler does not invent a time');
+A.eq(Widgets._nextRoutine({ ...scheduled, enabled: false }, now).sub, 'desarmado', 'disarmed scheduler is explicit');
+A.eq(Widgets._nextRoutine({ enabled: true, jobs: [] }, now).sub, 'nada programado', 'empty scheduler does not invent a time');
 A.eq(Widgets._nextRoutine(null, now).val, null, 'missing scheduler stays unknown');
 A.eq(Widgets._nextRoutine(scheduled, now + 10 * 60000).val, 'due', 'overdue does not claim running');
 
@@ -141,7 +141,7 @@ A.eq(Widgets._nextRoutine(scheduled, now + 10 * 60000).val, 'due', 'overdue does
 global.Channels = require('../frontend/app/channels.js');
 global.Channels.begin('connecting', now);
 A.eq(Widgets._commsReadout(false).val, '0', 'unconfirmed request is not a running conversation');
-A.eq(Widgets._commsReadout(false).sub, '1 connecting', 'connection state stays distinct');
+A.eq(Widgets._commsReadout(false).sub, '1 conectando', 'connection state stays distinct');
 global.Channels.begin('working', now);
 global.Channels.setRunId('working', 'run-1', now);
 A.eq(Widgets._commsReadout(false).val, '1', 'confirmed run is counted');
