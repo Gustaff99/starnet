@@ -18,7 +18,7 @@
   "expectedClaimCount": 37,
   "releaseSurface": {
     "algorithm": "sha256",
-    "sourceCommit": "fbbd1aa85afc10e360d72915db214f01d19cb9b2",
+    "sourceCommit": "540bd314ebff0884ba46b93ed9ab841629af69bd",
     "pathSetSha256": "93a6809cb616abda08e0ace8ac71308a79d2a668935dd6695ca7e0ddac84df17",
     "files": [
       {
@@ -1203,8 +1203,8 @@
       },
       {
         "path": "frontend/app/stationui.js",
-        "bytes": 968610,
-        "sha256": "5ffd238f3b2fe8a5c6b93404f26ebf0b8037349642c1e72f2d02e67e7eaf554d"
+        "bytes": 968720,
+        "sha256": "7fda2873bc821efaf0495db87396ca85dd8ed95e47f8c366ba04295ff7fc13a9"
       },
       {
         "path": "frontend/app/stepin.js",
