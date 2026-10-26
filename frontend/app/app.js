@@ -1710,7 +1710,7 @@ const App = (() => {
   async function loadModels(provider) {
     const p = normalizeProviderId(provider || pickedProvider);
     const countEl = el('model-count'), inp = el('in-model');
-    el('model-hint').textContent = 'loading model catalog…';
+    el('model-hint').textContent = 'cargando catálogo de modelos…';
     const list = await Harness.listModels(p);
     if (p !== normalizeProviderId(pickedProvider)) return;
     // DEFAULT = the curated MODEL_PICKS[provider][0] — NOT the alphabetical regex hit the old code used (which
@@ -1727,11 +1727,11 @@ const App = (() => {
     }
     if (list.length) {
       genesisModels = list; genesisOffline = false;
-      countEl.textContent = '(' + list.length + ' in catalog)';
+      countEl.textContent = '(' + list.length + ' en el catálogo)';
       if (!inp.value) inp.value = defId;   // DEFAULT-FILL so a first ⏼ WAKE never bounces on an empty model (matches the Codex path)
       // Retire the "loading models…" placeholder once the catalog resolves — a default-filled field must not keep
       // asserting "loading" as its accessible name.
-      inp.placeholder = 'search models — e.g. ' + defId;
+      inp.placeholder = 'buscar modelos — p. ej. ' + defId;
     } else {
       // catalog unreachable (no network to openrouter.ai, or fetch blocked): seed the curated slugs MARKED
       // offline so the popover never reads as a verified live catalog. The screen stays usable — you can always
@@ -1742,9 +1742,9 @@ const App = (() => {
       // #39: a refused page (a stale token after a sidecar restart, or a key the station withheld) is NOT an offline
       // catalog — say the one thing that fixes it.
       const refused = refusedPageLine();
-      countEl.textContent = refused ? '(' + refused + ')' : '(catalog offline — type or pick a slug)';
+      countEl.textContent = refused ? '(' + refused + ')' : '(catálogo sin conexión — escribe o elige un slug)';
       if (!inp.value) inp.value = defId || FALLBACK[0];   // default-fill even offline so WAKE works; the Commander can overtype
-      inp.placeholder = 'type a model slug — e.g. ' + (defId || 'gpt-5.5');
+      inp.placeholder = 'escribe un slug de modelo — p. ej. ' + (defId || 'gpt-5.5');
     }
     if (el('model-pop') && !el('model-pop').hidden) renderModelPop();   // live-refresh an open popover after a provider switch
     // OLLAMA status = the catalog truth for this machine: a non-empty live list IS "ollama detected"; an empty one
@@ -1753,8 +1753,8 @@ const App = (() => {
       const os = el('ollama-status');
       if (os) {
         os.textContent = list.length
-          ? '● ollama detected on this machine · ' + list.length + ' local model' + (list.length === 1 ? '' : 's') + ' ready'
-          : '○ ollama not detected yet — install it from ollama.com, pull a model, and it will show up here';
+          ? '● ollama detectado en esta máquina · ' + list.length + ' modelo local' + (list.length === 1 ? '' : 'os') + ' listo' + (list.length === 1 ? '' : 's')
+          : '○ ollama aún no detectado — instálalo desde ollama.com, descarga un modelo y aparecerá aquí';
       }
     }
     updateHint();
@@ -1770,26 +1770,26 @@ const App = (() => {
     // #93: managed ids are vendor/model, like OpenRouter's; [0] is the default a fresh STARNET setup saves.
     starnet: [
       { label: 'GPT-5.5', id: 'openai/gpt-5.5', tag: '' },
-      { label: 'Sonnet 4.6', id: 'anthropic/claude-sonnet-4.6', tag: 'balanced' },
-      { label: 'Opus 4.8', id: 'anthropic/claude-opus-4.8', tag: 'deepest' },
+      { label: 'Sonnet 4.6', id: 'anthropic/claude-sonnet-4.6', tag: 'equilibrado' },
+      { label: 'Opus 4.8', id: 'anthropic/claude-opus-4.8', tag: 'más profundo' },
       { label: 'Gemini 2.5 Pro', id: 'google/gemini-2.5-pro', tag: '' }
     ],
     openrouter: [
-      { label: 'Opus 4.8', id: 'anthropic/claude-opus-4.8', tag: 'deepest' },
-      { label: 'Sonnet 4.6', id: 'anthropic/claude-sonnet-4.6', tag: 'balanced' },
+      { label: 'Opus 4.8', id: 'anthropic/claude-opus-4.8', tag: 'más profundo' },
+      { label: 'Sonnet 4.6', id: 'anthropic/claude-sonnet-4.6', tag: 'equilibrado' },
       { label: 'GPT-5', id: 'openai/gpt-5', tag: '' },
       { label: 'Gemini 2.5 Pro', id: 'google/gemini-2.5-pro', tag: '' }
     ],
     openai: [
-      { label: 'GPT-5.5', id: 'gpt-5.5', tag: 'deepest' },
+      { label: 'GPT-5.5', id: 'gpt-5.5', tag: 'más profundo' },
       { label: 'GPT-5.4', id: 'gpt-5.4', tag: '' }
     ],
     anthropic: [
-      { label: 'Sonnet 5.5', id: 'claude-sonnet-5-5', tag: 'balanced' },
-      { label: 'Opus 5.5', id: 'claude-opus-5-5', tag: 'deepest' }   // was Opus 4.1 — retired 2026-08-05, the chip 404'd
+      { label: 'Sonnet 5.5', id: 'claude-sonnet-5-5', tag: 'equilibrado' },
+      { label: 'Opus 5.5', id: 'claude-opus-5-5', tag: 'más profundo' }   // was Opus 4.1 — retired 2026-08-05, the chip 404'd
     ],
     gemini: [
-      { label: 'Gemini 2.5 Pro', id: 'gemini-2.5-pro', tag: 'deepest' },
+      { label: 'Gemini 2.5 Pro', id: 'gemini-2.5-pro', tag: 'más profundo' },
       { label: 'Gemini 2.5 Flash', id: 'gemini-2.5-flash', tag: 'fast' }
     ],
     xai: [
@@ -2037,8 +2037,8 @@ const App = (() => {
     const id = el('in-model').value.trim(), hint = el('model-hint');
     window.OverseerSetup?.reflectModel(genesisModels.find(m => m.id === id) || { id, name: id }, pickedProvider === 'openai' && codexConnected && !el('in-key').value.trim() ? 'codex' : pickedProvider);
     syncModelPicks();   // keep the recommended-chip highlight in lockstep with whatever's in the field
-    if (isOAuthProviderId(pickedProvider)) { hint.textContent = 'included in your ' + OAUTH_GENESIS[pickedProvider].sub.replace(/ subscription$/, '') + ' subscription'; return; }
-    if (!id) { hint.textContent = 'pick or type a model slug'; return; }
+    if (isOAuthProviderId(pickedProvider)) { hint.textContent = 'incluido en tu ' + OAUTH_GENESIS[pickedProvider].sub.replace(/subscription$/, ''); return; }
+    if (!id) { hint.textContent = 'elige o escribe un slug de modelo'; return; }
     // the PICKED card's own catalog row (genesisModels = Harness.listModels(pickedProvider)): the Harness lookups prefer
     // the station's stored provider, which only WAKE sets, and two routes can list one id with different run windows
     // (StarNet credits work in a 200k tier, OpenRouter in the whole window) — final-polish 10-23
@@ -2055,14 +2055,14 @@ const App = (() => {
       const run = row ? (Number(row.runWindow) || 0) : 0;
       if (limit && run > 0 && run < limit) bits.push('recuerda hasta ' + fmt(run) + ' tokens de chat (el modelo puede sostener ' + fmt(limit) + ', pero cobra un precio más alto para un prompt de más de ' + fmt(run) + ')');
       else if (limit) bits.push('recuerda hasta ' + fmt(limit) + ' tokens de chat');
-      if (price) bits.push('costs ' + usdPerM(price.in) + ' in · ' + usdPerM(price.out) + ' out per million tokens (a token ≈ ¾ of a word)');
+      if (price) bits.push('cuesta ' + usdPerM(price.in) + ' entrada · ' + usdPerM(price.out) + ' salida por millón de tokens (un token ≈ ¾ de una palabra)');
       hint.textContent = bits.join('  ·  ');
       return;
     }
     // the catalog has NO data for this slug — split the honest reasons instead of one vague "custom model slug":
-    if (genesisOffline) { hint.textContent = 'price and memory size unknown for this model — it will still run'; return; }
-    if (genesisModels.some(m => m.id === id)) { hint.textContent = 'custom model — not priced in the catalog'; return; }
-    hint.textContent = 'not in the catalog — double-check the slug, or it runs as a custom model';
+    if (genesisOffline) { hint.textContent = 'precio y tamaño de memoria desconocidos para este modelo — aun así se ejecutará'; return; }
+    if (genesisModels.some(m => m.id === id)) { hint.textContent = 'modelo personalizado — sin precio en el catálogo'; return; }
+    hint.textContent = 'no está en el catálogo — verifica el slug, o se ejecutará como modelo personalizado';
   }
 
   /* ---------- provider toggle + ChatGPT (Codex OAuth) sign-in ---------- */
@@ -2075,8 +2075,8 @@ const App = (() => {
   // pin refreshCodexStatus/startCodexSignIn); grok/kimi ride ONE generic path parameterized by this copy table —
   // the same split stationui.js uses (codex literal + OAUTH_EXTRA shared), so the two surfaces stay twins.
   const OAUTH_GENESIS = Object.freeze({
-    codex: Object.freeze({ name: 'ChatGPT', sub: 'ChatGPT subscription' }),
-    grok:  Object.freeze({ name: 'Grok',    sub: 'SuperGrok / X Premium+ subscription' }),
+    codex: Object.freeze({ name: 'ChatGPT', sub: 'suscripción a ChatGPT' }),
+    grok:  Object.freeze({ name: 'Grok',    sub: 'suscripción SuperGrok / X Premium+' }),
     kimi:  Object.freeze({ name: 'Kimi',    sub: 'Suscripción a Kimi' })
   });
   function isOAuthProviderId(p) { return !!OAUTH_GENESIS[normalizeProviderId(p)]; }
@@ -2092,7 +2092,7 @@ const App = (() => {
     }
     row.classList.toggle('collapsed', !expand);
     more.setAttribute('aria-expanded', String(expand));
-    more.textContent = expand ? '－ FEWER' : '＋ ' + row.querySelectorAll('.prov.tail').length + ' MORE';
+    more.textContent = expand ? '－ MENOS' : '＋ ' + row.querySelectorAll('.prov.tail').length + ' MÁS';
   }
 
   function selectProviderUI(p) {
@@ -2181,7 +2181,7 @@ const App = (() => {
     // feed the themed popover (not a datalist): carry displayName through as .name so modelLabel renders it.
     genesisModels = models.map(m => ({ id: m.id, name: m.displayName || m.name || m.id }));
     genesisOffline = false;
-    el('model-count').textContent = '(ChatGPT subscription)';
+    el('model-count').textContent = '(suscripción a ChatGPT)';
     const mi = el('in-model'); if (!ids.includes(mi.value)) mi.value = def;
     if (def) mi.placeholder = 'search models — e.g. ' + def;   // retire "loading models…" here too, so the field's accessible name matches the loaded catalog
     if (el('model-pop') && !el('model-pop').hidden) renderModelPop();
@@ -2203,25 +2203,25 @@ const App = (() => {
       // Truthful telemetry: if the sidecar signed in but could NOT prove the (rotated) token reached disk, say so —
       // the session works now, but a restart may require re-signing in. Never claim durable state the harness can't prove.
       if (j.persistError) {
-        statusEl.innerHTML = '<span class="conn-dot"></span>connected to ChatGPT — but the sign-in could not be saved to disk; you may need to re-sign in after a restart';
+        statusEl.innerHTML = '<span class="conn-dot"></span>conectado a ChatGPT — pero el inicio de sesión no se pudo guardar en disco; es posible que tengas que iniciar sesión de nuevo tras un reinicio';
         statusEl.className = 'codex-status warn';
       } else {
-        statusEl.innerHTML = '<span class="conn-dot"></span>connected to ChatGPT — your agents can run on your subscription';
+        statusEl.innerHTML = '<span class="conn-dot"></span>conectado a ChatGPT — tus agentes pueden ejecutarse con tu suscripción';
         statusEl.className = 'codex-status ok';
       }
-      signinBtn.textContent = '↻ RE-SIGN IN';
+      signinBtn.textContent = '↻ INICIAR SESIÓN DE NUEVO';
       logoutBtn.classList.remove('hidden');
     } else if (j.expired) {
       // the stored refresh token is KNOWN-dead (e.g. consumed by another Codex client) — say so honestly
       // instead of a generic "not connected"; DISCONNECT stays offered to drop the dead credentials.
-      statusEl.textContent = '⚠ your ChatGPT sign-in expired — ' + (j.reason || 'sign in again to reconnect');
+      statusEl.textContent = '⚠ tu sesión de ChatGPT expiró — ' + (j.reason || 'inicia sesión de nuevo para reconectar');
       statusEl.className = 'codex-status bad';
-      signinBtn.textContent = '⏼ RE-SIGN IN WITH CHATGPT ▸';
+      signinBtn.textContent = '⏼ INICIAR SESIÓN DE NUEVO CON CHATGPT ▸';
       logoutBtn.classList.remove('hidden');
     } else {
-      statusEl.textContent = 'not connected — sign in to use your ChatGPT subscription';
+      statusEl.textContent = 'sin conexión — inicia sesión para usar tu suscripción de ChatGPT';
       statusEl.className = 'codex-status';
-      signinBtn.textContent = '⏼ SIGN IN WITH CHATGPT ▸';
+      signinBtn.textContent = '⏼ INICIAR SESIÓN CON CHATGPT ▸';
       logoutBtn.classList.add('hidden');
     }
   }
@@ -2246,17 +2246,17 @@ const App = (() => {
     SFX.click();
     const statusEl = el('codex-status'), codeEl = el('codex-code'), openBtn = el('btn-codex-open');
     CodexSignIn.start({
-      onRequesting: () => { statusEl.textContent = 'requesting a sign-in code…'; statusEl.className = 'codex-status'; },
+      onRequesting: () => { statusEl.textContent = 'solicitando un código de inicio de sesión…'; statusEl.className = 'codex-status'; },
       onError: msg => { statusEl.textContent = msg; statusEl.className = 'codex-status bad'; },
       onCode: c => {
         codeEl.textContent = c.user_code; codeEl.classList.remove('hidden');
         openBtn.classList.remove('hidden');
         // DISPLAY the bare address, OPEN the code-carrying one (open_uri) — see codexsignin.js.
         openBtn.onclick = () => openExternalUrl(c.open_uri || c.verification_uri);
-        statusEl.innerHTML = 'enter this code at <b>' + esc(c.verification_uri) + '</b> (opening it now)…';
+        statusEl.innerHTML = 'introduce este código en <b>' + esc(c.verification_uri) + '</b> (abierto ahora mismo)…';
         openExternalUrl(c.open_uri || c.verification_uri);
       },
-      onTimeout: () => { statusEl.textContent = 'sign-in timed out — start again'; statusEl.className = 'codex-status bad'; },
+      onTimeout: () => { statusEl.textContent = 'el inicio de sesión expiró — vuelve a empezar'; statusEl.className = 'codex-status bad'; },
       onConnected: () => { codeEl.classList.add('hidden'); openBtn.classList.add('hidden'); SFX.open(); refreshCodexStatus(); loadCodexModels(); }
     });
   }
@@ -2285,10 +2285,10 @@ const App = (() => {
   function applyOAuthBlockCopy(pid) {
     const c = OAUTH_GENESIS[pid]; if (!c) return;
     const signinBtn = el('btn-codex-signin'), hint = el('codex-hint');
-    if (signinBtn) signinBtn.textContent = '⏼ SIGN IN WITH ' + c.name.toUpperCase() + ' ▸';
+    if (signinBtn) signinBtn.textContent = '⏼ INICIAR SESIÓN CON ' + c.name.toUpperCase() + ' ▸';
     if (hint) {
       hint.textContent = (pid === 'codex')
-        ? 'Uses the ChatGPT Plus/Pro account you already have — no API key, no billing setup. Prefer a key? Paste an OpenAI API key above instead.'
+        ? 'Usa la cuenta de ChatGPT Plus/Pro que ya tienes — sin clave API, sin configurar facturación. ¿Prefieres una clave? Pega una clave API de OpenAI arriba.'
         : 'Usa la ' + c.sub + ' que ya tienes — sin clave API, sin configurar facturación. ¿Prefieres una clave? Cambia a OPENROUTER (o cualquier proveedor) arriba.';
     }
     paintKimiRegion(pid);
@@ -2297,7 +2297,7 @@ const App = (() => {
     if (codeEl) codeEl.classList.add('hidden');
     if (openBtn) openBtn.classList.add('hidden');
     const statusEl = el('codex-status');
-    if (statusEl) { statusEl.textContent = 'checking…'; statusEl.className = 'codex-status'; }
+    if (statusEl) { statusEl.textContent = 'comprobando…'; statusEl.className = 'codex-status'; }
   }
 
   // KIMI ACCOUNT REGION (#70): shown only while Kimi is picked. The pick is what the NEXT sign-in sends (the shared
@@ -2331,23 +2331,23 @@ const App = (() => {
     if (!statusEl || !signinBtn || !logoutBtn) return;
     if (oauthConnected[pid]) {
       if (j.persistError) {
-        statusEl.innerHTML = '<span class="conn-dot"></span>connected to ' + esc(c.name) + ' — but the sign-in could not be saved to disk; you may need to re-sign in after a restart';
+        statusEl.innerHTML = '<span class="conn-dot"></span>conectado a ' + esc(c.name) + ' — pero el inicio de sesión no se pudo guardar en disco; es posible que tengas que iniciar sesión de nuevo tras un reinicio';
         statusEl.className = 'codex-status warn';
       } else {
-        statusEl.innerHTML = '<span class="conn-dot"></span>connected to ' + esc(c.name) + (pid === 'kimi' && j.region && typeof KimiRegion !== 'undefined' ? ' (' + esc(KimiRegion.label(j.region)) + ')' : '') + ' — your agents can run on your subscription';
+        statusEl.innerHTML = '<span class="conn-dot"></span>conectado a ' + esc(c.name) + (pid === 'kimi' && j.region && typeof KimiRegion !== 'undefined' ? ' (' + esc(KimiRegion.label(j.region)) + ')' : '') + ' — tus agentes pueden ejecutarse con tu suscripción';
         statusEl.className = 'codex-status ok';
       }
-      signinBtn.textContent = '↻ RE-SIGN IN';
+      signinBtn.textContent = '↻ INICIAR SESIÓN DE NUEVO';
       logoutBtn.classList.remove('hidden');
     } else if (j.expired) {
-      statusEl.textContent = '⚠ your ' + c.name + ' sign-in expired — ' + (j.reason || 'sign in again to reconnect');
+      statusEl.textContent = '⚠ tu sesión de ' + c.name + ' expiró — ' + (j.reason || 'inicia sesión de nuevo para reconectar');
       statusEl.className = 'codex-status bad';
-      signinBtn.textContent = '⏼ RE-SIGN IN WITH ' + c.name.toUpperCase() + ' ▸';
+      signinBtn.textContent = '⏼ INICIAR SESIÓN DE NUEVO CON ' + c.name.toUpperCase() + ' ▸';
       logoutBtn.classList.remove('hidden');
     } else {
-      statusEl.textContent = 'not connected — sign in to use your ' + c.sub;
+      statusEl.textContent = 'sin conexión — inicia sesión para usar tu ' + c.sub;
       statusEl.className = 'codex-status';
-      signinBtn.textContent = '⏼ SIGN IN WITH ' + c.name.toUpperCase() + ' ▸';
+      signinBtn.textContent = '⏼ INICIAR SESIÓN CON ' + c.name.toUpperCase() + ' ▸';
       logoutBtn.classList.add('hidden');
     }
   }
@@ -2384,17 +2384,17 @@ const App = (() => {
     SFX.click();
     const statusEl = el('codex-status'), codeEl = el('codex-code'), openBtn = el('btn-codex-open');
     OAuthSignIn.for(pid).start({
-      onRequesting: () => { statusEl.textContent = 'requesting a sign-in code…'; statusEl.className = 'codex-status'; },
+      onRequesting: () => { statusEl.textContent = 'solicitando un código de inicio de sesión…'; statusEl.className = 'codex-status'; },
       onError: msg => { statusEl.textContent = msg; statusEl.className = 'codex-status bad'; },
       onCode: cc => {
         codeEl.textContent = cc.user_code; codeEl.classList.remove('hidden');
         openBtn.classList.remove('hidden');
         // DISPLAY the bare address, OPEN the code-carrying one (open_uri) — kimi's page REQUIRES ?user_code=.
         openBtn.onclick = () => openExternalUrl(cc.open_uri || cc.verification_uri);
-        statusEl.innerHTML = 'enter this code at <b>' + esc(cc.verification_uri) + '</b> (opening it now)…';
+        statusEl.innerHTML = 'introduce este código en <b>' + esc(cc.verification_uri) + '</b> (abierto ahora mismo)…';
         openExternalUrl(cc.open_uri || cc.verification_uri);
       },
-      onTimeout: () => { statusEl.textContent = 'sign-in timed out — start again'; statusEl.className = 'codex-status bad'; },
+      onTimeout: () => { statusEl.textContent = 'el inicio de sesión expiró — vuelve a empezar'; statusEl.className = 'codex-status bad'; },
       onConnected: () => { codeEl.classList.add('hidden'); openBtn.classList.add('hidden'); SFX.open(); refreshOAuthGenesisStatus(pid); loadOAuthModels(pid); }
     });
   }
