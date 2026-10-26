@@ -1,9 +1,10 @@
-# CHECKPOINT — MIS-23-4: app.js (criterios cumplidos, pendiente cierre)
+# CHECKPOINT — MIS-23-4: app.js (DONE) → siguiente MIS-23-5
 
 ## Estado
-- Subtarea activa: MIS-23-4 (app.js) — TODOS los criterios de traducción cumplidos
+- MIS-23-4 (app.js): **done** en Paperclip (comentario e9f598f2 con evidencia)
 - Rama: es/interfaz-espanol
-- Commits: 94a8e18b (lote A) + commit lotes B/C/D (este)
+- Commits: 94a8e18b (lote A) + 0e36ee3c (lotes B/C/D + sueltos)
+- Siguiente subtarea: MIS-23-5 (chat/voice) — activar en la próxima ejecución
 
 ## Criterios de MIS-23-4
 - [x] Lote A: model catalog + sign-in (L1700-2560) — commit 94a8e18b
@@ -20,7 +21,7 @@
 - [x] Tests: line-sendto 1/1, needs-you* 6/6 (needs-you, rail-fit, fold,
       bell-settle, one-list, loop-review-needs-you)
 - [x] Espejo website/app/app/app.js sincronizado (cp + node --check)
-- [ ] Comentario Paperclip + cierre (done) o continuación
+- [x] Comentario Paperclip (e9f598f2) + status done
 
 ## Notas de terminología aplicadas
 - WAKE→DESPERTAR, WAKING→DESPERTANDO, RESUME→REANUDAR, GENESIS→GÉNESIS
@@ -31,9 +32,11 @@
 ## Rojos conocidos (fuera de alcance MIS-23-4)
 19 CDP/Chrome ambientales (requieren SKYNET_CHROME en host). Ver checkpoint MIS-23-3.
 
-## Siguiente acción
-Comentar en Paperclip MIS-23-4 con evidencia (commits, scanner, tests) y marcar
-done; activar MIS-23-5 (chat/voice).
+## Siguiente acción (próxima ejecución)
+1. Checkout MIS-23-5 (chat/voice) y marcar in_progress.
+2. Correr scanner sobre frontend/app/chat.js + voice para dimensionar lotes.
+3. Traducir por lotes con el mismo método (script Python, exact replacements,
+   count assertions); node --check + rescan + tests pertinentes por lote.
 
 ## Archivos clave
 - frontend/app/app.js (traducido)
