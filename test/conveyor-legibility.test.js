@@ -3,7 +3,7 @@
    A first-time builder could not find the conveyors, was told three different things about what belts are, could not
    tell the five 1×1 junctions apart, and could not see whether a SPLITTER copies a job to every branch or makes the
    branches take turns (a JOINER somewhere downstream decides). Locked here, read from the shipped sources:
-     F1 — WORK › WORKFLOWS opens the conveyor builder (Build.openWorkflows), and REFIT's subtitle names workflow lines;
+     F1 — WORK › FLUJOS opens the conveyor builder (Build.openWorkflows), and REFIT's subtitle names workflow lines;
      F2 — one account of belts everywhere: belts ARE the workflow (no "optional", no "to watch", no "no belts required");
      P1 — the splitter's mode is said where the Commander looks: its Workflow panel section, its hover card, its tag;
      P2 — every machine on the shelf carries a wiring diagram, and the shelf is grouped the way work meets it;
@@ -21,8 +21,8 @@ const PropSprites = require('../frontend/app/propsprites.js');
 
 /* F1 — a door named for the job */
 const workMenu = html.slice(html.indexOf('data-group="work"'), html.indexOf('data-group="build"'));
-A.ok(/id="bb-automate" data-family="automate"[^>]*>[\s\S]{0,120}<b>AUTOMATE<\/b>/.test(workMenu) && /automate: \{ label: 'AUTOMATE', tabs: \[\s*\{ id: 'workflows', k: 'workflows', label: 'WORKFLOWS'/.test(read('frontend/app/stationui.js')), 'WORK menu has AUTOMATE, whose first tab is WORKFLOWS (ONE MENU, 2026-10-01)');
-A.ok(/registerWindow\('workflows', 'WORKFLOWS'/.test(read('frontend/app/windows/workflows.js')) && !/bbWorkflows\.onclick/.test(app), 'WORKFLOWS opens its own docked window — send a job, read the result, change it (2026-09-30; never Build Mode)');
+A.ok(/id="bb-automate" data-family="automate"[^>]*>[\s\S]{0,120}<b>AUTOMATIZAR<\/b>/.test(workMenu) && /automate: \{ label: 'AUTOMATIZAR', tabs: \[\s*\{ id: 'workflows', k: 'workflows', label: 'FLUJOS'/.test(read('frontend/app/stationui.js')), 'WORK menu has AUTOMATIZAR, whose first tab is FLUJOS (ONE MENU, 2026-10-01)');
+A.ok(/registerWindow\('workflows', 'FLUJOS'/.test(read('frontend/app/windows/workflows.js')) && !/bbWorkflows\.onclick/.test(app), 'FLUJOS opens its own docked window — send a job, read the result, change it (2026-09-30; never Build Mode)');
 A.ok(/const api = \{ init, open, openWorkflows,/.test(build), 'Build exports openWorkflows');
 const ow = build.slice(build.indexOf('function openWorkflows()'), build.indexOf('const api = {'));
 A.ok(/pendingGroup = 'workflow'/.test(ow) && /rebake\(\)/.test(ow) && /openFlowCard\(first\.id\)/.test(ow), 'it opens on the Conveyors tab, compiles, and docks the line’s panel');

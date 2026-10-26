@@ -6,7 +6,7 @@
       validated against the frozen shared/events.js contract. Both the unknown-id and the known-but-down
       paths fire it; a healthy call fires nothing. The ctx rides through makeMcpToolDef's run(args, ctx).
    2) FRONTEND: Friendly.connectorDoor(ev) builds the post-run chip ("⇄ CONNECT GMAIL — 2 clicks") whose
-      run() opens ABILITIES on the CATALOG section and pre-fills the console search with the connector id
+      run() opens HABILIDADES on the CATALOG section and pre-fills the console search with the connector id
       (the existing "what are you trying to connect?" router window), re-asserting the filter until the
       async catalog has rendered a card.
    3) chat.js SEAM (source lock — chat.js is DOM flow and not require-able): the bus listener is wired at
@@ -170,8 +170,8 @@ function ctxFor(runId) {
       const thrower = makeConnectorTools({ connectors: { list: () => [] }, connectorCatalog: catalog, signInUnavailable: () => { throw new Error('boom'); } });
       A.eq(thrower.suggestFor('send my newsletter to subscribers')[0].unavailable, '', 'a throwing availability probe fails open to the old behavior');
     }
-    // every ABILITIES path the agent quotes names a tab or section the window actually draws (the walk found "KEYS tab",
-    // "ABILITIES › CONNECTORS" and "ABILITIES › KEYS" — doors renamed away long ago, still quoted to users)
+    // every HABILIDADES path the agent quotes names a tab or section the window actually draws (the walk found "KEYS tab",
+    // "HABILIDADES › CONNECTORS" and "HABILIDADES › KEYS" — doors renamed away long ago, still quoted to users)
     {
       const win = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/connectors.js'), 'utf8');
       const labels = new Set((win.match(/label: '([^']+)'/g) || []).map(m => m.slice(8, -1)));
@@ -181,7 +181,7 @@ function ctxFor(runId) {
       for (const f of files) {
         const text = fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
         // segments are the window's UPPERCASE labels; prose after a label ("… is where …") must not join the path
-        for (const m of text.match(/ABILITIES(?: › [A-Z][A-Z0-9 /&]*[A-Z0-9])+/g) || []) {
+        for (const m of text.match(/HABILIDADES(?: › [A-Z][A-Z0-9 /&]*[A-Z0-9])+/g) || []) {
           m.split(' › ').slice(1).forEach(seg => { if (!labels.has(seg.trim())) bad.push(f + ': ' + m + ' (' + seg + ')'); });
         }
         text.split('\n').forEach((line, i) => {
@@ -190,7 +190,7 @@ function ctxFor(runId) {
           if (/['"`][^'"`]*KEYS tab/.test(line)) bad.push(f + ':' + (i + 1) + ' quotes the retired "KEYS tab"');
         });
       }
-      A.eq(bad, [], 'every quoted ABILITIES door exists in the ABILITIES window');
+      A.eq(bad, [], 'every quoted HABILIDADES door exists in the HABILIDADES window');
     }
     // the lead is TOLD to call it before declining (system-prompt guidance)
     const manual = fs.readFileSync(path.join(__dirname, '../sidecar/manual.js'), 'utf8');
@@ -205,7 +205,7 @@ function ctxFor(runId) {
     A.eq(Friendly.connectorDoor({}), null, 'no connector id -> no chip (never an empty door)');
     const door = Friendly.connectorDoor({ runId: 'r', connectorId: 'gmail', kind: 'mcp', reason: 'x', toolName: 'send_email' });
     A.eq(door.connectorId, 'gmail', 'door names its connector');
-    // run(): opens the ABILITIES window on CATALOG and pre-fills the console search
+    // run(): opens the HABILIDADES window on CATALOG and pre-fills the console search
     const opened = [];
     const inputEvents = [];
     const input = { value: '', dispatchEvent: e => inputEvents.push(e.type) };
@@ -215,7 +215,7 @@ function ctxFor(runId) {
     global.document = { querySelector: sel => sel === '#cc-list' ? list : null, defaultView: { Event: function (type) { this.type = type; } } };
     try {
       A.eq(door.run(), true, 'run() reports it opened the door');
-      A.eq(opened, [['connectors', 'catalog']], 'opens ABILITIES on the CATALOG section (the router window)');
+      A.eq(opened, [['connectors', 'catalog']], 'opens HABILIDADES on the CATALOG section (the router window)');
       A.eq(input.value, 'gmail', 'console search pre-filled with the connector id');
       A.eq(inputEvents, ['input'], 'search filter fired once a card exists');
       // catalog not rendered yet: the filter re-arms on a timer until a card appears (bounded)
@@ -258,7 +258,7 @@ function ctxFor(runId) {
     const guardAt = cont.indexOf('if (h.awaitingAnswer)'), sendAt = cont.indexOf('await send(');
     A.ok(guardAt > 0 && sendAt > guardAt && /App\.openWorkstream\(streamId\);[\s\S]{0,200}return false;/.test(cont.slice(guardAt, sendAt)), 'continueConnectorTask returns to the open question instead of answering it');
     const winSrc = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/connectors.js'), 'utf8');
-    A.ok(/const supported = !h\.awaitingAnswer && /.test(winSrc) && /btn\.textContent = h\.awaitingAnswer \? 'RETURN TO TASK'/.test(winSrc), 'ABILITIES offers RETURN TO TASK, never CONTINUE TASK, while the question is open');
+    A.ok(/const supported = !h\.awaitingAnswer && /.test(winSrc) && /btn\.textContent = h\.awaitingAnswer \? 'RETURN TO TASK'/.test(winSrc), 'HABILIDADES offers RETURN TO TASK, never CONTINUE TASK, while the question is open');
     {
       const W = require('../frontend/app/workstreams.js');
       W.reset();

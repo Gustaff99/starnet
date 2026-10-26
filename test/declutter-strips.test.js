@@ -1,5 +1,5 @@
 /* node test/declutter-strips.test.js — the three "space thief" fixes of 2026-10-10 (Andrew: "wtf is this share BS … the user
-   can't minimize that?"): the group chat's one-budget tray, the DELIVERABLES clear-from-library, and TO REVIEW's fold. */
+   can't minimize that?"): the group chat's one-budget tray, the ENTREGABLES clear-from-library, and TO REVIEW's fold. */
 'use strict';
 const A = require('./_assert.js');
 const fs = require('fs');
@@ -20,7 +20,7 @@ A.ok(/'starnet\.gc\.filesOpen\.' \+ id/.test(gc), 'the fold is remembered per gr
 A.ok(/#gc-files\{[^}]*max-height:132px;overflow-y:auto/.test(gc), 'an opened shelf scrolls inside its own cap (no chips spilling under the composer)');
 A.ok(/gc-preview-head[\s\S]{0,400}button\('CLOSE FILE', closeFile\)/.test(gc), 'CLOSE FILE sits in the preview head, not after the whole file body');
 
-/* ---- DELIVERABLES: clear from the library (files kept), undoable, scoped by the view's own filter ---- */
+/* ---- ENTREGABLES: clear from the library (files kept), undoable, scoped by the view's own filter ---- */
 const idx = read('sidecar/index.js');
 A.ok(/exact: '\/api\/deliverables\/clear', h: handleDeliverablesClear/.test(idx) && /exact: '\/api\/deliverables\/clear-undo', h: handleDeliverablesClearUndo/.test(idx),
   'clear + undo routes are registered');
@@ -93,7 +93,7 @@ A.ok(/el\.addEventListener\('click', \(\) => showInterruption\(''\)\)/.test(voic
   && /muteStopSpeaking\(\); speakerOffClearsNote\(\);/.test(voice),
   'the speech-interrupted note can be dismissed and clears when the speaker goes off');
 
-/* ---- DELIVERABLES toolbar + drawer (org pass 10-14, P13): upkeep folds, filters stay, chips read plainly ---- */
+/* ---- ENTREGABLES toolbar + drawer (org pass 10-14, P13): upkeep folds, filters stay, chips read plainly ---- */
 {
   const bar = dlv.slice(dlv.indexOf('<div class="deliverables-toolbar">'), dlv.indexOf('<div id="dl-kinds"'));
   const fold = bar.indexOf('<details class="dlv-tools"');

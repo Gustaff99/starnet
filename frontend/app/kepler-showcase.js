@@ -11,7 +11,7 @@
     for(const b of nav.children)b.setAttribute('aria-pressed',String(b.dataset.room===(id||'')));
     return true;
   }
-  for(const[id,label]of [['','Whole station'],['command','01 · Command'],['fabrication','02 · Fabrication'],['lounge','03 · Lounge']]){
+  for(const[id,label]of [['','Estación completa'],['command','01 · Command'],['fabrication','02 · Fabrication'],['lounge','03 · Lounge']]){
     const b=document.createElement('button');b.textContent=label;b.dataset.room=id;b.setAttribute('aria-pressed','false');b.onclick=()=>frame(id);nav.append(b);
   }
   document.body.append(panel);

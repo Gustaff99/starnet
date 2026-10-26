@@ -85,7 +85,7 @@
       { id: 'slack', title: 'SLACK', pre: 'sl', accent: '#b98ec8',
         // HONESTY: channel messages need a chat allowlist no production path supplies yet — DMs only today.
         // audit finding 5: Slack appears in BOTH panels — say which direction THIS one is.
-        tagline: 'Envía mensajes directos a tu app de Slack para hablar con tu agente. Las conversaciones en canales aún no están soportadas. Para que tu agente use Slack como tool, abre ABILITIES.'
+        tagline: 'Envía mensajes directos a tu app de Slack para hablar con tu agente. Las conversaciones en canales aún no están soportadas. Para que tu agente use Slack como tool, abre ABILITIES.',
         verb: 'receiving',
         steps: [
           'Abre <b>api.slack.com/apps</b> → <b>Create New App</b> → From scratch.',

@@ -9,10 +9,10 @@ const context={Channels:{pendingOf:()=>pending,isBusy:()=>busy,statusOf:()=> 'wo
 const state=vm.runInNewContext(source.slice(start,end)+'\nrailRowState',context);
 const w={id:'test-session'};
 assert(state(w).dot.includes('approval'));
-assert.equal(state(w).meta,'Approval needed');
+assert.equal(state(w).meta,'Aprobación pendiente');
 pending={tool:'brief.ask'};
 assert(!state(w).dot.includes('approval'));
-assert.equal(state(w).meta,'Reply needed');
+assert.equal(state(w).meta,'Respuesta pendiente');
 pending=null;
 assert.equal(state(w).dot,'ws-dot working');
 busy=false;w.lastRunOk=false;

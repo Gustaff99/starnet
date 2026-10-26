@@ -267,7 +267,7 @@ const Chat = (() => {
     if (hasNew) pill.classList.add('hasnew');
     const isNew = pill.classList.contains('hasnew');
     pill.textContent = isNew ? 'new messages' : 'latest';   // the ▾ chevron is drawn by CSS (::after), not a font glyph
-    pill.setAttribute('aria-label', isNew ? 'Jump to newest messages' : 'Scroll to latest');
+    pill.setAttribute('aria-label', isNew ? 'Ir a los mensajes nuevos' : 'Bajar a los últimos');
     positionNewPill(pill);
     pill.classList.add('show');
     if (log) log.classList.add('pill-clear');   // reserve the pill's height at the foot of the scroll so it never covers the newest line
@@ -651,11 +651,11 @@ const Chat = (() => {
     const ask = index => {
       if (!isActiveWs(ws) || index >= calls.length) return;
       const call = calls[index];
-      toolLine('before the restart, did ' + String(call.name || 'this action') + ' actually happen? StarNet will not run it again while the answer is uncertain.', true);
+      toolLine('antes del reinicio, ¿se realizó de verdad ' + String(call.name || 'esta acción') + '? StarNet no la ejecutará de nuevo mientras la respuesta sea incierta.', true);
       choices([
-        { label: 'It happened', value: 'happened' },
-        { label: 'It did not happen', value: 'did_not_happen' },
-        { label: 'I am not sure', value: 'unknown', quiet: true }
+        { label: 'Pasó', value: 'happened' },
+        { label: 'No pasó', value: 'did_not_happen' },
+        { label: 'No estoy seguro', value: 'unknown', quiet: true }
       ], async picked => {
         outcomes.push({ callId: String(call.callId || ''), outcome: String((picked && picked.value) || 'unknown') });
         if (index + 1 < calls.length) { ask(index + 1); return; }
@@ -685,7 +685,7 @@ const Chat = (() => {
       if (review && announce && isActiveWs(ws) && !recoveryNotices.has(review.runId)) {
         recoveryNotices.add(review.runId);
         const names = (review.uncertain || []).map(x => x.name || 'action').join(', ');
-        toolLine('recovery paused — ' + (names || 'an action') + ' may already have happened. StarNet will not repeat it; verify the outcome before continuing.', true);
+        toolLine('recuperación en pausa — ' + (names || 'una acción') + ' puede que ya se haya realizado. StarNet no la repetirá; comprueba el resultado antes de continuar.', true);
         offerRecoveryReview(review, ws);
       }
       return review ? 'review' : 'none';
@@ -1197,12 +1197,12 @@ const Chat = (() => {
     btn.classList.toggle('copied', !!ok);
     btn.classList.toggle('copy-failed', !ok);
     btn.textContent = ok ? '✓' : '!';
-    btn.setAttribute('aria-label', ok ? 'Copied' : 'Copy failed');
+    btn.setAttribute('aria-label', ok ? 'Copied' : 'No se pudo copiar');
     btn.setAttribute('data-tip', ok ? 'copied' : 'copy failed — select manually');
     btn.__copyResultTimer = setTimeout(() => {
       btn.classList.remove('copied', 'copy-failed'); btn.textContent = '⧉';
       btn.setAttribute('aria-label', idleLabel);
-      btn.setAttribute('data-tip', idleLabel === 'Copy code block' ? 'copy code' : 'copy message');
+      btn.setAttribute('data-tip', idleLabel === 'Copiar bloque de código' ? 'copiar código' : 'copiar mensaje');
       btn.__copyResultTimer = null;
     }, 1100);
   }
@@ -1537,7 +1537,7 @@ const Chat = (() => {
     if (panel.__resetFileDrop) { panel.__resetFileDrop(); return; }
     const hint = document.createElement('div');
     hint.className = 'chat-drop-hint'; hint.hidden = true;
-    hint.textContent = 'Drop files to attach';
+    hint.textContent = 'Suelta archivos para adjuntar';
     hint.setAttribute('role', 'status');
     panel.appendChild(hint);
     let depth = 0;
@@ -2524,7 +2524,7 @@ const Chat = (() => {
     rowEl.id = 'comms-agent-busy'; rowEl.className = 'choice-row comms-agent-busy'; rowEl.textContent = '';
     const label = document.createElement('span'); label.className = 'dim';
     // ORG P25: say WHO is busy and WHERE — it explains why a first message here queues (kept visible in an empty session)
-    const busyName = peer ? ((typeof App !== 'undefined' && App.agentName && App.agentName(peer.agentId || 'agent')) || name || 'This agent') : '';
+    const busyName = peer ? ((typeof App !== 'undefined' && App.agentName && App.agentName(peer.agentId || 'agent')) || name || 'Este agente') : '';
     label.textContent = peer ? (String(busyName).toUpperCase() + ' IS BUSY IN ' + shownName(peer).toUpperCase()) : String(detail || 'AGENT BUSY');
     rowEl.appendChild(label);
     if (peer) {
@@ -2655,7 +2655,7 @@ const Chat = (() => {
     const chips = document.createElement('div'); chips.className = 'cmsg-empty-chips';
     const personalized = result.ideas || [], ideas = personalized.length ? personalized : Starters.defaults();
     const messages = {
-      cold: 'Three ways to put ' + name + ' to work. Suggestions will become specific as we work together.',
+      cold: 'Tres formas de poner a ' + name + ' a trabajar. Las sugerencias se harán concretas a medida que trabajemos juntos.',
       paused: 'Personalization is paused. These starting points are available to everyone.',
       loading: 'Finding ideas from your work. These starting points are available meanwhile.',
       cooldown: 'Updating ideas from your latest context. Or start with one of these.',
@@ -2677,12 +2677,12 @@ const Chat = (() => {
       b.title = st.description + (st.general ? '' : ' Result: ' + st.deliverable);   // cabinet-clean.css shows the title only; the detail is the tip
       b.addEventListener('click', () => openStarter(st, hint));
       const dismiss = document.createElement('button'); dismiss.type = 'button'; dismiss.className = 'choice cmsg-starter-dismiss';
-      dismiss.textContent = 'Not relevant'; dismiss.setAttribute('aria-label', 'Not relevant: ' + st.label);
+      dismiss.textContent = 'No es relevante'; dismiss.setAttribute('aria-label', 'Not relevant: ' + st.label);
       dismiss.addEventListener('click', () => { StarterStore.dismiss(st); row.remove(); if (!chips.querySelector('.cmsg-starter-row')) renderStarterIdeas(d, hint, { status: 'ready', ideas: [] }); });
       row.appendChild(b); if (!st.general) row.appendChild(dismiss); chips.appendChild(row);
     }
     if (['ready', 'error'].includes(result.status)) {
-      const refresh = document.createElement('button'); refresh.type = 'button'; refresh.className = 'choice cmsg-starter-refresh'; refresh.textContent = 'Refresh suggestions';
+      const refresh = document.createElement('button'); refresh.type = 'button'; refresh.className = 'choice cmsg-starter-refresh'; refresh.textContent = 'Actualizar sugerencias';
       refresh.addEventListener('click', () => requestStarterIdeas(d, hint, starterContext(), starterOptions(), true)); chips.appendChild(refresh);
     }
     d.appendChild(chips);
@@ -2826,8 +2826,8 @@ const Chat = (() => {
     // in init() reads the row's .body text, so a streamed reply gains the button the moment its row exists.
     if (role === 'agent' || role === 'user') {
       const cp = document.createElement('button'); cp.className = 'cmsg-copy'; cp.type = 'button';
-      cp.setAttribute('data-copy-label', 'Copy message'); cp.setAttribute('data-tip', 'copy message');
-      cp.setAttribute('aria-label', 'Copy message'); cp.textContent = '⧉';
+      cp.setAttribute('data-copy-label', 'Copiar mensaje'); cp.setAttribute('data-tip', 'copiar mensaje');
+      cp.setAttribute('aria-label', 'Copiar mensaje'); cp.textContent = '⧉';
       d.appendChild(cp);
     }
     log.appendChild(d);   // CHRONOLOGICAL: every row lands at the bottom, in the order it happened (classic chat)
@@ -3461,7 +3461,7 @@ const Chat = (() => {
     const cap = document.createElement('figcaption'); cap.className = 'lb-name'; cap.textContent = name; cap.title = name;
     fig.appendChild(img); fig.appendChild(cap);
     const x = document.createElement('button'); x.type = 'button'; x.className = 'lb-close';
-    x.textContent = '×'; x.title = 'close'; x.setAttribute('aria-label', 'Close enlarged image');
+    x.textContent = '×'; x.title = 'close'; x.setAttribute('aria-label', 'Cerrar imagen ampliada');
     root.appendChild(fig); root.appendChild(x);
     // click-OUT closes; clicks on the image/caption/frame do not (so a viewer can't lose it by mis-clicking)
     root.addEventListener('click', ev => { if (ev.target === root) closeLightbox(); });
@@ -3893,7 +3893,7 @@ const Chat = (() => {
       for (const k of Object.keys(o)) if (k !== 'path') parts.push((k in heads ? heads[k] : k + ': ') + (typeof o[k] === 'string' ? o[k] : JSON.stringify(o[k], null, 2)));
       return { label, text: parts.join('\n\n') || raw };
     }
-    if (/^routine[._](?:create|manage)$/.test(t)) { const o = requestArgs(raw); return { label: 'What it will do each run', text: (o && o.prompt) ? String(o.prompt) : raw || '(payload unavailable)' }; }
+    if (/^routine[._](?:create|manage)$/.test(t)) { const o = requestArgs(raw); return { label: 'Qué hará en cada ejecución', text: (o && o.prompt) ? String(o.prompt) : raw || '(payload unavailable)' }; }
     if (!raw.trim() || /^station[._]/.test(t) || /^(?:path\.trust|browser\.login(?:\.done)?|brief\.ask)$/.test(t)) return null;
     const o = requestArgs(raw), label = 'Inspect the full request (secrets redacted)';
     if (!o) return glance(raw) === raw.trim() ? null : { label, text: raw };
@@ -3924,7 +3924,7 @@ const Chat = (() => {
     // the station builder's card: every step's instructions, one click away (the summary line is in the phrase above)
     if (/^station[._]build$/.test(String(p.tool || '')) && String(p.argsSummary || '').indexOf('\n') > 0) {
       const detail = document.createElement('details'); detail.className = 'consent-payload';
-      const label = document.createElement('summary'); label.textContent = 'What each step will be told';
+      const label = document.createElement('summary'); label.textContent = 'Qué se le dirá en cada paso';
       const payload = document.createElement('pre'); payload.textContent = String(p.argsSummary).split('\n').slice(1).join('\n');
       detail.appendChild(label); detail.appendChild(payload); host.appendChild(detail);
     }
@@ -4258,7 +4258,7 @@ const Chat = (() => {
     }
     const skip = document.createElement('button');
     skip.className = 'consent-btn quiet';
-    skip.textContent = 'Use your judgment';   // the answer it sends stays 'use your judgment' (the host matches it)
+    skip.textContent = 'Usa tu criterio';   // the answer it sends stays 'use your judgment' (the host matches it)
     skip.onclick = () => answer('use your judgment', '✓ your call');
     btns.appendChild(skip);
     // BATCH-WIDE ESCAPE: opting out of a 3-question batch cost 3 taps, which is the wrong ratio for the
@@ -4418,7 +4418,7 @@ const Chat = (() => {
     const byTool = askedTools.get(ws.id) || new Map(); askedTools.set(ws.id, byTool);
     const ids = byTool.get(tool) || new Set(); byTool.set(tool, ids);
     ids.add(String(p.promptId)); if (ids.size > 20) ids.delete(ids.values().next().value);
-    return ids.size > 1 ? 'Always stops asking for ' + toolWordsOf(tool) + ' from now on' : '';
+    return ids.size > 1 ? 'Siempre dejará de preguntar por ' + toolWordsOf(tool) + ' from now on' : '';
   }
   function retireOpenConsents(wsId, runId) {
     for (const [id, c] of openConsentCards) {
@@ -4511,21 +4511,21 @@ const Chat = (() => {
     // ATTENDED BROWSER LOGIN cards get purpose-built buttons: "Always"/"Full access" make no sense for a
     // one-shot window open, and the done-wait card is a completion signal, not a permission grade.
     if (p.tool === 'browser.login') {
-      mk('Open login window', 'once', 'primary', '✓ window opened', false);
+      mk('Abrir ventana de acceso', 'once', 'primary', '✓ ventana abierta', false);
       mk('Deny', 'deny', 'deny', '✕ denied', true);
     } else if (p.tool === 'browser.login.done') {
       mk('Done — I\'ve logged in', 'once', 'primary', '✓ done', false);
-      mk('Cancel', 'deny', 'deny', '✕ cancelled', true);
+      mk('Cancelar', 'deny', 'deny', '✕ cancelled', true);
     } else if (p.tool === 'station.power' || p.tool === 'plugin.submit') {
       // widening the station's leash and installing a plugin are answered fresh every time (freshConsent tools,
       // permissions.js tier 1.5): the station grants any yes once, so no Always and no Full access
-      mk('Approve once', 'once', 'primary', '✓ approved once', false);
+      mk('Aprobar una vez', 'once', 'primary', '✓ aprobado una vez', false);
       mk('Deny', 'deny', 'deny', '✕ denied', true);
     } else {
       const agentName = (p && p.workerAgentId) ? askerName(p, ws) : name;
-      mk('Approve once', 'once', 'primary', '✓ approved once', false, 'Allow just this one');
+      mk('Aprobar una vez', 'once', 'primary', '✓ aprobado una vez', false, 'Permitir solo esta');
       mk('Always', 'always', '', '✓ always allowed', false, 'Allow this kind of action from now on, without asking');
-      mk('Full access', 'full', 'danger', '✓ full access', false, 'Give ' + agentName + ' full access: it stops asking before most actions, until you change it back');
+      mk('Acceso total', 'full', 'danger', '✓ acceso total', false, 'Da a ' + agentName + ' acceso total: dejará de preguntar antes de la mayoría de acciones, hasta que lo cambies');
       mk('Deny', 'deny', 'deny', '✕ denied', true);
       // a repeat ask's one line (what Always does), inside the keys' row so it leaves with them once the card is answered
       const hintText = consentHintFor(p, ws);
@@ -5689,7 +5689,7 @@ const Chat = (() => {
     // THE LABEL STATES THE CONSEQUENCE. One word "Implement" covered three different outcomes (apply a patch,
     // save files, run a build), so the button taught the Commander nothing and the explanatory line below had to
     // carry all of it. On a plan the action IS a build — say so.
-    const implLabel = buildable ? 'Build it' : patchSaveOnly ? 'Save patch file' : 'Implement';
+    const implLabel = buildable ? 'Constrúyelo' : patchSaveOnly ? 'Guardar archivo de parche' : 'Implementar';
     implBtn.textContent = implLabel;
     implBtn.title = (plan && plan.action === 'apply') ? ('applies this patch to a new branch in ' + plan.root)
       : patchSaveOnly ? 'saves the .patch file only — it will NOT be applied to your project'
@@ -5765,15 +5765,15 @@ const Chat = (() => {
     // DISCARD — the ONE confirm (single click to arm, second to confirm). Honest about its weight: discard
     // wipes the files AND denylists the idea so it is never rebuilt or re-proposed (UX audit: the old confirm
     // undersold a permanent decision).
-    const discardBtn = document.createElement('button'); discardBtn.className = 'consent-btn deny'; discardBtn.textContent = 'Discard';
+    const discardBtn = document.createElement('button'); discardBtn.className = 'consent-btn deny'; discardBtn.textContent = 'Descartar';
     discardBtn.title = 'delete these files and never rebuild or re-propose this idea';
     let armed = false;
     discardBtn.onclick = async () => {
-      if (!armed) { armed = true; discardBtn.textContent = 'Discard forever?'; setTimeout(() => { if (!settled) { armed = false; discardBtn.textContent = 'Discard'; } }, 4000); return; }
+      if (!armed) { armed = true; discardBtn.textContent = 'Discard forever?'; setTimeout(() => { if (!settled) { armed = false; discardBtn.textContent = 'Descartar'; } }, 4000); return; }
       discardBtn.disabled = true;
       let res = null; try { res = await onDecide('discard'); } catch (_) { res = { ok: false }; }
       if (res && res.ok) { const done = '✕ discarded — this idea won’t be rebuilt or re-proposed'; decideNote(done); sendNote(); settle(done, true); }
-      else { discardBtn.disabled = false; armed = false; discardBtn.textContent = 'Discard'; localLine('Could not discard this: ' + ((res && res.error) || 'the station kept it') + '.'); }
+      else { discardBtn.disabled = false; armed = false; discardBtn.textContent = 'Descartar'; localLine('Could not discard this: ' + ((res && res.error) || 'the station kept it') + '.'); }
     };
     acts.appendChild(discardBtn);
 
@@ -5916,9 +5916,9 @@ const Chat = (() => {
       }
       function renderChoices() {
         btns.innerHTML = '';
-        mkBtn(prop.kind === 'skill' ? 'Save skill' : 'Keep', 'primary', () => submit('keep', null, prop.kind === 'skill' ? 'saved as skill' : 'kept in memory', false));
+        mkBtn(prop.kind === 'skill' ? 'Guardar habilidad' : 'Mantener', 'primary', () => submit('keep', null, prop.kind === 'skill' ? 'guardado como habilidad' : 'guardado en memoria', false));
         mkBtn('Edit', '', enterEdit);
-        mkBtn('Discard', 'deny', () => submit('discard', null, '✕ discarded', true));
+        mkBtn('Descartar', 'deny', () => submit('discard', null, '✕ discarded', true));
       }
       // inline edit: swap the belief into an input; Save commits the edited text (verdict 'edit'), Cancel restores.
       function enterEdit() {
@@ -5929,7 +5929,7 @@ const Chat = (() => {
         const cancel = () => { item.replaceChild(text, inp); renderChoices(); };
         btns.innerHTML = '';
         mkBtn('Save', '', commit);
-        mkBtn('Cancel', '', cancel);
+        mkBtn('Cancelar', '', cancel);
         inp.onkeydown = e => { if (e.key === 'Enter') commit(); else if (e.key === 'Escape') cancel(); };
       }
       renderChoices();
@@ -6565,9 +6565,9 @@ const Chat = (() => {
     function renderChoices() {
       btns.innerHTML = '';
       const mk = (lbl, cls, fn) => { const b = document.createElement('button'); b.className = 'consent-btn' + (cls ? ' ' + cls : ''); b.textContent = lbl; b.onclick = fn; btns.appendChild(b); };
-      mk(prop.kind === 'retire' ? 'Retire it' : 'Keep', 'primary', () => commit('keep'));
+      mk(prop.kind === 'retire' ? 'Retire it' : 'Mantener', 'primary', () => commit('keep'));
       if (prop.kind !== 'retire') mk('Edit', '', enterEdit);
-      mk('Discard', 'deny', () => commit('discard'));
+      mk('Descartar', 'deny', () => commit('discard'));
     }
     function enterEdit() {
       if (card.isDecided()) return;
@@ -6577,7 +6577,7 @@ const Chat = (() => {
       const cancel = () => { item.replaceChild(text, inp); renderChoices(); };
       btns.innerHTML = '';
       const mk = (lbl, fn) => { const b = document.createElement('button'); b.className = 'consent-btn'; b.textContent = lbl; b.onclick = fn; btns.appendChild(b); };
-      mk('Save', commitEdit); mk('Cancel', cancel);
+      mk('Save', commitEdit); mk('Cancelar', cancel);
       inp.onkeydown = e => { if (e.key === 'Enter') commitEdit(); else if (e.key === 'Escape') cancel(); };
     }
     renderChoices();
@@ -6988,9 +6988,9 @@ const Chat = (() => {
     function renderChoices() {
       btns.innerHTML = '';
       const mk = (lbl, cls, fn) => { const b = document.createElement('button'); b.className = 'consent-btn' + (cls ? ' ' + cls : ''); b.textContent = lbl; b.onclick = fn; btns.appendChild(b); };
-      mk('Keep', 'primary', () => commit('keep'));
+      mk('Mantener', 'primary', () => commit('keep'));
       mk('Edit', '', enterEdit);
-      mk('Discard', 'deny', () => commit('discard'));
+      mk('Descartar', 'deny', () => commit('discard'));
     }
     function enterEdit() {
       if (card.isDecided()) return;
@@ -7008,7 +7008,7 @@ const Chat = (() => {
       const cancel = () => { item.replaceChild(text, wrap); renderChoices(); };
       btns.innerHTML = '';
       const mk = (lbl, fn) => { const b = document.createElement('button'); b.className = 'consent-btn'; b.textContent = lbl; b.onclick = fn; btns.appendChild(b); };
-      mk('Save', commitEdit); mk('Cancel', cancel);
+      mk('Save', commitEdit); mk('Cancelar', cancel);
       const keydown = e => { if (e.key === 'Enter') commitEdit(); else if (e.key === 'Escape') cancel(); };
       inpTitle.onkeydown = keydown; inpSpec.onkeydown = keydown;
     }
@@ -7816,9 +7816,9 @@ const Chat = (() => {
       if (typeof StationUI !== 'undefined' && StationUI.rerender) { try { StationUI.rerender('commander'); } catch (_) {} }
     }
     const mk = (lbl, cls, fn) => { const b = document.createElement('button'); b.className = 'consent-btn' + (cls ? ' ' + cls : ''); b.textContent = lbl; b.onclick = fn; btns.appendChild(b); };
-    mk('Still true', '', () => commit('confirm'));
+    mk('Sigue siendo cierto', '', () => commit('confirm'));
     mk('Not now', '', () => commit('defer'));
-    mk('Not anymore', 'deny', () => commit('deny'));
+    mk('Ya no', 'deny', () => commit('deny'));
     autoscroll();
     return true;
   }
@@ -8697,7 +8697,7 @@ const Chat = (() => {
       pill.setAttribute('data-tip', '“' + (t.length > room ? t.slice(0, room - 1) + '…' : t) + '” · ' + QHINT);
       const label = document.createElement('span'); label.className = 'queued-text'; label.textContent = t;
       const x = document.createElement('button'); x.className = 'queued-x'; x.type = 'button'; x.textContent = '✕';
-      x.setAttribute('aria-label', 'Cancel queued message');
+      x.setAttribute('aria-label', 'Cancelar mensaje en cola');
       x.onclick = () => { const a = queued.get(activeWs.id) || []; a.splice(i, 1); a.length ? queued.set(activeWs.id, a) : queued.delete(activeWs.id); renderQueued(); };
       const now = document.createElement('button'); now.className = 'queued-now'; now.type = 'button'; now.textContent = 'send now';
       now.setAttribute('data-tip', 'Hand this to the run that is working now: the agent reads it before its next step, instead of after the run finishes');
@@ -8762,9 +8762,9 @@ const Chat = (() => {
           flushQueued(id);
           return;
         }
-        back(status === 409 || status === 404 ? 'The run had already finished its work' : status === 429 ? 'The run is holding too many notes already' : 'The station did not take it');
+        back(status === 409 || status === 404 ? 'La ejecución ya había terminado su trabajo' : status === 429 ? 'La ejecución ya sostiene demasiadas notas' : 'La estación no lo aceptó');
       })
-      .catch(() => back('The station did not answer'));
+      .catch(() => back('La estación no respondió'));
   }
   // take one sent-now line off its stream's list; false = it was no longer there (a STOP gave it back already, or the page let
   // go of it — then its disk copy is the station's to decide). true = this page decides it now (a queued pill again, or read).
@@ -8860,7 +8860,7 @@ const Chat = (() => {
     dropSentNow(id, mine.filter(n => lost.indexOf(n) < 0).map(n => n.id));   // read: settled with the stopped turn
     if (!lost.length) return;
     giveBack(id, lost.map(n => n.text), lost.length === 1 ? 'The run stopped before the agent read your send-now message — it is back in the message box.'
-      : 'The run stopped before the agent read ' + lost.length + ' of your send-now messages — they are back in the message box.', lost.map(n => n.id));
+      : 'La ejecución se detuvo antes de que el agente leyera ' + lost.length + ' of your send-now messages — they are back in the message box.', lost.map(n => n.id));
   }
   // words a stop gives back go into THEIR session's message box: now if it is on screen, else when you return (returnHeld).
   // Never into the queue — a return would auto-send them behind the stop. ids = their sent-now lines: on disk until they
@@ -8893,7 +8893,7 @@ const Chat = (() => {
     queued.set(id, unread.map(n => n.text).concat(queued.get(id) || []));
     renderQueued();
     if (activeWs && activeWs.id === id) localLine(unread.length === 1 ? 'The run ended before the agent read your send-now message — it goes as your next message.'
-      : 'The run ended before the agent read ' + unread.length + ' of your send-now messages — they go as your next messages.');
+      : 'La ejecución terminó antes de que el agente leyera ' + unread.length + ' of your send-now messages — they go as your next messages.');
   }
   /* THE STATION DECIDES WHAT THE PAGE COULD NOT (live walk 2026-10-14). On a conversation's load (once its history merged)
      and when a run whose stream died ends, every line still on disk that this page is not holding itself is asked about:
@@ -8941,7 +8941,7 @@ const Chat = (() => {
     if (by.read.length) { dropSentNow(id, by.read.map(e => e.id)); showSentNowRead(cur, by.read); }
     const n = by.back.length, u = by.unsure.length;
     if (n) giveBack(id, by.back.map(e => e.text), n === 1 ? 'The run ended before the agent read your send-now message — it is back in the message box.'
-      : 'The run ended before the agent read ' + n + ' of your send-now messages — they are back in the message box.', by.back.map(e => e.id));
+      : 'La ejecución terminó antes de que el agente leyera ' + n + ' of your send-now messages — they are back in the message box.', by.back.map(e => e.id));
     if (u) giveBack(id, by.unsure.map(e => e.text), u === 1 ? 'The station has no record that the agent read your send-now message before its run ended — it is back in the message box.'
       : 'The station has no record that the agent read ' + u + ' of your send-now messages before their run ended — they are back in the message box.', by.unsure.map(e => e.id));
     // a line the station still cannot decide a day after it was sent stops waiting: back in the box, saying no answer came
@@ -9311,14 +9311,14 @@ const Chat = (() => {
       stop.hidden = !isBusy();
       // in a group ■ is stop-all (GroupChat.stop), so its tip says it stops every agent, not one turn
       const groupStop = activeWs?.conversationMode === 'group';
-      stop.setAttribute('data-tip', groupStop ? 'Stop every agent in this chat (Esc)' : 'Stop the running turn (Esc)');
-      stop.setAttribute('aria-label', groupStop ? 'Stop every agent in this chat' : 'Stop the running turn');
+      stop.setAttribute('data-tip', groupStop ? 'Detener todos los agentes de este chat (Esc)' : 'Detener el turno en curso (Esc)');
+      stop.setAttribute('aria-label', groupStop ? 'Detener todos los agentes de este chat' : 'Detener el turno en curso');
     }
     // CONCURRENT SESSIONS: a peer run on this agent no longer disables the composer — the backend admits
     // concurrent same-agent runs (workspace lease guards the real collision). The peer surfaces as the soft
     // status row + a tooltip; send stays live.
     const peer = !isBusy() ? busyPeerFor(activeWs) : null;
-    if (input) { input.disabled = false; input.title = peer ? ('This agent is also running in ' + shownName(peer)) : ''; }
+    if (input) { input.disabled = false; input.title = peer ? ('Este agente también está corriendo en ' + shownName(peer)) : ''; }
     const sendBtn = el('chat-send'); if (sendBtn) sendBtn.disabled = false;
     const attachBtn = el('chat-attach'); if (attachBtn) attachBtn.disabled = false;
     renderQueued();
@@ -9412,7 +9412,7 @@ const Chat = (() => {
     try { if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } catch (_) {}
     try { if (typeof App !== 'undefined' && App.persist) App.persist(); } catch (_) {}
   }
-  function streamLabel(w) { return (w && (typeof Workstreams !== 'undefined' && Workstreams.titleOf ? Workstreams.titleOf(w) : (w.title || 'New session'))) || 'current stream'; }
+  function streamLabel(w) { return (w && (typeof Workstreams !== 'undefined' && Workstreams.titleOf ? Workstreams.titleOf(w) : (w.title || 'Nueva sesión'))) || 'flujo actual'; }
   function workstreamList() {
     try { return (typeof Workstreams !== 'undefined' && Workstreams.list) ? Workstreams.list() : []; } catch (_) { return []; }
   }
@@ -9445,7 +9445,7 @@ const Chat = (() => {
     if (!title) return localLine('Title: ' + streamLabel(activeWs) + '. Use /title <name> to rename this workstream.');
     Workstreams.rename(activeWs.id, title);
     refreshWorkflowViews();
-    localLine('Renamed this workstream to ' + streamLabel(activeWs) + '.');
+    localLine('Renombra este flujo de trabajo a ' + streamLabel(activeWs) + '.');
   }
   function resumeCommand(args) {
     if (typeof Workstreams === 'undefined' || !Workstreams.switch) return localLine('Workstreams are not available yet.');
@@ -9481,7 +9481,7 @@ const Chat = (() => {
     if (!text) return localLine('Usage: /background <prompt>');
     if (typeof Workstreams === 'undefined' || !Workstreams.create) return localLine('Workstreams are not available yet.');
     const prev = activeWs;
-    const title = Workstreams.deriveTitle ? (Workstreams.deriveTitle(text) || 'Background task') : 'Background task';
+    const title = Workstreams.deriveTitle ? (Workstreams.deriveTitle(text) || 'Tarea en segundo plano') : 'Tarea en segundo plano';
     const ws = Workstreams.create(title, { agentId: (activeWs && activeWs.agentId) || 'agent', kind: 'task' });   // /background is a directive → a board task
     load(ws);
     send(text);
@@ -9664,7 +9664,7 @@ const Chat = (() => {
     const title = String(args || '').trim() || null;
     const ws = Workstreams.create(title, { agentId: (activeWs && activeWs.agentId) || 'agent' });
     load(ws); refreshWorkflowViews();
-    localLine('Started a fresh workstream' + (title ? ': ' + title : '.') );
+    localLine('Iniciado un flujo de trabajo nuevo' + (title ? ': ' + title : '.') );
   }
   function branchWorkstreamCommand(args) {
     if (!activeWs || typeof Workstreams === 'undefined' || !Workstreams.create) return localLine('No active workstream to branch.');
@@ -9674,7 +9674,7 @@ const Chat = (() => {
     ws.history = (src.history || []).map(m => Object.assign({}, m));
     ws.lane = 'todo';
     load(ws); refreshWorkflowViews();
-    localLine('Branched from ' + streamLabel(src) + '.');
+    localLine('Bifurcado desde ' + streamLabel(src) + '.');
   }
   function statusCommand() {
     const q = (activeWs && queued.get(activeWs.id)) || [];
@@ -9822,8 +9822,8 @@ const Chat = (() => {
     const rec = { wsId: wsId, ms: ms, label: loopLabel(ms), prompt: prompt, fired: 0, skipped: 0, skipStreak: 0, timer: null, startedAt: Date.now() };
     loops.set(wsId, rec);
     loopArm(rec);
-    localLine('Looping every ' + rec.label + ' (up to ' + LOOP_MAX_ITERS + ' runs): "' + prompt.slice(0, 60) + '". '
-      + 'First run in ' + rec.label + '. Each run costs a real model turn — /loop off to stop, /stop also ends it.');
+    localLine('Repitiendo cada ' + rec.label + ' (up to ' + LOOP_MAX_ITERS + ' runs): "' + prompt.slice(0, 60) + '". '
+      + 'Primera ejecución en ' + rec.label + '. Each run costs a real model turn — /loop off to stop, /stop also ends it.');
   }
   function steerCommand(args) {
     if (!activeWs) return localLine('No active workstream.');
@@ -9886,11 +9886,11 @@ const Chat = (() => {
       const tier = run > 0 && run < cs.limit;
       const win = tier ? run : cs.limit;
       const pct = Math.round(((cs.used || 0) / win) * 100);
-      localLine('Chat memory: ' + (cs.used || 0) + ' / ' + win + ' tokens used (' + pct + '% — a token is roughly ¾ of a word). '
-        + (tier ? 'The model can hold ' + cs.limit + ', but it bills a higher rate for a prompt over ' + run + ' tokens, so a run works in ' + run + '. ' : '')
-        + 'When it nears full, older turns are folded into a summary automatically during the next run; there is nothing you need to do.');
+      localLine('Memoria del chat: ' + (cs.used || 0) + ' / ' + win + ' tokens usados (' + pct + '% — un token equivale a aproximadamente ¾ de una palabra). '
+        + (tier ? 'El modelo puede sostener ' + cs.limit + ', pero cobra un precio más alto para un prompt de más de ' + run + ' tokens, así que una ejecución trabaja en ' + run + '. ' : '')
+        + 'Cuando se acerca al límite, los turnos antiguos se plegan automáticamente en un resumen durante la siguiente ejecución; no tienes que hacer nada.');
     } else {
-      localLine('Chat memory is managed automatically: when a conversation grows past what the model can hold, older turns are folded into a summary during the next run. There is nothing you need to do.');
+      localLine('La memoria del chat se gestiona automáticamente: cuando una conversación crece más de lo que el modelo puede sostener, los turnos antiguos se plegan en un resumen durante la siguiente ejecución. No tienes que hacer nada.');
     }
   }
   // /clear — wipe the rendered COMMS panel and start a fresh workstream. Shares newWorkstreamCommand's create+load
@@ -9932,7 +9932,7 @@ const Chat = (() => {
     const model = (typeof Harness !== 'undefined' && Harness.getModel) ? Harness.getModel() : (a.model || '');
     const provider = (typeof Harness !== 'undefined' && Harness.getProv) ? Harness.getProv() : (a.provider || '');
     const placed = slashPlacedTypes();
-    localLine('You are ' + name + ' [' + id + '] — ' + klass + lvl + '. Model: ' + (model || 'not selected') + (provider ? ' via ' + provider : '')
+    localLine('Eres ' + name + ' [' + id + '] — ' + klass + lvl + '. Modelo: ' + (model || 'no seleccionado') + (provider ? ' vía ' + provider : '')
       + '. Placed capabilities: ' + (placed.length ? placed.join(', ') : 'none on the floor yet') + '.');
   }
   // /insights — a usage rollup from the DURABLE run history (GET /api/insights): total runs, spend, tokens,
@@ -9990,8 +9990,8 @@ const Chat = (() => {
     const next = String(args || '').trim();
     if (next) {
       let set = false;
-      if (applyAgentPatch({ model: next })) { localLine('Model set to ' + next + ' for future runs.'); set = true; }
-      else if (typeof Harness !== 'undefined' && Harness.setModel) { Harness.setModel(next); localLine('Model set to ' + next + ' for this harness session.'); set = true; }
+      if (applyAgentPatch({ model: next })) { localLine('Modelo puesto en ' + next + ' for future runs.'); set = true; }
+      else if (typeof Harness !== 'undefined' && Harness.setModel) { Harness.setModel(next); localLine('Modelo puesto en ' + next + ' for this harness session.'); set = true; }
       else localLine('Model setting is not available yet.');
       if (set) warnUnknownModel(next);
       refreshWorkflowViews();
@@ -10000,7 +10000,7 @@ const Chat = (() => {
     const a = activeAgent();
     const model = (typeof Harness !== 'undefined' && Harness.getModel) ? Harness.getModel() : ((a && a.model) || '');
     const provider = (typeof Harness !== 'undefined' && Harness.getProv) ? Harness.getProv() : '';
-    localLine('Model: ' + (model || 'not selected') + (provider ? ' via ' + provider : '') + '. Use /model <model-id> to switch.');
+    localLine('Model: ' + (model || 'no seleccionado') + (provider ? ' via ' + provider : '') + '. Use /model <model-id> to switch.');
   }
   function personalityCommand(args) {
     const raw = String(args || '').trim();
@@ -10009,7 +10009,7 @@ const Chat = (() => {
       const id = Personas.resolve ? Personas.resolve(key) : key;
       if (applyAgentPatch({ personaId: id })) {
         // slash-set skips the create screen's two-press confirm, so the honesty note rides the confirmation line
-        localLine('Personality set to ' + Personas.get(id).name + '.' + (id === 'unhinged' && Personas.effective(id, (activeAgent() || {}).voiceTraits).profanity > 0 ? ' Heads up: this one swears — for real.' : ''));
+        localLine('Personalidad puesta en ' + Personas.get(id).name + '.' + (id === 'unhinged' && Personas.effective(id, (activeAgent() || {}).voiceTraits).profanity > 0 ? ' Ojo: este jura — de verdad.' : ''));
       }
       else localLine('Personality setting is not available yet.');
       return;
@@ -10074,12 +10074,12 @@ const Chat = (() => {
     }
     const want = reasoningLevelOf(raw);
     if (!want) return localLine('"' + raw + '" is not a reasoning level. Pick one of: ' + REASONING_LEVELS.join(', ') + '.');
-    if (want === cur) return localLine('Reasoning effort is already ' + cur + '.' + reasoningModelNote());
+    if (want === cur) return localLine('El esfuerzo de razonamiento ya es ' + cur + '.' + reasoningModelNote());
     if (typeof App === 'undefined' || !App.applyConfig) return localLine('Reasoning effort could not be changed on this surface.');
     App.applyConfig({ reasoningEffort: want });
     // READ BACK before claiming it: only the store's own answer proves the write landed (truthful telemetry).
     const now = Harness.getReasoningEffort((Harness.getProv && Harness.getProv()) || prov);
-    if (now !== want) return localLine('Could not set reasoning effort to ' + want + ' — it is still ' + now + '.');
+    if (now !== want) return localLine('No se pudo poner el esfuerzo de razonamiento en ' + want + ' — it is still ' + now + '.');
     localLine('Reasoning effort: ' + cur + ' → ' + want + (prov ? ' (for ' + prov + ')' : '')
       + '. Takes effect on your next message.' + reasoningModelNote());
   }
@@ -10201,7 +10201,7 @@ const Chat = (() => {
     const r = recipeByRef(raw);
     if (!r) return localLine('No blueprint matched "' + raw + '".');
     insertRecipe(r);
-    localLine('Loaded blueprint ' + (r.name || r.id) + ' into the composer.');
+    localLine('Cargado el plano ' + (r.name || r.id) + ' into the composer.');
   }
   function suggestionsCommand(args) {
     if (typeof MintStore === 'undefined' || !MintStore.candidates) return localLine('Suggestions are not available yet.');
@@ -10224,7 +10224,7 @@ const Chat = (() => {
     }
     if (action === 'accept' || action === 'save' || action === 'approve') {
       if (typeof Recipes !== 'undefined' && Recipes.saveCustom && Recipes.draft) {
-        const rec = Recipes.saveCustom(Recipes.draft({ name: 'Suggested Mission', tagline: 'learned from recurring tasks', task: c.template || c.lastText || '' }));
+        const rec = Recipes.saveCustom(Recipes.draft({ name: 'Misión sugerida', tagline: 'aprendida de tareas recurrentes', task: c.template || c.lastText || '' }));
         MintStore.markMinted(c.key);
         warmSlashCatalog();
         return localLine('Saved suggestion #' + n + ' as /' + rec.id + '.');
@@ -10243,7 +10243,7 @@ const Chat = (() => {
         const want = /^(on|enable|enabled|arm)$/.test(raw);
         const r = await fetch('/api/cron/arm', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled: want }) });
         const j = await r.json().catch(() => null);
-        return reply(r.ok && j ? ('Routines scheduler ' + (j.enabled ? 'enabled' : 'disabled') + '.') : 'Could not update the routines scheduler.');
+        return reply(r.ok && j ? ('Programador de rutinas ' + (j.enabled ? 'activado' : 'desactivado') + '.') : 'No se pudo actualizar el programador de rutinas.');
       }
       const r = await fetch('/api/cron', { cache: 'no-store' });
       // an errored read is NOT "scheduler off, 0 jobs" — that reassuring line is exactly the lie to avoid.

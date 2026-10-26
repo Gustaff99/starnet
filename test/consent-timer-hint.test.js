@@ -23,11 +23,11 @@ vm.runInContext(hintSrc + '\n;this.hint = consentHintFor;', c);
 const ws = { id: 'w1', agentId: 'agent' }, other = { id: 'w2', agentId: 'agent' };
 A.eq(c.hint({ promptId: 'a1', tool: 'fs.write' }, ws), '', 'a first ask carries no hint line');
 A.eq(c.hint({ promptId: 'a1', tool: 'fs.write' }, ws), '', 'a re-render of the same ask is not a second ask');
-A.eq(c.hint({ promptId: 'a2', tool: 'fs.write' }, ws), 'Always stops asking for fs write from now on', 'the second ask for the same tool in the same chat teaches Always, in the title words');
+A.eq(c.hint({ promptId: 'a2', tool: 'fs.write' }, ws), 'Siempre dejará de preguntar por fs write from now on', 'the second ask for the same tool in the same chat teaches Always, in the title words');
 A.eq(c.hint({ promptId: 'a3', tool: 'shell.exec' }, ws), '', 'another tool starts its own count');
 A.eq(c.hint({ promptId: 'a4', tool: 'fs.write' }, other), '', 'another chat starts its own count');
 A.eq(c.hint({ promptId: 'm1', tool: 'mcp__sheets__write_values' }, other), '', 'a first connector ask: no line');
-A.eq(c.hint({ promptId: 'm2', tool: 'mcp__sheets__write_values' }, other), 'Always stops asking for sheets write values from now on', 'a connector tool says whose, as its title does');
+A.eq(c.hint({ promptId: 'm2', tool: 'mcp__sheets__write_values' }, other), 'Siempre dejará de preguntar por sheets write values from now on', 'a connector tool says whose, as its title does');
 for (const w of [{ workerAgentId: 'writer' }, { workerRunId: 'wr1' }, { background: true }]) {
   c.hint(Object.assign({ promptId: 'b1', tool: 'web_request' }, w), ws);
   A.eq(c.hint(Object.assign({ promptId: 'b2', tool: 'web_request' }, w), ws), '', 'a worker\'s ask never gets a line: ' + Object.keys(w)[0]);

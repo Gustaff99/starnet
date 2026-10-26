@@ -223,7 +223,7 @@
   function titleOf(w) {
     w = (w && w.id) ? w : find(w);
     if (!w) return '';
-    return w.title || (w.id === generalId ? 'General' : 'New session');
+    return w.title || (w.id === generalId ? 'General' : 'Nueva sesión');
   }
 
   // display order: pinned first, then most-recently-active; archived hidden unless asked; delegated workers'
@@ -260,9 +260,9 @@
     const sameScope = !scoped || ((cur && cur.projectRoot) || null) === wantedRoot;
     if (opts.reuseActive !== false && isUntouched(cur) && sameScope) return cur;
     /* …and an untouched blank already in the rail, just not the open one, is the same blank line (org live walk 10-14:
-       +NEW from another session minted a SECOND empty 'New session' row beside it). Same untouched test, same scope rule
+       +NEW from another session minted a SECOND empty 'Nueva sesión' row beside it). Same untouched test, same scope rule
        — scoped: the exact stored root; unscoped (+NEW on the sessions rail): an unanchored blank only. Never the General
-       home (its own row, not a 'New session'), a worker's hidden thread or an automation's session. The newest wins and
+       home (its own row, not a 'Nueva sesión'), a worker's hidden thread or an automation's session. The newest wins and
        is focused here, exactly as create() focuses a fresh one (activate:false leaves the focus to the caller). */
     if (opts.reuseActive !== false) {
       const blank = ws.filter(w => w !== cur && w.id !== generalId && !w.worker && !w.parentStreamId && !w.automation
@@ -590,7 +590,7 @@
   }
   // the exported file's heading / name and the search title are the name the rail shows (titleOf): an untitled
   // session exports as "New session", never as a second "General"
-  function safeTitle(w) { return scrubSecrets(titleOf(w) || 'New session'); }
+  function safeTitle(w) { return scrubSecrets(titleOf(w) || 'Nueva sesión'); }
 
   function exportConversation(id, format, opts) {
     const w = find(id); if (!w) return null;
@@ -622,7 +622,7 @@
     if (!doc || doc.schema !== 'starnet.conversation' || doc.version !== 1 || !Array.isArray(doc.messages)) return null;
     const messages = doc.messages.filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
       .map(m => ({ role: m.role, content: scrubSecrets(m.content) }));
-    return { title: scrubSecrets(doc.title || 'New session'), messages, secretsIncluded: false };
+    return { title: scrubSecrets(doc.title || 'Nueva sesión'), messages, secretsIncluded: false };
   }
 
   function clone(v) { return JSON.parse(JSON.stringify(v)); }

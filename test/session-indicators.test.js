@@ -48,15 +48,15 @@ A.eq(row(b).dot, 'ws-dot seen', 'a different session on the same agent does not 
 A.ok(context.railRowLabel(a, row(a)).includes('thinking'), 'working status is named for screen readers');
 Channels.setPending('a', { tool: 'fs.write', promptId: 'approval' }, 6000);
 A.eq(row(a).dot, 'ws-dot needsyou approval', 'pending approval outranks the working animation');
-A.eq(row(a).meta, 'Approval needed', 'approval has an explicit visible label');
-A.ok(context.railRowTip(a, row(a)).includes('awaiting your approval'), 'tooltip explains the actual approval state');
+A.eq(row(a).meta, 'Aprobación pendiente', 'approval has an explicit visible label');
+A.ok(context.railRowTip(a, row(a)).includes('esperando tu aprobación'), 'tooltip explains the actual approval state');
 Channels.clearPending('a', 11000);
 A.eq(row(a).dot, 'ws-dot working', 'resolving approval returns to the same confirmed run');
 A.eq(row(a).meta, '3000', 'approval waiting time is excluded after resume');
 A.ok(!context.railRowTip(a, row(a)).includes('awaiting'), 'resumed tooltip no longer claims a pending approval');
 Channels.setPending('a', { tool: 'brief.ask', promptId: 'question' }, now);
 A.eq(row(a).dot, 'ws-dot needsyou reply', 'an agent question has its own reply signal');
-A.eq(row(a).meta, 'Reply needed', 'a question cannot masquerade as approval');
+A.eq(row(a).meta, 'Respuesta pendiente', 'a question cannot masquerade as approval');
 now = 13000;
 Channels.clearPending('a', now);
 Channels.end('a');
@@ -130,8 +130,8 @@ A.ok(!context.railRowTip(savedA, row(savedA), true).includes('right-click'), 'pr
   A.eq(context.railRowLabel(crew, row(crew)), title + ' group chat, ULTRON + CYPHER + MIRA + ROOK + VEX, read; Enter to open; Shift+F10 for actions', 'custom long titles do not replace accessible crew membership or keyboard actions');
   for (const question of [true, false]) {
     groupState.crew = { questions: question ? 1 : 0, approvals: question ? 0 : 1, busy: true };
-    A.eq([row(crew).attn, row(crew).meta], [true, question ? 'Reply needed' : 'Approval needed'], 'group attention reads the actual pending-request state');
-    A.ok(context.railRowLabel(crew, row(crew)).includes(question ? 'waiting for your answer' : 'awaiting your approval'), 'the full crew label retains the truthful pending request');
+    A.eq([row(crew).attn, row(crew).meta], [true, question ? 'Respuesta pendiente' : 'Aprobación pendiente'], 'group attention reads the actual pending-request state');
+    A.ok(context.railRowLabel(crew, row(crew)).includes(question ? 'esperando tu respuesta' : 'esperando tu aprobación'), 'the full crew label retains the truthful pending request');
     A.eq(context.railAgentLine(crew), '<span class="ws-agent-names">ULTRON, CYPHER</span><span class="ws-agent-more">+3</span>', 'attention does not replace or shorten the crew identity');
   }
   members.crew = ['ultron', 'vex']; delete groupState.crew;

@@ -587,7 +587,7 @@ const GroupChat = (() => {
     };
     // the direct chat's copy key, on every message: the message as it was written
     const copyKey = content => {
-      const cp = h('button', { type: 'button', class: 'cmsg-copy', 'aria-label': 'Copy message', 'data-tip': 'copy message', 'data-copy-label': 'Copy message' }, '⧉');
+      const cp = h('button', { type: 'button', class: 'cmsg-copy', 'aria-label': 'Copiar mensaje', 'data-tip': 'copiar mensaje', 'data-copy-label': 'Copiar mensaje' }, '⧉');
       cp.addEventListener('click', () => {
         const done = ok => { cp.classList.add(ok ? 'copied' : 'copy-failed'); setTimeout(() => cp.classList.remove('copied', 'copy-failed'), 1400); };
         try { navigator.clipboard.writeText(content).then(() => done(true), () => done(false)); } catch (_) { done(false); }
@@ -729,7 +729,7 @@ const GroupChat = (() => {
     });
     setGroupPlaceholder();
     const states = $('gc-states'), stateNodes = [];
-    const VERB = { queued: 'queued', held: 'ready', connecting: 'connecting…', running: 'working', 'waiting for answer': 'waiting for your answer', 'waiting for approval': 'needs approval', stopping: 'stopping', failed: 'failed', interrupted: 'interrupted', stopped: 'stopped' };
+    const VERB = { queued: 'queued', held: 'ready', connecting: 'connecting…', running: 'working', 'waiting for answer': 'esperando tu respuesta', 'waiting for approval': 'needs approval', stopping: 'stopping', failed: 'failed', interrupted: 'interrupted', stopped: 'stopped' };
     const pendingQ = (group.questions || []).find(q => q.state === 'pending');
     const needsYou = t => t.state === 'waiting for approval' || t.state === 'held' || (t.state === 'queued' && group.paused);
     let continueShown = false;
@@ -760,7 +760,7 @@ const GroupChat = (() => {
       if (t.approval) {
         // the keys first (line one), the argument text under them: a short window clips text, never the decision
         const keys = [], gid = group.id, pid0 = t.approval.promptId, tool0 = String(t.approval.tool || '');
-        const labels = tool0 === 'browser.login' ? ['Open login window', 'Deny'] : tool0 === 'browser.login.done' ? ['Done — I\'ve logged in', 'Cancel'] : ['Approve once', 'Deny'];
+        const labels = tool0 === 'browser.login' ? ['Abrir ventana de acceso', 'Deny'] : tool0 === 'browser.login.done' ? ['Done — I\'ve logged in', 'Cancelar'] : ['Aprobar una vez', 'Deny'];
         ['once', 'deny'].forEach((decision, i) => {
           const k = h('button', { type: 'button', class: 'gc-ok' + (i ? ' deny' : ' lit') }, labels[i]);
           k.addEventListener('click', () => Promise.resolve().then(async () => {

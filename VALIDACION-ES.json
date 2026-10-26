@@ -2,38 +2,73 @@
   "results": {
     "test/voice-live-ui.test.js": {
       "exitCode": 0,
-      "seconds": 0.056,
+      "seconds": 0.052,
       "sha256": "932da88f88350a87d10927acf6081cc8cfa0823cdf93536c68e1dad8036da582",
-      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/6a7dd1d302998426.log"
     },
     "test/workflows-window.test.js": {
       "exitCode": 0,
-      "seconds": 1.962,
+      "seconds": 1.954,
       "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
-      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/586a6e32336d38a6.log"
     },
     "test/autonomy-ui.test.js": {
       "exitCode": 0,
       "seconds": 0.036,
       "sha256": "1536dad5fab427a71077ffcc2305be5621b61c711a35c1d4e300bd3f68a7b5a1",
-      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/432da7dfe80b52a2.log"
     },
     "test/line-sendto.test.js": {
       "exitCode": 0,
-      "seconds": 0.234,
+      "seconds": 0.239,
       "sha256": "deafcff8b5f6467c051b8abc6383835800d404eabf5fd2ab2e3b46789f4b6b42",
-      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/aaf4b1d61b727543.log"
     },
     "test/needs-you.test.js": {
       "exitCode": 0,
-      "seconds": 0.077,
+      "seconds": 0.075,
       "sha256": "c93619ad350189dbe6f03eeb1446153e65e23c5e38671942db5d3c10c7c6d3e4",
-      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/d4b7e36b1e7756d2.log"
+    },
+    "test/outbox-window.test.js": {
+      "exitCode": 0,
+      "seconds": 0.13,
+      "sha256": "6fff6548bec9d0ea33a49632930a79847db150ea17c536b7bfaf558ce9eb8ec5",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/747d100d80ad1cd0.log"
+    },
+    "test/ask-cards-readable.test.js": {
+      "exitCode": 0,
+      "seconds": 0.057,
+      "sha256": "3acd48ab8635f25f3acb8a643c68c48e630ab473a34363d24dd17bce384efb22",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/49a15af16d7648cf.log"
+    },
+    "test/session-indicators.test.js": {
+      "exitCode": 0,
+      "seconds": 0.048,
+      "sha256": "b2de05476b6075d203043f701df4d4b7ed17b7199c9df26af08efa091a64579b",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/e8360ad0b3246482.log"
+    },
+    "test/consent-visibility.test.js": {
+      "exitCode": 0,
+      "seconds": 0.048,
+      "sha256": "35ef5aa54ecdb9af10109ad49fc0f013680fb26a7c6ef716dea7ed8a16f07f17",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/deb679801f807511.log"
+    },
+    "test/help-copy-matches-screen.test.js": {
+      "exitCode": 0,
+      "seconds": 0.06,
+      "sha256": "84e1481da16b582ca8bdd1030597c1847a0b89ce0bc767c83ce5038c64fb26aa",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/90106d4630d1d207.log"
     }
   }
 }

@@ -224,7 +224,7 @@ async function presetsCase(live, on) {
   A.eq(share.getAttribute('aria-pressed'), 'true', label + 'with the key held while the form is open');
 }
 
-/* ---- 2. the skill card (ABILITIES › AGENT SKILLS): Share to market ---- */
+/* ---- 2. the skill card (HABILIDADES › AGENT SKILLS): Share to market ---- */
 const OWN = { id: 'meeting-recap', name: 'meeting-recap', summary: 'Recap a meeting into decisions and owners.', body: '# Recap\n1. Read it.', state: 'active', scope: 'agent', category: 'productivity', createdBy: 'agent', useCount: 2, updatedAt: 1792629276812 };
 const INSTALLED = { id: 'market-brief', name: 'market-brief', summary: 'A market skill.', body: '# Brief', state: 'active', scope: 'agent', createdBy: 'community', sourceAuthor: 'Ada', updatedAt: 1792629276812 };
 async function skillCards(live) {

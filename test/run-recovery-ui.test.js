@@ -14,8 +14,8 @@ A.eq(chat, mirrorChat, 'website chat mirror carries the same recovery behavior')
 A.ok(/mode: 'automatic'/.test(harness) && /continuationToken/.test(harness), 'browser prepares the typed one-shot automatic continuation');
 A.ok(/r\.canAutoContinue/.test(chat), 'chat only auto-starts a server-proven safe recovery');
 A.ok(/operationalState === 'needs_review'/.test(chat), 'review-required recovery has a distinct UI path');
-A.ok(/StarNet will not repeat it/.test(chat), 'uncertain mutation copy states the no-duplicate guarantee');
-A.ok(/It happened/.test(chat) && /It did not happen/.test(chat) && /I am not sure/.test(chat), 'uncertain mutation presents explicit outcome choices');
+A.ok(/StarNet no la repetirá/.test(chat), 'uncertain mutation copy states the no-duplicate guarantee');
+A.ok(/Pasó/.test(chat) && /No pasó/.test(chat) && /No estoy seguro/.test(chat), 'uncertain mutation presents explicit outcome choices');
 A.ok(/resolveRunRecovery/.test(harness) && /prepareReviewedRecovery/.test(harness), 'review decisions persist before reviewed continuation starts');
 A.ok(/recovery: recoveryResume \? opts\.recovery : undefined/.test(chat), 'recovery re-enters the ordinary Harness.chat execution path');
 A.ok(!/last run was interrupted and can\\'t resume/.test(chat), 'obsolete unconditional cannot-resume claim is gone');

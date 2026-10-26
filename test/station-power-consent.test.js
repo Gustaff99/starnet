@@ -6,7 +6,7 @@
    hook code. On the way to the page the model's own args could swap the approved action, or read a value one way for the
    tier check and another for the page. Pinned here:
      • station.power carries freshConsent: in ASK no cached grant approves it and no yes leaves one behind (its card offers
-       Approve once / Deny only; a forged "full" answers that one call); Full Access still covers it untainted;
+       Aprobar una vez / Deny only; a forged "full" answers that one call); Full Access still covers it untainted;
      • Full Access never lifts the taint lock on it;
      • a phone / non-owner run can never call it (STANDING_ESCALATES);
      • args.action can not swap the action; {on:"off"}, " this-computer", "FULL" read the same for the tier and the page;
@@ -84,7 +84,7 @@ function stubs() {
   const freshBranch = "} else if (p.tool === 'station.power' || p.tool === 'plugin.submit') {";
   A.ok(chat.indexOf(freshBranch) >= 0, 'the station.power and plugin.submit cards share the fresh-consent branch');
   const card = chat.slice(chat.indexOf(freshBranch), chat.indexOf("} else {", chat.indexOf(freshBranch)));
-  A.ok(/'Approve once'/.test(card) && /'Deny'/.test(card) && !/'Always'|'Full access'/.test(card), 'the station.power card offers Approve once and Deny only');
+  A.ok(/'Aprobar una vez'/.test(card) && /'Deny'/.test(card) && !/'Always'|'Acceso total'/.test(card), 'the station.power card offers Aprobar una vez and Deny only');
 
   // ---- a phone / non-owner run never escalates ----
   A.ok(standingWorkEscalates('station.power', { action: 'budget.set', args: { perDay: 5 } }) && standingWorkEscalates('station_power', {}), 'station.power is withheld from phone and non-owner runs');

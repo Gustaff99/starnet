@@ -103,7 +103,7 @@ const NeedsYou = (() => {
       for (const l of LoopsReview.waiting()) {
         if (!l || !l.id || !(l.count > 0)) continue;
         out.push({ key: 'loop:' + l.id, kind: 'loop', who: nameOf(l.agentId || 'agent'), aid: l.agentId || 'agent',
-          what: 'has ' + plural(l.count, 'result', 'results') + ' waiting on your review from "' + String(l.name || 'a goal loop') + '"', where: 'GOAL LOOPS', since: Number(l.since) || 0 });
+          what: 'has ' + plural(l.count, 'result', 'results') + ' waiting on your review from "' + String(l.name || 'a goal loop') + '"', where: 'BUCLES DE OBJETIVO', since: Number(l.since) || 0 });
       }
     }
     refreshFeeds(false, now);
@@ -120,9 +120,9 @@ const NeedsYou = (() => {
      deleted it (adopt refuses the tombstone). Read only: the session is adopted by the click, never by a render. */
   function buildPlace(m) {
     const W = typeof WorkshopStore !== 'undefined' ? WorkshopStore : null;
-    if (!W || typeof W.ensureSession !== 'function' || !has(App, 'openWorkstream')) return 'DELIVERABLES';
+    if (!W || typeof W.ensureSession !== 'function' || !has(App, 'openWorkstream')) return 'ENTREGABLES';
     const sid = W.sessionIdOf ? W.sessionIdOf(m.runId) : 'workshop-' + m.runId;
-    if (Workstreams.isDeleted && Workstreams.isDeleted(sid)) return 'DELIVERABLES';
+    if (Workstreams.isDeleted && Workstreams.isDeleted(sid)) return 'ENTREGABLES';
     const ws = Workstreams.get ? Workstreams.get(sid) : null;
     if (ws) return titleOf(ws);
     return W.sessionTitleOf ? W.sessionTitleOf(m) : String(m.title || 'a build');

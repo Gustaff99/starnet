@@ -4,7 +4,7 @@
       900 ms poll): who asks · the question · answer keys · one hint · the reason and draft folded; the SAME card node is
       kept while the transcript streams (focus, hover and a press survive the poll); one tap answers and every key waits
       ("Sending your answer…"), a refusal frees them; pick-several keys toggle with a ✓ and follow the message box; the
-      agent's suggestion is the lit ★ key; Approve once / Deny wait too; the box says whom it answers; an answer keeps its
+      agent's suggestion is the lit ★ key; Aprobar una vez / Deny wait too; the box says whom it answers; an answer keeps its
       question ("NOVA asked: …") in the transcript.
    B. the ONE-ON-ONE choice card (chat.js clarifyRow, executed): who asks on its own line, the question at reading size,
       the reason folded, a hint that says what ★ means, the suggested answer as the lit key, the hint gone once answered.
@@ -92,9 +92,9 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   tick++; await pollFn(); await settle();
   tick++; await pollFn(); await settle();
   A.ok(cards()[0] === card && byClass(cards()[0], 'gc-q-choice')[1] === keyNode, 'the card and its keys are the same nodes across polls (focus, hover and a press survive)');
-  const rowsBefore = byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Approve once/.test(r.textContent));
+  const rowsBefore = byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Aprobar una vez/.test(r.textContent));
   tick++; await pollFn(); await settle();
-  A.ok(byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Approve once/.test(r.textContent)) === rowsBefore, 'the approval row is kept too');
+  A.ok(byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Aprobar una vez/.test(r.textContent)) === rowsBefore, 'the approval row is kept too');
   A.ok(/^●NOVA|MIRAwants to change brief\.md/.test(rowsBefore.textContent) && byClass(rowsBefore, 'gc-asks')[0].textContent === 'wants to change brief.md', 'the approval reads like the desk card: "MIRA wants to change brief.md"');
   A.ok(byClass(rowsBefore, 'gc-ok-row').length === 1 && !byClass(rowsBefore, 'gc-inspect').length, 'its keys sit on their own row under it; no INSPECT where the desk card has none');
   // one tap answers: every key waits and the hint says so; a refusal frees them and restores the hint
@@ -126,13 +126,13 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   box.value = 'Reviews; Pricing pages'; box.fire('input'); await settle();
   A.eq(keys.map(k => k.getAttribute('aria-pressed')).join(), 'false,true,true', 'the keys follow what is in the message box (it is the truth)');
   box.value = ''; box.fire('input'); await settle();
-  // Approve once / Deny: the words every approval uses, the lit key first, and both wait while the answer is on its way
+  // Aprobar una vez / Deny: the words every approval uses, the lit key first, and both wait while the answer is on its way
   let allow; answerReply = new Promise(r => { allow = r; });
-  const row = byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Approve once/.test(r.textContent));
+  const row = byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Aprobar una vez/.test(r.textContent));
   const ak = byClass(row, 'gc-ok');
-  A.eq(ak.map(k => k.textContent + (k._cls.has('lit') ? '[lit]' : '') + (k._cls.has('deny') ? '[deny]' : '')).join('|'), 'Approve once[lit]|Deny[deny]', 'the approval keys');
+  A.eq(ak.map(k => k.textContent + (k._cls.has('lit') ? '[lit]' : '') + (k._cls.has('deny') ? '[deny]' : '')).join('|'), 'Aprobar una vez[lit]|Deny[deny]', 'the approval keys');
   ak[0].fire('click'); await settle();
-  A.ok(ak.every(k => k.disabled) && ak[0].textContent === 'Sending…', 'Approve once / Deny both wait, and the pressed key says what it is doing');
+  A.ok(ak.every(k => k.disabled) && ak[0].textContent === 'Sending…', 'Aprobar una vez / Deny both wait, and the pressed key says what it is doing');
   allow({ ok: true }); await settle();
   A.eq(posts.filter(p => p.op === 'answer').length, 1, 'one answer sent');
 
@@ -161,7 +161,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   const hint = kids.find(k => k._cls.has('cq-hint'));
   A.eq(hint && hint.textContent, 'Tap an answer. ★ is NOVA\'s suggestion.', 'the hint says what ★ means');
   const btns = kids.find(k => k._cls.has('consent-btns'));
-  A.eq(btns.children.map(b => b.textContent + (b._cls.has('primary') ? '[lit]' : '') + (b._cls.has('quiet') ? '[quiet]' : '')).join('|'), 'Starter|★ Pro[lit]|Use your judgment[quiet]', 'the suggested answer is the lit key; "Use your judgment" is quiet');
+  A.eq(btns.children.map(b => b.textContent + (b._cls.has('primary') ? '[lit]' : '') + (b._cls.has('quiet') ? '[quiet]' : '')).join('|'), 'Starter|★ Pro[lit]|Usa tu criterio[quiet]', 'the suggested answer is the lit key; "Usa tu criterio" is quiet');
   let confirm; clarifyReply = new Promise(r => { confirm = r; });
   const sent = btns.children[1].onclick(); await settle();
   A.ok(btns.children.every(b => b.disabled) && btns.children[1]._cls.has('sel') && hint.textContent === 'Sending your answer…', 'one tap: every key waits, the pressed one stays lit, the hint says it is on its way');

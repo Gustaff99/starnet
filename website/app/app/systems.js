@@ -34,10 +34,10 @@ const Systems = (() => {
     // ONE MENU (2026-10-01): MI TRABAJO / AUTOMATIZAR / CONECTAR son cada uno un botón del dock sobre varias ventanas
     // (FAMILIES de stationui) — el key de cada ventana miembro está en terms, así que abrirla por cualquier puerta cuenta.
     { id: 'mywork', label: 'MI TRABAJO', group: 'work', sel: '#bb-mywork', terms: ['tasks', 'work', 'deliverables', 'outbox'], start: true, tip: 'tareas, trabajo terminado y trabajos listos' },
-    { id: 'automate', label: 'AUTOMATIZAR', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATE', 'AUTOMATION', 'WORKFLOWS', 'WORKFLOW', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'cuando pides algo con horario', tip: 'flujos de trabajo, horarios, bucles y trabajo remoto' },
+    { id: 'automate', label: 'AUTOMATIZAR', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATIZAR', 'AUTOMATION', 'FLUJOS', 'WORKFLOW', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'cuando pides algo con horario', tip: 'flujos de trabajo, horarios, bucles y trabajo remoto' },
     { id: 'quests', label: 'MISIONES', group: 'work', sel: '.bb[data-term="quests"]', terms: ['quests'], start: true, tip: 'pequeños pasos hacia tus metas y progreso registrado' },
     { id: 'refit', label: 'MODO CONSTRUCCIÓN', group: 'build', sel: '#bb-build', start: true, tip: 'salas, pasillos, equipo y líneas de trabajo' },
-    { id: 'connect', label: 'CONECTAR', group: 'build', sel: '#bb-connect', terms: ['connectors', 'skills', 'messaging'], words: ['ABILITIES', 'CHANNELS'], start: true, tip: 'servicios que usan tus agentes y dónde les escribes' },
+    { id: 'connect', label: 'CONECTAR', group: 'build', sel: '#bb-connect', terms: ['connectors', 'skills', 'messaging'], words: ['HABILIDADES', 'CANALES'], start: true, tip: 'servicios que usan tus agentes y dónde les escribes' },
     { id: 'newapp', label: 'NUEVA APP', group: 'build', sel: '#bb-newapp-build', start: true, tip: 'describe cualquier cosa — un panel, un registro, una herramienta, un juego — y tu tripulación la construye en su propia ventana' },
     { id: 'manual', label: 'MANUAL DE CAMPO', group: 'system', sel: '.bb[data-term="manual"]', terms: ['manual'], start: true, tip: 'primera misión, controles y manual de la estación' },
     { id: 'settings', label: 'AJUSTES', group: 'system', sel: '.bb[data-term="settings"]', terms: ['settings'], start: true, tip: 'modelos, claves, permisos, gastos y más' },

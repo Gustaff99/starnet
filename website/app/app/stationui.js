@@ -236,7 +236,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     try { localStorage.setItem(KEY, JSON.stringify(store)); lastSaveOk = true; return true; }
     catch (_) {
       const wasSaved = lastSaveOk; lastSaveOk = false;
-      if (wasSaved) try { notify('Could not save local settings. Changes may be lost when you restart.', 'warn', undefined, { kind: 'alert', key: 'settings-save-failed' }); } catch (_) {}
+      if (wasSaved) try { notify('No se pudieron guardar los ajustes locales. Los cambios pueden perderse al reiniciar.', 'warn', undefined, { kind: 'alert', key: 'settings-save-failed' }); } catch (_) {}
       return false;
     }
   }
@@ -248,7 +248,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!elm) return;
     clearTimeout(elm._flashTimer);
     if (!independentSave && !lastSaveOk) {
-      elm.textContent = 'Could not save — changes apply for this session. Change a setting to retry.';
+      elm.textContent = 'No se pudo guardar — los cambios aplican por esta sesión. Cambia un ajuste para reintentar.';
       elm.className = 'msg bad';
       return;
     }
@@ -485,7 +485,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function syncKeepAwake(enabled, opts) {
     if (typeof KeepAwake === 'undefined' || !KeepAwake.apply) return Promise.resolve(null);
     return KeepAwake.apply(!!enabled, opts || {}).catch(err => {
-      if (enabled) notify('Keep Computer Awake failed: ' + ((err && err.message) || err), 'warn');
+      if (enabled) notify('Mantener el equipo despierto falló: ' + ((err && err.message) || err), 'warn');
       return (err && err.status) || null;
     });
   }
@@ -674,7 +674,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const grip = mkEl('button', 'term-resize', '◢');
     grip.type = 'button';
     grip.setAttribute('aria-label', 'Resize ' + title);
-    grip.title = 'Drag to resize · arrow keys resize';
+    grip.title = 'Arrastra para redimensionar · las flechas también';
     grip.addEventListener('pointerdown', ev => {
       if (ev.button != null && ev.button !== 0) return;
       const r = bakeTermRect(w);
@@ -761,7 +761,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     try { rerender('settings'); } catch (_) {}
     const name = next === 0 ? 'AUTO · ' + autoTextScale() + '%' : (TEXT_SCALES.find(([v]) => v === next) || [0, ''])[1] + ' · ' + next + '%';
     const mod = ev.metaKey ? 'Cmd' : 'Ctrl';   // name the key that was pressed (Cmd on a Mac); a plain '-' is what the user types
-    notify('TEXT SIZE ' + name + '. ' + mod + ' + and ' + mod + ' - change it, ' + mod + ' 0 resets. Also in SETTINGS › LOOK & SOUND.', '', undefined, { transient: true });
+    notify('TAMAÑO DE TEXTO ' + name + '. ' + mod + ' + y ' + mod + ' - lo cambian, ' + mod + ' 0 lo restablece. También en AJUSTES › ASPECTO Y SONIDO.', '', undefined, { transient: true });
   });
   let resizeClampTimer = 0;
   window.addEventListener('resize', () => {
@@ -878,7 +878,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const bar = document.getElementById('bottombar'); if (!bar) return null;
     strip = mkEl('div', 'term-strip'); strip.id = 'term-strip';
     strip.setAttribute('role', 'group');
-    strip.setAttribute('aria-label', 'Minimized windows');
+    strip.setAttribute('aria-label', 'Ventanas minimizadas');
     const right = bar.querySelector('.bb-right');
     if (right) bar.insertBefore(strip, right); else bar.appendChild(strip);
     return strip;
@@ -1065,7 +1065,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // ARM: keep the window, warn, and require a second close within 3s.
     w._closeArmed = true; sfx('bad');
     let bar = w.querySelector('.term-unsaved-bar');
-    if (!bar) { bar = mkEl('div', 'term-unsaved-bar', '⚠ UNSAVED — close again to discard, or SAVE first'); bar.setAttribute('role', 'alert'); w.appendChild(bar); }
+    if (!bar) { bar = mkEl('div', 'term-unsaved-bar', '⚠ SIN GUARDAR — cierra otra vez para descartar, o guarda primero'); bar.setAttribute('role', 'alert'); w.appendChild(bar); }
     bar.hidden = false;
     clearTimeout(w._closeArmTimer);
     w._closeArmTimer = setTimeout(() => { if (!w) return; w._closeArmed = false; w._closeArmTimer = 0; const b = w.querySelector('.term-unsaved-bar'); if (b) b.remove(); }, 3000);
@@ -1080,22 +1080,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      name — the name the manual, the agents and every error door already use. Never a merged card grid: each
      tab stays its own distinct surface (the August ABILITIES lesson). */
   const FAMILIES = {
-    mywork: { label: 'MY WORK', first: 'deliverables', tabs: [
-      { id: 'tasks', k: 'tasks', label: 'TASKS', tip: 'Planned work you track — chats and routines live in COMMS' },
-      { id: 'deliverables', k: 'deliverables', label: 'DELIVERABLES', tip: 'Everything your crew finished, with its files' },
-      { id: 'recipes', k: 'marketplace', label: 'RECIPES', tip: 'Ready-made jobs to start',
+    mywork: { label: 'MI TRABAJO', first: 'deliverables', tabs: [
+      { id: 'tasks', k: 'tasks', label: 'TAREAS', tip: 'Trabajo planificado que llevas — los chats y rutinas viven en COMUNICACIONES' },
+      { id: 'deliverables', k: 'deliverables', label: 'ENTREGABLES', tip: 'Todo lo que tu tripulación terminó, con sus archivos' },
+      { id: 'recipes', k: 'marketplace', label: 'RECETAS', tip: 'Trabajos listos para empezar',
         is: () => typeof Marketplace !== 'undefined' && Marketplace.currentTab && Marketplace.currentTab() === 'recipes',
         open: () => { if (typeof App !== 'undefined' && App.openRecipes) App.openRecipes(); } }
     ] },
-    automate: { label: 'AUTOMATE', tabs: [
-      { id: 'workflows', k: 'workflows', label: 'WORKFLOWS', tip: 'Send a job down a line of agents' },
-      { id: 'schedules', k: 'automation', section: 'routines', match: ['routines', 'routines-create'], label: 'SCHEDULES', tip: 'Run any job on a schedule' },
-      { id: 'loops', k: 'automation', section: 'loops', match: ['loops', 'loops-start'], label: 'GOAL LOOPS', tip: 'Repeat a job until it is done' },
-      { id: 'away', k: 'automation', section: 'away', match: ['away'], label: 'AWAY WORK', tip: 'What agents work on between your messages' }
+    automate: { label: 'AUTOMATIZAR', tabs: [
+      { id: 'workflows', k: 'workflows', label: 'FLUJOS', tip: 'Enviar un trabajo por una línea de agentes' },
+      { id: 'schedules', k: 'automation', section: 'routines', match: ['routines', 'routines-create'], label: 'HORARIOS', tip: 'Ejecutar cualquier trabajo con horario' },
+      { id: 'loops', k: 'automation', section: 'loops', match: ['loops', 'loops-start'], label: 'BUCLES DE OBJETIVO', tip: 'Repetir un trabajo hasta terminarlo' },
+      { id: 'away', k: 'automation', section: 'away', match: ['away'], label: 'TRABAJO EN AUSENCIA', tip: 'En qué trabajan los agentes entre tus mensajes' }
     ] },
-    connect: { label: 'CONNECT', tabs: [
-      { id: 'abilities', k: 'connectors', label: 'ABILITIES', tip: 'Tools, apps, connectors and skills your agents can use' },
-      { id: 'channels', k: 'messaging', label: 'CHANNELS', tip: 'Talk to your agents from Telegram, Slack, Discord' }
+    connect: { label: 'CONECTAR', tabs: [
+      { id: 'abilities', k: 'connectors', label: 'HABILIDADES', tip: 'Herramientas, apps, conectores y habilidades que tus agentes pueden usar' },
+      { id: 'channels', k: 'messaging', label: 'CANALES', tip: 'Habla con tus agentes desde Telegram, Slack, Discord' }
     ] }
   };
   // which menu a window belongs to (marketplace counts only while it is the RECIPES library, not the recruit bay)
@@ -1769,7 +1769,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           searchEmpty.hidden = matches.length > 0;
           searchEmpty.textContent = matches.length
             ? ''
-            : (opts.searchEmptyText || 'No matching results. Try another name, tool, or skill.');
+            : (opts.searchEmptyText || 'Sin resultados. Prueba otro nombre, herramienta o habilidad.');
         }
         // A tablist must retain one selected tab even when the temporary search context has no hits.
         // Keep the user's real section selected; clearing search restores its visible panel unchanged.
@@ -1825,7 +1825,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       return;
     }
     ul.innerHTML = present.map((a, i) =>
-      '<li class="crew-row" role="button" tabindex="0" aria-label="' + (present.length > 1 ? 'Show sessions with ' + esc(a.name || a.id) + '; Shift+F10 for the dossier" aria-keyshortcuts="Shift+F10' : 'Open dossier for ' + esc(a.name || a.id)) + '" data-i="' + i + '" data-agent-id="' + esc(a.id) + '" style="--ci:' + i + '">' +
+      '<li class="crew-row" role="button" tabindex="0" aria-label="' + (present.length > 1 ? 'Mostrar sesiones con ' + esc(a.name || a.id) + '; Shift+F10 for the dossier" aria-keyshortcuts="Shift+F10' : 'Abrir el dossier de ' + esc(a.name || a.id)) + '" data-i="' + i + '" data-agent-id="' + esc(a.id) + '" style="--ci:' + i + '">' +
       crewPortrait(a) +
       '<span class="dot on"></span>' +
       '<div class="crew-main">' +
@@ -1838,7 +1838,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="crew-prog bar-active" id="cp-' + esc(a.id) + '" aria-hidden="true"><div></div></div>' +
       '</div>' +
       // the dossier stays one step away: this key (or a right-click) opens it; the row itself shows the sessions
-      (present.length > 1 ? '<button type="button" class="crew-dossier" tabindex="-1" aria-label="Open dossier for ' + esc(a.name || a.id) + '" data-tip="Open ' + esc(a.name || a.id) + '&#39;s dossier">DOSSIER</button>' : '') +
+      (present.length > 1 ? '<button type="button" class="crew-dossier" tabindex="-1" aria-label="Abrir el dossier de ' + esc(a.name || a.id) + '" data-tip="Abrir el dossier de ' + esc(a.name || a.id) + '">DOSSIER</button>' : '') +
       '</li>').join('');
     // (the head's roster count moved out — #crew-sum below the list already totals the same crew)
     ul.querySelectorAll('.crew-row').forEach(li => {
@@ -1969,7 +1969,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   const CONFIG_FILES = [
     { key: 'identity', file: 'identity.md', badge: 'YOU WRITE THIS',
-      desc: 'The system prompt sent to the model on every run — the heart of who your agent is.',
+      desc: 'El prompt de sistema que se envía al modelo en cada ejecución — el corazón de quién es tu agente.',
       ph: 'You are …' },
     { key: 'purpose', file: 'purpose.md', badge: 'YOU WRITE THIS',
       // P23 REACH: the purpose and house rules are THIS agent's only; rules for every agent are YOU › PREFERENCES'
@@ -1980,7 +1980,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       desc: 'About you and your world — your project, domain, and what "good" looks like. Grounds every run.',
       ph: 'e.g. I build TypeScript web apps solo; "good" = tested, minimal diffs, no hand-waving.' },
     { key: 'manual', file: 'operating-manual.md', badge: 'YOU WRITE THIS',
-      desc: n => 'House rules only ' + n + ' follows: tone, format, the do-nots. Rules for every agent live in YOU › PREFERENCES.',
+      desc: n => 'Reglas de la casa que solo ' + n + ' sigue: tono, formato, lo que no se debe hacer. Las reglas para todos los agentes viven en TÚ › PREFERENCES.',
       ph: '- Cite your sources.\n- Keep it terse.\n- Never message anyone without asking first.' }
   ];
 
@@ -2023,12 +2023,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // NAME — read-only with a ✎ rename affordance, or an inline editor while agEdit['__name'] is set (wired in wireHead).
       (agEdit['__name']
         ? '<div class="ag-name-edit">' +
-            '<input id="ag-rename-in" class="ag-name-input" type="text" maxlength="18" spellcheck="false" autocomplete="off" value="' + esc(a.name) + '" aria-label="Rename agent" style="color:' + esc(a.color) + '">' +
-            '<button class="ag-name-ok" id="ag-rename-save" title="save name" aria-label="Save name">✓</button>' +
-            '<button class="ag-name-x" id="ag-rename-cancel" title="cancel" aria-label="Cancel rename">✕</button></div>'
+            '<input id="ag-rename-in" class="ag-name-input" type="text" maxlength="18" spellcheck="false" autocomplete="off" value="' + esc(a.name) + '" aria-label="Renombrar agente" style="color:' + esc(a.color) + '">' +
+            '<button class="ag-name-ok" id="ag-rename-save" title="guardar nombre" aria-label="Guardar nombre">✓</button>' +
+            '<button class="ag-name-x" id="ag-rename-cancel" title="cancelar" aria-label="Cancelar renombrado">✕</button></div>'
         : '<div class="ag-name" style="color:' + esc(a.color) + '">' + esc(a.name) +
             (duplicateAgentName(a) ? '<span class="ag-name-id">[' + esc(duplicateAgentName(a)) + ']</span>' : '') +
-            '<button class="ag-rename" id="ag-rename-btn" title="rename this agent" aria-label="Rename agent">✎</button>' +
+            '<button class="ag-rename" id="ag-rename-btn" title="renombrar este agente" aria-label="Renombrar agente">✎</button>' +
             (lv ? '<span class="ag-lv">Lv ' + lv + '</span>' : '') + '</div>') +
       '<div class="ag-role-line"><span class="ag-sdot ' + dotCls + '"></span>' + statusText + '</div>' +
       '<div class="ag-tags">' +
@@ -2086,9 +2086,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       { lbl: 'PROFILE',   val: prof.label.toLowerCase(),  dim: false,               go: 'ag-execution-card', tip: 'change it in CONFIG › ACCESS' },
       { lbl: 'VOICE',     val: voice || 'station default', dim: !voice,             go: 'ag-voice',          tip: 'opens SETTINGS › LOOK & SOUND › VOICE FOR this agent' },
       { lbl: 'SKILLS',    val: 'its own procedures',       dim: true,               go: 'ag-skills',         tip: 'opens ABILITIES › AGENT SKILLS for this agent' },
-      { lbl: 'AWAY WORK', val: (a && a.workshop) ? 'on'  : 'off', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'opens AUTOMATE › AWAY WORK' }
+      { lbl: 'TRABAJO EN AUSENCIA', val: (a && a.workshop) ? 'on'  : 'off', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'opens AUTOMATE › AWAY WORK' }
     ];
-    return '<div class="ag-setup" role="group" aria-label="How this agent is set up">' +
+    return '<div class="ag-setup" role="group" aria-label="Cómo está configurado este agente">' +
       rows.map(r =>
         '<button type="button" class="ag-setup-row" data-goconfig="' + r.go + '" data-tip="' + esc(r.tip) + '" data-tip-below>' +
           '<span class="ag-setup-lbl">' + r.lbl + '</span>' +
@@ -2157,7 +2157,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="ag-cmd-sec"><div class="ag-cmd-lbl">SKIN</div>' +
         '<div class="ag-skin-section">' +
           // role=group, not listbox: the thumbs are <button>s (a picker), not selectable listbox options.
-          '<div class="ag-skin-row skin-picker" role="group" aria-label="Agent skin">' + thumbs + '</div>' +
+          '<div class="ag-skin-row skin-picker" role="group" aria-label="Skin del agente">' + thumbs + '</div>' +
           stage +
         '</div></div>' +
       '</div>';
@@ -2187,7 +2187,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     ) : '';
   }
   function agGrowth(a) {
-    if (typeof Xp === 'undefined' || !a.stats) return '<div class="ag-growth-empty"><h3>Waiting for growth data</h3><p>Growth metrics unavailable. This agent’s XP and achievements will appear when its activity data is available.</p></div>';
+    if (typeof Xp === 'undefined' || !a.stats) return '<div class="ag-growth-empty"><h3>Esperando datos de crecimiento</h3><p>Métricas de crecimiento no disponibles. El XP y los logros de este agente aparecerán cuando haya datos de actividad.</p></div>';
     const g = Xp.compute(a.stats);
     const cat = Xp.milestones(a.stats);
     const earned = cat.filter(m => m.earned).length, locked = cat.length - earned;
@@ -2198,12 +2198,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
     const progression =
       '<div class="ag-xp-panel">' +
-      '<div class="gx-sec"><span class="gx-ref">▣</span><span class="gx-title">Progression</span><span class="gx-tag">LV ' + g.level + '&rarr;' + (g.level + 1) + '</span></div>' +
-      '<div class="gx-row" style="margin-bottom:6px;"><span class="gx-lbl">This level</span>' +
+      '<div class="gx-sec"><span class="gx-ref">▣</span><span class="gx-title">Progresión</span><span class="gx-tag">LV ' + g.level + '&rarr;' + (g.level + 1) + '</span></div>' +
+      '<div class="gx-row" style="margin-bottom:6px;"><span class="gx-lbl">Este nivel</span>' +
         '<span class="gx-val" style="font-size:15px;">' + g.inLevel + ' <span class="gx-dim">/</span> ' + g.span + ' <span class="gx-dim" style="font-size:11px;">XP</span></span></div>' +
       '<div class="gx-trk" style="margin-bottom:5px;"><div class="gx-fill" style="width:' + g.pct + '%;"></div><div class="gx-mark" style="left:' + g.pct + '%;"></div></div>' +
-      '<div class="gx-row"><span class="gx-val gx-dim" style="font-size:12px;">' + g.toNext + ' XP TO LV ' + (g.level + 1) + '</span><span class="gx-val" style="color:var(--ph);font-size:13px;">' + g.pct + '%</span></div>' +
-      '<div class="gx-well"><span class="gx-lbl">Positive feedback</span><span class="v">' + g.positiveFeedback + '</span></div>' +
+      '<div class="gx-row"><span class="gx-val gx-dim" style="font-size:12px;">' + g.toNext + ' XP PARA NIVEL ' + (g.level + 1) + '</span><span class="gx-val" style="color:var(--ph);font-size:13px;">' + g.pct + '%</span></div>' +
+      '<div class="gx-well"><span class="gx-lbl">Retroalimentación positiva</span><span class="v">' + g.positiveFeedback + '</span></div>' +
       // what a level actually MEANS (UX sweep 2026-07-15): honest — levels gate nothing (sandbox law);
       // they are the agent's proven track record from work you rated well.
       '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">Rate completed work “nailed it” to earn XP. Positive turn-in feedback earns XP too. Levels celebrate progress; every capability is available from the start.</div>' +
@@ -2216,13 +2216,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '</div>';
     const confidence =
       '<div>' +
-      '<div class="gx-sec"><span class="gx-ref">★</span><span class="gx-title">Satisfaction</span><span class="gx-tag">' + (g.known ? 'average of your recent ratings (' + Xp.MIN_SAMPLES + '+ ratings)' : 'calibrating &middot; ' + g.samples + ' of ' + Xp.MIN_SAMPLES + ' ratings so far') + '</span></div>' +
+      '<div class="gx-sec"><span class="gx-ref">★</span><span class="gx-title">Satisfacción</span><span class="gx-tag">' + (g.known ? 'promedio de tus valoraciones recientes (' + Xp.MIN_SAMPLES + '+ valoraciones)' : 'calibrando &middot; ' + g.samples + ' de ' + Xp.MIN_SAMPLES + ' valoraciones hasta ahora') + '</span></div>' +
       '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:9px;">' +
         '<span class="gx-confnum' + (g.known ? '' : ' cal') + '">' + confnum + '</span>' +
-        '<span class="gx-band' + (g.known ? '' : ' cal') + '">' + (g.known ? g.band.toUpperCase() : 'CALIBRATING') + '</span></div>' +
+        '<span class="gx-band' + (g.known ? '' : ' cal') + '">' + (g.known ? g.band.toUpperCase() : 'CALIBRANDO') + '</span></div>' +
       gauge +
-      '<div class="gx-zlabels"><span>BUILD</span><span>STEADY</span><span>RELIABLE</span><span class="hot">TRUST</span></div>' +
-      '<div class="gx-well' + (g.bonus ? ' gold' : '') + '"><span class="gx-lbl">Feedback bonus</span><span class="v">' + (g.bonus ? '+' + g.bonus + '%' : '—') + '</span></div>' +
+      '<div class="gx-zlabels"><span>CONSTRUYE</span><span>SOLIDO</span><span>FIABLE</span><span class="hot">CONFIANZA</span></div>' +
+      '<div class="gx-well' + (g.bonus ? ' gold' : '') + '"><span class="gx-lbl">Bonus de retroalimentación</span><span class="v">' + (g.bonus ? '+' + g.bonus + '%' : '—') + '</span></div>' +
       '</div>';
 
     /* S2 RELIABILITY — the harness's OWN read, sitting under Satisfaction so the pair reads as what it is:
@@ -2232,22 +2232,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        an honest bad number belongs. Excluded runs are NAMED, not silently dropped from the denominator. */
     const rl = Xp.reliability ? Xp.reliability(a.stats) : null;
     const excludedNote = rl && rl.excluded
-      ? '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">' + rl.excluded + ' run' + (rl.excluded === 1 ? '' : 's') + ' set aside — ' +
-        (rl.faulted ? rl.faulted + ' the provider failed' : '') + (rl.faulted && rl.neutral ? ', ' : '') +
-        (rl.neutral ? rl.neutral + ' you stopped or it asked a question' : '') + ' — never charged to this agent</div>'
+      ? '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">' + rl.excluded + ' ejecución' + (rl.excluded === 1 ? '' : 'es') + ' apartada' + ' — ' +
+        (rl.faulted ? rl.faulted + ' falló el proveedor' : '') + (rl.faulted && rl.neutral ? ', ' : '') +
+        (rl.neutral ? rl.neutral + ' la detuviste o preguntó' : '') + ' — nunca le imputada a este agente</div>'
       : '';
     const reliabilityBlk = !rl ? '' :
       // spans both columns of the existing .gx-2 grid (no CSS change; still correct under the 1-col media query)
       '<div style="grid-column:1/-1;">' +
-      '<div class="gx-sec"><span class="gx-ref">◉</span><span class="gx-title">Reliability</span><span class="gx-tag">' +
-        (rl.known ? 'runs it finished, of the runs it owned (' + Xp.MIN_RUNS + '+ runs)' : 'calibrating &middot; ' + rl.attempted + ' of ' + Xp.MIN_RUNS + ' attributable runs so far') + '</span></div>' +
+      '<div class="gx-sec"><span class="gx-ref">◉</span><span class="gx-title">Fiabilidad</span><span class="gx-tag">' +
+        (rl.known ? 'ejecuciones que terminó, de las que le tocaban (' + Xp.MIN_RUNS + '+ ejecuciones)' : 'calibrando &middot; ' + rl.attempted + ' de ' + Xp.MIN_RUNS + ' ejecuciones atribuibles hasta ahora') + '</span></div>' +
       '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:9px;">' +
         '<span class="gx-confnum' + (rl.known ? '' : ' cal') + '">' + (rl.known ? rl.pct + '<span style="font-size:18px;color:var(--ph-dim);">%</span>' : '—') + '</span>' +
-        '<span class="gx-band' + (rl.known ? '' : ' cal') + '">' + (rl.known ? rl.band.toUpperCase() : 'CALIBRATING') + '</span></div>' +
+        '<span class="gx-band' + (rl.known ? '' : ' cal') + '">' + (rl.known ? rl.band.toUpperCase() : 'CALIBRANDO') + '</span></div>' +
       '<div class="gx-trk" style="margin-bottom:5px;"><div class="gx-fill" style="width:' + (rl.known ? rl.pct : 0) + '%;"></div></div>' +
-      '<div class="gx-well"><span class="gx-lbl">Finished / owned</span><span class="v">' + rl.completed + ' <span class="gx-dim">/</span> ' + rl.attempted + '</span></div>' +
+      '<div class="gx-well"><span class="gx-lbl">Terminadas / propias</span><span class="v">' + rl.completed + ' <span class="gx-dim">/</span> ' + rl.attempted + '</span></div>' +
       // the honest distinction from Satisfaction — these two meters measure different things and may disagree.
-      '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">what the station observed — Satisfaction above is what you said</div>' +
+      '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">lo que observó la estación — Satisfacción arriba es lo que tú dijiste</div>' +
       excludedNote +
       '</div>';
 
@@ -2258,18 +2258,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        never a zero: an unread skillbase is not an empty one. */
     const practiceBlk =
       '<div id="gx-practice" style="grid-column:1/-1;">' +
-      '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Practice</span>' +
-      '<span class="gx-tag">reading the skillbase&hellip;</span></div>' +
+      '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Práctica</span>' +
+      '<span class="gx-tag">leyendo la skillbase&hellip;</span></div>' +
       '<div style="display:flex;align-items:baseline;gap:10px;"><span class="gx-confnum cal">&mdash;</span>' +
-      '<span class="gx-band cal">READING</span></div></div>';
+      '<span class="gx-band cal">LEYENDO</span></div></div>';
 
     const tros = cat.map(m =>
       '<div class="gx-tro ' + (m.earned ? 'on' : 'off') + (nextMilestone && m.id === nextMilestone.id ? ' ag-next-trophy' : '') + '">' +
       '<div style="display:flex;align-items:center;gap:6px;"><span class="gl">' + (m.earned ? '&#9733;' : '&#9675;') + '</span><span class="nm">' + m.label + '</span></div>' +
-      '<div class="sub">' + (m.earned ? 'EARNED · ' + m.hint : m.hint) + '</div></div>').join('');
+      '<div class="sub">' + (m.earned ? 'GANADO · ' + m.hint : m.hint) + '</div></div>').join('');
     const trophies =
-      '<div class="gx-trohead"><div class="gx-sec" style="flex:1;margin:0;border:0;height:auto;"><span class="gx-ref">▦</span><span class="gx-title">Achievements</span></div>' +
-      '<span class="gx-tag">' + pad2(earned) + ' earned &middot; ' + pad2(locked) + ' to earn</span></div>' +
+      '<div class="gx-trohead"><div class="gx-sec" style="flex:1;margin:0;border:0;height:auto;"><span class="gx-ref">▦</span><span class="gx-title">Logros</span></div>' +
+      '<span class="gx-tag">' + pad2(earned) + ' ganados &middot; ' + pad2(locked) + ' por ganar</span></div>' +
       '<div class="gx-tros">' + tros + '</div>';
 
 
@@ -2279,10 +2279,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        occupying the top of the pane. The level chip survives (it belongs beside a level bar); the rest is gone. */
     return '<div class="gx ag-growth">' +
       '<div class="ag-growth-hero"><div class="ag-level-badge"><span>LEVEL</span><strong>' + pad2(g.level) + '</strong></div>' +
-      '<div class="ag-growth-heading"><span class="ag-growth-eyebrow">AGENT PROGRESSION</span><h3>' + esc(a.name || 'Agent') + '</h3><p>' + g.xp.toLocaleString() + ' total XP · ' + earned + ' of ' + cat.length + ' achievements earned</p>' + progression + '</div></div>' +
-      (nextMilestone ? '<div class="ag-next-challenge"><span>CHALLENGE TO AIM FOR</span><b>' + nextMilestone.label + '</b><span>' + nextMilestone.hint + '</span></div>' : '') +
-      '<div class="ag-growth-section-title">Performance &amp; learning</div><div class="gx-2">' + confidence + reliabilityBlk + practiceBlk + '</div>' +
-      '<p class="ag-growth-station-link">The station’s own level, systems and milestones: <button type="button" class="bb xs" data-open-progress>QUESTS › PROGRESS</button></p>' +
+      '<div class="ag-growth-heading"><span class="ag-growth-eyebrow">PROGRESIÓN DEL AGENTE</span><h3>' + esc(a.name || 'Agent') + '</h3><p>' + g.xp.toLocaleString() + ' XP total · ' + earned + ' de ' + cat.length + ' logros ganados</p>' + progression + '</div></div>' +
+      (nextMilestone ? '<div class="ag-next-challenge"><span>DESAFÍO A ALCANZAR</span><b>' + nextMilestone.label + '</b><span>' + nextMilestone.hint + '</span></div>' : '') +
+      '<div class="ag-growth-section-title">Rendimiento y aprendizaje</div><div class="gx-2">' + confidence + reliabilityBlk + practiceBlk + '</div>' +
+      '<p class="ag-growth-station-link">El nivel, los sistemas y los hitos de la estación: <button type="button" class="bb xs" data-open-progress>MISSIONES › PROGRESO</button></p>' +
       '<section class="ag-achievements">' + trophies + '</section></div>';
   }
 
@@ -2295,12 +2295,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!host || typeof Xp === 'undefined' || !Xp.practice) return;
     const fail = (why) => {
       const h = $('#gx-practice'); if (!h) return;
-      h.innerHTML = '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Practice</span>' +
+      h.innerHTML = '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Práctica</span>' +
         '<span class="gx-tag">' + why + '</span></div>' +
         '<div style="display:flex;align-items:baseline;gap:10px;"><span class="gx-confnum cal">&mdash;</span>' +
-        '<span class="gx-band cal">UNREAD</span></div>';
+        '<span class="gx-band cal">SIN LEER</span></div>';
     };
-    if (!(typeof Harness === 'object' && Harness.agentSkillsRead)) return fail('skillbase unavailable');
+    if (!(typeof Harness === 'object' && Harness.agentSkillsRead)) return fail('skillbase no disponible');
     Harness.agentSkillsRead(agentId, { archived: true }).then(r => {
       const h = $('#gx-practice'); if (!h) return;
       const now = present[sel]; if (!now || now.id !== agentId) return;   // the Commander moved on — never paint the wrong agent
@@ -2313,7 +2313,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (p.idle) aside.push(p.idle + ' written but never used yet');
       if (p.given) aside.push(p.given + ' you wrote yourself');
       h.innerHTML =
-        '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Practice</span><span class="gx-tag">' +
+        '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Práctica</span><span class="gx-tag">' +
           (p.count ? 'procedures it worked out and has actually used' : 'nothing distilled from real work yet') + '</span></div>' +
         '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:9px;">' +
           '<span class="gx-confnum' + (p.count ? '' : ' cal') + '">' + p.count + '</span>' +
@@ -2343,7 +2343,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     Harness.api.get('/api/toolsets?agent=' + encodeURIComponent(a.id) + '&placed=' + encodeURIComponent(placed.join(',')))
       .then(view => {
         if (!body.isConnected || body._accessRequest !== request) return;
-        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Access unavailable');
+        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Acceso no disponible');
         const authority = view.authority;
         const summary = body.querySelector('[data-goconfig="ag-approval-card"] .ag-setup-val');
         // ORG P21: the summary speaks the ONE ACCESS posture words. FULL POWER only when the live authority is unrestricted;
@@ -2371,7 +2371,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const html = '<p><b>' + esc(authority.approvalLabel) + '</b><br>' + esc(authority.filesystemLabel) + ' · ' + esc(authority.profileLabel) + '</p>' +
           '<div class="perk-grid">' + view.toolsets.map(t => '<div class="perk' + (t.available ? ' on' : '') + '"><div class="perk-name">' + esc(t.label) + '</div><div class="perk-stat">' +
             (t.available ? (t.consentGated ? 'AVAILABLE · risky actions may ask' : 'AVAILABLE') : !t.enabled ? 'SWITCHED OFF' : 'NEEDS GEAR OR ACCESS') +
-            '</div><div class="perk-desc">' + esc(t.grantSource || 'No current grant') + '</div></div>').join('') + '</div>' +
+            '</div><div class="perk-desc">' + esc(t.grantSource || 'Sin permiso actual') + '</div></div>').join('') + '</div>' +
           '<p class="sk-note">' + esc(authority.revoke) + ' Service credentials, task-specific permissions and operating-system limits still apply. Unattended jobs have their own grants.</p>' +
           '<button class="bb sm" data-access-manage>MANAGE ABILITIES</button> <button class="bb sm" data-access-settings>STATION PERMISSIONS</button> <button class="bb sm" data-access-refresh>REFRESH ACCESS</button>';
         // BRIEF's compact line: how many toolsets are ready, which ones, and the approval mode — one jump to the full grid
@@ -2508,9 +2508,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const r = await Harness.memoryTurnin({ agentId: a.id, runId: p.runId, id: p.id, verdict: verdict });
       if (r && r.ok) { sfx('click'); loadMemoryCore(a); } else busy = false;   // a failed verdict must stay clickable
     };
-    const keep = mkEl('button', 'consent-btn'); keep.textContent = 'Keep'; keep.title = 'remember this'; keep.onclick = () => decide('keep');
+    const keep = mkEl('button', 'consent-btn'); keep.textContent = 'Mantener'; keep.title = 'recordar esto'; keep.onclick = () => decide('keep');
     btns.appendChild(keep);
-    const drop = mkEl('button', 'consent-btn deny'); drop.textContent = 'Discard'; drop.title = 'reject it — never propose this again'; drop.onclick = () => decide('discard');
+    const drop = mkEl('button', 'consent-btn deny'); drop.textContent = 'Descartar'; drop.title = 'rechazarlo — que nunca lo proponga de nuevo'; drop.onclick = () => decide('discard');
     btns.appendChild(drop);
     return card;
   }
@@ -2645,7 +2645,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const reload = () => loadMemoryCore(a);
     let busy = false;   // in-flight guard: a fast double-click must not fire two POSTs (a success reloads the card away)
     const mk = (label, cls, fn) => { const b = mkEl('button', 'consent-btn' + (cls ? ' ' + cls : '')); b.textContent = label; b.onclick = fn; btns.appendChild(b); return b; };
-    mk(rec.pinned ? 'Unpin' : 'Pin', '', async () => {
+    mk(rec.pinned ? 'Quitar fijado' : 'Pin', '', async () => {
       if (busy) return; busy = true;
       const r = await Harness.memoryPin({ agentId: a.id, id: rec.id, pinned: !rec.pinned });
       if (r && r.ok) { sfx('click'); reload(); } else busy = false;
@@ -2653,8 +2653,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     mk('Edit', '', () => editMemCard(card, bodyEl, btns, rec, a));
     // forget is destructive → two-step inline confirm (auto-disarms after 3s)
     let armed = false;
-    const fbtn = mk('Forget', 'deny', async () => {
-      if (!armed) { armed = true; fbtn.textContent = 'Confirm forget'; setTimeout(() => { if (armed) { armed = false; fbtn.textContent = 'Forget'; } }, 4000); return; }
+    const fbtn = mk('Olvidar', 'deny', async () => {
+      if (!armed) { armed = true; fbtn.textContent = 'Confirmar olvido'; setTimeout(() => { if (armed) { armed = false; fbtn.textContent = 'Olvidar'; } }, 4000); return; }
       if (busy) return; busy = true;
       const r = await Harness.memoryForget({ agentId: a.id, id: rec.id });
       if (r && r.ok) { sfx('click'); reload(); } else busy = false;
@@ -2668,7 +2668,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     card.replaceChild(ta, bodyEl); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
     btns.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
     let saving = false;
     save.onclick = async () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; const r = await Harness.memoryEdit({ agentId: a.id, id: rec.id, content: v }); if (r && r.ok) { sfx('click'); loadMemoryCore(a); } else saving = false; };
     cancel.onclick = () => loadMemoryCore(a);
@@ -2735,10 +2735,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       modelCard(a), personaCard(a),
       agSkills(a.id) + accessAnswerCard(a), agCommand(a)
     ];
-    const summaries = [a.purpose || 'What should this agent accomplish?', 'Identity, context and operating rules · edit each source file',
-      a.model || 'Follow station default', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Station personality',
-      (() => { const AP = agentPostureOf(a); return AP ? AP.label + ' — ' + AP.agentBlurb : 'Custom — its own mix of reach and asking'; })(),
-      ((typeof DATA !== 'undefined' && DATA.SKINS && DATA.SKINS[a.skin]) || {}).name || 'Choose a skin'];
+    const summaries = [a.purpose || '¿Qué debe lograr este agente?', 'Identidad, contexto y reglas de operación · edita cada una para queurce file',
+      a.model || 'Seguir el defecto de la estación', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Personalidad de la estación',
+      (() => { const AP = agentPostureOf(a); return AP ? AP.label + ' — ' + AP.agentBlurb : 'Personalizado — su propia mezcla de alcance y preguntas'; })(),
+      ((typeof DATA !== 'undefined' && DATA.SKINS && DATA.SKINS[a.skin]) || {}).name || 'Elige un aspecto'];
     return '<p class="cf-grp-note">Choose what to change. Text you edit needs SAVE; buttons apply right away.</p>' +
       CF_GROUPS.map((g, i) => {
         const key = a.id + ':' + g.id;
@@ -2757,7 +2757,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return '<div class="cf-card" id="ag-workshop-card">' +
       '<div class="cf-head"><span class="cf-file">Queued builds</span></div>' +
       '<label class="set-row" style="align-items:flex-start;gap:8px;">' +
-        '<input type="checkbox" id="ag-workshop-on"' + (on ? ' checked' : '') + ' aria-label="Build things while I am away">' +
+        '<input type="checkbox" id="ag-workshop-on"' + (on ? ' checked' : '') + ' aria-label="Construir cosas mientras estoy fuera">' +
         '<span><b>Work through this agent’s queue</b>' +
         '<span class="dim" style="display:block;margin-top:2px;line-height:1.35;">Let this agent work through the list below in its own sandbox. Keep the station running. Finished builds arrive as <b>sessions to review</b>.</span></span>' +
       '</label>' +
@@ -2781,11 +2781,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // `plainLabel` is what the chip SAYS (what the choice means to the person choosing); `label` stays the
     // house name and rides every notification, the dossier card, and the roster — renaming a chip must never
     // rename the thing. A newcomer reads "NOTHING OF MINE"; the house name sits under it for everyone else.
-    { id: 'safe-cell', label: 'SAFE CELL', plainLabel: 'NOTHING OF MINE', reach: 1, plain: 'None of your files. It works inside a sealed container that only holds its own workspace.', short: 'works in a sealed box', backend: 'docker', files: 'agent workspace only', tools: 'terminal + files', desktop: 'never', desc: 'isolated workspace; connected services still follow placed station gear' },
-    { id: 'remote-ssh', label: 'REMOTE SSH', plainLabel: 'ANOTHER MACHINE', reach: 1, plain: 'None of your files. Commands run on a different machine you point it at below.', short: 'works on another machine', backend: 'ssh', files: 'synced agent workspace', tools: 'remote terminal + files + connectors', desktop: 'never', desc: 'strict-known-host SSH; pushes the workspace before each command and pulls it back afterward' },
-    { id: 'station-gear', label: 'STATION GEAR', plainLabel: 'WHAT I PLACED', reach: 2, plain: 'Only what you placed on the station floor, plus project folders you approved. The default.', short: 'uses only the gear you placed', backend: 'current', files: 'placed gear + approved project folders', tools: 'only tools granted by floor objects', desktop: 'live lease required', desc: 'compatibility profile; the station floor remains the capability authority' },
-    { id: 'trusted-project', label: 'TRUSTED PROJECT', plainLabel: 'MY PROJECT FOLDERS', reach: 3, plain: 'Its own workspace plus the project folders you approved — nothing else on this computer.', short: 'reaches your approved project folders', backend: 'local', files: 'workspace + approved project folders', tools: 'terminal + files + connectors', desktop: 'live lease required', desc: 'local project work with the folders you approve' },
-    { id: 'this-computer', label: 'THIS COMPUTER', plainLabel: 'MY WHOLE COMPUTER', reach: 4, plain: 'The whole local computer. In Full Power this includes protected files, arbitrary host commands, visible apps, and screen/input control.', short: 'reaches the whole local computer', backend: 'local', files: 'all host paths in Full Power', tools: 'all available tools + host terminal', desktop: 'Full Power or live lease', desc: 'host-wide authority when paired with Full Power; ASK mode retains approval boundaries' }
+    { id: 'safe-cell', label: 'CÉLULA SEGURA', plainLabel: 'NADA MÍO', reach: 1, plain: 'Nada de tus archivos. Trabaja dentro de un contenedor sellado que solo contiene su propio espacio de trabajo.', short: 'trabaja en una caja sellada', backend: 'docker', files: 'solo el espacio del agente', tools: 'terminal + archivos', desktop: 'nunca', desc: 'espacio aislado; los servicios conectados siguen el equipo colocado en la estación' },
+    { id: 'remote-ssh', label: 'SSH REMOTO', plainLabel: 'OTRO EQUIPO', reach: 1, plain: 'Nada de tus archivos. Los comandos se ejecutan en otro equipo al que lo apuntas abajo.', short: 'trabaja en otro equipo', backend: 'ssh', files: 'espacio del agente sincronizado', tools: 'terminal remota + archivos + conectores', desktop: 'nunca', desc: 'SSH con known-host estricto; empuja el espacio antes de cada comando y lo recupera después' },
+    { id: 'station-gear', label: 'EQUIPO DE LA ESTACIÓN', plainLabel: 'LO QUE COLOQUÉ', reach: 2, plain: 'Solo lo que colocaste en el suelo de la estación, más las carpetas de proyecto que aprobaste. El defecto.', short: 'usa solo el equipo que colocaste', backend: 'current', files: 'equipo colocado + carpetas de proyecto aprobadas', tools: 'solo las herramientas que dan los objetos del suelo', desktop: 'requiere arrendamiento en vivo', desc: 'perfil de compatibilidad; el suelo de la estación sigue siendo la autoridad de capacidad' },
+    { id: 'trusted-project', label: 'PROYECTO CONFIABLE', plainLabel: 'MIS CARPETAS DE PROYECTO', reach: 3, plain: 'Su propio espacio más las carpetas de proyecto que aprobaste — nada más en este equipo.', short: 'llega a tus carpetas de proyecto aprobadas', backend: 'local', files: 'espacio + carpetas de proyecto aprobadas', tools: 'terminal + archivos + conectores', desktop: 'requiere arrendamiento en vivo', desc: 'trabajo local de proyecto con las carpetas que apruebas' },
+    { id: 'this-computer', label: 'ESTE EQUIPO', plainLabel: 'TODO MI EQUIPO', reach: 4, plain: 'Todo el equipo local. En Poder total incluye archivos protegidos, comandos arbitrarios del host, apps visibles y control de pantalla/entrada.', short: 'llega a todo el equipo local', backend: 'local', files: 'todas las rutas del host en Poder total', tools: 'todas las herramientas + terminal del host', desktop: 'Poder total o arrendamiento en vivo', desc: 'autoridad sobre todo el host junto a Poder total; el modo PEDIR conserva los límites de aprobación' }
   ];
   const EXECUTION_PROFILE_MAX_REACH = 4;
   /* ── STATION POSTURES — the beginner's front door (2026-08-07 round 2) ────────────────────────────
@@ -2807,25 +2807,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      'leash' reads SMALL JOBS (its own tip's words): BUILD clashed with the BUILD dock, and DRAFT is untrue once
      the away workshop is on and jobs build real deliverables. */
   const INITIATIVE_RUNGS = [
-    { id: 'wait', label: 'WAIT', tip: 'nothing runs unless you ask' },
-    { id: 'propose', label: 'SUGGEST', tip: 'lines up suggestions you approve — never acts on its own' },
-    { id: 'leash', label: 'SMALL JOBS', tip: 'does a few small grounded jobs a day on its own' },
+    { id: 'wait', label: 'ESPERA', tip: 'nada se ejecuta salvo que lo pidas' },
+    { id: 'propose', label: 'SUGIERE', tip: 'prepara sugerencias que apruebas — nunca actúa solo' },
+    { id: 'leash', label: 'TAREAS PEQUEÑAS', tip: 'hace unas pocas tareas pequeñas al día por su cuenta' },
     { id: 'free', label: 'FREE', tip: 'picks & does work toward your goals while you’re away' }
   ];
   const initiativeLabel = (id) => { const r = INITIATIVE_RUNGS.find(x => x.id === id); return r ? r.label : String(id || '').toUpperCase(); };
   const STATION_POSTURES = [
     { id: 'careful', label: 'CHECK WITH ME', approval: 'ask', profile: 'station-gear', level: 'suggest',
-      blurb: 'It asks you before every risky step, and only touches what you placed on the station.',
-      who: 'Best if you are just starting out.',
-      agentBlurb: 'Asks before every risky step. Uses only what you placed on the station.' },
+      blurb: 'Te pregunta antes de cada paso arriesgado y solo toca lo que colocaste en la estación.',
+      who: 'Mejor si estás empezando.',
+      agentBlurb: 'Pregunta antes de cada paso arriesgado. Usa solo lo que colocaste en la estación.' },
     { id: 'balanced', label: 'LET IT WORK', approval: 'ask', profile: 'trusted-project', level: 'draft',
-      blurb: 'It still asks before risky steps, but it can work in your project folders and leave drafts while you are away.',
-      who: 'The everyday setting.',
-      agentBlurb: 'Asks before risky steps. Can work in your approved project folders.' },
+      blurb: 'Aun pregunta antes de pasos arriesgados, pero puede trabajar en tus carpetas de proyecto y dejar borradores mientras estás fuera.',
+      who: 'El ajuste de todos los días.',
+      agentBlurb: 'Pregunta antes de pasos arriesgados. Puede trabajar en tus carpetas de proyecto aprobadas.' },
     { id: 'open', label: 'FULL POWER', approval: 'full', profile: 'this-computer', level: 'full',
-      blurb: 'It never asks and may use the whole local computer to complete your requests.',
-      who: 'Only when you trust it completely.',
-      agentBlurb: 'Never asks. Can use the whole local computer.' }
+      blurb: 'Nunca pregunta y puede usar todo el equipo local para completar tus peticiones.',
+      who: 'Solo si confías en él por completo.',
+      agentBlurb: 'Nunca pregunta. Puede usar todo el equipo local.' }
   ];
   // the posture ONE agent matches (approval + reach profile), or null = its own custom mix. The station-wide
   // unattended level is not part of a single agent's answer — only the whole-station cards set that.
@@ -2850,9 +2850,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const env = row && row.environment;
     if (!env || env.backendMatched !== false) return '';
     const requested = String(env.requestedBackend || '').toUpperCase();
-    const fix = env.requestedBackend === 'docker' ? 'Start Docker, or change the execution profile.'
-      : env.requestedBackend === 'ssh' ? 'Save & probe an SSH target, or change the execution profile.'
-      : 'Change the execution profile.';
+    const fix = env.requestedBackend === 'docker' ? 'Arranca Docker o cambia el perfil de ejecución.'
+      : env.requestedBackend === 'ssh' ? 'Guarda y sondea un destino SSH, o cambia el perfil de ejecución.'
+      : 'Cambia el perfil de ejecución.';
     const why = String(env.mismatchReason || (requested + ' backend unavailable'));
     const mode = env.refusing === false ? 'commands are running on this computer instead' : 'commands are REFUSED until it is fixed';
     return '<span class="sandbox-chip" data-sandbox-unavailable="' + esc(String(env.requestedBackend || '')) + '" title="' + esc(why + ' — ' + mode + '. ' + fix) + '">▲ SANDBOX UNAVAILABLE</span>' +
@@ -2883,7 +2883,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return '<div class="cf-card" id="ag-access-card">' +
       '<div class="cf-head"><span class="cf-file">How much can it do?</span></div>' +
       '<div class="ov-vchips" id="ag-access-chips">' + chips + '</div>' +
-      '<div class="cf-desc pc-plain" id="ag-access-plain">' + esc(AP ? AP.agentBlurb : 'A custom mix — open More options to see exactly what it can reach and whether it asks first.') + '</div>' +
+      '<div class="cf-desc pc-plain" id="ag-access-plain">' + esc(AP ? AP.agentBlurb : 'Una mezcla personalizada — abre Más opciones para ver exactamente a qué puede llegar y si pregunta antes.') + '</div>' +
       '<div id="ag-access-msg" class="msg"></div>' +
       '<details class="cf-access-more"' + (executionProfileId(a) === 'remote-ssh' ? ' open' : '') + '><summary>More options — exact reach and asking</summary>' +
         executionProfileCard(a) + approvalCard(a) +
@@ -2899,8 +2899,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="cf-head"><span class="cf-file">✋ approval prompts</span></div>' +
       '<div class="cf-desc">ASK respects the selected reach profile and pauses before risky calls. FULL POWER authorizes the whole local computer: all available tools, host paths, arbitrary commands, visible apps, and screen/input control. <code>/yolo</code> is the Full Power shortcut.</div>' +
       '<div class="ov-vchips" id="ag-approval-chips">' +
-        chip('ask', 'ASK FOR APPROVAL', 'stops to check with you before it writes, runs, or reaches out', !full) +
-        chip('full', 'FULL POWER', 'uses the whole local computer without approval prompts', full) +
+        chip('ask', 'PEDIR APROBACIÓN', 'se detiene a confirmarlo contigo antes de escribir, ejecutar o contactar', !full) +
+        chip('full', 'PODER TOTAL', 'usa todo el equipo local sin pedidos de aprobación', full) +
       '</div>' +
       '<div id="ag-approval-msg" class="msg"></div>' +
     '</div>';
@@ -2921,9 +2921,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const traits = (a && a.voiceTraits) || {};
     const select = (key, label, options, selected) => '<div class="set-row"><label for="ag-persona-' + key + '">' + esc(label) + '</label><select class="fbc-sel" id="ag-persona-' + key + '" data-persona-trait="' + key + '">' + options.map((text, i) => '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + esc(text) + '</option>').join('') + '</select></div>';
     const tuning = Personas.TRAITS.map(t => select(t.key, t.label, t.options, Number.isInteger(traits[t.key]) ? traits[t.key] : t.neutral)).join('') +
-      select('profanity', 'LANGUAGE', ['Use preset', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
+      select('profanity', 'LANGUAGE', ['Usar preajuste', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
       Personas.TOGGLES.map(t => '<label class="cf-desc"><input type="checkbox" data-persona-toggle="' + t.key + '"' + (traits[t.key] === true ? ' checked' : '') + '> ' + esc(t.label) + '</label>').join('') +
-      '<div class="set-row"><label for="ag-persona-custom">CUSTOM STYLE</label><textarea class="key-input" id="ag-persona-custom" rows="3" placeholder="How you want this agent to communicate">' + esc((a && a.customVoice) || '') + '</textarea></div>' +
+      '<div class="set-row"><label for="ag-persona-custom">ESTILO PERSONALIZADO</label><textarea class="key-input" id="ag-persona-custom" rows="3" placeholder="Cómo quieres que se comunique este agente">' + esc((a && a.customVoice) || '') + '</textarea></div>' +
       '<button type="button" class="bb" id="ag-persona-save">SAVE TUNING</button> <button type="button" class="bb" id="ag-persona-reset">RESET TO PRESET</button>';
     return '<div class="cf-card" id="ag-persona-card">' +
       '<div class="cf-head"><span class="cf-file">◉ personality</span></div>' +
@@ -2950,7 +2950,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const hasPicker = (typeof ModelPicker !== 'undefined');
     const picker = hasPicker
       ? '<div class="set-row mc-pick-row"><label for="ag-model-pick-model">MODEL</label>' +
-          '<div class="mc-pick" id="ag-model-pick">' + ModelPicker.shellHTML({ id: 'ag-model-pick', inheritLabel: 'Follow station default', ariaLabel: 'Agent model', effort: true }) + '</div></div>'
+          '<div class="mc-pick" id="ag-model-pick">' + ModelPicker.shellHTML({ id: 'ag-model-pick', inheritLabel: 'Seguir el defecto de la estación', ariaLabel: 'Modelo del agente', effort: true }) + '</div></div>'
       : '';
     return '<div class="cf-card" id="ag-model-card">' +
       '<div class="cf-head"><span class="cf-file">▣ model</span></div>' +
@@ -3005,7 +3005,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (base && a && base.id === a.id && liveText !== base.text && val !== liveText) {
         agEditBase[key] = { id: a.id, text: liveText };
         sfx('bad');
-        notify('This document changed since you opened it (the lead may have edited it from chat). Your draft is kept; SAVE again to replace the new text, or CANCEL to see it.', 'warn');
+        notify('Este documento cambió desde que lo abriste (el líder pudo editarlo desde el chat). Tu borrador se conserva; GUARDA otra vez para reemplazar el texto nuevo, o CANCELA para verlo.', 'warn');
         return;
       }
       if (access.config && access.config.apply) access.config.apply({ [key]: val }, a && a.id);
@@ -3090,7 +3090,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (id === 'unhinged' && Personas.effective(id, a && a.voiceTraits).profanity > 0 && armed !== chip) {
           disarm(); armed = chip;
           chip.classList.add('arm');
-          chip.textContent = 'UNHINGED — SURE? it swears, for real';
+          chip.textContent = 'SIN FRENO — ¿SEGURO? maldice, de verdad';
           sfx('click');
           return;
         }
@@ -3532,11 +3532,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
          the level and kudos, GROWTH is the readout behind those numbers. Putting RECORD between them split
          a pair. Read as a sentence: who it is → how it's doing → what it did → what it knows → how to
          change it. This is the array order and mountConsole renders it verbatim; there is no other list. */
-      { id: 'brief', label: 'BRIEF', glyph: '▤', desc: 'Who this agent is, how it is set up, and what it can do.',
+      { id: 'brief', label: 'BRIEF', glyph: '▤', desc: 'Quién es este agente, cómo está configurado y qué puede hacer.',
         build: frag(agHead(a, act) + agBrief(a)) },
-      { id: 'growth', label: 'GROWTH', glyph: '★', desc: 'Level up through real work. Track XP, achievements, and performance.',
+      { id: 'growth', label: 'GROWTH', glyph: '★', desc: 'Sube de nivel con trabajo real. Sigue XP, logros y rendimiento.',
         build: frag(agGrowth(a)) },
-      { id: 'record', label: 'RECORD', glyph: '▦', desc: 'Review work, understand failed runs, and find restore points.',
+      { id: 'record', label: 'RECORD', glyph: '▦', desc: 'Revisa el trabajo, entiende las ejecuciones fallidas y encuentra puntos de restauración.',
         build: (elx) => {
           mountLane('logbook')(elx);
           elx.insertAdjacentHTML('beforeend', '<div class="sec"><span class="sec-l">RESTORE POINTS</span><span class="sec-r"></span><span class="sec-nd"></span></div>');
@@ -3548,7 +3548,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
              lane that adds or renames a block cannot silently fall out of its own contents. */
           addSectionJumpNav(elx);
         } },
-      { id: 'memory', label: 'MEMORY', glyph: '◈', desc: 'Review saved memories, their sources, and how the station learns.',
+      { id: 'memory', label: 'MEMORY', glyph: '◈', desc: 'Revisa las memorias guardadas, sus fuentes y cómo aprende la estación.',
         build: frag(agMemory(a)) },
       { id: 'config', label: 'CONFIG', glyph: '▣', desc: 'Adjust this agent’s instructions, model, access, and appearance.',
         build: frag(agConfig(a)) }
@@ -3564,7 +3564,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           ? '<span class="ag-item-st working">' + (x.id === focusedId && act === 'talk' ? 'talking' : 'working') + '</span>'
           : '<span class="ag-item-st">idle</span>';
         top.innerHTML =
-          '<div class="ag-list" role="listbox" aria-label="Agents on station">' +
+          '<div class="ag-list" role="listbox" aria-label="Agentes en la estación">' +
           present.map((x, i) => '<div class="ag-item ' + (i === sel ? 'sel' : '') + '" data-i="' + i + '" role="option" aria-selected="' + (i === sel ? 'true' : 'false') + '" tabindex="0" style="--ci:' + i + '">' +
             '<span class="ag-item-dot" style="color:' + esc(x.color) + '">●</span>' +
             '<span class="ag-item-nm">' + esc(x.name) + '</span>' + hint(x) + '</div>').join('') +
@@ -3688,7 +3688,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     try { focusedId = (typeof App !== 'undefined' && App.currentAgent && App.currentAgent() || {}).id || ''; } catch (_) {}
     const selectedTalking = !!(selected && selected.id === focusedId && act === 'talk');
     const dotCls = dn ? 'down' : selectedLive ? 'working' : selectedTalking ? 'thinking' : 'on';
-    const statusText = dn ? 'OFFLINE' : selectedLive ? 'WORKING' : selectedTalking ? 'THINKING' : 'ONLINE';
+    const statusText = dn ? 'SIN LÍNEA' : selectedLive ? 'TRABAJANDO' : selectedTalking ? 'PENSANDO' : 'EN LÍNEA';
     // selected agent: the status dot (class) + the role line's status word
     const dot = w.querySelector('.ag-role-line .ag-sdot');
     if (dot) dot.className = 'ag-sdot ' + dotCls;
@@ -3770,9 +3770,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     { icon: '⌕', name: 'WEB SEARCH',  tools: 'web_search',               cap: 'dish' },
     { icon: '⇩', name: 'WEB FETCH',   tools: 'web_fetch',                cap: 'dish' },
     { icon: '⇄', name: 'CALL AN API', tools: 'web_request',              cap: 'dish', consent: true },
-    { icon: '▤', name: 'READ FILES',  tools: 'fs.read · fs.list',        cap: 'cabinet' },
-    { icon: '✎', name: 'WRITE FILES', tools: 'fs.write · append · edit', cap: 'cabinet', consent: true },
-    { icon: '◉', name: 'MEMORY',      tools: 'notebook.read · write',    cap: 'notebook' },
+    { icon: '▤', name: 'LEER ARCHIVOS',  tools: 'fs.read · fs.list',        cap: 'cabinet' },
+    { icon: '✎', name: 'ESCRIBIR ARCHIVOS', tools: 'fs.write · append · edit', cap: 'cabinet', consent: true },
+    { icon: '◉', name: 'MEMORIA',      tools: 'notebook.read · write',    cap: 'notebook' },
     { icon: '⌗', name: 'TERMINAL',    tools: 'shell.exec · verify.run',  cap: 'workbench', consent: true }
   ];
   // TRUTHFUL readout (QA-4): derive each skill's grant from the agent's REAL placed objects via World.heroCaps
@@ -3799,7 +3799,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const agentId = (a && a.id) || 'agent';
     skillsShown = { id: agentId, win: weakWin(open.connectors) };
     const agentPicker = present.length
-      ? '<label class="mc-hint" for="sk-agent-pick">Skills of</label><select id="sk-agent-pick" class="ab-agent-pick" aria-label="Show the skills of agent">' +
+      ? '<label class="mc-hint" for="sk-agent-pick">Habilidades de</label><select id="sk-agent-pick" class="ab-agent-pick" aria-label="Mostrar las habilidades del agente">' +
         present.map(x => '<option value="' + esc(x.id) + '"' + (x.id === agentId ? ' selected' : '') + '>' + esc(x.name || x.id) + '</option>').join('') + '</select>'
       : '';
     const secLibrary =
@@ -3833,7 +3833,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // CATALOG uses. The catalog is fetched when this section loads, never in the background.
     const secMarket =
       '<p class="set-about"><b>Add skills to your whole crew.</b> StarNet Originals are written by StarNet for your station; community picks are credited to their authors. Installing adds the skill to your SKILL LIBRARY and switches it on.</p>' +
-      '<div class="cc-filters" id="skm-filters" role="group" aria-label="Filter the skill market">' +
+      '<div class="cc-filters" id="skm-filters" role="group" aria-label="Filtrar el mercado de habilidades">' +
         '<button type="button" class="cc-filter active" data-skm-filter="all" aria-pressed="true">ALL</button>' +
         '<button type="button" class="cc-filter" data-skm-filter="originals" aria-pressed="false">STARNET ORIGINALS</button>' +
         '<button type="button" class="cc-filter" data-skm-filter="community" aria-pressed="false">COMMUNITY</button>' +
@@ -3846,10 +3846,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
     const frag = html => (el => { el.innerHTML = html; });
     const sections = [
-      { id: 'market', label: 'SKILL MARKET', glyph: '▦', desc: 'Browse StarNet Originals and credited community skills, and install one for the whole crew in one click.', build: frag(secMarket) },
-      { id: 'library', label: 'SKILL LIBRARY', glyph: '▤', desc: 'The procedures your agents follow when a task matches: the ones built into StarNet and the ones you installed from the market.', build: frag(secLibrary) },
-      { id: 'agent', label: 'AGENT SKILLS', glyph: '✎', desc: 'Each agent keeps its own skill library. Pick whose to see.', build: frag(secAgent) },
-      { id: 'exchange', label: 'SKILL EXCHANGE', glyph: '⇩', desc: 'Inspect and install open SKILL.md procedures with provenance and guard review.', build: frag(secExchange) }
+      { id: 'market', label: 'SKILL MARKET', glyph: '▦', desc: 'Explora StarNet Originals y habilidades de la comunidad con crédito, e instala una para toda la tripulación con un clic.', build: frag(secMarket) },
+      { id: 'library', label: 'SKILL LIBRARY', glyph: '▤', desc: 'Los procedimientos que siguen tus agentes cuando una tarea coincide: los integrados en StarNet y los que instalaste del mercado.', build: frag(secLibrary) },
+      { id: 'agent', label: 'AGENT SKILLS', glyph: '✎', desc: 'Cada agente mantiene su propia biblioteca de habilidades. Elige cuál ver.', build: frag(secAgent) },
+      { id: 'exchange', label: 'SKILL EXCHANGE', glyph: '⇩', desc: 'Inspecciona e instala procedimientos SKILL.md abiertos con procedencia y revisión de guardián.', build: frag(secExchange) }
     ];
     function wire() {
       loadSkillMarket(agentId);
@@ -3925,18 +3925,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     } else if (e.status === 'update') {
       action = btn('install', 'UPDATE');
       hint = e.builtIn && !e.delisted && e.installedVersion === e.builtInVersion
-        ? 'A newer version than the one built into StarNet: v' + esc(e.builtInVersion) + ' → v' + esc(e.version) + '.'
+        ? 'Una versión más nueva que la integrada en StarNet: v' + esc(e.builtInVersion) + ' → v' + esc(e.version) + '.'
         : 'v' + esc(e.installedVersion) + ' → v' + esc(e.version) + '.';
     } else if (e.status === 'tampered') {
       action = btn('install', 'REINSTALL'); warn = true;
-      hint = 'Its files changed on disk after install, so agents are not given it. Reinstall to restore it.';
+      hint = 'Sus archivos cambiaron en disco tras la instalación, así que no se la da a los agentes. Reinstala para restaurarla.';
     } else if (e.status === 'pulled') {
       warn = true;
       action = (e.fixVersion ? btn('install', 'UPDATE TO v' + esc(e.fixVersion)) + ' ' : '') + btn('uninstall', 'REMOVE');
       hint = 'PULLED from the market: ' + esc(e.pulledReason || 'no reason given') + '. ' +
         (e.fallback === 'bundled' ? 'The version you installed is off; agents use your built-in copy instead.'
           : e.fixVersion ? 'The version you installed is off; v' + esc(e.fixVersion) + ' replaces it.'
-            : 'It is switched off and agents are not given it.');
+            : 'Está desactivada y no se la da a los agentes.');
     } else {
       action = btn('install', '+ INSTALL', 'sm');
       hint = gear.length ? 'Needs ' + esc(gear.join(', ')) + ' placed to be used.' : 'Ready to use as soon as it is installed.';
@@ -3956,7 +3956,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="cc-head"><span class="cc-brand" aria-hidden="true">' + esc(String(e.name || e.slug).slice(0, 2).toUpperCase()) + '</span>' +
         '<div class="cc-identity"><b>' + esc(e.name) + '</b><span class="cc-chip">' + esc(e.category) + '</span></div></div>' +
       (e.description ? '<div class="cc-blurb dim">' + esc(e.description) + '</div>' : '') +
-      '<details class="cc-details"><summary aria-label="Details for ' + esc(e.name) + '">Skill details</summary><div class="cc-details-body">' + origin +
+      '<details class="cc-details"><summary aria-label="Detalles de ' + esc(e.name) + '">Detalles de la habilidad</summary><div class="cc-details-body">' + origin +
         '<div class="mc-hint">v' + esc(e.version) + ' · ' + esc(e.license || 'no license') + (e.requires && e.requires.length ? ' · uses ' + esc(e.requires.map(skmGear).join(', ')) : '') + '</div>' +
         upstream + (files ? '<ul class="skm-files">' + files + '</ul>' : '') + '</div></details>' +
       '<div class="mc-hint cc-setup-hint' + (warn ? ' skm-warn' : '') + '">' + hint + '</div>' + place + result +
@@ -4073,7 +4073,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (msg) msg.textContent = text;
         skillsChanged();
       } catch (e) {
-        const text = String((e && e.message) || 'That did not work').replace(/[.\s]+$/, '') + '.';
+        const text = String((e && e.message) || 'Eso no funcionó').replace(/[.\s]+$/, '') + '.';
         skmResult = { slug, text, ok: false };
         if (msg) msg.textContent = text;
       } finally {
@@ -4095,14 +4095,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     try { placed = (typeof World !== 'undefined' && World.heroCaps) ? World.heroCaps(agentId).map(c => c.objectType) : []; } catch (e) {}
     Harness.api.get('/api/toolsets?agent=' + encodeURIComponent(agentId) + '&placed=' + encodeURIComponent(placed.join(',')))
       .then(view => {
-        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Access could not be checked');
+        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('No se pudo verificar el acceso');
         // Match runOnce's skill context: room objects plus profile/Full Access projection and shared station gear.
         // This only explains instruction availability; it does not grant any tools or change skill preferences.
         const shared = typeof World !== 'undefined' && World.stationCaps ? World.stationCaps().map(c => c.objectType) : [];
         placed = [...new Set(placed.concat(shared, view.toolsets.filter(r => r.object && (r.placed || r.profileGranted || r.runtimeGranted || view.authority.unrestricted)).map(r => r.object)))];
         return fetch('/api/skills?placed=' + encodeURIComponent(placed.join(',')));
       })
-      .then(r => { if (!r.ok) throw Error('Skill library unavailable'); return r.json(); })
+      .then(r => { if (!r.ok) throw Error('Biblioteca de habilidades no disponible'); return r.json(); })
       .then(d => {
         const h = $('#sk-lib');
         if (h === host && load === skillLibLoad) {
@@ -4143,7 +4143,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const spot = SK_PLACE[objType];
     const label = SK_OBJ_NAME[objType] || String(objType).toUpperCase();
     if (typeof Build === 'undefined' || !(Build.open || Build.toggle)) {
-      notify('Open ⚒ BUILD and place ' + skArt(label) + label + ' to unlock this skill', 'warn'); return;
+      notify('Abre ⚒ MODO CONSTRUCCIÓN y coloca ' + skArt(label) + label + ' para desbloquear esta habilidad', 'warn'); return;
     }
     // the caller may sit in the ABILITIES console (skill library PLACE) or the dossier's SKILLS tab
     // (locked capability card) — clear whichever is open so BUILD MODE isn't buried under it.
@@ -4153,8 +4153,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (Build.isOpen && Build.isOpen()) { /* already in BUILD MODE */ }
       else if (Build.open) Build.open();
       else Build.toggle();
-    } catch (_) { notify('Could not open BUILD MODE — open ⚒ BUILD and place ' + skArt(label) + label, 'warn'); return; }
-    notify('Place ' + skArt(label) + label + ' at ' + (agentName || 'the agent') + '’s desk to unlock this skill', 'good');
+    } catch (_) { notify('No se pudo abrir MODO CONSTRUCCIÓN — abre ⚒ MODO CONSTRUCCIÓN y coloca ' + skArt(label) + label, 'warn'); return; }
+    notify('Coloca ' + skArt(label) + label + ' en el escritorio de ' + (agentName || 'el agente') + ' para desbloquear esta habilidad', 'good');
     if (!spot) return;   // no known prop mapping — BUILD MODE is open, the toast named the gear; that's the floor of acceptable
     // Drive the palette to the PROP tool → FUNCTIONAL tier → the missing cap's category tab → its prop tile so the
     // very next floor-click drops it. BUILD MODE builds its DOM synchronously in open(), so the FIRST pass runs inline
@@ -4233,7 +4233,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
               (missing.length ? '<div class="sk-place-row">' + placeBtns(missing) + '</div>' : '') +
             '</div>' +
           '</div>' +
-          '<div class="sk-card-actions"><button class="sk-expand" data-expand="' + esc(s.slug) + '" aria-expanded="false" aria-label="Read instructions for ' + esc(s.name) + '">Read instructions</button>' + switchHTML(s) + '</div>' +
+          '<div class="sk-card-actions"><button class="sk-expand" data-expand="' + esc(s.slug) + '" aria-expanded="false" aria-label="Leer instrucciones de ' + esc(s.name) + '">Leer instrucciones</button>' + switchHTML(s) + '</div>' +
           '<div class="sk-body"><div class="sk-detail-label">Required gear</div><div class="sk-reqs">' + reqBadges(s) + '</div><div class="sk-detail-label">Instructions</div><div class="sk-instructions">' + (typeof Deliverables !== 'undefined' && Deliverables.safeMarkdown ? Deliverables.safeMarkdown(s.body || '') : '<pre>' + esc(s.body || '') + '</pre>') + '</div>' +
             (s.market ? '<div class="sk-attr">' + (s.shelf === 'originals' ? 'StarNet Original, installed from the Skill Market' : 'From the Skill Market' + (s.author ? ' · by ' + esc(s.author) : '')) + (s.license ? ' · ' + esc(s.license) : '') + '</div>'
               : s.author ? '<div class="sk-attr">Ported from ' + esc(s.author) + (s.license ? ' · ' + esc(s.license) : '') + '</div>' : '') +
@@ -4259,7 +4259,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     }));
     host.querySelectorAll('[data-expand]').forEach(btn => btn.addEventListener('click', () => {
       const card = btn.closest('.sk-card'); if (!card) return;
-      const opened = card.classList.toggle('open'); btn.textContent = opened ? 'Hide instructions' : 'Read instructions'; btn.setAttribute('aria-expanded', String(opened)); sfx('click');
+      const opened = card.classList.toggle('open'); btn.textContent = opened ? 'Ocultar instrucciones' : 'Leer instrucciones'; btn.setAttribute('aria-expanded', String(opened)); sfx('click');
     }));
   }
 
@@ -4288,7 +4288,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     host.innerHTML =
       '<div class="sk-card open ' + (blocked || asks ? 'want' : 'on') + '">' +
         '<div class="sk-card-head"><div class="sk-card-main">' +
-          '<div class="sk-name-row"><span class="sk-name">' + esc(preview.name || 'Unnamed skill') + '</span>' +
+          '<div class="sk-name-row"><span class="sk-name">' + esc(preview.name || 'Habilidad sin nombre') + '</span>' +
             '<span class="sk-badge ' + (blocked || asks ? 'miss' : 'have') + '">' + verdict + '</span>' +
             (preview.version ? '<span class="sk-badge free">v' + esc(preview.version) + '</span>' : '') + '</div>' +
           '<div class="sk-desc">' + esc(preview.summary || '') + '</div>' +
@@ -4369,7 +4369,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (Harness.skillExchangeRegistries) Harness.skillExchangeRegistries().then(r => { if (r && r.ok) renderSources(r.sources); });
     if (registrySave && Harness.skillExchangeRegistries) registrySave.addEventListener('click', async () => {
       const r = await Harness.skillExchangeRegistries({ action: 'add', url: registryUrl.value });
-      if (r && r.ok) { renderSources(r.sources); notify('Saved community registry tap.', 'good'); }
+      if (r && r.ok) { renderSources(r.sources); notify('Registro de comunidad guardado.', 'good'); }
       else notify((r && r.error) || 'Registry tap could not be saved.', 'warn');
     });
     if (registryUrl && registryButton && registryResults && Harness.skillExchangeRegistry) registryButton.addEventListener('click', async () => {
@@ -4517,7 +4517,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         (outdated ? '<div class="sk-attr" data-evaluation-result></div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-reject>Reject proposal</button></div></div>' :
         '<div class="sk-attr">Evaluation checks only the selected task family. A passing result does not prove improvement for every use.</div><div data-evaluation-suites></div>' +
         '<div class="sk-attr" data-evaluation-result>No evaluation run from this panel yet.</div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-approve disabled>Approve evaluated revision</button><button class="consent-btn" data-candidate-acknowledge hidden disabled>Approve without measured improvement</button><button class="consent-btn" data-candidate-reject>Reject proposal</button></div>' +
-        '<details><summary>Register task checks (JSON)</summary><div class="sk-attr">Declare repeatable tasks and exact checks, including a held-out case. The station validates and runs this suite before approval.</div><textarea class="cf-ta mc-edit" data-suite-json spellcheck="false" aria-label="Evaluation suite JSON" placeholder="' + esc(SUITE_EXAMPLE) + '"></textarea><button class="consent-btn" data-suite-register>Register task checks</button></details></div>');
+        '<details><summary>Registrar comprobaciones de tareas (JSON)</summary><div class="sk-attr">Declara tareas repetibles y comprobaciones exactas, incluido un caso reservado. La estación valida y ejecuta esta suite antes de aprobar.</div><textarea class="cf-ta mc-edit" data-suite-json spellcheck="false" aria-label="Suite de evaluación JSON" placeholder="' + esc(SUITE_EXAMPLE) + '"></textarea><button class="consent-btn" data-suite-register>Registrar comprobaciones</button></details></div>');
       const note = card.querySelector('[data-evaluation-result]');
       const reject = card.querySelector('[data-candidate-reject]');
       let receipt = null, busy = false;
@@ -4541,7 +4541,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const tie = candidateTie(r);
         note.textContent = lead + candidateResultText(r, suite, tie) + ' Approval remains a separate action.';
         const box = mkEl('details', ''), head = mkEl('summary', ''), raw = mkEl('pre', '');
-        head.textContent = 'Evaluation receipt'; raw.textContent = JSON.stringify(r, null, 2);
+        head.textContent = 'Recibo de evaluación'; raw.textContent = JSON.stringify(r, null, 2);
         box.appendChild(head); box.appendChild(raw); note.appendChild(box);
         approve.disabled = !(r && r.status === 'passed' && r.receiptId);
         // The station re-checks the receipt; this only offers the owner's "accept it anyway" on a complete tie.
@@ -4550,7 +4550,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (!matching.length) suiteHost.textContent = 'No task checks registered for this skill yet.';
       for (const suite of matching) {
         const label = mkEl('div', 'sk-attr'); label.textContent = (suite.description || suite.skillName || suite.id) + (suite.generic ? ' · generic check (not specific to this skill)' : ''); suiteHost.appendChild(label);
-        const run = mkEl('button', 'consent-btn'); run.textContent = 'Run these checks'; suiteHost.appendChild(run);
+        const run = mkEl('button', 'consent-btn'); run.textContent = 'Ejecutar estas comprobaciones'; suiteHost.appendChild(run);
         run.onclick = async () => {
           if (busy) return; busy = true; run.disabled = true; approve.disabled = true; acknowledge.disabled = true; acknowledge.hidden = true; receipt = null;
           note.textContent = 'Running the checks with and without the proposal…';
@@ -4592,7 +4592,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   // Skill sharing in plain words (skillstore.js isAccessible): agent = only the owning agent; project = any
   // agent working in that project folder; station = every agent on the station.
-  const SKILL_SCOPE_LABEL = { agent: 'Only this agent', project: 'This project', station: 'Whole station' };
+  const SKILL_SCOPE_LABEL = { agent: 'Solo este agente', project: 'Este proyecto', station: 'Estación completa' };
   const skillScopeText = (scope, root) => (SKILL_SCOPE_LABEL[scope || 'agent'] || String(scope)) + (root ? ' · ' + root : '');
   const SUITE_EXAMPLE = 'Example:\n{ "id": "owner:weekly-brief", "version": 1, "description": "Weekly brief",\n  "cases": [\n' +
     '    { "id": "basic", "prompt": "Write brief.json for this week", "writablePaths": ["brief.json"],\n' +
@@ -4646,7 +4646,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       html +=
         '<div class="sk-card ' + state + (held ? ' held' : '') + '" data-agent-skill="' + esc(s.id) + '">' +
           '<div class="sk-card-head">' +
-            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Unpin' : 'Pin') + ' this skill">' + (s.pinned ? '*' : '+') + '</button>' +
+            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Quitar fijado' : 'Pin') + ' this skill">' + (s.pinned ? '*' : '+') + '</button>' +
             '<div class="sk-card-main">' +
               '<div class="sk-name-row"><span class="sk-name">' + esc(s.name) + '</span>' +
                 (s.category ? '<span class="sk-badge cat">' + esc(String(s.category).toUpperCase()) + '</span>' : '') +
@@ -4695,7 +4695,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (r && r.ok && r.envelope) {
           const url = URL.createObjectURL(new Blob([r.envelope], { type: 'application/json' }));
           const a = document.createElement('a'); a.href = url; a.download = r.filename || (skill.id + '.starnet-skill.json'); a.click();
-          setTimeout(() => URL.revokeObjectURL(url), 1000); notify('Exported sealed package ' + String(r.digest || '').slice(0, 12), 'good');
+          setTimeout(() => URL.revokeObjectURL(url), 1000); notify('Exportado paquete sellado ' + String(r.digest || '').slice(0, 12), 'good');
         } else notify((r && r.error) || 'Export was refused.', 'warn');
         return;
       }
@@ -4704,7 +4704,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (r && r.ok && r.handoff) {
           const text = JSON.stringify(r.handoff, null, 2) + '\n'; const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
           const a = document.createElement('a'); a.href = url; a.download = skill.id + '.publish-handoff.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-          notify('Prepared local publish handoff; nothing was uploaded.', 'good');
+          notify('Preparado el traspaso local de publicación; nada se subió.', 'good');
         } else notify((r && r.error) || 'Publish handoff was refused.', 'warn');
         return;
       }
@@ -4757,7 +4757,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     note.textContent = 'Only this agent: just ' + agentId + ' uses it. This project: any agent working in that project folder. Whole station: every agent.';
     const row = mkEl('div', 'consent-btns mc-acts'); panel.appendChild(row);
     const input = mkEl('input', 'key-input'); input.value = skill.projectRoot || ''; input.placeholder = 'Project folder (full path)';
-    input.setAttribute('aria-label', 'Project folder to share with'); input.hidden = (skill.scope || 'agent') !== 'project'; panel.appendChild(input);
+    input.setAttribute('aria-label', 'Carpeta del proyecto para compartir con'); input.hidden = (skill.scope || 'agent') !== 'project'; panel.appendChild(input);
     for (const scope of ['agent', 'project', 'station']) {
       const current = (skill.scope || 'agent') === scope;
       const button = mkEl('button', 'consent-btn' + (current ? ' sel' : '')); button.type = 'button';
@@ -4810,8 +4810,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     });
     actions.before(form);
     actions.innerHTML = '';
-    const send = mkEl('button', 'consent-btn'); send.textContent = 'Send for review'; actions.appendChild(send);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; actions.appendChild(cancel);
+    const send = mkEl('button', 'consent-btn'); send.textContent = 'Enviar a revisión'; actions.appendChild(send);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; actions.appendChild(cancel);
     const result = form.querySelector('.skm-result');
     const picked = (k) => { const b = form.querySelector('[data-skm="' + k + '"] [aria-pressed="true"]'); return b ? b.dataset.v : ''; };
     // back to the card as it was, with the keyboard on the key that opened the form
@@ -4828,11 +4828,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       try { localStorage.setItem(SHARE_CREDIT_KEY, fields.credit); } catch (_) {}
       let r = null;
       try { r = await (await Harness.apiFetch('/api/skill-market/share', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(fields) })).json(); } catch (_) { r = null; }
-      send.disabled = false; send.textContent = 'Send for review';
+      send.disabled = false; send.textContent = 'Enviar a revisión';
       if (r && r.ok && r.submission) {
         result.textContent = 'Sent for review as "' + (r.submission.title || fields.title) + '". A person reads it next; your Skills tab on account.starnetos.com shows where it stands.'
           + (r.referencesLeftOut ? ' ' + r.referencesLeftOut + (r.referencesLeftOut === 1 ? ' support file was' : ' support files were') + ' left out: the market takes up to five plain-text references.' : '');
-        send.remove(); cancel.textContent = 'Done'; cancel.focus(); sfx('click');
+        send.remove(); cancel.textContent = 'Hecho'; cancel.focus(); sfx('click');
         return;
       }
       if (!r) { result.textContent = 'The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again.'; return; }
@@ -4853,7 +4853,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (pre) body.replaceChild(ta, pre);
     if (actions) actions.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; actions.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; actions.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; actions.appendChild(cancel);
     save.onclick = async () => {
       const r = await Harness.agentSkillManage({ agentId, action: 'edit', target: skill.id, summary: skill.summary || '', body: ta.value, category: skill.category || 'General', force: true });   // the human author may edit their own pinned skill (see force note above)
       if (r && r.ok) { sfx('click'); loadAgentSkills(agentId); }
@@ -5037,7 +5037,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // a stranded ⌫ on its own row (the raggedness the keycap restyle made visible).
     const tail = '<details class="kb-more"><summary>More</summary><span class="kb-meta-keys">' +
       '<button data-act="rename">Rename</button>' +
-      '<button data-act="pin">' + (s.pinned ? 'Unpin' : 'Pin to top') + '</button>' +
+      '<button data-act="pin">' + (s.pinned ? 'Quitar fijado' : 'Fijar arriba') + '</button>' +
       (s.lane === 'active' ? '<button data-act="queue">Back to To do</button>' : '') +
       (s.lane === 'shipped' ? '<button data-act="repeat" title="Review a schedule; nothing runs until you save and enable it">Repeat on a schedule</button>' : '') +
       '<button data-act="arch" title="Recover from the COMMS rail’s Archived view">Archive</button></span></details>';
@@ -5056,7 +5056,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       (runs ? '<span>' + runs + '</span>' : '') +
       (dv ? '<span class="kb-deliv">' + dv + ' deliverable' + (dv === 1 ? '' : 's') + '</span>' : '') + '</div>' +
       stateChip(s) +
-      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Latest reply' : 'Request') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
+      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Última respuesta' : 'Request') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
       '<div class="kb-acts">' + acts + '</div></div>';
   }
   // LIVE board refresh (P1, 2026-08-04): renderRail pokes the board on EVERY rail change (run start/end,
@@ -5092,7 +5092,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const openMenus = live ? Array.from(body.querySelectorAll('.kb-more[open]')).map(d => d.closest('.kb-card').dataset.id) : [];
     body.innerHTML =
       '<div class="kb-heading"><header class="kb-header"><p>Plan a task, start it, and open what comes back.</p></header></div>' +   // OUTBOX / DELIVERABLES are this window's MY WORK tabs now (FAMILIES) — no second pair of doors here
-      '<div class="kb-add"><input id="kb-in" data-draft aria-label="New task" maxlength="80" placeholder="What would you like to get done?" autocomplete="off">' +
+      '<div class="kb-add"><input id="kb-in" data-draft aria-label="Nueva tarea" maxlength="80" placeholder="¿Qué te gustaría lograr?" autocomplete="off">' +
       '<button class="bb sm" id="kb-add">ADD TASK</button></div><p class="kb-add-note">Adding saves your plan. Start sends the task to its agent.</p>' +
       '<div class="kb-cols">' +
       COLS.map(([lane, label]) => {
@@ -5161,7 +5161,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const stream = boardStreams().find(s => s.id === id);
           const message = stream && Workstreams.visibleMessages(stream).find(m => m.role === 'user');
           if (message && typeof AutomationWindow !== 'undefined') AutomationWindow.openDraft({name:stream.title,prompt:message.content,agentId:stream.agentId,workdir:stream.projectRoot});
-          else notify('Open the task and give it instructions before scheduling it.', 'warn');
+          else notify('Abre la tarea y dale instrucciones antes de programarla.', 'warn');
         }
       }));
       c.addEventListener('click', () => openStream(id));   // clicking the card body opens its conversation
@@ -5897,7 +5897,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '</button>' +
         '<span class="prov-stat"><span class="prov-stat-t">' + stat + '</span></span>' +
       '<button class="bb sm prov-addkey" data-act="credits-store" data-provider="' + esc(p.id) + '" ' +
-      'aria-label="' + ((linked || saved) ? 'Open the STORE' : 'Link this station to a StarNet account') + '" ' +
+      'aria-label="' + ((linked || saved) ? 'Abrir la TIENDA' : 'Vincular esta estación a una cuenta de StarNet') + '" ' +
       'title="' + ((linked || saved) ? 'balance, plan and history live in the STORE' : 'link this station to a StarNet account') + '">' +
       ((linked || saved) ? '◆ STORE' : '↗ LINK STATION') + '</button>' +
       '</div>';
@@ -6683,7 +6683,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const current = () => generation === _creditsStoreGeneration && host.isConnected !== false;
     stopLinkPoll();        // any in-flight link poll from a prior render is stale now
     if (_creditsUnlinkPending) {
-      host.innerHTML = '<h4 class="ms-h">STORE <span class="dim">— managed credits</span></h4>' +
+      host.innerHTML = '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
         '<p class="set-about" role="status">Unlinking this station…</p>';
       return Promise.resolve();
     }
@@ -6723,7 +6723,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   }
 
   function renderCreditsUnavailable(body, host) {
-    host.innerHTML = '<h4 class="ms-h">STORE <span class="dim">— managed credits</span></h4>' +
+    host.innerHTML = '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
       '<p class="set-about" role="alert">Could not check your account connection. Retry to load your balance or linking options.</p>' +
       '<button class="bb sm" id="credits-retry">↻ RETRY</button>';
@@ -6787,7 +6787,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       ? 'This station runs on <b>your StarNet credits</b> — agents work without you bringing a provider key. Each run reserves up to your <b>PER RUN</b> budget and refunds whatever it doesn’t spend. You can always switch to your own key: add it on a provider card above, then select that card.'
       : 'This station runs on <b>managed credits</b> — a prepaid balance the operator tops up, so your agents can work without you bringing your own provider key. Each run reserves up to your <b>PER RUN</b> budget and refunds whatever it doesn’t spend. You can always switch to your own key: add it on a provider card above, then select that card.';
     host.innerHTML =
-      '<h4 class="ms-h">STORE <span class="dim">— managed credits</span></h4>' +
+      '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
       '<p class="set-about">' + about + '</p>' +
       (j.linkSaved && j.accountId ? '<div class="set-row"><span class="dim">ACCOUNT</span><span class="dim" style="margin-left:auto">' + esc(String(j.accountId)) + '</span></div>' : '') +
@@ -6886,7 +6886,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // The UNLINKED-but-linkable state: a LINK STATION card. Clicking begins the pairing dance.
   function renderCreditsLinkCard(body, host, note) {
     host.innerHTML =
-      '<h4 class="ms-h">STORE <span class="dim">— managed credits</span></h4>' +
+      '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
       '<p class="set-about">Link this station to your <b>StarNet account</b> to run agents on managed credits — no provider key needed. You will confirm a short code in your browser.</p>' +
       (note ? '<div class="set-row" style="color:var(--gold,#e8c15a)">' + esc(note) + '</div>' : '') +
@@ -6925,7 +6925,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const generation = _creditsLinkGeneration;
     const expiresAt = Number(j.expiresAt) || 0;
     host.innerHTML =
-      '<h4 class="ms-h">LINK STATION <span class="dim">— confirm in your browser</span></h4>' +
+      '<h4 class="ms-h">ENLAZAR ESTACIÓN <span class="dim">— confirma en tu navegador</span></h4>' +
       '<p class="set-about">Open the link page and confirm this code to connect your account:</p>' +
       '<div class="credits-link-code" style="font-family:\'VT323\',monospace;font-size:2.6em;line-height:1.1;letter-spacing:.14em;text-align:center;color:var(--gold,#e8c15a);text-shadow:0 0 10px rgba(232,193,90,.55);margin:.35em 0">' + esc(String(j.code)) + '</div>' +
       '<div class="mc-acts"><button class="bb sm" id="credits-link-open">OPEN LINK PAGE ↗</button></div>' +
@@ -7753,17 +7753,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // NB: no inner "PROVIDERS" heading — the console section head already prints PROVIDERS above the pane
       // (a second identical h4 read as a duplicated title in sys-settings.png).
       '<div class="prov-list">' + providersHtml() + '</div>' +
-      '<h4 class="ms-h">API KEYS</h4>' +
+      '<h4 class="ms-h">CLAVES API</h4>' +
       '<div class="key-list">' + keysHtml() + '</div>' +
-      '<p class="set-about">Credentials are saved locally and used to authenticate with the selected service. Saved keys stay masked. Desktop storage uses the OS keychain when available.</p>' +
+      '<p class="set-about">Las credenciales se guardan localmente y se usan para autenticar con el servicio seleccionado. Las claves guardadas siguen enmascaradas. El almacenamiento de escritorio usa el keychain del SO cuando está disponible.</p>' +
       // org P05: model keys live here; a SERVICE key lives in CONNECT › ABILITIES › SAVED API CONNECTIONS — one door, the
       // places.js api-connections target (live walk 10-14: the door used to open CATALOG, so no key reached the place the
       // sentence named). Gmail and Notion are SIGN IN catalog connectors (sidecar/mcp/catalog.js authType 'oauth') that
       // SAVED API CONNECTIONS cannot connect, so the line says they connect from CATALOG — the neighbouring tab of the
       // window this key opens. The key sits OUTSIDE the .set-about prose: that paragraph's 0.55 reading-dim greyed it into a
       // disabled-looking key.
-      '<p class="set-about">A key for any other service goes in CONNECT › ABILITIES › SAVED API CONNECTIONS; Gmail, Notion and other sign-in services connect from CATALOG beside it.</p>' +
-      '<div class="mc-acts"><button type="button" class="bb sm" data-act="to-service-keys">▸ SAVED API CONNECTIONS</button></div>' +
+      '<p class="set-about">Una clave para cualquier otro servicio va en CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS; Gmail, Notion y otros servicios de inicio de sesión se conectan desde CATÁLOGO, al lado.</p>' +
+      '<div class="mc-acts"><button type="button" class="bb sm" data-act="to-service-keys">▸ CONEXIONES API GUARDADAS</button></div>' +
       // STORE / MANAGED CREDITS — rendered ONLY when the sidecar reports a configured credits backend (/api/credits).
       // When credits aren't wired this stays an empty node (no dead card, no fake balance — the honesty law). wireCredits
       // fetches the real balance + history and the external purchase link; buying opens a browser tab, never an in-app form.
@@ -7789,7 +7789,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         INITIATIVE_RUNGS.map(r => '<button class="set-theme" data-init="' + r.id + '" data-tip="' + esc(r.tip) + '">' + esc(r.label) + '</button>').join('') +
       '</div>' +
       '<p class="mc-hint">The three answers in PERMISSIONS set this too.</p>' +
-      '<details class="cf-group set-fold" id="auto-direction-fold"><summary><h4 class="ms-h">FINE-TUNE <span class="dim">— how far, how often, and where</span></h4></summary>' +
+      '<details class="cf-group set-fold" id="auto-direction-fold"><summary><h4 class="ms-h">AJUSTE FINO <span class="dim">— how far, how often, and where</span></h4></summary>' +
       '<div class="set-sub"><span class="set-sub-k">REACH</span><span class="set-sub-d">how far an unattended action may go</span></div>' +
       '<div class="set-themes" id="auto-reach">' +
         '<button class="set-theme" data-reach="observe" data-tip="read / research only — writes nothing">OBSERVE</button>' +
@@ -7813,7 +7813,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // heading. Every control and id is unchanged; settings search opens the fold when a match is inside.
       '<div class="set-sub"><span class="set-sub-k">DIRECTION</span><span class="set-sub-d">where its unattended work should go</span></div>' +
       '<div class="set-sub"><span class="set-sub-k">FOCUS</span><span class="set-sub-d" id="auto-focus">…</span></div>' +
-      '<div class="set-row ns-steer"><input id="auto-steer" class="key-input" type="text" autocomplete="off" placeholder="Project folder, thread:&lt;id&gt;, or goal"><button class="bb xs" id="auto-steer-set">SET FOCUS</button><button class="bb xs" id="auto-steer-clear" style="display:none">CLEAR</button></div>' +
+      '<div class="set-row ns-steer"><input id="auto-steer" class="key-input" type="text" autocomplete="off" placeholder="Carpeta de proyecto, thread:&lt;id&gt;, o meta"><button class="bb xs" id="auto-steer-set">FIJAR ENFOQUE</button><button class="bb xs" id="auto-steer-clear" style="display:none">LIMPIAR</button></div>' +
       '<div class="mc-hint">a steer outranks learned evidence (~7 days, or until cleared). It only redirects the unattended priority — no new access.</div>' +
       '<div class="set-sub"><span class="set-sub-k">OFF-LIMITS</span><span class="set-sub-d">it will never pick these on its own</span></div>' +
       '<div class="key-list" id="auto-avoid"><p class="set-about">reading directives…</p></div>' +
@@ -7833,7 +7833,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        away. This block (status, decision trail, last report) now renders INSIDE the AUTONOMY section, under the dial
        it reports on. "Night shift" stays only as the internal name of the server-side driver (routes, ids, files). */
     const secAwayActivity =
-      '<h4 class="ms-h">WHILE YOU’RE AWAY <span class="dim">— what autonomy did, and why</span></h4>' +
+      '<h4 class="ms-h">MIENTRAS ESTÁS FUERA <span class="dim">— qué hizo la autonomía y por qué</span></h4>' +
       // NIGHT SHIFT — the honest live status of the server-owned night shift (NS-4). Every line maps to a field of
       // GET /api/nightshift/status + /api/autonomy/ledger; painted live from the routes (never invented). The
       // decision trail is the scrollable recent act/decline log. Loading/error states are honest, never fake-zero.
@@ -7894,11 +7894,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // the whole station. Painted by paintPostures(): a card highlights only when every component matches.
       '<div class="perm-postures" id="perm-postures"><p class="set-about">reading your station…</p></div>' +
       // ── EACH CREW MEMBER — visible, directly under the cards it overrides. One collapsed row per agent.
-      '<h4 class="ms-h">EACH CREW MEMBER <span class="dim">— give one agent a different answer</span></h4>' +
+      '<h4 class="ms-h">CADA MIEMBRO DE LA TRIPULACIÓN <span class="dim">— da una respuesta distinta a un agente</span></h4>' +
       '<div class="perm-list" id="perm-crew"></div>' +
       // ── ALWAYS-YES — what you already said ALWAYS to. Visible: a revocation you cannot find is not revocable.
       // its tip says what happens to an ask nobody answers (org P02), filled from the sidecar's own timeout (consentTipText)
-      '<h4 class="ms-h" id="perm-standing-h" data-tip="' + esc(consentTipText(null)) + '">STANDING APPROVALS <span class="dim">— things you said ALWAYS to</span></h4>' +
+      '<h4 class="ms-h" id="perm-standing-h" data-tip="' + esc(consentTipText(null)) + '">APROBACIONES PERMANENTES <span class="dim">— a lo que dijiste SIEMPRE</span></h4>' +
       '<p class="set-about perm-lede" id="perm-status" aria-live="polite">checking standing approvals…</p>' +
       '<div class="key-list perm-grants" id="perm-grants"></div>' +
       // ── ADVANCED — ONE fold, never a fold inside a fold. The override's EFFECT is never hidden (glance + rows).
@@ -7910,7 +7910,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const secBudget =
       // BUDGET — the four real USD spend caps the sidecar enforces over the ledger (perRun hard stop + soft
       // per-agent / per-day / global pools). Persisted server-side + applied live; a live spend readout below.
-      '<h4 class="ms-h">Spending limits <span class="dim">— in USD</span></h4>' +
+      '<h4 class="ms-h">Límites de gasto <span class="dim">— en USD</span></h4>' +
       '<p class="set-about">Limits apply to recorded agent spending. <b>Blank or 0 means no cap.</b> Changes take effect when you save; unsaved limits follow their environment defaults.</p>' +
       '<div id="budget-spend" class="set-row dim">reading spend…</div>' +
       '<div id="budget-unsettled"></div>' +   // interrupted runs whose charge is unknown + their SETTLE (only rendered when one exists)
@@ -7935,7 +7935,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // MODELS — the ordered FALLBACK CHAIN (P0-3). The primary model is chosen live in the COMMS model dock; this
       // sets what the loop tries NEXT if that model fails mid-run. Persisted server-side + applied live to every run
       // path (browser, cron, channels); env SKYNET_FALLBACK_MODELS is the default until you save one here.
-      '<h4 class="ms-h">FALLBACK MODELS <span class="dim">— tried in order if your primary model fails</span></h4>' +
+      '<h4 class="ms-h">MODELOS DE RESPALDO <span class="dim">— se prueban en orden si tu modelo principal falla</span></h4>' +
       '<p class="set-about">Choose your primary model in COMMS. If it fails mid-run because of availability, authentication, billing, or rate limits, StarNet tries this list from top to bottom. Saved models use your OpenRouter connection, or your StarNet connection when StarNet is the primary provider. <b>An empty list disables fallback.</b> Model changes appear in COMMS and the logbook.</p>' +
       '<div class="mc-form" id="fbc-form">' +
         '<div id="fbc-list" class="mc-list-fb"><div class="dim">reading chain…</div></div>' +
@@ -7951,7 +7951,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // model is a TIER indirection (DEEP / BALANCED / FAST); when summoned it resolves through this map. Left
       // at "(station default)" a tier inherits the model dock's primary, so this is purely opt-in. Saved per-machine
       // (localStorage) and read live by the summon path (app.resolveTierModel) — no rerun/rebuild needed.
-      '<h4 class="ms-h">New agent defaults <span class="dim">— model choice by class tier</span></h4>' +
+      '<h4 class="ms-h">Valores por defecto de agentes nuevos <span class="dim">— modelo según nivel de clase</span></h4>' +
       '<p class="set-about">Choose the model used when recruiting each class tier. <b>Station default</b> follows your primary model in COMMS. Existing agents keep their model; you can change an individual agent in its dossier.</p>' +
       '<div class="mc-form" id="tm-form">' +
         '<div class="set-row"><label for="tm-reasoning">◆◆◆ DEEP</label><select id="tm-reasoning" class="fbc-sel" data-tier="reasoning"><option value="">(station default)</option></select></div>' +
@@ -7962,7 +7962,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div id="tm-msg" class="msg"></div>' +
       // VOICE CHAT MODEL (Hermes parity auxiliary.voice_chat) — the model a SPOKEN reply runs on. Server-persisted
       // (/api/voice/chat-model) and read by the sidecar per voice turn; only that turn moves (sidecar/voice-chat-route.js).
-      '<h4 class="ms-h">Voice chat model <span class="dim">— answers spoken replies</span></h4>' +
+      '<h4 class="ms-h">Modelo de voz <span class="dim">— responde las réplicas habladas</span></h4>' +
       '<p class="set-about">With the speaker on, spoken replies and Telegram voice notes can use a faster model. Only that reply moves: typed messages and the agent’s saved model stay as they are. If the voice model can’t answer, the agent’s own model does.</p>' +
       '<div class="mc-form" id="vcm-form">' +
         '<div class="set-row"><label for="vcm-model">MODEL</label><select id="vcm-model" class="fbc-sel"><option value="">(same as the agent)</option></select></div>' +
@@ -7977,7 +7977,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        call, which is not a setting. The list is fetched from the sidecar (status().voices) rather than
        hardcoded here, so it can never drift from what the provider actually offers. */
     const secLiveVoice =
-      '<h4 class="ms-h">SPOKEN VOICE</h4>' +
+      '<h4 class="ms-h">VOZ HABLADA</h4>' +
       '<p class="set-about">Choose a station default for LIVE VOICE, or assign each agent a built-in, keyless voice for spoken replies and hands-free conversations. Changes apply to the next reply or new Live Voice session. Saved in this app or browser.</p>' +
       '<div class="set-row"><label for="set-lv-agent">VOICE FOR</label><select id="set-lv-agent" class="fbc-sel"><option value="">Station default</option>' +
         present.map(a => '<option value="' + esc(a.id) + '">' + esc(a.name || a.id) + '</option>').join('') + '</select></div>' +
@@ -7985,7 +7985,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<p id="set-lv-msg" class="msg" aria-live="polite"></p>' +
       '<div class="set-themes" id="set-lv-voices"><span class="dim">reading the built-in voice list…</span></div>' +
       // EFFECT — what the voice is played through. One choice for every voice; AUTO lets each wear its own.
-      '<h4 class="ms-h">VOICE EFFECT</h4>' +
+      '<h4 class="ms-h">EFECTO DE VOZ</h4>' +
       '<div class="set-themes" id="set-lv-effect">' +
         [['', 'AUTO', 'Each voice wears its own effect: built-in voices sound natural, the Ultron station voice keeps its machine shell.'],
          ['natural', 'NATURAL', 'The voice itself, with a light room around it.'],
@@ -7996,13 +7996,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<p id="set-lv-effect-msg" class="msg" aria-live="polite"></p>';
 
     const secAppearance =
-      '<h4 class="ms-h">PHOSPHOR THEME</h4><div class="set-themes">' +
+      '<h4 class="ms-h">TEMA FÓSFORO</h4><div class="set-themes">' +
       THEMES.map(([t, c]) => '<button type="button" class="set-theme settings-swatch ' + (s.theme === t ? 'sel' : '') + '" aria-pressed="' + (s.theme === t ? 'true' : 'false') + '" data-t="' + t + '" aria-label="' + t + ' theme" title="' + t + '" style="--sw:' + c + '"></button>').join('') +
       '<button type="button" class="set-theme settings-swatch settings-swatch-custom ' + (s.theme === 'custom' ? 'sel' : '') + '" aria-pressed="' + (s.theme === 'custom' ? 'true' : 'false') + '" data-t="custom" id="set-theme-custom" aria-label="Custom color theme" title="Custom color" style="--sw:' + customSw + '"></button>' +
       '</div>' +
       // CUSTOM PHOSPHOR — hue + saturation derive a full palette live (moving either switches to CUSTOM);
       // GLOW is independent and scales the bloom on EVERY theme, presets included. All instant-save.
-      '<h4 class="ms-h">CUSTOM PHOSPHOR <span class="dim">— dial in any colour</span></h4>' +
+      '<h4 class="ms-h">FÓSFORO PERSONALIZADO <span class="dim">— ajusta cualquier color</span></h4>' +
       '<p class="set-about">Hue and saturation create a custom color. Glow controls the light around text; brightness takes the panel glass darker (left) or lighter (right). Changes preview and save immediately.</p>' +
       '<label class="set-slider"><span class="set-slider-name">HUE</span><input type="range" id="set-hue" class="set-hue-track" min="0" max="359" step="1" value="' + clampN(s.themeHue, 0, 359, 35) + '"><span class="set-slider-val" id="set-hue-val">' + clampN(s.themeHue, 0, 359, 35) + '°</span></label>' +
       '<label class="set-slider"><span class="set-slider-name">SATURATION</span><input type="range" id="set-sat" min="0" max="100" step="1" value="' + clampN(s.themeSat, 0, 100, 100) + '"><span class="set-slider-val" id="set-sat-val">' + clampN(s.themeSat, 0, 100, 100) + '%</span></label>' +
@@ -8014,7 +8014,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // THE BACKDROP — what the station floats in. Swatches are painted by the REAL backdrop
       // renderer below (SpaceBG.paintSample), never by a stand-in gradient, so a preview can
       // not promise a sky the station won't deliver — the same law the deck/wall swatches follow.
-      '<h4 class="ms-h">BACKDROP <span class="dim">— where the station is</span></h4>' +
+      '<h4 class="ms-h">FONDO <span class="dim">— dónde está la estación</span></h4>' +
       '<p class="set-about">Choose the scene around your station. Each tile previews the actual backdrop.</p>' +
       '<div class="set-backdrops" id="set-backdrop">' +
       (typeof SpaceBG === 'undefined' ? '' : []
@@ -8027,7 +8027,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           '<span class="set-bd-name">' + esc(b.label) + '</span></button>';
       }).join('')) +
       '</div>' +
-      '<h4 class="ms-h">DISPLAY</h4>' +
+      '<h4 class="ms-h">PANTALLA</h4>' +
       // TEXT SIZE — the laptop-readability dial (2026-07-19): scales every panel, window and COMMS
       // face together; the station view re-renders sharp at the new scale (world.js resize).
       '<div class="set-row"><span class="dim">TEXT SIZE — AUTO matches this screen; scales all panels &amp; COMMS, the station view stays crisp</span></div>' +
@@ -8062,7 +8062,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // accessibility fix ("easy read") tells the people who like the tube that they are enduring
       // something, which is not what most of them report. There is no OFF: the station is a CRT.
       // SCREEN FLICKER lives here too — it is a CRT effect, not a display one.
-      '<h4 class="ms-h">CRT <span class="dim">— how strong the tube reads</span></h4>' +
+      '<h4 class="ms-h">CRT <span class="dim">— qué tan fuerte se lee el tubo</span></h4>' +
       '<div class="set-row"><span class="dim">DULLED thins the glass over the panels &amp; COMMS so text sits clearer under it. The station keeps its tube either way.</span></div>' +
       '<div class="set-themes" id="set-crtglass">' +
       GLASS_STEPS.map(([v, name, why]) => {
@@ -8074,13 +8074,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<p class="mc-hint" id="set-static-help">Film grain over the station view. 0% removes static; 100% is the default. Changes preview and save immediately.</p>' +
       '<label class="set-row"><input type="checkbox" id="set-flicker" ' + (s.flicker ? 'checked' : '') + '> SCREEN FLICKER</label>' +
       // TERMINAL AUDIO is a sound control, not a display one — its own header (it also gates notification chimes).
-      '<h4 class="ms-h">SOUND</h4>' +
+      '<h4 class="ms-h">SONIDO</h4>' +
       '<label class="set-row"><input type="checkbox" id="set-sound" ' + (s.sound ? 'checked' : '') + '> TERMINAL AUDIO <span class="dim">— UI &amp; notification sounds</span></label>' +
       '<span class="msg" id="appearance-msg" aria-live="polite"></span>';
     const secNotifs =
       // NOTIFICATIONS — per-category on/off + a notification sound toggle (P1-8). Each is HONORED at emit time in
       // notify(): a muted category is dropped before it ever reaches the panel/toast (not decorative).
-      '<h4 class="ms-h">NOTIFICATIONS <span class="dim">— what pings you, and whether it chimes</span></h4>' +
+      '<h4 class="ms-h">NOTIFICACIONES <span class="dim">— qué te avisa y si suena</span></h4>' +
       '<p class="set-about">Choose which events appear in the notification panel and as pop-up alerts. Changes save immediately.</p>' +
       '<label class="set-row"><input type="checkbox" id="ntp-runComplete"' + (npf('runComplete') ? ' checked' : '') + '> RUN COMPLETE <span class="dim">— a run saved or made something</span></label>' +
       '<label class="set-row"><input type="checkbox" id="ntp-needsApproval"' + (npf('needsApproval') ? ' checked' : '') + '> NEEDS APPROVAL <span class="dim">— an agent is waiting on your yes/no</span></label>' +
@@ -8093,7 +8093,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<span class="msg" id="notifs-msg" aria-live="polite"></span>';
     const secSystem =
       // "POWER" — this header held only KEEP COMPUTER AWAKE, so "SCHEDULED TASKS" mislabelled it.
-      '<h4 class="ms-h">POWER</h4>' +
+      '<h4 class="ms-h">ENERGÍA</h4>' +
       '<label class="set-row"><input type="checkbox" id="set-awake" ' + (awakeChecked ? 'checked' : '') + (awakeDesktop ? '' : ' disabled') + '> KEEP COMPUTER AWAKE <span class="dim">— ' + (awakeDesktop ? 'prevent idle sleep while StarNet is open' : 'desktop app only') + '</span></label>' +
       // Lane 4D — native startup/tray choices + the honest background-lifecycle explainer. All controls are
       // desktop-only; they stay disabled and the line names the browser reality otherwise. The explainer
@@ -8104,13 +8104,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<p class="set-about" id="lifecycle-desc">' + (lifecycleDesktop ? 'Checking what runs in the background…' : 'The desktop app can stay supervised in the system tray. This browser tab has no background process.') + '</p>' +
       // ADVANCED — env-only runtime knobs, now editable + persisted server-side (P1-9). PRECEDENCE is spelled out
       // in the card: an explicit environment variable ALWAYS wins over a value saved here (a deploy stays in control).
-      '<h4 class="ms-h">Runtime limits <span class="dim">— optional ceilings and timeouts</span></h4>' +
+      '<h4 class="ms-h">Límites de ejecución <span class="dim">— techos y timeouts opcionales</span></h4>' +
       '<p class="set-about">StarNet does not limit agent concurrency or run iterations by default. Set a positive value only when you want a ceiling. Saved here on this machine and read by the sidecar at boot. <b>An environment variable always overrides a value saved here</b>. Blank a field to clear the override.</p>' +
       '<div class="mc-form" id="adv-form"><div class="dim" id="adv-loading">reading runtime settings…</div></div>' +
       '<div id="adv-msg" class="msg"></div>' +
       // DATA / STATION BACKUP — export the whole station config to one JSON file, import it back, reset a section.
       // Secrets NEVER leave the machine (configexport.js redacts to a configured-marker); import surfaces re-enter states.
-      '<h4 class="ms-h">STATION BACKUP <span class="dim">— export / import your setup</span></h4>' +
+      '<h4 class="ms-h">COPIA DE SEGURIDAD <span class="dim">— exporta / importa tu configuración</span></h4>' +
       '<p class="set-about">Export your station configuration to a JSON file, or restore a saved configuration. <b>Keys and tokens are excluded</b> and must be entered again after importing.</p>' +
       '<div class="set-save">' +
         '<button class="bb sm" id="bk-export">EXPORT STATION</button>' +
@@ -8122,7 +8122,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // DIAGNOSTICS (T3.9) — one click copies a paste-ready, SECRET-FREE report to email in a bug report. The sidecar
       // assembles + sanitizes it (GET /api/diagnostics); this button just fetches + copies. Destination is ONE constant
       // (Diag.SUPPORT_EMAIL) so it's a one-line swap when the support address is picked. Copy stays honest about where it goes.
-      '<h4 class="ms-h">DIAGNOSTICS <span class="dim">— for a bug report</span></h4>' +
+      '<h4 class="ms-h">DIAGNÓSTICOS <span class="dim">— para un reporte de fallo</span></h4>' +
       // Name the support address only when Diag reports one is configured; when it's unset/placeholder we omit
       // the "email to X" clause entirely (no placeholder, no fake address) — the copy button still works.
       ((function () {
@@ -8138,7 +8138,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div id="diag-msg" class="msg"></div>' +
       // fail-open pressure: per-tag swallowed-error counts since boot, from report.swallowed. Painted in wireDiagnostics().
       '<div id="diag-swallowed" class="dim" style="margin-top:6px;font-size:11px">swallowed errors: reading…</div>' +
-      '<h4 class="ms-h">LIVE DOCTOR <span class="dim">— opt-in runtime proof</span></h4>' +
+      '<h4 class="ms-h">MÉDICO EN VIVO <span class="dim">— prueba de ejecución opcional</span></h4>' +
       '<p class="set-about">Runs one tiny response through the selected model, a harmless sentinel through the effective execution profile, an initialize/list round-trip for each enabled MCP server, and safe authentication/status checks for messaging channels. It sends no channel messages and exports no secrets.</p>' +
       '<label class="set-check"><input type="checkbox" id="diag-live-consent"> I understand this performs real network and execution probes and may spend one tiny model response.</label>' +
       '<div class="set-save"><button class="bb sm" id="diag-live-run">RUN LIVE DOCTOR</button><button class="bb sm" id="diag-live-copy" hidden>⧉ COPY RECEIPT</button></div>' +
@@ -8148,7 +8148,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // stays hidden in a plain browser, where there is no binary to prove). Populated in wireDiagnostics().
       '<div id="diag-build" class="dim" style="margin-top:6px;font-size:11px" hidden></div>' +
       // CLEAR NOTIFICATIONS moved to the NOTIFICATIONS section (where it belongs); this is now just the about note.
-      '<h4 class="ms-h">ABOUT</h4>' +
+      '<h4 class="ms-h">ACERCA DE</h4>' +
       '<p class="set-about">STARNET — gamified AI-agent harness.<br>Theme, display & audio preferences are saved locally on this machine. Manage planned tasks under MY WORK › TASKS and saved conversations under SESSIONS in COMMS.</p>';
 
     // Keep every control mounted and reachable; group existing nodes without replacing their IDs.
@@ -8171,7 +8171,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (named.length > 2) {
         const nav = document.createElement('nav');
         nav.className = 'settings-jumps';
-        nav.setAttribute('aria-label', 'Jump to settings subsection');
+        nav.setAttribute('aria-label', 'Ir a la subsección de ajustes');
         named.forEach(g => {
           const heading = g.querySelector('h4.ms-h');
           const btn = document.createElement('button');
@@ -8524,11 +8524,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         Lifecycle.setAutostart(desired).then(st => {
           const real = !!(st && st.enabled);
           ev.target.checked = real;
-          if (real !== desired) notify('Launch at login could not be ' + (desired ? 'enabled' : 'disabled') + ' on this system.', 'warn');
+          if (real !== desired) notify('Arrancar al iniciar sesión no se pudo ' + (desired ? 'activar' : 'desactivar') + ' en este sistema.', 'warn');
           else flashSaved(appMsg(), undefined, true);
         }).catch(err => {
           ev.target.checked = !desired;
-          notify('Launch at login failed: ' + ((err && err.message) || err), 'warn');
+          notify('Falló arrancar al iniciar sesión: ' + ((err && err.message) || err), 'warn');
           sfx('bad');
         });
       });
@@ -8553,8 +8553,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           });
         });
       };
-      wireLifecyclePreference(startMinimizedToggle, Lifecycle.setStartMinimized, 'Start minimized', 'startMinimized');
-      wireLifecyclePreference(closeToTrayToggle, Lifecycle.setCloseToTray, 'Close to tray', 'closeToTray');
+      wireLifecyclePreference(startMinimizedToggle, Lifecycle.setStartMinimized, 'Empezar minimizado', 'startMinimized');
+      wireLifecyclePreference(closeToTrayToggle, Lifecycle.setCloseToTray, 'Cerrar a la bandeja', 'closeToTray');
     }
     // PERMISSIONS panel repaint hook — set by the permissions block below; called whenever the granular dial
     // changes so the posture cards stay in sync with the dial. No-op until that block wires it.
@@ -8641,7 +8641,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           label.title = String(e.ref);
           const rm = document.createElement('button');
           rm.className = 'bb xs';
-          rm.textContent = 'ALLOW AGAIN';
+          rm.textContent = 'PERMITIR OTRA VEZ';
           rm.title = 'remove this boundary — the station may pick it unattended again';
           rm.addEventListener('click', () => {
             rm.disabled = true;
@@ -9846,7 +9846,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         (dis ? '<button class="nf-x" data-ny-dismiss="' + esc(it.key) + '" data-tip="Dismiss: it leaves NEEDS YOU here and on the rail" aria-label="Dismiss ' + esc(line) + '">✕</button>' : '') + '</div>';
     };
     const needsRows = NY ? live.map(liveRow) : waiting.map(row);
-    const needsHtml = needsRows.length ? '<section class="nf-needs"><h4 class="ms-h">NEEDS YOU <span class="dim">— ' + needsRows.length + ' waiting</span></h4><div class="nf-list nf-list-needs">' + needsRows.join('') + '</div></section>' : '';
+    const needsHtml = needsRows.length ? '<section class="nf-needs"><h4 class="ms-h">TE NECESITA <span class="dim">— ' + needsRows.length + ' waiting</span></h4><div class="nf-list nf-list-needs">' + needsRows.join('') + '</div></section>' : '';
     body.innerHTML = '<header class="utility-head"><h2>Notifications</h2><p>What needs you, and what finished or went wrong while you were elsewhere. Click one to go there.</p></header>' +
       needsHtml +
       '<div class="nf-toolbar"><div class="utility-tabs" role="group" aria-label="Show notifications">' +
@@ -9986,7 +9986,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
            ? ', estimated for this chat’s next message from a real measurement of this model. It becomes exact the moment the agent replies.'
            : ', measured on this chat’s last request.') +
          (tier
-           ? ' The model can hold ' + CtxGauge.fmtTokens(cs.limit) + ', but it bills a higher rate for a prompt over ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, so a run works in ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
+           ? ' The model can hold ' + CtxGauge.fmtTokens(cs.limit) + ', pero cobra un precio más alto para un prompt de más de ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, así que una ejecución trabaja en ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
            : '') +
          ' How much of this conversation a run can still hold; when it nears full, older turns are folded into a summary automatically.')
       : (s.limit ? 'measuring… send a message and this fills in' : 'measuring this model’s memory size…'));
@@ -10114,7 +10114,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     d.classList.remove('stale', 'degraded');
     if (h && h.seeded && !seededNotified) {
       seededNotified = true;
-      try { notify('The station file on this computer was missing, so this window’s copy of your station was saved back to it.', 'warn'); } catch (_) {}
+      try { notify('El archivo de la estación en este equipo no existía, así que la copia de esta ventana se guardó en él.', 'warn'); } catch (_) {}
     }
     if (h && h.conflict) {
       d.classList.add('degraded');
@@ -10146,7 +10146,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const label = document.createElement('p'); label.textContent = d.title;
         const exportButton = document.createElement('button'); exportButton.className = 'bb'; exportButton.textContent = 'Download this window’s save';
         exportButton.onclick = () => { const blob = new Blob([JSON.stringify(CloudSave.localSnapshot() || {})], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'starnet-conflicting-save.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
-        const reload = document.createElement('button'); reload.className = 'bb'; reload.textContent = reset ? 'Open the fresh station' : 'Reload current station'; reload.onclick = async () => { try { await CloudSave.reloadCurrent(); } catch (e) { label.textContent = e.message; } };
+        const reload = document.createElement('button'); reload.className = 'bb'; reload.textContent = reset ? 'Abrir la estación nueva' : 'Recargar la estación actual'; reload.onclick = async () => { try { await CloudSave.reloadCurrent(); } catch (e) { label.textContent = e.message; } };
         // the preserved copy's sessions go INTO the station (added, never removing any), then this window reloads onto it
         // never after a RESET, and never for erased work: the station was erased on purpose, and this copy is from before it
         // (the station refuses that restore, so the key is never shown for it)
@@ -10164,7 +10164,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       d.title = 'this station’s data was written by a newer StarNet — update the app. Until then, changes are NOT being backed up.';
       if (!degradedNotified) {
         degradedNotified = true;
-        try { notify('This station’s data was written by a newer StarNet — update the app. Until you do, your changes are NOT being backed up.', 'bad'); } catch (_) {}
+        try { notify('Los datos de esta estación los escribió un StarNet más nuevo — actualiza la app. Hasta que lo hagas, tus cambios NO están respaldados.', 'bad'); } catch (_) {}
       }
     } else if (h && h.cacheFailed) {
       // #121: the browser cache is full (its per-site cap), so every change rides on the station file alone. The words
@@ -10290,7 +10290,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // dossier through the same upsert path the cards use. Gated on a free agent + not-already-running.
     const actRow = mkEl('div', 'cd-actions-row');
     const goBtn = mkEl('button', 'cd-interview');
-    goBtn.textContent = sum.blank.length ? 'Start a guided interview' : 'Update through an interview';
+    goBtn.textContent = sum.blank.length ? 'Empezar una entrevista guiada' : 'Actualizar mediante una entrevista';
     goBtn.onclick = () => {
       if (typeof Intake === 'undefined') return;
       if (typeof Onboarding !== 'undefined' && Onboarding.isRunning && Onboarding.isRunning()) { notify('let your agent finish waking up first', ''); return; }
@@ -10464,11 +10464,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const btns = mkEl('div', 'consent-btns cd-acts'); card.appendChild(btns);
     let busy = false;
     const mk = (label, cls, fn) => { const x = mkEl('button', 'consent-btn' + (cls ? ' ' + cls : '')); x.textContent = label; x.onclick = fn; btns.appendChild(x); return x; };
-    mk(b.pinned ? 'Unpin' : 'Pin', '', () => { if (busy) return; busy = true; CDS().setPinned(dim, b.id, !b.pinned); sfx('click'); rerender('commander'); });
+    mk(b.pinned ? 'Quitar fijado' : 'Pin', '', () => { if (busy) return; busy = true; CDS().setPinned(dim, b.id, !b.pinned); sfx('click'); rerender('commander'); });
     mk('Edit', '', () => cdEdit(card, txt, btns, dim, b));
     let armed = false;
-    const fb = mk('Forget', 'deny', () => {
-      if (!armed) { armed = true; fb.textContent = 'Confirm forget'; setTimeout(() => { if (armed) { armed = false; fb.textContent = 'Forget'; } }, 3000); return; }
+    const fb = mk('Olvidar', 'deny', () => {
+      if (!armed) { armed = true; fb.textContent = 'Confirmar olvido'; setTimeout(() => { if (armed) { armed = false; fb.textContent = 'Olvidar'; } }, 3000); return; }
       if (busy) return; busy = true; CDS().forget(dim, b.id); sfx('click'); rerender('commander');
     });
     return card;
@@ -10494,7 +10494,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     card.replaceChild(ta, txt); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
     btns.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
     btns.appendChild(cdCount(ta));
     let saving = false;
     save.onclick = () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; CDS().upsert(dim, { id: b.id, text: v }); sfx('click'); rerender('commander'); };
@@ -10548,7 +10548,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
       const btns = mkEl('div', 'consent-btns cd-acts'); row.appendChild(btns);
       const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-      const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+      const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
       btns.appendChild(count);
       let saving = false;
       save.onclick = () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; CDS().upsert(dim, { text: v, source: 'commander' }); sfx('click'); rerender('commander'); };
@@ -10680,10 +10680,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const startsWork = !existing && q.executionMode === 'agent' && Chat.send && !(Chat.isBusy && Chat.isBusy());
       if (startsWork) {
         Chat.send(ask);
-        notify('Quest started — the work is running in its own session.', 'good');
+        notify('Misión iniciada — el trabajo corre en su propia sesión.', 'good');
       } else if (Chat.prefill) {
         Chat.prefill(ask + '\n\n');
-        notify('Conversation prepared. Edit and send it when you are ready.', 'good');
+        notify('Conversación preparada. Edítala y envíala cuando estés listo.', 'good');
       }
     }
     return true;
@@ -10733,10 +10733,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const latest = brief.latest, next = brief.next;
     const latestWork = latest && latest.questRef && typeof WorkQuestStore !== 'undefined' && WorkQuestStore.quests
       ? WorkQuestStore.quests().find(q => q.id === latest.questRef) : null;
-    const proof = '<details class="q-return-proof"' + (latest ? ' open' : '') + '><summary>' + (latest ? 'LAST RESULT · ' + esc(latest.text) : 'Why this step matters') + '</summary>'
+    const proof = '<details class="q-return-proof"' + (latest ? ' open' : '') + '><summary>' + (latest ? 'LAST RESULT · ' + esc(latest.text) : 'Por qué importa este paso') + '</summary>'
       + (goal.successCondition ? '<p>Working toward: ' + esc(goal.successCondition) + '</p>' : '')
       + (latest ? '<p>' + esc(latest.evidence || 'No detail was saved with this step.') + '</p>'
-        + '<span class="sub dim">' + (latest.source === 'commander' ? 'You reported this action' : 'Recorded work completion') + ' · ' + esc(qrRel(latest.doneAt)) + '</span>' : '<p>This is a step you chose toward ' + esc(goal.text) + '.</p>')
+        + '<span class="sub dim">' + (latest.source === 'commander' ? 'You reported this action' : 'Trabajo completado registrado') + ' · ' + esc(qrRel(latest.doneAt)) + '</span>' : '<p>This is a step you chose toward ' + esc(goal.text) + '.</p>')
       + (latest ? '<div class="q-return-actions">' + jump('progress', 'VIEW PROGRESS')
         + (latestWork && latestWork.runId ? '<button class="consent-btn q-step-outputs" data-run="' + esc(latestWork.runId) + '" data-label="' + esc(latest.text) + '">OPEN THIS STEP’S OUTPUTS</button>'
           : latest.source !== 'commander' ? '<button class="consent-btn q-go" data-dest="deliverables">OPEN DELIVERABLES</button>' : '') + '</div>' : '') + '</details>';
@@ -10912,7 +10912,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const next = steps.find(s => s.isNext && s.status !== 'done');
     const accept = (next && !next.inFlight)
       ? '<button class="consent-btn q-arc-accept q-track-accept" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">▶ START THIS STEP</button><p class="sub dim">Starts work with your crew using your current model and permissions.</p>'
-        + '<details class="q-life-report"><summary>I DID THIS STEP</summary><label>What did you do?<textarea class="q-step-evidence" maxlength="1000" placeholder="Describe the action you completed outside StarNet"></textarea></label>'
+        + '<details class="q-life-report"><summary>HICE ESTE PASO</summary><label>¿Qué hiciste?<textarea class="q-step-evidence" maxlength="1000" placeholder="Describe la acción que completaste fuera de StarNet"></textarea></label>'
         + '<button class="consent-btn q-step-report" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">RECORD MY ACTION</button></details>'
       : (next && next.inFlight ? '<span class="sub q-track-running">the build for this step is running — finishing it completes the step.</span>' : '');
     const alternatives = steps.filter(s => s.status !== 'done' && !s.isNext);
@@ -10961,10 +10961,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const condition = registered ? registered.successCondition : (g.successCondition || '');
     return '<div class="q-life-goal" data-gid="' + esc(goalId) + '">'
       + '<details class="q-life-condition"' + (condition ? '' : ' open') + '><summary>' + (condition ? 'SUCCESS CONDITION: ' + esc(condition) : 'DEFINE WHAT SUCCESS MEANS') + '</summary>'
-      + '<label>What observable result means you have reached this goal?<textarea class="q-success-condition" maxlength="500" placeholder="For example: I accepted a job offer">' + esc(condition) + '</textarea></label>'
+      + '<label>¿Qué resultado observable significa que alcanzaste esta meta?<textarea class="q-success-condition" maxlength="500" placeholder="Por ejemplo: acepté una oferta de trabajo">' + esc(condition) + '</textarea></label>'
       + '<button class="consent-btn q-success-save">SAVE SUCCESS CONDITION</button></details>'
       + (registered ? '<details class="q-life-report"><summary>MY GOAL IS ACHIEVED</summary><div class="sub">Confirm only when this is true: ' + esc(condition) + '</div>'
-        + '<label>What happened?<textarea class="q-goal-evidence" maxlength="1000" placeholder="Describe the result and when it happened"></textarea></label>'
+        + '<label>¿Qué pasó?<textarea class="q-goal-evidence" maxlength="1000" placeholder="Describe el resultado y cuándo pasó"></textarea></label>'
         + '<button class="consent-btn q-goal-confirm">CONFIRM MY OUTCOME</button><div class="sub dim">Saved as your report. Completing the plan alone never confirms this outcome.</div></details>' : '')
       + '<details class="q-life-next"><summary>ADD A NEXT STEP</summary><label>Next action<input class="q-next-step" maxlength="140" placeholder="A concrete action that helps this goal"></label>'
       + '<button class="consent-btn q-step-add">ADD STEP</button></details></div>';
@@ -11081,7 +11081,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!root) return;
     root.querySelectorAll('.q-sys').forEach(b => b.addEventListener('click', () => { sfx('click'); Systems.openSystem(b.dataset.sys); }));
     const all = root.querySelector('.q-sys-all');
-    if (all) all.addEventListener('click', () => { sfx('click'); Systems.showEverything(); notify('Every station system is in your dock now. SETTINGS › LOOK & SOUND › STATION DOCK switches it back.', '', undefined, { transient: true }); });
+    if (all) all.addEventListener('click', () => { sfx('click'); Systems.showEverything(); notify('Cada sistema de la estación está ahora en tu dock. AJUSTES › ASPECTO Y SONIDO › DOCK DE ESTACIÓN lo devuelve.', '', undefined, { transient: true }); });
   }
   // repaint ONLY the systems block of an open quest log — never the whole window (drafts live there)
   function refreshSystems() {
@@ -11146,9 +11146,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       + '<details class="q-metric-editor"><summary>Add a metric</summary><div class="q-section-body"><div class="sub dim">'
       + (goal && goal.id ? 'Linked to your current focus: ' + esc(goal.text || 'your focused goal') : 'No focused goal. This metric will be tracked independently; choose a focus in Goals to link a new metric.')
       + '</div><div class="q-metric-create">'
-      + '<label class="q-metric-name-field">Metric name<input class="q-metric-label" maxlength="100" placeholder="For example: monthly revenue"></label>'
+      + '<label class="q-metric-name-field">Nombre de la métrica<input class="q-metric-label" maxlength="100" placeholder="Por ejemplo: ingresos mensuales"></label>'
       + '<label>Starting value<input class="q-metric-baseline" type="number" step="any" placeholder="0"></label><label>Target value<input class="q-metric-target" type="number" step="any" placeholder="100"></label>'
-      + '<label>Unit<input class="q-metric-unit" maxlength="24" placeholder="For example: USD"></label><button class="consent-btn q-metric-add">ADD METRIC</button></div></div></details></div></details>';
+      + '<label>Unidad<input class="q-metric-unit" maxlength="24" placeholder="Por ejemplo: USD"></label><button class="consent-btn q-metric-add">AÑADIR MÉTRICA</button></div></div></details></div></details>';
 
     const domainLabel = d => (typeof Journey !== 'undefined' && Journey.DOMAIN_LABEL && Journey.DOMAIN_LABEL[d]) || String(d || '').toUpperCase();
     const mastery = (Array.isArray(j.mastery) ? j.mastery : []).slice().sort((a, b) => Number(b.count || 0) - Number(a.count || 0));
@@ -11173,7 +11173,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const growthHtml = progression ? '<div class="q-commander-growth"><div class="q-journey-title">COMMANDER LEVEL ' + progression.level + '</div>'
       + '<div class="sub">' + progression.points + ' achievement points · ' + progression.pointsToNextLevel + ' to the next level</div>'
       + '<div class="sub dim">Confirmed goal activity and recorded metric checkpoints earn points across your goals. Confirming a completed goal earns 100 points. Setbacks never erase your history.</div>'
-      + '<details class="q-growth-history"><summary>Recent achievements</summary>' + achievements.map(a => '<details class="sub q-achievement"><summary>◆ ' + esc(a.title || a.kind || 'Goal progress') + ' <span class="gx-tag">+' + (Number(a.points) || 0) + '</span></summary>'
+      + '<details class="q-growth-history"><summary>Recent achievements</summary>' + achievements.map(a => '<details class="sub q-achievement"><summary>◆ ' + esc(a.title || a.kind || 'Progreso del objetivo') + ' <span class="gx-tag">+' + (Number(a.points) || 0) + '</span></summary>'
         + '<div>' + esc(a.evidence || '') + '</div><div class="dim">' + proofLabel(a.kind, a.verifiedBy) + '</div></details>').join('') + '</details></div>' : '';
     const outcomeHtml = recent.length ? '<div class="q-proof-list">' + recent.map(o => '<div class="sub"><span class="q-outcome">' + esc(o.kind) + '</span> '
       + esc(o.title || o.sourceId) + ' <span class="dim">&middot; ' + proofLabel(o.kind, o.verifiedBy) + '</span></div>').join('') + '</div>' : '';
@@ -11210,7 +11210,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       + ideas.filter(i => !i.archived && !i.goalId).map(ideaRow).join('')
       + '<details class="q-life-goal q-idea-new"' + (!ideas.length && !goals.length ? ' open' : '') + '><summary>Capture a possibility</summary>'
       + '<label>I wonder if…<input class="q-idea-title" maxlength="280" placeholder="I could turn my sketches into a short film"></label>'
-      + '<label>A small experiment<textarea class="q-idea-question" maxlength="500" placeholder="What could I try or learn before committing?"></textarea></label>'
+      + '<label>Un experimento pequeño<textarea class="q-idea-question" maxlength="500" placeholder="¿Qué podría probar o aprender antes de comprometerme?"></textarea></label>'
       + '<button class="consent-btn q-idea-save">SAVE POSSIBILITY</button></details>'
       + (ideas.some(i => i.archived || i.goalId) ? '<details class="q-shelf-history"><summary>Earlier possibilities</summary>' + ideas.filter(i => i.archived || i.goalId).map(ideaRow).join('') + '</details>' : '') + '</div>';
     const collection = goals.length ? '<div class="q-goal-collection"><div class="gx-sec"><span class="gx-title">YOUR DIRECTIONS</span><span class="gx-tag">' + goals.filter(g => g.status === 'active').length + ' ACTIVE</span></div>'
@@ -11218,7 +11218,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const focus = active && active.id === g.id;
         const ms = g.milestones || [], done = ms.filter(m => m.status === 'done').length;
         return '<details class="q-direction q-life-goal" data-gid="' + esc(g.id) + '"><summary><span>' + (focus ? '◆ ' : '◇ ') + esc(g.text) + '</span><span class="q-section-note">' + (focus ? 'FOCUS' : esc(g.status.toUpperCase())) + ' · ' + done + '/' + ms.length + ' STEPS</span></summary>'
-          + '<p class="sub">Success: ' + esc(g.successCondition || 'Define the result you want') + '</p>'
+          + '<p class="sub">Success: ' + esc(g.successCondition || 'Define el resultado que quieres') + '</p>'
           + (g.status === 'active' && !focus ? '<button class="consent-btn q-goal-focus" data-gid="' + esc(g.id) + '">MAKE THIS MY FOCUS</button>' : '')
           + '<div class="q-journey-actions"><button class="consent-btn q-goal-review" data-gid="' + esc(g.id) + '">REVIEW WITH MY CREW</button>'
           + (g.status === 'active' ? '<button class="consent-btn q-goal-disposition" data-state="paused">PAUSE</button>' : '<button class="consent-btn q-goal-disposition" data-state="active">RESUME &amp; FOCUS</button>')
@@ -11229,22 +11229,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           + '<details class="q-plan-editor"><summary>Revise upcoming steps</summary><p class="sub">Completed and accepted work keeps its original objective. Add a new step when that objective changes.</p>'
           + ms.map(m => '<div class="q-revise-row" data-mid="' + esc(m.id) + '"><span class="gx-tag">' + (m.status === 'done' ? 'DONE' : m.questRef ? 'ACCEPTED' : 'PLANNED') + '</span>'
             + (m.status === 'open' && !m.questRef && g.status !== 'archived' ? '<input class="q-revise-text" maxlength="140" aria-label="Planned step" value="' + esc(m.text) + '"><button class="consent-btn q-step-revise">SAVE STEP</button>' : '<span class="sub">' + esc(m.text) + '</span>') + '</div>').join('') + '</details>'
-          + '<details class="q-reflection-editor"><summary>Reflect or explain a change</summary><label>Reflection or reason for changing direction<textarea class="q-goal-reflection" maxlength="1000" placeholder="What worked? What surprised you? What should change?"></textarea></label>'
+          + '<details class="q-reflection-editor"><summary>Reflexiona o explica un cambio</summary><label>Reflexión o motivo del cambio de dirección<textarea class="q-goal-reflection" maxlength="1000" placeholder="¿Qué funcionó? ¿Qué te sorprendió? ¿Qué debe cambiar?"></textarea></label>'
           + '<button class="consent-btn q-goal-reflect">SAVE REFLECTION</button></details></details>';
       }).join('') + '</div>' : '';
     return '<details class="q-life-goal q-life-manage"' + (goals.length ? '' : ' open') + '><summary>Start a goal</summary>'
       + '<p class="sub">A rough idea is enough. Shape it with StarNet or write your own plan.</p>'
-      + '<label>I want to…<input class="q-new-goal" maxlength="280" placeholder="Learn to play a song, change careers, build a business…"></label>'
+      + '<label>Quiero…<input class="q-new-goal" maxlength="280" placeholder="Aprender a tocar una canción, cambiar de carrera, construir un negocio…"></label>'
       + '<button class="consent-btn q-goal-suggest">HELP SHAPE MY PLAN</button><p class="sub dim">Uses your current AI model to suggest an editable plan. Saving and starting work are separate actions.</p>'
       + '<div class="q-plan-feedback" role="status" aria-live="polite"></div><div class="q-plan-proposal"></div>'
       + '<details class="q-goal-starters"><summary>Or adapt a starting point</summary><div class="q-journey-actions"><button class="consent-btn q-goal-template" data-template="app">BUILD &amp; LAUNCH</button><button class="consent-btn q-goal-template" data-template="automation">RECLAIM MY TIME</button><button class="consent-btn q-goal-template" data-template="creative">MAKE SOMETHING</button></div></details>'
       + '<button class="consent-btn q-goal-draft-undo" hidden>RESTORE PREVIOUS DRAFT</button>'
       + '<details class="q-goal-plan-editor"><summary>Your starting plan</summary>'
-      + '<label>What does success look like?<textarea class="q-new-success" maxlength="500" placeholder="The observable result you want to reach"></textarea></label>'
-      + '<label>First steps (one per line, up to five)<textarea class="q-new-steps" placeholder="Start with one concrete action. You can extend the plan later."></textarea></label>'
+      + '<label>¿Cómo se ve el éxito?<textarea class="q-new-success" maxlength="500" placeholder="El resultado observable que quieres alcanzar"></textarea></label>'
+      + '<label>Primeros pasos (uno por línea, hasta cinco)<textarea class="q-new-steps" placeholder="Empieza con una acción concreta. Puedes ampliar el plan después."></textarea></label>'
       + '<details class="q-goal-optional"><summary>What matters to you (optional)</summary>'
-      + '<label>Why does it matter? (optional)<textarea class="q-new-motivation" maxlength="500" placeholder="What would this change for you?"></textarea></label>'
-      + '<label>Constraints (optional)<input class="q-new-constraints" maxlength="500" placeholder="Two evenings a week; use tools I already have"></label></details>'
+      + '<label>¿Por qué importa? (opcional)<textarea class="q-new-motivation" maxlength="500" placeholder="¿Qué cambiaría esto para ti?"></textarea></label>'
+      + '<label>Restricciones (opcional)<input class="q-new-constraints" maxlength="500" placeholder="Dos tardes a la semana; usar herramientas que ya tengo"></label></details>'
       + '<div class="q-journey-actions"><button class="consent-btn q-goal-create"' + (saving ? ' disabled aria-busy="true"' : '') + '>' + (saving ? 'SAVING YOUR GOAL…' : 'SAVE &amp; FOCUS ON THIS GOAL') + '</button></div></details></details>' + collection + shelf;
   }
 
@@ -11289,7 +11289,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function questOpenOutputs(runId, label) {
     openTerm('deliverables');
     const library = open.deliverables && open.deliverables.querySelector('.term-body');
-    if (!library || typeof Deliverables === 'undefined' || !Deliverables.showRun || !Deliverables.showRun(library, runId, label)) notify('Could not locate that run’s outputs. The library is available to search.', 'warn');
+    if (!library || typeof Deliverables === 'undefined' || !Deliverables.showRun || !Deliverables.showRun(library, runId, label)) notify('No se encontraron las salidas de esa ejecución. La biblioteca está disponible para buscar.', 'warn');
   }
 
   function buildQuests(body) {
@@ -11419,7 +11419,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const lifeActions = q.kind === 'ledger' && q.status !== 'done' ? '<div class="q-life-quest" data-qid="' + esc(q.id) + '">'
         + '<div class="sub q-owner">' + esc(q.executionMode === 'commander' ? 'YOUR ACTION' : q.executionMode === 'together' ? 'YOU + STARNET' : 'STARNET CAN HELP') + '</div>'
         + (q.whyNow ? '<div class="sub">Why now: ' + esc(q.whyNow) + '</div>' : '')
-        + (isPaused(q) ? '<div class="sub">' + esc(q.disposition.type === 'later' ? 'Saved for tomorrow' : q.disposition.type === 'too_big' ? 'Needs a smaller step' : 'Blocked') + (q.disposition.reason ? ': ' + esc(q.disposition.reason) : '') + '</div><button class="consent-btn q-quest-disposition" data-action="resume">RESUME</button>'
+        + (isPaused(q) ? '<div class="sub">' + esc(q.disposition.type === 'later' ? 'Guardado para mañana' : q.disposition.type === 'too_big' ? 'Necesita un paso más pequeño' : 'Blocked') + (q.disposition.reason ? ': ' + esc(q.disposition.reason) : '') + '</div><button class="consent-btn q-quest-disposition" data-action="resume">RESUME</button>'
           : '<details><summary>CHANGE THIS RECOMMENDATION</summary><label>What needs to change?<input id="q-reason-' + esc(q.id) + '" class="q-disposition-reason" value="' + esc(questDrafts.get(q.id)?.reason || '') + '" maxlength="240" placeholder="For example: waiting for a reply, or only 15 minutes available"></label>'
             + '<div class="consent-btns"><button class="consent-btn q-quest-disposition" data-action="later">TOMORROW</button><button class="consent-btn q-quest-disposition" data-action="blocked">BLOCKED</button><button class="consent-btn q-quest-disposition" data-action="too_big">TOO BIG</button></div></details>')
         + (q.contract && q.contract.type === 'attest' ? '<details><summary>I COMPLETED THIS</summary><label>What happened?<textarea id="q-evidence-' + esc(q.id) + '" class="q-quest-evidence" data-dirty="' + (questDrafts.get(q.id)?.dirty ? '1' : '0') + '" maxlength="2000" placeholder="Describe your action and its result">' + esc(questDrafts.get(q.id)?.evidence || '') + '</textarea></label><button class="consent-btn q-quest-report">RECORD MY RESULT</button></details>' : '')
@@ -11460,7 +11460,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // Selection is presentation state only. Keep it on the stable window body across background data pokes;
     // if a selected quest completes/disappears, fall back to the first remaining quest in this category.
     const categories = [
-      ['all', 'All quests', () => true],
+      ['all', 'Todas las misiones', () => true],
       ['missions', 'Missions', q => ['ledger', 'work', 'idea'].includes(q.kind)],
       ['station', 'Station', q => ['station', 'station-gap', 'maintenance'].includes(q.kind)],
       ['commander', 'About you', q => q.kind === 'dossier']
@@ -11485,7 +11485,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         + esc(q.title) + '</span></span><span class="q-mission-arrow" aria-hidden="true">›</span></button>').join('')
       + '</nav><section class="q-briefing q-grid" id="quest-briefing" aria-label="Quest briefing">'
       + (selected ? tro(selected, 0) : '<div class="q-journal-empty"><span aria-hidden="true">◇</span><h3>'
-        + (open.length ? 'No quests in this category' : 'All caught up') + '</h3><p>'
+        + (open.length ? 'No hay misiones en esta categoría' : 'Todo al día') + '</h3><p>'
         + (open.length ? 'Choose another category to find your next action.' : 'Set a direction or refresh your quests when you are ready for what comes next.') + '</p></div>')
       + '</section></div>';
     const questViews = [
@@ -11601,7 +11601,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     }));
     body.querySelectorAll('.q-choose-next').forEach(b => b.addEventListener('click', () => {
       if (GoalStore.chooseNext(b.dataset.gid, b.dataset.mid)) { sfx('click'); rerender('quests', false); }
-      else notify('This step could not be selected. Check whether work is already in progress.', 'warn');
+      else notify('No se pudo seleccionar este paso. Revisa si ya hay trabajo en curso.', 'warn');
     }));
     body.querySelectorAll('details').forEach(el => { const key = detailKey(el); if (disclosures.has(key)) el.open = disclosures.get(key); });
     if (body.querySelector('.q-mission-list')) body.querySelector('.q-mission-list').scrollTop = listScroll;
@@ -12032,12 +12032,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // (TERM_ALIAS). UPDATES stays its own SYSTEM-dock window (Andrew's call — an update is a
     // check-it-now surface, not a setting).
     updates:  ['UPDATE CENTER',          buildUpdates,   {}],
-    tasks:    ['TASKS',                  buildTasks,     { console: true, className: 'tasks-win' }],   // three kanban lanes side by side
+    tasks:    ['TAREAS',                  buildTasks,     { console: true, className: 'tasks-win' }],   // three kanban lanes side by side
     // DELIVERABLES is console-WIDE (a project rail beside the cards needs the room) and holds a STEADY height for
     // the same reason the dossier does: a never-moved window is CSS-centred, so a content-fit box would re-centre
     // itself every time a card's details drawer opens — the row you just clicked would slide out from under you.
     // The `dlv` class owns that height; the card list scrolls inside it.
-    deliverables:['DELIVERABLES',         body => {
+    deliverables:['ENTREGABLES',         body => {
       if (typeof Deliverables !== 'undefined') Deliverables.mount(body);
       // TO REVIEW (the old OUTBOX): finished runs waiting for your verdict, above the library — hidden when none
       const lib = body.querySelector('.dlv'), host = mkEl('section', 'dlv-review');
@@ -12247,7 +12247,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   // Following work should uncover the destination and preserve the source's scroll/draft.
   // Reuse the window manager's suspension, never destroy a form to follow a link.
-  const WORK_LABELS = { tasks: 'TASKS', deliverables: 'DELIVERABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' };   // display words only (org P30): the keys stay
+  const WORK_LABELS = { tasks: 'TAREAS', deliverables: 'ENTREGABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' };   // display words only (org P30): the keys stay
   let workTrail = [];
   function navigateWork(from, to, section, back) {
     const alias = TERM_ALIAS[to];
@@ -12266,7 +12266,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const w = open[to]; if (!w) return;
     let nav = w.querySelector('.work-path');
     if (!nav) {
-      nav = mkEl('nav', 'work-path'); nav.setAttribute('aria-label', 'Work navigation');
+      nav = mkEl('nav', 'work-path'); nav.setAttribute('aria-label', 'Navegación de trabajo');
       w.querySelector('.term-head').after(nav);
     }
     nav.replaceChildren();
@@ -12289,7 +12289,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const b = mkEl('button', 'work-back', '‹ BACK TO ' + (WORK_LABELS[from] || from.toUpperCase())); b.type = 'button';
     b.onclick = () => { openTerm(from); nav.hidden = true; };
     nav.appendChild(b);
-    const dismiss = mkEl('button', 'work-dismiss', '×'); dismiss.type = 'button'; dismiss.setAttribute('aria-label', 'Dismiss return shortcut');
+    const dismiss = mkEl('button', 'work-dismiss', '×'); dismiss.type = 'button'; dismiss.setAttribute('aria-label', 'Descartar el acceso directo de retorno');
     dismiss.onclick = () => { nav.hidden = true; }; nav.appendChild(dismiss);
     const input = $('#chat-input'); if (input) input.focus();
   }

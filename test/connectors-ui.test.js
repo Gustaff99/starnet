@@ -124,7 +124,7 @@ function fakeStack(tools) {
   const idx = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'index.html'), 'utf8');
 
   // the panel is still reachable + Spotify (the pre-existing card) is untouched
-  A.ok(/id="bb-connect" data-family="connect"/.test(idx) && /connect: \{ label: 'CONNECT', tabs: \[\s*\{ id: 'abilities', k: 'connectors'/.test(fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'stationui.js'), 'utf8')), 'the CONNECTORS panel is reached from the dock: BUILD › CONNECT opens it as its ABILITIES tab (ONE MENU, 2026-10-01)');
+  A.ok(/id="bb-connect" data-family="connect"/.test(idx) && /connect: \{ label: 'CONNECT', tabs: \[\s*\{ id: 'abilities', k: 'connectors'/.test(fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'stationui.js'), 'utf8')), 'the CONNECTORS panel is reached from the dock: BUILD › CONNECT opens it as its HABILIDADES tab (ONE MENU, 2026-10-01)');
   A.ok(/function buildConnectors/.test(station), 'buildConnectors panel builder present');
   A.ok(/setupSpotify\(body\)/.test(station), 'Spotify card is still wired (not regressed)');
   A.ok(/id="sp-connect"/.test(station), 'Spotify connect control preserved');
@@ -267,7 +267,7 @@ function fakeStack(tools) {
   A.ok(/\.cc-card/.test(css) && /\.cc-grid/.test(css) && /\.cc-chip/.test(css), 'catalog card styles present');
 
   /* ---------- 4. THE CONSOLE SEARCH MUST INDEX THE PLATFORMS (regression, 2026-07-28) ----------
-     A user could not connect Google Drive: typing "google" / "gmail" / "google drive" into the ABILITIES
+     A user could not connect Google Drive: typing "google" / "gmail" / "google drive" into the HABILIDADES
      search box returned ZERO hits while a Google Workspace card was rendered on screen. Cause: doFilter's
      row selector is a hardcoded class allowlist and `.cc-card` — the class every catalog AND every KEYS
      platform card uses (48 of them) — was not on it. A search box directly above a catalog that indexes
@@ -289,7 +289,7 @@ function fakeStack(tools) {
   A.ok(/setSearchContext\(matches\[0\] \|\| activeId\)/.test(stationCore),
     'zero-hit search retains the real selected section instead of clearing the tablist selection');
   A.ok(/searchLabel:\s*'Buscar habilidades'/.test(station) && /searchEmptyText:\s*'Ninguna habilidad coincide/.test(station),
-    'ABILITIES names its global search accurately and explains a zero-hit result');
+    'HABILIDADES names its global search accurately and explains a zero-hit result');
   A.ok(/data-cc-filter="all" aria-pressed="true"/.test(station) &&
     /setAttribute\('aria-pressed', active \? 'true' : 'false'\)/.test(station),
     'catalog setup filters expose the same selected state to assistive technology that the active class paints');
@@ -318,7 +318,7 @@ function fakeStack(tools) {
   const routes = routeSource ? vm.runInNewContext(routeSource[1]) : [];
   const podRoute = routes.find(r => /print.on.demand|\bPOD\b/i.test(r.title + ' ' + r.blurb));
   A.ok(podRoute && podRoute.to === 'catalog',
-    'the ABILITIES front door routes POD discovery through CATALOG before the KEYS setup path');
+    'the HABILIDADES front door routes POD discovery through CATALOG before the KEYS setup path');
   A.eq(routes.filter(r => r.to === 'catalog').length, 1,
     'service and platform discovery share one catalog route');
   A.ok(/to: 'catalog', title: 'Conecta un servicio que usas'/.test(station) && /entry\.platformApi \? 'keys' : 'mcp'/.test(station),

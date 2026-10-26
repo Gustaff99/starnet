@@ -3,7 +3,13 @@
 ## Objetivo y alcance
 Evaluar la viabilidad del fork de androoAGI/starnet en español y terminar la traducción de UI local solicitada, conservando términos técnicos necesarios. No reinstalar/arrancar StarNet ni publicar sin autorización adicional. Paperclip es la fuente de verdad para las fases.
 
-## Estado actual (MIS-21 · 2/3 completado, 2026-10-26)
+## Estado actual (MIS-22 · 3/3 completado, 2026-10-26)
+- **Lote fase 3 (6 archivos)**: test/consent-visibility (`'awaiting your approval…'`, alineado a channels.js), test/ask-cards-readable (`'Aprobar una vez'`/`'Deny'` según group-chat.js: 3 aserciones + 3 finds), test/help-copy-matches-screen (`tasks: 'TAREAS'` según stationui.js), frontend/app/glossary.js + website/app/app/glossary.js (capability → `CONNECT › HABILIDADES`), website/docs/connect-a-platform.html (3 rutas → HABILIDADES).
+- **Tests (bounded-ui-tests.py): 10/10 PASS.** Lote 1 core (voice-live-ui, workflows-window, autonomy-ui, line-sendto, needs-you) 5/5 en re-ejecución real; lote 2 contrato (outbox-window, ask-cards-readable, session-indicators, consent-visibility, help-copy-matches-screen) 5/5. Evidencia: `VALIDACION-ES.json` (sha256 de test + sourceSha256) + logs en `validation-logs/`. `node --check` OK en los 61 js modificados.
+- **Hallazgos ocultos del lote fase 3**: ask-cards tenía 2 fallos en cascada (find `'Approve once'` en 3 lugares + etiqueta esperada); el patrón «corregir el 1.º fallo revela el 2.º» se repitió (como en 2/3 con voice-live-ui). Sin tocar canales ni endpoints: solo aserciones + 3 fuentes de copy de usuario (glossary×2, guía HTML).
+- **Entrega**: `ENTREGA-ES.md` (alcance, criterios, pruebas con exitcode, commits, límites conocidos). Commits de esta fase: 63 M + `scripts/translate-core-es.py` + `.gitignore` (`.pi/`) y `ENTREGA-ES.md`+`CHECKPOINT.md`.
+
+## Estado anterior (MIS-21 · 2/3 completado, 2026-10-26)
 - **Lote A (commit d9a7b244, 7 archivos)**: outbox.js `ABRIR EN WORKFLOWS`→`ABRIR EN FLUJOS`; workflows.js `FOR YOUR GOAL`→`PARA TU OBJETIVO` (+data-tip), `COMMON WORKFLOWS`→`FLUJOS COMUNES`, nota de trabajos vacíos y nota de envío→español; `lang="es"` en frontend/index.html y website/index.html; espejo website/app/app/ sincronizado (diff -q limpio); test/workflows-window.test.js alineado (7 aserciones).
 - **Lote B (commit 16a7b0a7, 4 archivos)**: test/line-sendto.test.js (`SENT ON TO`→`ENVIADO A`, `FROM`→`DE`, `NOT SENT ON TO`→`NO ENVIADO A`); test/needs-you.test.js (aria `Needs you`→`Necesita de ti`); test/autonomy-ui.test.js (`SMALL JOBS`→`TAREAS PEQUEÑAS`); test/voice-live-ui.test.js (aria→`Iniciar voz local manos libres` + 1 fallo oculto: status de canal, ver hallazgo).
 - **Tests (bounded-ui-tests.py, 5/5 PASS)**: voice-live-ui, workflows-window (128+ok), autonomy-ui, line-sendto, needs-you. Evidencia: `VALIDACION-ES.json` (5×exitCode 0, sha256 de test y fuente) + logs en `validation-logs/`. `node --check` OK en los 4 js modificados; espejos website en sync.
@@ -38,4 +44,8 @@ Evaluar la viabilidad del fork de androoAGI/starnet en español y terminar la tr
 No alterar identificadores/protocolos/prompts internos para traducir UI. No ocultar regresiones cambiando aserciones. No afirmar suite completa si solo se ejecutó una selección. Cerrar cada fase con informe y evidencia; si queda trabajo, persistir y programar continuación real.
 
 ## Siguiente acción
-MIS-22 (3/3): validación y entrega local — repasar el estado completo del worktree (62 archivos de MIS-20 pendientes de commit), decidir alcance de entrega (commits ya en rama `es/interfaz-espanol`), informe final con límites conocidos (suite completa NO ejecutada; solo los 5 tests de triage verificados + barrido de cadenas). Criterios abiertos de fase 3: traducción completa de estados de canal (channels.js) y demás textos restantes.
+MIS-22 completada (3/3) → misión terminada localmente. Pendientes para misiones futuras (límites conocidos, no regresiones):
+1. Traducción completa de estados de canal (channels.js, rail, COMMS, tooltips) + los 4 tests que asercionan la forma EN.
+2. Suite global (fuera de alcance de esta misión).
+3. Publicación/PR del fork con autorización explícita del usuario.
+Sin monitor: la tarea terminó con done; no queda trabajo útil programable en esta rama.

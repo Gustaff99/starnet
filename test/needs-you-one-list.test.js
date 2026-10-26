@@ -72,8 +72,8 @@ const NY = require('../frontend/app/needsyou.js');
   A.eq([att.who, att.what, att.where].join(' | '), 'ROOK | says "Ship the landing page" is done | QUESTS', 'a quest an agent says is done');
   A.eq(att.tip, 'deployed to /landing', 'its evidence rides the row\'s tip');
   A.eq(byKind('loop')[0].what, 'has 2 results waiting on your review from "Tidy the docs"', 'goal-loop results waiting on review (who + a verb)');
-  A.eq(byKind('extension')[0].what, 'has 2 extensions awaiting your approval', 'extensions awaiting approval (1 hook + 1 plugin), read as STATION has …');
-  // (two reviews 10-16) a build row said "in DELIVERABLES" while its door opened the build's own session: it names the place
+  A.eq(byKind('extension')[0].what, 'has 2 extensions esperando tu aprobación', 'extensions awaiting approval (1 hook + 1 plugin), read as STATION has …');
+  // (two reviews 10-16) a build row said "in ENTREGABLES" while its door opened the build's own session: it names the place
   // the click lands, by the name the SESSIONS rail gives that session
   A.eq([byKind('build')[0].who, byKind('build')[0].what, byKind('build')[0].where].join(' | '), 'VEX | built "Pricing page v2": keep or discard it | ⚒ Pricing page v2', 'a build that needs a decision, in its own session (named as the rail names it)');
   A.ok(!ensured.length, '…read only: naming the place never adopts the session (the click does)');
@@ -100,25 +100,25 @@ const NY = require('../frontend/app/needsyou.js');
 
   // the doors
   NY.openKey('stepin:h1'); A.eq(opened.pop(), ['stepin', 'h1'], 'STEP-IN opens its window on THAT handoff');
-  NY.openKey('extensions'); A.eq(ui.terms.pop(), ['connectors', 'extensions'], 'extensions open ABILITIES › EXTENSIONS');
+  NY.openKey('extensions'); A.eq(ui.terms.pop(), ['connectors', 'extensions'], 'extensions open HABILIDADES › EXTENSIONS');
   NY.openKey(att.key); A.eq(ui.terms.pop(), ['quests', 'available'], 'a quest attest opens QUESTS on NOW, where its confirm lives (PASS leads the log)');
-  NY.openKey('loop:L1'); A.eq(ui.terms.pop(), ['loops', null], 'loop results open GOAL LOOPS');
+  NY.openKey('loop:L1'); A.eq(ui.terms.pop(), ['loops', null], 'loop results open BUCLES DE OBJETIVO');
   A.ok(!opened.length, 'none of them opens a conversation');
   // (Andrew 10-15: "it only takes you to deliverables … instead of where you are ACTUALLY needed") a build opens ITS OWN session,
   // where its keep/discard card is
   const termsBefore = ui.terms.length;
   A.eq(NY.openKey('build:b1'), { conversation: true }, 'a build opens its own session (NOTIFICATIONS steps aside for it)');
   A.eq(opened.pop(), ['ws', 'workshop-b1'], '…THAT build session, where its keep/discard card is');
-  A.ok(ensured[0] === 'b1' && ui.terms.length === termsBefore, '…adopted through WorkshopStore, and DELIVERABLES is not opened');
+  A.ok(ensured[0] === 'b1' && ui.terms.length === termsBefore, '…adopted through WorkshopStore, and ENTREGABLES is not opened');
   // only a build whose session cannot be had (the Commander deleted it: ensureSession returns null, adopt refuses the
-  // tombstone) falls back to DELIVERABLES › NEEDS A DECISION, and its row names DELIVERABLES before the click
+  // tombstone) falls back to ENTREGABLES › NEEDS A DECISION, and its row names ENTREGABLES before the click
   deleted.add('workshop-b1');
-  A.eq(NY.items(NOW).find(i => i.key === 'build:b1').where, 'DELIVERABLES', 'a build whose session was deleted names DELIVERABLES, where its door now goes');
+  A.eq(NY.items(NOW).find(i => i.key === 'build:b1').where, 'ENTREGABLES', 'a build whose session was deleted names ENTREGABLES, where its door now goes');
   global.document = { querySelector: sel => sel === '#dl-status' ? { closest: () => ({}) } : null, hidden: false };
   ensured.length = 0;
-  A.eq(NY.openKey('build:b1'), { conversation: false }, '…and opens DELIVERABLES, a window (NOTIFICATIONS keeps the focus there)');
+  A.eq(NY.openKey('build:b1'), { conversation: false }, '…and opens ENTREGABLES, a window (NOTIFICATIONS keeps the focus there)');
   A.ok(ensured[0] === 'b1', '…after WorkshopStore said its session cannot be had (null)');
-  A.eq(ui.terms.pop(), ['deliverables', null], '…the DELIVERABLES window');
+  A.eq(ui.terms.pop(), ['deliverables', null], '…the ENTREGABLES window');
   A.eq(shownStatus, 'pending', '…filtered to NEEDS A DECISION');
   A.ok(!opened.length, '…and no conversation');
   global.document = undefined;
@@ -129,7 +129,7 @@ const NY = require('../frontend/app/needsyou.js');
   {
     const su0 = read('frontend/app/stationui.js');
     A.ok(/const did = NY && NY\.openKey\(el\.dataset\.nyKey\); if \(did && did\.conversation && open\.notifs\) workConversation\('notifs'\);/.test(su0),
-      'NOTIFICATIONS › NEEDS YOU steps aside only when the row opened a conversation (a STEP-IN / EXTENSIONS / DELIVERABLES / QUESTS / GOAL LOOPS window keeps the focus)');
+      'NOTIFICATIONS › NEEDS YOU steps aside only when the row opened a conversation (a STEP-IN / EXTENSIONS / ENTREGABLES / QUESTS / BUCLES DE OBJETIVO window keeps the focus)');
   }
   A.ok(!NY.dismissKey('stepin:h1') && !NY.dismissKey(att.key), 'a wait is never dismissed away — only failed work has Dismiss (as on the rail)');
   A.ok(NY.canDismiss({ kind: 'failed' }) && !NY.canDismiss(step), 'canDismiss follows the rail');
@@ -162,7 +162,7 @@ const NY = require('../frontend/app/needsyou.js');
     global.fetch = realFetch;
     await NY.refreshFeeds(true);                  // back to the fixture's station (2 extensions waiting) for the rest
     const conn = read('frontend/app/windows/connectors.js');
-    A.ok(/NeedsYou\.refreshFeeds\(true\)/.test(conn), 'approving / changing an extension in ABILITIES › EXTENSIONS re-reads NEEDS YOU at once');
+    A.ok(/NeedsYou\.refreshFeeds\(true\)/.test(conn), 'approving / changing an extension in HABILIDADES › EXTENSIONS re-reads NEEDS YOU at once');
   }
 
   // ---- NOTIFICATIONS › NEEDS YOU renders the SAME list; the bell adds the live count ----

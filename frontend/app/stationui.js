@@ -878,7 +878,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const bar = document.getElementById('bottombar'); if (!bar) return null;
     strip = mkEl('div', 'term-strip'); strip.id = 'term-strip';
     strip.setAttribute('role', 'group');
-    strip.setAttribute('aria-label', 'Minimized windows');
+    strip.setAttribute('aria-label', 'Ventanas minimizadas');
     const right = bar.querySelector('.bb-right');
     if (right) bar.insertBefore(strip, right); else bar.appendChild(strip);
     return strip;
@@ -1065,7 +1065,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // ARM: keep the window, warn, and require a second close within 3s.
     w._closeArmed = true; sfx('bad');
     let bar = w.querySelector('.term-unsaved-bar');
-    if (!bar) { bar = mkEl('div', 'term-unsaved-bar', '⚠ UNSAVED — close again to discard, or SAVE first'); bar.setAttribute('role', 'alert'); w.appendChild(bar); }
+    if (!bar) { bar = mkEl('div', 'term-unsaved-bar', '⚠ SIN GUARDAR — cierra otra vez para descartar, o guarda primero'); bar.setAttribute('role', 'alert'); w.appendChild(bar); }
     bar.hidden = false;
     clearTimeout(w._closeArmTimer);
     w._closeArmTimer = setTimeout(() => { if (!w) return; w._closeArmed = false; w._closeArmTimer = 0; const b = w.querySelector('.term-unsaved-bar'); if (b) b.remove(); }, 3000);
@@ -1080,22 +1080,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      name — the name the manual, the agents and every error door already use. Never a merged card grid: each
      tab stays its own distinct surface (the August ABILITIES lesson). */
   const FAMILIES = {
-    mywork: { label: 'MY WORK', first: 'deliverables', tabs: [
-      { id: 'tasks', k: 'tasks', label: 'TASKS', tip: 'Trabajo planificado que llevas — los chats y rutinas viven en COMUNICACIONES' },
-      { id: 'deliverables', k: 'deliverables', label: 'DELIVERABLES', tip: 'Todo lo que tu tripulación terminó, con sus archivos' },
-      { id: 'recipes', k: 'marketplace', label: 'RECIPES', tip: 'Ready-made jobs to start',
+    mywork: { label: 'MI TRABAJO', first: 'deliverables', tabs: [
+      { id: 'tasks', k: 'tasks', label: 'TAREAS', tip: 'Trabajo planificado que llevas — los chats y rutinas viven en COMUNICACIONES' },
+      { id: 'deliverables', k: 'deliverables', label: 'ENTREGABLES', tip: 'Todo lo que tu tripulación terminó, con sus archivos' },
+      { id: 'recipes', k: 'marketplace', label: 'RECETAS', tip: 'Trabajos listos para empezar',
         is: () => typeof Marketplace !== 'undefined' && Marketplace.currentTab && Marketplace.currentTab() === 'recipes',
         open: () => { if (typeof App !== 'undefined' && App.openRecipes) App.openRecipes(); } }
     ] },
-    automate: { label: 'AUTOMATE', tabs: [
-      { id: 'workflows', k: 'workflows', label: 'WORKFLOWS', tip: 'Enviar un trabajo por una línea de agentes' },
-      { id: 'schedules', k: 'automation', section: 'routines', match: ['routines', 'routines-create'], label: 'SCHEDULES', tip: 'Ejecutar cualquier trabajo con horario' },
-      { id: 'loops', k: 'automation', section: 'loops', match: ['loops', 'loops-start'], label: 'GOAL LOOPS', tip: 'Repetir un trabajo hasta terminarlo' },
-      { id: 'away', k: 'automation', section: 'away', match: ['away'], label: 'AWAY WORK', tip: 'En qué trabajan los agentes entre tus mensajes' }
+    automate: { label: 'AUTOMATIZAR', tabs: [
+      { id: 'workflows', k: 'workflows', label: 'FLUJOS', tip: 'Enviar un trabajo por una línea de agentes' },
+      { id: 'schedules', k: 'automation', section: 'routines', match: ['routines', 'routines-create'], label: 'HORARIOS', tip: 'Ejecutar cualquier trabajo con horario' },
+      { id: 'loops', k: 'automation', section: 'loops', match: ['loops', 'loops-start'], label: 'BUCLES DE OBJETIVO', tip: 'Repetir un trabajo hasta terminarlo' },
+      { id: 'away', k: 'automation', section: 'away', match: ['away'], label: 'TRABAJO EN AUSENCIA', tip: 'En qué trabajan los agentes entre tus mensajes' }
     ] },
-    connect: { label: 'CONNECT', tabs: [
-      { id: 'abilities', k: 'connectors', label: 'ABILITIES', tip: 'Herramientas, apps, conectores y habilidades que tus agentes pueden usar' },
-      { id: 'channels', k: 'messaging', label: 'CHANNELS', tip: 'Habla con tus agentes desde Telegram, Slack, Discord' }
+    connect: { label: 'CONECTAR', tabs: [
+      { id: 'abilities', k: 'connectors', label: 'HABILIDADES', tip: 'Herramientas, apps, conectores y habilidades que tus agentes pueden usar' },
+      { id: 'channels', k: 'messaging', label: 'CANALES', tip: 'Habla con tus agentes desde Telegram, Slack, Discord' }
     ] }
   };
   // which menu a window belongs to (marketplace counts only while it is the RECIPES library, not the recruit bay)
@@ -2086,7 +2086,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       { lbl: 'PROFILE',   val: prof.label.toLowerCase(),  dim: false,               go: 'ag-execution-card', tip: 'change it in CONFIG › ACCESS' },
       { lbl: 'VOICE',     val: voice || 'station default', dim: !voice,             go: 'ag-voice',          tip: 'opens SETTINGS › LOOK & SOUND › VOICE FOR this agent' },
       { lbl: 'SKILLS',    val: 'its own procedures',       dim: true,               go: 'ag-skills',         tip: 'opens ABILITIES › AGENT SKILLS for this agent' },
-      { lbl: 'AWAY WORK', val: (a && a.workshop) ? 'on'  : 'off', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'opens AUTOMATE › AWAY WORK' }
+      { lbl: 'TRABAJO EN AUSENCIA', val: (a && a.workshop) ? 'on'  : 'off', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'opens AUTOMATE › AWAY WORK' }
     ];
     return '<div class="ag-setup" role="group" aria-label="Cómo está configurado este agente">' +
       rows.map(r =>
@@ -2343,7 +2343,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     Harness.api.get('/api/toolsets?agent=' + encodeURIComponent(a.id) + '&placed=' + encodeURIComponent(placed.join(',')))
       .then(view => {
         if (!body.isConnected || body._accessRequest !== request) return;
-        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Access unavailable');
+        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Acceso no disponible');
         const authority = view.authority;
         const summary = body.querySelector('[data-goconfig="ag-approval-card"] .ag-setup-val');
         // ORG P21: the summary speaks the ONE ACCESS posture words. FULL POWER only when the live authority is unrestricted;
@@ -2371,7 +2371,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const html = '<p><b>' + esc(authority.approvalLabel) + '</b><br>' + esc(authority.filesystemLabel) + ' · ' + esc(authority.profileLabel) + '</p>' +
           '<div class="perk-grid">' + view.toolsets.map(t => '<div class="perk' + (t.available ? ' on' : '') + '"><div class="perk-name">' + esc(t.label) + '</div><div class="perk-stat">' +
             (t.available ? (t.consentGated ? 'AVAILABLE · risky actions may ask' : 'AVAILABLE') : !t.enabled ? 'SWITCHED OFF' : 'NEEDS GEAR OR ACCESS') +
-            '</div><div class="perk-desc">' + esc(t.grantSource || 'No current grant') + '</div></div>').join('') + '</div>' +
+            '</div><div class="perk-desc">' + esc(t.grantSource || 'Sin permiso actual') + '</div></div>').join('') + '</div>' +
           '<p class="sk-note">' + esc(authority.revoke) + ' Service credentials, task-specific permissions and operating-system limits still apply. Unattended jobs have their own grants.</p>' +
           '<button class="bb sm" data-access-manage>MANAGE ABILITIES</button> <button class="bb sm" data-access-settings>STATION PERMISSIONS</button> <button class="bb sm" data-access-refresh>REFRESH ACCESS</button>';
         // BRIEF's compact line: how many toolsets are ready, which ones, and the approval mode — one jump to the full grid
@@ -2508,9 +2508,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const r = await Harness.memoryTurnin({ agentId: a.id, runId: p.runId, id: p.id, verdict: verdict });
       if (r && r.ok) { sfx('click'); loadMemoryCore(a); } else busy = false;   // a failed verdict must stay clickable
     };
-    const keep = mkEl('button', 'consent-btn'); keep.textContent = 'Keep'; keep.title = 'remember this'; keep.onclick = () => decide('keep');
+    const keep = mkEl('button', 'consent-btn'); keep.textContent = 'Mantener'; keep.title = 'recordar esto'; keep.onclick = () => decide('keep');
     btns.appendChild(keep);
-    const drop = mkEl('button', 'consent-btn deny'); drop.textContent = 'Discard'; drop.title = 'reject it — never propose this again'; drop.onclick = () => decide('discard');
+    const drop = mkEl('button', 'consent-btn deny'); drop.textContent = 'Descartar'; drop.title = 'rechazarlo — que nunca lo proponga de nuevo'; drop.onclick = () => decide('discard');
     btns.appendChild(drop);
     return card;
   }
@@ -2645,7 +2645,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const reload = () => loadMemoryCore(a);
     let busy = false;   // in-flight guard: a fast double-click must not fire two POSTs (a success reloads the card away)
     const mk = (label, cls, fn) => { const b = mkEl('button', 'consent-btn' + (cls ? ' ' + cls : '')); b.textContent = label; b.onclick = fn; btns.appendChild(b); return b; };
-    mk(rec.pinned ? 'Unpin' : 'Pin', '', async () => {
+    mk(rec.pinned ? 'Quitar fijado' : 'Pin', '', async () => {
       if (busy) return; busy = true;
       const r = await Harness.memoryPin({ agentId: a.id, id: rec.id, pinned: !rec.pinned });
       if (r && r.ok) { sfx('click'); reload(); } else busy = false;
@@ -2653,8 +2653,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     mk('Edit', '', () => editMemCard(card, bodyEl, btns, rec, a));
     // forget is destructive → two-step inline confirm (auto-disarms after 3s)
     let armed = false;
-    const fbtn = mk('Forget', 'deny', async () => {
-      if (!armed) { armed = true; fbtn.textContent = 'Confirm forget'; setTimeout(() => { if (armed) { armed = false; fbtn.textContent = 'Forget'; } }, 4000); return; }
+    const fbtn = mk('Olvidar', 'deny', async () => {
+      if (!armed) { armed = true; fbtn.textContent = 'Confirmar olvido'; setTimeout(() => { if (armed) { armed = false; fbtn.textContent = 'Olvidar'; } }, 4000); return; }
       if (busy) return; busy = true;
       const r = await Harness.memoryForget({ agentId: a.id, id: rec.id });
       if (r && r.ok) { sfx('click'); reload(); } else busy = false;
@@ -2668,7 +2668,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     card.replaceChild(ta, bodyEl); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
     btns.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
     let saving = false;
     save.onclick = async () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; const r = await Harness.memoryEdit({ agentId: a.id, id: rec.id, content: v }); if (r && r.ok) { sfx('click'); loadMemoryCore(a); } else saving = false; };
     cancel.onclick = () => loadMemoryCore(a);
@@ -2736,9 +2736,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       agSkills(a.id) + accessAnswerCard(a), agCommand(a)
     ];
     const summaries = [a.purpose || '¿Qué debe lograr este agente?', 'Identidad, contexto y reglas de operación · edita cada una para queurce file',
-      a.model || 'Seguir el defecto de la estación', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Station personality',
+      a.model || 'Seguir el defecto de la estación', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Personalidad de la estación',
       (() => { const AP = agentPostureOf(a); return AP ? AP.label + ' — ' + AP.agentBlurb : 'Personalizado — su propia mezcla de alcance y preguntas'; })(),
-      ((typeof DATA !== 'undefined' && DATA.SKINS && DATA.SKINS[a.skin]) || {}).name || 'Choose a skin'];
+      ((typeof DATA !== 'undefined' && DATA.SKINS && DATA.SKINS[a.skin]) || {}).name || 'Elige un aspecto'];
     return '<p class="cf-grp-note">Choose what to change. Text you edit needs SAVE; buttons apply right away.</p>' +
       CF_GROUPS.map((g, i) => {
         const key = a.id + ':' + g.id;
@@ -2921,7 +2921,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const traits = (a && a.voiceTraits) || {};
     const select = (key, label, options, selected) => '<div class="set-row"><label for="ag-persona-' + key + '">' + esc(label) + '</label><select class="fbc-sel" id="ag-persona-' + key + '" data-persona-trait="' + key + '">' + options.map((text, i) => '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + esc(text) + '</option>').join('') + '</select></div>';
     const tuning = Personas.TRAITS.map(t => select(t.key, t.label, t.options, Number.isInteger(traits[t.key]) ? traits[t.key] : t.neutral)).join('') +
-      select('profanity', 'LANGUAGE', ['Use preset', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
+      select('profanity', 'LANGUAGE', ['Usar preajuste', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
       Personas.TOGGLES.map(t => '<label class="cf-desc"><input type="checkbox" data-persona-toggle="' + t.key + '"' + (traits[t.key] === true ? ' checked' : '') + '> ' + esc(t.label) + '</label>').join('') +
       '<div class="set-row"><label for="ag-persona-custom">ESTILO PERSONALIZADO</label><textarea class="key-input" id="ag-persona-custom" rows="3" placeholder="Cómo quieres que se comunique este agente">' + esc((a && a.customVoice) || '') + '</textarea></div>' +
       '<button type="button" class="bb" id="ag-persona-save">SAVE TUNING</button> <button type="button" class="bb" id="ag-persona-reset">RESET TO PRESET</button>';
@@ -2950,7 +2950,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const hasPicker = (typeof ModelPicker !== 'undefined');
     const picker = hasPicker
       ? '<div class="set-row mc-pick-row"><label for="ag-model-pick-model">MODEL</label>' +
-          '<div class="mc-pick" id="ag-model-pick">' + ModelPicker.shellHTML({ id: 'ag-model-pick', inheritLabel: 'Seguir el defecto de la estación', ariaLabel: 'Agent model', effort: true }) + '</div></div>'
+          '<div class="mc-pick" id="ag-model-pick">' + ModelPicker.shellHTML({ id: 'ag-model-pick', inheritLabel: 'Seguir el defecto de la estación', ariaLabel: 'Modelo del agente', effort: true }) + '</div></div>'
       : '';
     return '<div class="cf-card" id="ag-model-card">' +
       '<div class="cf-head"><span class="cf-file">▣ model</span></div>' +
@@ -4073,7 +4073,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (msg) msg.textContent = text;
         skillsChanged();
       } catch (e) {
-        const text = String((e && e.message) || 'That did not work').replace(/[.\s]+$/, '') + '.';
+        const text = String((e && e.message) || 'Eso no funcionó').replace(/[.\s]+$/, '') + '.';
         skmResult = { slug, text, ok: false };
         if (msg) msg.textContent = text;
       } finally {
@@ -4095,14 +4095,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     try { placed = (typeof World !== 'undefined' && World.heroCaps) ? World.heroCaps(agentId).map(c => c.objectType) : []; } catch (e) {}
     Harness.api.get('/api/toolsets?agent=' + encodeURIComponent(agentId) + '&placed=' + encodeURIComponent(placed.join(',')))
       .then(view => {
-        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('Access could not be checked');
+        if (!view || !view.authority || !Array.isArray(view.toolsets)) throw Error('No se pudo verificar el acceso');
         // Match runOnce's skill context: room objects plus profile/Full Access projection and shared station gear.
         // This only explains instruction availability; it does not grant any tools or change skill preferences.
         const shared = typeof World !== 'undefined' && World.stationCaps ? World.stationCaps().map(c => c.objectType) : [];
         placed = [...new Set(placed.concat(shared, view.toolsets.filter(r => r.object && (r.placed || r.profileGranted || r.runtimeGranted || view.authority.unrestricted)).map(r => r.object)))];
         return fetch('/api/skills?placed=' + encodeURIComponent(placed.join(',')));
       })
-      .then(r => { if (!r.ok) throw Error('Skill library unavailable'); return r.json(); })
+      .then(r => { if (!r.ok) throw Error('Biblioteca de habilidades no disponible'); return r.json(); })
       .then(d => {
         const h = $('#sk-lib');
         if (h === host && load === skillLibLoad) {
@@ -4259,7 +4259,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     }));
     host.querySelectorAll('[data-expand]').forEach(btn => btn.addEventListener('click', () => {
       const card = btn.closest('.sk-card'); if (!card) return;
-      const opened = card.classList.toggle('open'); btn.textContent = opened ? 'Hide instructions' : 'Read instructions'; btn.setAttribute('aria-expanded', String(opened)); sfx('click');
+      const opened = card.classList.toggle('open'); btn.textContent = opened ? 'Ocultar instrucciones' : 'Leer instrucciones'; btn.setAttribute('aria-expanded', String(opened)); sfx('click');
     }));
   }
 
@@ -4288,7 +4288,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     host.innerHTML =
       '<div class="sk-card open ' + (blocked || asks ? 'want' : 'on') + '">' +
         '<div class="sk-card-head"><div class="sk-card-main">' +
-          '<div class="sk-name-row"><span class="sk-name">' + esc(preview.name || 'Unnamed skill') + '</span>' +
+          '<div class="sk-name-row"><span class="sk-name">' + esc(preview.name || 'Habilidad sin nombre') + '</span>' +
             '<span class="sk-badge ' + (blocked || asks ? 'miss' : 'have') + '">' + verdict + '</span>' +
             (preview.version ? '<span class="sk-badge free">v' + esc(preview.version) + '</span>' : '') + '</div>' +
           '<div class="sk-desc">' + esc(preview.summary || '') + '</div>' +
@@ -4541,7 +4541,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const tie = candidateTie(r);
         note.textContent = lead + candidateResultText(r, suite, tie) + ' Approval remains a separate action.';
         const box = mkEl('details', ''), head = mkEl('summary', ''), raw = mkEl('pre', '');
-        head.textContent = 'Evaluation receipt'; raw.textContent = JSON.stringify(r, null, 2);
+        head.textContent = 'Recibo de evaluación'; raw.textContent = JSON.stringify(r, null, 2);
         box.appendChild(head); box.appendChild(raw); note.appendChild(box);
         approve.disabled = !(r && r.status === 'passed' && r.receiptId);
         // The station re-checks the receipt; this only offers the owner's "accept it anyway" on a complete tie.
@@ -4550,7 +4550,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (!matching.length) suiteHost.textContent = 'No task checks registered for this skill yet.';
       for (const suite of matching) {
         const label = mkEl('div', 'sk-attr'); label.textContent = (suite.description || suite.skillName || suite.id) + (suite.generic ? ' · generic check (not specific to this skill)' : ''); suiteHost.appendChild(label);
-        const run = mkEl('button', 'consent-btn'); run.textContent = 'Run these checks'; suiteHost.appendChild(run);
+        const run = mkEl('button', 'consent-btn'); run.textContent = 'Ejecutar estas comprobaciones'; suiteHost.appendChild(run);
         run.onclick = async () => {
           if (busy) return; busy = true; run.disabled = true; approve.disabled = true; acknowledge.disabled = true; acknowledge.hidden = true; receipt = null;
           note.textContent = 'Running the checks with and without the proposal…';
@@ -4592,7 +4592,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   // Skill sharing in plain words (skillstore.js isAccessible): agent = only the owning agent; project = any
   // agent working in that project folder; station = every agent on the station.
-  const SKILL_SCOPE_LABEL = { agent: 'Only this agent', project: 'This project', station: 'Whole station' };
+  const SKILL_SCOPE_LABEL = { agent: 'Solo este agente', project: 'Este proyecto', station: 'Estación completa' };
   const skillScopeText = (scope, root) => (SKILL_SCOPE_LABEL[scope || 'agent'] || String(scope)) + (root ? ' · ' + root : '');
   const SUITE_EXAMPLE = 'Example:\n{ "id": "owner:weekly-brief", "version": 1, "description": "Weekly brief",\n  "cases": [\n' +
     '    { "id": "basic", "prompt": "Write brief.json for this week", "writablePaths": ["brief.json"],\n' +
@@ -4646,7 +4646,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       html +=
         '<div class="sk-card ' + state + (held ? ' held' : '') + '" data-agent-skill="' + esc(s.id) + '">' +
           '<div class="sk-card-head">' +
-            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Unpin' : 'Pin') + ' this skill">' + (s.pinned ? '*' : '+') + '</button>' +
+            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Quitar fijado' : 'Pin') + ' this skill">' + (s.pinned ? '*' : '+') + '</button>' +
             '<div class="sk-card-main">' +
               '<div class="sk-name-row"><span class="sk-name">' + esc(s.name) + '</span>' +
                 (s.category ? '<span class="sk-badge cat">' + esc(String(s.category).toUpperCase()) + '</span>' : '') +
@@ -4757,7 +4757,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     note.textContent = 'Only this agent: just ' + agentId + ' uses it. This project: any agent working in that project folder. Whole station: every agent.';
     const row = mkEl('div', 'consent-btns mc-acts'); panel.appendChild(row);
     const input = mkEl('input', 'key-input'); input.value = skill.projectRoot || ''; input.placeholder = 'Project folder (full path)';
-    input.setAttribute('aria-label', 'Project folder to share with'); input.hidden = (skill.scope || 'agent') !== 'project'; panel.appendChild(input);
+    input.setAttribute('aria-label', 'Carpeta del proyecto para compartir con'); input.hidden = (skill.scope || 'agent') !== 'project'; panel.appendChild(input);
     for (const scope of ['agent', 'project', 'station']) {
       const current = (skill.scope || 'agent') === scope;
       const button = mkEl('button', 'consent-btn' + (current ? ' sel' : '')); button.type = 'button';
@@ -4811,7 +4811,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     actions.before(form);
     actions.innerHTML = '';
     const send = mkEl('button', 'consent-btn'); send.textContent = 'Enviar a revisión'; actions.appendChild(send);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; actions.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; actions.appendChild(cancel);
     const result = form.querySelector('.skm-result');
     const picked = (k) => { const b = form.querySelector('[data-skm="' + k + '"] [aria-pressed="true"]'); return b ? b.dataset.v : ''; };
     // back to the card as it was, with the keyboard on the key that opened the form
@@ -4832,7 +4832,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (r && r.ok && r.submission) {
         result.textContent = 'Sent for review as "' + (r.submission.title || fields.title) + '". A person reads it next; your Skills tab on account.starnetos.com shows where it stands.'
           + (r.referencesLeftOut ? ' ' + r.referencesLeftOut + (r.referencesLeftOut === 1 ? ' support file was' : ' support files were') + ' left out: the market takes up to five plain-text references.' : '');
-        send.remove(); cancel.textContent = 'Done'; cancel.focus(); sfx('click');
+        send.remove(); cancel.textContent = 'Hecho'; cancel.focus(); sfx('click');
         return;
       }
       if (!r) { result.textContent = 'The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again.'; return; }
@@ -4853,7 +4853,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (pre) body.replaceChild(ta, pre);
     if (actions) actions.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; actions.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; actions.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; actions.appendChild(cancel);
     save.onclick = async () => {
       const r = await Harness.agentSkillManage({ agentId, action: 'edit', target: skill.id, summary: skill.summary || '', body: ta.value, category: skill.category || 'General', force: true });   // the human author may edit their own pinned skill (see force note above)
       if (r && r.ok) { sfx('click'); loadAgentSkills(agentId); }
@@ -5037,7 +5037,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // a stranded ⌫ on its own row (the raggedness the keycap restyle made visible).
     const tail = '<details class="kb-more"><summary>More</summary><span class="kb-meta-keys">' +
       '<button data-act="rename">Rename</button>' +
-      '<button data-act="pin">' + (s.pinned ? 'Unpin' : 'Pin to top') + '</button>' +
+      '<button data-act="pin">' + (s.pinned ? 'Quitar fijado' : 'Fijar arriba') + '</button>' +
       (s.lane === 'active' ? '<button data-act="queue">Back to To do</button>' : '') +
       (s.lane === 'shipped' ? '<button data-act="repeat" title="Review a schedule; nothing runs until you save and enable it">Repeat on a schedule</button>' : '') +
       '<button data-act="arch" title="Recover from the COMMS rail’s Archived view">Archive</button></span></details>';
@@ -5056,7 +5056,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       (runs ? '<span>' + runs + '</span>' : '') +
       (dv ? '<span class="kb-deliv">' + dv + ' deliverable' + (dv === 1 ? '' : 's') + '</span>' : '') + '</div>' +
       stateChip(s) +
-      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Latest reply' : 'Request') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
+      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Última respuesta' : 'Request') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
       '<div class="kb-acts">' + acts + '</div></div>';
   }
   // LIVE board refresh (P1, 2026-08-04): renderRail pokes the board on EVERY rail change (run start/end,
@@ -5897,7 +5897,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '</button>' +
         '<span class="prov-stat"><span class="prov-stat-t">' + stat + '</span></span>' +
       '<button class="bb sm prov-addkey" data-act="credits-store" data-provider="' + esc(p.id) + '" ' +
-      'aria-label="' + ((linked || saved) ? 'Open the STORE' : 'Link this station to a StarNet account') + '" ' +
+      'aria-label="' + ((linked || saved) ? 'Abrir la TIENDA' : 'Vincular esta estación a una cuenta de StarNet') + '" ' +
       'title="' + ((linked || saved) ? 'balance, plan and history live in the STORE' : 'link this station to a StarNet account') + '">' +
       ((linked || saved) ? '◆ STORE' : '↗ LINK STATION') + '</button>' +
       '</div>';
@@ -8171,7 +8171,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (named.length > 2) {
         const nav = document.createElement('nav');
         nav.className = 'settings-jumps';
-        nav.setAttribute('aria-label', 'Jump to settings subsection');
+        nav.setAttribute('aria-label', 'Ir a la subsección de ajustes');
         named.forEach(g => {
           const heading = g.querySelector('h4.ms-h');
           const btn = document.createElement('button');
@@ -8553,8 +8553,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           });
         });
       };
-      wireLifecyclePreference(startMinimizedToggle, Lifecycle.setStartMinimized, 'Start minimized', 'startMinimized');
-      wireLifecyclePreference(closeToTrayToggle, Lifecycle.setCloseToTray, 'Close to tray', 'closeToTray');
+      wireLifecyclePreference(startMinimizedToggle, Lifecycle.setStartMinimized, 'Empezar minimizado', 'startMinimized');
+      wireLifecyclePreference(closeToTrayToggle, Lifecycle.setCloseToTray, 'Cerrar a la bandeja', 'closeToTray');
     }
     // PERMISSIONS panel repaint hook — set by the permissions block below; called whenever the granular dial
     // changes so the posture cards stay in sync with the dial. No-op until that block wires it.
@@ -8641,7 +8641,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           label.title = String(e.ref);
           const rm = document.createElement('button');
           rm.className = 'bb xs';
-          rm.textContent = 'ALLOW AGAIN';
+          rm.textContent = 'PERMITIR OTRA VEZ';
           rm.title = 'remove this boundary — the station may pick it unattended again';
           rm.addEventListener('click', () => {
             rm.disabled = true;
@@ -9986,7 +9986,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
            ? ', estimated for this chat’s next message from a real measurement of this model. It becomes exact the moment the agent replies.'
            : ', measured on this chat’s last request.') +
          (tier
-           ? ' The model can hold ' + CtxGauge.fmtTokens(cs.limit) + ', but it bills a higher rate for a prompt over ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, so a run works in ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
+           ? ' The model can hold ' + CtxGauge.fmtTokens(cs.limit) + ', pero cobra un precio más alto para un prompt de más de ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, así que una ejecución trabaja en ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
            : '') +
          ' How much of this conversation a run can still hold; when it nears full, older turns are folded into a summary automatically.')
       : (s.limit ? 'measuring… send a message and this fills in' : 'measuring this model’s memory size…'));
@@ -10146,7 +10146,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const label = document.createElement('p'); label.textContent = d.title;
         const exportButton = document.createElement('button'); exportButton.className = 'bb'; exportButton.textContent = 'Download this window’s save';
         exportButton.onclick = () => { const blob = new Blob([JSON.stringify(CloudSave.localSnapshot() || {})], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'starnet-conflicting-save.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
-        const reload = document.createElement('button'); reload.className = 'bb'; reload.textContent = reset ? 'Open the fresh station' : 'Reload current station'; reload.onclick = async () => { try { await CloudSave.reloadCurrent(); } catch (e) { label.textContent = e.message; } };
+        const reload = document.createElement('button'); reload.className = 'bb'; reload.textContent = reset ? 'Abrir la estación nueva' : 'Recargar la estación actual'; reload.onclick = async () => { try { await CloudSave.reloadCurrent(); } catch (e) { label.textContent = e.message; } };
         // the preserved copy's sessions go INTO the station (added, never removing any), then this window reloads onto it
         // never after a RESET, and never for erased work: the station was erased on purpose, and this copy is from before it
         // (the station refuses that restore, so the key is never shown for it)
@@ -10290,7 +10290,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // dossier through the same upsert path the cards use. Gated on a free agent + not-already-running.
     const actRow = mkEl('div', 'cd-actions-row');
     const goBtn = mkEl('button', 'cd-interview');
-    goBtn.textContent = sum.blank.length ? 'Start a guided interview' : 'Update through an interview';
+    goBtn.textContent = sum.blank.length ? 'Empezar una entrevista guiada' : 'Actualizar mediante una entrevista';
     goBtn.onclick = () => {
       if (typeof Intake === 'undefined') return;
       if (typeof Onboarding !== 'undefined' && Onboarding.isRunning && Onboarding.isRunning()) { notify('let your agent finish waking up first', ''); return; }
@@ -10464,11 +10464,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const btns = mkEl('div', 'consent-btns cd-acts'); card.appendChild(btns);
     let busy = false;
     const mk = (label, cls, fn) => { const x = mkEl('button', 'consent-btn' + (cls ? ' ' + cls : '')); x.textContent = label; x.onclick = fn; btns.appendChild(x); return x; };
-    mk(b.pinned ? 'Unpin' : 'Pin', '', () => { if (busy) return; busy = true; CDS().setPinned(dim, b.id, !b.pinned); sfx('click'); rerender('commander'); });
+    mk(b.pinned ? 'Quitar fijado' : 'Pin', '', () => { if (busy) return; busy = true; CDS().setPinned(dim, b.id, !b.pinned); sfx('click'); rerender('commander'); });
     mk('Edit', '', () => cdEdit(card, txt, btns, dim, b));
     let armed = false;
-    const fb = mk('Forget', 'deny', () => {
-      if (!armed) { armed = true; fb.textContent = 'Confirm forget'; setTimeout(() => { if (armed) { armed = false; fb.textContent = 'Forget'; } }, 3000); return; }
+    const fb = mk('Olvidar', 'deny', () => {
+      if (!armed) { armed = true; fb.textContent = 'Confirmar olvido'; setTimeout(() => { if (armed) { armed = false; fb.textContent = 'Olvidar'; } }, 3000); return; }
       if (busy) return; busy = true; CDS().forget(dim, b.id); sfx('click'); rerender('commander');
     });
     return card;
@@ -10494,7 +10494,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     card.replaceChild(ta, txt); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
     btns.innerHTML = '';
     const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+    const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
     btns.appendChild(cdCount(ta));
     let saving = false;
     save.onclick = () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; CDS().upsert(dim, { id: b.id, text: v }); sfx('click'); rerender('commander'); };
@@ -10548,7 +10548,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
       const btns = mkEl('div', 'consent-btns cd-acts'); row.appendChild(btns);
       const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
-      const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancel'; btns.appendChild(cancel);
+      const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
       btns.appendChild(count);
       let saving = false;
       save.onclick = () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; CDS().upsert(dim, { text: v, source: 'commander' }); sfx('click'); rerender('commander'); };
@@ -10733,10 +10733,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const latest = brief.latest, next = brief.next;
     const latestWork = latest && latest.questRef && typeof WorkQuestStore !== 'undefined' && WorkQuestStore.quests
       ? WorkQuestStore.quests().find(q => q.id === latest.questRef) : null;
-    const proof = '<details class="q-return-proof"' + (latest ? ' open' : '') + '><summary>' + (latest ? 'LAST RESULT · ' + esc(latest.text) : 'Why this step matters') + '</summary>'
+    const proof = '<details class="q-return-proof"' + (latest ? ' open' : '') + '><summary>' + (latest ? 'LAST RESULT · ' + esc(latest.text) : 'Por qué importa este paso') + '</summary>'
       + (goal.successCondition ? '<p>Working toward: ' + esc(goal.successCondition) + '</p>' : '')
       + (latest ? '<p>' + esc(latest.evidence || 'No detail was saved with this step.') + '</p>'
-        + '<span class="sub dim">' + (latest.source === 'commander' ? 'You reported this action' : 'Recorded work completion') + ' · ' + esc(qrRel(latest.doneAt)) + '</span>' : '<p>This is a step you chose toward ' + esc(goal.text) + '.</p>')
+        + '<span class="sub dim">' + (latest.source === 'commander' ? 'You reported this action' : 'Trabajo completado registrado') + ' · ' + esc(qrRel(latest.doneAt)) + '</span>' : '<p>This is a step you chose toward ' + esc(goal.text) + '.</p>')
       + (latest ? '<div class="q-return-actions">' + jump('progress', 'VIEW PROGRESS')
         + (latestWork && latestWork.runId ? '<button class="consent-btn q-step-outputs" data-run="' + esc(latestWork.runId) + '" data-label="' + esc(latest.text) + '">OPEN THIS STEP’S OUTPUTS</button>'
           : latest.source !== 'commander' ? '<button class="consent-btn q-go" data-dest="deliverables">OPEN DELIVERABLES</button>' : '') + '</div>' : '') + '</details>';
@@ -11173,7 +11173,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const growthHtml = progression ? '<div class="q-commander-growth"><div class="q-journey-title">COMMANDER LEVEL ' + progression.level + '</div>'
       + '<div class="sub">' + progression.points + ' achievement points · ' + progression.pointsToNextLevel + ' to the next level</div>'
       + '<div class="sub dim">Confirmed goal activity and recorded metric checkpoints earn points across your goals. Confirming a completed goal earns 100 points. Setbacks never erase your history.</div>'
-      + '<details class="q-growth-history"><summary>Recent achievements</summary>' + achievements.map(a => '<details class="sub q-achievement"><summary>◆ ' + esc(a.title || a.kind || 'Goal progress') + ' <span class="gx-tag">+' + (Number(a.points) || 0) + '</span></summary>'
+      + '<details class="q-growth-history"><summary>Recent achievements</summary>' + achievements.map(a => '<details class="sub q-achievement"><summary>◆ ' + esc(a.title || a.kind || 'Progreso del objetivo') + ' <span class="gx-tag">+' + (Number(a.points) || 0) + '</span></summary>'
         + '<div>' + esc(a.evidence || '') + '</div><div class="dim">' + proofLabel(a.kind, a.verifiedBy) + '</div></details>').join('') + '</details></div>' : '';
     const outcomeHtml = recent.length ? '<div class="q-proof-list">' + recent.map(o => '<div class="sub"><span class="q-outcome">' + esc(o.kind) + '</span> '
       + esc(o.title || o.sourceId) + ' <span class="dim">&middot; ' + proofLabel(o.kind, o.verifiedBy) + '</span></div>').join('') + '</div>' : '';
@@ -11218,7 +11218,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const focus = active && active.id === g.id;
         const ms = g.milestones || [], done = ms.filter(m => m.status === 'done').length;
         return '<details class="q-direction q-life-goal" data-gid="' + esc(g.id) + '"><summary><span>' + (focus ? '◆ ' : '◇ ') + esc(g.text) + '</span><span class="q-section-note">' + (focus ? 'FOCUS' : esc(g.status.toUpperCase())) + ' · ' + done + '/' + ms.length + ' STEPS</span></summary>'
-          + '<p class="sub">Success: ' + esc(g.successCondition || 'Define the result you want') + '</p>'
+          + '<p class="sub">Success: ' + esc(g.successCondition || 'Define el resultado que quieres') + '</p>'
           + (g.status === 'active' && !focus ? '<button class="consent-btn q-goal-focus" data-gid="' + esc(g.id) + '">MAKE THIS MY FOCUS</button>' : '')
           + '<div class="q-journey-actions"><button class="consent-btn q-goal-review" data-gid="' + esc(g.id) + '">REVIEW WITH MY CREW</button>'
           + (g.status === 'active' ? '<button class="consent-btn q-goal-disposition" data-state="paused">PAUSE</button>' : '<button class="consent-btn q-goal-disposition" data-state="active">RESUME &amp; FOCUS</button>')
@@ -11419,7 +11419,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const lifeActions = q.kind === 'ledger' && q.status !== 'done' ? '<div class="q-life-quest" data-qid="' + esc(q.id) + '">'
         + '<div class="sub q-owner">' + esc(q.executionMode === 'commander' ? 'YOUR ACTION' : q.executionMode === 'together' ? 'YOU + STARNET' : 'STARNET CAN HELP') + '</div>'
         + (q.whyNow ? '<div class="sub">Why now: ' + esc(q.whyNow) + '</div>' : '')
-        + (isPaused(q) ? '<div class="sub">' + esc(q.disposition.type === 'later' ? 'Saved for tomorrow' : q.disposition.type === 'too_big' ? 'Needs a smaller step' : 'Blocked') + (q.disposition.reason ? ': ' + esc(q.disposition.reason) : '') + '</div><button class="consent-btn q-quest-disposition" data-action="resume">RESUME</button>'
+        + (isPaused(q) ? '<div class="sub">' + esc(q.disposition.type === 'later' ? 'Guardado para mañana' : q.disposition.type === 'too_big' ? 'Necesita un paso más pequeño' : 'Blocked') + (q.disposition.reason ? ': ' + esc(q.disposition.reason) : '') + '</div><button class="consent-btn q-quest-disposition" data-action="resume">RESUME</button>'
           : '<details><summary>CHANGE THIS RECOMMENDATION</summary><label>What needs to change?<input id="q-reason-' + esc(q.id) + '" class="q-disposition-reason" value="' + esc(questDrafts.get(q.id)?.reason || '') + '" maxlength="240" placeholder="For example: waiting for a reply, or only 15 minutes available"></label>'
             + '<div class="consent-btns"><button class="consent-btn q-quest-disposition" data-action="later">TOMORROW</button><button class="consent-btn q-quest-disposition" data-action="blocked">BLOCKED</button><button class="consent-btn q-quest-disposition" data-action="too_big">TOO BIG</button></div></details>')
         + (q.contract && q.contract.type === 'attest' ? '<details><summary>I COMPLETED THIS</summary><label>What happened?<textarea id="q-evidence-' + esc(q.id) + '" class="q-quest-evidence" data-dirty="' + (questDrafts.get(q.id)?.dirty ? '1' : '0') + '" maxlength="2000" placeholder="Describe your action and its result">' + esc(questDrafts.get(q.id)?.evidence || '') + '</textarea></label><button class="consent-btn q-quest-report">RECORD MY RESULT</button></details>' : '')
@@ -11460,7 +11460,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // Selection is presentation state only. Keep it on the stable window body across background data pokes;
     // if a selected quest completes/disappears, fall back to the first remaining quest in this category.
     const categories = [
-      ['all', 'All quests', () => true],
+      ['all', 'Todas las misiones', () => true],
       ['missions', 'Missions', q => ['ledger', 'work', 'idea'].includes(q.kind)],
       ['station', 'Station', q => ['station', 'station-gap', 'maintenance'].includes(q.kind)],
       ['commander', 'About you', q => q.kind === 'dossier']
@@ -11485,7 +11485,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         + esc(q.title) + '</span></span><span class="q-mission-arrow" aria-hidden="true">›</span></button>').join('')
       + '</nav><section class="q-briefing q-grid" id="quest-briefing" aria-label="Quest briefing">'
       + (selected ? tro(selected, 0) : '<div class="q-journal-empty"><span aria-hidden="true">◇</span><h3>'
-        + (open.length ? 'No quests in this category' : 'All caught up') + '</h3><p>'
+        + (open.length ? 'No hay misiones en esta categoría' : 'Todo al día') + '</h3><p>'
         + (open.length ? 'Choose another category to find your next action.' : 'Set a direction or refresh your quests when you are ready for what comes next.') + '</p></div>')
       + '</section></div>';
     const questViews = [
@@ -12032,12 +12032,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // (TERM_ALIAS). UPDATES stays its own SYSTEM-dock window (Andrew's call — an update is a
     // check-it-now surface, not a setting).
     updates:  ['UPDATE CENTER',          buildUpdates,   {}],
-    tasks:    ['TASKS',                  buildTasks,     { console: true, className: 'tasks-win' }],   // three kanban lanes side by side
+    tasks:    ['TAREAS',                  buildTasks,     { console: true, className: 'tasks-win' }],   // three kanban lanes side by side
     // DELIVERABLES is console-WIDE (a project rail beside the cards needs the room) and holds a STEADY height for
     // the same reason the dossier does: a never-moved window is CSS-centred, so a content-fit box would re-centre
     // itself every time a card's details drawer opens — the row you just clicked would slide out from under you.
     // The `dlv` class owns that height; the card list scrolls inside it.
-    deliverables:['DELIVERABLES',         body => {
+    deliverables:['ENTREGABLES',         body => {
       if (typeof Deliverables !== 'undefined') Deliverables.mount(body);
       // TO REVIEW (the old OUTBOX): finished runs waiting for your verdict, above the library — hidden when none
       const lib = body.querySelector('.dlv'), host = mkEl('section', 'dlv-review');
@@ -12247,7 +12247,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   // Following work should uncover the destination and preserve the source's scroll/draft.
   // Reuse the window manager's suspension, never destroy a form to follow a link.
-  const WORK_LABELS = { tasks: 'TASKS', deliverables: 'DELIVERABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' };   // display words only (org P30): the keys stay
+  const WORK_LABELS = { tasks: 'TAREAS', deliverables: 'ENTREGABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' };   // display words only (org P30): the keys stay
   let workTrail = [];
   function navigateWork(from, to, section, back) {
     const alias = TERM_ALIAS[to];
@@ -12266,7 +12266,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const w = open[to]; if (!w) return;
     let nav = w.querySelector('.work-path');
     if (!nav) {
-      nav = mkEl('nav', 'work-path'); nav.setAttribute('aria-label', 'Work navigation');
+      nav = mkEl('nav', 'work-path'); nav.setAttribute('aria-label', 'Navegación de trabajo');
       w.querySelector('.term-head').after(nav);
     }
     nav.replaceChildren();
@@ -12289,7 +12289,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const b = mkEl('button', 'work-back', '‹ BACK TO ' + (WORK_LABELS[from] || from.toUpperCase())); b.type = 'button';
     b.onclick = () => { openTerm(from); nav.hidden = true; };
     nav.appendChild(b);
-    const dismiss = mkEl('button', 'work-dismiss', '×'); dismiss.type = 'button'; dismiss.setAttribute('aria-label', 'Dismiss return shortcut');
+    const dismiss = mkEl('button', 'work-dismiss', '×'); dismiss.type = 'button'; dismiss.setAttribute('aria-label', 'Descartar el acceso directo de retorno');
     dismiss.onclick = () => { nav.hidden = true; }; nav.appendChild(dismiss);
     const input = $('#chat-input'); if (input) input.focus();
   }

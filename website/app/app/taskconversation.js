@@ -42,7 +42,7 @@ const TaskConversation = (() => {
     const input=el('textarea','tc-answer');input.rows=3;input.maxLength=3800;
     input.setAttribute('aria-label','Your answer');input.placeholder='Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line.';
     label.appendChild(input);card.appendChild(label);
-    const actions=el('div','tc-actions'), submit=el('button','consent-btn primary','Send answer'), skip=el('button','consent-btn tc-skip','Use your judgment');
+    const actions=el('div','tc-actions'), submit=el('button','consent-btn primary','Send answer'), skip=el('button','consent-btn tc-skip','Usa tu criterio');
     submit.type=skip.type='button';actions.appendChild(submit);actions.appendChild(skip);card.appendChild(actions);
     const feedback=el('div','tc-feedback');feedback.setAttribute('role','status');card.appendChild(feedback);
     // the question leads; the model's reasoning, its understanding and its draft are one tap away, never a wall above the answer

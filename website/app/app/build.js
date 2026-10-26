@@ -591,7 +591,7 @@ const Build = (() => {
     ? (WorldModel.grantLabelForProp(c && c.id) || '') : '');
   const capOf = c => WorldModel.capForProp(c.id);
   const sectionOf = c => EquipmentHelp.kind(c, capOf(c));
-  const SECTION_NAMES = { decoration: 'FURNITURE', equipment: 'EQUIPMENT', abilities: 'ABILITIES' };
+  const SECTION_NAMES = { decoration: 'FURNITURE', equipment: 'EQUIPMENT', abilities: 'HABILIDADES' };
   const starterProps = () => PropSprites.STARTER.map(id => PropSprites.spec(id)).filter(Boolean);
   const abilityName = cap => EquipmentHelp.ABILITY_NAMES[cap] || String(cap || '').toUpperCase();
   const chooseLibrarySection = section => {

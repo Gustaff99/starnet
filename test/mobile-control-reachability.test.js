@@ -21,7 +21,7 @@ has(/@media \(max-width: 600px\)[\s\S]*#topbar #wr-top,[\s\S]*#topbar #tb-statio
   'mobile topbar removes the widget rail, level lamp and separator', topCss);
 has(/@media \(max-width: 600px\)[\s\S]*#topbar \.tb-status\s*\{[^}]*gap:\s*4px;[^}]*padding:\s*0/s,
   'mobile status cluster spends no hidden padding around safety controls', topCss);
-has(/id="chat-stop"[^>]*aria-label="Stop the running turn"/,
+has(/id="chat-stop"[^>]*aria-label="Detener el turno en curso"/,
   'COMMS retains the current-conversation Stop control', fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8'));
 
 // Genesis: the tint bank owns a second row, so all six 14px switches fit even at 320px.

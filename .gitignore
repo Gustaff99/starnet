@@ -14,6 +14,7 @@ Desktop.ini
 .claude/settings.local.json
 
 # agent runtime workspaces / notes (created by tools at run time)
+.pi/
 workspaces/
 sidecar/workspaces/
 sidecar/workspaces.*/

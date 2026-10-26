@@ -263,7 +263,7 @@ buttons['.q-filter'].find(b => b.dataset.category === 'station').click();
 A.eq(body.dataset.questSelected, 'st:crew', 'category changes choose a quest in that category');
 A.eq(buttons['.q-mission'].length, 1, 'category filters exclude unrelated quests');
 buttons['.q-filter'].find(b => b.dataset.category === 'missions').click();
-A.ok(rendered.includes('No quests in this category'), 'an empty category has an explicit recovery state');
+A.ok(rendered.includes('No hay misiones en esta categoría'), 'an empty category has an explicit recovery state');
 buttons['.q-filter'].find(b => b.dataset.category === 'all').click();
 questRows[0].status = 'done';
 ctx.buildQuests(body);
@@ -271,7 +271,7 @@ A.eq(body.dataset.questSelected, 'ds:stack', 'completion advances selection to a
 A.ok(rendered.includes('id="q-view-completed"'), 'completed quests remain accessible in history');
 questRows = [];
 ctx.buildQuests(body);
-A.ok(rendered.includes('All caught up'), 'zero open quests has an honest empty state');
+A.ok(rendered.includes('Todo al día'), 'zero open quests has an honest empty state');
 questRows = [
   { id: 'q:first', kind: 'ledger', title: 'First', status: 'open', executionMode: 'commander', contract: { type: 'attest' } },
   { id: 'q:second', kind: 'ledger', title: 'Second', status: 'open', executionMode: 'commander', contract: { type: 'attest' } }

@@ -24,8 +24,8 @@ A.ok(concepts && concepts.length > 4000, 'concepts is a real section (' + (conce
 const tags = [...concepts.matchAll(/\[([a-z][a-z-]*)\]/g)].map(m => m[1]);
 A.ok(tags.length >= 30, 'concepts points at places (' + tags.length + ' tags)');
 for (const t of new Set(tags)) A.ok(!!Places.get(t), 'concepts tag [' + t + '] is a station.show place');
-for (const must of ['CREW', 'PROPS', 'WORKFLOWS', 'OUTBOX', 'RECIPES', 'SCHEDULES', 'GOAL LOOPS', 'AWAY WORK', 'TASKS', 'GROUP CHAT', 'ACCESS',
-  'AUTONOMY', 'E-STOP', 'SPENDING', 'MEMORY', 'RESTORE POINTS', 'QUESTS', 'TROPHIES', 'NOTIFICATIONS', 'ABILITIES', 'CHANNELS', 'APPS', 'STEP-IN', 'DOSSIER'])
+for (const must of ['CREW', 'PROPS', 'FLUJOS', 'OUTBOX', 'RECIPES', 'HORARIOS', 'BUCLES DE OBJETIVO', 'TRABAJO EN AUSENCIA', 'TASKS', 'GROUP CHAT', 'ACCESS',
+  'AUTONOMY', 'E-STOP', 'SPENDING', 'MEMORY', 'RESTORE POINTS', 'QUESTS', 'TROPHIES', 'NOTIFICATIONS', 'HABILIDADES', 'CANALES', 'APPS', 'STEP-IN', 'DOSSIER'])
   A.ok(concepts.indexOf(must) >= 0, 'concepts explains ' + must);
 const tools = new Set(Object.values(CAP_REGISTRY).flat().map(g => g.tool));
 const actions = new Set(Object.keys(ACTIONS));
@@ -77,7 +77,7 @@ for (const gone of [/SKILLS tab/, /APPROVALS hotspot/, /Alt\+A/]) A.ok(!gone.tes
 // org P12 (2026-10-14): TO REVIEW holds away runs and workflow jobs waiting for a rating; an attended chat is rated in COMMS
 // and never lands there, so the manual must not let an agent tell the Commander a chat result waits in TO REVIEW
 A.ok(!/TO REVIEW[^.]{0,80}(finished work|results) waiting/.test(full), 'the manual never calls TO REVIEW every finished result waiting on a verdict');
-A.eq((full.match(/away runs and workflow jobs waiting for the Commander's rating/g) || []).length, 3, 'all three TO REVIEW mentions (MY WORK, the EVERY PLACE entry, OUTBOX vs DELIVERABLES) name what it really holds');
+A.eq((full.match(/away runs and workflow jobs waiting for the Commander's rating/g) || []).length, 3, 'all three TO REVIEW mentions (MY WORK, the EVERY PLACE entry, OUTBOX vs ENTREGABLES) name what it really holds');
 A.eq((full.match(/chats are rated in COMMS/g) || []).length, 3, 'all three TO REVIEW mentions say chats are rated in COMMS');
 
 A.report('manual-concepts');

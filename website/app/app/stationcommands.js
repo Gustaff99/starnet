@@ -98,7 +98,7 @@ const StationCommands = (() => {
      Lookup is unchanged — an untitled session is still addressed by its id — and the session LISTS keep `title: null` for
      untitled, so the model can tell an unnamed session from one literally called "New session". */
   function sessionName(w) {
-    if (typeof Workstreams !== 'undefined' && Workstreams.titleOf) return Workstreams.titleOf(w) || 'New session';
+    if (typeof Workstreams !== 'undefined' && Workstreams.titleOf) return Workstreams.titleOf(w) || 'Nueva sesión';
     return (w && w.title) || 'General';
   }
   function resolveChat(want) {

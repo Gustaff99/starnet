@@ -285,7 +285,7 @@ const DossierPure = require('../frontend/app/dossier.js');
 }
 /* ── 11b-i. THE MID-CARD EDIT SURVIVES THE CONFIRM (B1, 2026-08-04) ──
    The Commander edits the belief in the COMMANDER panel while the re-confirm card is still sitting in the feed,
-   then taps "Still true". Writing the render-time capture reverted their edit — and recorded the reverted wording
+   then taps "Sigue siendo cierto". Writing the render-time capture reverted their edit — and recorded the reverted wording
    as commander/stated, i.e. a sentence they had just replaced, stamped as one they had just said. */
 {
   const now0 = 1780000000000;
@@ -312,7 +312,7 @@ A.ok(/const live = liveBelief\(\);\s*\n\s*if \(!live\) \{ settle\(/.test(cardBod
 A.ok(/if \(!confirmed && live\.pinned\) \{ settle\(/.test(cardBody),
   'a PINNED belief is never forgotten by this card (DossierStore.forget has no pin guard of its own)');
 // F3: the third chip. Both answers were terminal, so ignoring the card re-asked at every task end forever.
-A.ok(/mk\('Still true'/.test(cardBody) && /mk\('Not now'/.test(cardBody) && /mk\('Not anymore', 'deny'/.test(cardBody),
+A.ok(/mk\('Sigue siendo cierto'/.test(cardBody) && /mk\('Not now'/.test(cardBody) && /mk\('Ya no', 'deny'/.test(cardBody),
   'the card offers three answers — including a NOT NOW, so ignoring it is not the only way to defer');
 /* ── 11c. A DEFERRAL SILENCES THE QUESTION, NOT THE UNRELATED OFFER (S4, 2026-08-04) ──
    "Not now" called GoalStore.markOffered — but that offered-fingerprint ALSO gates pendingDecomposition, so

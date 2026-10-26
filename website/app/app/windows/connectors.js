@@ -52,7 +52,7 @@
   function startFreshKeptText(answer) {
     const j = answer || {};
     const previous = Array.isArray(j.previous) ? j.previous.filter(p => typeof p === 'string' && p) : [];
-    const where = (typeof j.movedTo === 'string' && j.movedTo) || previous[0] || 'the connectors folder';
+    const where = (typeof j.movedTo === 'string' && j.movedTo) || previous[0] || 'la carpeta de conectores';
     const earlier = previous.filter(p => p !== where);
     return 'Connector storage started fresh. Old files kept in ' + where + (earlier.length ? ' (earlier copies in ' + earlier.join(', ') + ')' : '');
   }
@@ -73,15 +73,15 @@
     //      the JUKEBOX row can host it (kept verbatim from the old SPOTIFY section, ids unchanged). ----
     const spotifyInline =
       '<div class="ts-spotify" id="ts-spotify">' +
-        '<p class="set-about">One-time setup: make a free app at <span class="dim">developer.spotify.com/dashboard</span>, add the redirect URI below to it, paste the Client ID, then connect. ' +
-          '<span class="dim">(OAuth PKCE — no client secret is ever stored.)</span></p>' +
-        '<div id="sp-status" class="mc-url dim">checking…</div>' +
+        '<p class="set-about">Configuración única: crea una app gratis en <span class="dim">developer.spotify.com/dashboard</span>, añade la URI de redirección de abajo, pega el Client ID y conecta. ' +
+          '<span class="dim">(OAuth PKCE — nunca se guarda el client secret.)</span></p>' +
+        '<div id="sp-status" class="mc-url dim">comprobando…</div>' +
         '<div class="mc-form">' +
           '<input id="sp-client" class="key-input" placeholder="Spotify Client ID" autocomplete="off" spellcheck="false" maxlength="64">' +
-          '<div class="mc-url dim">Redirect URI to whitelist: <code id="sp-redir">…</code></div>' +
+          '<div class="mc-url dim">URI de redirección para autorizar: <code id="sp-redir">…</code></div>' +
           '<div class="mc-acts">' +
-            '<button class="bb sm" id="sp-connect">▶ CONNECT SPOTIFY</button>' +
-            '<button class="bb xs danger" id="sp-disconnect" style="display:none">✕ DISCONNECT</button>' +
+            '<button class="bb sm" id="sp-connect">▶ CONECTAR SPOTIFY</button>' +
+            '<button class="bb xs danger" id="sp-disconnect" style="display:none">✕ DESCONECTAR</button>' +
           '</div>' +
         '</div>' +
         '<div id="sp-msg" class="msg" role="status" aria-live="polite"></div>' +
@@ -92,13 +92,13 @@
     // capability your agents can use, grouped into toolsets…"). Every pane in this console had the same
     // stutter. The `desc` is the one that stays — it is also what the search box matches on.
     const secToolsets =
-      '<label class="mc-hint" for="ts-agent">Show abilities of</label><select id="ts-agent" class="ab-agent-pick" aria-label="Show the abilities of agent"></select>' +
-      '<button class="bb xs" id="ts-refresh" type="button">REFRESH ACCESS</button>' +
+      '<label class="mc-hint" for="ts-agent">Mostrar habilidades de</label><select id="ts-agent" class="ab-agent-pick" aria-label="Mostrar las habilidades del agente"></select>' +
+      '<button class="bb xs" id="ts-refresh" type="button">REFRESCAR ACCESO</button>' +
       '<div id="ts-authority" class="set-about" role="status"></div>' +
       '<div class="ts-core set-row"><span class="ts-glyph" aria-hidden="true">◉</span>' +
-        '<span class="ts-main"><span class="ts-name">COMPUTE <span class="ts-core-tag">CORE</span></span>' +
-        '<span class="ts-desc dim">The compute gate — an agent can always think. Always on.</span></span></div>' +
-      '<div id="ts-list"><span class="loading pulse">loading toolsets…</span></div>';
+        '<span class="ts-main"><span class="ts-name">COMPUTO <span class="ts-core-tag">CORE</span></span>' +
+        '<span class="ts-desc dim">La compuerta de computo — un agente siempre puede pensar. Siempre activo.</span></span></div>' +
+      '<div id="ts-list"><span class="loading pulse">cargando toolsets…</span></div>';
     // ---- CONNECTORS pane markup (unchanged generic MCP manager) ----
     // The lead sentence that used to open this pane restated the section `desc` verbatim; only the two
     // asides were load-bearing, so only they remain. The CHANNELS pointer earns its place because
@@ -114,15 +114,15 @@
       // than re-point the audit needle at whatever the copy happens to say now.
       '<div id="mc-overview" class="mc-overview" role="status"></div>' +
       '<div id="mc-notices"></div>' +
-      '<div id="mc-list" class="mc-list"><span class="loading pulse">loading…</span></div>' +
-      '<details class="mc-adv"><summary>About connected services</summary>' +
-        '<p class="set-about">Remote http(s) MCP servers. Secrets are stored locally by the sidecar and never displayed. ' +
-        'Looking to chat with your agent <i>from</i> Slack or Telegram instead? That’s the <b>CHANNELS</b> window.</p></details>' +
-      '<div class="sec"><span class="sec-l" id="mc-form-h">ADD A CONNECTOR</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<div id="mc-list" class="mc-list"><span class="loading pulse">cargando…</span></div>' +
+      '<details class="mc-adv"><summary>Acerca de los servicios conectados</summary>' +
+        '<p class="set-about">Remote http(s) MCP servers. Los secretos se guardan localmente en el sidecar y nunca se muestran. ' +
+        '¿Prefieres hablar con tu agente <i>desde</i> Slack o Telegram? Esa es la ventana CANALES.</p></details>' +
+      '<div class="sec"><span class="sec-l" id="mc-form-h">AÑADIR UN CONECTOR</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
       '<div class="mc-form" id="mc-form">' +
-        '<input id="mc-id" class="key-input" placeholder="id — e.g. github (a-z 0-9 _ -)" autocomplete="off" spellcheck="false" maxlength="40">' +
-        '<div class="mc-hint">A short handle for this server. Its tools appear to agents as <code>mcp__&lt;id&gt;__&lt;tool&gt;</code>.</div>' +
-        '<input id="mc-label" class="key-input" placeholder="label (optional) — e.g. GitHub" autocomplete="off" spellcheck="false">' +
+        '<input id="mc-id" class="key-input" placeholder="id — p. ej. github (a-z 0-9 _ -)" autocomplete="off" spellcheck="false" maxlength="40">' +
+        '<div class="mc-hint">Un identificador corto para este servidor. Sus herramientas aparecen para los agentes como <code>mcp__&lt;id&gt;__&lt;tool&gt;</code>.</div>' +
+        '<input id="mc-label" class="key-input" placeholder="etiqueta (opcional) — p. ej. GitHub" autocomplete="off" spellcheck="false">' +
         '<div class="mc-seg" id="mc-transport" role="tablist">' +
           '<button type="button" class="mc-seg-btn active" data-tp="http" role="tab" aria-selected="true">HTTP</button>' +
           '<button type="button" class="mc-seg-btn" data-tp="oauth" role="tab" aria-selected="false">OAUTH</button>' +
@@ -131,38 +131,38 @@
         // ---- HTTP fields ----
         '<div class="mc-tp-fields" data-tp="http oauth">' +
           '<input id="mc-url" class="key-input" placeholder="https://server.example/mcp" autocomplete="off" spellcheck="false">' +
-          '<div class="mc-hint">The server’s Streamable-HTTP endpoint. <code>http://</code> is allowed only for localhost.</div>' +
+          '<div class="mc-hint">El endpoint Streamable-HTTP del servidor. <code>http://</code> solo se permite para localhost.</div>' +
           '<div id="mc-token-fields">' +
-            '<input id="mc-token" type="password" class="key-input" placeholder="bearer token (optional)" autocomplete="off" spellcheck="false">' +
-            '<div class="mc-hint">Sent as <code>Authorization: Bearer …</code>. Leave blank when editing to keep the saved token.</div>' +
+            '<input id="mc-token" type="password" class="key-input" placeholder="bearer token (opcional)" autocomplete="off" spellcheck="false">' +
+            '<div class="mc-hint">Se envía como <code>Authorization: Bearer …</code>. Déjalo en blanco al editar para conservar el token guardado.</div>' +
           '</div>' +
-          '<div id="mc-oauth-note" class="mc-hint" style="display:none">A secure browser window will open for sign-in. The OAuth grant is stored locally and refreshed automatically.</div>' +
+          '<div id="mc-oauth-note" class="mc-hint" style="display:none">Se abrirá una ventana segura del navegador para el inicio de sesión. La concesión OAuth se guarda localmente y se refresca automáticamente.</div>' +
         '</div>' +
         // ---- STDIO fields ----
         // Arbitrary stdio server code is bound to one named agent's persistent Docker Safe Cell.
         '<div class="mc-tp-fields" data-tp="stdio" style="display:none">' +
-          '<select id="mc-agent" class="key-input" aria-label="Safe Cell owner"><option value="">loading Safe Cell agents…</option></select>' +
-          '<div class="mc-hint" id="mc-agent-hint">The server runs inside this agent’s persistent Safe Cell, never as an interactive host child.</div>' +
-          '<input id="mc-command" class="key-input" placeholder="command — e.g. npx" autocomplete="off" spellcheck="false">' +
+          '<select id="mc-agent" class="key-input" aria-label="Propietario de la Safe Cell"><option value="">cargando agentes de Safe Cell…</option></select>' +
+          '<div class="mc-hint" id="mc-agent-hint">El servidor corre dentro de la Safe Cell persistente de este agente, nunca como hijo interactivo del host.</div>' +
+          '<input id="mc-command" class="key-input" placeholder="comando — p. ej. npx" autocomplete="off" spellcheck="false">' +
           '<textarea id="mc-args" class="key-input mc-kv" placeholder="arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace" spellcheck="false" rows="3"></textarea>' +
-          '<input id="mc-cwd" class="key-input" placeholder="container cwd (optional; default /workspace)" autocomplete="off" spellcheck="false">' +
-          '<textarea id="mc-env" class="key-input mc-kv" placeholder="environment (optional), one per line:&#10;SERVICE_TOKEN=value" spellcheck="false" rows="2"></textarea>' +
-          '<div class="mc-hint">Command and arguments use exact argv with no shell. Secrets stay out of process listings; blank env while editing keeps the saved values.</div>' +
+          '<input id="mc-cwd" class="key-input" placeholder="cwd del contenedor (opcional; por defecto /workspace)" autocomplete="off" spellcheck="false">' +
+          '<textarea id="mc-env" class="key-input mc-kv" placeholder="entorno (opcional), uno por línea:&#10;SERVICE_TOKEN=value" spellcheck="false" rows="2"></textarea>' +
+          '<div class="mc-hint">Comando y argumentos usan argv exacto sin shell. Los secretos quedan fuera de las listas de procesos; un env en blanco al editar conserva los valores guardados.</div>' +
         '</div>' +
         // FOLDED, NOT REMOVED. Adding a server needs an id and a URL; custom headers and a hand-set
         // timeout are power-user fields, and stacked open they made the common path look like a
         // six-field form. Both keep their ids, so edit-prefill and the add handler are unchanged.
         // (Deliberately NOT `open` by default — unlike the CHANNELS setup guide, which is instructions
         // needed at exactly the moment it was folded away, these are settings almost nobody sets.)
-        '<details class="mc-adv"><summary>advanced — custom headers, timeout</summary>' +
-          '<textarea id="mc-headers" class="key-input mc-kv" placeholder="extra headers (optional), one per line:&#10;X-Api-Version: 2024-01" spellcheck="false" rows="2"></textarea>' +
-          '<div class="mc-hint">Custom request headers as <code>Name: value</code>, one per line.</div>' +
-          '<input id="mc-timeout" class="key-input" type="number" min="1000" max="600000" placeholder="timeout ms (optional, default 30000)" autocomplete="off">' +
-          '<div class="mc-hint">How long to wait for the handshake / a tool call before giving up. Default 30s.</div>' +
+        '<details class="mc-adv"><summary>avanzado — cabeceras personalizadas, timeout</summary>' +
+          '<textarea id="mc-headers" class="key-input mc-kv" placeholder="cabeceras extra (opcionales), una por línea:&#10;X-Api-Version: 2024-01" spellcheck="false" rows="2"></textarea>' +
+          '<div class="mc-hint">Cabeceras de request personalizadas como <code>Name: value</code>, una por línea.</div>' +
+          '<input id="mc-timeout" class="key-input" type="number" min="1000" max="600000" placeholder="timeout ms (opcional, por defecto 30000)" autocomplete="off">' +
+          '<div class="mc-hint">Cuánto esperar por el handshake / una llamada de herramienta antes de rendirse. Por defecto 30s.</div>' +
         '</details>' +
         '<div class="mc-acts">' +
-          '<button class="bb sm" id="mc-add">+ ADD &amp; CONNECT</button>' +
-          '<button class="bb xs" id="mc-cancel" style="display:none">CANCEL EDIT</button>' +
+          '<button class="bb sm" id="mc-add">+ AÑADIR &amp; CONECTAR</button>' +
+          '<button class="bb xs" id="mc-cancel" style="display:none">CANCELAR EDICIÓN</button>' +
         '</div>' +
       '</div>' +
       '<div id="mc-msg" class="msg" role="status" aria-live="polite"></div>';
@@ -175,21 +175,21 @@
     // first question a newcomer has and 39 cards in one scroll could not answer it; "which of these am
     // I already on?" was equally unanswerable without reading every card.
     const secCatalog =
-      '<p class="set-about"><b>Connect an app you already use.</b> Choose a platform below. SIGN IN opens your browser; API key setup walks you through adding a key from your account.</p>' +
+      '<p class="set-about"><b>Conecta una app que ya usas.</b> Elige una plataforma de abajo. INICIAR SESIÓN abre tu navegador; la configuración de API key te guía para añadir una clave desde tu cuenta.</p>' +
       (typeof Tutorial !== 'undefined' && Tutorial.platformGuideHTML ? Tutorial.platformGuideHTML('apps') : '') +
-      '<div class="cc-filters" id="cc-filters" role="group" aria-label="Filter connectors by setup type">' +
-        '<button type="button" class="cc-filter active" data-cc-filter="all" aria-pressed="true">ALL</button>' +
-        '<button type="button" class="cc-filter cc-lg-none" data-cc-filter="none" aria-pressed="false">▸ no setup</button>' +
+      '<div class="cc-filters" id="cc-filters" role="group" aria-label="Filtrar conectores por tipo de configuración">' +
+        '<button type="button" class="cc-filter active" data-cc-filter="all" aria-pressed="true">TODOS</button>' +
+        '<button type="button" class="cc-filter cc-lg-none" data-cc-filter="none" aria-pressed="false">▸ sin setup</button>' +
         '<button type="button" class="cc-filter cc-lg-key" data-cc-filter="apikey" aria-pressed="false">API key</button>' +
-        '<button type="button" class="cc-filter cc-lg-oauth" data-cc-filter="oauth" aria-pressed="false">SIGN IN</button>' +
-        '<button type="button" class="cc-filter" data-cc-filter="manual" aria-pressed="false">MANUAL SETUP</button>' +
-        '<button type="button" class="cc-filter cc-f-on" data-cc-filter="installed" aria-pressed="false">YOUR SERVICES</button>' +
+        '<button type="button" class="cc-filter cc-lg-oauth" data-cc-filter="oauth" aria-pressed="false">INICIAR SESIÓN</button>' +
+        '<button type="button" class="cc-filter" data-cc-filter="manual" aria-pressed="false">CONFIGURACIÓN MANUAL</button>' +
+        '<button type="button" class="cc-filter cc-f-on" data-cc-filter="installed" aria-pressed="false">TUS SERVICIOS</button>' +
       '</div>' +
-      '<p class="set-about"><span class="cc-legend"><b class="cc-lg-none">▸ no setup</b> no credentials needed · ' +
-        '<b class="cc-lg-key">API key</b> you paste a key · <b class="cc-lg-oauth">SIGN IN</b> connect through your browser. Some services require one-time app setup first.</span></p>' +
-      '<div id="cc-list" class="cc-list"><span class="loading pulse">loading catalog…</span></div>' +
+      '<p class="set-about"><span class="cc-legend"><b class="cc-lg-none">▸ sin setup</b> no necesita credenciales · ' +
+        '<b class="cc-lg-key">API key</b> pegas una clave · <b class="cc-lg-oauth">INICIAR SESIÓN</b> conectas por tu navegador. Algunos servicios requieren una configuración de app única primero.</span></p>' +
+      '<div id="cc-list" class="cc-list"><span class="loading pulse">cargando catálogo…</span></div>' +
       '<div id="cc-msg" class="msg" role="status" aria-live="polite"></div>' +
-      '<p class="set-about dim">Need something not listed? Add any remote MCP server by URL in <b>CONNECTED SERVICES</b>, or paste a custom platform key in <b>SAVED API CONNECTIONS</b>.</p>';
+      '<p class="set-about dim">¿Necesitas algo no listado? Añade cualquier servidor MCP remoto por URL en <b>SERVICIOS CONECTADOS</b>, o pega una clave de plataforma personalizada en <b>CONEXIONES API GUARDADAS</b>.</p>';
     // ---- KEYS pane markup: every platform key the agents hold, in one place. Top = keyed catalog/MCP platforms
     //      currently connected (truth from /api/connectors — managed on their own tab, read-only here). Bottom =
     //      encrypted API credentials (POST /api/servicekeys): the sidecar exposes each as an env var in
@@ -209,29 +209,29 @@
        and prefill this form; KEYS stays the inventory/setup surface for credentials the Commander actually
        holds, plus the escape hatch for a custom platform the catalog does not list. */
     const secKeys =
-      '<div class="sec"><span class="sec-l">YOUR KEYS</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-      '<div class="set-sub"><span class="set-sub-k">CONNECTED PLATFORMS</span><span class="set-sub-d" id="ky-plat-n">0</span></div>' +
-      '<div id="ky-platforms" class="mc-list"><span class="loading pulse">loading…</span></div>' +
-      '<div class="set-sub"><span class="set-sub-k">CONNECTED API KEYS</span><span class="set-sub-d" id="ky-mine-n">0</span></div>' +
+      '<div class="sec"><span class="sec-l">TUS CLAVES</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">PLATAFORMAS CONECTADAS</span><span class="set-sub-d" id="ky-plat-n">0</span></div>' +
+      '<div id="ky-platforms" class="mc-list"><span class="loading pulse">cargando…</span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">CLAVES API CONECTADAS</span><span class="set-sub-d" id="ky-mine-n">0</span></div>' +
       '<div id="ky-list" class="mc-list"></div>' +
-      '<div class="sec"><span class="sec-l">ADD A KEY</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<div class="sec"><span class="sec-l">AÑADIR UNA CLAVE</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
       '<div class="mc-form">' +
         '<div id="ky-guide" class="mc-hint" hidden></div>' +
-        '<input id="ky-name" class="key-input" placeholder="platform name — e.g. Resend" autocomplete="off" spellcheck="false" maxlength="64">' +
-        '<input id="ky-key" type="password" class="key-input" placeholder="API key — or a 1Password reference (op://vault/item/field)" autocomplete="off" spellcheck="false">' +
-        '<input id="ky-docs" class="key-input" placeholder="API docs URL (optional — helps agents use the service)" autocomplete="off" spellcheck="false">' +
-        '<div class="mc-hint">Stored locally by the sidecar and shown as ····last4 only. Agents get it as an environment variable ' +
-          '(e.g. <code>RESEND_API_KEY</code>) in their shell, so they can call the platform’s API directly.</div>' +
+        '<input id="ky-name" class="key-input" placeholder="nombre de plataforma — p. ej. Resend" autocomplete="off" spellcheck="false" maxlength="64">' +
+        '<input id="ky-key" type="password" class="key-input" placeholder="API key — o una referencia de 1Password (op://vault/item/field)" autocomplete="off" spellcheck="false">' +
+        '<input id="ky-docs" class="key-input" placeholder="URL de la documentación (opcional — ayuda a los agentes a usar el servicio)" autocomplete="off" spellcheck="false">' +
+        '<div class="mc-hint">Se guarda localmente en el sidecar y se muestra solo como ····últimos4. Los agentes la reciben como variable de entorno ' +
+          '(p. ej. <code>RESEND_API_KEY</code>) en su shell, así pueden llamar a la API de la plataforma directamente.</div>' +
         // 1PASSWORD: the same field takes a secret reference. Only the reference is saved; the sidecar reads the key with
         // the 1Password CLI when an agent needs it and keeps it in memory (sidecar/onepassword.js).
-        '<div class="mc-hint">Keep keys in 1Password? Paste the field’s secret reference instead (in 1Password: the field’s menu → Copy Secret Reference). ' +
-          'StarNet saves only the reference and reads the key with the 1Password CLI (<code>op</code>) when an agent needs it.</div>' +
+        '<div class="mc-hint">¿Guardas claves en 1Password? Pega en su lugar la referencia secreta del campo (en 1Password: menú del campo → Copy Secret Reference). ' +
+          'StarNet guarda solo la referencia y lee la clave con el CLI de 1Password (<code>op</code>) cuando un agente la necesita.</div>' +
         // TRUTHFUL TELEMETRY: the key alone is not enough. The shell it is handed to only exists when a WORKBENCH
         // prop is placed (capability/office.js grants it nowhere by default), and workspace-process tools are not
         // projected onto unattended surfaces at all (inputpolicy.js), so a saved key is inert until both hold.
-        '<div class="mc-hint">These API keys are used through the terminal. Check the selected agent in BUILT-IN ABILITIES: access may come from a workbench, an execution profile or Full Access. ' +
-          'Scheduled work also follows its saved unattended access settings. Saving a key does not verify that the service accepts it.</div>' +
-        '<div class="mc-acts"><button class="bb sm" id="ky-add">+ SAVE KEY</button></div>' +
+        '<div class="mc-hint">Estas claves API se usan a través de la terminal. Revisa el agente seleccionado en HABILIDADES INTEGRADAS: el acceso puede provenir de un banco de trabajo, un perfil de ejecución o Acceso Total. ' +
+          'El trabajo programado también sigue sus ajustes guardados de acceso sin supervisión. Guardar una clave no verifica que el servicio la acepte.</div>' +
+        '<div class="mc-acts"><button class="bb sm" id="ky-add">+ GUARDAR CLAVE</button></div>' +
       '</div>' +
       '<div id="ky-msg" class="msg" role="status" aria-live="polite"></div>';
     /* ---- EXTENSIONS: the Commander's OWN code, running inside the station ----
@@ -245,52 +245,52 @@
        screen saying why, is the worst failure this design can produce. */
     const secExt = `
       <div class="ext-workspace">
-        <div class="ext-choices" aria-label="Add an extension">
+        <div class="ext-choices" aria-label="Añadir una extensión">
           <button class="ext-choice" data-ext-editor="hook" aria-controls="hk-form" aria-expanded="false">
             <span class="ext-choice-icon" aria-hidden="true">⌁</span>
-            <span><b>Run a command automatically</b><small>Choose when StarNet runs your script.</small></span><span aria-hidden="true">＋</span>
+            <span><b>Ejecutar un comando automáticamente</b><small>Elige cuándo StarNet ejecuta tu script.</small></span><span aria-hidden="true">＋</span>
           </button>
           <button class="ext-choice" data-ext-editor="plugin" aria-controls="pl-form" aria-expanded="false">
             <span class="ext-choice-icon" aria-hidden="true">⌘</span>
-            <span><b>Create a plugin</b><small>Start with working code you can customize.</small></span><span aria-hidden="true">＋</span>
+            <span><b>Crear un plugin</b><small>Empieza con código funcional que puedes personalizar.</small></span><span aria-hidden="true">＋</span>
           </button>
         </div>
         <div id="ext-msg" class="msg" role="status" aria-live="polite"></div>
-        <section class="ext-editor mc-form" id="hk-form" aria-label="Run a command automatically" hidden>
-          <div class="ext-editor-head"><b>Run a command automatically</b><button class="bb xs" data-ext-editor="">CANCEL</button></div>
-          <label for="hk-event">When to run</label>
+        <section class="ext-editor mc-form" id="hk-form" aria-label="Ejecutar un comando automáticamente" hidden>
+          <div class="ext-editor-head"><b>Ejecutar un comando automáticamente</b><button class="bb xs" data-ext-editor="">CANCELAR</button></div>
+          <label for="hk-event">Cuándo ejecutar</label>
           <select id="hk-event" class="key-input fbc-sel"></select>
-          <label for="hk-cmd">Command</label>
-          <input id="hk-cmd" class="key-input" placeholder="e.g. node scripts/run-summary.js" autocomplete="off" spellcheck="false">
-          <details class="ext-details"><summary>Name &amp; technical details</summary>
-            <label for="hk-name">Name <span class="dim">(optional)</span></label>
-            <input id="hk-name" class="key-input" placeholder="e.g. Run summary" autocomplete="off" maxlength="60">
-            <p class="mc-hint">This is a hook. The event arrives as JSON on stdin. Commands run without a shell; put pipes and redirects in a script. Before-tool hooks can block a tool by printing <code>{"decision":"block","reason":"why"}</code>.</p>
+          <label for="hk-cmd">Comando</label>
+          <input id="hk-cmd" class="key-input" placeholder="p. ej. node scripts/run-summary.js" autocomplete="off" spellcheck="false">
+          <details class="ext-details"><summary>Nombre y detalles técnicos</summary>
+            <label for="hk-name">Nombre <span class="dim">(opcional)</span></label>
+            <input id="hk-name" class="key-input" placeholder="p. ej. Run summary" autocomplete="off" maxlength="60">
+            <p class="mc-hint">Esto es un hook. El evento llega como JSON por stdin. Los comandos corren sin shell; pon pipes y redirecciones en un script. Los hooks before-tool pueden bloquear una herramienta imprimiendo <code>{"decision":"block","reason":"why"}</code>.</p>
           </details>
-          <p class="mc-hint">Runs with your computer’s permissions. Enable only commands you trust.</p>
-          <div class="mc-acts"><button class="bb sm" id="hk-add">+ ADD &amp; ENABLE</button></div>
+          <p class="mc-hint">Corre con los permisos de tu equipo. Activa solo comandos en los que confíes.</p>
+          <div class="mc-acts"><button class="bb sm" id="hk-add">+ AÑADIR &amp; ACTIVAR</button></div>
         </section>
-        <section class="ext-editor mc-form" id="pl-form" aria-label="Create a plugin" hidden>
-          <div class="ext-editor-head"><b>Create a plugin</b><button class="bb xs" data-ext-editor="">CANCEL</button></div>
-          <p class="mc-hint">Your starter comes with its own window, styled like the rest of the station, plus code that counts tool calls each run. Open the window, then edit its files to make it yours.</p>
-          <label for="pl-name">Plugin name</label>
-          <input id="pl-name" class="key-input" placeholder="e.g. PR Radar" autocomplete="off" maxlength="60">
-          <details class="ext-details" id="pl-options"><summary>Optional settings</summary>
-            <label for="pl-desc">Description</label>
-            <input id="pl-desc" class="key-input" placeholder="A short note about this plugin" autocomplete="off" maxlength="140">
-            <label for="pl-id">Folder ID <span class="dim">(filled from the name)</span></label>
+        <section class="ext-editor mc-form" id="pl-form" aria-label="Crear un plugin" hidden>
+          <div class="ext-editor-head"><b>Crear un plugin</b><button class="bb xs" data-ext-editor="">CANCELAR</button></div>
+          <p class="mc-hint">Tu starter viene con su propia ventana, con el estilo del resto de la estación, más código que cuenta llamadas de herramientas por ejecución. Abre la ventana y edita sus archivos para hacerla tuya.</p>
+          <label for="pl-name">Nombre del plugin</label>
+          <input id="pl-name" class="key-input" placeholder="p. ej. PR Radar" autocomplete="off" maxlength="60">
+          <details class="ext-details" id="pl-options"><summary>Ajustes opcionales</summary>
+            <label for="pl-desc">Descripción</label>
+            <input id="pl-desc" class="key-input" placeholder="Una nota corta sobre este plugin" autocomplete="off" maxlength="140">
+            <label for="pl-id">ID de carpeta <span class="dim">(se rellena con el nombre)</span></label>
             <input id="pl-id" class="key-input" autocomplete="off" spellcheck="false" maxlength="64" aria-describedby="pl-id-hint">
-            <p id="pl-id-hint" class="mc-hint">Letters, numbers, dots, dashes or underscores. Use a different ID if this name is already taken.</p>
+            <p id="pl-id-hint" class="mc-hint">Letras, números, puntos, guiones o guiones bajos. Usa otro ID si este nombre ya está ocupado.</p>
           </details>
-          <p class="mc-hint">Runs with your computer’s permissions. Creating it enables the starter code.</p>
-          <div class="mc-acts"><button class="bb sm" id="pl-add">+ CREATE &amp; ENABLE</button></div>
+          <p class="mc-hint">Corre con los permisos de tu equipo. Crearlo activa el código starter.</p>
+          <div class="mc-acts"><button class="bb sm" id="pl-add">+ CREAR &amp; ACTIVAR</button></div>
         </section>
-        <div class="sec"><span class="sec-l">YOUR EXTENSIONS</span><span class="sec-r"></span><span class="sec-nd"></span></div>
-        <div class="ext-list-heading">AUTOMATIC COMMANDS <span class="dim">/ hooks</span></div>
-        <div id="hk-list" class="mc-list"><span class="loading pulse">Loading commands…</span></div>
+        <div class="sec"><span class="sec-l">TUS EXTENSIONES</span><span class="sec-r"></span><span class="sec-nd"></span></div>
+        <div class="ext-list-heading">COMANDOS AUTOMÁTICOS <span class="dim">/ hooks</span></div>
+        <div id="hk-list" class="mc-list"><span class="loading pulse">Cargando comandos…</span></div>
         <div class="ext-list-heading">PLUGINS</div>
-        <div id="pl-list" class="mc-list"><span class="loading pulse">Loading plugins…</span></div>
-        <button class="bb xs" id="pl-where">COPY PLUGINS FOLDER PATH</button>
+        <div id="pl-list" class="mc-list"><span class="loading pulse">Cargando plugins…</span></div>
+        <button class="bb xs" id="pl-where">COPIAR RUTA DE LA CARPETA DE PLUGINS</button>
       </div>`;
 
     const frag = h => (el => { el.innerHTML = h; });
@@ -313,21 +313,21 @@
        I connect Telegram" is a different window, and silence there is exactly what sends people hunting.
        Nothing here gates anything: every tab remains one click away in the rail. */
     const ROUTES = [
-      { glyph: '⊞', to: 'catalog', title: 'Connect a service you use',
-        blurb: 'Find services and platform APIs, including print-on-demand. See what they can do and follow their setup steps. <b>Start here.</b>' },
-      { glyph: '⧉', to: 'mcp', title: 'Advanced: add a custom connection',
-        blurb: 'You already have an MCP endpoint and want to point the station at it.' },
-      { glyph: '▤', to: 'toolsets', title: 'Switch a built-in on or off',
-        blurb: 'Web, files, terminal, memory — inspect the selected agent’s tools and where its access comes from.' },
+      { glyph: '⊞', to: 'catalog', title: 'Conecta un servicio que usas',
+        blurb: 'Encuentra servicios y APIs de plataforma, incluido print-on-demand. Mira qué pueden hacer y sigue sus pasos de configuración. <b>Empieza aquí.</b>' },
+      { glyph: '⧉', to: 'mcp', title: 'Avanzado: añade una conexión personalizada',
+        blurb: 'Ya tienes un endpoint MCP y quieres apuntar la estación a él.' },
+      { glyph: '▤', to: 'toolsets', title: 'Activa o desactiva una integrada',
+        blurb: 'Web, archivos, terminal, memoria — inspecciona las herramientas del agente seleccionado y de dónde viene su acceso.' },
       // cross-window, and deliberately so: naming the wrong window is worse than naming none.
-      { glyph: '✉', term: 'messaging', title: 'Message your agent from Telegram or Slack',
-        blurb: 'Connect a chat account so you can give your agent work from there. Opens CHANNELS.' },
-      { glyph: '◈', term: 'settings', section: 'providers', title: 'Add an AI model provider',
-        blurb: 'Anthropic, OpenAI, OpenRouter keys and sign-ins live in SETTINGS › AI & MODELS.' }
+      { glyph: '✉', term: 'messaging', title: 'Escríbele a tu agente desde Telegram o Slack',
+        blurb: 'Conecta una cuenta de chat para darle trabajo a tu agente desde allí. Abre CANALES.' },
+      { glyph: '◈', term: 'settings', section: 'providers', title: 'Añade un proveedor de modelos de IA',
+        blurb: 'Las claves e inicios de sesión de Anthropic, OpenAI, OpenRouter están en AJUSTES › IA Y MODELOS.' }
     ];
     const secRouter =
       '<details class="ab-router" id="ab-router">' +
-        '<summary class="ab-router-q"><span>＋ ADD AN ABILITY</span><small>Choose a service, server, channel or model provider</small></summary>' +
+        '<summary class="ab-router-q"><span>＋ AÑADIR UNA HABILIDAD</span><small>Elige un servicio, servidor, canal o proveedor de modelos</small></summary>' +
         '<div class="ab-router-grid">' +
           ROUTES.map((r, i) =>
             '<button type="button" class="ab-route" style="--ci:' + i + '"' +
@@ -348,34 +348,34 @@
     // sections are unchanged — only the first one shown.
     if (H.consoleSection && !H.consoleSection.connectors) H.consoleSection.connectors = 'catalog';
     const host = mountConsole(body, 'connectors', [
-      { id: 'toolsets', label: 'BUILT-IN ABILITIES', glyph: '▤', desc: 'The list shows what the agent you pick can use, but each switch turns a built-in ability on or off for every agent; CHECK WITH ME and LET IT WORK obey the switches, FULL POWER overrides them. Connected services still need working credentials.', build: frag(secToolsets) },
-      { id: 'computer', label: 'COMPUTER CONTROL', glyph: '▣', desc: 'Choose how agents interact with native desktop apps. Full Power or a paired remote-owner lease is required.', build: frag(
-        '<div class="set-about">CUA targets windows and accessibility elements, works in the background where supported, and reports evidence for each action. Foreground input can move focus when needed.</div>' +
-        '<div id="cu-status" class="set-about" role="status" aria-live="polite">Checking computer control…</div>' +
-        '<div class="mc-acts" role="group" aria-label="Computer control backend">' +
-        '<button type="button" class="bb sm" data-cu-backend="cua">CUA · ACCESSIBILITY</button>' +
-        '<button type="button" class="bb sm" data-cu-backend="win32">WINDOWS · CLASSIC</button>' +
-        '<button type="button" class="bb sm" data-cu-backend="off">OFF</button></div>' +
-        '<div class="mc-acts"><button type="button" class="bb sm" id="cu-install">INSTALL CUA</button>' +
-        '<button type="button" class="bb sm" id="cu-check">CHECK DRIVER</button></div>' +
-        '<p class="dim">Install downloads the verified Windows x64 driver from CUA’s official release. Reinstall and backend changes close current CUA sessions; start a new task afterward.</p>' +
+      { id: 'toolsets', label: 'HABILIDADES INTEGRADAS', glyph: '▤', desc: 'La lista muestra lo que el agente elegido puede usar, pero cada interruptor activa o desactiva una habilidad integrada para todos los agentes; COMPROBAR CONMIGO y DEJARLO TRABAJAR obedecen los interruptores, PODER TOTAL los anula. Los servicios conectados siguen necesitando credenciales válidas.', build: frag(secToolsets) },
+      { id: 'computer', label: 'CONTROL DE ORDENADOR', glyph: '▣', desc: 'Elige cómo interactúan los agentes con las apps nativas de escritorio. Se necesita Poder Total o un arrendamiento de propietario remoto emparejado.', build: frag(
+        '<div class="set-about">CUA apunta a ventanas y elementos de accesibilidad, trabaja en segundo plano donde se soporta e informa evidencia de cada acción. La entrada en primer plano puede mover el foco si hace falta.</div>' +
+        '<div id="cu-status" class="set-about" role="status" aria-live="polite">Comprobando control de ordenador…</div>' +
+        '<div class="mc-acts" role="group" aria-label="Backend de control de ordenador">' +
+        '<button type="button" class="bb sm" data-cu-backend="cua">CUA · ACCESIBILIDAD</button>' +
+        '<button type="button" class="bb sm" data-cu-backend="win32">WINDOWS · CLÁSICO</button>' +
+        '<button type="button" class="bb sm" data-cu-backend="off">APAGADO</button></div>' +
+        '<div class="mc-acts"><button type="button" class="bb sm" id="cu-install">INSTALAR CUA</button>' +
+        '<button type="button" class="bb sm" id="cu-check">COMPROBAR DRIVER</button></div>' +
+        '<p class="dim">Instalar descarga el driver Windows x64 verificado de la publicación oficial de CUA. Reinstalar y cambiar de backend cierran las sesiones CUA actuales; empieza una tarea nueva después.</p>' +
         '<div id="cu-message" class="msg" role="status" aria-live="polite"></div>') },
-      { id: 'catalog', label: 'CATALOG', glyph: '⊞', desc: 'Find a service by name or what you want to do. Choose it to see the setup required; YOUR SERVICES shows saved setups, not a live connection guarantee.', build: frag(secCatalog) },
-      { id: 'keys', label: 'SAVED API CONNECTIONS', glyph: '⊟', desc: 'The platform credentials your agents actually hold, plus a safe drop for a custom API the catalog does not list.', build: frag(secKeys) },
-      { id: 'mcp', label: 'CONNECTED SERVICES', glyph: '⧉', desc: 'Manage service access, check connection status, and reconnect when needed.', build: frag(secMcp) },
+      { id: 'catalog', label: 'CATÁLOGO', glyph: '⊞', desc: 'Encuentra un servicio por nombre o por lo que quieres hacer. Elígelo para ver la configuración necesaria; TUS SERVICIOS muestra configuraciones guardadas, no una garantía de conexión en vivo.', build: frag(secCatalog) },
+      { id: 'keys', label: 'CONEXIONES API GUARDADAS', glyph: '⊟', desc: 'Las credenciales de plataforma que tus agentes realmente tienen, más un espacio seguro para una API personalizada que el catálogo no lista.', build: frag(secKeys) },
+      { id: 'mcp', label: 'SERVICIOS CONECTADOS', glyph: '⧉', desc: 'Gestiona el acceso a servicios, comprueba el estado de conexión y reconecta cuando sea necesario.', build: frag(secMcp) },
       // (ONE DOOR EACH, 2026-10-01: the CREATE / ADVANCED router pane repeated the rail — custom MCP server → CONNECTED
       // SERVICES, custom API key → SAVED API CONNECTIONS, skill package → SKILL EXCHANGE, hooks/plugins → EXTENSIONS)
-      { id: 'extensions', label: 'EXTENSIONS', glyph: '⌥', desc: 'Automate a step or extend StarNet with your own code.', build: frag(secExt) }
+      { id: 'extensions', label: 'EXTENSIONES', glyph: '⌥', desc: 'Automatiza un paso o amplía StarNet con tu propio código.', build: frag(secExt) }
     ].concat(lanes.reduce((acc, l) => acc.concat(l.sections), [])), {
       search: true,
       groups: [
-        { id: 'installed', label: 'INSTALLED', sections: ['toolsets', 'computer', 'mcp', 'keys', 'agent'] },
-        { id: 'discover', label: 'DISCOVER', sections: ['catalog', 'market', 'library'] },
-        { id: 'advanced', label: 'CREATE / ADVANCED', sections: ['extensions', 'exchange'] }
+        { id: 'installed', label: 'INSTALADO', sections: ['toolsets', 'computer', 'mcp', 'keys', 'agent'] },
+        { id: 'discover', label: 'DESCUBRIR', sections: ['catalog', 'market', 'library'] },
+        { id: 'advanced', label: 'CREAR / AVANZADO', sections: ['extensions', 'exchange'] }
       ],
-      searchLabel: 'Search abilities',
+      searchLabel: 'Buscar habilidades',
       searchPlaceholder: 'search abilities…',   // fits the rail's search box whole (the long hint was cut at 'search a platform,')
-      searchEmptyText: 'No abilities match that search. Try another platform, tool, or skill.'
+      searchEmptyText: 'Ninguna habilidad coincide con esa búsqueda. Prueba otra plataforma, herramienta o skill.'
     });
     lanes.forEach(l => { try { if (typeof l.wire === 'function') l.wire(); } catch (_) {} });
     if (typeof Tutorial !== 'undefined' && Tutorial.wirePlatformGuide) Tutorial.wirePlatformGuide(body);
@@ -404,12 +404,12 @@
         const supported = !h.awaitingAnswer && (dormant || (ready && (!h.toolName || (c.tools || []).includes(h.toolName))));
         const line = document.createElement('div');
         const caption = document.createElement('span');
-        caption.textContent = (ws.title || 'Task') + ' · ' + h.connectorId + ' — '
-          + (h.awaitingAnswer ? (ready || dormant ? 'connected — answer the task\'s open question to continue. ' : 'waiting for connection; the task has an open question. ')
-            : dormant ? 'saved connection will be checked. ' : supported ? 'connection ready. ' : ready ? 'requested operation is unavailable. ' : 'waiting for connection. ');
+        caption.textContent = (ws.title || 'Tarea') + ' · ' + h.connectorId + ' — '
+          + (h.awaitingAnswer ? (ready || dormant ? 'conectado — responde la pregunta abierta de la tarea para continuar. ' : 'esperando conexión; la tarea tiene una pregunta abierta. ')
+            : dormant ? 'se comprobará la conexión guardada. ' : supported ? 'conexión lista. ' : ready ? 'la operación solicitada no está disponible. ' : 'esperando conexión. ');
         line.appendChild(caption);
         const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'bb xs';
-        btn.textContent = h.awaitingAnswer ? 'RETURN TO TASK' : dormant ? 'CHECK & CONTINUE TASK' : supported ? 'CONTINUE TASK' : 'RETURN TO TASK';
+        btn.textContent = h.awaitingAnswer ? 'VOLVER A LA TAREA' : dormant ? 'COMPROBAR Y CONTINUAR TAREA' : supported ? 'CONTINUAR TAREA' : 'VOLVER A LA TAREA';
         btn.onclick = async () => {
           if (!supported) { App.openWorkstream(ws.id); return; }
           btn.disabled = true;
@@ -446,15 +446,15 @@
     /* The picker says WHEN in plain language. "post_tool_call" is the wire name and it is meaningless to
        anyone who has not read the source; the value stays the wire name, only the label is human. */
     const EVENT_LABEL = {
-      pre_tool_call: 'before the agent uses a tool  (can block it)',
-      post_tool_call: 'after the agent uses a tool',
-      pre_llm_call: 'before every model call  (can add a note, or block)',
-      post_llm_call: 'after every model call',
-      on_session_start: 'when a run starts',
-      on_session_end: 'when a run finishes',
-      subagent_stop: 'when a delegated worker finishes',
-      on_pre_compress: 'just before history is compacted',
-      on_memory_write: 'when something is written to memory'
+      pre_tool_call: 'antes de que el agente use una herramienta  (puede bloquearla)',
+      post_tool_call: 'después de que el agente use una herramienta',
+      pre_llm_call: 'antes de cada llamada al modelo  (puede añadir una nota, o bloquear)',
+      post_llm_call: 'después de cada llamada al modelo',
+      on_session_start: 'cuando empieza una ejecución',
+      on_session_end: 'cuando termina una ejecución',
+      subagent_stop: 'cuando termina un trabajador delegado',
+      on_pre_compress: 'justo antes de compactar el historial',
+      on_memory_write: 'cuando se escribe algo en la memoria'
     };
     let extPluginDir = '';
     const extMsg = body.querySelector('#ext-msg');
@@ -469,18 +469,18 @@
       try {
         const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         const j = await r.json().catch(() => ({}));
-        if (!r.ok) { extSay((j && j.error) || ('request failed (' + r.status + ')'), true); return false; }
+        if (!r.ok) { extSay((j && j.error) || ('falló la solicitud (' + r.status + ')'), true); return false; }
         return true;
-      } catch (e) { extSay('could not reach the station: ' + ((e && e.message) || e), true); return false; }
+      } catch (e) { extSay('no se pudo alcanzar la estación: ' + ((e && e.message) || e), true); return false; }
       finally { if (btn) { btn.disabled = false; btn.classList.remove('busy'); } }
     }
 
     function extBadge(state) {
       return ({
-        active: ['var(--ok)', '● On'],
-        pending: ['var(--gold)', '○ Off · needs approval'],
+        active: ['var(--ok)', '● Activado'],
+        pending: ['var(--gold)', '○ Inactivo · necesita aprobación'],
         error: ['var(--bad)', '✕ error']
-      })[state] || ['var(--ph-dim)', '○ Off'];
+      })[state] || ['var(--ph-dim)', '○ Inactivo'];
     }
     // A findings block is DISCLOSURE at the approval moment — the guard is not a boundary, so the Commander
     // has to be able to see what they are about to say yes to.
@@ -488,12 +488,12 @@
     // shape this used to read never existed, so every plugin's findings silently rendered as nothing.
     function extFindings(f) {
       if (Array.isArray(f)) {
-        if (!f.length) return '<div class="mc-hint">scanner: nothing suspicious found</div>';
+        if (!f.length) return '<div class="mc-hint">analizador: no se encontró nada sospechoso</div>';
         const rank = { critical: 3, high: 2, medium: 1, low: 0 };
         const worst = f.reduce((w, x) => (rank[x && x.severity] || 0) > (rank[w] || 0) ? x.severity : w, 'low');
-        const lines = f.slice(0, 6).map(x => esc(String((x && x.description) || 'finding')) + ' <span class="mc-hint">(' + esc(String((x && x.file) || '')) + ':' + esc(String((x && x.line) || '')) + ')</span>').join('<br>');
-        return '<div class="mc-hint">scanner: <b>' + esc(String(f.length)) + ' finding' + (f.length === 1 ? '' : 's') + ' · worst ' + esc(String(worst)) + '</b><br>' + lines +
-          (f.length > 6 ? '<br>…and ' + esc(String(f.length - 6)) + ' more' : '') + '</div>';
+        const lines = f.slice(0, 6).map(x => esc(String((x && x.description) || 'hallazgo')) + ' <span class="mc-hint">(' + esc(String((x && x.file) || '')) + ':' + esc(String((x && x.line) || '')) + ')</span>').join('<br>');
+        return '<div class="mc-hint">analizador: <b>' + esc(String(f.length)) + ' hallazgo' + (f.length === 1 ? '' : 's') + ' · peor ' + esc(String(worst)) + '</b><br>' + lines +
+          (f.length > 6 ? '<br>…y ' + esc(String(f.length - 6)) + ' más' : '') + '</div>';
       }
       if (!f || !f.level) return '';
       const hits = Array.isArray(f.hits) && f.hits.length ? ' — ' + f.hits.map(h => esc(String(h))).join(', ') : '';
@@ -506,17 +506,17 @@
       if (!p.active || !tools.length) return '';
       const host = typeof PluginHost !== 'undefined' ? PluginHost : null;
       const term = host && host.terminalOf ? host.terminalOf(p.id) : null;
-      return '<div class="mc-hint">Tools: ' + tools.map(t => '<code>' + esc(t) + '</code>').join(' ') + '<br>' +
-        (term ? 'Its terminal stands in the station: agents in that room can use these. Each call asks you first unless you choose Always or Full access.'
-          : 'No terminal in the station yet, so no agent can use these. <button class="bb xs" data-ext="plugin-place" data-id="' + esc(p.id) + '">PLACE TERMINAL</button>') +
+      return '<div class="mc-hint">Herramientas: ' + tools.map(t => '<code>' + esc(t) + '</code>').join(' ') + '<br>' +
+        (term ? 'Su terminal está en la estación: los agentes de esa sala pueden usarlas. Cada llamada te pregunta primero salvo que elijas Siempre o Acceso total.'
+          : 'Todavía no hay terminal en la estación, así que ningún agente puede usarlas. <button class="bb xs" data-ext="plugin-place" data-id="' + esc(p.id) + '">COLOCAR TERMINAL</button>') +
         '</div>';
     }
     // A plugin's windows (plugin.json `screens`), openable only while it is approved and live.
     function extScreens(p) {
       const list = Array.isArray(p.screens) ? p.screens : [];
       if (!list.length) return '';
-      if (!p.active) return '<div class="mc-hint">Has ' + list.length + ' window' + (list.length === 1 ? '' : 's') + ' — approve it to open ' + (list.length === 1 ? 'it' : 'them') + '.</div>';
-      return list.map(s => '<button class="bb xs" data-ext="plugin-open" data-id="' + esc(p.id) + '" data-screen="' + esc(s.id) + '">OPEN ' + esc(String(s.title || s.id).toUpperCase()) + '</button>').join('');
+      if (!p.active) return '<div class="mc-hint">Tiene ' + list.length + ' ventana' + (list.length === 1 ? '' : 's') + ' — apruébalo para abrir ' + (list.length === 1 ? 'la ventana' : 'las ventanas') + '.</div>';
+      return list.map(s => '<button class="bb xs" data-ext="plugin-open" data-id="' + esc(p.id) + '" data-screen="' + esc(s.id) + '">ABRIR ' + esc(String(s.title || s.id).toUpperCase()) + '</button>').join('');
     }
 
     // Keep drafts in the DOM while changing editors; never ask for two setups at once.
@@ -565,55 +565,55 @@
         && typeof StationUI !== 'undefined' && StationUI.settleNotifs) StationUI.settleNotifs('extensions-pending');
       extPluginDir = plugins ? plugins.dir || '' : '';
       body.querySelector('#pl-where').hidden = !extPluginDir || !plugins.plugins.length;
-      const unavailable = label => '<div class="mc-hint">Could not load ' + label + '. <button class="bb xs" data-ext="retry">TRY AGAIN</button></div>';
+      const unavailable = label => '<div class="mc-hint">No se pudo cargar ' + label + '. <button class="bb xs" data-ext="retry">INTENTAR DE NUEVO</button></div>';
       const evSel = body.querySelector('#hk-event');
       if (hooks && evSel && !evSel.options.length && Array.isArray(hooks.events)) {
         evSel.innerHTML = hooks.events.map(e => '<option value="' + esc(e) + '">' + esc(EVENT_LABEL[e] || e) + '</option>').join('');
         if (hooks.events.includes('on_session_end')) evSel.value = 'on_session_end';
       }
       body.querySelector('#hk-add').disabled = !hooks || !evSel.options.length;
-      hkEl.innerHTML = !hooks ? unavailable('commands') : hooks.hooks.map(h => {
+      hkEl.innerHTML = !hooks ? unavailable('los comandos') : hooks.hooks.map(h => {
         const badge = extBadge(h.active ? 'active' : 'pending');
         const dat = ' data-event="' + esc(h.event) + '" data-command="' + esc(h.command) + '"';
         return '<div class="mc-row ext-row"><div class="mc-top"><b>' + esc(h.name || h.command) + '</b>' +
           '<span class="mc-state" style="color:' + badge[0] + '">' + badge[1] + '</span></div>' +
           '<div class="mc-hint">' + esc(EVENT_LABEL[h.event] || h.event) + '</div>' +
           '<div class="mc-acts"><button class="bb xs" data-ext="hook-' + (h.active ? 'revoke' : 'allow') + '"' + dat + '>' +
-          (h.active ? 'TURN OFF' : 'APPROVE &amp; ENABLE') + '</button></div>' +
-          '<details class="ext-details"><summary>Details</summary><code class="ext-command">' + esc(h.command) + '</code>' +
-          (!h.active ? '<p class="mc-hint">Runs with your computer’s permissions when enabled.</p>' : '') +
-          '<button class="bb xs danger" data-ext="hook-delete"' + dat + '>REMOVE COMMAND</button></details></div>';
-      }).join('') || '<div class="ext-empty">No automatic commands yet.</div>';
-      plEl.innerHTML = !plugins ? unavailable('plugins') : plugins.plugins.map(p => {
+          (h.active ? 'DESACTIVAR' : 'APROBAR &amp; ACTIVAR') + '</button></div>' +
+          '<details class="ext-details"><summary>Detalles</summary><code class="ext-command">' + esc(h.command) + '</code>' +
+          (!h.active ? '<p class="mc-hint">Corre con los permisos de tu equipo cuando se activa.</p>' : '') +
+          '<button class="bb xs danger" data-ext="hook-delete"' + dat + '>ELIMINAR COMANDO</button></details></div>';
+      }).join('') || '<div class="ext-empty">Todavía no hay comandos automáticos.</div>';
+      plEl.innerHTML = !plugins ? unavailable('los plugins') : plugins.plugins.map(p => {
         const badge = extBadge(p.active ? 'active' : (p.pending ? 'pending' : 'inert'));
         return '<div class="mc-row ext-row"><div class="mc-top"><b>' + esc(p.name || p.id) + '</b>' +
           '<span class="mc-state" style="color:' + badge[0] + '">' + badge[1] + '</span></div>' +
           (p.description ? '<div class="mc-hint">' + esc(p.description) + '</div>' : '') +
           (!p.active ? extFindings(p.findings) : '') +
           '<div class="mc-acts">' + (p.active ? extScreens(p) : '') + '<button class="bb xs" data-ext="plugin-' + (p.active ? 'revoke' : 'allow') + '" data-id="' + esc(p.id) + '" data-digest="' + esc(p.digest || '') + '">' +
-          (p.active ? 'TURN OFF' : 'APPROVE &amp; ENABLE') + '</button></div>' +
+          (p.active ? 'DESACTIVAR' : 'APROBAR &amp; ACTIVAR') + '</button></div>' +
           (!p.active ? extScreens(p) : '') +
           extTools(p) +
-          (p.process && p.process.state === 'crashed' ? '<div class="mc-hint" style="color:var(--bad)">Its code crashed: ' + esc(p.process.error || 'unknown') + '. It restarts on its next use.</div>' : '') +
-          '<details class="ext-details"><summary>Details &amp; code</summary>' +
-          '<p class="mc-hint">Folder: <code>' + esc(p.id) + '</code> · Version ' + esc(p.version || '0') +
-          '<br>Open its folder to edit the code. Starters use <code>index.js</code> and <code>ui/index.html</code>.</p>' +
+          (p.process && p.process.state === 'crashed' ? '<div class="mc-hint" style="color:var(--bad)">Su código se cayó: ' + esc(p.process.error || 'desconocido') + '. Se reinicia en su próximo uso.</div>' : '') +
+          '<details class="ext-details"><summary>Detalles y código</summary>' +
+          '<p class="mc-hint">Carpeta: <code>' + esc(p.id) + '</code> · Versión ' + esc(p.version || '0') +
+          '<br>Abre su carpeta para editar el código. Los starters usan <code>index.js</code> y <code>ui/index.html</code>.</p>' +
           (p.active ? extFindings(p.findings) : (p.hasCode === false
-            ? '<p class="mc-hint">Window-only plugin: its pages run sandboxed inside their windows, with no access to your station or computer.</p>'
-            : '<p class="mc-hint">Enabling loads this code with your computer’s permissions.</p>')) +
-          '<div class="mc-acts"><button class="bb xs" data-ext="plugin-where" data-id="' + esc(p.id) + '">COPY FOLDER PATH</button>' +
-          '<button class="bb xs danger" data-ext-remove="' + esc(p.id) + '">DELETE PLUGIN</button></div>' +
-          '<p class="mc-hint">Deleting also removes its code from disk.</p></details></div>';
-      }).join('') || '<div class="ext-empty">No plugins yet.</div>';
+            ? '<p class="mc-hint">Plugin solo de ventanas: sus páginas corren aisladas dentro de sus ventanas, sin acceso a tu estación ni a tu equipo.</p>'
+            : '<p class="mc-hint">Activar carga este código con los permisos de tu equipo.</p>')) +
+          '<div class="mc-acts"><button class="bb xs" data-ext="plugin-where" data-id="' + esc(p.id) + '">COPIAR RUTA DE CARPETA</button>' +
+          '<button class="bb xs danger" data-ext-remove="' + esc(p.id) + '">ELIMINAR PLUGIN</button></div>' +
+          '<p class="mc-hint">Eliminar también borra su código del disco.</p></details></div>';
+      }).join('') || '<div class="ext-empty">Todavía no hay plugins.</div>';
       plEl.querySelectorAll('[data-ext-remove]').forEach(btn => {
         ArmConfirm.wire(btn, {
-          armedLabel: 'SURE? DELETE CODE', restLabel: 'DELETE PLUGIN', timeoutMs: 4000,
+          armedLabel: '¿SEGURO? ELIMINAR CÓDIGO', restLabel: 'ELIMINAR PLUGIN', timeoutMs: 4000,
           onArm: () => sfx('bad'),
           onConfirm: async () => {
             if (await extPost('/api/plugins/delete', { id: btn.dataset.extRemove }, btn)) {
               if (typeof PluginHost !== 'undefined') { try { await PluginHost.refresh(); } catch (_) {} }
               const refreshed = await renderExtensions();
-              if (refreshed) extSay('Plugin deleted.');
+              if (refreshed) extSay('Plugin eliminado.');
             }
           }
         });
@@ -646,10 +646,10 @@
       else if (kind === 'plugin-place') {
         const host = typeof PluginHost !== 'undefined' ? PluginHost : null;
         const r = host ? host.placeTerminal(btn.dataset.id) : { ok: false, msg: 'plugin windows are not available in this build' };
-        if (!r || !r.ok) { extSay('Could not place its terminal: ' + ((r && (r.msg || r.error)) || 'unknown') + '. Place a PLUGIN TERMINAL in BUILD MODE instead.', true); return; }
+        if (!r || !r.ok) { extSay('No se pudo colocar su terminal: ' + ((r && (r.msg || r.error)) || 'desconocido') + '. Coloca un TERMINAL DE PLUGIN en MODO CONSTRUCCIÓN.', true); return; }
         try { sfx('ok'); } catch (_) {}
         await renderExtensions();
-        extSay('Its terminal now stands in the lead’s room.');
+        extSay('Su terminal ahora está en la sala del líder.');
         return;
       }
       else if (kind === 'plugin-open') {
@@ -663,28 +663,28 @@
       }
       else if (kind === 'hook-add') {
         const ev = body.querySelector('#hk-event'), cmd = body.querySelector('#hk-cmd'), nm = body.querySelector('#hk-name');
-        if (!cmd.value.trim()) { extSay('Enter the command you want to run.', true); cmd.focus(); return; }
+        if (!cmd.value.trim()) { extSay('Escribe el comando que quieres ejecutar.', true); cmd.focus(); return; }
         ok = await extPost('/api/hooks/create', { event: ev.value, command: cmd.value.trim(), name: nm.value.trim() }, btn);
-        if (ok) { cmd.value = ''; nm.value = ''; done = 'Command added.'; extEditor('', false); }
+        if (ok) { cmd.value = ''; nm.value = ''; done = 'Comando añadido.'; extEditor('', false); }
       }
       else if (kind === 'plugin-add') {
         const id = body.querySelector('#pl-id'), nm = body.querySelector('#pl-name'), ds = body.querySelector('#pl-desc');
-        if (!nm.value.trim()) { extSay('Give your plugin a name.', true); nm.focus(); return; }
+        if (!nm.value.trim()) { extSay('Dale un nombre a tu plugin.', true); nm.focus(); return; }
         if (!pluginIdEdited) id.value = suggestedPluginId(nm.value);
         if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/.test(id.value.trim())) {
           body.querySelector('#pl-options').open = true;
-          extSay('Use letters or numbers at the start of the folder ID, then letters, numbers, dots, dashes or underscores.', true);
+          extSay('Empieza el ID de carpeta con letras o números, y usa letras, números, puntos, guiones o guiones bajos.', true);
           id.focus(); return;
         }
         const newId = id.value.trim();
         ok = await extPost('/api/plugins/create', { id: newId, name: nm.value.trim(), description: ds.value.trim() }, btn);
         if (!ok) body.querySelector('#pl-options').open = true;
-        if (ok) { openAfter = newId; done = 'Plugin created and its window opened. Find its code under Details & code.'; id.value = ''; nm.value = ''; ds.value = ''; pluginIdEdited = false; extEditor('', false); }
+        if (ok) { openAfter = newId; done = 'Plugin creado y su ventana abierta. Encuentra su código en Detalles y código.'; id.value = ''; nm.value = ''; ds.value = ''; pluginIdEdited = false; extEditor('', false); }
       }
       else if (kind === 'plugin-where') {
         if (!extPluginDir) { extSay('the station has not reported a plugins folder yet', true); return; }
         const path = extPluginDir + (btn.dataset.id ? '/' + btn.dataset.id : '');
-        try { await navigator.clipboard.writeText(path); extSay('Path copied to your clipboard.'); }
+        try { await navigator.clipboard.writeText(path); extSay('Ruta copiada a tu portapapeles.'); }
         catch (_) { extSay(path); }   // no clipboard permission — show it rather than fail silently
         return;
       }
@@ -698,7 +698,7 @@
         if (/^plugin-/.test(kind) && typeof PluginHost !== 'undefined') {
           try {
             await PluginHost.refresh();
-            if (openAfter && !PluginHost.open(openAfter)) done = 'Plugin created. Find its code under Details & code.';
+            if (openAfter && !PluginHost.open(openAfter)) done = 'Plugin creado. Encuentra su código en Detalles y código.';
             // INSTALL PLACES THE TERMINAL: a plugin that came up with tools gets its body in the lead's room now,
             // so "approve" is the only step between writing a tool and the crew being able to use it.
             const pid = openAfter || (kind === 'plugin-allow' ? btn.dataset.id : '');
@@ -731,12 +731,12 @@
     let cuState = null, cuBusy = false;
     function cuRender(state) {
       cuState = state;
-      cuStatus.textContent = (state.backend === 'cua' ? 'CUA' : state.backend === 'win32' ? 'WINDOWS CLASSIC' : 'OFF') + ' — ' + state.detail + (state.envLocked ? ' Selection is controlled by the launch environment.' : '');
+      cuStatus.textContent = (state.backend === 'cua' ? 'CUA' : state.backend === 'win32' ? 'WINDOWS CLÁSICO' : 'APAGADO') + ' — ' + state.detail + (state.envLocked ? ' La selección la controla el entorno de lanzamiento.' : '');
       for (const button of cuChoices) {
         button.setAttribute('aria-pressed', String(button.dataset.cuBackend === state.backend));
         button.disabled = cuBusy || state.envLocked || ((!state.desktopShell || !state.nativeSupported) && button.dataset.cuBackend !== 'off') || (button.dataset.cuBackend === 'cua' && (!state.supported || !state.installed));
       }
-      cuInstall.textContent = state.installing ? 'INSTALLING CUA…' : (state.installed ? 'REINSTALL CUA ' : 'INSTALL CUA ') + state.version;
+      cuInstall.textContent = state.installing ? 'INSTALANDO CUA…' : (state.installed ? 'REINSTALAR CUA ' : 'INSTALAR CUA ') + state.version;
       cuInstall.hidden = state.customBinary;
       cuInstall.style.display = state.customBinary ? 'none' : '';
       cuInstall.disabled = cuBusy || state.installing || !state.supported || !state.desktopShell;
@@ -748,7 +748,7 @@
         cuRender(state);
         if (state.installing) setTimeout(() => { if (cuStatus.isConnected) cuRefresh(); }, 1500);
       }
-      catch (_) { cuStatus.textContent = 'Computer control status unavailable. Reopen Abilities after reconnecting.'; }
+      catch (_) { cuStatus.textContent = 'Estado del control de ordenador no disponible. Reabre Habilidades tras reconectar.'; }
     }
     async function cuAction(payload) {
       if (cuBusy) return;
@@ -757,10 +757,10 @@
       cuMessage.textContent = payload.action === 'install' ? 'Downloading and verifying CUA…' : 'Checking…';
       try {
         const response = await Harness.api.post('/api/computer-control', payload, { timeoutMs: 240000 });
-        if (!response.ok || response.j?.error) throw new Error(response.j?.error || 'Computer control request failed');
+        if (!response.ok || response.j?.error) throw new Error(response.j?.error || 'Fallo la solicitud de control de ordenador');
         cuRender(response.j);
         cuMessage.textContent = response.j.checkDetail || (payload.action === 'install' ? 'Installed. Select CUA to use it for new runs.' : 'Selection saved. Start a new run to use it.');
-      } catch (e) { cuMessage.textContent = e.message || 'Computer control request failed'; }
+      } catch (e) { cuMessage.textContent = e.message || 'Fallo la solicitud de control de ordenador'; }
       finally { cuBusy = false; await cuRefresh(); }
     }
     for (const button of [...cuChoices, cuInstall, cuCheck]) button.disabled = true;
@@ -779,10 +779,10 @@
     // full list is still one click away — this hides nothing, it just stops one row eating the pane.
     const TS_TOOLS_SHOWN = 8;
     function tsAvailability(t) {
-      if (t.available) return 'AVAILABLE';
-      if (t.switchEffective && !t.enabled) return 'DISABLED';
-      if (t.switchEffective && !t.placed && !t.profileGranted) return 'NEEDS PROP';
-      return 'UNAVAILABLE';
+      if (t.available) return 'DISPONIBLE';
+      if (t.switchEffective && !t.enabled) return 'DESACTIVADO';
+      if (t.switchEffective && !t.placed && !t.profileGranted) return 'NECESITA PROP';
+      return 'NO DISPONIBLE';
     }
     function tsRowHTML(t, ri) {
       const off = !t.available;
@@ -809,7 +809,7 @@
           '</div></details>'
         : '';
       return '<div class="set-row ts-row' + (off ? ' ts-off' : '') + (inert ? ' ts-inert-row' : '') + '" data-id="' + esc(t.id) + '" style="--ci:' + (ri || 0) + '">' +
-          '<input type="checkbox" data-ts-toggle="' + esc(t.id) + '"' + (t.enabled ? ' checked' : '') + ' aria-label="Enable ' + esc(t.label) + ' for every agent"' + (t.switchEffective ? ' data-tip="Turns ' + esc(t.label) + ' on or off for every agent"' : ' disabled data-tip-below data-tip="FULL POWER overrides this saved switch. Change access first."') + '>' +
+          '<input type="checkbox" data-ts-toggle="' + esc(t.id) + '"' + (t.enabled ? ' checked' : '') + ' aria-label="Activar ' + esc(t.label) + ' para todos los agentes"' + (t.switchEffective ? ' data-tip="Activa o desactiva ' + esc(t.label) + ' para todos los agentes"' : ' disabled data-tip-below data-tip="PODER TOTAL anula este interruptor guardado. Cambia el acceso primero."') + '>' +
           '<span class="ts-glyph" aria-hidden="true">' + esc(t.glyph || '▪') + '</span>' +
           '<span class="ts-main">' +
             '<span class="ts-name">' + esc(t.label) + ' ' + status + consent +
@@ -842,13 +842,13 @@
         const list = (j && j.toolsets) || [];
         list.forEach(t => { if (t && t.id) tsLabels[t.id] = t.label || t.id; });   // the toast names the ability, not its id
         tsListEl.innerHTML = '<div class="ability-readout" aria-label="Selected agent toolset availability">' +
-          '<div><b>' + list.filter(t => t.available).length + '</b><span>AVAILABLE</span></div>' +
-          '<div><b>' + list.filter(t => tsAvailability(t) === 'NEEDS PROP').length + '</b><span>NEED A PROP</span></div>' +
-          '<div><b>' + list.filter(t => !t.available && tsAvailability(t) !== 'NEEDS PROP').length + '</b><span>UNAVAILABLE</span></div></div>' +
-          '<p class="ability-legend">AVAILABLE means this agent has the capability through equipment or access settings. Service connections and task permissions still apply. Each switch below applies to every agent.</p>' +
+          '<div><b>' + list.filter(t => t.available).length + '</b><span>DISPONIBLE</span></div>' +
+          '<div><b>' + list.filter(t => tsAvailability(t) === 'NECESITA PROP').length + '</b><span>NECESITA PROP</span></div>' +
+          '<div><b>' + list.filter(t => !t.available && tsAvailability(t) !== 'NECESITA PROP').length + '</b><span>NO DISPONIBLE</span></div></div>' +
+          '<p class="ability-legend">DISPONIBLE significa que este agente tiene la capacidad mediante equipo o ajustes de acceso. Las conexiones de servicio y los permisos de tarea aún se aplican. Cada interruptor de abajo se aplica a todos los agentes.</p>' +
           list.map(tsRowHTML).join('');
         if (body.querySelector('#sp-connect')) setupSpotify(body);   // wire Spotify now the sp-* markup is in the JUKEBOX row
-      } catch (_) { if (request !== tsRequest) return; tsAuthorityEl.textContent = 'Effective authority unavailable.'; tsListEl.innerHTML = '<div class="mc-detail">Cannot read current capabilities. Reopen ABILITIES after reconnecting.</div>'; }
+      } catch (_) { if (request !== tsRequest) return; tsAuthorityEl.textContent = 'Autoridad efectiva no disponible.'; tsListEl.innerHTML = '<div class="mc-detail">No se pueden leer las capacidades actuales. Reabre HABILIDADES tras reconectar.</div>'; }
     }
     tsListEl.addEventListener('change', async ev => {
       const cb = ev.target.closest('input[data-ts-toggle]'); if (!cb) return;
@@ -857,9 +857,9 @@
       try {
         const r = await Harness.api.post('/api/toolsets/' + encodeURIComponent(id), { enabled });
         const j = r.j || {};
-        if (!r.ok || j.error) { cb.checked = !enabled; sfx('bad'); notify('✕ ' + (j.error || 'toggle failed')); }
-        else { sfx('tick'); notify((tsLabels[id] || id) + (enabled ? ' on' : ' off') + ' for every agent', enabled ? 'good' : undefined); }
-      } catch (e) { cb.checked = !enabled; sfx('bad'); notify('✕ ' + ((e && e.message) || 'request failed')); }
+        if (!r.ok || j.error) { cb.checked = !enabled; sfx('bad'); notify('✕ ' + (j.error || 'falló el interruptor')); }
+        else { sfx('tick'); notify((tsLabels[id] || id) + (enabled ? ' activado' : ' desactivado') + ' para todos los agentes', enabled ? 'good' : undefined); }
+      } catch (e) { cb.checked = !enabled; sfx('bad'); notify('✕ ' + ((e && e.message) || 'solicitud fallida')); }
       cb.disabled = false;
       tsRefresh();
     });
@@ -879,7 +879,7 @@
         // No mapping for this objectType still opens BUILD MODE + names the gear in a toast, which is the
         // floor of acceptable — never a silent no-op.
         if (typeof H.placeGearForSkill === 'function') H.placeGearForSkill(place.dataset.tsPlace);
-        else notify('Open ⚒ BUILD and place a ' + place.dataset.tsPlace + ' to grant these tools', 'warn');
+        else notify('Abre ⚒ MODO CONSTRUCCIÓN y coloca un ' + place.dataset.tsPlace + ' para otorgar estas herramientas', 'warn');
       }
     });
     tsRefresh();
@@ -939,7 +939,7 @@
 
     function resetForm() {
       editing = null;
-      formH.textContent = 'ADD A CONNECTOR';
+      formH.textContent = 'AÑADIR UN CONECTOR';
       addBtn.textContent = '+ ADD & CONNECT';
       cancelBtn.style.display = 'none';
       idInput.disabled = false;
@@ -953,7 +953,7 @@
     // populate the form from an existing connector for EDIT (secrets stay blank = keep-saved).
     function startEdit(c) {
       editing = c.id;
-      formH.textContent = 'EDIT CONNECTOR — ' + (c.label || c.id);
+      formH.textContent = 'EDITAR CONECTOR — ' + (c.label || c.id);
       addBtn.textContent = '✓ SAVE & RECONNECT';
       cancelBtn.style.display = '';
       idInput.disabled = true;
@@ -985,18 +985,18 @@
     }
 
     function badge(state) {
-      return ({ up: ['var(--ok)', '● connected'], connecting: ['var(--gold)', '◌ connecting…'],
-                cached: ['var(--gold)', '◐ idle · starts on use'],
-                down: ['var(--ph-dim)', '○ disabled'], error: ['var(--bad)', '✕ error'] })[state] || ['var(--ph-dim)', '○ ' + esc(state || 'unknown')];
+      return ({ up: ['var(--ok)', '● conectado'], connecting: ['var(--gold)', '◌ conectando…'],
+                cached: ['var(--gold)', '◐ en espera · se inicia al usarlo'],
+                down: ['var(--ph-dim)', '○ desactivado'], error: ['var(--bad)', '✕ error'] })[state] || ['var(--ph-dim)', '○ ' + esc(state || 'desconocido')];
     }
     function row(c, ri) {
-      const b = c.releaseDeferred ? ['var(--gold)', '○ deferred'] : badge(c.state);
+      const b = c.releaseDeferred ? ['var(--gold)', '○ diferido'] : badge(c.state);
       const tools = (c.tools && c.tools.length) ? '<div class="mc-tools">' + c.tools.map(t => '<code>' + esc(t) + '</code>').join('') + '</div>' : '';
       const detail = (c.state === 'error' && c.detail) ? '<div class="mc-detail">' + esc(c.detail) + '</div>' : '';
-      const next = c.releaseDeferred ? (c.credentialSaved ? 'Saved connection retained.' : 'Unavailable in this release.') : !c.enabled ? 'Turn on the switch above to let agents use this service.'
-        : c.oauth && (c.authRequired || !c.oauthAuthorized) ? 'Sign in below to restore access to this account.'
-        : c.catalogSignIn ? 'This service now connects by browser sign-in. SIGN IN below replaces the saved token only after you approve.'
-        : c.state === 'error' ? 'Open the error details below, then reload to retry.'
+      const next = c.releaseDeferred ? (c.credentialSaved ? 'Conexión guardada retenida.' : 'No disponible en esta versión.') : !c.enabled ? 'Activa el interruptor de arriba para que los agentes usen este servicio.'
+        : c.oauth && (c.authRequired || !c.oauthAuthorized) ? 'Inicia sesión abajo para restaurar el acceso a esta cuenta.'
+        : c.catalogSignIn ? 'Este servicio ahora se conecta con inicio de sesión en el navegador. INICIAR SESIÓN abajo reemplaza el token guardado solo después de que apruebes.'
+        : c.state === 'error' ? 'Abre los detalles del error de abajo y luego recarga para reintentar.'
         : '';
       const where = c.transport === 'stdio'
         ? ('<span class="mc-tag">stdio</span> <code>' + esc([c.command].concat(c.args || []).join(' ')) + '</code>' + (c.hasEnv ? ' · env set' : '') +
@@ -1004,20 +1004,20 @@
         : ('<span class="mc-tag">' + (c.oauth ? 'oauth' : 'http') + '</span> ' + esc(c.url)
           // COPY TRUTH: a row must never read "OAuth authorized" AND "reauthentication required" at once — a
           // rejected grant (authRequired) outranks token presence (oauthAuthorized derives from a stored token).
-          + (c.releaseDeferred ? (c.credentialSaved ? ' · saved connection retained' : '') : c.oauth ? (c.authRequired ? ' · OAuth grant rejected — sign in again' : (c.oauthAuthorized ? ' · OAuth authorized' : ' · OAuth sign-in needed')) : (c.hasToken ? ' · token saved' : ''))
-          + (c.hasHeaders ? ' · headers set' : ''));
+          + (c.releaseDeferred ? (c.credentialSaved ? ' · conexión guardada retenida' : '') : c.oauth ? (c.authRequired ? ' · concesión OAuth rechazada — inicia sesión de nuevo' : (c.oauthAuthorized ? ' · OAuth autorizado' : ' · necesita inicio de sesión OAuth')) : (c.hasToken ? ' · token guardado' : ''))
+          + (c.hasHeaders ? ' · cabeceras configuradas' : ''));
       const timeout = (c.timeoutMs && c.timeoutMs !== 30000) ? '<span class="dim"> · ' + Math.round(c.timeoutMs / 1000) + 's</span>' : '';
       return '<div class="mc-row" data-service data-id="' + esc(c.id) + '" data-enabled="' + (c.enabled ? '1' : '0') + '" style="--ci:' + (ri || 0) + '">' +
         '<div class="mc-top">' +
           '<span class="set-row mc-enable"><input type="checkbox" data-act="toggle"' + (c.enabled ? ' checked' : '') + (c.releaseDeferred ? ' disabled' : '') + ' aria-label="Enable connector ' + esc(c.id) + '"></span>' +
           '<b>' + esc(c.label || c.id) + '</b>' +
-          '<span class="mc-state" style="color:' + b[0] + '">' + b[1] + (c.toolCount ? ' · ' + c.toolCount + ' tool' + (c.toolCount === 1 ? '' : 's') : '') + '</span></div>' +
-        (c.account && c.account.email ? '<div class="mc-summary">Account at last sign-in: ' + esc(c.account.email) + '</div>' : '') +
+          '<span class="mc-state" style="color:' + b[0] + '">' + b[1] + (c.toolCount ? ' · ' + c.toolCount + ' herramienta' + (c.toolCount === 1 ? '' : 's') : '') + '</span></div>' +
+        (c.account && c.account.email ? '<div class="mc-summary">Cuenta en el último inicio de sesión: ' + esc(c.account.email) + '</div>' : '') +
         (next ? '<div class="mc-summary">' + esc(next) + '</div>' : '') +
-        '<details class="mc-inspect"><summary>' + (detail ? 'Error &amp; connection details' : 'Connection details') + (c.tools && c.tools.length ? ' · ' + c.tools.length + ' tools' : '') + '</summary>' +
-          '<div class="mc-hint">Service ID: <code>' + esc(c.id) + '</code></div>' +
+        '<details class="mc-inspect"><summary>' + (detail ? 'Error y detalles de conexión' : 'Detalles de conexión') + (c.tools && c.tools.length ? ' · ' + c.tools.length + ' herramienta' + (c.tools.length === 1 ? '' : 's') : '') + '</summary>' +
+          '<div class="mc-hint">ID de servicio: <code>' + esc(c.id) + '</code></div>' +
           '<div class="mc-url dim">' + where + timeout + '</div>' +
-          '<div class="mc-hint">' + (c.account && c.account.email ? '' : 'Account identity: not verified by StarNet. ') + 'Browser logins are separate from this connection.</div>' +
+          '<div class="mc-hint">' + (c.account && c.account.email ? '' : 'Identidad de cuenta: no verificada por StarNet. ') + 'Los inicios de sesión del navegador son independientes de esta conexión.</div>' +
           detail + tools +
         '</details>' +
         '<div class="mc-acts">' +
@@ -1028,13 +1028,13 @@
           // unreachable here: the catalog card renders a disabled ✓ ADDED for every installed connector.
           // catalogSignIn = a saved-token row whose catalog entry now signs in: the same engine, and its callback
           // swaps the token for the grant only after consent (EDIT → OAUTH would drop the token first).
-          ((c.oauth || c.catalogSignIn) && !c.releaseDeferred ? '<button class="bb xs" data-act="resign" title="' + (c.id === 'google-files' ? 'choose files in Google’s picker">CHOOSE GOOGLE FILES' : c.oauthAuthorized
-            ? 're-run the browser OAuth sign-in — the fix for a revoked or expired grant">⏼ RE-SIGN-IN'
-            : 'open the browser OAuth sign-in">⏼ SIGN IN') + '</button>' : '') +
+          ((c.oauth || c.catalogSignIn) && !c.releaseDeferred ? '<button class="bb xs" data-act="resign" title="' + (c.id === 'google-files' ? 'elige archivos en el selector de Google">ELEGIR ARCHIVOS DE GOOGLE' : c.oauthAuthorized
+            ? 'repite el inicio de sesión OAuth del navegador — la solución para una concesión revocada o expirada">⏼ RE-INICIAR SESIÓN'
+            : 'abre el inicio de sesión OAuth del navegador">⏼ INICIAR SESIÓN') + '</button>' : '') +
           (c.releaseDeferred ? '' :
-          '<button class="bb xs" data-act="reload">↻ RELOAD</button>' +
-          (c.id === 'google-files' ? '' : '<button class="bb xs" data-act="edit">✎ EDIT</button>')) +
-          '<button class="bb xs danger" data-act="remove">✕ REMOVE</button>' +
+          '<button class="bb xs" data-act="reload">↻ RECARGAR</button>' +
+          (c.id === 'google-files' ? '' : '<button class="bb xs" data-act="edit">✎ EDITAR</button>')) +
+          '<button class="bb xs danger" data-act="remove">✕ QUITAR</button>' +
         '</div></div>';
     }
     let lastList = [];
@@ -1050,13 +1050,13 @@
         const connected = list.filter(c => !c.releaseDeferred && c.state === 'up').length;
         const deferred = list.filter(c => c.releaseDeferred);
         const attention = list.filter(c => !c.releaseDeferred && (c.state === 'error' || c.authRequired)).length;
-        overview.textContent = list.length + ' service' + (list.length === 1 ? '' : 's') + ' · ' + connected + ' connected' + (deferred.length ? ' · ' + deferred.length + ' deferred' : '') + (attention ? ' · ' + attention + ' need attention' : '');
+        overview.textContent = list.length + ' servicio' + (list.length === 1 ? '' : 's') + ' · ' + connected + ' conectado' + (deferred.length ? ' · ' + deferred.length + ' diferido' : '') + (attention ? ' · ' + attention + ' necesitan atención' : '');
         // A release-wide explanation belongs once above the list, not in every saved service.
         notices.innerHTML = Array.from(new Set(deferred.map(c => c.detail).filter(Boolean))).map(note =>
-          '<div class="mc-notice"><b>Service availability</b>' + esc(note) + '</div>').join('');
+          '<div class="mc-notice"><b>Disponibilidad del servicio</b>' + esc(note) + '</div>').join('');
         if (storageError) {
-          overview.textContent = 'Saved services unavailable';
-          notices.innerHTML += '<div class="mc-notice"><b>Credential storage</b>' + esc(storageError) + '</div>';
+          overview.textContent = 'Servicios guardados no disponibles';
+          notices.innerHTML += '<div class="mc-notice"><b>Almacenamiento de credenciales</b>' + esc(storageError) + '</div>';
           // START FRESH is the exit the sidecar offers for a store it cannot open (wrong key, damaged, unrecognized):
           // the old files are moved aside, never deleted, and every service is signed in again.
           listEl.innerHTML = '<div class="mc-detail">Your saved connections have not been erased.' + storageNextStep(storage) + '</div>' +
@@ -1064,14 +1064,14 @@
           const fresh = listEl.querySelector('#mc-start-fresh');
           if (fresh && typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
             ArmConfirm.wire(fresh, {
-              armedLabel: 'SURE? SIGN IN AGAIN', restLabel: 'START FRESH', timeoutMs: 4000,
+              armedLabel: '¿SEGURO? VOLVER A INICIAR SESIÓN', restLabel: 'EMPEZAR DESDE CERO', timeoutMs: 4000,
               onArm: () => sfx('bad'),
               onConfirm: async () => {
                 fresh.disabled = true;
                 let r = null;
                 try { r = await Harness.api.post('/api/connectors/storage/start-fresh', { confirm: true }); } catch (_) {}
                 if (r && r.ok) { sfx('ok'); notify(startFreshKeptText(r.j)); }
-                else { sfx('bad'); notify('START FRESH failed: ' + ((r && r.j && r.j.error) || 'the station did not answer')); }
+                else { sfx('bad'); notify('EMPEZAR DE CERO falló: ' + ((r && r.j && r.j.error) || 'la estación no respondió')); }
                 refresh();
               }
             });
@@ -1093,7 +1093,7 @@
         }
         wireRemoveButtons();
       } catch (_) {
-        body.querySelector('#mc-overview').textContent = 'Service status unavailable';
+        body.querySelector('#mc-overview').textContent = 'Estado del servicio no disponible';
         body.querySelector('#mc-notices').textContent = '';
         listEl.innerHTML = '<div class="mc-detail">Could not read connections. Retry when the station is available.</div>';
       }
@@ -1127,12 +1127,12 @@
         const r = await postJSON('/api/connectors/remove', { id });
         if (!r.ok) {
           const j = await r.json().catch(() => ({}));
-          notify('Connector "' + id + '" was NOT removed', 'warn');
+          notify('Conector "' + id + '" NO se eliminó', 'warn');
           msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((j && j.error) || ('HTTP ' + r.status)); sfx('bad');
         } else {
-          notify('Connector "' + id + '" removed'); sfx('click'); if (editing === id) resetForm(); ccRefresh();
+          notify('Conector "' + id + '" eliminado'); sfx('click'); if (editing === id) resetForm(); ccRefresh();
         }
-      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'request failed'); sfx('bad'); }
+      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'solicitud fallida'); sfx('bad'); }
       if (btn && btn.isConnected) btn.disabled = false;
       refresh();
     }
@@ -1165,13 +1165,13 @@
       btn.disabled = true;
       try {
         if (act === 'reload') {
-          msgEl.classList.remove('ok'); msgEl.textContent = 'reloading ' + id + '…';
+          msgEl.classList.remove('ok'); msgEl.textContent = 'recargando ' + id + '…';
           const j = await (await postJSON('/api/connectors/refresh', { id })).json().catch(() => ({}));
-          if (j.status && j.status.state === 'up') { msgEl.classList.add('ok'); msgEl.textContent = '✓ ' + id + ' — ' + (j.status.toolCount || 0) + ' tool(s)'; }
-          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'not connected'); }
+          if (j.status && j.status.state === 'up') { msgEl.classList.add('ok'); msgEl.textContent = '✓ ' + id + ' — ' + (j.status.toolCount || 0) + ' herramienta(s)'; }
+          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'no conectado'); }
           sfx('click');
         }
-      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'request failed'); sfx('bad'); }
+      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'solicitud fallida'); sfx('bad'); }
       refresh();
     });
     // per-connector ENABLE pill switch (upgraded presentation of the old DISABLE/ENABLE button; same server flag).
@@ -1187,7 +1187,7 @@
           cb.checked = !cb.checked; msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((j && j.error) || ('HTTP ' + r.status)); sfx('bad');
         } else sfx('tick');
       }
-      catch (e) { cb.checked = !cb.checked; msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'request failed'); sfx('bad'); }
+      catch (e) { cb.checked = !cb.checked; msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'solicitud fallida'); sfx('bad'); }
       cb.disabled = false;
       refresh();
     });
@@ -1200,19 +1200,19 @@
       const payload = { id, label, transport: httpMode ? 'http' : 'stdio', enabled: true };
       if (httpMode) {
         const url = (body.querySelector('#mc-url').value || '').trim();
-        if (!url) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'a server URL is required'; return; }
+        if (!url) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'se necesita una URL de servidor'; return; }
         payload.url = url;
         payload.oauth = tp === 'oauth';
         const token = body.querySelector('#mc-token').value || '';
         if (tp === 'http' && token) payload.token = token;   // blank keeps the saved one (on edit)
         const h = parseKV(body.querySelector('#mc-headers').value, ':');
-        if (h.bad) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'header needs "Name: value" — check: ' + h.bad; return; }
+        if (h.bad) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'la cabecera necesita "Nombre: valor" — comprueba: ' + h.bad; return; }
         payload.headers = h.out;
       } else {
         const agentId = (body.querySelector('#mc-agent').value || '').trim();
         const command = (body.querySelector('#mc-command').value || '').trim();
-        if (!agentId) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'choose a Safe Cell agent'; return; }
-        if (!command) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'a stdio command is required'; return; }
+        if (!agentId) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'elige un agente de Safe Cell'; return; }
+        if (!command) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'se necesita un comando stdio'; return; }
         payload.agentId = agentId;
         payload.command = command;
         const argText = body.querySelector('#mc-args').value || '';
@@ -1222,13 +1222,13 @@
         const envText = body.querySelector('#mc-env').value || '';
         if (envText.trim()) {
           const e = parseKV(envText, '=');
-          if (e.bad) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'environment needs "NAME=value" — check: ' + e.bad; return; }
+          if (e.bad) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'el entorno necesita "NOMBRE=valor" — comprueba: ' + e.bad; return; }
           payload.env = e.out;
         }
       }
       const to = (body.querySelector('#mc-timeout').value || '').trim();
       if (to) payload.timeout = Number(to);
-      msgEl.classList.remove('ok'); msgEl.textContent = (editing ? 'saving ' : 'connecting ') + id + '…';
+      msgEl.classList.remove('ok'); msgEl.textContent = (editing ? 'guardando ' : 'conectando ') + id + '…';
       try {
         const j = await (await postJSON('/api/connectors', payload)).json().catch(() => ({}));
         if (tp === 'oauth' && j.saved) {
@@ -1238,11 +1238,11 @@
           if (ccPending.has(id)) resetForm();
         } else if (j.error) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + j.error; sfx('bad'); }
         else if (j.status && j.status.state === 'up') {
-          msgEl.classList.add('ok'); msgEl.textContent = '✓ connected — ' + (j.status.toolCount || 0) + ' tool(s) available'; sfx('click');
-          notify('Connector "' + id + '" ' + (editing ? 'saved' : 'connected'), 'good');
+          msgEl.classList.add('ok'); msgEl.textContent = '✓ conectado — ' + (j.status.toolCount || 0) + ' herramienta(s) disponible(s)'; sfx('click');
+          notify('Conector "' + id + '" ' + (editing ? 'guardado' : 'conectado'), 'good');
           resetForm();
-        } else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((j.status && j.status.detail) || ('state: ' + (j.state || 'error'))); sfx('bad'); }
-      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'failed to reach the sidecar'); sfx('bad'); }
+        } else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((j.status && j.status.detail) || ('estado: ' + (j.state || 'error'))); sfx('bad'); }
+      } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'no se pudo alcanzar el sidecar'); sfx('bad'); }
       refresh();
     });
     refresh();
@@ -1268,7 +1268,7 @@
     function ccResetSignBtn(id) {
       const btn = ccListEl && ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"] button[data-cc-act]');
       if (btn && (btn.dataset.ccAct === 'signin' || btn.dataset.ccAct === 'signin-cancel')) {
-        btn.dataset.ccAct = 'signin'; btn.textContent = id === 'github' ? 'SIGN IN WITH GITHUB' : '▸ SIGN IN'; btn.disabled = false;
+        btn.dataset.ccAct = 'signin'; btn.textContent = id === 'github' ? 'INICIAR SESIÓN CON GITHUB' : '▸ INICIAR SESIÓN'; btn.disabled = false;
         btn.title = 'opens a secure browser sign-in (OAuth)';
       }
     }
@@ -1276,7 +1276,7 @@
     // CRT glyphs, not emoji (⚡🔑🔒 punched holes in the phosphor look). ▸ = no setup; API key + OAUTH ride as plain
     // colour-coded text chips (gold / dim) — VT323 has no key/lock glyph that renders (⚿ came out as tofu), and the
     // task says plain text chips are fine. The render below omits the leading glyph when it's empty.
-    const CC_CHIP = { none: ['▸', 'no setup', 'var(--ok)'], apikey: ['', 'API key', 'var(--gold)'], oauth: ['', 'sign in', 'var(--ph-dim)'] };
+    const CC_CHIP = { none: ['▸', 'sin configuración', 'var(--ok)'], apikey: ['', 'clave API', 'var(--gold)'], oauth: ['', 'iniciar sesión', 'var(--ph-dim)'] };
     // Shared local brand marks. SPOD's wordmark needs a wider frame than square symbols.
     function ccSeal(e) {
       return '<span class="cc-brand' + (e.id === 'spod' ? ' cc-brand-wide' : '') + '" aria-hidden="true">' + (ClassIcons.brandIcon(e) || esc(e.name.slice(0, 2).toUpperCase())) + '</span>';
@@ -1284,28 +1284,28 @@
     function ccCard(e, ci) {
       const cardId = e.catalogId || e.id;
       const chip = e.platformApi && e.unattendedSupported === false
-        ? ['', 'manual setup', 'var(--gold)']
-        : e.appPassword ? ['', 'app password', 'var(--gold)']
-        : (e.signInAvailable === false ? ['', e.releaseDeferred ? 'deferred' : 'sign-in unavailable', 'var(--gold)'] : (CC_CHIP[e.authType] || CC_CHIP.none));
+        ? ['', 'configuración manual', 'var(--gold)']
+        : e.appPassword ? ['', 'contraseña de app', 'var(--gold)']
+        : (e.signInAvailable === false ? ['', e.releaseDeferred ? 'diferido' : 'inicio de sesión no disponible', 'var(--gold)'] : (CC_CHIP[e.authType] || CC_CHIP.none));
       const origin = e.googleApi ? '<span class="cc-badge cc-official" title="StarNet connector using Google’s APIs">STARNET · GOOGLE API</span>' : e.platformApi
         ? (e.apiVia ? '<span class="cc-badge cc-community" title="this vendor publishes no API of its own">via ' + esc(e.apiVia) + '</span>'
-                    : '<span class="cc-badge cc-official" title="first-party REST API documented by the vendor">✓ official API</span>')
+                    : '<span class="cc-badge cc-official" title="API REST de primera parte documentada por el proveedor">✓ API oficial</span>')
         : (e.official ? '<span class="cc-badge cc-official" title="first-party server, run by the vendor">✓ official</span>'
                       : '<span class="cc-badge cc-community" title="community-run server">community</span>');
       let action;
-      if (e.installed) action = '<button class="bb xs" data-cc-act="manage" data-id="' + esc(cardId) + '">MANAGE SERVICE</button>' +
+      if (e.installed) action = '<button class="bb xs" data-cc-act="manage" data-id="' + esc(cardId) + '">GESTIONAR SERVICIO</button>' +
         // a rejected or revoked app password is fixed HERE (the login error says so): re-open the same form
         (e.appPassword ? '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">NEW APP PASSWORD</button>' : '');
-      else if (e.platformApi) action = '<button class="bb xs" data-cc-act="platform" data-id="' + esc(cardId) + '">SET UP API KEY</button>';
+      else if (e.platformApi) action = '<button class="bb xs" data-cc-act="platform" data-id="' + esc(cardId) + '">CONFIGURAR CLAVE API</button>';
       else if (e.googleApi && e.signInAvailable === false) action =
-        '<button class="bb xs" disabled>' + (e.releaseDeferred ? 'DEFERRED' : 'GOOGLE SIGN-IN UNAVAILABLE') + '</button>';
+        '<button class="bb xs" disabled>' + (e.releaseDeferred ? 'DIFERIDO' : 'INICIO DE SESIÓN DE GOOGLE NO DISPONIBLE') + '</button>';
       else if (e.authType === 'oauth') action = e.url
-        ? '<button class="bb xs" data-cc-act="signin" data-id="' + esc(cardId) + '" title="opens a secure browser sign-in (OAuth)">' + (e.id === 'google-files' ? 'CHOOSE GOOGLE FILES' : e.deviceFlow ? 'SIGN IN WITH GITHUB' : e.googleApi ? 'SIGN IN WITH GOOGLE' : '▸ SIGN IN') + '</button>'
+        ? '<button class="bb xs" data-cc-act="signin" data-id="' + esc(cardId) + '" title="abre un inicio de sesión seguro en el navegador (OAuth)">' + (e.id === 'google-files' ? 'ELEGIR ARCHIVOS DE GOOGLE' : e.deviceFlow ? 'INICIAR SESIÓN CON GITHUB' : e.googleApi ? 'INICIAR SESIÓN CON GOOGLE' : '▸ INICIAR SESIÓN') + '</button>'
         : (e.via
           // url-less oauth entry reachable through an aggregator: a LIVE jump to that card, never a mute dead button.
           ? '<button class="bb xs" data-cc-act="via" data-id="' + esc(cardId) + '" data-via="' + esc(e.via) + '" title="no direct endpoint — jump to the connector that reaches it">▸ VIA ' + esc(e.via.toUpperCase()) + '</button>'
           : '<button class="bb xs" data-cc-act="soon" disabled title="not directly wired yet — see the note">SOON</button>');   // an oauth entry with no endpoint and no aggregator is honestly not sign-in-able
-      else if (e.authType === 'apikey') action = '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">' + (e.appPassword ? 'SET UP APP PASSWORD' : 'SET UP API KEY') + '</button>';
+      else if (e.authType === 'apikey') action = '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">' + (e.appPassword ? 'CONFIGURAR CONTRASEÑA DE APP' : 'CONFIGURAR CLAVE API') + '</button>';
       else action = '<button class="bb sm" data-cc-act="add" data-id="' + esc(cardId) + '">+ ADD</button>';
       const keyDelivery = e.keyHeader
         ? '<code>' + esc(e.keyHeader) + ': &hellip;</code>'
@@ -1319,7 +1319,7 @@
             '<div class="mc-hint">This uses an app password, not Google sign-in. StarNet talks to Gmail directly from this computer (IMAP and SMTP); the password is saved with your other connector credentials on this computer and never shown again.' +
             ' Mail read through this connection is never sent to StarNet Managed. On a work or school account, an administrator can turn app passwords off. Remove the connection or revoke the app password in your Google account at any time.</div></div>'
         : (e.authType === 'apikey' || e.deviceFlow) && !e.platformApi
-        ? '<div class="cc-key" style="display:none"><div class="mc-hint">1. Open your ' + esc(e.name) + ' account and create an API key or token. ' + (e.homepage ? '<a href="' + esc(e.homepage) + '" target="_blank" rel="noopener">Open ' + esc(e.name) + ' ↗</a>' : '') + '<br>2. Paste it below, then choose CONNECT.</div><input type="password" class="key-input" data-cc-key="' + esc(cardId) + '" aria-label="' + esc(e.name) + ' API key or token" placeholder="' + esc(e.name) + ' API key / token" autocomplete="off" spellcheck="false">' +
+        ? '<div class="cc-key" style="display:none"><div class="mc-hint">1. Abre tu cuenta de ' + esc(e.name) + ' y crea una clave o token API. ' + (e.homepage ? '<a href="' + esc(e.homepage) + '" target="_blank" rel="noopener">Abrir ' + esc(e.name) + ' ↗</a>' : '') + '<br>2. Pégalo abajo y elige CONECTAR.</div><input type="password" class="key-input" data-cc-key="' + esc(cardId) + '" aria-label="Clave o token API de ' + esc(e.name) + '" placeholder="Clave / token API de ' + esc(e.name) + '" autocomplete="off" spellcheck="false">' +
             '<div class="mc-hint">Stored locally by the sidecar, sent as ' + keyDelivery + ', never displayed again.</div></div>'
         : '';
       const clientField = e.googleApi && e.signInAvailable === false
@@ -1351,7 +1351,7 @@
           ' style="--ci:' + (ci || 0) + '">' +
           '<div class="cc-head">' + ccSeal(e) + '<div class="cc-identity"><b>' + esc(e.name) + '</b>' +
             '<span class="cc-chip" style="color:' + chip[2] + '" title="' + esc(chip[1]) + '">' + (chip[0] ? chip[0] + ' ' : '') + esc(chip[1]) + '</span></div></div>' +
-          (e.appPassword ? '<div class="cc-blurb dim" data-tip="' + esc(e.blurb) + '">IMAP · SMTP · app password</div>' : '<div class="cc-blurb dim">' + esc(e.blurb) + '</div>') + '<details class="cc-details"><summary>Connection details</summary><div class="cc-details-body">' + clientField + origin + presets + platformMeta + (e.installed ? '<div class="mc-hint">' + (e.releaseDeferred ? 'Saved connection retained. Open Manage Service to view or remove it.' : 'Setup saved. Open Manage Service to check access or reconnect.') + '</div>' : '') + '</div></details>' + keyField +
+          (e.appPassword ? '<div class="cc-blurb dim" data-tip="' + esc(e.blurb) + '">IMAP · SMTP · app password</div>' : '<div class="cc-blurb dim">' + esc(e.blurb) + '</div>') + '<details class="cc-details"><summary>Connection details</summary><div class="cc-details-body">' + clientField + origin + presets + platformMeta + (e.installed ? '<div class="mc-hint">' + (e.releaseDeferred ? 'Conexión guardada retenida. Abre Gestionar Servicio para verlo o eliminarlo.' : 'Configuración guardada. Abre Gestionar Servicio para comprobar el acceso o reconectar.') + '</div>' : '') + '</div></details>' + keyField +
           '<div class="mc-hint cc-setup-hint">' + esc(setupHint) + '</div>' +
           '<div class="cc-acts">' + action + home + '</div>' + (e.deviceFlow && !e.installed ? '<details><summary>Use a personal access token instead</summary><button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">SET UP TOKEN</button></details>' : '') +
         '</div>';
@@ -1491,17 +1491,17 @@
     async function ccInstall(id, token) {
       const e = ccEntry(id);
       if (!e || !e.url) { sfx('bad'); return; }
-      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'connecting ' + e.name + '…';
+      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'conectando ' + e.name + '…';
       const payload = { id: e.id, label: e.name, transport: 'http', url: e.url, enabled: true };
       if (token) payload.token = token;
       try {
         const j = await (await postJSON('/api/connectors', payload)).json().catch(() => ({}));
         if (j.error) { ccMsgEl.textContent = '✕ ' + j.error; sfx('bad'); }
         else if (j.status && j.status.state === 'up') {
-          ccMsgEl.classList.add('ok'); ccMsgEl.textContent = '✓ ' + e.name + ' connected — ' + (j.status.toolCount || 0) + ' tool(s) available'; sfx('click');
-          notify('Connector "' + e.name + '" connected', 'good');
+          ccMsgEl.classList.add('ok'); ccMsgEl.textContent = '✓ ' + e.name + ' connected — ' + (j.status.toolCount || 0) + ' herramienta(s) disponible(s)'; sfx('click');
+          notify('Conector "' + e.name + '" conectado', 'good');
         } else { ccMsgEl.textContent = '✕ ' + ((j.status && j.status.detail) || ('could not connect (' + (j.state || 'error') + ')')); sfx('bad'); }
-      } catch (err) { ccMsgEl.textContent = '✕ ' + ((err && err.message) || 'failed to reach the sidecar'); sfx('bad'); }
+      } catch (err) { ccMsgEl.textContent = '✕ ' + ((err && err.message) || 'no se pudo alcanzar el sidecar'); sfx('bad'); }
       ccRefresh();   // reflect the new installed state on the cards
       refresh();     // and repaint the MCP CONNECTORS list (same underlying connector set)
     }
@@ -1511,7 +1511,7 @@
       // progress lands in the caller's message line: the catalog's by default, the MCP CONNECTORS pane's when the
       // ⏼ RE-SIGN-IN row action drives this (the user is looking at that tab — the catalog line is off-screen).
       const out = msgOut || ccMsgEl;
-      if (ccPending.has(id)) { sfx('bad'); out.classList.remove('ok'); out.textContent = 'a sign-in is already in progress for this connector…'; return; }
+      if (ccPending.has(id)) { sfx('bad'); out.classList.remove('ok'); out.textContent = 'ya hay un inicio de sesión en curso para este conector…'; return; }
       const e = ccEntry(id); const label = labelOverride || (e && e.name) || id;
       if (e && e.releaseDeferred) { out.classList.remove('ok'); out.textContent = e.signInMessage; return; }
       // Disclose the actual model/data path in the app immediately before Google consent.
@@ -1521,11 +1521,11 @@
         const notice = document.createElement('section');
         notice.className = 'ext-editor mc-form google-disclosure';
         notice.setAttribute('role', 'group');
-        notice.setAttribute('aria-label', 'Google connection and data use');
+        notice.setAttribute('aria-label', 'Conexión de Google y uso de datos');
         notice.innerHTML = '<strong>CONNECT ' + esc(label.toUpperCase()) + '</strong>' +
-          '<p>' + esc((e && e.blurb) || 'Connect the selected Google service using the permissions you approve in Google.') + '</p>' +
-          '<p>When an agent uses this connection, content from the Google service can be sent to your selected AI model provider. With StarNet Credits, those requests also pass through the StarNet credits gateway.</p>' +
-          '<p>Sign-in credentials are saved on this device. Conversations, files and memories may retain content from your requests. Removing the connection clears its saved credentials; it does not erase previous work or revoke access in your Google account.</p>' +
+          '<p>' + esc((e && e.blurb) || 'Conecta el servicio de Google seleccionado usando los permisos que apruebes en Google.') + '</p>' +
+          '<p>Cuando un agente usa esta conexión, el contenido del servicio de Google puede enviarse a tu proveedor de modelos de IA seleccionado. Con StarNet Credits, esas solicitudes también pasan por la pasarela de créditos de StarNet.</p>' +
+          '<p>Las credenciales de inicio de sesión se guardan en este dispositivo. Las conversaciones, archivos y memorias pueden retener contenido de tus solicitudes. Eliminar la conexión borra sus credenciales guardadas; no borra el trabajo previo ni revoca el acceso en tu cuenta de Google.</p>' +
           '<p><a class="bb sm" href="https://starnetos.com/legal/privacy#google-workspace" target="_blank" rel="noopener">Google data use and removal details ↗</a></p>' +
           '<div class="mc-acts"><button class="bb sm" data-google-continue>CONTINUE TO GOOGLE</button><button class="bb sm" data-google-cancel>CANCEL</button></div>';
         out.classList.remove('ok'); out.textContent = '';
@@ -1537,30 +1537,30 @@
           ccSignIn(id, msgOut, labelOverride, true);
         });
         notice.querySelector('[data-google-cancel]').addEventListener('click', () => {
-          notice.remove(); out.textContent = 'Google sign-in cancelled — no connection was started.';
+          notice.remove(); out.textContent = 'Inicio de sesión de Google cancelado — no se inició ninguna conexión.';
         });
         notice.scrollIntoView({ block: 'center' }); proceed.focus({ preventScroll: true });
         return;
       }
       ccPending.add(id);   // one in-flight sign-in per connector — no duplicate popups / concurrent pollers
-      out.classList.remove('ok'); out.textContent = 'starting sign-in for ' + label + '…';
+      out.classList.remove('ok'); out.textContent = 'iniciando sesión para ' + label + '…';
       const attemptId = 'cc_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
       const controller = new AbortController();
       ccAttempts.set(id, { attemptId, controller });
       const earlyCancel = ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"] button[data-cc-act]');
-      if (earlyCancel) { earlyCancel.dataset.ccAct = 'signin-cancel'; earlyCancel.textContent = 'CANCEL'; earlyCancel.disabled = false; }
+      if (earlyCancel) { earlyCancel.dataset.ccAct = 'signin-cancel'; earlyCancel.textContent = 'CANCELAR'; earlyCancel.disabled = false; }
       let url, device;
       try {
         const startRes = await fetch('/api/connectors/oauth/start', { method: 'POST', signal: controller.signal,
           headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, attemptId: attemptId }) });
         const j = await startRes.json().catch(() => ({}));
-        if (j.error || !j.url) { out.textContent = '✕ ' + (j.error || 'could not start sign-in'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return; }
+        if (j.error || !j.url) { out.textContent = '✕ ' + (j.error || 'no se pudo iniciar la sesión'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return; }
         url = j.url;
         if (j.deviceFlow) device = j;
       } catch (err) {
         ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id);
-        if (controller.signal.aborted) { out.textContent = 'sign-in for ' + label + ' cancelled — press SIGN IN to try again.'; return; }
-        out.textContent = '✕ ' + ((err && err.message) || 'request failed'); sfx('bad'); return;
+        if (controller.signal.aborted) { out.textContent = 'sign-in for ' + label + ' cancelada — pulsa INICIAR SESIÓN para reintentar.'; return; }
+        out.textContent = '✕ ' + ((err && err.message) || 'solicitud fallida'); sfx('bad'); return;
       }
       if (controller.signal.aborted) return;
       if (device) { await ccDeviceSignIn(id, out, device, controller); return; }
@@ -1569,15 +1569,15 @@
         // The consent window never opened (popup-blocked in a browser, or the OS-browser hand-off failed on
         // desktop). Do NOT start the poll — a "waiting for sign-in" claim against a window that doesn't exist
         // is the exact lie this fix removes. Tell the truth and stop.
-        out.textContent = '✕ couldn’t open the sign-in page for ' + label + (opened.where === 'popup' ? ' — allow pop-ups for this site, then try again.' : ' — try again.'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return;
+        out.textContent = '✕ couldn’t open the sign-in page for ' + label + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return;
       }
       const win = opened.win;   // popup handle when in a browser; null on desktop (opened in the real browser)
       ccPendingWin.set(id, win || null);   // remembered so a CANCEL can close a still-open popup
-      out.textContent = 'complete the sign-in for ' + label + (opened.where === 'browser' ? ' in your browser…' : ' in the popup window…');
+      out.textContent = 'completa el inicio de sesión para ' + label + (opened.where === 'browser' ? ' en tu navegador…' : ' en la ventana emergente…');
       // Turn the card's SIGN IN button into a visible CANCEL affordance for the duration of the poll — before this
       // the only way out of a stalled/abandoned sign-in was to wait out the 5-minute cap (EL-11 #13).
       const signBtn = ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"] button[data-cc-act]');
-      if (signBtn) { signBtn.dataset.ccAct = 'signin-cancel'; signBtn.textContent = '✕ CANCEL'; signBtn.disabled = false; signBtn.title = 'stop waiting for this sign-in'; }
+      if (signBtn) { signBtn.dataset.ccAct = 'signin-cancel'; signBtn.textContent = '✕ CANCELAR'; signBtn.disabled = false; signBtn.title = 'deja de esperar este inicio de sesión'; }
       let tries = 0;
       const timer = setInterval(async () => {
         // Self-terminate the moment the panel body leaves the DOM (window closed / rerendered) — the same guard
@@ -1590,34 +1590,34 @@
           // Only an OAuth row is proof of a finished sign-in: a saved-token row moving to sign-in (catalogSignIn) is
           // already up — or already erroring — before consent, and stays non-oauth until the callback lands.
           const c = found && found.oauth ? found : null;
-          if (c && c.state === 'up') { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); sfx('click'); notify('Connector "' + label + '" connected', 'good'); out.classList.add('ok'); out.textContent = '✓ ' + label + ' signed in — ' + (c.toolCount || 0) + ' tool(s)'; ccRefresh(); refresh(); try { if (win && !win.closed) win.close(); } catch (_) {} return; }
-          if (c && c.state === 'error' && (!c.oauth || c.oauthAuthorized)) { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); sfx('bad'); out.textContent = '✕ ' + label + ' — ' + (c.detail || 'connection failed'); ccRefresh(); refresh(); return; }
+          if (c && c.state === 'up') { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); sfx('click'); notify('Conector "' + label + '" conectado', 'good'); out.classList.add('ok'); out.textContent = '✓ ' + label + ' con sesión iniciada — ' + (c.toolCount || 0) + ' herramienta(s)'; ccRefresh(); refresh(); try { if (win && !win.closed) win.close(); } catch (_) {} return; }
+          if (c && c.state === 'error' && (!c.oauth || c.oauthAuthorized)) { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); sfx('bad'); out.textContent = '✕ ' + label + ' — ' + (c.detail || 'falló la conexión'); ccRefresh(); refresh(); return; }
         } catch (_) {}
-        if (tries > 150) { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); out.classList.remove('ok'); out.textContent = 'Sign-in timed out. Sign in again, then return to your task.'; }   // ~5-minute cap
+        if (tries > 150) { stopCcPoll(id); ccPending.delete(id); ccPendingWin.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); out.classList.remove('ok'); out.textContent = 'El inicio de sesión expiró. Inicia sesión de nuevo y vuelve a tu tarea.'; }   // ~5-minute cap
       }, 2000);
       ccTimers.set(id, timer);
     }
     async function ccDeviceSignIn(id, out, device, controller) {
       const notice = document.createElement('dialog');
       notice.className = 'ext-editor mc-form github-device-code';
-      notice.setAttribute('aria-label', 'Sign in with GitHub');
+      notice.setAttribute('aria-label', 'Iniciar sesión con GitHub');
       notice.style.cssText = 'position:fixed;inset:0;margin:auto;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;padding:24px;background:#17140e;color:var(--ph,#ddbd83);border:1px solid var(--gold,#ac853e);z-index:10000;box-shadow:0 0 0 100vmax #0009';
       notice.innerHTML = '<strong>CONNECT GITHUB</strong><p>1. Copy this code: <code style="font-size:20px;user-select:all">' + esc(device.userCode) + '</code> <button class="bb sm" data-device-copy>COPY CODE</button></p>' +
         '<p>2. Open GitHub, enter the code, and approve StarNet’s repository and organization access.</p>' +
-        '<p>3. Return here. StarNet will check and save your connection on this device.</p>' +
+        '<p>3. Vuelve aquí. StarNet verificará y guardará tu conexión en este dispositivo.</p>' +
         '<div class="mc-acts"><button class="bb sm" data-device-open>OPEN GITHUB</button><button class="bb sm" data-device-cancel>CANCEL</button></div><p data-device-status role="status"></p>';
       document.body.appendChild(notice); notice.showModal();
       notice.addEventListener('cancel', ev => { ev.preventDefault(); ccCancelSignIn(id); });
       const progress = message => { out.textContent = message; notice.querySelector('[data-device-status]').textContent = message; };
       const copy = notice.querySelector('[data-device-copy]');
       copy.addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText(device.userCode); copy.textContent = 'COPIED'; }
-        catch (_) { copy.textContent = 'SELECT CODE ABOVE'; }
+        try { await navigator.clipboard.writeText(device.userCode); copy.textContent = 'COPIADO'; }
+        catch (_) { copy.textContent = 'SELECCIONA EL CÓDIGO DE ARRIBA'; }
       });
       const open = async () => {
         const result = await openSignIn(device.url);
-        if (!result.opened) progress('Could not open GitHub. Allow pop-ups and choose OPEN GITHUB.');
-        else { ccPendingWin.set(id, result.win || null); progress('Waiting for you to enter the code and approve StarNet in GitHub…'); }
+        if (!result.opened) progress('No se pudo abrir GitHub. Permite ventanas emergentes y elige ABRIR GITHUB.');
+        else { ccPendingWin.set(id, result.win || null); progress('Esperando a que introduzcas el código y apruebes StarNet en GitHub…'); }
       };
       notice.querySelector('[data-device-open]').addEventListener('click', open);
       notice.querySelector('[data-device-cancel]').addEventListener('click', () => ccCancelSignIn(id));
@@ -1635,13 +1635,13 @@
           if (j.state === 'pending') continue;
           if (controller.signal.aborted) break;
           if (j.state === 'connected') {
-            out.classList.add('ok'); out.textContent = '✓ GitHub connected as ' + j.login + ' — ' + j.toolCount + ' tool(s)';
+            out.classList.add('ok'); out.textContent = '✓ GitHub conectado como ' + j.login + ' — ' + j.toolCount + ' herramienta(s)';
             sfx('click'); notify(out.textContent, 'good');
-          } else { out.classList.remove('ok'); out.textContent = j.error || 'GitHub sign-in failed. Try again.'; notify(out.textContent, 'bad'); }
+          } else { out.classList.remove('ok'); out.textContent = j.error || 'Falló el inicio de sesión de GitHub. Inténtalo de nuevo.'; notify(out.textContent, 'bad'); }
           ccRefresh(); refresh(); return;
         }
-        if (!controller.signal.aborted && body.isConnected) { out.textContent = 'GitHub code expired. Sign in again to get a new code.'; notify(out.textContent, 'bad'); }
-      } catch (_) { if (!controller.signal.aborted) { out.textContent = 'Could not finish GitHub sign-in. Please try again.'; notify(out.textContent, 'bad'); } }
+        if (!controller.signal.aborted && body.isConnected) { out.textContent = 'El código de GitHub expiró. Inicia sesión de nuevo para obtener un código nuevo.'; notify(out.textContent, 'bad'); }
+      } catch (_) { if (!controller.signal.aborted) { out.textContent = 'No se pudo completar el inicio de sesión de GitHub. Inténtalo de nuevo.'; notify(out.textContent, 'bad'); } }
       finally {
         controller.signal.removeEventListener('abort', remove); notice.remove();
         postJSON('/api/connectors/oauth/cancel', { id, attemptId: device.attemptId }).catch(() => {});
@@ -1664,14 +1664,14 @@
       try { if (w && !w.closed) w.close(); } catch (_) {}
       ccResetSignBtn(id);
       const e = ccEntry(id); const label = (e && e.name) || id;
-      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'sign-in for ' + label + ' cancelled — press SIGN IN to try again.'; sfx('tick');
+      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'sign-in for ' + label + ' cancelada — pulsa INICIAR SESIÓN para reintentar.'; sfx('tick');
     }
     ccListEl.addEventListener('click', async ev => {
       const copyBtn = ev.target.closest('button[data-cc-copy]');
       if (copyBtn) {
-        try { await navigator.clipboard.writeText(copyBtn.dataset.ccCopy); copyBtn.textContent = 'COPIED'; sfx('tick'); }
-        catch (_) { copyBtn.textContent = 'SELECT'; const code = copyBtn.previousElementSibling; try { getSelection().selectAllChildren(code); } catch (__) {} }
-        setTimeout(() => { copyBtn.textContent = 'COPY'; }, 1500);
+        try { await navigator.clipboard.writeText(copyBtn.dataset.ccCopy); copyBtn.textContent = 'COPIADO'; sfx('tick'); }
+        catch (_) { copyBtn.textContent = 'SELECCIONAR'; const code = copyBtn.previousElementSibling; try { getSelection().selectAllChildren(code); } catch (__) {} }
+        setTimeout(() => { copyBtn.textContent = 'COPIAR'; }, 1500);
         return;
       }
       const btn = ev.target.closest('button[data-cc-act]'); if (!btn) return;
@@ -1686,7 +1686,7 @@
           await refresh();
           const target = Array.from(listEl.querySelectorAll('.mc-row')).find(r => r.dataset.id === entry.id);
           if (target) ccFlash(target);
-          else { msgEl.classList.remove('ok'); msgEl.textContent = 'This saved connection is no longer listed. Return to CATALOG and refresh to check its setup.'; }
+          else { msgEl.classList.remove('ok'); msgEl.textContent = 'Esta conexión guardada ya no aparece en la lista. Vuelve al CATÁLOGO y actualiza para comprobar su configuración.'; }
         }
       }
       else if (act === 'add') { btn.disabled = true; await ccInstall(id); }
@@ -1701,15 +1701,15 @@
         const input = wrap && wrap.querySelector('input[data-cc-key]');
         const addrIn = wrap && wrap.querySelector('input[data-cc-addr]');
         // the class (not the inline style) is what menu-glass.css's :has() keys on: a :has() reading [style] re-checks on every inline-style write in the page
-        if (wrap && wrap.style.display === 'none') { wrap.style.display = ''; wrap.classList.add('cc-key-open'); btn.textContent = '▶ CONNECT'; if (addrIn || input) (addrIn || input).focus(); sfx('tick'); return; }
+        if (wrap && wrap.style.display === 'none') { wrap.style.display = ''; wrap.classList.add('cc-key-open'); btn.textContent = '▶ CONECTAR'; if (addrIn || input) (addrIn || input).focus(); sfx('tick'); return; }
         let token = ((input && input.value) || '').trim();
         if (addrIn) {
           const addr = (addrIn.value || '').trim();
-          if (!addr || !token) { sfx('bad'); ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'enter your Gmail address and the 16-letter app password first'; return; }
+          if (!addr || !token) { sfx('bad'); ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'introduce primero tu dirección de Gmail y la contraseña de app de 16 caracteres'; return; }
           token = addr + ':' + token.replace(/\s+/g, '');
           input.value = '';   // the password never lingers in the page
         }
-        if (!token) { sfx('bad'); ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'paste the API key first'; return; }
+        if (!token) { sfx('bad'); ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'pega primero la clave API'; return; }
         btn.disabled = true; await ccInstall(id, token);
       }
       else if (act === 'signin') { btn.disabled = true; await ccSignIn(id); btn.disabled = false; }
@@ -1720,8 +1720,8 @@
         const target = ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(viaId) : viaId) + '"]');
         const e = ccEntry(id), v = ccEntry(viaId);
         ccMsgEl.classList.remove('ok');
-        if (!target || !v) { ccMsgEl.textContent = '✕ the "' + viaId + '" connector is not in the catalog'; sfx('bad'); return; }
-        ccMsgEl.textContent = ((e && e.name) || id) + ' connects through ' + v.name + ' — add ' + v.name + ' with one API key.';
+        if (!target || !v) { ccMsgEl.textContent = '✕ el conector "' + viaId + '" no está en el catálogo'; sfx('bad'); return; }
+        ccMsgEl.textContent = ((e && e.name) || id) + ' se conecta a través de ' + v.name + ' — añade ' + v.name + ' con una sola clave API.';
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         target.classList.remove('cc-jump'); void target.offsetWidth;   // restart the flash on a re-click
         target.classList.add('cc-jump');
@@ -1752,15 +1752,15 @@
       kyDocsEl.value = p.docsUrl || '';
       const guide = body.querySelector('#ky-guide');
       guide.hidden = false;
-      guide.innerHTML = '<b>Connect ' + esc(p.name) + '</b><br>1. ' + (p.docsUrl ? '<a href="' + esc(p.docsUrl) + '" target="_blank" rel="noopener">Open ' + esc(p.name) + ' API instructions ↗</a>' : 'Open your ' + esc(p.name) + ' account settings.') +
-        '<br>2. Create a key or token using those instructions, then paste it below. Use an API key, not your account password.' +
-        '<br>3. Choose SAVE KEY, then ask your agent to try a task with ' + esc(p.name) + '. Saving a key does not verify access.';
+      guide.innerHTML = '<b>Conecta ' + esc(p.name) + '</b><br>1. ' + (p.docsUrl ? '<a href="' + esc(p.docsUrl) + '" target="_blank" rel="noopener">Abre las instrucciones de la API de ' + esc(p.name) + ' ↗</a>' : 'Abre los ajustes de cuenta de ' + esc(p.name) + '.') +
+        '<br>2. Crea una clave o token siguiendo esas instrucciones y pégalos abajo. Usa una clave API, no la contraseña de tu cuenta.' +
+        '<br>3. Elige GUARDAR CLAVE y pide a tu agente que pruebe una tarea con ' + esc(p.name) + '. Guardar una clave no verifica el acceso.';
       kyMsgEl.classList.remove('ok');
       kyMsgEl.textContent = p.unattendedSupported === false
-        ? p.name + ' is watched/manual only — ' + (p.unattendedReason || 'unattended use is unsupported')
+        ? p.name + ' solo es supervisado/manual — ' + (p.unattendedReason || 'el uso sin supervisión no está soportado')
         : (p.authHint
-          ? 'paste your ' + p.name + ' key — the agent will send it as  ' + p.authHint
-          : 'paste your ' + p.name + ' key — the agent reads ' + (p.docsUrl || 'the docs') + ' for the right header');
+          ? 'pega tu clave de ' + p.name + ' — el agente la enviará como  ' + p.authHint
+          : 'pega tu clave de ' + p.name + ' — el agente lee ' + (p.docsUrl || 'la documentación') + ' para la cabecera correcta');
       if (host) host.scrollTop = host.scrollHeight;
       kyKeyEl.focus();
       sfx('click');
@@ -1773,7 +1773,7 @@
         const [cRes, gRes] = await Promise.all([readJSON('/api/connectors'), readJSON('/api/connectors/catalog')]);
         // The CONNECTORS read is what decides "you have none" — if it failed, say so instead of asserting zero.
         // The catalog is only display sugar (names); a failed catalog degrades labels, never the count.
-        if (!cRes.ok) { kyPlatEl.innerHTML = readFailLine(cRes, 'sidecar offline — start it to see connected platforms.'); return; }
+        if (!cRes.ok) { kyPlatEl.innerHTML = readFailLine(cRes, 'sidecar desconectado — inícialo para ver las plataformas conectadas.'); return; }
         const cj = cRes.json, gj = gRes.json;
         const byId = {};
         for (const e of ((gj && gj.connectors) || [])) byId[e.id] = e;
@@ -1788,20 +1788,20 @@
         }
         kyPlatEl.innerHTML = keyed.map((c, i) => {
           const cat = byId[c.id];
-          const b = c.state === 'up' ? ['var(--ok)', '● connected'] : (c.state === 'cached' ? ['var(--gold)', '◐ idle · starts on use'] : (c.state === 'error' ? ['var(--bad)', '✕ error'] : ['var(--ph-dim)', '○ ' + esc(c.state || 'off')]));
+          const b = c.state === 'up' ? ['var(--ok)', '● conectado'] : (c.state === 'cached' ? ['var(--gold)', '◐ en espera · se inicia al usarlo'] : (c.state === 'error' ? ['var(--bad)', '✕ error'] : ['var(--ph-dim)', '○ ' + esc(c.state || 'apagado')]));
           return '<div class="mc-row" style="--ci:' + i + '">' +
             '<div class="mc-top"><b>' + esc((cat && cat.name) || c.label || c.id) + '</b> <span class="dim">' + esc(c.id) + '</span>' +
-              '<span class="mc-state" style="color:' + b[0] + '">' + b[1] + (c.toolCount ? ' · ' + c.toolCount + ' tool' + (c.toolCount === 1 ? '' : 's') : '') + '</span></div>' +
-            '<div class="mc-url dim"><span class="mc-tag">' + (c.hasHeaders && !c.hasToken ? 'header saved' : 'token saved') + '</span> managed in ' + (cat ? 'CATALOG' : 'CONNECTED SERVICES') + '</div>' +
+              '<span class="mc-state" style="color:' + b[0] + '">' + b[1] + (c.toolCount ? ' · ' + c.toolCount + ' herramienta' + (c.toolCount === 1 ? '' : 's') : '') + '</span></div>' +
+            '<div class="mc-url dim"><span class="mc-tag">' + (c.hasHeaders && !c.hasToken ? 'cabecera guardada' : 'token guardado') + '</span> gestionado en ' + (cat ? 'CATÁLOGO' : 'SERVICIOS CONECTADOS') + '</div>' +
           '</div>';
         }).join('');
-      } catch (_) { kyPlatEl.innerHTML = '<div class="mc-detail">sidecar offline — start it to see connected platforms.</div>'; }
+      } catch (_) { kyPlatEl.innerHTML = '<div class="mc-detail">sidecar desconectado — inícialo para ver las plataformas conectadas.</div>'; }
     }
     // BOTTOM: the custom store. Checkbox = kill-switch (key stays saved, agents stop seeing it); ✕ deletes.
     // "read 4 min ago" from the sidecar's own read time (refReadAt) — never a client-side guess
     function kyReadAgo(t) {
       const s = Math.max(0, Math.round((Date.now() - Number(t || 0)) / 1000));
-      return s < 60 ? 'just now' : (s < 3600 ? Math.round(s / 60) + ' min ago' : Math.round(s / 3600) + ' h ago');
+      return s < 60 ? 'ahora mismo' : (s < 3600 ? Math.round(s / 60) + ' min atrás' : Math.round(s / 3600) + ' h atrás');
     }
     function kyRow(k, i) {
       const unattendedSupported = k.unattendedSupported !== false;
@@ -1827,10 +1827,10 @@
         '<div class="set-row ky-auto"><input type="checkbox" data-ky-act="autonomy"' + (k.autonomous ? ' checked' : '') +
           (k.enabled && unattendedSupported ? '' : ' disabled') + ' aria-label="Allow unattended use of ' + esc(k.name) + '">' +
           '<span class="dim">' + (!unattendedSupported
-            ? 'watched sessions only — ' + esc(k.unattendedReason || 'unattended use is unsupported')
+            ? 'solo sesiones supervisadas — ' + esc(k.unattendedReason || 'el uso sin supervisión no está soportado')
             : (k.autonomous
-              ? 'usable in scheduled &amp; messaged runs' + (op ? ' while 1Password can answer without you (unlocked, or a service account)' : '')
-              : 'watched sessions only — tick to allow scheduled &amp; messaged runs')) + '</span></div>' +
+              ? 'usable en ejecuciones programadas y con mensajes' + (op ? ' mientras 1Password puede responder sin ti (desbloqueada, o una cuenta de servicio)' : '')
+              : 'solo sesiones supervisadas — marca para permitir ejecuciones programadas y con mensajes')) + '</span></div>' +
         '<div class="mc-acts"><button class="bb xs danger" data-ky-act="remove">✕ REMOVE</button></div>' +
       '</div>';
     }
@@ -1847,31 +1847,31 @@
     body.querySelector('#ky-add').addEventListener('click', async () => {
       const name = (kyNameEl.value || '').trim(), key = (kyKeyEl.value || '').trim(), docsUrl = (kyDocsEl.value || '').trim();
       kyMsgEl.classList.remove('ok');
-      if (!name) { kyMsgEl.textContent = 'give the platform a name first'; sfx('bad'); kyNameEl.focus(); return; }
-      if (!key) { kyMsgEl.textContent = 'paste the API key'; sfx('bad'); kyKeyEl.focus(); return; }
+      if (!name) { kyMsgEl.textContent = 'dale primero un nombre a la plataforma'; sfx('bad'); kyNameEl.focus(); return; }
+      if (!key) { kyMsgEl.textContent = 'pega la clave API'; sfx('bad'); kyKeyEl.focus(); return; }
       // the sidecar reads a reference before it answers: say so, since 1Password may be asking for approval right now
-      if (kyIsRef(key)) kyMsgEl.textContent = 'reading from 1Password — approve StarNet in the 1Password app if it asks…';
+      if (kyIsRef(key)) kyMsgEl.textContent = 'leyendo desde 1Password — aprueba StarNet en la app de 1Password si te lo pide…';
       try {
         // a non-JSON refusal parses to {} — without the r.ok check that {} reads as "saved".
         // A body that carries `key` is a structured verdict (saved:false = live-this-session,
         // handled below) even on a 500, so only a key-less answer is a refusal.
         const r = await postJSON('/api/servicekeys', { name, key, docsUrl });
         const j = await r.json().catch(() => ({}));
-        if (!j.key && (!r.ok || j.error)) { kyMsgEl.textContent = '✕ ' + (j.error || ('the station refused (HTTP ' + r.status + ') — the key was NOT saved')); sfx('bad'); return; }
+        if (!j.key && (!r.ok || j.error)) { kyMsgEl.textContent = '✕ ' + (j.error || ('la estación rechazó (HTTP ' + r.status + ') — la clave NO se guardó')); sfx('bad'); return; }
         // saved:false still means LIVE this session — surface the persistence truth instead of a flat "saved".
         // A 1Password reference is saved even when the read failed; the message says which happened.
         const opUnread = !!(j.key && j.key.source === '1password' && !j.key.refReady);
         kyMsgEl.classList.toggle('ok', j.saved !== false && !opUnread);
         kyMsgEl.textContent = j.saved === false
-          ? '⚠ ' + name + ' is active for this session, but saving to disk failed — it may not survive a restart'
+          ? '⚠ ' + name + ' está activo para esta sesión, pero falló el guardado en disco — puede no sobrevivir a un reinicio'
           : (opUnread
-            ? '⚠ ' + name + ' saved, but 1Password could not be read: ' + (j.key.refError || 'no answer') + ' — agents get ' + j.key.envVar + ' once it can'
-            : '✓ ' + name + ' saved' + (j.key && j.key.source === '1password' ? ' and read from 1Password' : '') + ' — agents can use ' + ((j.key && j.key.envVar) || 'it') + ' in their shell');
+            ? '⚠ ' + name + ' guardado, pero 1Password no se pudo leer: ' + (j.key.refError || 'sin respuesta') + ' — los agentes obtienen ' + j.key.envVar + ' cuando pueda'
+            : '✓ ' + name + ' guardado' + (j.key && j.key.source === '1password' ? ' y leído desde 1Password' : '') + ' — los agentes pueden usar ' + ((j.key && j.key.envVar) || 'it') + ' en su shell');
         sfx(j.saved === false || opUnread ? 'bad' : 'click');
-        if (j.saved !== false && !opUnread) notify('Key "' + name + '" saved', 'good');
+        if (j.saved !== false && !opUnread) notify('Clave "' + name + '" guardada', 'good');
         kyNameEl.value = ''; kyKeyEl.value = ''; kyDocsEl.value = ''; kyKeyEl.type = 'password';
         body.querySelector('#ky-guide').hidden = true;
-      } catch (e) { kyMsgEl.textContent = '✕ ' + ((e && e.message) || 'failed to reach the sidecar'); sfx('bad'); }
+      } catch (e) { kyMsgEl.textContent = '✕ ' + ((e && e.message) || 'no se pudo alcanzar el sidecar'); sfx('bad'); }
       ccRefresh(); kyRefresh();
     });
     kyListEl.addEventListener('click', async ev => {
@@ -1881,9 +1881,9 @@
         try {
           const r = await postJSON('/api/servicekeys/remove', { id });
           const j = await r.json().catch(() => ({}));
-          if (!r.ok || (j.error && !j.ok)) { kyMsgEl.classList.remove('ok'); kyMsgEl.textContent = '✕ ' + (j.error || ('the station refused (HTTP ' + r.status + ') — the key was NOT removed')); sfx('bad'); }
-          else { sfx('tick'); notify('Key removed'); }
-        } catch (_) { kyMsgEl.classList.remove('ok'); kyMsgEl.textContent = '✕ could not reach the sidecar — the key was NOT removed'; sfx('bad'); }
+          if (!r.ok || (j.error && !j.ok)) { kyMsgEl.classList.remove('ok'); kyMsgEl.textContent = '✕ ' + (j.error || ('la estación rechazó (HTTP ' + r.status + ') — la clave NO se eliminó')); sfx('bad'); }
+          else { sfx('tick'); notify('Clave eliminada'); }
+        } catch (_) { kyMsgEl.classList.remove('ok'); kyMsgEl.textContent = '✕ no se pudo alcanzar el sidecar — la clave NO se eliminó'; sfx('bad'); }
         ccRefresh(); kyRefresh();
       }
     });
@@ -1902,9 +1902,9 @@
         if (j.key && j.saved === false) {
           // structured 500: the switch IS live this session (list + env already updated) — keep the
           // box truthful to the live state and surface the persistence gap instead of reverting.
-          sfx('bad'); notify('⚠ the switch is live for this session, but saving to disk failed — it may not survive a restart', 'warn');
+          sfx('bad'); notify('⚠ el interruptor está activo para esta sesión, pero falló el guardado en disco — puede no sobrevivir a un reinicio', 'warn');
         }
-        else if (!r.ok || (j.error && !j.ok)) { cb.checked = !cb.checked; sfx('bad'); notify('✕ ' + (j.error || ('the station refused (HTTP ' + r.status + ') — nothing changed'))); }
+        else if (!r.ok || (j.error && !j.ok)) { cb.checked = !cb.checked; sfx('bad'); notify('✕ ' + (j.error || ('la estación rechazó (HTTP ' + r.status + ') — no cambió nada'))); }
         else sfx('tick');
       } catch (_) { cb.checked = !cb.checked; sfx('bad'); }
       cb.disabled = false;
@@ -1935,29 +1935,29 @@
         const j = await Harness.api.get('/api/spotify/status');
         if (redirEl && j.redirectUri) redirEl.textContent = j.redirectUri;
         if (j.connected) {
-          statusEl.innerHTML = '<span style="color:var(--ok)">● connected</span>' + (j.scope ? ' <span class="dim">· ' + esc(j.scope) + '</span>' : '');
-          connectBtn.textContent = '↻ RECONNECT';
+          statusEl.innerHTML = '<span style="color:var(--ok)">● conectado</span>' + (j.scope ? ' <span class="dim">· ' + esc(j.scope) + '</span>' : '');
+          connectBtn.textContent = '↻ RECONECTAR';
           disconnectBtn.style.display = '';
         } else {
-          statusEl.innerHTML = j.hasClientId ? '<span class="dim">○ not connected (Client ID saved)</span>' : '<span class="dim">○ not connected</span>';
+          statusEl.innerHTML = j.hasClientId ? '<span class="dim">○ no conectado (Client ID guardado)</span>' : '<span class="dim">○ no conectado</span>';
           disconnectBtn.style.display = 'none';
-          connectBtn.textContent = '▶ CONNECT SPOTIFY';
+          connectBtn.textContent = '▶ CONECTAR SPOTIFY';
         }
         return j;
-      } catch (_) { statusEl.textContent = 'sidecar offline — start the full app to connect Spotify.'; return null; }
+      } catch (_) { statusEl.textContent = 'sidecar desconectado — inicia la app completa para conectar Spotify.'; return null; }
     }
     connectBtn.addEventListener('click', async () => {
       const clientId = (clientInput.value || '').trim();
-      msgEl.textContent = 'opening Spotify…';
+      msgEl.textContent = 'abriendo Spotify…';
       try {
         const j = (await Harness.api.post('/api/spotify/auth/start', clientId ? { clientId } : {})).j;
         if (j.error) { msgEl.textContent = '✕ ' + j.error; sfx('bad'); return; }
         const opened = await openSignIn(j.url);
         if (!opened.opened) {
           // No consent window opened → don't poll and don't claim one is waiting (truthful-telemetry law).
-          msgEl.textContent = '✕ couldn’t open the Spotify sign-in page' + (opened.where === 'popup' ? ' — allow pop-ups for this site, then try again.' : ' — try again.'); sfx('bad'); return;
+          msgEl.textContent = '✕ couldn’t open the Spotify sign-in page' + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); return;
         }
-        msgEl.textContent = 'Approve access in ' + (opened.where === 'browser' ? 'your browser' : 'the window that opened') + ', then return here — this updates automatically.';
+        msgEl.textContent = 'Aprueba el acceso en ' + (opened.where === 'browser' ? 'tu navegador' : 'la ventana que se abrió') + ', y luego vuelve aquí — esto se actualiza automáticamente.';
         sfx('click');
         let n = 0, fails = 0; clearInterval(pollTimer);
         pollTimer = setInterval(async () => {
@@ -1975,25 +1975,25 @@
           catch (_) { fails++; }
           if ((s && s.connected) || n > 60 || fails >= 5) {
             clearInterval(pollTimer);
-            if (s && s.connected) { msgEl.textContent = '✓ Spotify connected'; notify('Spotify connected', 'good'); sfx('click'); }
+            if (s && s.connected) { msgEl.textContent = '✓ Spotify conectado'; notify('Spotify conectado', 'good'); sfx('click'); }
           }
         }, 2000);
-      } catch (e) { msgEl.textContent = '✕ ' + ((e && e.message) || 'failed to reach the sidecar'); sfx('bad'); }
+      } catch (e) { msgEl.textContent = '✕ ' + ((e && e.message) || 'no se pudo alcanzar el sidecar'); sfx('bad'); }
     });
     disconnectBtn.addEventListener('click', async () => {
       disconnectBtn.disabled = true;
       try {
         const out = await Harness.api.post('/api/spotify/disconnect');
         if (!out.ok || !out.j || out.j.ok === false) {
-          const why = (out.j && out.j.error) || 'the station did not confirm the change';
+          const why = (out.j && out.j.error) || 'la estación no confirmó el cambio';
           msgEl.textContent = '✕ ' + why;
-          notify('Spotify was NOT disconnected', 'warn'); sfx('bad');
+          notify('Spotify NO se desconectó', 'warn'); sfx('bad');
           return;
         }
-        clearInterval(pollTimer); msgEl.textContent = 'disconnected'; notify('Spotify disconnected'); sfx('click');
+        clearInterval(pollTimer); msgEl.textContent = 'desconectado'; notify('Spotify desconectado'); sfx('click');
       } catch (_) {
-        msgEl.textContent = '✕ could not reach the station — Spotify was not disconnected';
-        notify('Spotify was NOT disconnected', 'warn'); sfx('bad');
+        msgEl.textContent = '✕ no se pudo alcanzar la estación — Spotify no se desconectó';
+        notify('Spotify NO se desconectó', 'warn'); sfx('bad');
       } finally {
         disconnectBtn.disabled = false;
         refreshStatus();
@@ -2004,5 +2004,5 @@
 
   // The title must match the dock button that opens it — a window whose chrome disagrees with the button you
   // pressed reads as the wrong window, and this console now covers more than toolsets and connectors.
-  StationUI.registerWindow('connectors', 'ABILITIES', buildConnectors, { console: true });
+  StationUI.registerWindow('connectors', 'HABILIDADES', buildConnectors, { console: true });
 })();

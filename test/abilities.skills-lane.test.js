@@ -1,7 +1,7 @@
 'use strict';
 
 // The Skills backend can be completely healthy while a missing frontend lane dependency makes
-// ABILITIES silently omit SKILL LIBRARY, AGENT SKILLS, and SKILL EXCHANGE. connectors.js deliberately
+// HABILIDADES silently omit SKILL LIBRARY, AGENT SKILLS, and SKILL EXCHANGE. connectors.js deliberately
 // catches lane-builder errors so one optional lane cannot break the whole console; this test therefore
 // executes the production lane builder and requires every shipped Skills section to survive that seam.
 const fs = require('fs');
@@ -11,7 +11,7 @@ const A = require('./_assert.js');
 
 const source = fs.readFileSync(path.join(__dirname, '../frontend/app/stationui.js'), 'utf8');
 const laneMatch = source.match(/function abilitySkillsLane\(body\) \{[\s\S]*?\n  \}\n  window\.AbilityLanes/);
-A.ok(laneMatch, 'the ABILITIES Skills lane is present');
+A.ok(laneMatch, 'the HABILIDADES Skills lane is present');
 
 const laneSource = laneMatch[0].replace(/\n  window\.AbilityLanes[\s\S]*$/, '');
 const context = {
@@ -46,7 +46,7 @@ A.ok(/Reusable procedures <b>Agent<\/b> created or learned/.test(context.result.
   A.eq(shownAfterBuild(), 'nova', 'P21: sent from NOVA\'s dossier SKILLS row → the lane shows NOVA');
   A.eq(seq.skillsPick, null, 'P21: the request is consumed when the lane builds');
   A.eq(shownAfterBuild(), 'nova', 'P21: a rerender of the same open window keeps NOVA');
-  // night-leak 10-15: a strong `win` kept the last closed ABILITIES window (8,762 elements) alive until the next open
+  // night-leak 10-15: a strong `win` kept the last closed HABILIDADES window (8,762 elements) alive until the next open
   A.ok(seq.skillsShown && seq.skillsShown.win !== seq.open.connectors && typeof seq.skillsShown.win.deref === 'function' && seq.skillsShown.win.deref() === seq.open.connectors,
     'the lane ties its pick to the window WEAKLY (a WeakRef to this instance, never the element itself)');
   seq.open.connectors = { id: 'w2' };
@@ -66,7 +66,7 @@ A.ok(/host\.dataset\.agent = agentId;/.test(source) && /const shownId = host\.da
 A.ok(/const agentName = \(\(present\.find\(x => x && x\.id === agentId\) \|\| \{\}\)\.name\) \|\| agentId;/.test(source),
   'P21: the library\'s "active for <agent>" names the agent it was loaded for, not the dossier selection');
 A.ok(/const openOn = typeof H\.skillsAgentId === 'function' \? H\.skillsAgentId\(\)/.test(fs.readFileSync(path.join(__dirname, '../frontend/app/windows/connectors.js'), 'utf8')),
-  'P21: BUILT-IN ABILITIES opens on the same agent as the skills lane');
+  'P21: BUILT-IN HABILIDADES opens on the same agent as the skills lane');
 
 A.eq(context.result.sections.map(section => section.id), ['market', 'library', 'agent', 'exchange'],
   'the live lane builds all four Skills sections without throwing');
@@ -75,7 +75,7 @@ A.eq(context.result.sections.map(section => section.label), ['SKILL MARKET', 'SK
 A.ok(/function\s+scanFindingText\s*\(/.test(source), 'Skill Exchange scan findings renderer is defined');
 A.ok(/function\s+renderSkillExchangePreview\s*\(/.test(source), 'Skill Exchange preview renderer is defined');
 A.ok(/function\s+wireSkillExchange\s*\(/.test(source), 'Skill Exchange controls are wired');
-A.ok(/window\.AbilityLanes\.push\(abilitySkillsLane\)/.test(source), 'the Skills lane registers with ABILITIES');
+A.ok(/window\.AbilityLanes\.push\(abilitySkillsLane\)/.test(source), 'the Skills lane registers with HABILIDADES');
 A.ok(source.includes("skills.length + ' skill'"), 'the library count calls these procedures skills, not launchable recipes');
 A.ok(/id="sk-exchange-preview"[^>]*role="status"[^>]*aria-live="polite"/.test(source),
   'Skill Exchange inspection and validation feedback is announced');
@@ -149,7 +149,7 @@ async function checkCandidateReview() {
   // Fake DOM does not parse disabled attributes, but the actual markup must start disabled.
   A.ok(card.html.includes('data-candidate-approve disabled'), 'pending approval starts disabled');
   A.ok(card.html.includes('does not prove improvement for every use'), 'UI states evaluation scope honestly');
-  A.ok(card.html.includes('Proposed sharing: Only this agent · revision 3'), 'proposed sharing reads in plain words, not the raw scope id');
+  A.ok(card.html.includes('Proposed sharing: Solo este agente · revision 3'), 'proposed sharing reads in plain words, not the raw scope id');
   A.ok(/data-suite-json[^>]*placeholder="Example:/.test(card.html), 'the task-check editor shows an example suite');
   A.ok(card.html.includes('data-candidate-acknowledge hidden disabled'), 'no-improvement approval starts hidden and disabled');
   // The header states the gate the station enforces: a passing evaluation, or a complete no-improvement one the owner confirms.
@@ -233,11 +233,11 @@ async function checkCandidateReview() {
   // Review finding skills-eval-21: plain words, no raw ids, and a paid passing receipt survives a panel reload.
   const runLabel = card3.querySelector('[data-evaluation-suites]').children[1].textContent;
   A.ok(!runLabel.includes('brief-checks'), 'the run button does not show the raw suite id: ' + runLabel);
-  A.eq(runLabel, 'Run these checks', 'the run button says what it does; the description label sits above it');
+  A.eq(runLabel, 'Ejecutar estas comprobaciones', 'the run button says what it does; the description label sits above it');
   // The run's receipt sits in a closed details block, never as a JSON dump in the sentence.
   const note2 = card2.querySelector('[data-evaluation-result]'), receiptBox = note2.children.at(-1);
   A.eq(receiptBox && receiptBox.tag, 'details', 'the evaluation receipt is folded into a details block');
-  A.eq(receiptBox && receiptBox.children[0] && receiptBox.children[0].textContent, 'Evaluation receipt', 'the folded receipt is labeled');
+  A.eq(receiptBox && receiptBox.children[0] && receiptBox.children[0].textContent, 'Recibo de evaluación', 'the folded receipt is labeled');
   A.ok(!note2.textContent.includes('{'), 'the result sentence carries no JSON');
   // A run the station refused ('policy-denied') says so in plain words, listing only causes the harness can have had.
   const host8 = element(); ctx.host = host8; status = 'insufficient_evidence';
@@ -356,7 +356,7 @@ async function checkCandidateReview() {
 }
 
 // Review finding world-render-10: Change sharing speaks plain words, marks the current choice, asks for a
-// project folder only for This project, and a second click on Change sharing closes it.
+// project folder only for Este proyecto, and a second click on Change sharing closes it.
 async function checkSkillSharing() {
   function node(tag, cls) {
     const n = { tag, className: cls || '', children: [], dataset: {}, attrs: {}, hidden: false, disabled: false, textContent: '', value: '', parent: null,
@@ -382,15 +382,15 @@ async function checkSkillSharing() {
   const panel = body.querySelector('[data-skill-sharing]');
   A.ok(panel, 'Change sharing opens the panel');
   const row = panel.children.find(c => /consent-btns/.test(c.className)), buttons = row.children;
-  A.eq(buttons.map(b => b.textContent), ['Only this agent', 'This project', 'Whole station'], 'scope buttons use plain words, not raw ids');
+  A.eq(buttons.map(b => b.textContent), ['Solo este agente', 'Este proyecto', 'Estación completa'], 'scope buttons use plain words, not raw ids');
   A.eq(buttons.map(b => b.attrs['aria-pressed']), ['true', 'false', 'false'], 'the current sharing is marked');
   A.ok(/(^| )sel( |$)/.test(buttons[0].className), 'the current sharing has the selected skin');
   const input = panel.children.find(c => c.tag === 'input');
-  A.eq(input.hidden, true, 'no folder field until This project is chosen');
+  A.eq(input.hidden, true, 'no folder field until Este proyecto is chosen');
   A.ok(panel.children[0].textContent.includes('just nova uses it'), 'the note says who uses each choice');
   await buttons[1].onclick();
-  A.eq(posts.length, 0, 'choosing This project first asks for the folder');
-  A.eq(input.hidden, false, 'the folder field appears for This project');
+  A.eq(posts.length, 0, 'choosing Este proyecto first asks for the folder');
+  A.eq(input.hidden, false, 'the folder field appears for Este proyecto');
   input.value = 'C:/work/brief';
   await buttons[1].onclick();
   A.eq(posts.at(-1).payload, { agentId: 'nova', target: 'brief', scope: 'project', projectRoot: 'C:/work/brief' }, 'the second click shares with the folder');

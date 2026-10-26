@@ -356,12 +356,12 @@ test('a phone answer graded "always" on a station.power card still settles as ap
 });
 
 /* A PLUGIN INSTALL IS ANSWERED FRESH EVERY TIME (review app-shell-ui-03). plugin.submit is a fresh-consent tool: the
-   station grants any yes for this one install. Its desk card still offered Always and Full access and could settle as
-   "✓ always allowed", a standing grant the station never made. It now gets the station.power keys: Approve once, Deny. */
+   station grants any yes for this one install. Its desk card still offered Always and Acceso total and could settle as
+   "✓ always allowed", a standing grant the station never made. It now gets the station.power keys: Aprobar una vez, Deny. */
 for (const decision of ['always', 'full']) test('a plugin.submit card offers only a yes and a no, and a "' + decision + '" answer settles as approved once', () => {
   const f = permissionFixture('plugin.submit');
   const buttons = f.nodes[0].body.children.find(n => n.className === 'consent-btns');
-  assert.deepEqual(buttons.children.map(b => b.textContent), ['Approve once', 'Deny'], 'no Always, no Full access on a card the station answers once');
+  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Deny'], 'no Always, no Acceso total on a card the station answers once');
   f.listeners.get('permission.response')({ promptId: f.p.promptId, decision });
   const tag = f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent;
   assert.equal(tag, '✓ approved once from your phone');
@@ -369,16 +369,16 @@ for (const decision of ['always', 'full']) test('a plugin.submit card offers onl
 });
 
 /* P08 STRUCK (Andrew 10-14: "the approval key was fine before"): a general approval card's standing key is the candidate's
-   "Full access" again — its receipt "✓ full access" and its tip "Give <agent> full access: it stops asking before most
+   "Acceso total" again — its receipt "✓ full access" and its tip "Give <agent> full access: it stops asking before most
    actions, until you change it back" — never the struck "Never ask" / "Full power" names. */
-test('a general approval card offers Full access, as the 0.13.5 candidate had it, and settles in those words', () => {
+test('a general approval card offers Acceso total, as the 0.13.5 candidate had it, and settles in those words', () => {
   const f = permissionFixture('fs.read');
   const buttons = f.nodes[0].body.children.find(n => n.className === 'consent-btns');
   // org P02 (Andrew 10-14): no auto-deny line on the card — a first ask is the candidate's four keys and nothing else
-  assert.deepEqual(buttons.children.map(b => b.textContent), ['Approve once', 'Always', 'Full access', 'Deny'], 'the standing key reads Full access, and no hint line rides a first ask');
+  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Always', 'Acceso total', 'Deny'], 'the standing key reads Acceso total, and no hint line rides a first ask');
   assert.ok(!buttons.children.some(b => /never ask|full power/i.test(String(b.textContent) + ' ' + String((b.dataset && b.dataset.tip) || b.title || ''))), 'no key or tip uses the struck Never ask / Full power names');
-  const fullKey = buttons.children.find(b => b.textContent === 'Full access');
-  assert.ok(/^Give .+ full access: it stops asking before most actions, until you change it back$/.test(String(fullKey.title || '')), 'the Full access tip is the candidate\'s: ' + fullKey.title);
+  const fullKey = buttons.children.find(b => b.textContent === 'Acceso total');
+  assert.ok(/^Give .+ full access: it stops asking before most actions, until you change it back$/.test(String(fullKey.title || '')), 'the Acceso total tip is the candidate\'s: ' + fullKey.title);
   f.listeners.get('permission.response')({ promptId: f.p.promptId, decision: 'full' });
   assert.equal(f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ full access from your phone', 'the receipt names what was applied');
 });

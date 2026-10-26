@@ -71,7 +71,7 @@
     quest:        'a suggestion or progress marker from the station — accepting one starts real work; it is never a second to-do list.',
     skill:        'something an agent CAN do — some skills only switch on once their gear is on station. Browse them under CONNECT › ABILITIES ▸ SKILL LIBRARY.',
     toolset:      'a family of tools you can switch on or off for agents (web, files, terminal…) — the switches live in CONNECT › ABILITIES › BUILT-IN ABILITIES.',
-    capability:   'the same tool families as TOOLSETS, read-only — what an agent is equipped with right now; see them under CONNECT › ABILITIES.',
+    capability:   'the same tool families as TOOLSETS, read-only — what an agent is equipped with right now; see them under CONNECT › HABILIDADES.',
     connector:    'an outside service you plug IN so agents can use it as a tool (calendar, Slack actions, databases).',
     app:          'something your crew built for you in its own window — a dashboard, a tracker, a tool, a game. Describe it (or a change) in plain words; it can refresh itself on a schedule.',
     apps:         'the apps your crew built for you — open one, or describe a new one.',

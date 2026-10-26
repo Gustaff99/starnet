@@ -907,19 +907,19 @@ const App = (() => {
   }
   function providerKeyPlaceholder(provider, configured) {
     const p = normalizeProviderId(provider);
-    if (configured) return 'stored locally - leave blank to keep';
+    if (configured) return 'Guardada localmente — déjala en blanco para conservarla';
     if (p === 'openai') return 'sk-...  -  platform.openai.com/api-keys';
     if (p === 'anthropic') return 'sk-ant-...  -  console.anthropic.com/settings/keys';
     if (p === 'gemini') return 'AIza...  -  aistudio.google.com/app/apikey';
     if (p === 'xai') return 'xai-...  -  console.x.ai';
     if (p === 'groq') return 'gsk_...  -  console.groq.com/keys';
-    if (p === 'mistral') return 'Mistral API key';
+    if (p === 'mistral') return 'Clave API de Mistral';
     if (p === 'deepseek') return 'sk-...  -  platform.deepseek.com/api_keys';
-    if (p === 'together') return 'Together API key';
-    if (p === 'fireworks') return 'Fireworks API key';
+    if (p === 'together') return 'Clave API de Together';
+    if (p === 'fireworks') return 'Clave API de Fireworks';
     if (p === 'perplexity') return 'pplx-...  -  perplexity.ai/settings/api';
-    if (p === 'cerebras') return 'Cerebras API key';
-    if (p === 'custom') return 'optional API key for this endpoint';
+    if (p === 'cerebras') return 'Clave API de Cerebras';
+    if (p === 'custom') return 'Clave API opcional para este endpoint';
     return 'sk-or-...  -  openrouter.ai/keys';
   }
   // Where a NEW user actually GETS a key for this provider — the same destinations the key placeholder
@@ -2053,7 +2053,7 @@ const App = (() => {
       // sidecar's runWindow): name THAT window and why, never the 1M a 200k-tier run folds inside (final-polish 10-23). The
       // tier belongs to the ROUTE: an id the picked catalog does not list names none (only another route's catalog has it)
       const run = row ? (Number(row.runWindow) || 0) : 0;
-      if (limit && run > 0 && run < limit) bits.push('remembers up to ' + fmt(run) + ' tokens of chat (the model can hold ' + fmt(limit) + ', but it bills a higher rate for a prompt over ' + fmt(run) + ')');
+      if (limit && run > 0 && run < limit) bits.push('remembers up to ' + fmt(run) + ' tokens of chat (the model can hold ' + fmt(limit) + ', pero cobra un precio más alto para un prompt de más de ' + fmt(run) + ')');
       else if (limit) bits.push('remembers up to ' + fmt(limit) + ' tokens of chat');
       if (price) bits.push('costs ' + usdPerM(price.in) + ' in · ' + usdPerM(price.out) + ' out per million tokens (a token ≈ ¾ of a word)');
       hint.textContent = bits.join('  ·  ');
@@ -2077,7 +2077,7 @@ const App = (() => {
   const OAUTH_GENESIS = Object.freeze({
     codex: Object.freeze({ name: 'ChatGPT', sub: 'ChatGPT subscription' }),
     grok:  Object.freeze({ name: 'Grok',    sub: 'SuperGrok / X Premium+ subscription' }),
-    kimi:  Object.freeze({ name: 'Kimi',    sub: 'Kimi subscription' })
+    kimi:  Object.freeze({ name: 'Kimi',    sub: 'Suscripción a Kimi' })
   });
   function isOAuthProviderId(p) { return !!OAUTH_GENESIS[normalizeProviderId(p)]; }
 
@@ -2289,7 +2289,7 @@ const App = (() => {
     if (hint) {
       hint.textContent = (pid === 'codex')
         ? 'Uses the ChatGPT Plus/Pro account you already have — no API key, no billing setup. Prefer a key? Paste an OpenAI API key above instead.'
-        : 'Uses the ' + c.sub + ' you already have — no API key, no billing setup. Prefer a key? Switch to OPENROUTER (or any provider) above.';
+        : 'Usa la ' + c.sub + ' que ya tienes — sin clave API, sin configurar facturación. ¿Prefieres una clave? Cambia a OPENROUTER (o cualquier proveedor) arriba.';
     }
     paintKimiRegion(pid);
     // a stale code/status from the previously picked provider must never dress this one's block
@@ -3027,7 +3027,7 @@ const App = (() => {
       const nameIn = el('in-name'); if (nameIn) { nameIn.readOnly = true; nameIn.tabIndex = -1; }
     } else {
       if (banner) { banner.classList.add('hidden'); banner.innerHTML = ''; }
-      if (title) title.textContent = 'Create your Overseer';
+      if (title) title.textContent = 'Crea tu Overseer';
       if (sub) sub.textContent = 'One mind to run your station. Build your crew from here.';
       if (mode) mode.textContent = 'GENESIS';
       if (wake) wake.textContent = '⏼ WAKE OVERSEER ▸';
@@ -3652,11 +3652,11 @@ const App = (() => {
       now: () => Date.now(),
       getSystem: () => agent ? agent.systemPrompt : '',
       // UNION of two same-day fixes: title = deriveTitle(directive) (every milestone card used to read the
-      // literal 'Goal milestone', so three goals were three identical cards; the derived placeholder rides the
+      // literal 'Hito del objetivo', so three goals were three identical cards; the derived placeholder rides the
       // normal model-title upgrade ladder) — AND returns TRUE only when a run really kicked off, because a
       // mid-run send silently no-ops and callers that record a launch (the outcome loop's attribution stamp)
       // must never count one that never happened.
-      launchDirective: (text) => { const ws = (typeof Workstreams !== 'undefined') ? Workstreams.create((Workstreams.deriveTitle && Workstreams.deriveTitle(text)) || 'Goal milestone', { kind: 'task' }) : null; if (ws && typeof Chat !== 'undefined' && Chat.load) Chat.load(ws); let sent = false; if (typeof Chat !== 'undefined' && Chat.send && !Chat.isBusy()) { Chat.send(text); sent = true; } persist(); return sent; },
+      launchDirective: (text) => { const ws = (typeof Workstreams !== 'undefined') ? Workstreams.create((Workstreams.deriveTitle && Workstreams.deriveTitle(text)) || 'Hito del objetivo', { kind: 'task' }) : null; if (ws && typeof Chat !== 'undefined' && Chat.load) Chat.load(ws); let sent = false; if (typeof Chat !== 'undefined' && Chat.send && !Chat.isBusy()) { Chat.send(text); sent = true; } persist(); return sent; },
       getRunSummary: (runId) => { const m = (runId && typeof Chat !== 'undefined' && Chat.runMeta) ? Chat.runMeta(runId) : null; return (m && m.title) ? m.title : ''; }
     });
     // UNDERSTANDING: the one honest, adaptive "how well the station understands the Commander" read
@@ -3721,7 +3721,7 @@ const App = (() => {
       // UNION (see the goal-milestone twin above): derived title from the directive + returns TRUE only when a
       // run really kicked off — the suggestion's attribution stamp is armed off this answer, so a busy stream
       // must report the no-op honestly.
-      launchDirective: (text) => { if (typeof Chat === 'undefined' || !Chat.send || Chat.isBusy()) return false; const ws = (typeof Workstreams !== 'undefined') ? Workstreams.create((Workstreams.deriveTitle && Workstreams.deriveTitle(text)) || 'First build', { kind: 'task' }) : null; if (ws && typeof Chat !== 'undefined' && Chat.load) Chat.load(ws); let sent = false; if (typeof Chat !== 'undefined' && Chat.send && !Chat.isBusy()) { Chat.send(text); sent = true; } persist(); return sent; }
+      launchDirective: (text) => { if (typeof Chat === 'undefined' || !Chat.send || Chat.isBusy()) return false; const ws = (typeof Workstreams !== 'undefined') ? Workstreams.create((Workstreams.deriveTitle && Workstreams.deriveTitle(text)) || 'Primera construcción', { kind: 'task' }) : null; if (ws && typeof Chat !== 'undefined' && Chat.load) Chat.load(ws); let sent = false; if (typeof Chat !== 'undefined' && Chat.send && !Chat.isBusy()) { Chat.send(text); sent = true; } persist(); return sent; }
     };
     if (typeof PitchStore !== 'undefined') PitchStore.init(adviceDeps);
     if (typeof SuggestStore !== 'undefined') SuggestStore.init(adviceDeps);
@@ -4111,7 +4111,7 @@ const App = (() => {
     chip.innerHTML = thumb + '<span class="waf-name" style="color:' + U.esc(a.color || '') + '">' + U.esc(name) + '</span>'
       + '<span class="waf-count">' + count + '</span><span class="waf-clear" aria-hidden="true">✕</span>';
     chip.setAttribute('aria-label', 'Showing ' + name + "'s " + count + ' session' + (count === 1 ? '' : 's') + '. Show all sessions');
-    chip.setAttribute('data-tip', 'Showing only ' + name + "'s sessions — click to show all");
+    chip.setAttribute('data-tip', 'Mostrando solo las sesiones de ' + name + ' — clic para ver todas');
   }
   // Pending consent belongs to a session. Multiple sessions on one agent remain distinct;
   // deleted/orphaned channels cannot contribute a count with nowhere to open.
@@ -4190,13 +4190,13 @@ const App = (() => {
     const pending = typeof Channels !== 'undefined' && Channels.pendingOf(w.id);
     if (pending) {
       const question = pending.tool === 'brief.ask';
-      return { dot: question ? 'ws-dot needsyou reply' : 'ws-dot needsyou approval', meta: question ? 'Reply needed' : 'Approval needed', busy: Channels.isBusy(w.id), attn: true, status: question ? 'waiting for your answer' : 'awaiting your approval' };
+      return { dot: question ? 'ws-dot needsyou reply' : 'ws-dot needsyou approval', meta: question ? 'Respuesta pendiente' : 'Aprobación pendiente', busy: Channels.isBusy(w.id), attn: true, status: question ? 'esperando tu respuesta' : 'esperando tu aprobación' };
     }
     // a GROUP's runs live in the group coordinator, not Channels: its row reads the backend group state instead
     const gs = w.conversationMode === 'group' && typeof GroupChat !== 'undefined' && GroupChat.stateOf ? GroupChat.stateOf(w.id) : null;
     if (gs && (gs.approvals || gs.questions)) {
       const ask = !gs.approvals;
-      return { dot: ask ? 'ws-dot needsyou reply' : 'ws-dot needsyou approval', meta: ask ? 'Reply needed' : 'Approval needed', busy: !!gs.busy, attn: true, status: ask ? 'waiting for your answer' : 'awaiting your approval' };
+      return { dot: ask ? 'ws-dot needsyou reply' : 'ws-dot needsyou approval', meta: ask ? 'Respuesta pendiente' : 'Aprobación pendiente', busy: !!gs.busy, attn: true, status: ask ? 'esperando tu respuesta' : 'esperando tu aprobación' };
     }
     if (gs && gs.busy) return { dot: 'ws-dot working', meta: 'Working', busy: true, attn: false, status: 'agents are working in this group' };
     if (typeof Channels !== 'undefined' && Channels.isBusy(w.id)) {
@@ -4697,7 +4697,7 @@ const App = (() => {
     const item = (act, label, glyph, cls) =>
       '<button class="ws-menu-item' + (cls ? ' ' + cls : '') + '" role="menuitem" data-act="' + act + '">' +
       '<span class="ws-menu-glyph" aria-hidden="true">' + glyph + '</span>' + U.esc(label) + '</button>';
-    let html = item('rename', 'Rename', '✎') + item('pin', w.pinned ? 'Unpin' : 'Pin to top', w.pinned ? '☆' : '★')
+    let html = item('rename', 'Renombrar', '✎') + item('pin', w.pinned ? 'Quitar fijado' : 'Fijar arriba', w.pinned ? '☆' : '★')
       + item('export-md', 'Export .md', '⤓') + item('export-json', 'Export .json', '⤓');
     if (!isGeneral) {
       html += item('archive', w.archived ? 'Unarchive' : 'Archive', w.archived ? '⇱' : '⇲') +
@@ -5163,8 +5163,8 @@ const App = (() => {
       '<span class="ws-menu-glyph" aria-hidden="true">' + glyph + '</span>' + U.esc(label) + '</button>';
     let html = '';
     if (r.blessed) {
-      if (!projScope || !(Projects.sameRoot && Projects.sameRoot(r.root, projScope))) html += item('open', 'Open project', '▸');
-      html += item('newsess', typeof ProjectHome !== 'undefined' ? 'Open project COMMS' : 'New session here', '▸');
+      if (!projScope || !(Projects.sameRoot && Projects.sameRoot(r.root, projScope))) html += item('open', 'Abrir proyecto', '▸');
+      html += item('newsess', typeof ProjectHome !== 'undefined' ? 'Abrir COMMS del proyecto' : 'Nueva sesión aquí', '▸');
     }
     html += (r.blessed ? '<div class="ws-menu-sep"></div>' : '') + item('remove', r.blessed ? 'Remove (revoke trust)' : 'Forget (already revoked)', '✕', 'danger');
     menu.innerHTML = html;
@@ -5763,7 +5763,7 @@ const App = (() => {
         const size = row && row.bytes ? Math.max(1, Math.ceil(row.bytes / 1024)) + ' KB' : 'size unavailable';
         const on = !!(row && row.id === selected);
         return '<button class="lineage-candidate' + (on ? ' on' : '') + '" data-candidate-id="' + U.esc(row && row.id || '') + '" aria-pressed="' + (on ? 'true' : 'false') + '"' + (row && row.recoverable ? '' : ' disabled') + '>' +
-          '<b>' + U.esc(row && row.stationName || 'Prior station') + '</b>' +
+          '<b>' + U.esc(row && row.stationName || 'Estación anterior') + '</b>' +
           '<span>' + U.esc(row && row.displayRoot || 'local StarNet storage') + '</span>' +
           '<small>' + U.esc(row && row.recoverable ? when + ' · ' + size : row && row.reason || 'unreadable save') + '</small></button>';
       }).join('');

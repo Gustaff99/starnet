@@ -1,9 +1,9 @@
 /* node test/markdown-everywhere.test.js — one reading of an answer, everywhere it is shown (live walk 10-14, seams 2/3/11/17).
 
    The walker ran one line job whose answer was markdown ('## Findings', '- **Item one:**', '`code`') and found it printed raw
-   in three places while WORKFLOWS and the Workflow panel drew it rendered. Locked here by EXECUTING the shipped functions
+   in three places while FLUJOS and the Workflow panel drew it rendered. Locked here by EXECUTING the shipped functions
    (sliced with A.fnBody or required as UMD) over the real COMMS renderer built from chat.js:
-     #2   DELIVERABLES › TO REVIEW › WHAT CAME BACK is drawn by Chat.renderProse (escape-first) — and so is the library card's
+     #2   ENTREGABLES › TO REVIEW › WHAT CAME BACK is drawn by Chat.renderProse (escape-first) — and so is the library card's
           WHAT CAME BACK below it, once its drawer opens; a fenced block's ⧉ key works outside COMMS
      #3   the COMMS INBOX "prove the line" card quotes the reply as plain words (Deliverables.plainLine), never markdown
      #11  the goal-arc confirm panel's milestones are plain words (no '**', no '`', no '## ' header as a step)
@@ -189,7 +189,7 @@ A.eq(cascadeWhiteSpace(['cmsg', 'body']).value, 'pre-wrap', 'cascade sanity: COM
   run({ Chat })(letter, LETTER);
   A.eq([letter.textContent, letter.innerHTML], [LETTER, ''], 'a plain multi-line reply is drawn as its own text (the fast path)');
   for (const [cls, where] of [[['ob-out', 'wf-md'], 'TO REVIEW'], [['dlv-said', 'md', 'wf-md'], 'the library drawer'],
-    [['wf-io', 'wf-md'], 'a Workflow panel / WORKFLOWS step reply'], [['wf-io', 'out', 'wfw-out', 'wf-md'], 'the WORKFLOWS result']]) {
+    [['wf-io', 'wf-md'], 'a Workflow panel / FLUJOS step reply'], [['wf-io', 'out', 'wfw-out', 'wf-md'], 'the FLUJOS result']]) {
     const won = cascadeWhiteSpace(cls);
     A.eq(won && won.value, 'pre-wrap', where + ' keeps a plain reply’s line breaks (winning white-space rule: ' + (won ? won.file + ' ' + won.sel : 'none') + ')');
   }

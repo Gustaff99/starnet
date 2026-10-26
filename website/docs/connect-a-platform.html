@@ -91,7 +91,7 @@
 
 <ol>
   <li><b>Does the platform publish a <i>remote</i> MCP server?</b> Then add it in
-    <b>CONNECT &rsaquo; ABILITIES &rarr; CONNECTED SERVICES</b>, or find it already sitting in <b>CATALOG</b>.
+    <b>CONNECT &rsaquo; HABILIDADES &rarr; CONNECTED SERVICES</b>, or find it already sitting in <b>CATALOG</b>.
     You get ready-made tools, and it is the least work. Notion, Linear, Stripe, GitHub and Sentry are here.</li>
   <li><b>Does it publish only a local stdio MCP server?</b> Put an agent on the <b>SAFE CELL</b> execution
     profile, choose <b>STDIO (Safe Cell)</b> in CONNECTED SERVICES, and enter the command and exact arguments.
@@ -107,7 +107,7 @@ remote MCP server for Printify, Printful, Etsy or WooCommerce — the only Print
 the lighter option when you do not want to maintain a container command.</div>
 
 <h2 id="route-1-a-remote-mcp-server">Route 1 — a remote MCP server</h2>
-<p>Open <b>CONNECT &rsaquo; ABILITIES</b> (dock: <b>&#8644; CONNECT</b>).</p>
+<p>Open <b>CONNECT &rsaquo; HABILIDADES</b> (dock: <b>&#8644; CONNECT</b>).</p>
 <ul>
   <li><b>CATALOG</b> — browse vetted servers. <b>&#9656; no setup</b> connects instantly, <b>API key</b> takes a
     pasted token, <b>OAUTH</b> opens a browser sign-in. One click and its tools are live.</li>
@@ -122,7 +122,7 @@ interactive host.</p>
 <h2 id="route-2-an-api-key-web-request">Route 2 — an API key + <code>web_request</code></h2>
 
 <h3 id="paste-the-key">1. Paste the key</h3>
-<p><b>CONNECT &rsaquo; ABILITIES &rarr; SAVED API CONNECTIONS &rarr; ADD A KEY</b>. Type the platform name (or pick it in CATALOG, which fills it in),
+<p><b>CONNECT &rsaquo; HABILIDADES &rarr; SAVED API CONNECTIONS &rarr; ADD A KEY</b>. Type the platform name (or pick it in CATALOG, which fills it in),
 paste your key, and save. StarNet stores it locally and shows only the last four characters, ever.</p>
 <p>Keep your keys in 1Password? Paste a reference like <code>op://vault/item/field</code> instead of the key. StarNet reads it
 with the 1Password CLI (<code>op</code>) when a run needs it and holds the value in memory only &mdash; it is never written to disk.</p>

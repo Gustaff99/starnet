@@ -4,7 +4,7 @@
    Every assertion here pairs the copy with the real place it now names:
      - a model failure points at SETTINGS › AI & MODELS (where model keys live), never CONNECT (tools + channels);
      - the glossary's overseer is the first agent (it leads and delegates), never "the station itself"; a capability
-       readout points at CONNECT › ABILITIES, never a SKILLS tab the dossier does not have;
+       readout points at CONNECT › HABILIDADES, never a SKILLS tab the dossier does not have;
      - the FIELD MANUAL's CONTROLS calls BUILD MODE key 9 by build.js's own label (CONVEYOR LINES), lists the APPS
        dock and the keys that work anywhere — each backed by a real handler in the app;
      - the manual and the HELP chapter send waiting items to NEEDS YOU at the top of SESSIONS first;
@@ -43,8 +43,8 @@ const gsrc = read('frontend/app/glossary.js');
 const entry = key => { const m = gsrc.match(new RegExp('\\n\\s+' + key + ':\\s+\'([^\']*)\'')); return m ? m[1] : ''; };
 A.ok(/your first agent; it leads and delegates/.test(entry('overseer')) && !/station itself/.test(entry('overseer')),
   'the overseer is the first agent that leads and delegates: ' + entry('overseer'));
-A.ok(/CONNECT › ABILITIES/.test(entry('capability')) && !/SKILLS tab/.test(entry('capability')),
-  'a capability readout points at ABILITIES, not a SKILLS tab: ' + entry('capability'));
+A.ok(/CONNECT › HABILIDADES/.test(entry('capability')) && !/SKILLS tab/.test(entry('capability')),
+  'a capability readout points at HABILIDADES, not a SKILLS tab: ' + entry('capability'));
 A.ok(/MY WORK › TASKS/.test(entry('workstream')) && /SESSIONS/.test(entry('workstream')) && !/TASK BOARD/.test(entry('workstream')),
   'a workstream is a SESSION, and planned ones show on MY WORK › TASKS: ' + entry('workstream'));
 
@@ -116,9 +116,9 @@ A.ok(app && !/START FRESH/.test(app.about) && /ERASE EVERYTHING/.test(app.about)
 }
 
 // ---- MY WORK display words; keys unchanged ----
-A.ok(/const WORK_LABELS = \{ tasks: 'TASKS', deliverables: 'DELIVERABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' \}/.test(station),
-  'MY WORK\'s trail words read TASKS / AGENT DOSSIER, keyed by the unchanged window ids');
-A.ok(/tasks:\s+\['TASKS',\s+buildTasks,/.test(station) && /agents:\s+\['AGENT DOSSIER',\s+buildAgents,/.test(station), 'window titles: TASKS and AGENT DOSSIER');
+A.ok(/const WORK_LABELS = \{ tasks: 'TAREAS', deliverables: 'ENTREGABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' \}/.test(station),
+  'MY WORK\'s trail words read TAREAS / AGENT DOSSIER, keyed by the unchanged window ids');
+A.ok(/tasks:\s+\['TAREAS',\s+buildTasks,/.test(station) && /agents:\s+\['AGENT DOSSIER',\s+buildAgents,/.test(station), 'window titles: TAREAS and AGENT DOSSIER');
 A.ok(/Manage planned tasks under MY WORK › TASKS/.test(station) && !/on the TASK BOARD and saved/.test(station), 'ABOUT names MY WORK › TASKS');
 
 // ---- BROWSER promises only what it offers ----
@@ -133,8 +133,8 @@ for (const o of [undefined, { cancelSource: 'estop_by_run' }]) {
 }
 
 /* ---- org P05: "where do I paste my key?" has one answer per kind of key ----
-   SETTINGS' tip and dock subtitle say what is actually in there; ABILITIES' own copy names its real tabs; AI & MODELS'
-   API KEYS points service keys at CONNECT › ABILITIES › SAVED API CONNECTIONS through the places.js target. */
+   SETTINGS' tip and dock subtitle say what is actually in there; HABILIDADES' own copy names its real tabs; AI & MODELS'
+   API KEYS points service keys at CONNECT › HABILIDADES › SAVED API CONNECTIONS through the places.js target. */
 {
   const rd = f => fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
   const sys = rd('frontend/app/systems.js'), idx = rd('frontend/index.html'), con = rd('frontend/app/windows/connectors.js');
@@ -142,14 +142,14 @@ for (const o of [undefined, { cancelSource: 'estop_by_run' }]) {
   A.ok(/tip: 'modelos, claves, permisos, gastos y más'/.test(sys), 'SETTINGS dock tip names what Settings holds, and says there is more');
   A.ok(/<small>modelos, claves, permisos, gastos y más<\/small>/.test(idx), 'the SETTINGS dock subtitle says the same line, on one line like its neighbours');
   A.ok(!/Keys, models, voice, data|keys, models, voice, data/.test(sys + idx), 'the old "keys, models, voice, data" line is gone');
-  A.ok(!/in <b>MCP CONNECTORS<\/b>|in <b>KEYS<\/b>|in TOOLSETS:|'CATALOG' : 'MCP CONNECTORS'/.test(con), 'ABILITIES copy names no retired tab (MCP CONNECTORS, KEYS, TOOLSETS)');
+  A.ok(!/in <b>MCP CONNECTORS<\/b>|in <b>KEYS<\/b>|in TOOLSETS:|'CATALOG' : 'MCP CONNECTORS'/.test(con), 'HABILIDADES copy names no retired tab (MCP CONNECTORS, KEYS, TOOLSETS)');
   A.ok(/en <b>SERVICIOS CONECTADOS<\/b>, o pega una clave de plataforma personalizada en <b>CONEXIONES API GUARDADAS<\/b>/.test(con), 'the catalog footer names SERVICIOS CONECTADOS and CONEXIONES API GUARDADAS');
   A.ok(/\{ id: 'keys', label: 'CONEXIONES API GUARDADAS'/.test(con) && /\{ id: 'mcp', label: 'SERVICIOS CONECTADOS'/.test(con) && /\{ id: 'toolsets', label: 'HABILIDADES INTEGRADAS'/.test(con), 'the names it uses are the real tab labels');
   // (live walk 10-14) the service-key door lands ON SAVED API CONNECTIONS — the place its sentence names — and the sign-in
   // services are named at CATALOG, the neighbouring tab of that same window
   A.ok(/Una clave para cualquier otro servicio va en CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS; Gmail, Notion y otros servicios de inicio de sesión se conectan desde CATÁLOGO, al lado\.<\/p>' \+\s*'<div class="mc-acts"><button type="button" class="bb sm" data-act="to-service-keys">▸ CONEXIONES API GUARDADAS<\/button><\/div>/.test(ui), 'API KEYS: one full-strength glass key to CONEXIONES API GUARDADAS, outside the dimmed prose; Gmail/Notion named at CATÁLOGO');
   A.ok(!/data-act="to-service-catalog"|↗ CATALOG<\/button>/.test(ui), 'the old door to CATALOG (which the sentence never named as the key place) is gone');
-  A.ok(!/Keys for Gmail, Notion and other services live in CONNECT › ABILITIES › SAVED API CONNECTIONS/.test(ui), 'never the old wrong claim: SAVED API CONNECTIONS cannot connect Gmail or Notion');
+  A.ok(!/Keys for Gmail, Notion and other services live in CONNECT › HABILIDADES › SAVED API CONNECTIONS/.test(ui), 'never the old wrong claim: SAVED API CONNECTIONS cannot connect Gmail or Notion');
   A.ok(/toServiceKeys\.addEventListener\('click', \(\) => \{ sfx\('click'\); openTerm\('connectors', 'keys'\); \}\)/.test(ui), 'the key opens the connectors SAVED API CONNECTIONS section');
   A.ok(/P\('api-connections', 'CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS', [^\n]*\{ term: 'connectors', section: 'keys' \}\)/.test(places), 'which is the places.js api-connections target');
   A.ok(/P\('find-a-service', [^\n]*\{ term: 'connectors', section: 'catalog' \}\)/.test(places) && /\{ id: 'catalog', label: 'CATÁLOGO'/.test(con), 'CATÁLOGO, named for the sign-in services, is a real tab of that window');
@@ -162,7 +162,7 @@ for (const o of [undefined, { cancelSource: 'estop_by_run' }]) {
   // the public "Connect a service" guide walks the same paths the app shows (P05 review): no retired window or tab name
   const guide = rd('website/docs/connect-a-platform.html');
   A.ok(!/TOOLSETS &amp; CONNECTORS|&#8644; TOOLSETS|in <b>KEYS<\/b>|row in\s+KEYS|in TOOLSETS\.|MCP CONNECTORS|PICK A PLATFORM/.test(guide), 'the Connect a service guide names no retired window or tab (TOOLSETS & CONNECTORS, KEYS, TOOLSETS, PICK A PLATFORM)');
-  A.ok(/CONNECT &rsaquo; ABILITIES &rarr; SAVED API CONNECTIONS &rarr; ADD A KEY/.test(guide) && /\(dock: <b>&#8644; CONNECT<\/b>\)/.test(guide), 'its paths read CONNECT › ABILITIES › SAVED API CONNECTIONS, from the ⇄ CONNECT dock button');
+  A.ok(/CONNECT &rsaquo; HABILIDADES &rarr; SAVED API CONNECTIONS &rarr; ADD A KEY/.test(guide) && /\(dock: <b>&#8644; CONNECT<\/b>\)/.test(guide), 'its paths read CONNECT › HABILIDADES › SAVED API CONNECTIONS, from the ⇄ CONNECT dock button');
 }
 
 A.report('help-copy-matches-screen.test');

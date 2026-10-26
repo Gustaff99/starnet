@@ -1,6 +1,6 @@
 /* node test/comms-stop-queue-tips.test.js — org(P27): the COMMS stop key and the queued pill say what they DO.
    In a group ■ is stop-all (GroupChat.stop → every agent), so its tip and aria-label say so; a direct chat keeps
-   "Stop the running turn". A queued ⤷ pill sends after the run (it is not a mid-run edit) and /steer is the way to
+   "Detener el turno en curso". A queued ⤷ pill sends after the run (it is not a mid-run edit) and /steer is the way to
    change the running task. Both tips are data-tip (the station card), never a native title. */
 'use strict';
 const fs = require('node:fs');
@@ -14,12 +14,12 @@ const chat = read('frontend/app/chat.js');
 const stopTag = (html.match(/<button id="chat-stop"[^>]*>/) || [''])[0];
 A.ok(stopTag, 'COMMS keeps its stop key');
 A.ok(!/\stitle=/.test(stopTag), 'the stop key carries no native title (OS tooltip)');
-A.ok(/data-tip="Stop the running turn \(Esc\)"/.test(stopTag), 'a direct chat keeps today\'s stop wording as a data-tip');
+A.ok(/data-tip="Detener el turno en curso \(Esc\)"/.test(stopTag), 'a direct chat keeps today\'s stop wording as a data-tip');
 
 const uc = chat.slice(chat.indexOf('function updateControls()'), chat.indexOf('function updateControls()') + 900);
 A.ok(/conversationMode === 'group'/.test(uc), 'updateControls reads whether the open chat is a group');
-A.ok(uc.includes("'Stop every agent in this chat (Esc)'") && uc.includes("'Stop every agent in this chat'"), 'a group stop key says it stops every agent (tip + aria-label)');
-A.ok(uc.includes("'Stop the running turn (Esc)'") && uc.includes("'Stop the running turn'"), 'a direct chat stop key keeps its wording');
+A.ok(uc.includes("'Detener todos los agentes de este chat (Esc)'") && uc.includes("'Detener todos los agentes de este chat'"), 'a group stop key says it stops every agent (tip + aria-label)');
+A.ok(uc.includes("'Detener el turno en curso (Esc)'") && uc.includes("'Detener el turno en curso'"), 'a direct chat stop key keeps its wording');
 A.ok(/GroupChat\.stop\(\)/.test(chat.slice(chat.indexOf('function stopActive('), chat.indexOf('function stopActive(') + 600)), 'the group wording matches what stopActive does (GroupChat.stop = stop-all)');
 
 // the whole function body (a fixed-length slice broke when the live-walk queue comment grew the function's head)

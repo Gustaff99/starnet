@@ -77,13 +77,13 @@ module.exports = (async () => {
     return lines[0] || '';
   }
   const pro = compress({ used: 13000, limit: 1048576, model: 'gemini-2.5-pro' }, id => (id === 'gemini-2.5-pro' ? 200000 : 0));
-  A.ok(/^Chat memory: 13000 \/ 200000 tokens used \(7%/.test(pro), 'Gemini 2.5 Pro on a key: /compress measures against the 200k window a run works in: ' + pro);
-  A.ok(pro.indexOf('The model can hold 1048576, but it bills a higher rate for a prompt over 200000 tokens, so a run works in 200000.') >= 0, 'and says why it is smaller than the model\'s window: ' + pro);
-  A.ok(pro.indexOf('1048576 tokens used') < 0, 'and never measures against the 1M window a run folds inside 200k');
+  A.ok(/^Memoria del chat: 13000 \/ 200000 tokens usados \(7%/.test(pro), 'Gemini 2.5 Pro on a key: /compress measures against the 200k window a run works in: ' + pro);
+  A.ok(pro.indexOf('El modelo puede sostener 1048576, pero cobra un precio más alto para un prompt de más de 200000 tokens, así que una ejecución trabaja en 200000.') >= 0, 'and says why it is smaller than the model\'s window: ' + pro);
+  A.ok(pro.indexOf('1048576 tokens usados') < 0, 'and never measures against the 1M window a run folds inside 200k');
   const whole = compress({ used: 13000, limit: 200000, model: 'm' }, () => 200000);
-  A.ok(/^Chat memory: 13000 \/ 200000 tokens used \(7%/.test(whole) && whole.indexOf('higher rate') < 0, 'a run that works in the whole window: the line is as before: ' + whole);
+  A.ok(/^Memoria del chat: 13000 \/ 200000 tokens usados \(7%/.test(whole) && whole.indexOf('precio más alto') < 0, 'a run that works in the whole window: the line is as before: ' + whole);
   const old = compress({ used: 13000, limit: 200000, model: 'm' }, null);
-  A.ok(/^Chat memory: 13000 \/ 200000 tokens used \(7%/.test(old), 'no runWindowOf (an older harness): the model window, as before: ' + old);
+  A.ok(/^Memoria del chat: 13000 \/ 200000 tokens usados \(7%/.test(old), 'no runWindowOf (an older harness): the model window, as before: ' + old);
 
   // ---- 4. the website app ships the same ----
   const webChat = read('website/app/app/chat.js'), webHarness = read('website/app/app/harness.js');
