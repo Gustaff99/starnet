@@ -29,15 +29,15 @@ const run = evs => evs.reduce((note, [name, p]) => foldWaitNote(note, name, p), 
 {
   const retry = { agentId: 'a', runId: 'r', attempt: 3, maxAttempts: 6, reason: 'overloaded', delayMs: 30000, model: 'anthropic/claude-sonnet-4.5' };
   let n = foldWaitNote(null, 'provider.retry', retry);
-  A.eq(waitNoteText(n), 'retry 3/6 in 30s (overloaded) — claude-sonnet-4.5', 'retry line: rung/budget, the announced wait, the reason, then the model');
+  A.eq(waitNoteText(n), 'reintento 3/6 en 30s (sobrecarga) — claude-sonnet-4.5', 'retry line: rung/budget, the announced wait, the reason, then the model');
   n = foldWaitNote(n, 'agent.waiting', { runId: 'r', phase: 'retry_backoff', sinceMs: 15000, model: 'anthropic/claude-sonnet-4.5' });
-  A.eq(waitNoteText(n), 'retry 3/6 in 15s (overloaded) — claude-sonnet-4.5', 'a backoff beat updates the remaining wait from the EVENT (delayMs − sinceMs)');
+  A.eq(waitNoteText(n), 'reintento 3/6 en 15s (sobrecarga) — claude-sonnet-4.5', 'a backoff beat updates the remaining wait from the EVENT (delayMs − sinceMs)');
   n = foldWaitNote(n, 'agent.waiting', { runId: 'r', phase: 'first_byte', sinceMs: 0, model: 'anthropic/claude-sonnet-4.5' });
-  A.eq(waitNoteText(n), 'waiting on claude-sonnet-4.5', 'the retry going out replaces the countdown (no stale "retry in 15s")');
+  A.eq(waitNoteText(n), 'esperando a claude-sonnet-4.5', 'the retry going out replaces the countdown (no stale "retry in 15s")');
   n = foldWaitNote(n, 'agent.waiting', { runId: 'r', phase: 'first_byte', sinceMs: 45000, model: 'anthropic/claude-sonnet-4.5' });
-  A.eq(waitNoteText(n), 'waiting for 45s on claude-sonnet-4.5', 'a slow first byte: how long, per the heartbeat');
+  A.eq(waitNoteText(n), 'esperando 45s a claude-sonnet-4.5', 'a slow first byte: how long, per the heartbeat');
   n = foldWaitNote(n, 'agent.waiting', { runId: 'r', phase: 'streaming', sinceMs: 75000, model: 'anthropic/claude-sonnet-4.5' });
-  A.eq(waitNoteText(n), 'waiting for 1:15 (stream open) on claude-sonnet-4.5', 'an open stream with nothing shown says so; long waits use the COMMS m:ss format');
+  A.eq(waitNoteText(n), 'esperando 1:15 (flujo abierto) a claude-sonnet-4.5', 'an open stream with nothing shown says so; long waits use the COMMS m:ss format');
   A.eq(foldWaitNote(n, 'agent.token', { runId: 'r', delta: 'Hello' }), null, 'the first token clears the line');
   A.eq(foldWaitNote(n, 'agent.token', { runId: 'r', delta: '' }), n, 'an empty delta shows nothing, so it clears nothing');
   for (const ev of ['agent.tool_call', 'agent.tool_result', 'provider.fallback', 'agent.run.end', 'agent.run.error']) {
@@ -48,22 +48,22 @@ const run = evs => evs.reduce((note, [name, p]) => foldWaitNote(note, name, p), 
 
 /* ---------- 2. edges stay honest ---------- */
 A.eq(waitNoteText(run([['provider.retry', { attempt: 1, maxAttempts: 6, reason: 'server_error', delayMs: 400, model: 'm' }]])),
-  'retry 1/6 in 1s (server error) — m', 'a sub-second rung reads "in 1s" (rounded up), reason made readable');
+  'reintento 1/6 en 1s (error del servidor) — m', 'a sub-second rung reads "in 1s" (rounded up), reason made readable');
 A.eq(waitNoteText(run([['provider.retry', { attempt: 2, reason: 'timeout', delayMs: 0, model: 'm' }]])),
-  'retry 2 now (timeout) — m', 'no sleep wired -> "now"; no budget -> no "/N"');
+  'reintento 2 ahora (tiempo agotado) — m', 'no sleep wired -> "now"; no budget -> no "/N"');
 A.eq(waitNoteText(run([['agent.waiting', { phase: 'retry_backoff', sinceMs: 30000, model: 'm' }]])),
-  'retry backoff, 30s so far — m', 'a backoff beat with no retry seen (e.g. after a reload) claims only what it says');
-A.eq(waitNoteText(run([['agent.waiting', { phase: 'first_byte', sinceMs: 15000 }]])), 'waiting for 15s on the model', 'no model named -> "the model"');
-A.eq(waitNoteText(run([['agent.waiting', { phase: 'connect', sinceMs: 15000, model: 'm' }]])), 'connecting for 15s to m', 'connect phase');
+  'reintento en retroceso, 30s hasta ahora — m', 'a backoff beat with no retry seen (e.g. after a reload) claims only what it says');
+A.eq(waitNoteText(run([['agent.waiting', { phase: 'first_byte', sinceMs: 15000 }]])), 'esperando 15s a el modelo', 'no model named -> "the model"');
+A.eq(waitNoteText(run([['agent.waiting', { phase: 'connect', sinceMs: 15000, model: 'm' }]])), 'conectando 15s a m', 'connect phase');
 A.eq(waitNoteText(null), '', 'no note -> empty line (the slot hides)');
 /* #99: a local Ollama withholds its headers until the first token; the sidecar's beat names where /api/ps says the model
    sits. The line shows exactly that note after the duration, the model still last; a later beat without one drops it. */
 {
   const note = '~27k-token prompt · Ollama has it 45% on GPU, 55% on CPU at a 32k window';
   let n = foldWaitNote(null, 'agent.waiting', { runId: 'r', phase: 'connect', sinceMs: 95000, model: 'aide-qwen3-8b:latest', note });
-  A.eq(waitNoteText(n), 'waiting for 1:35 · ' + note + ' — aide-qwen3-8b:latest', 'the note follows the duration; the model trails');
+  A.eq(waitNoteText(n), 'esperando 1:35 · ' + note + ' — aide-qwen3-8b:latest', 'the note follows the duration; the model trails');
   n = foldWaitNote(n, 'agent.waiting', { runId: 'r', phase: 'streaming', sinceMs: 110000, model: 'aide-qwen3-8b:latest' });
-  A.eq(waitNoteText(n), 'waiting for 1:50 (stream open) on aide-qwen3-8b:latest', 'a beat without a note shows none (never carried over)');
+  A.eq(waitNoteText(n), 'esperando 1:50 (flujo abierto) a aide-qwen3-8b:latest', 'a beat without a note shows none (never carried over)');
   A.eq(foldWaitNote(null, 'agent.waiting', { phase: 'connect', sinceMs: 1, note: 'n'.repeat(500) }).note.length, 240, 'the note is bounded');
 }
 const longModel = 'x'.repeat(80);
@@ -71,10 +71,10 @@ A.ok(waitNoteText(run([['agent.waiting', { phase: 'first_byte', sinceMs: 15000, 
 /* FACTS FIRST (live browser proof 2026-09-24: the 520 px panel clipped every retry reason; 300 px showed only the model).
    Every line with numbers leads with them and ends on the model; no line ends in the clip-lookalike "…". */
 for (const [evs, lead] of [
-  [[['provider.retry', { attempt: 3, maxAttempts: 6, reason: 'overloaded', delayMs: 30000, model: 'anthropic/claude-sonnet-4.6' }]], 'retry 3/6 in 30s (overloaded)'],
-  [[['agent.waiting', { phase: 'first_byte', sinceMs: 35000, model: 'anthropic/claude-sonnet-4.6' }]], 'waiting for 35s'],
-  [[['agent.waiting', { phase: 'connect', sinceMs: 15000, model: 'anthropic/claude-sonnet-4.6' }]], 'connecting for 15s'],
-  [[['agent.waiting', { phase: 'retry_backoff', sinceMs: 30000, model: 'anthropic/claude-sonnet-4.6' }]], 'retry backoff, 30s so far']
+  [[['provider.retry', { attempt: 3, maxAttempts: 6, reason: 'overloaded', delayMs: 30000, model: 'anthropic/claude-sonnet-4.6' }]], 'reintento 3/6 en 30s (sobrecarga)'],
+  [[['agent.waiting', { phase: 'first_byte', sinceMs: 35000, model: 'anthropic/claude-sonnet-4.6' }]], 'esperando 35s'],
+  [[['agent.waiting', { phase: 'connect', sinceMs: 15000, model: 'anthropic/claude-sonnet-4.6' }]], 'conectando 15s'],
+  [[['agent.waiting', { phase: 'retry_backoff', sinceMs: 30000, model: 'anthropic/claude-sonnet-4.6' }]], 'reintento en retroceso, 30s hasta ahora']
 ]) {
   const line = waitNoteText(run(evs));
   A.ok(line.startsWith(lead) && line.endsWith(' claude-sonnet-4.6') && !line.includes('anthropic/'), 'facts lead, the bare model id trails: ' + line);
@@ -93,7 +93,7 @@ A.ok(/paintToolLine\(tool, t, presenceCurTool \? null : presenceWaitNote\(\)\)/.
   'the model id is drawn as one .cp-model token (never broken at a hyphen); a tool name stays plain text');
 A.eq(lib.waitModelLabel({ model: 'meta-llama/llama-3.3-70b' }), 'llama-3.3-70b', 'vendor path dropped');
 A.eq(lib.waitModelLabel({ model: 'qwen3:8b' }), 'qwen3:8b', 'a bare id is kept as is');
-A.eq(lib.waitModelLabel({}), 'the model', 'no model -> "the model"');
+A.eq(lib.waitModelLabel({}), 'el modelo', 'no model -> "el modelo"');
 const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'css', 'comms.css'), 'utf8');
 A.ok(/#comms-presence \.cp-tool\.wait-note\s*\{[^}]*white-space:\s*normal/.test(css), 'comms.css: the wait line wraps instead of clipping its numbers');
 A.ok(/\.cp-tool\.wait-note \.cp-model\s*\{[^}]*white-space:\s*nowrap[^}]*\}/.test(css) || /\.cp-tool\.wait-note \.cp-model\s*\{[\s\S]*?white-space:\s*nowrap/.test(css), 'comms.css: the model token never breaks mid-id');

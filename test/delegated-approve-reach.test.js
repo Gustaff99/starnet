@@ -138,7 +138,7 @@ const flush = () => new Promise(r => setTimeout(r, 0));
   A.ok(!!err && !/try again/i.test(err.message) && /no longer waiting/i.test(err.message), 'in words that never ask for a retry: ' + (err && err.message));
   A.eq(emitted, ['POST:lead1:p9:once'], 'it was sent to the ask\'s own run, and no decision is announced on the bus for it');
   A.eq(Channels.pendingAllOf('ws_lead').map(x => x.promptId), ['p10'], 'this page lets go of exactly that ask (a sibling still waits)');
-  A.eq(retired, ['p9:■ no longer waiting on you'], 'its card (if one is drawn) retires in neutral words');
+  A.eq(retired, ['p9:■ ya no espera tu respuesta'], 'its card (if one is drawn) retires in neutral words');
   A.ok(rerendered.includes('delegated') && rerendered.includes('needs'), 'the worker\'s row and NEEDS YOU repaint for it');
   A.eq(settled.length, 0, 'the conversation\'s bell entry stays while a sibling ask still waits');
 

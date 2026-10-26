@@ -102,7 +102,7 @@ A.ok(/Friendly\.stopLine\(endReason/.test(chat), 'COMMS routes its stop lines th
 // threads-backend-03: the stop line hears how many tool calls this run made, so an "empty" end after real steps is
 // never told "nothing was done" (callNames is the run's own callId -> tool map that onToolCall fills)
 A.ok(/Friendly\.stopLine\(endReason, \{[^}]*toolsRan: Object\.keys\(callNames\)\.length/.test(chat), 'COMMS passes the run\'s tool-call count to its stop line');
-A.ok(/stopActive\('esc'\)/.test(chat) && /■ STOPPED BY YOU \(ESC\)/.test(chat), 'Esc stops say STOPPED BY YOU (ESC) on the card');
+A.ok(/stopActive\('esc'\)/.test(chat) && /■ DETENIDA POR TI \(ESC\)/.test(chat), 'Esc stops say STOPPED BY YOU (ESC) on the card');
 
 // the ⚠ row keeps the real reason (unknown verdicts carry their raw text) …
 {

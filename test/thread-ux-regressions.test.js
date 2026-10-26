@@ -222,14 +222,14 @@ test('spoken delegated approvals await confirmed exact-prompt settlement and pre
   const drain=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
   assert.equal(c.approvalCommand('approve'),true);assert.equal(c.approvalCommand('approve'),true);await drain();
   assert.equal(calls,1);assert.deepEqual(Channels.pendingAllOf(ws.id).map(p=>p.promptId),['voice-mira','voice-rook']);
-  assert.equal(events.length,0);assert.equal(spoken.some(t=>/^Approved/.test(t)),false);assert.match(spoken[0],/could not submit/);
+  assert.equal(events.length,0);assert.equal(spoken.some(t=>/^Aprobada/.test(t)),false);assert.match(spoken[0],/No pude enviar esa respuesta/);
   let confirm;reply=new Promise(resolve=>{confirm=resolve;});spoken.length=0;
   c.approvalCommand('always allow');await drain();assert.equal(spoken.length,0);assert.equal(Channels.pendingAllOf(ws.id).length,2);
   confirm({ok:true,decision:'always'});await drain();
-  assert.deepEqual(Channels.pendingAllOf(ws.id).map(p=>p.promptId),['voice-mira']);assert.deepEqual(spoken,['Always allowed.']);
+  assert.deepEqual(Channels.pendingAllOf(ws.id).map(p=>p.promptId),['voice-mira']);assert.deepEqual(spoken,['Permiso permanente.']);
   assert.deepEqual(events,[['permission.response','voice-rook']]);
   reply={ok:true,decision:'deny'};c.approvalCommand('approve');await drain();
-  assert.equal(Channels.pendingAllOf(ws.id).length,0);assert.equal(spoken.at(-1),'Denied.','say the decision the station applied');
+  assert.equal(Channels.pendingAllOf(ws.id).length,0);assert.equal(spoken.at(-1),'Denegada.','say the decision the station applied');
   Channels.setPending(ws.id,{promptId:'question',tool:'brief.ask'});const before=calls;
   assert.equal(c.approvalCommand('approve'),false);assert.equal(calls,before,'a question is never answered as a tool approval');
   Channels.clearPending(ws.id,Date.now(),'question');Channels.setPending(ws.id,{promptId:'late',tool:'fs.write'});
@@ -241,7 +241,7 @@ test('spoken delegated approvals await confirmed exact-prompt settlement and pre
   c.boundWsId=ws.id;Channels.setPending(ws.id,{promptId:'remote-wins',tool:'fs.write'});let reject;
   reply=new Promise((_resolve,no)=>{reject=no;});c.approvalCommand('approve');await drain();
   Channels.clearPending(ws.id,Date.now(),'remote-wins');reject(new Error('local network failed'));await drain();
-  assert.deepEqual(spoken,['That approval is no longer waiting.'],'a failed local request on a remotely handled prompt says so, never that it still waits (review app-shell-ui-08)');
+  assert.deepEqual(spoken,['Esa aprobación ya no está esperando.'],'a failed local request on a remotely handled prompt says so, never that it still waits (review app-shell-ui-08)');
 });
 
 test('COMMS prose resolves files where the speaking run wrote them (review comms-threads-ui-03)',()=>{

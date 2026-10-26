@@ -444,9 +444,10 @@ const Chat = (() => {
   function waitModelLabel(n) {
     const model = String((n && n.model) || '').trim();
     const bare = model.slice(model.lastIndexOf('/') + 1) || model;
-    return bare ? (bare.length > 48 ? bare.slice(0, 47) + '…' : bare) : 'the model';
+    return bare ? (bare.length > 48 ? bare.slice(0, 47) + '…' : bare) : 'el modelo';
   }
   function waitNoteText(n) {
+    const WAIT_REASONS_ES = { overloaded: 'sobrecarga', server_error: 'error del servidor', timeout: 'tiempo agotado' };
     if (!n) return '';
     const name = waitModelLabel(n);
     const since = Math.max(0, Number(n.sinceMs) || 0);
@@ -455,15 +456,16 @@ const Chat = (() => {
       // "in Ns" rounds UP: a 400 ms rung reads "in 1s", never "in 0s"
       const left = Math.max(0, (Number(r.delayMs) || 0) - since);
       const of = Number(r.maxAttempts) > 0 ? '/' + r.maxAttempts : '';
-      const why = String(r.reason || '').replace(/_/g, ' ').trim();
-      return 'retry ' + r.attempt + of + (left > 0 ? ' in ' + fmtElapsed(Math.ceil(left / 1000) * 1000) : ' now') + (why ? ' (' + why + ')' : '') + ' — ' + name;
+      const whyRaw = String(r.reason || '').trim();
+      const why = WAIT_REASONS_ES[whyRaw] || whyRaw.replace(/_/g, ' ');
+      return 'reintento ' + r.attempt + of + (left > 0 ? ' en ' + fmtElapsed(Math.ceil(left / 1000) * 1000) : ' ahora') + (why ? ' (' + why + ')' : '') + ' — ' + name;
     }
-    if (n.phase === 'retry_backoff') return 'retry backoff' + (since >= 1000 ? ', ' + fmtElapsed(since) + ' so far' : '') + ' — ' + name;
-    const dur = since >= 1000 ? ' for ' + fmtElapsed(since) : '';
+    if (n.phase === 'retry_backoff') return 'reintento en retroceso' + (since >= 1000 ? ', ' + fmtElapsed(since) + ' hasta ahora' : '') + ' — ' + name;
+    const dur = since >= 1000 ? ' ' + fmtElapsed(since) : '';
     // the sidecar's facts about the wait (#99, a local Ollama: prompt size, GPU/CPU share, window) follow the duration
-    if (n.note) return 'waiting' + dur + ' · ' + n.note + ' — ' + name;
-    if (n.phase === 'connect') return 'connecting' + dur + ' to ' + name;   // (the model id is always LAST: renderPresence splits it off)
-    return 'waiting' + dur + (n.phase === 'streaming' ? ' (stream open)' : '') + ' on ' + name;
+    if (n.note) return 'esperando' + dur + ' · ' + n.note + ' — ' + name;
+    if (n.phase === 'connect') return 'conectando' + dur + ' a ' + name;   // (the model id is always LAST: renderPresence splits it off)
+    return 'esperando' + dur + (n.phase === 'streaming' ? ' (flujo abierto)' : '') + ' a ' + name;
   }
   // the model id closes every wait line as ONE token (.cp-model): it wraps whole and clips only itself, never mid-id
   function paintToolLine(tool, t, note) {
@@ -481,10 +483,10 @@ const Chat = (() => {
      on the agent's own model — say so ONCE per model+reason, in the stream it happened in, from the sidecar's own
      agent.run.start voiceRoute (never inferred here). A turn the voice model answered needs no line: its receipt
      already names the model that answered. PURE text builder, test-locked in test/voice-chat-route.test.js. */
-  const VOICE_ROUTE_REASONS = { not_configured: 'its provider is not connected', too_large: 'this conversation is larger than its context window' };
+  const VOICE_ROUTE_REASONS = { not_configured: 'su proveedor no está conectado', too_large: 'esta conversación es mayor que su ventana de contexto' };
   function voiceRouteNoticeText(vr) {
     if (!vr || vr.used || !vr.reason || !VOICE_ROUTE_REASONS[vr.reason] || !vr.wanted || !vr.wanted.model) return '';
-    return 'VOICE MODEL ' + vr.wanted.model + ' not used — ' + VOICE_ROUTE_REASONS[vr.reason] + '; spoken replies use ' + (vr.model || 'the agent’s model');
+    return 'MODELO DE VOZ ' + vr.wanted.model + ' no usado — ' + VOICE_ROUTE_REASONS[vr.reason] + '; las respuestas habladas usan ' + (vr.model || 'el modelo del agente');
   }
   const voiceRouteNoticed = new Set();
   let voiceRouteWired = false;
@@ -556,8 +558,8 @@ const Chat = (() => {
     card.classList.add('resolved'); if (isErr) card.classList.add('err'); else if (isStop) card.classList.add('stopped');
     // WHO stopped it (2026-10-11): the Commander's own Stop/Esc says so on the card — a bare "RUN STOPPED" after Esc
     // read as the run quitting on its own. opts.stoppedBy: 'esc' | 'you' (stopActive's record); absent = not proven.
-    const byYou = opts.stoppedBy === 'esc' ? '■ STOPPED BY YOU (ESC)' : opts.stoppedBy === 'you' ? '■ STOPPED BY YOU' : '';
-    let label = isErr ? '■ RUN FAILED' : needsVerify ? '■ VERIFICATION REQUIRED' : opts.cutShort ? '■ CUT SHORT' : (isStop && byYou) ? byYou : isStop ? '■ RUN STOPPED' : '■ RUN COMPLETE';
+    const byYou = opts.stoppedBy === 'esc' ? '■ DETENIDA POR TI (ESC)' : opts.stoppedBy === 'you' ? '■ DETENIDA POR TI' : '';
+    let label = isErr ? '■ EJECUCIÓN FALLIDA' : needsVerify ? '■ VERIFICACIÓN REQUERIDA' : opts.cutShort ? '■ RECORTADA' : (isStop && byYou) ? byYou : isStop ? '■ EJECUCIÓN DETENIDA' : '■ EJECUCIÓN COMPLETA';
     const bits = [];
     if (dur) bits.push(dur);
     if (typeof opts.steps === 'number' && opts.steps > 0) bits.push(opts.steps + (opts.steps === 1 ? ' step' : ' steps'));
@@ -3813,7 +3815,7 @@ const Chat = (() => {
       const bits = [];
       if (honest > 0) {
         bits.push(fmtMs(honest));
-        if (wall - honest > 1500) bits.push(fmtMs(wall - honest) + ' waiting on you');
+        if (wall - honest > 1500) bits.push(fmtMs(wall - honest) + ' esperándote');
       } else if (wall > 0) bits.push(fmtMs(wall));
       bits.push(leadCalls + ' tool ' + (leadCalls === 1 ? 'call' : 'calls'));   // the LEAD's tool calls (runCallCount = toolTrace) — not model calls
       if (children.length) bits.push(workerCalls + ' worker ' + (workerCalls === 1 ? 'call' : 'calls'));
@@ -4418,14 +4420,14 @@ const Chat = (() => {
     const byTool = askedTools.get(ws.id) || new Map(); askedTools.set(ws.id, byTool);
     const ids = byTool.get(tool) || new Set(); byTool.set(tool, ids);
     ids.add(String(p.promptId)); if (ids.size > 20) ids.delete(ids.values().next().value);
-    return ids.size > 1 ? 'Siempre dejará de preguntar por ' + toolWordsOf(tool) + ' from now on' : '';
+    return ids.size > 1 ? 'Siempre dejará de preguntar por ' + toolWordsOf(tool) + ' de ahora en adelante' : '';
   }
   function retireOpenConsents(wsId, runId) {
     for (const [id, c] of openConsentCards) {
       if (c.wsId !== wsId || c.background) continue;
       // a delegated worker's ask can outlive its lead's run — only this run's own cards (or unattributed lead cards) retire
       if (c.runId ? c.runId !== runId : c.worker) continue;
-      retireConsentCard(id, '■ the run ended before an answer — nothing was approved');
+      retireConsentCard(id, '■ la ejecución terminó antes de la respuesta — nada se aprobó');
     }
     for (const [id, a] of askAnswerers) if (a.wsId === wsId) askAnswerers.delete(id);   // its questions are gone with it
   }
@@ -4450,7 +4452,7 @@ const Chat = (() => {
         if (typeof Workstreams !== 'undefined' && Workstreams.get && isActiveWs(Workstreams.get(wsId))) renderPresence();
       }
     }
-    retireConsentCard(id, '■ no longer waiting on you');
+    retireConsentCard(id, '■ ya no espera tu respuesta');
     if (typeof Delegated !== 'undefined' && Delegated.repaint) Delegated.repaint();
     if (typeof NeedsYou !== 'undefined' && NeedsYou.render) NeedsYou.render();
     try { if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } catch (e) { console.warn('[comms] rail refresh after a gone ask failed', e); }
@@ -4489,8 +4491,8 @@ const Chat = (() => {
       }
       submitting = false; decided = true;
       if (received && applyElsewhere) applyElsewhere(received);
-      if (decision === 'full' && !res.fullSaved) { doneLabel = '✕ full access was not saved'; isDeny = true; }
-      else if (decision !== 'full' && res.appliedDecision === 'deny' && decision !== 'deny') { doneLabel = '✕ approval was not applied'; isDeny = true; }
+      if (decision === 'full' && !res.fullSaved) { doneLabel = '✕ el acceso total no se guardó'; isDeny = true; }
+      else if (decision !== 'full' && res.appliedDecision === 'deny' && decision !== 'deny') { doneLabel = '✕ la aprobación no se aplicó'; isDeny = true; }
       btns.remove(); keepFocus(r.d); releaseCard(r.d);
       const tag = document.createElement('span');
       tag.className = 'consent-result' + (isDeny ? ' err' : '');
@@ -4575,7 +4577,7 @@ const Chat = (() => {
     // a blocking, run-pausing prompt: make it keyboard-operable. Esc on the focused CONTAINER = Deny (the row,
     // not a button — so a reflexive Enter never lands on Approve and greenlights a write the user didn't read).
     r.d.tabIndex = -1;
-    r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); decide('deny', '✕ denied', true); } });
+    r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); decide('deny', '✕ denegada', true); } });
     status('esperando tu aprobación…');
     const asker = (p && p.workerAgentId) ? askerName(p, ws) : name;   // a delegated worker's ask names the worker
     // ONE APPROVAL, ONE PLACE YOU ARE LOOKING (live walkthrough 2026-10-13: one file write was announced in 7 places). The
@@ -4694,7 +4696,7 @@ const Chat = (() => {
       if (!p || p.background !== true || open.has(String(p.promptId)) || !asOf || !(Number(p.askedAt) < asOf - 5000)) continue;
       Channels.clearPending(wsId, Date.now(), p.promptId);
       settlePromptNotice(wsId, p.promptId);
-      retireConsentCard(p.promptId, '■ no longer waiting on you');
+      retireConsentCard(p.promptId, '■ ya no espera tu respuesta');
       withdrawn++;
     }
     if (!withdrawn && !filedLate) return;
@@ -6741,7 +6743,7 @@ const Chat = (() => {
         let choice = heard === NOT_NOW ? NOT_NOW : await unlessLeft(Dialogue.node({
           lines: linesOf(path),
           options: [ { label: 'confirmar la ruta', value: 'confirm' }, { label: 'ahora no', value: 'other', skip: true } ],
-          allowCustom: true, customLabel: 'edit the milestones', customPlaceholder: 'your milestones, separated by ; …'   // Dialogue draws the ✎ itself (it read "✎✎")
+          allowCustom: true, customLabel: 'editar los hitos', customPlaceholder: 'tus hitos, separados por ; …'   // Dialogue draws the ✎ itself (it read "✎✎")
         }));
         if (choice === STEPPED_ASIDE) return opened;   // unanswered: no confirm, no decline, no learning signal
         if (choice === NOT_NOW) choice = { value: 'other', label: 'ahora no', skip: true };   // Esc = the panel's own NOT NOW key

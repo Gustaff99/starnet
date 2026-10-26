@@ -2,10 +2,13 @@
   "results": {
     "test/voice-live-ui.test.js": {
       "exitCode": 0,
-      "seconds": 0.052,
-      "sha256": "932da88f88350a87d10927acf6081cc8cfa0823cdf93536c68e1dad8036da582",
-      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
-      "log": "validation-logs/6a7dd1d302998426.log"
+      "seconds": 0.053,
+      "sha256": "62357825f1ada2f590b2f641478895d7b1a8846167b8db6aadbfe7e4ac938331",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/6a7dd1d302998426-1793035449533588963.log",
+      "purpose": "final",
+      "retryReason": null
     },
     "test/workflows-window.test.js": {
       "exitCode": 0,
@@ -44,10 +47,13 @@
     },
     "test/ask-cards-readable.test.js": {
       "exitCode": 0,
-      "seconds": 0.057,
-      "sha256": "3acd48ab8635f25f3acb8a643c68c48e630ab473a34363d24dd17bce384efb22",
-      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
-      "log": "validation-logs/49a15af16d7648cf.log"
+      "seconds": 0.058,
+      "sha256": "5985a235c1f2e6d40fd5604a5914ca1c0e3ed60392119961b38772ae7b8d8fe1",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/49a15af16d7648cf-1793035455768243822.log",
+      "purpose": "final",
+      "retryReason": null
     },
     "test/session-indicators.test.js": {
       "exitCode": 0,
@@ -69,6 +75,420 @@
       "sha256": "84e1481da16b582ca8bdd1030597c1847a0b89ce0bc767c83ce5038c64fb26aa",
       "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
       "log": "validation-logs/90106d4630d1d207.log"
+    },
+    "test/browser-chip-wait.test.js": {
+      "exitCode": 0,
+      "seconds": 0.033,
+      "sha256": "7cab5de5e67d8c0780c4aadc677cfed6ba0afc86f50c446dc95d60b557d46407",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/1fad8d608f88bc42-1793035449429427573.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/comms-render-seams.test.js": {
+      "exitCode": 0,
+      "seconds": 0.12,
+      "sha256": "2287e06e63e288e428cbd75d4aa20f58f77a0038a6aaa5bbf9ddb81e43fdc1fb",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/47bb70c0e72557b7-1793035449655028416.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/comms-presence.test.js": {
+      "exitCode": 0,
+      "seconds": 0.043,
+      "sha256": "90c851934f47effce27e093313e3705689698d9cf6a0a23ce5ca41bbfd873266",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/3df87d11d96c0ca4-1793035449698995570.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/notifications-useful.test.js": {
+      "exitCode": 0,
+      "seconds": 0.05,
+      "sha256": "96bb335f80d2b96434bc458db85bdeb17a059f2ffa5177b51a5acc9afe09a8be",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/46dc3fd169d53118-1793035449480162920.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/comms-wait-line.test.js": {
+      "exitCode": 0,
+      "seconds": 0.037,
+      "sha256": "f12913034f0236557e9e4d1c57e88734020110b88b1e4ea1886ff39fa2ce67bc",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/d2a3519a2fb2eed2-1793035452631801530.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/voice-chat-route.test.js": {
+      "exitCode": 0,
+      "seconds": 0.043,
+      "sha256": "c12fea1dc7c92270436c6de0ce3a33740c7f946a876dfe2bc65c97d0a967bde2",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/c41052e457c3b32c-1793035452675444777.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/stop-reason.test.js": {
+      "exitCode": 0,
+      "seconds": 0.069,
+      "sha256": "3688ca8a69a6b64080ac7104cda62325eb56db49ccac37de33811931330cd0c9",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/290015db2aff451c-1793035452744821533.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/task-postconditions-ui.test.js": {
+      "exitCode": 0,
+      "seconds": 0.039,
+      "sha256": "a32114d8867cf8493d7f6169108e22d6ea679348870f691f7ef5ee128dbbf343",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/b04c07c9af7ace34-1793035452784431536.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/delegated-approve-reach.test.js": {
+      "exitCode": 0,
+      "seconds": 0.055,
+      "sha256": "80d06738aecd58a92309f7734b2536d7e8d596b3d57591f0cb448d2abf812a97",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/ecc1747baed875a7-1793035452840799476.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/thread-ux-regressions.test.js": {
+      "exitCode": 0,
+      "seconds": 0.127,
+      "sha256": "19106a7b01537052dcebe2bdb4e57a30f13ce2470dd31c330187c1c2b81b2ace",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/161f54e7136dee25-1793035455896092825.log",
+      "purpose": "final",
+      "retryReason": null
+    },
+    "test/dialogue-offer-yields.test.js": {
+      "exitCode": 0,
+      "seconds": 0.062,
+      "sha256": "727d20c3652b1628650595e6ea5582adcea60897310f17bcae35b2d5e52e210a",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/d4c0a0cf1df91e4c-1793035455959692828.log",
+      "purpose": "final",
+      "retryReason": null
     }
-  }
+  },
+  "history": [
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 0,
+      "seconds": 0.052,
+      "sha256": "932da88f88350a87d10927acf6081cc8cfa0823cdf93536c68e1dad8036da582",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/6a7dd1d302998426.log"
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.039,
+      "sha256": "c81e5e88d8a333a104ec898376982e7539b072bf50b7f74d2adf8f760cad06c8",
+      "sourceSha256": "5d952347c21f23e30ab04236b321dbf6dc3c28e224dd30a3ef47c615343a3436",
+      "inputsSha256": "2c379820b62354cbf70116cf52bf600921554f513d6a87f1f46ef1797e5de07a",
+      "log": "validation-logs/6a7dd1d302998426-1793032265041369673.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.038,
+      "sha256": "6a221f67d0004ce9d81769c296b0a883ae1d4f18819185212f6ccb510ea40084",
+      "sourceSha256": "978098fd0e38b596f6c178045b35c22d757d2b2d725cd97370f74e0efb5f922c",
+      "inputsSha256": "f3b51a7f05fb83cc686507c0b489d2544c1340faffd08afd359b60aff64e0328",
+      "log": "validation-logs/6a7dd1d302998426-1793032317525955645.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.042,
+      "sha256": "2001d67520aaaccd0daf003ad8c6464307c3b16852a05860c281a6e47cca6c21",
+      "sourceSha256": "978098fd0e38b596f6c178045b35c22d757d2b2d725cd97370f74e0efb5f922c",
+      "inputsSha256": "acfbe2208f0276789c806c3c211114d0aa8d582f2459963487e1f2dc3ef12aa2",
+      "log": "validation-logs/6a7dd1d302998426-1793032366771577675.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.044,
+      "sha256": "ced1e34e5d0b2b0a2ae86358bce8424e3cd18662ec1d735085a938d79339a92d",
+      "sourceSha256": "978098fd0e38b596f6c178045b35c22d757d2b2d725cd97370f74e0efb5f922c",
+      "inputsSha256": "acfbe2208f0276789c806c3c211114d0aa8d582f2459963487e1f2dc3ef12aa2",
+      "log": "validation-logs/6a7dd1d302998426-1793032378862958381.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.049,
+      "sha256": "38249b731650e48d748e2860ee74c50aa66656a5b1597a2978d3c31e95cb084f",
+      "sourceSha256": "544909e85e40f9ff7953893f75a2e3bc15e3f829a839f7975b2b699dc5906bef",
+      "inputsSha256": "70752fc543ef0355d3be4ba34fb8ff68a4c0ac1b1e37febfbe5cb6b909f096db",
+      "log": "validation-logs/6a7dd1d302998426-1793033009699775005.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.058,
+      "sha256": "7c178ca8370fba18557ef84b517b6df70515785fe8a2848613e0141ea778e710",
+      "sourceSha256": "544909e85e40f9ff7953893f75a2e3bc15e3f829a839f7975b2b699dc5906bef",
+      "inputsSha256": "70752fc543ef0355d3be4ba34fb8ff68a4c0ac1b1e37febfbe5cb6b909f096db",
+      "log": "validation-logs/6a7dd1d302998426-1793033055781486476.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 0,
+      "seconds": 0.059,
+      "sha256": "6c534db240323b144aa5318cb4d80e639aee208c47ddaa363add59e62a8f3b4f",
+      "sourceSha256": "544909e85e40f9ff7953893f75a2e3bc15e3f829a839f7975b2b699dc5906bef",
+      "inputsSha256": "70752fc543ef0355d3be4ba34fb8ff68a4c0ac1b1e37febfbe5cb6b909f096db",
+      "log": "validation-logs/6a7dd1d302998426-1793033083066516722.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 1,
+      "seconds": 0.044,
+      "sha256": "6c534db240323b144aa5318cb4d80e639aee208c47ddaa363add59e62a8f3b4f",
+      "sourceSha256": "2d72e8c94060358ebf4d38b2e26f2b0f489d69bcdbead91eddefef909a23df69",
+      "inputsSha256": "a440323adec114038db8929d47588a43eaae443360e3401c7a83a4ee6b38c0f1",
+      "log": "validation-logs/6a7dd1d302998426-1793034270923889096.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/comms-render-seams.test.js",
+      "exitCode": 1,
+      "seconds": 0.115,
+      "sha256": "00e80983b6c01e3fa1d09d738753d854a8e6847cbfa15fafb6a180785bc59172",
+      "sourceSha256": "2d72e8c94060358ebf4d38b2e26f2b0f489d69bcdbead91eddefef909a23df69",
+      "inputsSha256": "a440323adec114038db8929d47588a43eaae443360e3401c7a83a4ee6b38c0f1",
+      "log": "validation-logs/47bb70c0e72557b7-1793034271072208247.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/comms-presence.test.js",
+      "exitCode": 1,
+      "seconds": 0.047,
+      "sha256": "90c851934f47effce27e093313e3705689698d9cf6a0a23ce5ca41bbfd873266",
+      "sourceSha256": "2d72e8c94060358ebf4d38b2e26f2b0f489d69bcdbead91eddefef909a23df69",
+      "inputsSha256": "a440323adec114038db8929d47588a43eaae443360e3401c7a83a4ee6b38c0f1",
+      "log": "validation-logs/3df87d11d96c0ca4-1793034271120148843.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/delegated-approve-reach.test.js",
+      "exitCode": 1,
+      "seconds": 0.053,
+      "sha256": "c24e83669892b3768d6faa13cece5dfbcf5b7e4457b8829b41fe93661f9efdf3",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/ecc1747baed875a7-1793035158027120551.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/ask-cards-readable.test.js",
+      "exitCode": 0,
+      "seconds": 0.057,
+      "sha256": "3acd48ab8635f25f3acb8a643c68c48e630ab473a34363d24dd17bce384efb22",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/49a15af16d7648cf.log"
+    },
+    {
+      "test": "test/ask-cards-readable.test.js",
+      "exitCode": 1,
+      "seconds": 0.059,
+      "sha256": "878441fb12e74fc30497a554d2e28f9d55f9226ccd9d7c858d9c48f0ae492cec",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/49a15af16d7648cf-1793035166970928972.log",
+      "purpose": "targeted",
+      "retryReason": "L141 actualizada a la cadena ES real de retireConsentCard"
+    },
+    {
+      "test": "test/thread-ux-regressions.test.js",
+      "exitCode": 1,
+      "seconds": 0.126,
+      "sha256": "c2af57d643f631f09b25bfb067e929c49a367a08a4b0e560ecca529c4d494d5f",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/161f54e7136dee25-1793035167097526969.log",
+      "purpose": "targeted",
+      "retryReason": "L141 actualizada a la cadena ES real de retireConsentCard"
+    },
+    {
+      "test": "test/browser-chip-wait.test.js",
+      "exitCode": 0,
+      "seconds": 0.032,
+      "sha256": "7cab5de5e67d8c0780c4aadc677cfed6ba0afc86f50c446dc95d60b557d46407",
+      "sourceSha256": "2d72e8c94060358ebf4d38b2e26f2b0f489d69bcdbead91eddefef909a23df69",
+      "inputsSha256": "a440323adec114038db8929d47588a43eaae443360e3401c7a83a4ee6b38c0f1",
+      "log": "validation-logs/1fad8d608f88bc42-1793034270956666726.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/notifications-useful.test.js",
+      "exitCode": 0,
+      "seconds": 0.048,
+      "sha256": "96bb335f80d2b96434bc458db85bdeb17a059f2ffa5177b51a5acc9afe09a8be",
+      "sourceSha256": "2d72e8c94060358ebf4d38b2e26f2b0f489d69bcdbead91eddefef909a23df69",
+      "inputsSha256": "a440323adec114038db8929d47588a43eaae443360e3401c7a83a4ee6b38c0f1",
+      "log": "validation-logs/46dc3fd169d53118-1793034271168585329.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-live-ui.test.js",
+      "exitCode": 0,
+      "seconds": 0.054,
+      "sha256": "62357825f1ada2f590b2f641478895d7b1a8846167b8db6aadbfe7e4ac938331",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/6a7dd1d302998426-1793035152444905790.log",
+      "purpose": "targeted",
+      "retryReason": "correcciones 5g aplicadas: 5 documentadas + etiquetas tarjeta + linea espera + voz + consentimiento"
+    },
+    {
+      "test": "test/comms-render-seams.test.js",
+      "exitCode": 0,
+      "seconds": 0.116,
+      "sha256": "2287e06e63e288e428cbd75d4aa20f58f77a0038a6aaa5bbf9ddb81e43fdc1fb",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/47bb70c0e72557b7-1793035152561338884.log",
+      "purpose": "targeted",
+      "retryReason": "correcciones 5g aplicadas: 5 documentadas + etiquetas tarjeta + linea espera + voz + consentimiento"
+    },
+    {
+      "test": "test/comms-presence.test.js",
+      "exitCode": 0,
+      "seconds": 0.042,
+      "sha256": "90c851934f47effce27e093313e3705689698d9cf6a0a23ce5ca41bbfd873266",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/3df87d11d96c0ca4-1793035152604359513.log",
+      "purpose": "targeted",
+      "retryReason": "correcciones 5g aplicadas: 5 documentadas + etiquetas tarjeta + linea espera + voz + consentimiento"
+    },
+    {
+      "test": "test/comms-wait-line.test.js",
+      "exitCode": 0,
+      "seconds": 0.039,
+      "sha256": "f12913034f0236557e9e4d1c57e88734020110b88b1e4ea1886ff39fa2ce67bc",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/d2a3519a2fb2eed2-1793035157834814518.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/voice-chat-route.test.js",
+      "exitCode": 0,
+      "seconds": 0.043,
+      "sha256": "c12fea1dc7c92270436c6de0ce3a33740c7f946a876dfe2bc65c97d0a967bde2",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/c41052e457c3b32c-1793035157878665755.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/stop-reason.test.js",
+      "exitCode": 0,
+      "seconds": 0.06,
+      "sha256": "3688ca8a69a6b64080ac7104cda62325eb56db49ccac37de33811931330cd0c9",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/290015db2aff451c-1793035157939271482.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/task-postconditions-ui.test.js",
+      "exitCode": 0,
+      "seconds": 0.034,
+      "sha256": "a32114d8867cf8493d7f6169108e22d6ea679348870f691f7ef5ee128dbbf343",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/b04c07c9af7ace34-1793035157973714996.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/delegated-approve-reach.test.js",
+      "exitCode": 0,
+      "seconds": 0.053,
+      "sha256": "80d06738aecd58a92309f7734b2536d7e8d596b3d57591f0cb448d2abf812a97",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/ecc1747baed875a7-1793035166911575273.log",
+      "purpose": "targeted",
+      "retryReason": "L141 actualizada a la cadena ES real de retireConsentCard"
+    },
+    {
+      "test": "test/ask-cards-readable.test.js",
+      "exitCode": 0,
+      "seconds": 0.059,
+      "sha256": "5985a235c1f2e6d40fd5604a5914ca1c0e3ed60392119961b38772ae7b8d8fe1",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/49a15af16d7648cf-1793035355489033665.log",
+      "purpose": "targeted",
+      "retryReason": "4 spoken assertions thread-ux + 3 clarify assertions ask-cards actualizadas a las cadenas ES reales de voice-live/chat"
+    },
+    {
+      "test": "test/thread-ux-regressions.test.js",
+      "exitCode": 0,
+      "seconds": 0.123,
+      "sha256": "19106a7b01537052dcebe2bdb4e57a30f13ce2470dd31c330187c1c2b81b2ace",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/161f54e7136dee25-1793035355612616487.log",
+      "purpose": "targeted",
+      "retryReason": "4 spoken assertions thread-ux + 3 clarify assertions ask-cards actualizadas a las cadenas ES reales de voice-live/chat"
+    },
+    {
+      "test": "test/dialogue-offer-yields.test.js",
+      "exitCode": 0,
+      "seconds": 0.057,
+      "sha256": "727d20c3652b1628650595e6ea5582adcea60897310f17bcae35b2d5e52e210a",
+      "sourceSha256": "86c016b2119f441275b499bbc0d80486808affb50ef6f629cc1d86c4fbf9127e",
+      "inputsSha256": "b5cb0fb031524bbc0a8d5cc4f185f95afe4227937203ebc6c8a808804450eef6",
+      "log": "validation-logs/d4c0a0cf1df91e4c-1793035167155459483.log",
+      "purpose": "targeted",
+      "retryReason": "L141 actualizada a la cadena ES real de retireConsentCard"
+    }
+  ]
 }

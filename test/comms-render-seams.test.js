@@ -80,7 +80,7 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
   // the PHONE live view (rc review 2026-10-14: it drew ✕ for a held call): the station sends held, and the phone app draws it
   const host = read('sidecar/remote/host.js'), phone = read('relay/app/app.js');
   A.ok(/const held = TaskIntent\.isGateHeld\(p\);[\s\S]{0,200}ok: held \? null : \(!!p\.ok && !p\.isError\)[\s\S]{0,80}held \? \{ held: true \} : \{\}/.test(host), 'the phone step for a held call carries held and no outcome (an older phone shows it pending, never ✕)');
-  A.ok(/if \(s\) \{ s\.ok = e\.held \? null : e\.ok; if \(e\.held\) s\.held = true; \}/.test(phone) && /if \(s\.held\) d\.appendChild\(el\('b', 'h', '▸'\)\);/.test(phone) && /s\.held \? ' · aún no se ejecuta' : ''/.test(phone), 'the phone draws a held step as a dim ▸ "not run yet"');
+  A.ok(/if \(s\) \{ s\.ok = e\.held \? null : e\.ok; if \(e\.held\) s\.held = true; \}/.test(phone) && /if \(s\.held\) d\.appendChild\(el\('b', 'h', '▸'\)\);/.test(phone) && /s\.held \? ' · not run yet' : ''/.test(phone), 'the phone draws a held step as a dim ▸ "not run yet"');
   A.ok(/\.step b\.h \{ color: var\(--ph-dim\); \}/.test(read('relay/app/app.css')), 'in dim phosphor, not red');
   const css = read('frontend/css/comms.css');
   A.ok(/\.tool-chip\.held \.tc-glyph,\s*\n\.tool-chip\.held \.tc-stat\s*\{ color: var\(--ph-dim\); \}/.test(css), 'the held chip is plain dim phosphor (no red)');
@@ -132,7 +132,7 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
 
   const denied = fold({ isError: true, summary: 'denied', ms: 54 });
   A.eq(denied.cls.join(','), 'denied', 'a denied call draws the neutral .denied chip, never .err');
-  A.eq([denied.glyph, denied.stat], ['▸', 'denied'], 'its glyph is the not-run ▸ and its stat says "denied" (no red ✗, no duration of a failure)');
+  A.eq([denied.glyph, denied.stat], ['▸', 'denegada'], 'its glyph is the not-run ▸ and its stat says "denied" (no red ✗, no duration of a failure)');
   A.eq([denied.res.className, denied.res.textContent], ['tc-d-res denied', 'denegada · sin ejecutar'], 'its detail says it did not run, without the ✗');
   const failed = fold({ isError: true, summary: 'error', ms: 54 });
   A.eq([failed.cls.join(','), failed.glyph, failed.stat, failed.res.className], ['err', '✗', '54ms', 'tc-d-res err'], 'a real failure still draws the red ✗');
@@ -146,7 +146,7 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
     { name: 'fs_write', ms: 54, ok: false, isError: true, summary: 'denied' },
     { name: 'fs_read', ms: 3, ok: false, isError: true, summary: 'error' }] }, 'LEAD', false);
   const lines = wrap.kids.slice(1);
-  A.eq(lines.map(l => l.textContent), ['↳ fs_write · 54ms · denied', '↳ fs_read · 3ms · failed'], 'the run\'s history says "denied" for the Deny and "failed" only for the real error');
+  A.eq(lines.map(l => l.textContent), ['↳ fs_write · 54ms · denegada', '↳ fs_read · 3ms · fallida'], 'the run\'s history says "denied" for the Deny and "failed" only for the real error');
   A.eq(lines.map(l => l.className), ['rt-tool denied', 'rt-tool err'], 'and only the real error is drawn red');
 
   A.ok(/c\.reason === 'denied'\) return errResult\('consent denied for ' \+ call\.name \+ ': the Commander said no on the approval card[^\n]*'denied'\);/.test(read('sidecar/tools/registry.js')), 'the summary it keys on is the consent broker\'s own answer to a Deny on the card');

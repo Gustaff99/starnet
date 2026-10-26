@@ -11,7 +11,7 @@ A.ok(/reqBody\.postconditions\s*=\s*postconditions/.test(harness), 'harness send
 A.ok(/completionVerdict\s*=\s*payload\.completionVerdict/.test(harness), 'harness reads the host completion verdict');
 A.ok(/effectVerdict\s*=\s*payload\.effectVerdict/.test(harness), 'harness reads the host effect verdict');
 A.ok(/completionVerdict\s*!==\s*'completed_verified'/.test(chat), 'explicit contract fails closed unless the host says completed_verified');
-A.ok(/VERIFICATION REQUIRED/.test(chat), 'unproved contracted work has a visible terminal state');
+A.ok(/VERIFICACIÓN REQUERIDA/.test(chat), 'unproved contracted work has a visible terminal state');
 A.ok(/!postconditionUnmet\)\s*wiEmit\('workitem\.delivered'/.test(chat), 'unproved contracted work cannot emit delivery');
 A.ok(/!cutShort\s*&&\s*!taskQuestion\s*&&\s*!postconditionUnmet/.test(chat), 'unproved contracted work cannot become rateable work');
 A.ok(/!postconditionUnmet\s*&&\s*\(!endReason/.test(chat), 'unproved contracted work cannot continue a downstream work line');

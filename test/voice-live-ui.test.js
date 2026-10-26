@@ -105,7 +105,7 @@ function bodyOf(name) {
     'a withheld page\'s 403 carries the withheld notice, never a stale (restarted) session'
   );
   const bare = withHarness({ tokenWithheld: () => 'peer-not-found' })({ ok: false, status: 403 });
-  assert.ok(bare.staleSession === false && /could not confirm this browser/.test(bare.tokenWithheld) && !/restart|reload/i.test(bare.tokenWithheld),
+  assert.ok(bare.staleSession === false && /no pudo confirmar que este navegador/.test(bare.tokenWithheld) && !/restart|reload/i.test(bare.tokenWithheld),
     'an older Harness without the notice still names the check, never a restart: ' + bare.tokenWithheld);
   assert.deepEqual(
     withHarness({ tokenWithheld: () => '' })({ ok: false, status: 403 }),

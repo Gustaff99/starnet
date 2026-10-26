@@ -123,8 +123,8 @@ function planVoiceRoute(input) {
 
 // the words a reason reads as, in the COMMS notice and the run record
 const REASON_TEXT = {
-  not_configured: 'its provider is not connected',
-  too_large: 'this conversation is larger than its context window'
+  not_configured: 'su proveedor no está conectado',
+  too_large: 'esta conversación es mayor que su ventana de contexto'
 };
 function reasonText(reason) { return REASON_TEXT[reason] || ''; }
 
