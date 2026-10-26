@@ -41,7 +41,7 @@ const app = p => fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', p
   const ui = app('stationui.js');
   A.ok(!/style="color:' \+ a\.color \+/.test(ui), 'crew dossier name/rename never concatenates a raw colour');
   A.ok(!/style="color:' \+ x\.color \+/.test(ui), 'agent list dot never concatenates a raw colour');
-  A.ok(/aria-label="Rename agent" style="color:' \+ esc\(a\.color\)/.test(ui), 'rename input escapes the colour');
+  A.ok(/aria-label="Renombrar agente" style="color:' \+ esc\(a\.color\)/.test(ui), 'rename input escapes the colour (aria-label in the ES interface)');
   A.ok(/class="ag-name" style="color:' \+ esc\(a\.color\)/.test(ui), 'dossier name escapes the colour');
   A.ok(/class="ag-item-dot" style="color:' \+ esc\(x\.color\)/.test(ui), 'agent list dot escapes the colour');
   const world = app('world.js');

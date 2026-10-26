@@ -1627,7 +1627,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         (sec.desc ? '<p class="con-sec-desc">' + esc(sec.desc) + '</p>' : '');
       const slot = mkEl('div', 'con-sec-body');
       pane.appendChild(slot);
-      try { sec.build(slot); } catch (e) { slot.innerHTML = '<p class="con-sec-desc">This section failed to render.</p>'; }
+      try { sec.build(slot); } catch (e) { slot.innerHTML = '<p class="con-sec-desc">Esta sección no pudo renderizarse.</p>'; }
       host.appendChild(pane);
       panes[sec.id] = pane;
     });
@@ -1825,7 +1825,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       return;
     }
     ul.innerHTML = present.map((a, i) =>
-      '<li class="crew-row" role="button" tabindex="0" aria-label="' + (present.length > 1 ? 'Mostrar sesiones con ' + esc(a.name || a.id) + '; Shift+F10 for the dossier" aria-keyshortcuts="Shift+F10' : 'Abrir el dossier de ' + esc(a.name || a.id)) + '" data-i="' + i + '" data-agent-id="' + esc(a.id) + '" style="--ci:' + i + '">' +
+      '<li class="crew-row" role="button" tabindex="0" aria-label="' + (present.length > 1 ? 'Mostrar sesiones con ' + esc(a.name || a.id) + '; Shift+F10 para el dossier" aria-keyshortcuts="Shift+F10' : 'Abrir el dossier de ' + esc(a.name || a.id)) + '" data-i="' + i + '" data-agent-id="' + esc(a.id) + '" style="--ci:' + i + '">' +
       crewPortrait(a) +
       '<span class="dot on"></span>' +
       '<div class="crew-main">' +
@@ -1910,7 +1910,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // Update only when the text actually changes so the region doesn't spam announcements every tick.
     const stageSum = $('#stage-summary');
     if (stageSum) {
-      const txt = 'Station crew: ' + working + ' working, ' + (present.length - working) + ' idle.';
+      const txt = 'Tripulación de la estación: ' + working + ' trabajando, ' + (present.length - working) + ' en espera.';
       if (txt !== lastStageSummary) { lastStageSummary = txt; stageSum.textContent = txt; }
     }
   }
@@ -1968,20 +1968,20 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   let skillsLiveWired = false, skillsRefreshTimer = 0;   // A3: the once-wired, debounced AGENT SKILLS live-refresh
 
   const CONFIG_FILES = [
-    { key: 'identity', file: 'identity.md', badge: 'YOU WRITE THIS',
+    { key: 'identity', file: 'identity.md', badge: 'LO ESCRIBES TÚ',
       desc: 'El prompt de sistema que se envía al modelo en cada ejecución — el corazón de quién es tu agente.',
       ph: 'You are …' },
-    { key: 'purpose', file: 'purpose.md', badge: 'YOU WRITE THIS',
+    { key: 'purpose', file: 'purpose.md', badge: 'LO ESCRIBES TÚ',
       // P23 REACH: the purpose and house rules are THIS agent's only; rules for every agent are YOU › PREFERENCES'
       // standing orders (DossierStore.composeBlock rides every agent's prompt + cron's withDossier). Name the reach.
-      desc: n => 'What ' + n + ' is for. It rides only ' + n + '’s prompt, so it colours everything ' + n + ' does. In a workflow, a step’s DOES adds to it for that step only.',
-      ph: 'e.g. Track AI-policy news and brief me each morning.' },
-    { key: 'context', file: 'context.md', badge: 'YOU WRITE THIS',
-      desc: 'About you and your world — your project, domain, and what "good" looks like. Grounds every run.',
-      ph: 'e.g. I build TypeScript web apps solo; "good" = tested, minimal diffs, no hand-waving.' },
-    { key: 'manual', file: 'operating-manual.md', badge: 'YOU WRITE THIS',
+      desc: n => 'Para qué sirve ' + n + '. Viaja solo en el prompt de ' + n + ', así que da color a todo lo que ' + n + ' hace. En un flujo, el HACE de un paso lo suma solo para ese paso.',
+      ph: 'p. ej. Rastrea noticias de política de IA y brífame cada mañana.' },
+    { key: 'context', file: 'context.md', badge: 'LO ESCRIBES TÚ',
+      desc: 'Sobre ti y tu mundo — tu proyecto, tu dominio y qué es "bueno". Da base a cada ejecución.',
+      ph: 'p. ej. Hago apps web en TypeScript en solitario; "bueno" = probado, diffs mínimos, sin humo.' },
+    { key: 'manual', file: 'operating-manual.md', badge: 'LO ESCRIBES TÚ',
       desc: n => 'Reglas de la casa que solo ' + n + ' sigue: tono, formato, lo que no se debe hacer. Las reglas para todos los agentes viven en TÚ › PREFERENCES.',
-      ph: '- Cite your sources.\n- Keep it terse.\n- Never message anyone without asking first.' }
+      ph: '- Cita tus fuentes.\n- Sé conciso.\n- Nunca envíes mensajes sin preguntar antes.' }
   ];
 
   function docVal(a, key) {
@@ -2035,7 +2035,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // the agent's deployed SPECIALTY (set by the Recruitment Bay) — its primary "what it's FOR" identity, shown first.
       ((typeof Specialties !== 'undefined' && a.specialtyId) ? (function () { var s = Specialties.get(a.specialtyId); return s ? '<span class="tag">' + esc(s.emoji + ' ' + s.name) + '</span>' : ''; })() : '') +
       // MODEL tag doubles as the shortcut into CONFIG › model (wired in wireHead) so "change the model" is one click from anywhere.
-      '<span class="tag model" data-goconfig="ag-model-card" role="button" tabindex="0" title="change this agent’s model">' + esc(a.model || '—') + '</span>' +
+      '<span class="tag model" data-goconfig="ag-model-card" role="button" tabindex="0" title="cambia el modelo de este agente">' + esc(a.model || '—') + '</span>' +
       '</div>' +
       // the three stat wells ride INSIDE the hero's info column rather than as a full-width band beneath it.
       // The hero previously used 88px of a 780px pane and left the rest empty while the stats claimed their own
@@ -2050,8 +2050,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const g = (typeof Xp !== 'undefined' && a.stats) ? Xp.compute(a.stats) : null;
     const runs = (a.stats && a.stats.counters && a.stats.counters.runs) || 0;
     return '<div class="stat-grid">' +
-      '<div class="stat-cell"><div class="stat-val">' + runs + '</div><div class="stat-lbl">RUNS</div></div>' +
-      '<div class="stat-cell"><div class="stat-val">' + (g ? g.level : '—') + '</div><div class="stat-lbl">LEVEL</div></div>' +
+      '<div class="stat-cell"><div class="stat-val">' + runs + '</div><div class="stat-lbl">EJECUCIONES</div></div>' +
+      '<div class="stat-cell"><div class="stat-val">' + (g ? g.level : '—') + '</div><div class="stat-lbl">NIVEL</div></div>' +
       '<div class="stat-cell"><div class="stat-val pos">' + (g ? g.positiveFeedback : 0) + '</div><div class="stat-lbl">KUDOS</div></div>' +
       '</div>';
   }
@@ -2080,13 +2080,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // the picker's word for the stored choice (HEART, never the engine id af_heart) — Voice.voiceLabel
     try { voice = (typeof Voice !== 'undefined' && Voice.voiceChoice && a && a.id) ? Voice.voiceChoice(a.id) : ''; if (voice && Voice.voiceLabel) voice = Voice.voiceLabel(voice); } catch (_) { voice = ''; }
     const rows = [
-      { lbl: 'MODEL',     val: pin || 'station default', dim: !pin,                 go: 'ag-model-card',     tip: 'change it in CONFIG › MODEL' },
-      { lbl: 'PERSONALITY',     val: persona || '—',           dim: !persona,             go: 'ag-persona-card',   tip: 'change it in CONFIG › PERSONALITY' },
-      { lbl: 'ACCESS',    val: 'checking effective access…', dim: false, go: 'ag-approval-card',  tip: 'change it in CONFIG › ACCESS' },
-      { lbl: 'PROFILE',   val: prof.label.toLowerCase(),  dim: false,               go: 'ag-execution-card', tip: 'change it in CONFIG › ACCESS' },
-      { lbl: 'VOICE',     val: voice || 'station default', dim: !voice,             go: 'ag-voice',          tip: 'opens SETTINGS › LOOK & SOUND › VOICE FOR this agent' },
-      { lbl: 'SKILLS',    val: 'its own procedures',       dim: true,               go: 'ag-skills',         tip: 'opens ABILITIES › AGENT SKILLS for this agent' },
-      { lbl: 'TRABAJO EN AUSENCIA', val: (a && a.workshop) ? 'on'  : 'off', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'opens AUTOMATE › AWAY WORK' }
+      { lbl: 'MODELO',    val: pin || 'por defecto de la estación', dim: !pin,    go: 'ag-model-card',     tip: 'cámbialo en CONFIG › MODELO' },
+      { lbl: 'PERSONALIDAD', val: persona || '—',           dim: !persona,        go: 'ag-persona-card',   tip: 'cámbiala en CONFIG › PERSONALIDAD' },
+      { lbl: 'ACCESO',    val: 'comprobando el acceso efectivo…', dim: false, go: 'ag-approval-card',  tip: 'cámbialo en CONFIG › ACCESO' },
+      { lbl: 'PERFIL',    val: prof.label.toLowerCase(),  dim: false,               go: 'ag-execution-card', tip: 'cámbialo en CONFIG › ACCESO' },
+      { lbl: 'VOZ',       val: voice || 'por defecto de la estación', dim: !voice, go: 'ag-voice',          tip: 'abre SETTINGS › LOOK & SOUND › VOICE para este agente' },
+      { lbl: 'HABILIDADES', val: 'sus propios procedimientos', dim: true,          go: 'ag-skills',         tip: 'abre ABILITIES › AGENT SKILLS para este agente' },
+      { lbl: 'TRABAJO EN AUSENCIA', val: (a && a.workshop) ? 'activado' : 'desactivado', dim: !(a && a.workshop), go: 'ag-workshop-card',  tip: 'abre AUTOMATE › TRABAJO EN AUSENCIA' }
     ];
     return '<div class="ag-setup" role="group" aria-label="Cómo está configurado este agente">' +
       rows.map(r =>
@@ -2100,17 +2100,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function agBrief(a) {
     const since = a.createdAt ? new Date(a.createdAt).toLocaleDateString() : '—';
     // (the stat wells moved into agHead's info column — see agStats)
-    return '<div class="ag-mission"><div class="ag-mission-lbl">PURPOSE</div>' +
+    return '<div class="ag-mission"><div class="ag-mission-lbl">MISIÓN</div>' +
       (a.purpose
         ? '<div class="ag-mission-text">' + esc(a.purpose) + '</div>'
-        : '<div class="ag-mission-cta">No purpose set — tell your agent what you need in COMMS, or write it in CONFIG › purpose.md.</div>') +
+        : '<div class="ag-mission-cta">Sin misión definida — dile a tu agente qué necesitas en COMMS o escríbela en CONFIG › purpose.md.</div>') +
       '</div>' +
       // the two questions the landing tab used to answer with 39 words of nothing: how is it set up, and what can it do.
-      '<div class="sec ag-brief-sec"><span class="sec-l">SET UP AS</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<div class="sec ag-brief-sec"><span class="sec-l">ASÍ CONFIGURADO</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
       agSetupStrip(a) +
-      '<div class="sec ag-brief-sec"><span class="sec-l">CAN DO</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<div class="sec ag-brief-sec"><span class="sec-l">PUEDE HACER</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
       agSkillsBrief(a && a.id) +
-      '<div class="ag-foot-row">on station since <b>' + since + '</b></div>';
+      '<div class="ag-foot-row">en la estación desde el <b>' + since + '</b></div>';
   }
 
   // DELETE AGENT — its OWN row at the foot of CONFIG, never inside a group. It used to sit in a DANGER block at
@@ -2122,13 +2122,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const isHero = (a && (a.id === 'agent' || a.role === 'orchestrator'));
     const crewCount = (access.config && typeof access.config.crewCount === 'function') ? access.config.crewCount() : present.length;
     const lastOne = crewCount <= 1;
-    const disabledReason = isHero ? 'the overseer can’t be deleted' : (lastOne ? 'the last agent can’t be deleted' : '');
+    const disabledReason = isHero ? 'el supervisor no se puede eliminar' : (lastOne ? 'el último agente no se puede eliminar' : '');
     // one statement of the disabled reason (the visible .ag-del-why) — no duplicate tooltip echoing the same words.
     const delBtn = disabledReason
-      ? '<button class="bb sm ag-del" id="ag-del-btn" disabled>✕ DELETE AGENT</button>' +
+      ? '<button class="bb sm ag-del" id="ag-del-btn" disabled>✕ ELIMINAR AGENTE</button>' +
         '<span class="ag-del-why">' + esc(disabledReason) + '</span>'
-      : '<button class="bb sm ag-del" id="ag-del-btn" title="archive this agent and remove it from the station">✕ DELETE AGENT</button>' +
-        '<span class="ag-del-why">work is archived, not erased</span>';
+      : '<button class="bb sm ag-del" id="ag-del-btn" title="archiva este agente y lo retira de la estación">✕ ELIMINAR AGENTE</button>' +
+        '<span class="ag-del-why">el trabajo se archiva, no se borra</span>';
     return '<div class="cf-card ag-del-card" id="ag-del-card"><div class="ag-del-row">' + delBtn + '</div></div>';
   }
 
@@ -2151,10 +2151,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const stage =
       '<figure class="ag-skin-stage">' +
         '<div class="ag-skin-stage-frame"><img id="ag-skin-stage-img" alt="" draggable="false"></div>' +
-        '<figcaption class="ag-skin-stage-name"><span class="ag-stage-lbl">LIVE PREVIEW —</span> <span id="ag-skin-stage-name"></span></figcaption>' +
+        '<figcaption class="ag-skin-stage-name"><span class="ag-stage-lbl">VISTA EN VIVO —</span> <span id="ag-skin-stage-name"></span></figcaption>' +
       '</figure>';
     return '<div class="ag-command">' +
-      '<div class="ag-cmd-sec"><div class="ag-cmd-lbl">SKIN</div>' +
+      '<div class="ag-cmd-sec"><div class="ag-cmd-lbl">ASPECTO</div>' +
         '<div class="ag-skin-section">' +
           // role=group, not listbox: the thumbs are <button>s (a picker), not selectable listbox options.
           '<div class="ag-skin-row skin-picker" role="group" aria-label="Skin del agente">' + thumbs + '</div>' +
@@ -2174,14 +2174,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const nAg = present.length || 1;
     return s ? (
       '<div class="gx-station" style="margin-top:18px;">' +
-      '<div class="hd"><span class="badge">●</span><span class="ttl">STATION XP</span><span class="agents">&Sigma; ' + nAg + ' AGENT' + (nAg === 1 ? '' : 'S') + '</span></div>' +
+      '<div class="hd"><span class="badge">●</span><span class="ttl">STATION XP</span><span class="agents">&Sigma; ' + nAg + ' AGENTE' + (nAg === 1 ? '' : 'S') + '</span></div>' +
       '<div class="body">' +
-        '<div class="lv"><div class="gx-lbl" style="font-size:9px;">STATION</div><div class="n">' + s.level + '</div><div class="gx-lbl" style="font-size:9px;">LEVEL</div></div>' +
+        '<div class="lv"><div class="gx-lbl" style="font-size:9px;">ESTACIÓN</div><div class="n">' + s.level + '</div><div class="gx-lbl" style="font-size:9px;">NIVEL</div></div>' +
         '<div style="flex:1;">' +
           '<div class="gx-row" style="margin-bottom:6px;"><span class="gx-val" style="font-size:13px;">' + s.xp.toLocaleString() + ' <span class="gx-dim">/</span> ' + Xp.xpForLevel(s.level + 1).toLocaleString() + ' <span class="gx-dim" style="font-size:11px;">XP</span></span><span class="gx-val" style="color:var(--gold);font-size:13px;">' + s.pct + '%</span></div>' +
           '<div class="gx-trk"><div class="gx-gfill" style="width:' + s.pct + '%;"></div></div>' +
-          '<div class="gx-row" style="margin-top:7px;"><span class="gx-val gx-dim" style="font-size:11px;">' + s.toNext.toLocaleString() + ' XP TO LV ' + (s.level + 1) + '</span>' +
-            '<span class="gx-mono" style="font-size:10px;color:var(--ph-dim);">' + s.positiveFeedback + ' THUMBS-UP &middot; <span style="color:var(--ph);">' + (s.known ? s.band.toUpperCase() : 'CALIBRATING') + '</span></span></div>' +
+          '<div class="gx-row" style="margin-top:7px;"><span class="gx-val gx-dim" style="font-size:11px;">' + s.toNext.toLocaleString() + ' XP PARA NIVEL ' + (s.level + 1) + '</span>' +
+            '<span class="gx-mono" style="font-size:10px;color:var(--ph-dim);">' + s.positiveFeedback + ' ME GUSTA &middot; <span style="color:var(--ph);">' + (s.known ? s.band.toUpperCase() : 'CALIBRANDO') + '</span></span></div>' +
         '</div>' +
       '</div></div>'
     ) : '';
@@ -2206,7 +2206,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="gx-well"><span class="gx-lbl">Retroalimentación positiva</span><span class="v">' + g.positiveFeedback + '</span></div>' +
       // what a level actually MEANS (UX sweep 2026-07-15): honest — levels gate nothing (sandbox law);
       // they are the agent's proven track record from work you rated well.
-      '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">Rate completed work “nailed it” to earn XP. Positive turn-in feedback earns XP too. Levels celebrate progress; every capability is available from the start.</div>' +
+      '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">Califica el trabajo completado como «nailed it» para ganar XP. La retroalimentación positiva también da XP. Los niveles celebran el progreso; toda capacidad está disponible desde el inicio.</div>' +
       '</div>';
 
     const confnum = g.known ? (g.confidence + '<span style="font-size:18px;color:var(--ph-dim);">%</span>') : '—';
@@ -2278,8 +2278,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        and with LEVEL already one of BRIEF's three stat wells. Four restatements of context the user already had,
        occupying the top of the pane. The level chip survives (it belongs beside a level bar); the rest is gone. */
     return '<div class="gx ag-growth">' +
-      '<div class="ag-growth-hero"><div class="ag-level-badge"><span>LEVEL</span><strong>' + pad2(g.level) + '</strong></div>' +
-      '<div class="ag-growth-heading"><span class="ag-growth-eyebrow">PROGRESIÓN DEL AGENTE</span><h3>' + esc(a.name || 'Agent') + '</h3><p>' + g.xp.toLocaleString() + ' XP total · ' + earned + ' de ' + cat.length + ' logros ganados</p>' + progression + '</div></div>' +
+      '<div class="ag-growth-hero"><div class="ag-level-badge"><span>NIVEL</span><strong>' + pad2(g.level) + '</strong></div>' +
+      '<div class="ag-growth-heading"><span class="ag-growth-eyebrow">PROGRESIÓN DEL AGENTE</span><h3>' + esc(a.name || 'Agente') + '</h3><p>' + g.xp.toLocaleString() + ' XP total · ' + earned + ' de ' + cat.length + ' logros ganados</p>' + progression + '</div></div>' +
       (nextMilestone ? '<div class="ag-next-challenge"><span>DESAFÍO A ALCANZAR</span><b>' + nextMilestone.label + '</b><span>' + nextMilestone.hint + '</span></div>' : '') +
       '<div class="ag-growth-section-title">Rendimiento y aprendizaje</div><div class="gx-2">' + confidence + reliabilityBlk + practiceBlk + '</div>' +
       '<p class="ag-growth-station-link">El nivel, los sistemas y los hitos de la estación: <button type="button" class="bb xs" data-open-progress>MISSIONES › PROGRESO</button></p>' +
@@ -2304,34 +2304,34 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     Harness.agentSkillsRead(agentId, { archived: true }).then(r => {
       const h = $('#gx-practice'); if (!h) return;
       const now = present[sel]; if (!now || now.id !== agentId) return;   // the Commander moved on — never paint the wrong agent
-      if (!r || !r.ok) return fail('could not read the skillbase');
+      if (!r || !r.ok) return fail('no se pudo leer el skillbase');
       const p = Xp.practice(r.skills);
       // every exclusion is NAMED rather than silently shrinking the count (the same rule B2 follows for the
       // runs it sets aside) — a withheld or never-used procedure is a real thing the Commander can act on.
       const aside = [];
-      if (p.withheld) aside.push(p.withheld + ' withheld pending your approval');
-      if (p.idle) aside.push(p.idle + ' written but never used yet');
-      if (p.given) aside.push(p.given + ' you wrote yourself');
+      if (p.withheld) aside.push(p.withheld + ' retenidas a la espera de tu aprobación');
+      if (p.idle) aside.push(p.idle + ' escritas pero aún no usadas');
+      if (p.given) aside.push(p.given + ' que escribiste tú');
       h.innerHTML =
         '<div class="gx-sec"><span class="gx-ref">◇</span><span class="gx-title">Práctica</span><span class="gx-tag">' +
-          (p.count ? 'procedures it worked out and has actually used' : 'nothing distilled from real work yet') + '</span></div>' +
+          (p.count ? 'procedimientos que descubrió y ha usado de verdad' : 'nada destilado de trabajo real todavía') + '</span></div>' +
         '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:9px;">' +
           '<span class="gx-confnum' + (p.count ? '' : ' cal') + '">' + p.count + '</span>' +
           '<span class="gx-band' + (p.count ? '' : ' cal') + '">' + p.band.toUpperCase() + '</span></div>' +
-        '<div class="gx-well"><span class="gx-lbl">Learned / held</span><span class="v">' + p.count + ' <span class="gx-dim">/</span> ' + p.authored + '</span></div>' +
+        '<div class="gx-well"><span class="gx-lbl">Aprendidas / retenidas</span><span class="v">' + p.count + ' <span class="gx-dim">/</span> ' + p.authored + '</span></div>' +
         // the anti-farm line, said out loud: writing a skill is not learning one.
-        '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">what it taught itself from your work — writing one counts for nothing until it is used</div>' +
+        '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">lo que se enseñó solo con tu trabajo — escribir una no cuenta hasta que la use</div>' +
         // (every aside is a count plus a fixed literal — no agent- or user-supplied text reaches this markup)
         (aside.length ? '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">' + aside.join(' &middot; ') + '</div>' : '');
-    }).catch(() => fail('could not read the skillbase'));
+    }).catch(() => fail('no se pudo leer el skillbase'));
   }
 
   function agSkills(agentId) {
-    return '<div class="ag-effective" data-access-agent="' + esc(agentId || 'agent') + '" role="status">Checking effective access…</div>';
+    return '<div class="ag-effective" data-access-agent="' + esc(agentId || 'agent') + '" role="status">Comprobando el acceso efectivo…</div>';
   }
   // the BRIEF tab's one-line readout of the SAME live /api/toolsets answer CONFIG › ACCESS shows in full
   function agSkillsBrief(agentId) {
-    return '<div class="ag-effective" data-access-agent="' + esc(agentId || 'agent') + '" data-access-compact role="status">Checking effective access…</div>';
+    return '<div class="ag-effective" data-access-agent="' + esc(agentId || 'agent') + '" data-access-compact role="status">Comprobando el acceso efectivo…</div>';
   }
 
   function loadEffectiveAccess(body, a) {
@@ -2348,37 +2348,37 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const summary = body.querySelector('[data-goconfig="ag-approval-card"] .ag-setup-val');
         // ORG P21: the summary speaks the ONE ACCESS posture words. FULL POWER only when the live authority is unrestricted;
         // otherwise the agent's saved posture if it is an asking one, else custom — never a posture the live answer contradicts.
-        const askingPosture = () => { const AP = agentPostureOf(a); return (AP && AP.approval === 'ask') ? AP.label : 'custom'; };
+        const askingPosture = () => { const AP = agentPostureOf(a); return (AP && AP.approval === 'ask') ? AP.label : 'personalizado'; };
         // the value is the posture word alone (the tile is narrow); what it means rides the row's tip
-        if (summary) summary.textContent = authority.unrestricted ? 'FULL POWER' : askingPosture();
+        if (summary) summary.textContent = authority.unrestricted ? 'POTENCIA TOTAL' : askingPosture();
         // FULL POWER that comes from OUTSIDE this agent (the launch environment or the station-wide switch) beats its
         // saved answer: CONFIG › ACCESS says so instead of showing the saved posture as if it were in force.
         const overrideBy = !authority.unrestricted || authority.source === 'agent' ? ''
-          : authority.source === 'environment' ? 'the SKYNET_FULL_ACCESS launch setting' : 'the station-wide FULL POWER switch';
+          : authority.source === 'environment' ? 'la configuración de arranque SKYNET_FULL_ACCESS' : 'el interruptor global de POTENCIA TOTAL';
         const accessRow = body.querySelector('[data-goconfig="ag-approval-card"]');
         if (accessRow && accessRow.dataset) accessRow.dataset.tip = (authority.unrestricted
-          ? 'never asks first' + (overrideBy ? ', set by ' + overrideBy : '') : 'asks first; standing grants apply') + ' · change it in CONFIG › ACCESS';
+          ? 'nunca pide antes' + (overrideBy ? ', puesto por ' + overrideBy : '') : 'pide antes; se aplican las concesiones permanentes') + ' · cámbialo en CONFIG › ACCESS';
         if (overrideBy) {
           const SP = agentPostureOf(a);
-          const said = 'FULL POWER — on for every agent by ' + overrideBy + '. Its saved answer, ' + (SP ? SP.label : 'a custom mix') + ', applies again when that is off.';
+          const said = 'POTENCIA TOTAL — activada para todos los agentes por ' + overrideBy + '. Su respuesta guardada, ' + (SP ? SP.label : 'una mezcla personalizada') + ', vuelve a aplicar cuando eso se apague.';
           const groupSummary = body.querySelector('#cf-grp-behaves .cf-group-summary');
           if (groupSummary) groupSummary.textContent = said;
           const plain = body.querySelector('#ag-access-plain');
           if (plain) plain.textContent = said;
         }
         const reach = body.querySelector('#ag-execution-plain');
-        if (reach) reach.textContent = authority.filesystemLabel + (authority.unrestricted ? '. Full Power overrides the saved profile below.' : '. The selected profile and standing grants apply.');
+        if (reach) reach.textContent = authority.filesystemLabel + (authority.unrestricted ? '. La Potencia Total anula el perfil guardado de abajo.' : '. Se aplican el perfil elegido y las concesiones permanentes.');
         const html = '<p><b>' + esc(authority.approvalLabel) + '</b><br>' + esc(authority.filesystemLabel) + ' · ' + esc(authority.profileLabel) + '</p>' +
           '<div class="perk-grid">' + view.toolsets.map(t => '<div class="perk' + (t.available ? ' on' : '') + '"><div class="perk-name">' + esc(t.label) + '</div><div class="perk-stat">' +
-            (t.available ? (t.consentGated ? 'AVAILABLE · risky actions may ask' : 'AVAILABLE') : !t.enabled ? 'SWITCHED OFF' : 'NEEDS GEAR OR ACCESS') +
+            (t.available ? (t.consentGated ? 'DISPONIBLE · las acciones arriesgadas pueden pedir' : 'DISPONIBLE') : !t.enabled ? 'DESACTIVADO' : 'NECESITA EQUIPO O ACCESO') +
             '</div><div class="perk-desc">' + esc(t.grantSource || 'Sin permiso actual') + '</div></div>').join('') + '</div>' +
-          '<p class="sk-note">' + esc(authority.revoke) + ' Service credentials, task-specific permissions and operating-system limits still apply. Unattended jobs have their own grants.</p>' +
-          '<button class="bb sm" data-access-manage>MANAGE ABILITIES</button> <button class="bb sm" data-access-settings>STATION PERMISSIONS</button> <button class="bb sm" data-access-refresh>REFRESH ACCESS</button>';
+          '<p class="sk-note">' + esc(authority.revoke) + ' Las credenciales de servicio, los permisos por tarea y los límites del sistema operativo siguen aplicando. Los trabajos no atendidos tienen sus propias concesiones.</p>' +
+          '<button class="bb sm" data-access-manage>GESTIONAR HABILIDADES</button> <button class="bb sm" data-access-settings>PERMISOS DE LA ESTACIÓN</button> <button class="bb sm" data-access-refresh>ACTUALIZAR ACCESO</button>';
         // BRIEF's compact line: how many toolsets are ready, which ones, and the approval mode — one jump to the full grid
         const ready = view.toolsets.filter(x => x.available);
-        const compactHtml = '<p class="ag-can-do"><b>' + ready.length + ' of ' + view.toolsets.length + ' toolsets ready</b>'
+        const compactHtml = '<p class="ag-can-do"><b>' + ready.length + ' de ' + view.toolsets.length + ' toolsets listos</b>'
           + (ready.length ? ' · ' + ready.slice(0, 6).map(x => esc(x.label)).join(', ') + (ready.length > 6 ? ' +' + (ready.length - 6) : '') : '')
-          + ' · ' + esc(authority.approvalLabel) + '</p><button class="bb sm" data-access-full>SEE FULL ACCESS</button>';
+          + ' · ' + esc(authority.approvalLabel) + '</p><button class="bb sm" data-access-full>VER ACCESO COMPLETO</button>';
         targets.forEach(target => {
           if (typeof target.hasAttribute === 'function' && target.hasAttribute('data-access-compact')) {
             target.innerHTML = compactHtml;
@@ -2393,9 +2393,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         });
       }).catch(() => {
         if (!body.isConnected || body._accessRequest !== request) return;
-        targets.forEach(t => { t.textContent = 'Effective access could not be checked. Reopen this panel after reconnecting.'; });
+        targets.forEach(t => { t.textContent = 'No se pudo comprobar el acceso efectivo. Vuelve a abrir este panel tras reconectar.'; });
         const summary = body.querySelector('[data-goconfig="ag-approval-card"] .ag-setup-val');
-        if (summary) summary.textContent = 'unavailable';
+        if (summary) summary.textContent = 'no disponible';
       });
   }
 
@@ -2404,18 +2404,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const head =
       '<div class="cf-head"><span class="cf-name">▤ ' + f.file + '</span>' +
       '<span class="cf-badge you">' + f.badge + '</span>' +
-      '<span class="cf-bytes">' + (val || '').length + ' chars</span>' +
-      (editing ? '' : '<button class="bb sm cf-edit" data-edit="' + f.key + '">✎ EDIT</button>') +
+      '<span class="cf-bytes">' + (val || '').length + ' caracteres</span>' +
+      (editing ? '' : '<button class="bb sm cf-edit" data-edit="' + f.key + '">✎ EDITAR</button>') +
       '</div><div class="cf-desc">' + (typeof f.desc === 'function' ? f.desc(esc((a && a.name) || 'this agent')) : f.desc) + '</div>';
     if (editing) {
       return '<div class="cf cf-on">' + head +
         '<textarea class="cf-ta" id="cf-ta-' + f.key + '" aria-label="' + esc(f.file) + '" spellcheck="false" placeholder="' + esc(f.ph) + '">' + esc(val) + '</textarea>' +
-        '<div class="cf-acts"><button class="bb sm" data-save="' + f.key + '">SAVE</button>' +
-        '<button class="bb sm" data-cancel="' + f.key + '">CANCEL</button></div></div>';
+        '<div class="cf-acts"><button class="bb sm" data-save="' + f.key + '">GUARDAR</button>' +
+        '<button class="bb sm" data-cancel="' + f.key + '">CANCELAR</button></div></div>';
     }
     const bodyHtml = val.trim()
       ? '<pre class="cf-body">' + esc(val) + '</pre>'
-      : '<pre class="cf-body empty">— empty — click EDIT to write ' + f.file + ' —</pre>';
+      : '<pre class="cf-body empty">— vacío — pulsa EDITAR para escribir ' + f.file + ' —</pre>';
     return '<div class="cf">' + head + bodyHtml + '</div>';
   }
 
@@ -2424,7 +2424,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   //      edit / forget. Rendered as a .gx-framed placeholder, then filled by loadMemoryCore() after the async
   //      fetch (survives retab without a refetch race). Record cards are built as DOM (textContent bodies —
   //      a poisoned/injection entry is inspectable + deletable here but never interpreted, §5.6). ----
-  const MEM_KIND = { profile: 'PREFERENCE', fact: 'FACT', skill: 'SKILL', note: 'NOTE' };
+  const MEM_KIND = { profile: 'PREFERENCIA', fact: 'HECHO', skill: 'HABILIDAD', note: 'NOTA' };
 
   function agMemory(a) {
     // same de-duplication as GROWTH: the window is already titled AGENT DOSSIER, the tab is already MEMORY, and
@@ -2434,37 +2434,37 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="ag-reflection-panel">' +
       // P1-10 REFLECTION controls — the master on/off + the cooldown, both HONORED live at the reflect gate in the
       // sidecar (station-wide, not per-agent — the reflect loop is a station engine). Plus a plain scope note.
-      '<div class="gx-sec"><span class="gx-ref">◈</span><span class="gx-title">Reflection</span></div>' +
-      '<div class="mc-note" id="mc-scope">How the station learns from finished work.</div>' +
-      '<label class="set-row"><input type="checkbox" id="mc-reflect-on"> REFLECTION <b id="mc-reflect-state">…</b> (all agents) <span class="dim">— propose memories after a completed task</span></label>' +
-      '<div class="set-row"><label for="mc-cooldown">TIME BETWEEN SUGGESTIONS (MINUTES)</label><input id="mc-cooldown" class="key-input" type="number" min="0" max="60" step="1" style="max-width:90px" title="minimum gap between turn-in beats per agent"></div>' +
-      '<div class="mc-acts"><button class="bb sm" id="mc-reflect-save">SAVE</button><span class="msg" id="mc-reflect-msg"></span></div></div>' +
+      '<div class="gx-sec"><span class="gx-ref">◈</span><span class="gx-title">Reflexión</span></div>' +
+      '<div class="mc-note" id="mc-scope">Cómo la estación aprende del trabajo terminado.</div>' +
+      '<label class="set-row"><input type="checkbox" id="mc-reflect-on"> REFLEXIÓN <b id="mc-reflect-state">…</b> (todos los agentes) <span class="dim">— proponer memorias tras una tarea completada</span></label>' +
+      '<div class="set-row"><label for="mc-cooldown">TIEMPO ENTRE SUGERENCIAS (MINUTOS)</label><input id="mc-cooldown" class="key-input" type="number" min="0" max="60" step="1" style="max-width:90px" title="intervalo mínimo entre entregas por agente"></div>' +
+      '<div class="mc-acts"><button class="bb sm" id="mc-reflect-save">GUARDAR</button><span class="msg" id="mc-reflect-msg"></span></div></div>' +
       // AWAITING A VERDICT — the durable high-stakes deck. Runs that finish while nobody is watching (a routine, a
       // night shift, a channel message) can raise a credential/PII/standing-instruction belief; it is neither kept
       // nor dropped until the Commander rules on it, and it waits HERE across restarts. Hidden until non-empty.
-      '<div class="gx-sec" id="mc-pending-sec" style="display:none;"><span class="gx-ref gold">?</span><span class="gx-title">Awaiting your decision</span><span class="gx-tag" id="mc-pending-count"></span></div>' +
-      '<div class="mc-note" id="mc-pending-note" style="display:none;">Proposed memories and corrections — <b>these changes have not been applied</b>. <b>Keep</b> to apply one &middot; <b>Discard</b> to reject it.</div>' +
+      '<div class="gx-sec" id="mc-pending-sec" style="display:none;"><span class="gx-ref gold">?</span><span class="gx-title">A la espera de tu decisión</span><span class="gx-tag" id="mc-pending-count"></span></div>' +
+      '<div class="mc-note" id="mc-pending-note" style="display:none;">Memorias y correcciones propuestas — <b>estos cambios no se han aplicado</b>. <b>Mantener</b> para aplicar &middot; <b>Descartar</b> para rechazar.</div>' +
       '<div id="mc-pending-list" class="mc-list"></div>' +
       // ▤ not "M": the ref chip is a marker, and every other one in the dossier is a glyph. A bare letter reads as
       // a code the reader is expected to already know (which is exactly what GROWTH's retired A/B/B2/B3 were).
-      '<div class="gx-sec"><span class="gx-ref gold">▤</span><span class="gx-title">Stored beliefs</span><span class="gx-tag" id="mc-count">&hellip;</span></div>' +
-      '<div class="mc-note">Each belief traces to the run that earned it. <b>Pin</b> to lock it to the top of recall &middot; <b>Edit</b> to refine it &middot; <b>Forget</b> to remove it.</div>' +
-      '<div id="mc-list" class="mc-list"><span class="loading pulse">reading memory core&hellip;</span></div>' +
+      '<div class="gx-sec"><span class="gx-ref gold">▤</span><span class="gx-title">Creencias almacenadas</span><span class="gx-tag" id="mc-count">&hellip;</span></div>' +
+      '<div class="mc-note">Cada creencia se remonta a la ejecución que la ganó. <b>Fijar</b> para anclarla al inicio del recuerdo &middot; <b>Editar</b> para refinarla &middot; <b>Olvidar</b> para eliminarla.</div>' +
+      '<div id="mc-list" class="mc-list"><span class="loading pulse">leyendo memory core&hellip;</span></div>' +
       // observability: the permanent reject-list (Discarded proposals never re-proposed). Hidden until non-empty.
-      '<div class="gx-sec" id="mc-declined-sec" style="display:none;"><span class="gx-ref">&#10007;</span><span class="gx-title">Declined</span><span class="gx-tag" id="mc-declined-count"></span></div>' +
-      '<div class="mc-note" id="mc-declined-note" style="display:none;">Beliefs you Discarded — the station will <b>never propose these again</b>. <b>Restore</b> one to let it be proposed in future.</div>' +
+      '<div class="gx-sec" id="mc-declined-sec" style="display:none;"><span class="gx-ref">&#10007;</span><span class="gx-title">Descartadas</span><span class="gx-tag" id="mc-declined-count"></span></div>' +
+      '<div class="mc-note" id="mc-declined-note" style="display:none;">Creencias que descartaste — la estación <b>nunca las propondrá de nuevo</b>. <b>Restaurar</b> una para que se proponga en el futuro.</div>' +
       '<div id="mc-declined-list" class="mc-list"></div>' +
       '</div>';
   }
 
   function loadMemoryCore(a) {
     const host = $('#mc-list'); if (!host) return;
-    if (!(typeof Harness === 'object' && Harness.memoryRecords)) { host.textContent = 'Memory Core unavailable — start the sidecar to read it.'; return; }
+    if (!(typeof Harness === 'object' && Harness.memoryRecords)) { host.textContent = 'Memory Core no disponible — arranca el sidecar para leerlo.'; return; }
     Harness.memoryRecords(a.id).then(records => {
       const cur = $('#mc-list'); if (!cur) return;   // dossier may have closed/retabbed mid-fetch
       renderMemoryList(cur, records, a);
-      const cnt = $('#mc-count'); if (cnt) cnt.textContent = records.length + (records.length === 1 ? ' belief' : ' beliefs');
-    }).catch(() => { const cur = $('#mc-list'); if (cur) cur.textContent = 'Could not read the Memory Core.'; });
+      const cnt = $('#mc-count'); if (cnt) cnt.textContent = records.length + (records.length === 1 ? ' creencia' : ' creencias');
+    }).catch(() => { const cur = $('#mc-list'); if (cur) cur.textContent = 'No se pudo leer el Memory Core.'; });
     loadDeclined(a);   // the reject-list renders alongside (its own fetch; absent/empty → the section stays hidden)
     loadPending(a);    // …as does the un-answered high-stakes deck (same pattern, same hidden-when-empty rule)
     loadReflectionConfig();   // P1-10 reflection on/off + cooldown (station-wide)
@@ -2493,12 +2493,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const tag = mkEl('span', 'turnin-kind'); tag.textContent = MEM_KIND[p.kind] || 'NOTE'; head.appendChild(tag);
     const org = originChip(p.origin); if (org) head.appendChild(org);
     card.appendChild(head);
-    const bodyEl = mkEl('div', 'mc-body'); bodyEl.textContent = p.replaceId ? 'Update remembered preference: “' + p.previousBody + '” → “' + p.content + '”' : (p.content || '(empty)'); card.appendChild(bodyEl);
+    const bodyEl = mkEl('div', 'mc-body'); bodyEl.textContent = p.replaceId ? 'Actualizar preferencia recordada: “' + p.previousBody + '” → “' + p.content + '”' : (p.content || '(vacía)'); card.appendChild(bodyEl);
     const meta = mkEl('div', 'mc-meta');
     const prov = mkEl('span', 'mc-prov');
     const when = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—';
-    prov.textContent = '◉ raised ' + when + (p.runId ? ' · run ' + String(p.runId).slice(0, 8) : '');
-    prov.title = p.runId ? ('proposed in run ' + p.runId) : 'origin run unknown';
+    prov.textContent = '◉ planteada ' + when + (p.runId ? ' · run ' + String(p.runId).slice(0, 8) : '');
+    prov.title = p.runId ? ('propuesta en la ejecución ' + p.runId) : 'ejecución de origen desconocida';
     meta.appendChild(prov);
     card.appendChild(meta);
     const btns = mkEl('div', 'consent-btns mc-acts'); card.appendChild(btns);
@@ -2522,7 +2522,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      stay quiet, or the label becomes noise nobody reads. */
   // 'feedback' = the Commander's OWN rating / correction of a run (sidecar/feedbackmemory.js): it is theirs, so its
   // tip must never say it was learned unwatched. 'failure-review' = a lesson from a run that failed.
-  const ORIGIN_LABEL = { schedule: '⏱ routine', nightshift: '◈ autonomy', api: '⇄ external app', feedback: '★ your rating', 'failure-review': '⚠ failed run' };
+  const ORIGIN_LABEL = { schedule: '⏱ rutinaria', nightshift: '◈ autonomía', api: '⇄ app externa', feedback: '★ tu calificación', 'failure-review': '⚠ ejecución fallida' };
   const ORIGIN_TIP = { feedback: 'from your own rating of a run — every agent shapes its work to this', 'failure-review': 'a lesson taken from a run that failed' };
   function originChip(origin) {
     const o = String(origin || 'commander');
@@ -2548,19 +2548,19 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       paintState();
       c.value = String(Math.round((cfg.reflectCooldownMs != null ? cfg.reflectCooldownMs : 180000) / 60000));
       if (s && cfg.scopeNote) s.textContent = cfg.scopeNote;
-    }).catch(() => { setMsg('could not load reflection settings'); });   // never paint an error body as config
+    }).catch(() => { setMsg('no se pudieron cargar los ajustes de reflexión'); });   // never paint an error body as config
     if (saveBtn && !saveBtn._wired) {
       saveBtn._wired = true;
       saveBtn.addEventListener('click', () => {
         const o = $('#mc-reflect-on'), c = $('#mc-cooldown');
         const mins = Number(String(c.value).trim());
-        if (!isFinite(mins) || mins < 0 || mins > 60) { setMsg('cooldown: 0–60 minutes'); sfx('bad'); c.focus(); return; }
-        setMsg('saving…');
+        if (!isFinite(mins) || mins < 0 || mins > 60) { setMsg('enfriamiento: 0–60 minutos'); sfx('bad'); c.focus(); return; }
+        setMsg('guardando…');
         Harness.api.post('/api/memory/config', { reflectEnabled: !!o.checked, reflectCooldownMs: Math.floor(mins * 60000) })
           .then(({ ok, j }) => {
-            if (!ok) { setMsg((j && j.error) || 'could not save'); sfx('bad'); return; }
-            setMsg('✓ saved', true); sfx('click');
-          }).catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+            if (!ok) { setMsg((j && j.error) || 'no se pudo guardar'); sfx('bad'); return; }
+            setMsg('✓ guardado', true); sfx('click');
+          }).catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
       });
     }
   }
@@ -2586,7 +2586,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const bodyEl = mkEl('div', 'mc-body'); bodyEl.textContent = text; card.appendChild(bodyEl);   // textContent — never interpreted
     const btns = mkEl('div', 'consent-btns mc-acts'); card.appendChild(btns);
     let busy = false;
-    const b = mkEl('button', 'consent-btn'); b.textContent = 'Restore'; b.title = 'allow this belief to be proposed again';
+    const b = mkEl('button', 'consent-btn'); b.textContent = 'Restaurar'; b.title = 'permitir que esta creencia se proponga de nuevo';
     b.onclick = async () => {
       if (busy) return; busy = true;
       const r = await Harness.memoryRestore({ agentId: a.id, text });
@@ -2601,9 +2601,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!records.length) {
       // shared .empty-state vocabulary (glyph + title + prose) rather than a bare paragraph
       const es = mkEl('div', 'empty-state');
-      es.innerHTML = '<span class="es-glyph">◈</span><b>NO MEMORIES YET</b>' +
-        '<span>As ' + esc(a.name) + ' works and you Keep what it learns, durable beliefs collect here — ' +
-        'each typed, scored, and traceable to the run that earned it.</span>';
+      es.innerHTML = '<span class="es-glyph">◈</span><b>SIN MEMORIAS TODAVÍA</b>' +
+        '<span>Mientras ' + esc(a.name) + ' trabaja y tú mantienes lo que aprende, las creencias duraderas se acumulan aquí — ' +
+        'cada una tipada, puntuada y rastreable hasta la ejecución que la ganó.</span>';
       host.appendChild(es); return;
     }
     // pinned first, then most-trusted, then most-recent — the order recall itself favours
@@ -2619,25 +2619,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (rec.kind === 'note' && rec.title) { const t = mkEl('span', 'mc-rectitle'); t.textContent = rec.title; head.appendChild(t); }
     if (rec.scope === 'stream' && rec.streamId) {   // M-mem.2b: working memory scoped to a workstream
       const wsT = (typeof Workstreams !== 'undefined' && Workstreams.get) ? ((Workstreams.get(rec.streamId) || {}).title || null) : null;
-      const sc = mkEl('span', 'mc-scope'); sc.textContent = '⊂ ' + (rec.projectRoot ? 'project' : (wsT || 'workstream')); sc.title = rec.projectRoot ? 'pinned requirements also follow this trusted project: ' + rec.projectRoot : 'working memory — scoped to this workstream (still cross-stream searchable)'; head.appendChild(sc);
+      const sc = mkEl('span', 'mc-scope'); sc.textContent = '⊂ ' + (rec.projectRoot ? 'proyecto' : (wsT || 'flujo')); sc.title = rec.projectRoot ? 'los requisitos fijados también siguen a este proyecto de confianza: ' + rec.projectRoot : 'memoria de trabajo — acotada a este flujo (se sigue buscando entre flujos)'; head.appendChild(sc);
     }
     const org = originChip(rec.origin); if (org) head.appendChild(org);   // only when it was NOT the Commander's own run
-    if (rec.pinned) { const p = mkEl('span', 'mc-pinflag'); p.textContent = '★ pinned'; head.appendChild(p); }
+    if (rec.pinned) { const p = mkEl('span', 'mc-pinflag'); p.textContent = '★ fijada'; head.appendChild(p); }
     card.appendChild(head);
 
-    const bodyEl = mkEl('div', 'mc-body'); bodyEl.textContent = rec.body || '(empty)'; card.appendChild(bodyEl);
+    const bodyEl = mkEl('div', 'mc-body'); bodyEl.textContent = rec.body || '(vacía)'; card.appendChild(bodyEl);
 
     const meta = mkEl('div', 'mc-meta');
     const prov = mkEl('span', 'mc-prov');
     const when = rec.createdAt ? new Date(rec.createdAt).toLocaleDateString() : '—';
-    prov.textContent = '◉ learned ' + when + (rec.sourceRunId ? ' · run ' + String(rec.sourceRunId).slice(0, 8) : '');
-    prov.title = rec.sourceRunId ? ('earned in run ' + rec.sourceRunId) : 'origin run unknown';   // drill-to-the-run (identity)
+    prov.textContent = '◉ aprendida ' + when + (rec.sourceRunId ? ' · run ' + String(rec.sourceRunId).slice(0, 8) : '');
+    prov.title = rec.sourceRunId ? ('ganada en la ejecución ' + rec.sourceRunId) : 'ejecución de origen desconocida';   // drill-to-the-run (identity)
     meta.appendChild(prov);
     const used = mkEl('span', 'mc-used');
-    used.textContent = rec.useCount ? ('used ' + rec.useCount + '×') : 'never recalled';
+    used.textContent = rec.useCount ? ('usada ' + rec.useCount + '×') : 'nunca recordada';
     meta.appendChild(used);
     const pct = Math.max(0, Math.min(100, Math.round((rec.trust || 0) * 100)));
-    const trust = mkEl('span', 'mc-trust', 'trust <span class="mc-trk"><span class="mc-fill" style="width:' + pct + '%;"></span></span>');   // numeric pct only — safe
+    const trust = mkEl('span', 'mc-trust', 'confianza <span class="mc-trk"><span class="mc-fill" style="width:' + pct + '%;"></span></span>');   // numeric pct only — safe
     meta.appendChild(trust);
     card.appendChild(meta);
 
@@ -2645,12 +2645,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const reload = () => loadMemoryCore(a);
     let busy = false;   // in-flight guard: a fast double-click must not fire two POSTs (a success reloads the card away)
     const mk = (label, cls, fn) => { const b = mkEl('button', 'consent-btn' + (cls ? ' ' + cls : '')); b.textContent = label; b.onclick = fn; btns.appendChild(b); return b; };
-    mk(rec.pinned ? 'Quitar fijado' : 'Pin', '', async () => {
+    mk(rec.pinned ? 'Quitar fijado' : 'Fijar', '', async () => {
       if (busy) return; busy = true;
       const r = await Harness.memoryPin({ agentId: a.id, id: rec.id, pinned: !rec.pinned });
       if (r && r.ok) { sfx('click'); reload(); } else busy = false;
     });
-    mk('Edit', '', () => editMemCard(card, bodyEl, btns, rec, a));
+    mk('Editar', '', () => editMemCard(card, bodyEl, btns, rec, a));
     // forget is destructive → two-step inline confirm (auto-disarms after 3s)
     let armed = false;
     const fbtn = mk('Olvidar', 'deny', async () => {
@@ -2667,7 +2667,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const ta = mkEl('textarea', 'cf-ta mc-edit'); ta.value = rec.body || ''; ta.spellcheck = false;
     card.replaceChild(ta, bodyEl); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {}
     btns.innerHTML = '';
-    const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; btns.appendChild(save);
+    const save = mkEl('button', 'consent-btn'); save.textContent = 'Guardar'; btns.appendChild(save);
     const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; btns.appendChild(cancel);
     let saving = false;
     save.onclick = async () => { if (saving) return; const v = ta.value.trim(); if (!v) { ta.focus(); return; } saving = true; const r = await Harness.memoryEdit({ agentId: a.id, id: rec.id, content: v }); if (r && r.ok) { sfx('click'); loadMemoryCore(a); } else saving = false; };
@@ -2719,12 +2719,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      information the surrounding chrome did not already carry, and it read as a warning label.
      Card ids (ag-*-card) are the anchor targets BRIEF's setup strip jumps to. */
   const CF_GROUPS = [
-    { id: 'cf-grp-purpose', label: 'PURPOSE' },
-    { id: 'cf-grp-knows', label: 'INSTRUCTIONS' },
-    { id: 'cf-grp-model', label: 'MODEL' },
-    { id: 'cf-grp-personality', label: 'PERSONALITY' },
-    { id: 'cf-grp-behaves', label: 'ACCESS' },
-    { id: 'cf-grp-unit', label: 'APPEARANCE' }
+    { id: 'cf-grp-purpose', label: 'MISIÓN' },
+    { id: 'cf-grp-knows', label: 'INSTRUCCIONES' },
+    { id: 'cf-grp-model', label: 'MODELO' },
+    { id: 'cf-grp-personality', label: 'PERSONALIDAD' },
+    { id: 'cf-grp-behaves', label: 'ACCESO' },
+    { id: 'cf-grp-unit', label: 'APARIENCIA' }
   ];
   const cfOpen = new Map();
   function agConfig(a) {
@@ -2735,15 +2735,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       modelCard(a), personaCard(a),
       agSkills(a.id) + accessAnswerCard(a), agCommand(a)
     ];
-    const summaries = [a.purpose || '¿Qué debe lograr este agente?', 'Identidad, contexto y reglas de operación · edita cada una para queurce file',
-      a.model || 'Seguir el defecto de la estación', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Personalidad de la estación',
+    const summaries = [a.purpose || '¿Qué debe lograr este agente?', 'Identidad, contexto y reglas de operación · edita cada archivo',
+      a.model || 'Seguir el modelo por defecto de la estación', (typeof Personas !== 'undefined' && Personas.get(a.personaId)?.name) || 'Personalidad de la estación',
       (() => { const AP = agentPostureOf(a); return AP ? AP.label + ' — ' + AP.agentBlurb : 'Personalizado — su propia mezcla de alcance y preguntas'; })(),
       ((typeof DATA !== 'undefined' && DATA.SKINS && DATA.SKINS[a.skin]) || {}).name || 'Elige un aspecto'];
-    return '<p class="cf-grp-note">Choose what to change. Text you edit needs SAVE; buttons apply right away.</p>' +
+    return '<p class="cf-grp-note">Elige qué cambiar. El texto que editas necesita GUARDAR; los botones aplican al instante.</p>' +
       CF_GROUPS.map((g, i) => {
         const key = a.id + ':' + g.id;
         return '<details class="cf-group" id="' + g.id + '" data-cf-group="' + esc(key) + '"' + (cfOpen.get(key) ? ' open' : '') + '><summary><span class="cf-group-title">' + g.label + '</span><span class="cf-group-summary">' + esc(summaries[i]) + '</span></summary><div class="cf-group-body">' + content[i] + '</div></details>';
-      }).join('') + '<div class="cf-card" id="ag-away-link"><button class="bb sm" data-away-open data-tip="opens AUTOMATE › AWAY WORK">AWAY WORK ▸</button></div>' +
+      }).join('') + '<div class="cf-card" id="ag-away-link"><button class="bb sm" data-away-open data-tip="abre AUTOMATE › TRABAJO EN AUSENCIA">TRABAJO EN AUSENCIA ▸</button></div>' +
       agDeleteRow(a);
   }
 
@@ -2755,15 +2755,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function workshopCard(a) {
     const on = !!(a && a.workshop);
     return '<div class="cf-card" id="ag-workshop-card">' +
-      '<div class="cf-head"><span class="cf-file">Queued builds</span></div>' +
+      '<div class="cf-head"><span class="cf-file">Construcciones en cola</span></div>' +
       '<label class="set-row" style="align-items:flex-start;gap:8px;">' +
         '<input type="checkbox" id="ag-workshop-on"' + (on ? ' checked' : '') + ' aria-label="Construir cosas mientras estoy fuera">' +
-        '<span><b>Work through this agent’s queue</b>' +
-        '<span class="dim" style="display:block;margin-top:2px;line-height:1.35;">Let this agent work through the list below in its own sandbox. Keep the station running. Finished builds arrive as <b>sessions to review</b>.</span></span>' +
+        '<span><b>Procesar la cola de este agente</b>' +
+        '<span class="dim" style="display:block;margin-top:2px;line-height:1.35;">Deja que este agente procese la lista de abajo en su propia sandbox. La estación sigue en marcha. Las construcciones terminadas llegan como <b>sesiones para revisar</b>.</span></span>' +
       '</label>' +
       '<div id="ag-workshop-msg" class="msg"></div>' +
-      '<div id="ag-ws-live"><div class="dim" style="font-size:11px;">reading the build list…</div></div>' +
-      '<p class="ws-queue-help">Add work from a quest’s <b>Build while away</b> action, or type <code>/away</code> in COMMS.</p>' +
+      '<div id="ag-ws-live"><div class="dim" style="font-size:11px;">leyendo la lista de construcción…</div></div>' +
+      '<p class="ws-queue-help">Añade trabajo desde la acción <b>Build while away</b> de una misión, o escribe <code>/away</code> en COMMS.</p>' +
     '</div>';
   }
 
@@ -2881,11 +2881,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const chips = STATION_POSTURES.map(P =>
       '<button type="button" class="ov-vchip' + (AP && AP.id === P.id ? ' sel' : '') + '" data-access-posture="' + P.id + '" data-name="' + esc(P.label) + '" title="' + esc(P.agentBlurb) + '" aria-pressed="' + (AP && AP.id === P.id ? 'true' : 'false') + '">' + esc(P.label) + '</button>').join('');
     return '<div class="cf-card" id="ag-access-card">' +
-      '<div class="cf-head"><span class="cf-file">How much can it do?</span></div>' +
+      '<div class="cf-head"><span class="cf-file">¿Cuánto puede hacer?</span></div>' +
       '<div class="ov-vchips" id="ag-access-chips">' + chips + '</div>' +
       '<div class="cf-desc pc-plain" id="ag-access-plain">' + esc(AP ? AP.agentBlurb : 'Una mezcla personalizada — abre Más opciones para ver exactamente a qué puede llegar y si pregunta antes.') + '</div>' +
       '<div id="ag-access-msg" class="msg"></div>' +
-      '<details class="cf-access-more"' + (executionProfileId(a) === 'remote-ssh' ? ' open' : '') + '><summary>More options — exact reach and asking</summary>' +
+      '<details class="cf-access-more"' + (executionProfileId(a) === 'remote-ssh' ? ' open' : '') + '><summary>Más opciones — alcance exacto y preguntas</summary>' +
         executionProfileCard(a) + approvalCard(a) +
       '</details>' +
     '</div>';
@@ -2896,8 +2896,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const chip = (id, label, desc, sel) =>
       '<button type="button" class="ov-vchip' + (sel ? ' sel' : '') + '" data-approval="' + id + '" data-name="' + esc(label) + '" data-tip="' + esc(desc) + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(label) + '</button>';
     return '<div class="cf-card" id="ag-approval-card">' +
-      '<div class="cf-head"><span class="cf-file">✋ approval prompts</span></div>' +
-      '<div class="cf-desc">ASK respects the selected reach profile and pauses before risky calls. FULL POWER authorizes the whole local computer: all available tools, host paths, arbitrary commands, visible apps, and screen/input control. <code>/yolo</code> is the Full Power shortcut.</div>' +
+      '<div class="cf-head"><span class="cf-file">✋ peticiones de aprobación</span></div>' +
+      '<div class="cf-desc">PEDIR respeta el perfil de alcance elegido y se detiene antes de llamadas arriesgadas. PODER TOTAL autoriza todo el equipo local: todas las herramientas disponibles, rutas del host, comandos arbitrarios, apps visibles y control de pantalla/entrada. <code>/yolo</code> es el atajo de Poder Total.</div>' +
       '<div class="ov-vchips" id="ag-approval-chips">' +
         chip('ask', 'PEDIR APROBACIÓN', 'se detiene a confirmarlo contigo antes de escribir, ejecutar o contactar', !full) +
         chip('full', 'PODER TOTAL', 'usa todo el equipo local sin pedidos de aprobación', full) +
@@ -2921,17 +2921,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const traits = (a && a.voiceTraits) || {};
     const select = (key, label, options, selected) => '<div class="set-row"><label for="ag-persona-' + key + '">' + esc(label) + '</label><select class="fbc-sel" id="ag-persona-' + key + '" data-persona-trait="' + key + '">' + options.map((text, i) => '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + esc(text) + '</option>').join('') + '</select></div>';
     const tuning = Personas.TRAITS.map(t => select(t.key, t.label, t.options, Number.isInteger(traits[t.key]) ? traits[t.key] : t.neutral)).join('') +
-      select('profanity', 'LANGUAGE', ['Usar preajuste', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
+      select('profanity', 'IDIOMA', ['Usar preajuste', ...Personas.PROFANITY.options], Number.isInteger(traits.profanity) ? traits.profanity + 1 : 0) +
       Personas.TOGGLES.map(t => '<label class="cf-desc"><input type="checkbox" data-persona-toggle="' + t.key + '"' + (traits[t.key] === true ? ' checked' : '') + '> ' + esc(t.label) + '</label>').join('') +
       '<div class="set-row"><label for="ag-persona-custom">ESTILO PERSONALIZADO</label><textarea class="key-input" id="ag-persona-custom" rows="3" placeholder="Cómo quieres que se comunique este agente">' + esc((a && a.customVoice) || '') + '</textarea></div>' +
-      '<button type="button" class="bb" id="ag-persona-save">SAVE TUNING</button> <button type="button" class="bb" id="ag-persona-reset">RESET TO PRESET</button>';
+      '<button type="button" class="bb" id="ag-persona-save">GUARDAR AJUSTES</button> <button type="button" class="bb" id="ag-persona-reset">RESTABLECER PREAJUSTE</button>';
     return '<div class="cf-card" id="ag-persona-card">' +
-      '<div class="cf-head"><span class="cf-file">◉ personality</span></div>' +
-      '<div class="cf-desc">How this agent communicates in conversation and real work. Every personality keeps the same rigor and honesty. Pick one to apply it immediately. Tune energy and language below; audible voice is configured separately.</div>' +
+      '<div class="cf-head"><span class="cf-file">◉ personalidad</span></div>' +
+      '<div class="cf-desc">Cómo se comunica este agente en la conversación y el trabajo real. Cada personalidad conserva el mismo rigor y honestidad. Elige una para aplicarla al instante. Ajusta energía e idioma abajo; la voz audible se configura aparte.</div>' +
       '<div class="ov-vchips" id="ag-persona-chips">' + chips + '</div>' +
       // sample-reply preview REMOVED (Andrew, 2026-07-20) — the sel chip + vibe tooltip carry the choice.
-      '<details><summary>FINE-TUNE PERSONALITY' + (Personas.hasTuning(traits, a && a.customVoice) ? ' · CUSTOMIZED' : '') + '</summary>' +
-      '<p class="cf-desc">Saved tuning stays when you switch presets. RESET TO PRESET clears tuning and custom style.</p>' + tuning + '</details>' +
+      '<details><summary>AFINAR PERSONALIDAD' + (Personas.hasTuning(traits, a && a.customVoice) ? ' · PERSONALIZADO' : '') + '</summary>' +
+      '<p class="cf-desc">Los ajustes guardados se conservan al cambiar de preajuste. RESTABLECER PREAJUSTE limpia los ajustes y el estilo personalizado.</p>' + tuning + '</details>' +
       '<div id="ag-persona-msg" class="msg" role="status" aria-live="polite"></div>' +
     '</div>';
   }
@@ -2949,21 +2949,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // an <details> as an escape hatch for a model id that isn't in the catalog. SAVE reads the picker first.
     const hasPicker = (typeof ModelPicker !== 'undefined');
     const picker = hasPicker
-      ? '<div class="set-row mc-pick-row"><label for="ag-model-pick-model">MODEL</label>' +
+      ? '<div class="set-row mc-pick-row"><label for="ag-model-pick-model">MODELO</label>' +
           '<div class="mc-pick" id="ag-model-pick">' + ModelPicker.shellHTML({ id: 'ag-model-pick', inheritLabel: 'Seguir el defecto de la estación', ariaLabel: 'Modelo del agente', effort: true }) + '</div></div>'
       : '';
     return '<div class="cf-card" id="ag-model-card">' +
-      '<div class="cf-head"><span class="cf-file">▣ model</span></div>' +
-      '<div class="cf-desc">What this agent runs on. Pick a model to run this agent on it everywhere — chat, delegated work, scheduled routines — independent of the station default in the COMMS dock. “Follow station default” clears the pin. Choose SAVE MODEL to apply your selection.</div>' +
+      '<div class="cf-head"><span class="cf-file">▣ modelo</span></div>' +
+      '<div class="cf-desc">Sobre qué modelo corre este agente. Elige un modelo para usarlo en todas partes — chat, trabajo delegado, rutinas programadas — independiente del modelo por defecto de la estación en el dock de COMMS. «Seguir el defecto de la estación» despega el fijo. Elige GUARDAR MODELO para aplicar tu selección.</div>' +
       picker +
-      '<details class="mc-adv"' + ((pinned && !hasPicker) ? ' open' : '') + '><summary>advanced — type a model id</summary>' +
-        '<div class="set-row"><label for="ag-model-in">MODEL</label><input id="ag-model-in" class="key-input" type="text" spellcheck="false" autocomplete="off" placeholder="e.g. anthropic/claude-sonnet-4-5" value="' + esc(model) + '"></div>' +
-        '<div class="set-row"><label for="ag-prov-in">PROVIDER</label><input id="ag-prov-in" class="key-input" type="text" spellcheck="false" autocomplete="off" placeholder="e.g. openrouter · anthropic · codex" value="' + esc(prov) + '"></div>' +
+      '<details class="mc-adv"' + ((pinned && !hasPicker) ? ' open' : '') + '><summary>avanzado — escribe un id de modelo</summary>' +
+        '<div class="set-row"><label for="ag-model-in">MODELO</label><input id="ag-model-in" class="key-input" type="text" spellcheck="false" autocomplete="off" placeholder="p. ej. anthropic/claude-sonnet-4-5" value="' + esc(model) + '"></div>' +
+        '<div class="set-row"><label for="ag-prov-in">PROVEEDOR</label><input id="ag-prov-in" class="key-input" type="text" spellcheck="false" autocomplete="off" placeholder="p. ej. openrouter · anthropic · codex" value="' + esc(prov) + '"></div>' +
       '</details>' +
-      '<div class="mc-hint">' + (pinned ? 'pinned — this agent ignores the station default' : 'following the station default') + '</div>' +
+      '<div class="mc-hint">' + (pinned ? 'fijado — este agente ignora el defecto de la estación' : 'siguiendo el defecto de la estación') + '</div>' +
       '<div class="mc-acts">' +
-        '<button class="bb sm" id="ag-model-save">SAVE MODEL</button>' +
-        (pinned ? '<button class="bb xs" id="ag-model-clear" title="run this agent on the station default model again">FOLLOW STATION DEFAULT</button>' : '') +
+        '<button class="bb sm" id="ag-model-save">GUARDAR MODELO</button>' +
+        (pinned ? '<button class="bb xs" id="ag-model-clear" title="vuelve a correr este agente con el modelo por defecto de la estación">SEGUIR EL DEFECTO DE LA ESTACIÓN</button>' : '') +
       '</div>' +
       '<div id="ag-model-msg" class="msg"></div>' +
     '</div>';
@@ -3011,7 +3011,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (access.config && access.config.apply) access.config.apply({ [key]: val }, a && a.id);
       delete agEdit[key]; delete agEditBase[key]; sfx('click');
       const meta = CONFIG_FILES.find(f => f.key === key);
-      notify('saved ' + (meta ? meta.file : key) + ' — your agent runs on it now', 'good');
+      notify('guardado ' + (meta ? meta.file : key) + ' — tu agente ya corre con él', 'good');
       rerender('agents');
     }));
     // keep focus in the editor across the rerender that opened it (ignore reserved '__' keys like the header rename)
@@ -3037,9 +3037,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       });
     }
     const applyModel = (model, provider, effort) => {
-      if (!(access.config && access.config.setModel)) { setMMsg('per-agent model unavailable'); return; }
+      if (!(access.config && access.config.setModel)) { setMMsg('modelo por agente no disponible'); return; }
       const ok = access.config.setModel(a && a.id, model, provider, effort);
-      if (ok === false) { setMMsg('could not update this agent'); sfx('bad'); return; }
+      if (ok === false) { setMMsg('no se pudo actualizar este agente'); sfx('bad'); return; }
       sfx('click'); rerender('agents');
     };
     if (mSave) mSave.addEventListener('click', () => {
@@ -3075,8 +3075,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const custom = reset ? '' : (body.querySelector('#ag-persona-custom').value || '');
         const id = Personas.resolve(a && a.personaId);
         const ok = access.config && access.config.setPersona && access.config.setPersona(a && a.id, id, { traits, custom });
-        if (!ok) { setPMsg('could not save personality tuning', false); sfx('bad'); return; }
-        notify(reset ? 'personality tuning reset' : 'personality tuning saved', 'good');
+        if (!ok) { setPMsg('no se pudieron guardar los ajustes de personalidad', false); sfx('bad'); return; }
+        notify(reset ? 'ajustes de personalidad restablecidos' : 'ajustes de personalidad guardados', 'good');
         rerender('agents');
       };
       body.querySelector('#ag-persona-save')?.addEventListener('click', () => saveTuning(false));
@@ -3095,10 +3095,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           return;
         }
         disarm();
-        if (!(access.config && access.config.setPersona)) { setPMsg('personality change unavailable', false); sfx('bad'); return; }
+        if (!(access.config && access.config.setPersona)) { setPMsg('cambio de personalidad no disponible', false); sfx('bad'); return; }
         const ok = access.config.setPersona(a && a.id, id);
-        if (ok === false) { setPMsg('could not change personality', false); sfx('bad'); return; }
-        notify('personality → ' + (chip.dataset.name || id).toUpperCase() + (id === 'unhinged' && Personas.effective(id, a && a.voiceTraits).profanity > 0 ? ' — it swears, for real' : ''), 'good');
+        if (ok === false) { setPMsg('no se pudo cambiar la personalidad', false); sfx('bad'); return; }
+        notify('personalidad → ' + (chip.dataset.name || id).toUpperCase() + (id === 'unhinged' && Personas.effective(id, a && a.voiceTraits).profanity > 0 ? ' — maldice, de verdad' : ''), 'good');
         sfx('click'); rerender('agents');
       }));
     }
@@ -3112,7 +3112,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const paintBackendTruth = (row) => {
         const routed = String((row && row.profile && row.profile.effectiveBackend) || 'unknown').toUpperCase();
         const availability = String((row && row.environment && row.environment.availability && row.environment.availability.state) || 'unknown').toUpperCase();
-        if (epTruth) epTruth.innerHTML = sandboxChip(row) + 'ROUTES NEXT COMMAND TO <b>' + esc(routed) + '</b> · AVAILABILITY <b>' + esc(availability) + '</b>. Current reach is shown in effective access above.';
+        if (epTruth) epTruth.innerHTML = sandboxChip(row) + 'EL PRÓXIMO COMANDO VA A <b>' + esc(routed) + '</b> · DISPONIBILIDAD <b>' + esc(availability) + '</b>. El alcance actual se muestra en el acceso efectivo de arriba.';
       };
       Harness.api.get('/api/execution-profiles').then(j => paintBackendTruth((j && j.agents || []).find(x => x.agentId === (a && a.id)))).catch(() => paintBackendTruth(null));
       let epArmed = null;
@@ -3124,16 +3124,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const id = chip.dataset.executionProfile;
         if (!id || id === currentId) { epDisarm(); return; }
         if (id === 'this-computer' && epArmed !== chip) {
-          epDisarm(); epArmed = chip; chip.classList.add('arm'); chip.textContent = 'SURE? IT COULD READ ANY FILE HERE'; sfx('click'); return;
+          epDisarm(); epArmed = chip; chip.classList.add('arm'); chip.textContent = '¿SEGURO? PODRÍA LEER CUALQUIER ARCHIVO DE AQUÍ'; sfx('click'); return;
         }
         epDisarm();
-        if (!(access.config && access.config.setExecutionProfile)) { notify('execution profile change unavailable', 'bad'); sfx('bad'); return; }
+        if (!(access.config && access.config.setExecutionProfile)) { notify('cambio de perfil de ejecución no disponible', 'bad'); sfx('bad'); return; }
         chip.disabled = true;
         Promise.resolve(access.config.setExecutionProfile(a && a.id, id)).then(ok => {
-          if (!ok) { notify('could not change execution profile — the station kept the prior profile', 'bad'); sfx('bad'); rerender('agents'); return; }
-          notify(((a && a.name) || 'agent') + ' execution profile → ' + (chip.dataset.name || id), id === 'this-computer' ? 'warn' : 'good');
+          if (!ok) { notify('no se pudo cambiar el perfil de ejecución — la estación conservó el anterior', 'bad'); sfx('bad'); rerender('agents'); return; }
+          notify(((a && a.name) || 'agente') + ' · perfil de ejecución → ' + (chip.dataset.name || id), id === 'this-computer' ? 'warn' : 'good');
           sfx('click'); rerender('agents');
-        }).catch(() => { notify('could not change execution profile — the station kept the prior profile', 'bad'); sfx('bad'); rerender('agents'); });
+        }).catch(() => { notify('no se pudo cambiar el perfil de ejecución — la estación conservó el anterior', 'bad'); sfx('bad'); rerender('agents'); });
       }));
     }
 
@@ -3153,15 +3153,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (id === 'full' && apArmed !== chip) {
           apDisarm(); apArmed = chip;
           chip.classList.add('arm');
-          chip.textContent = 'FULL POWER — SURE?';
+          chip.textContent = 'PODER TOTAL — ¿SEGURO?';
           sfx('click');
           return;
         }
         apDisarm();
-        if (!(access.config && access.config.setApproval)) { setApMsg('approval change unavailable', false); sfx('bad'); return; }
+        if (!(access.config && access.config.setApproval)) { setApMsg('cambio de aprobación no disponible', false); sfx('bad'); return; }
         const ok = access.config.setApproval(a && a.id, id);
-        if (ok === false) { setApMsg('could not change approval', false); sfx('bad'); return; }
-        notify(id === 'full' ? '⚡ ' + ((a && a.name) || 'agent') + ' now has Full Power over the local computer' : '✋ ' + ((a && a.name) || 'agent') + ' will ask before risky moves again', id === 'full' ? 'warn' : 'good');
+        if (ok === false) { setApMsg('no se pudo cambiar la aprobación', false); sfx('bad'); return; }
+        notify(id === 'full' ? '⚡ ' + ((a && a.name) || 'agente') + ' ahora tiene Poder Total sobre el equipo local' : '✋ ' + ((a && a.name) || 'agente') + ' volverá a pedir antes de movimientos arriesgados', id === 'full' ? 'warn' : 'good');
         sfx('click'); rerender('agents');
       }));
     }
@@ -3175,17 +3175,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const P = STATION_POSTURES.find(x => x.id === chip.dataset.accessPosture);
         if (!P || (held && held.id === P.id)) return;
         const apply = () => {
-          if (!(access.config && access.config.setExecutionProfile && access.config.setApproval)) { if (accMsg) accMsg.textContent = 'access change unavailable'; sfx('bad'); return; }
+          if (!(access.config && access.config.setExecutionProfile && access.config.setApproval)) { if (accMsg) accMsg.textContent = 'cambio de acceso no disponible'; sfx('bad'); return; }
           chip.disabled = true;
           Promise.resolve(access.config.setExecutionProfile(a && a.id, P.profile))
             .then(okP => !!okP && !!access.config.setApproval(a && a.id, P.approval))
             .catch(() => false)
             .then(ok => {
-              notify(ok ? ((a && a.name) || 'agent') + ' set to ' + P.label : 'could not change ' + ((a && a.name) || 'agent') + ' — it kept its previous setting', ok ? (P.id === 'open' ? 'warn' : 'good') : 'bad');
+              notify(ok ? ((a && a.name) || 'agente') + ' ajustado a ' + P.label : 'no se pudo ajustar ' + ((a && a.name) || 'agente') + ' — conservó su configuración anterior', ok ? (P.id === 'open' ? 'warn' : 'good') : 'bad');
               sfx(ok ? 'click' : 'bad'); rerender('agents');
             });
         };
-        if (P.id === 'open') ArmConfirm.wire(chip, { armedLabel: 'SURE? WHOLE COMPUTER', restLabel: P.label, timeoutMs: 4000, onArm: () => sfx('bad'), onConfirm: apply });
+        if (P.id === 'open') ArmConfirm.wire(chip, { armedLabel: '¿SEGURO? TODO EL EQUIPO', restLabel: P.label, timeoutMs: 4000, onArm: () => sfx('bad'), onConfirm: apply });
         else chip.addEventListener('click', apply);
       });
     }
@@ -3200,21 +3200,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const setWMsg = (t, ok) => { if (wMsg) { wMsg.textContent = t || ''; wMsg.className = 'msg' + (ok ? ' ok' : ''); } };
     if (wOn) wOn.addEventListener('change', () => {
       const next = !!wOn.checked;
-      if (!(access.config && access.config.setWorkshop)) { setWMsg('away workshop unavailable', false); wOn.checked = !next; return; }
+      if (!(access.config && access.config.setWorkshop)) { setWMsg('taller de ausencia no disponible', false); wOn.checked = !next; return; }
       // OPTIMISTIC then TRUTHFUL: show the intent immediately, but the switch only stays flipped if the sidecar
       // actually recorded the grant (POST /api/workshop/grant). setWorkshop resolves to that real result; on
       // failure we revert the checkbox + say so, so the UI never asserts a grant the harness didn't record.
       wOn.disabled = true;
       sfx('click');
-      setWMsg(next ? 'saving…' : 'saving…', true);
+      setWMsg('guardando…', true);
       Promise.resolve(access.config.setWorkshop(a && a.id, next)).then(ok => {
         wOn.disabled = false;
-        if (!ok) { setWMsg('could not save that — the station didn’t record it', false); sfx('bad'); wOn.checked = !next; return; }
-        setWMsg(next ? 'on — this agent can build in its sandbox while you’re away' : 'off — this agent stays idle while you’re away', true);
+        if (!ok) { setWMsg('no se pudo guardar — la estación no lo registró', false); sfx('bad'); wOn.checked = !next; return; }
+        setWMsg(next ? 'activado — este agente puede construir en su sandbox mientras estás fuera' : 'desactivado — este agente sigue en reposo mientras estás fuera', true);
         loadWsLive();   // grant flips arm/disarm the shift → the next-shift line changes
       }).catch(() => {
         wOn.disabled = false; wOn.checked = !next;
-        setWMsg('could not save that — reconnect and try again', false);
+        setWMsg('no se pudo guardar — reconecta e inténtalo de nuevo', false);
       });
     });
 
@@ -3226,59 +3226,59 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const wsLive = body.querySelector('#ag-ws-live');
     const aid = (a && a.id) || 'agent';
     const rel = (ms) => {
-      if (!ms || ms <= 0) return 'now';
+      if (!ms || ms <= 0) return 'ahora';
       const m = Math.round(ms / 60000);
       if (m < 60) return '~' + Math.max(1, m) + 'm';
       const h = Math.floor(m / 60);
       return '~' + h + 'h ' + (m % 60) + 'm';
     };
-    const ago = (t) => { const d = Date.now() - t; return d < 90000 ? 'just now' : rel(d).replace('~', '') + ' ago'; };
+    const ago = (t) => { const d = Date.now() - t; return d < 90000 ? 'ahora mismo' : rel(d).replace('~', '') + ' atrás'; };
     const lastShiftLine = (ls) => {
       if (!ls || !ls.at) return '';
       const when = ago(ls.at);
       const r = String(ls.reason || '');
-      if (r === 'built') return '✓ last shift (' + when + '): built “' + esc(ls.title || 'a deliverable') + '” — it’s waiting in your rail';
-      if (r === 'empty-backlog') return '· last shift (' + when + '): nothing queued, so it rested';
-      if (r === 'no-capability') return '⚠ last shift (' + when + '): couldn’t run — no model/key available for unattended builds. Fix the provider key in SETTINGS.';
-      if (r === 'run-failed' || r === 'no-manifest') return '⚠ last shift (' + when + '): tried “' + esc(ls.title || '') + '” but produced nothing reviewable' + (ls.parkedTitle ? ' — it’s now PARKED after repeated failures (retry below to try again)' : ' — it will retry next shift');
+      if (r === 'built') return '✓ último turno (' + when + '): construyó “' + esc(ls.title || 'un entregable') + '” — te espera en tu rail';
+      if (r === 'empty-backlog') return '· último turno (' + when + '): nada en cola, así que descansó';
+      if (r === 'no-capability') return '⚠ último turno (' + when + '): no pudo correr — sin modelo/clave para construcciones sin supervisión. Corrige la clave del proveedor en SETTINGS.';
+      if (r === 'run-failed' || r === 'no-manifest') return '⚠ último turno (' + when + '): intentó “' + esc(ls.title || '') + '” pero no produjo nada revisable' + (ls.parkedTitle ? ' — quedó APARCADO tras fallos repetidos (reintenta abajo para volver a intentarlo)' : ' — reintentará el próximo turno');
       // FREE = FINISHED: the top rung chains a plan straight into its build. When that chain doesn't land we
       // still deliver the plan (never an empty morning) — say so, rather than reporting a clean "built".
-      if (r === 'plan-fallback') return '⚠ last shift (' + when + '): planned “' + esc(ls.title || '') + '” but couldn’t build it in the same shift — the plan is waiting in your rail, press BUILD IT to finish it';
-      if (r === 'not-granted') return '· last shift (' + when + '): skipped — the grant was off';
-      return '· last shift (' + when + '): ' + esc(r);
+      if (r === 'plan-fallback') return '⚠ último turno (' + when + '): planificó “' + esc(ls.title || '') + '” pero no pudo construirlo en el mismo turno — el plan te espera en tu rail, pulsa CONSTRUIRLO para terminarlo';
+      if (r === 'not-granted') return '· último turno (' + when + '): se saltó — la concesión estaba apagada';
+      return '· último turno (' + when + '): ' + esc(r);
     };
     function loadWsLive() {
       if (!wsLive) return;
       Harness.api.get('/api/workshop/backlog?agent=' + encodeURIComponent(aid))
-        .then(j => { if (j && j.ok) renderWsLive(j); else if (wsLive) wsLive.innerHTML = '<div class="dim" style="font-size:11px;">couldn’t read the build list — the station may be unreachable</div>'; })
-        .catch(() => { if (wsLive) wsLive.innerHTML = '<div class="dim" style="font-size:11px;">couldn’t read the build list — the station may be unreachable</div>'; });
+        .then(j => { if (j && j.ok) renderWsLive(j); else if (wsLive) wsLive.innerHTML = '<div class="dim" style="font-size:11px;">no se pudo leer la lista de construcción — la estación puede estar inalcanzable</div>'; })
+        .catch(() => { if (wsLive) wsLive.innerHTML = '<div class="dim" style="font-size:11px;">no se pudo leer la lista de construcción — la estación puede estar inalcanzable</div>'; });
     }
     function renderWsLive(j) {
       const items = Array.isArray(j.items) ? j.items : [];
-      const STATE = { queued: 'queued', building: 'building…', built: 'built — review it', parked: 'parked (failed twice)' };
-      let h = '<div class="ws-bl-head">build list' + (items.length ? ' · ' + items.length : '') + '</div>';
-      if (!items.length) h += '<div class="dim" style="font-size:12px;">No builds queued yet.</div>';
+      const STATE = { queued: 'en cola', building: 'construyendo…', built: 'construido — revísalo', parked: 'aparcado (falló dos veces)' };
+      let h = '<div class="ws-bl-head">lista de construcción' + (items.length ? ' · ' + items.length : '') + '</div>';
+      if (!items.length) h += '<div class="dim" style="font-size:12px;">Aún no hay construcciones en cola.</div>';
       h += items.map(it =>
         '<div class="ws-bl-row" data-blid="' + esc(it.id) + '">' +
-          '<span class="ws-bl-title">' + esc(it.title || '(untitled)') + '</span>' +
+          '<span class="ws-bl-title">' + esc(it.title || '(sin título)') + '</span>' +
           '<span class="ws-bl-state ' + esc(it.state) + '">' + (STATE[it.state] || esc(it.state)) + '</span>' +
-          (it.state === 'built' ? '<button class="ws-bl-review" data-run="' + esc(it.builtRunId || '') + '">review</button>' : '') +
-          (it.state === 'parked' ? '<button class="ws-bl-retry" data-title="' + esc(it.title || '') + '">retry</button>' : '') +
-          (it.state === 'queued' || it.state === 'parked' ? '<button class="ws-bl-remove" title="take this off the list (it can be queued again later)">✕</button>' : '') +
+          (it.state === 'built' ? '<button class="ws-bl-review" data-run="' + esc(it.builtRunId || '') + '">revisar</button>' : '') +
+          (it.state === 'parked' ? '<button class="ws-bl-retry" data-title="' + esc(it.title || '') + '">reintentar</button>' : '') +
+          (it.state === 'queued' || it.state === 'parked' ? '<button class="ws-bl-remove" title="sácalo de la lista (puede volver a encolararse después)">✕</button>' : '') +
         '</div>').join('');
       // cadence + build-now + honest last-shift outcome
       // nextRunAt arrives as an ISO string from the cron store — parse, never subtract a string (NaN → "in now")
       const nextAt = j.nextShiftAt ? (Date.parse(j.nextShiftAt) || Number(j.nextShiftAt) || 0) : 0;
       const due = nextAt ? (nextAt - Date.now()) : 0;
       // the station withholds the clock while scheduling is OFF or E-STOPped (shiftsPaused) — say that, never a countdown
-      const next = (j.granted && j.shiftsPaused === 'halted') ? 'shifts paused — the E-STOP is engaged (resume automation to lift it)'
-        : (j.granted && j.shiftsPaused) ? 'shifts paused — scheduling is OFF (AUTOMATE › SCHEDULES › TURN SCHEDULING ON)'
+      const next = (j.granted && j.shiftsPaused === 'halted') ? 'turnos en pausa — el E-STOP está activado (reanuda la automatización para levantarlo)'
+        : (j.granted && j.shiftsPaused) ? 'turnos en pausa — la programación está APAGADA (AUTOMATE › PROGRAMACIONES › ACTIVAR PROGRAMACIÓN)'
         : (j.granted && nextAt)
-        ? (due <= 60000 ? 'next shift: due now' : 'next shift in ' + rel(due))
-        : (j.granted ? 'shift not scheduled yet' : 'shifts are off (grant above)');
+        ? (due <= 60000 ? 'próximo turno: debido ahora' : 'próximo turno en ' + rel(due))
+        : (j.granted ? 'aún no hay turno programado' : 'los turnos están apagados (concesión de arriba)');
       h += '<div class="ws-bl-foot">' +
-        '<span class="dim" style="font-size:11px;">' + esc(next) + (j.shiftEvery ? ' · repeats ' + esc(String(j.shiftEvery).replace(/^every /, 'every ')) : '') + '</span>' +
-        (j.granted && items.some(it => it.state === 'queued') ? '<button class="bb sm" id="ag-ws-now">⚒ build now</button>' : '') +
+        '<span class="dim" style="font-size:11px;">' + esc(next) + (j.shiftEvery ? ' · se repite ' + esc(String(j.shiftEvery).replace(/^every /, 'cada ')) : '') + '</span>' +
+        (j.granted && items.some(it.state === 'queued') ? '<button class="bb sm" id="ag-ws-now">⚒ construir ahora</button>' : '') +
         '</div>';
       const ls = lastShiftLine(j.lastShift);
       if (ls) h += '<div class="ws-bl-last' + (/^⚠/.test(ls) ? ' warn' : '') + '">' + ls + '</div>';
@@ -3288,24 +3288,24 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const id = b.closest('.ws-bl-row').getAttribute('data-blid');
         b.disabled = true;
         Harness.api.post('/api/workshop/remove', { agentId: aid, backlogId: id })
-          .then(({ j: res }) => { if (!(res && res.ok)) notify((res && res.error) || 'could not remove that', 'bad'); loadWsLive(); })
-          .catch(() => { notify('could not reach the station', 'bad'); loadWsLive(); });
+          .then(({ j: res }) => { if (!(res && res.ok)) notify((res && res.error) || 'no se pudo quitar eso', 'bad'); loadWsLive(); })
+          .catch(() => { notify('no se pudo alcanzar la estación', 'bad'); loadWsLive(); });
       }));
       wsLive.querySelectorAll('.ws-bl-retry').forEach(b => b.addEventListener('click', () => {
         const id = b.closest('.ws-bl-row').getAttribute('data-blid');
         b.disabled = true;   // re-queueing the SAME id un-parks it server-side (clears the failed-attempt count)
         Harness.api.post('/api/workshop/queue', { agentId: aid, id: id, title: b.getAttribute('data-title') || '' })
           .then(() => loadWsLive())
-          .catch(() => { notify('could not reach the station', 'bad'); loadWsLive(); });
+          .catch(() => { notify('no se pudo alcanzar la estación', 'bad'); loadWsLive(); });
       }));
       wsLive.querySelectorAll('.ws-bl-review').forEach(b => b.addEventListener('click', () => {
         const run = b.getAttribute('data-run');
         if (run && access.comms && access.comms.openWorkstream) { sfx('click'); access.comms.openWorkstream('workshop-' + run); }
-        else notify('open the ⚒ session in your rail to review it', 'gold');
+        else notify('abre la sesión ⚒ en tu rail para revisarla', 'gold');
       }));
       const nowBtn = wsLive.querySelector('#ag-ws-now');
       if (nowBtn) nowBtn.addEventListener('click', () => {
-        nowBtn.disabled = true; nowBtn.textContent = 'building…';
+        nowBtn.disabled = true; nowBtn.textContent = 'construyendo…';
         // the shift is a run: its lines ride the page's ONE run stream (Harness.streamPost) and its outcome is the
         // workshop.shift.result line at the end — never a connection of its own held for the whole build
         let shift = null;
@@ -3313,15 +3313,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           .then(async r => { if (!r.ok) throw new Error((r.j && r.j.error) || 'http ' + r.status); await r.done; return shift; })
           .then(res => {
             const p = res || {};
-            if (p.reason === 'built') notify('⚒ built — it’s waiting as a new session in your rail', 'gold');
-            else if (p.reason === 'no-capability') notify('couldn’t build — no model/key available for unattended runs', 'bad');
-            else if (p.reason === 'empty-backlog') notify('nothing queued to build', 'warn');
-            else if (p.chainedFrom) notify('⚒ planned it, then BUILT it — the finished thing is in your rail', 'gold');
-            else if (p.fired) notify('the shift ran but produced nothing reviewable — it will retry', 'warn');
-            else notify('the shift didn’t run (' + (p.reason || 'unknown') + ')', 'warn');
+            if (p.reason === 'built') notify('⚒ construido — te espera como una nueva sesión en tu rail', 'gold');
+            else if (p.reason === 'no-capability') notify('no se pudo construir — sin modelo/clave para ejecuciones sin supervisión', 'bad');
+            else if (p.reason === 'empty-backlog') notify('nada en cola para construir', 'warn');
+            else if (p.chainedFrom) notify('⚒ lo planificó y luego lo CONSTRUYÓ — el resultado está en tu rail', 'gold');
+            else if (p.fired) notify('el turno corrió pero no produjo nada revisable — reintentará', 'warn');
+            else notify('el turno no corrió (' + (p.reason || 'desconocido') + ')', 'warn');
             loadWsLive();
           })
-          .catch(() => { notify('could not reach the station', 'bad'); loadWsLive(); });
+          .catch(() => { notify('no se pudo alcanzar la estación', 'bad'); loadWsLive(); });
       });
     }
     loadWsLive();
@@ -3368,10 +3368,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const val = ((body.querySelector('#ag-rename-in') || {}).value || '').trim();
       if (!val) { sfx('bad'); return; }
       delete agEdit['__name'];
-      if (!(access.config && access.config.setName)) { notify('rename unavailable', 'bad'); rerender('agents'); return; }
+      if (!(access.config && access.config.setName)) { notify('renombrar no disponible', 'bad'); rerender('agents'); return; }
       const ok = access.config.setName(a && a.id, val);
-      if (ok === false) { notify('could not rename', 'bad'); sfx('bad'); rerender('agents'); return; }
-      notify('renamed to ' + val.replace(/\s+/g, ' ').trim().toUpperCase().slice(0, 18), 'good');
+      if (ok === false) { notify('no se pudo renombrar', 'bad'); sfx('bad'); rerender('agents'); return; }
+      notify('renombrado a ' + val.replace(/\s+/g, ' ').trim().toUpperCase().slice(0, 18), 'good');
       sfx('click'); rerender('agents');
     };
     const rin = body.querySelector('#ag-rename-in');
@@ -3805,25 +3805,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const secLibrary =
       // "recipes" here collided with the ❒ RECIPES dock feature (audit finding 2) — these are PROCEDURES: how-to
       // guides an agent follows mid-task, not launchable jobs.
-      '<p class="sk-note sk-lib-intro">Enable skills for the whole station. Agents use them when relevant, with the tools and service access they already have.</p>' +
-      '<div id="sk-lib" class="sk-lib"><div class="sk-loading"><span class="loading pulse">loading the skill library…</span></div></div>';
+      '<p class="sk-note sk-lib-intro">Activa habilidades para toda la estación. Los agentes las usan cuando son relevantes, con las herramientas y accesos a servicios que ya tienen.</p>' +
+      '<div id="sk-lib" class="sk-lib"><div class="sk-loading"><span class="loading pulse">cargando la biblioteca de habilidades…</span></div></div>';
     const secAgent =
       agentPicker +
       '<p class="sk-note sk-lib-intro" id="sk-agent-intro">' + skillsIntro(a) + '</p>' +
-      '<div id="sk-agent" class="sk-lib"><div class="sk-loading">loading agent skills…</div></div>';
+      '<div id="sk-agent" class="sk-lib"><div class="sk-loading">cargando las habilidades del agente…</div></div>';
     const secExchange =
-      '<p class="sk-note sk-lib-intro">Install a complete open skill package from a public HTTPS or GitHub <b>SKILL.md</b>. StarNet freezes the instructions and support files under one SHA-256 before review. Missing, oversized, unsafe, or partial packages are refused.</p>' +
-      '<div class="sk-exchange-form"><label for="sk-exchange-url">SKILL.MD SOURCE</label>' +
+      '<p class="sk-note sk-lib-intro">Instala un paquete completo de habilidad abierta desde una <b>SKILL.md</b> pública de HTTPS o GitHub. StarNet congela las instrucciones y los archivos de soporte bajo un solo SHA-256 antes de la revisión. Los paquetes faltantes, excesivos, inseguros o parciales se rechazan.</p>' +
+      '<div class="sk-exchange-form"><label for="sk-exchange-url">FUENTE SKILL.MD</label>' +
         '<div class="sk-exchange-row"><input id="sk-exchange-url" type="url" autocomplete="off" spellcheck="false" placeholder="https://github.com/owner/repo/blob/main/SKILL.md">' +
-        '<button id="sk-exchange-inspect" class="consent-btn" type="button">INSPECT</button></div>' +
-        '<label class="consent-btn" for="sk-exchange-import">IMPORT EXPORTED PACKAGE</label><input id="sk-exchange-import" type="file" accept=".json,.starnet-skill.json,application/json" hidden></div>' +
-      '<div class="sk-exchange-form"><label for="sk-registry-url">REGISTRY / TEAM TAP</label>' +
+        '<button id="sk-exchange-inspect" class="consent-btn" type="button">INSPECCIONAR</button></div>' +
+        '<label class="consent-btn" for="sk-exchange-import">IMPORTAR PAQUETE EXPORTADO</label><input id="sk-exchange-import" type="file" accept=".json,.starnet-skill.json,application/json" hidden></div>' +
+      '<div class="sk-exchange-form"><label for="sk-registry-url">REGISTRO / TAP DEL EQUIPO</label>' +
         '<div class="sk-exchange-row"><input id="sk-registry-url" type="url" autocomplete="off" spellcheck="false" placeholder="https://example.com/skills/index.json">' +
-        '<input id="sk-registry-query" type="search" autocomplete="off" placeholder="search or browse all">' +
-        '<button id="sk-registry-search" class="consent-btn" type="button">BROWSE</button>' +
-        '<button id="sk-registry-discover" class="consent-btn" type="button">DISCOVER SITE</button>' +
-        '<button id="sk-registry-save" class="consent-btn" type="button">SAVE TAP</button></div><div id="sk-registry-sources"></div><div id="sk-registry-results"></div></div>' +
-      '<div id="sk-exchange-preview" class="sk-exchange-preview" role="status" aria-live="polite"><div class="sk-loading">Paste a source to inspect its instructions, provenance, and guard verdict.</div></div>';
+        '<input id="sk-registry-query" type="search" autocomplete="off" placeholder="buscar o explorar todo">' +
+        '<button id="sk-registry-search" class="consent-btn" type="button">EXPLORAR</button>' +
+        '<button id="sk-registry-discover" class="consent-btn" type="button">DESCUBRIR SITIO</button>' +
+        '<button id="sk-registry-save" class="consent-btn" type="button">GUARDAR TAP</button></div><div id="sk-registry-sources"></div><div id="sk-registry-results"></div></div>' +
+      '<div id="sk-exchange-preview" class="sk-exchange-preview" role="status" aria-live="polite"><div class="sk-loading">Pega una fuente para inspeccionar sus instrucciones, procedencia y veredicto del guardián.</div></div>';
     /* Fill the LIVE VOICE section from the sidecar's real voice list and persist the pick.
        Truthful by construction: if the provider has no native voice endpoint we say so rather than
        offering choices that would do nothing, and the note about WHEN a change takes effect is shown
@@ -3832,12 +3832,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // SKILL MARKET (2026-09-29): the curated StarNet catalog, browsed as the same glass card grid the connectors
     // CATALOG uses. The catalog is fetched when this section loads, never in the background.
     const secMarket =
-      '<p class="set-about"><b>Add skills to your whole crew.</b> StarNet Originals are written by StarNet for your station; community picks are credited to their authors. Installing adds the skill to your SKILL LIBRARY and switches it on.</p>' +
+      '<p class="set-about"><b>Añade habilidades a toda tu tripulación.</b> Los Originals de StarNet están escritos por StarNet para tu estación; las selecciones de la comunidad llevan crédito a sus autores. Al instalar se añade la habilidad a tu BIBLIOTECA DE HABILIDADES y se activa.</p>' +
       '<div class="cc-filters" id="skm-filters" role="group" aria-label="Filtrar el mercado de habilidades">' +
-        '<button type="button" class="cc-filter active" data-skm-filter="all" aria-pressed="true">ALL</button>' +
-        '<button type="button" class="cc-filter" data-skm-filter="originals" aria-pressed="false">STARNET ORIGINALS</button>' +
-        '<button type="button" class="cc-filter" data-skm-filter="community" aria-pressed="false">COMMUNITY</button>' +
-        '<button type="button" class="cc-filter" data-skm-filter="installed" aria-pressed="false">INSTALLED</button>' +
+        '<button type="button" class="cc-filter active" data-skm-filter="all" aria-pressed="true">TODO</button>' +
+        '<button type="button" class="cc-filter" data-skm-filter="originals" aria-pressed="false">ORIGINALS DE STARNET</button>' +
+        '<button type="button" class="cc-filter" data-skm-filter="community" aria-pressed="false">COMUNIDAD</button>' +
+        '<button type="button" class="cc-filter" data-skm-filter="installed" aria-pressed="false">INSTALADAS</button>' +
         '<button type="button" class="cc-filter" data-skm-filter="update" aria-pressed="false">UPDATES</button>' +
       '</div>' +
       // the result of the last install/remove, read out once — the card itself also shows it next to its button
@@ -3846,10 +3846,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
     const frag = html => (el => { el.innerHTML = html; });
     const sections = [
-      { id: 'market', label: 'SKILL MARKET', glyph: '▦', desc: 'Explora StarNet Originals y habilidades de la comunidad con crédito, e instala una para toda la tripulación con un clic.', build: frag(secMarket) },
-      { id: 'library', label: 'SKILL LIBRARY', glyph: '▤', desc: 'Los procedimientos que siguen tus agentes cuando una tarea coincide: los integrados en StarNet y los que instalaste del mercado.', build: frag(secLibrary) },
-      { id: 'agent', label: 'AGENT SKILLS', glyph: '✎', desc: 'Cada agente mantiene su propia biblioteca de habilidades. Elige cuál ver.', build: frag(secAgent) },
-      { id: 'exchange', label: 'SKILL EXCHANGE', glyph: '⇩', desc: 'Inspecciona e instala procedimientos SKILL.md abiertos con procedencia y revisión de guardián.', build: frag(secExchange) }
+      { id: 'market', label: 'MERCADO DE HABILIDADES', glyph: '▦', desc: 'Explora StarNet Originals y habilidades de la comunidad con crédito, e instala una para toda la tripulación con un clic.', build: frag(secMarket) },
+      { id: 'library', label: 'BIBLIOTECA DE HABILIDADES', glyph: '▤', desc: 'Los procedimientos que siguen tus agentes cuando una tarea coincide: los integrados en StarNet y los que instalaste del mercado.', build: frag(secLibrary) },
+      { id: 'agent', label: 'HABILIDADES DEL AGENTE', glyph: '✎', desc: 'Cada agente mantiene su propia biblioteca de habilidades. Elige cuál ver.', build: frag(secAgent) },
+      { id: 'exchange', label: 'INTERCAMBIO DE HABILIDADES', glyph: '⇩', desc: 'Inspecciona e instala procedimientos SKILL.md abiertos con procedencia y revisión de guardián.', build: frag(secExchange) }
     ];
     function wire() {
       loadSkillMarket(agentId);
@@ -3905,59 +3905,59 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const gear = missing.map(skmGear);
     const slug = esc(e.slug);
     const origin = e.shelf === 'originals'
-      ? '<span class="cc-badge cc-official">STARNET ORIGINAL</span>'
-      : '<span class="cc-badge cc-community">community · ' + esc(e.author || 'credited') + '</span>';
+      ? '<span class="cc-badge cc-official">ORIGINAL DE STARNET</span>'
+      : '<span class="cc-badge cc-community">comunidad · ' + esc(e.author || 'con crédito') + '</span>';
     const btn = (act, text, cls) => {
       const busy = skmBusy.get(e.slug);
-      return busy ? '<button class="bb ' + (cls || 'xs') + '" disabled>' + (busy === 'install' ? 'INSTALLING…' : 'REMOVING…') + '</button>'
+      return busy ? '<button class="bb ' + (cls || 'xs') + '" disabled>' + (busy === 'install' ? 'INSTALANDO…' : 'QUITANDO…') + '</button>'
         : '<button class="bb ' + (cls || 'xs') + '" data-skm-act="' + act + '" data-slug="' + slug + '">' + text + '</button>';
     };
-    const needs = gear.length ? ' Needs ' + esc(gear.join(', ')) + ' placed to be used.' : '';
+    const needs = gear.length ? ' Necesita ' + esc(gear.join(', ')) + ' colocado para usarse.' : '';
     let action, hint, warn = false;
     if (e.status === 'installed' && e.superseded) {
-      action = btn('uninstall', 'REMOVE');
-      hint = 'Your built-in copy (v' + esc(e.builtInVersion) + ') is newer, so it is the one agents use. REMOVE clears this older market copy (v' + esc(e.installedVersion) + ').';
+      action = btn('uninstall', 'QUITAR');
+      hint = 'Tu copia integrada (v' + esc(e.builtInVersion) + ') es más nueva, así que es la que usan los agentes. QUITAR borra esta copia de mercado más antigua (v' + esc(e.installedVersion) + ').';
     } else if (e.status === 'installed') {
-      action = btn('uninstall', 'REMOVE'); hint = 'Installed · v' + esc(e.installedVersion || e.version) + '.' + needs;
+      action = btn('uninstall', 'QUITAR'); hint = 'Instalada · v' + esc(e.installedVersion || e.version) + '.' + needs;
     } else if (e.status === 'bundled') {
-      action = '<span class="cc-badge cc-official">BUILT IN</span>';
-      hint = 'Came with StarNet (v' + esc(e.builtInVersion || e.version) + '). Switch it on or off in SKILL LIBRARY.';
+      action = '<span class="cc-badge cc-official">INTEGRADA</span>';
+      hint = 'Vino con StarNet (v' + esc(e.builtInVersion || e.version) + '). Actívala o desactívala en la BIBLIOTECA DE HABILIDADES.';
     } else if (e.status === 'update') {
-      action = btn('install', 'UPDATE');
+      action = btn('install', 'ACTUALIZAR');
       hint = e.builtIn && !e.delisted && e.installedVersion === e.builtInVersion
         ? 'Una versión más nueva que la integrada en StarNet: v' + esc(e.builtInVersion) + ' → v' + esc(e.version) + '.'
         : 'v' + esc(e.installedVersion) + ' → v' + esc(e.version) + '.';
     } else if (e.status === 'tampered') {
-      action = btn('install', 'REINSTALL'); warn = true;
+      action = btn('install', 'REINSTALAR'); warn = true;
       hint = 'Sus archivos cambiaron en disco tras la instalación, así que no se la da a los agentes. Reinstala para restaurarla.';
     } else if (e.status === 'pulled') {
       warn = true;
-      action = (e.fixVersion ? btn('install', 'UPDATE TO v' + esc(e.fixVersion)) + ' ' : '') + btn('uninstall', 'REMOVE');
-      hint = 'PULLED from the market: ' + esc(e.pulledReason || 'no reason given') + '. ' +
-        (e.fallback === 'bundled' ? 'The version you installed is off; agents use your built-in copy instead.'
-          : e.fixVersion ? 'The version you installed is off; v' + esc(e.fixVersion) + ' replaces it.'
+      action = (e.fixVersion ? btn('install', 'ACTUALIZAR A v' + esc(e.fixVersion)) + ' ' : '') + btn('uninstall', 'QUITAR');
+      hint = 'RETIRADA del mercado: ' + esc(e.pulledReason || 'sin motivo dado') + '. ' +
+        (e.fallback === 'bundled' ? 'La versión que instalaste está apagada; los agentes usan tu copia integrada.'
+          : e.fixVersion ? 'La versión que instalaste está apagada; v' + esc(e.fixVersion) + ' la reemplaza.'
             : 'Está desactivada y no se la da a los agentes.');
     } else {
-      action = btn('install', '+ INSTALL', 'sm');
-      hint = gear.length ? 'Needs ' + esc(gear.join(', ')) + ' placed to be used.' : 'Ready to use as soon as it is installed.';
+      action = btn('install', '+ INSTALAR', 'sm');
+      hint = gear.length ? 'Necesita ' + esc(gear.join(', ')) + ' colocado para usarse.' : 'Lista para usarse en cuanto se instale.';
     }
     // gear an installed or installable skill still needs: the SAME → PLACE shortcut SKILL LIBRARY offers. The
     // ORCHESTRATOR is not a prop — every run the Commander starts carries it (runtimeGranted) — so it never gets one.
     const placeable = missing.filter(g => g !== 'orchestrator');
     const place = placeable.length && (e.status === 'available' || e.status === 'installed' || e.status === 'update')
-      ? '<div class="sk-place-row">' + placeable.map(g => '<button class="sk-place" type="button" data-place="' + esc(g) + '" title="Open BUILD MODE to place ' + skArt(skmGear(g)) + esc(skmGear(g)) + '">→ PLACE ' + esc(skmGear(g)) + '</button>').join('') + '</div>' : '';
+      ? '<div class="sk-place-row">' + placeable.map(g => '<button class="sk-place" type="button" data-place="' + esc(g) + '" title="Abre MODO CONSTRUCCIÓN para colocar ' + skArt(skmGear(g)) + esc(skmGear(g)) + '">→ COLOCAR ' + esc(skmGear(g)) + '</button>').join('') + '</div>' : '';
     const result = skmResult && skmResult.slug === e.slug
       ? '<div class="mc-hint skm-result' + (skmResult.ok ? '' : ' skm-result-bad') + '">' + esc(skmResult.text) + '</div>' : '';
     const files = (e.files || []).map(f => '<li><code>' + esc(f.path) + '</code> <span class="dim">' + esc(String(f.bytes)) + ' B</span></li>').join('');
     const upstream = e.upstream && /^https:\/\//.test(String(e.upstream.url || ''))
-      ? '<div class="mc-hint">Adapted from <a class="dim" href="' + esc(e.upstream.url) + '" target="_blank" rel="noopener">the original ↗</a> (' + esc(e.upstream.license || e.license) + ')</div>' : '';
+      ? '<div class="mc-hint">Adaptada de <a class="dim" href="' + esc(e.upstream.url) + '" target="_blank" rel="noopener">el original ↗</a> (' + esc(e.upstream.license || e.license) + ')</div>' : '';
     const search = [e.category, e.author, e.shelf === 'originals' ? 'starnet original' : 'community'].concat(e.tags || []).join(' ');
     return '<div class="cc-card' + (on ? ' cc-on' : '') + '" data-skm="' + slug + '" data-shelf="' + esc(e.shelf) + '" data-status="' + esc(e.status) + '" data-installed="' + (e.installedVersion && e.status !== 'available' ? '1' : '') + '" data-search="' + esc(search) + '" style="--ci:' + (i || 0) + '">' +
       '<div class="cc-head"><span class="cc-brand" aria-hidden="true">' + esc(String(e.name || e.slug).slice(0, 2).toUpperCase()) + '</span>' +
         '<div class="cc-identity"><b>' + esc(e.name) + '</b><span class="cc-chip">' + esc(e.category) + '</span></div></div>' +
       (e.description ? '<div class="cc-blurb dim">' + esc(e.description) + '</div>' : '') +
       '<details class="cc-details"><summary aria-label="Detalles de ' + esc(e.name) + '">Detalles de la habilidad</summary><div class="cc-details-body">' + origin +
-        '<div class="mc-hint">v' + esc(e.version) + ' · ' + esc(e.license || 'no license') + (e.requires && e.requires.length ? ' · uses ' + esc(e.requires.map(skmGear).join(', ')) : '') + '</div>' +
+        '<div class="mc-hint">v' + esc(e.version) + ' · ' + esc(e.license || 'sin licencia') + (e.requires && e.requires.length ? ' · usa ' + esc(e.requires.map(skmGear).join(', ')) : '') + '</div>' +
         upstream + (files ? '<ul class="skm-files">' + files + '</ul>' : '') + '</div></details>' +
       '<div class="mc-hint cc-setup-hint' + (warn ? ' skm-warn' : '') + '">' + hint + '</div>' + place + result +
       '<div class="cc-acts">' + action + '</div></div>';
@@ -3982,7 +3982,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const shown = list.querySelectorAll('.cc-card:not([hidden])').length;
     if (!shown) {
       if (!none) { none = document.createElement('p'); none.className = 'mc-hint cc-nores'; list.appendChild(none); }
-      none.textContent = skmFilter === 'update' ? 'Everything you have is up to date.' : skmFilter === 'installed' ? 'No skills installed yet.' : 'Nothing on this shelf yet.';
+      none.textContent = skmFilter === 'update' ? 'Todo lo que tienes está actualizado.' : skmFilter === 'installed' ? 'Aún no hay habilidades instaladas.' : 'Aún no hay nada en este estante.';
     } else if (none) none.remove();
   }
   function renderSkillMarket(host, d, agentId) {
@@ -3990,21 +3990,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       host.dataset.skmOk = '';
       const err = String((d && d.error) || 'no answer').replace(/[.\s]+$/, '');
       if (/turned off on this station/.test(err)) {
-        host.innerHTML = '<p class="mc-notice"><b>The skill market is turned off</b>This station was started with the market switched off (STARNET_SKILL_MARKET_URL=off). Skills you already installed keep working.</p>';
+        host.innerHTML = '<p class="mc-notice"><b>El mercado de habilidades está apagado</b>Esta estación arrancó con el mercado apagado (STARNET_SKILL_MARKET_URL=off). Las habilidades que ya instalaste siguen funcionando.</p>';
         return;
       }
       // a catalog that failed its signature or serial check was reached but REFUSED — say that, not "couldn't reach"
       const refused = /^the skill market (.+?) was not trusted: (.+)$/.exec(err);
       // "http 403" / "took too long" come from THIS app talking to its own station, not from the market
-      const local = /^http \d{3}$/i.test(err) ? 'your station didn\'t answer the request (' + err.toUpperCase() + '); reload StarNet and try again'
-        : /took too long/i.test(err) ? 'your station took too long to answer' : '';
+      const local = /^http \d{3}$/i.test(err) ? 'tu estación no respondió a la petición (' + err.toUpperCase() + '); recarga StarNet e inténtalo de nuevo'
+        : /took too long/i.test(err) ? 'tu estación tardó demasiado en responder' : '';
       host.innerHTML = (refused
-        ? '<p class="mc-notice"><b>StarNet refused the skill market\'s ' + esc(refused[1]) + '</b>' + esc(refused[2]) + '. Nothing from it was used, and skills you already installed keep working.</p>'
-        : '<p class="mc-hint">' + (local ? 'Couldn\'t load the skill market: ' + esc(local) : 'Couldn\'t reach the skill market: ' + esc(err)) + '. Skills you already installed keep working.</p>') +
-        '<button class="bb xs" type="button" data-skm-act="retry">TRY AGAIN</button>';
+        ? '<p class="mc-notice"><b>StarNet rechazó ' + esc(refused[1]) + ' del mercado de habilidades</b>' + esc(refused[2]) + '. Nada de ello se usó, y las habilidades que ya instalaste siguen funcionando.</p>'
+        : '<p class="mc-hint">' + (local ? 'No se pudo cargar el mercado de habilidades: ' + esc(local) : 'No se pudo alcanzar el mercado de habilidades: ' + esc(err)) + '. Las habilidades que ya instalaste siguen funcionando.</p>') +
+        '<button class="bb xs" type="button" data-skm-act="retry">REINTENTAR</button>';
       return;
     }
-    const shelves = [['originals', 'StarNet Originals', 'Written by StarNet for your station\'s gear and tools.'], ['community', 'Community picks', 'Open skills by other authors, adapted for StarNet and credited.']];
+    const shelves = [['originals', 'Originals de StarNet', 'Escritos por StarNet para el equipo y las herramientas de tu estación.'], ['community', 'Selecciones de la comunidad', 'Habilidades abiertas de otros autores, adaptadas para StarNet y con crédito.']];
     const html = shelves.map(([id, label, note]) => {
       const rows = d.entries.filter(e => e.shelf === id);
       if (!rows.length) return '';
@@ -4013,11 +4013,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     }).join('');
     const pulled = d.entries.filter(e => e.status === 'pulled');
     const banner = pulled.length
-      ? '<p class="mc-notice skm-pulled"><b>' + (pulled.length === 1 ? esc(pulled[0].name) + ' was pulled from the market' : pulled.length + ' of your skills were pulled from the market') + '</b>' +
-        (pulled.length === 1 ? 'It is' : 'They are') + ' switched off; ' + (pulled.length === 1 ? 'its card says' : 'each card says') + ' why and what to do. Find ' + (pulled.length === 1 ? 'it' : 'them') + ' under INSTALLED.</p>'
+      ? '<p class="mc-notice skm-pulled"><b>' + (pulled.length === 1 ? esc(pulled[0].name) + ' fue retirada del mercado' : pulled.length + ' de tus habilidades fueron retiradas del mercado') + '</b>' +
+        (pulled.length === 1 ? 'Está' : 'Están') + ' desactivada' + (pulled.length === 1 ? '' : 's') + '; ' + (pulled.length === 1 ? 'su tarjeta dice' : 'cada tarjeta dice') + ' por qué y qué hacer. Búscala' + (pulled.length === 1 ? '' : 's') + ' bajo INSTALADAS.</p>'
       : '';
     host.dataset.skmOk = html ? '1' : '';
-    host.innerHTML = html ? banner + html : '<p class="mc-hint">The skill market is empty right now.</p>';
+    host.innerHTML = html ? banner + html : '<p class="mc-hint">El mercado de habilidades está vacío por ahora.</p>';
     skmApplyFilter(host);
     if (skmFocus) {
       const f = host.querySelector('[data-skm="' + CSS.escape(skmFocus) + '"] .cc-acts button:not([disabled])') || host.querySelector('[data-skm="' + CSS.escape(skmFocus) + '"] .cc-acts');
@@ -4054,21 +4054,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (place) { sfx('click'); placeGearForSkill(place.dataset.place, (typeof App !== 'undefined' && App.agentName) ? App.agentName(shownId) : ''); return; }
       const b = ev.target.closest('[data-skm-act]'); if (!b || b.disabled) return;
       const act = b.dataset.skmAct, slug = b.dataset.slug;
-      if (act === 'retry') { host.innerHTML = '<span class="loading pulse">loading the skill market…</span>'; loadSkillMarket(shownId, true); return; }
+      if (act === 'retry') { host.innerHTML = '<span class="loading pulse">cargando el mercado de habilidades…</span>'; loadSkillMarket(shownId, true); return; }
       if (skmBusy.has(slug)) return;
       const msg = $('#skm-msg');
       const card = b.closest('[data-skm]');
       const name = card ? (card.querySelector('.cc-identity b') || {}).textContent : slug;
       const verb = b.textContent.trim();   // + INSTALL · UPDATE · UPDATE TO vX · REINSTALL · REMOVE — what the Commander clicked
       skmBusy.set(slug, act === 'install' ? 'install' : 'uninstall');
-      b.disabled = true; b.textContent = act === 'install' ? 'INSTALLING…' : 'REMOVING…';
+      b.disabled = true; b.textContent = act === 'install' ? 'INSTALANDO…' : 'QUITANDO…';
       try {
         const r = await Harness.api.post('/api/skill-market/' + (act === 'install' ? 'install' : 'uninstall'), { slug });
-        if (!r.ok || !r.j || r.j.ok === false) throw new Error((r.j && r.j.error) || 'the station refused');
-        const text = act !== 'install' ? 'Removed ' + name + '.'
-          : /^REINSTALL/.test(verb) ? 'Reinstalled ' + name + '.'
-            : /^UPDATE/.test(verb) ? 'Updated ' + name + ' to v' + (r.j.version || '') + '.'
-              : 'Installed ' + name + ' for the whole crew.';
+        if (!r.ok || !r.j || r.j.ok === false) throw new Error((r.j && r.j.error) || 'la estación rechazó');
+        const text = act !== 'install' ? 'Quitada ' + name + '.'
+          : /^REINSTALAR/.test(verb) ? 'Reinstalada ' + name + '.'
+            : /^ACTUALIZAR/.test(verb) ? 'Actualizada ' + name + ' a v' + (r.j.version || '') + '.'
+              : 'Instalada ' + name + ' para toda la tripulación.';
         skmResult = { slug, text, ok: true };
         if (msg) msg.textContent = text;
         skillsChanged();
@@ -4115,7 +4115,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       .catch(() => {
         const h = $('#sk-lib');
         if (h && load === skillLibLoad) {
-          h.innerHTML = '<div class="sk-loading">Could not load the skill library — is the sidecar running?</div>';
+          h.innerHTML = '<div class="sk-loading">No se pudo cargar la biblioteca de habilidades — ¿está funcionando el sidecar?</div>';
           requestAnimationFrame(() => fitTermInViewport(open.connectors));
         }
       });
@@ -4127,7 +4127,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   const SK_OBJ_NAME = { cabinet: 'INTEL CAB', dish: 'DISH', workbench: 'WORKBENCH', studio: 'STUDIO', notebook: 'NOTEBOOK', jukebox: 'JUKEBOX', computer: 'COMPUTER', orchestrator: 'ORCHESTRATOR', connector: 'CONNECTOR' };
   // Each capability objectType → the representative placeable prop (CAP_PROP_MAP) and the BUILD MODE palette category tab
   // that holds it. Lets a locked skill's "PLACE" button land the user on the exact gear in the real build surface.
-  const skArt = (label) => (/^[AEIOU]/.test(String(label || '')) ? 'an ' : 'a ');
+  const skArt = (label) => (/^[AEIOUáéíóúÁÉÍÓÚ]/.test(String(label || '')) ? 'una ' : 'un ');
   const SK_PLACE = {
     cabinet:  { prop: 'war_intelcab', cat: 'capability' },
     dish:     { prop: 'comms_dish', cat: 'capability' },
@@ -4192,32 +4192,32 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   }
 
   function renderSkillLibrary(host, skills, agentId, placed) {
-    if (!skills.length) { host.innerHTML = '<div class="sk-loading">No skills in the library yet.</div>'; return; }
+    if (!skills.length) { host.innerHTML = '<div class="sk-loading">Aún no hay habilidades en la biblioteca.</div>'; return; }
     const placedSet = {}; (placed || []).forEach(p => placedSet[p] = true);
     const objLabel = (r) => SK_OBJ_NAME[r] || String(r).toUpperCase();
     const active = skills.filter(s => s.enabled && s.available).length;
     const agentName = ((present.find(x => x && x.id === agentId) || {}).name) || agentId;   // ORG P21: the agent this list was loaded for
     const groups = groupSkillsByState(skills);
-    let html = '<div class="sk-lib-sum">' + skills.length + ' skill' + (skills.length === 1 ? '' : 's') +
-      ' · <b>' + active + '</b> active for ' + esc(agentName) + '</div>';
+    let html = '<div class="sk-lib-sum">' + skills.length + ' habilidad' + (skills.length === 1 ? '' : 'es') +
+      ' · <b>' + active + '</b> activas para ' + esc(agentName) + '</div>';
     // A pill SWITCH (the user's choice) — reads unambiguously as a control, not a status dot. data-toggle drives the round-trip.
     const switchHTML = (s) =>
       '<button class="sk-switch ' + (s.enabled ? 'on' : 'off') + '" role="switch" aria-checked="' + (s.enabled ? 'true' : 'false') + '" ' +
-        'aria-label="Turn ' + (s.enabled ? 'off' : 'on') + ' ' + esc(s.name) + '" ' +
-        'data-toggle="' + esc(s.slug) + '" data-enabled="' + (s.enabled ? 'true' : 'false') + '" title="' + (s.enabled ? 'Turn OFF' : 'Turn ON') + ' this skill station-wide">' +
+        'aria-label="' + (s.enabled ? 'Desactivar' : 'Activar') + ' ' + esc(s.name) + '" ' +
+        'data-toggle="' + esc(s.slug) + '" data-enabled="' + (s.enabled ? 'true' : 'false') + '" title="' + (s.enabled ? 'Desactivar' : 'Activar') + ' esta habilidad en toda la estación">' +
         '<span class="sk-sw-track"><span class="sk-sw-knob"></span></span>' +
-        '<span class="sk-sw-label">' + (s.enabled ? 'Enabled' : 'Disabled') + '</span>' +
+        '<span class="sk-sw-label">' + (s.enabled ? 'Activada' : 'Desactivada') + '</span>' +
       '</button>';
     // A SEPARATE readiness chip — the floor's grant, never merged with the switch. READY (green) or NEEDS GEAR (amber).
     const readyChip = (s, missing) => s.available
-      ? '<span class="sk-ready ok">READY</span>'
-      : '<span class="sk-ready gear">NEEDS ' + missing.map(objLabel).join(' + ') + '</span>';
+      ? '<span class="sk-ready ok">LISTA</span>'
+      : '<span class="sk-ready gear">FALTA ' + missing.map(objLabel).join(' + ') + '</span>';
     const reqBadges = (s) => (s.requires || []).length
       ? s.requires.map(r => '<span class="sk-badge ' + (placedSet[r] ? 'have' : 'miss') + '">' + objLabel(r) + '</span>').join('')
-      : '<span class="sk-badge free">no gear needed</span>';
+      : '<span class="sk-badge free">sin equipo necesario</span>';
     // one PLACE button per missing object → the real BUILD MODE placement surface (placeGearForSkill).
     const placeBtns = (missing) => missing.map(r =>
-      '<button class="sk-place" data-place="' + esc(r) + '" title="Open BUILD MODE to place ' + skArt(objLabel(r)) + esc(objLabel(r)) + '">→ PLACE ' + esc(objLabel(r)) + '</button>').join('');
+      '<button class="sk-place" data-place="' + esc(r) + '" title="Abre MODO CONSTRUCCIÓN para colocar ' + skArt(objLabel(r)) + esc(objLabel(r)) + '">→ COLOCAR ' + esc(objLabel(r)) + '</button>').join('');
     let ci = 0;
     const card = (s) => {
       const missing = (s.requires || []).filter(r => !placedSet[r]);
@@ -4227,25 +4227,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             '<div class="sk-card-main">' +
               '<div class="sk-name-row"><span class="sk-name">' + esc(s.name) + '</span>' +
                 (s.category ? '<span class="sk-badge cat">' + esc(String(s.category).toUpperCase()) + '</span>' : '') +
-                (s.enabled ? readyChip(s, missing) : '<span class="sk-ready">TURNED OFF</span>') + '</div>' +
+                (s.enabled ? readyChip(s, missing) : '<span class="sk-ready">DESACTIVADA</span>') + '</div>' +
               '<div class="sk-desc">' + esc(s.description) + '</div>' +
 
               (missing.length ? '<div class="sk-place-row">' + placeBtns(missing) + '</div>' : '') +
             '</div>' +
           '</div>' +
           '<div class="sk-card-actions"><button class="sk-expand" data-expand="' + esc(s.slug) + '" aria-expanded="false" aria-label="Leer instrucciones de ' + esc(s.name) + '">Leer instrucciones</button>' + switchHTML(s) + '</div>' +
-          '<div class="sk-body"><div class="sk-detail-label">Required gear</div><div class="sk-reqs">' + reqBadges(s) + '</div><div class="sk-detail-label">Instructions</div><div class="sk-instructions">' + (typeof Deliverables !== 'undefined' && Deliverables.safeMarkdown ? Deliverables.safeMarkdown(s.body || '') : '<pre>' + esc(s.body || '') + '</pre>') + '</div>' +
-            (s.market ? '<div class="sk-attr">' + (s.shelf === 'originals' ? 'StarNet Original, installed from the Skill Market' : 'From the Skill Market' + (s.author ? ' · by ' + esc(s.author) : '')) + (s.license ? ' · ' + esc(s.license) : '') + '</div>'
-              : s.author ? '<div class="sk-attr">Ported from ' + esc(s.author) + (s.license ? ' · ' + esc(s.license) : '') + '</div>' : '') +
+          '<div class="sk-body"><div class="sk-detail-label">Equipo requerido</div><div class="sk-reqs">' + reqBadges(s) + '</div><div class="sk-detail-label">Instrucciones</div><div class="sk-instructions">' + (typeof Deliverables !== 'undefined' && Deliverables.safeMarkdown ? Deliverables.safeMarkdown(s.body || '') : '<pre>' + esc(s.body || '') + '</pre>') + '</div>' +
+            (s.market ? '<div class="sk-attr">' + (s.shelf === 'originals' ? 'Original de StarNet, instalada del mercado de habilidades' : 'Del mercado de habilidades' + (s.author ? ' · por ' + esc(s.author) : '')) + (s.license ? ' · ' + esc(s.license) : '') + '</div>'
+              : s.author ? '<div class="sk-attr">Portada de ' + esc(s.author) + (s.license ? ' · ' + esc(s.license) : '') + '</div>' : '') +
           '</div>' +
         '</div>';
     };
     const section = (label, list) => list.length
       ? '<div class="sec sk-state-sec"><span class="sec-l">' + label + '</span><span class="sec-tag">' + list.length + '</span><span class="sec-r"></span><span class="sec-nd"></span></div>' + list.map(card).join('')
       : '';
-    html += section('READY TO USE', groups.ready);
-    html += section('NEEDS GEAR', groups.needsGear);
-    html += section('TURNED OFF', groups.off);
+    html += section('LISTA PARA USAR', groups.ready);
+    html += section('FALTA EQUIPO', groups.needsGear);
+    html += section('DESACTIVADAS', groups.off);
     host.innerHTML = html;
     host.querySelectorAll('[data-toggle]').forEach(btn => btn.addEventListener('click', () => {
       const slug = btn.dataset.toggle, next = btn.dataset.enabled !== 'true';
@@ -4265,9 +4265,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
   function scanFindingText(preview) {
     const findings = preview && preview.scan && Array.isArray(preview.scan.findings) ? preview.scan.findings : [];
-    if (!findings.length) return 'No guard findings.';
-    const shown = findings.slice(0, 6).map(f => (f.category || 'finding') + (f.line ? ' at line ' + f.line : '') + ': ' + (f.description || f.severity || 'review needed'));
-    if (findings.length > shown.length) shown.push('+' + (findings.length - shown.length) + ' more findings in the reviewed body');
+    if (!findings.length) return 'Sin hallazgos del guardián.';
+    const shown = findings.slice(0, 6).map(f => (f.category || 'hallazgo') + (f.line ? ' en la línea ' + f.line : '') + ': ' + (f.description || f.severity || 'revisión necesaria'));
+    if (findings.length > shown.length) shown.push('+' + (findings.length - shown.length) + ' hallazgos más en el cuerpo revisado');
     return shown.join(' · ');
   }
 
@@ -4280,11 +4280,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const updateLocked = !!opts.update && !!preview.updateLocked;
     const canInstall = !blocked && !unchanged && !updateLocked;
     const source = preview.sourceUrl || '';
-    const verdict = blocked ? 'BLOCKED' : (asks ? 'REVIEW + APPROVAL' : 'CLEAR');
+    const verdict = blocked ? 'BLOQUEADA' : (asks ? 'REVISIÓN + APROBACIÓN' : 'LIBRE');
     const packageFiles = Array.isArray(preview.files) ? preview.files : [];
     const filesHtml = packageFiles.map(f => '<details class="sk-package-file"><summary><code>' + esc(f.path) + '</code> · ' +
       esc(String(f.bytes || 0)) + ' bytes · <code>' + esc(f.sha256 || '') + '</code></summary>' +
-      (f.encoding === 'utf8' ? '<pre>' + esc(f.content || '') + '</pre>' : '<div class="sk-attr">Binary asset; exact bytes are covered by the package digest.</div>') + '</details>').join('');
+      (f.encoding === 'utf8' ? '<pre>' + esc(f.content || '') + '</pre>' : '<div class="sk-attr">Recurso binario; los bytes exactos están cubiertos por el digest del paquete.</div>') + '</details>').join('');
     host.innerHTML =
       '<div class="sk-card open ' + (blocked || asks ? 'want' : 'on') + '">' +
         '<div class="sk-card-head"><div class="sk-card-main">' +
@@ -4295,38 +4295,38 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           '<div class="sk-stat ' + (blocked || asks ? 'want' : 'on') + '">' + esc(scanFindingText(preview)) + '</div>' +
         '</div></div>' +
         '<div class="sk-body">' +
-          '<div class="sk-prov"><span>SOURCE</span><a href="' + esc(source) + '" target="_blank" rel="noopener noreferrer">' + esc(source) + '</a></div>' +
-          '<div class="sk-prov"><span>PACKAGE SHA-256</span><code>' + esc(preview.packageDigest || preview.sourceDigest || '') + '</code></div>' +
-          '<div class="sk-prov"><span>PACKAGE</span><code>' + packageFiles.length + ' files · ' + esc(String(preview.packageBytes || 0)) + ' bytes</code></div>' +
-          ((preview.author || preview.license) ? '<div class="sk-prov"><span>AUTHOR</span><code>' + esc([preview.author, preview.license].filter(Boolean).join(' · ')) + '</code></div>' : '') +
+          '<div class="sk-prov"><span>FUENTE</span><a href="' + esc(source) + '" target="_blank" rel="noopener noreferrer">' + esc(source) + '</a></div>' +
+          '<div class="sk-prov"><span>SHA-256 DEL PAQUETE</span><code>' + esc(preview.packageDigest || preview.sourceDigest || '') + '</code></div>' +
+          '<div class="sk-prov"><span>PAQUETE</span><code>' + packageFiles.length + ' archivo' + (packageFiles.length === 1 ? '' : 's') + ' · ' + esc(String(preview.packageBytes || 0)) + ' bytes</code></div>' +
+          ((preview.author || preview.license) ? '<div class="sk-prov"><span>AUTOR</span><code>' + esc([preview.author, preview.license].filter(Boolean).join(' · ')) + '</code></div>' : '') +
           '<pre>' + esc(preview.body || '') + '</pre>' +
           '<div class="sk-package-files">' + filesHtml + '</div>' +
           '<div class="sk-exchange-note ' + (blocked ? 'bad' : (asks ? 'warn' : 'ok')) + '">' +
-            (blocked ? 'Install is disabled. The source contains dangerous instructions.' : updateLocked ?
-              'This skill is pinned. Unpin it before applying an upstream update.' : unchanged ?
-              'The installed package already matches these exact upstream bytes.' :
-              (asks ? 'This can be installed, but it stays withheld from the agent until you approve these exact bytes in Agent Skills.' :
-                'This document passed the static guard. Install will preserve this source and digest.')) +
-            (preview.packageDiverged ? ' Local changes are present; applying the reviewed update will replace that fork after preserving its sealed predecessor.' : '') +
-            ' Install consumes this frozen complete package; it does not fetch again.' + '</div>' +
+            (blocked ? 'La instalación está desactivada. La fuente contiene instrucciones peligrosas.' : updateLocked ?
+              'Esta habilidad está fijada. Desfíjala antes de aplicar una actualización de origen.' : unchanged ?
+              'El paquete instalado ya coincide con estos bytes exactos de origen.' :
+              (asks ? 'Se puede instalar, pero se mantiene apartada del agente hasta que apruebes estos bytes exactos en Habilidades del Agente.' :
+                'Este documento pasó el guardián estático. La instalación conservará esta fuente y digest.')) +
+            (preview.packageDiverged ? ' Hay cambios locales; aplicar la actualización revisada reemplazará esa variante tras conservar su predecesora sellada.' : '') +
+            ' La instalación consume este paquete completo congelado; no vuelve a descargar.' + '</div>' +
           '<div class="consent-btns mc-acts">' +
-            (canInstall ? '<button class="consent-btn" data-exchange-install type="button">' + (opts.update ? 'INSTALL UPDATE' : 'INSTALL SKILL') + '</button>' : '') +
+            (canInstall ? '<button class="consent-btn" data-exchange-install type="button">' + (opts.update ? 'INSTALAR ACTUALIZACIÓN' : 'INSTALAR HABILIDAD') + '</button>' : '') +
           '</div>' +
         '</div>' +
       '</div>';
     const install = host.querySelector('[data-exchange-install]');
     if (install) install.addEventListener('click', async () => {
-      install.classList.add('busy'); install.textContent = 'INSTALLING…';
+      install.classList.add('busy'); install.textContent = 'INSTALANDO…';
       const r = await Harness.skillExchangeInstall({ agentId, inspectionId: preview.inspectionId, sourceDigest: preview.sourceDigest });
       if (r && r.ok) {
         sfx('click');
-        host.innerHTML = '<div class="sk-exchange-done">' + esc(preview.name) + ' ' + (r.action === 'update' ? 'updated' : 'installed') +
-          (r.skill && r.skill.withheld ? ' and quarantined for your approval.' : ' and ready for matching work.') + '</div>';
+        host.innerHTML = '<div class="sk-exchange-done">' + esc(preview.name) + ' ' + (r.action === 'update' ? 'actualizada' : 'instalada') +
+          (r.skill && r.skill.withheld ? ' y cuarentenada para tu aprobación.' : ' y lista para tareas coincidentes.') + '</div>';
         loadAgentSkills(agentId);
       } else {
-        install.classList.remove('busy'); install.textContent = opts.update ? 'INSTALL UPDATE' : 'INSTALL SKILL';
+        install.classList.remove('busy'); install.textContent = opts.update ? 'INSTALAR ACTUALIZACIÓN' : 'INSTALAR HABILIDAD';
         const note = host.querySelector('.sk-exchange-note');
-        if (note) { note.className = 'sk-exchange-note bad'; note.textContent = (r && r.error) || 'The install was refused.'; }
+        if (note) { note.className = 'sk-exchange-note bad'; note.textContent = (r && r.error) || 'La instalación fue rechazada.'; }
       }
     });
   }
@@ -4337,13 +4337,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!input || !button || !host || !Harness.skillExchangeInspect) return;
     const inspect = async () => {
       const url = String(input.value || '').trim();
-      if (!url) { host.innerHTML = '<div class="sk-loading">Enter a public HTTPS URL to a SKILL.md file.</div>'; return; }
-      button.classList.add('busy'); button.textContent = 'INSPECTING…';
-      host.innerHTML = '<div class="sk-loading"><span class="loading pulse">fetching and scanning exact source bytes…</span></div>';
+      if (!url) { host.innerHTML = '<div class="sk-loading">Introduce una URL HTTPS pública a un archivo SKILL.md.</div>'; return; }
+      button.classList.add('busy'); button.textContent = 'INSPECCIONANDO…';
+      host.innerHTML = '<div class="sk-loading"><span class="loading pulse">descargando y escaneando los bytes exactos de la fuente…</span></div>';
       const r = await Harness.skillExchangeInspect(url);
-      button.classList.remove('busy'); button.textContent = 'INSPECT';
+      button.classList.remove('busy'); button.textContent = 'INSPECCIONAR';
       if (r && r.ok && r.preview) renderSkillExchangePreview(host, r.preview, shownAgent());
-      else host.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'That source could not be inspected.') + '</div>';
+      else host.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'Esa fuente no se pudo inspeccionar.') + '</div>';
     };
     button.addEventListener('click', inspect);
     input.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); inspect(); } });
@@ -4351,16 +4351,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const file = importer.files && importer.files[0]; if (!file) return;
       host.innerHTML = '<div class="sk-loading"><span class="loading pulse">verifying exported package bytes…</span></div>';
       let envelope = ''; try { envelope = await file.text(); } catch (_) {}
-      const r = envelope ? await Harness.skillExchangeImport(envelope) : { ok: false, error: 'That file could not be read.' };
+      const r = envelope ? await Harness.skillExchangeImport(envelope) : { ok: false, error: 'Ese archivo no se pudo leer.' };
       importer.value = '';
       if (r && r.ok && r.preview) renderSkillExchangePreview(host, r.preview, shownAgent());
-      else host.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'That package could not be inspected.') + '</div>';
+      else host.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'Ese paquete no se pudo inspeccionar.') + '</div>';
     });
     const registryUrl = $('#sk-registry-url'), registryQuery = $('#sk-registry-query'), registryButton = $('#sk-registry-search'), registryResults = $('#sk-registry-results');
     const registrySave = $('#sk-registry-save'), registryDiscover = $('#sk-registry-discover'), registrySources = $('#sk-registry-sources');
     const renderSources = sources => {
       if (!registrySources) return;
-      registrySources.innerHTML = (sources || []).map((source, i) => '<button class="consent-btn" data-tap-use="' + i + '">' + esc(source.label || source.url) + ' · COMMUNITY</button><button class="consent-btn" data-tap-remove="' + i + '">×</button>').join('');
+      registrySources.innerHTML = (sources || []).map((source, i) => '<button class="consent-btn" data-tap-use="' + i + '">' + esc(source.label || source.url) + ' · COMUNIDAD</button><button class="consent-btn" data-tap-remove="' + i + '">×</button>').join('');
       registrySources.querySelectorAll('[data-tap-use]').forEach(b => b.addEventListener('click', () => { registryUrl.value = sources[Number(b.dataset.tapUse)].url; }));
       registrySources.querySelectorAll('[data-tap-remove]').forEach(b => b.addEventListener('click', async () => {
         const source = sources[Number(b.dataset.tapRemove)]; const r = await Harness.skillExchangeRegistries({ action: 'remove', url: source.url }); if (r && r.ok) renderSources(r.sources);
@@ -4370,14 +4370,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (registrySave && Harness.skillExchangeRegistries) registrySave.addEventListener('click', async () => {
       const r = await Harness.skillExchangeRegistries({ action: 'add', url: registryUrl.value });
       if (r && r.ok) { renderSources(r.sources); notify('Registro de comunidad guardado.', 'good'); }
-      else notify((r && r.error) || 'Registry tap could not be saved.', 'warn');
+      else notify((r && r.error) || 'El tap del registro no se pudo guardar.', 'warn');
     });
     if (registryUrl && registryButton && registryResults && Harness.skillExchangeRegistry) registryButton.addEventListener('click', async () => {
-      registryButton.classList.add('busy'); registryResults.innerHTML = '<div class="sk-loading">searching registry…</div>';
+      registryButton.classList.add('busy'); registryResults.innerHTML = '<div class="sk-loading">buscando en el registro…</div>';
       const r = await Harness.skillExchangeRegistry({ url: registryUrl.value, query: registryQuery && registryQuery.value });
       registryButton.classList.remove('busy');
-      if (!(r && r.ok)) { registryResults.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'Registry search failed.') + '</div>'; return; }
-      registryResults.innerHTML = '<div class="sk-attr">' + esc(r.name || 'Registry') + ' · ' + (r.entries || []).length + ' result(s)</div>' +
+      if (!(r && r.ok)) { registryResults.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'La búsqueda en el registro falló.') + '</div>'; return; }
+      registryResults.innerHTML = '<div class="sk-attr">' + esc(r.name || 'Registro') + ' · ' + (r.entries || []).length + ' resultado' + ((r.entries || []).length === 1 ? '' : 's') + '</div>' +
         (r.entries || []).map((entry, i) => '<button class="consent-btn" data-registry-entry="' + i + '">' + esc(entry.name) + (entry.version ? ' · v' + esc(entry.version) : '') + '</button><span class="sk-attr">' + esc(entry.description || '') + '</span>').join('');
       registryResults.querySelectorAll('[data-registry-entry]').forEach(entryButton => entryButton.addEventListener('click', () => {
         const entry = r.entries[Number(entryButton.dataset.registryEntry)]; if (!entry) return;
@@ -4389,7 +4389,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const r = await Harness.skillExchangeDiscover({ site: registryUrl.value, query: registryQuery && registryQuery.value });
       registryDiscover.classList.remove('busy');
       if (r && r.ok) { registryUrl.value = r.registryUrl; registryButton.click(); }
-      else registryResults.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'Well-known discovery failed.') + '</div>';
+      else registryResults.innerHTML = '<div class="sk-exchange-note bad">' + esc((r && r.error) || 'El descubrimiento well-known falló.') + '</div>';
     });
   }
 
@@ -4412,8 +4412,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return id || (present[sel] && present[sel].id) || 'agent';
   }
   function skillsIntro(a) {
-    const n = '<b>' + esc((a && (a.name || a.id)) || 'this agent') + '</b>';
-    return 'Reusable procedures ' + n + ' created or learned. These appear as a compact index in ' + n + '’s future runs; it loads the full body only when a task matches.';
+    const n = '<b>' + esc((a && (a.name || a.id)) || 'este agente') + '</b>';
+    return 'Procedimientos reutilizables creados o aprendidos por ' + n + '. Aparecen como un índice compacto en las ejecuciones futuras de ' + n + '; carga el cuerpo completo solo cuando una tarea coincide.';
   }
   // ORG P21: open SETTINGS › LOOK & SOUND with VOICE FOR already on this agent (the existing picker, preselected)
   // The settings window can be rebuilt right after it opens (the credits re-read rerenders it), which drops a
@@ -4440,7 +4440,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   }
   async function skillReviewPost(action, body, opts) {
     const r = await Harness.api.post('/api/agent-skills/' + action, body, { timeoutMs: (opts && opts.timeoutMs > 0) ? opts.timeoutMs : action === 'evaluate-candidate' ? 180000 : 60000 });
-    if (!r.ok || !r.j || !r.j.ok) throw new Error((r.j && r.j.error) || 'The station refused this change.');
+    if (!r.ok || !r.j || !r.j.ok) throw new Error((r.j && r.j.error) || 'La estación rechazó este cambio.');
     return r.j;
   }
   // How long the page waits for evaluate-candidate: the suite's waitMs (the station's own clock for it plus a margin,
@@ -4455,15 +4455,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const host = $('#sk-agent'); if (!host) return;
     const load = ++skillPanelLoad;
     if (!(typeof Harness === 'object' && Harness.agentSkills)) {
-      host.innerHTML = '<div class="sk-loading">Agent skillbase unavailable.</div>'; return;
+      host.innerHTML = '<div class="sk-loading">Base de habilidades del agente no disponible.</div>'; return;
     }
     Promise.all([
       Harness.agentSkills(agentId, { archived: true, body: true }),
       Harness.api.get('/api/agent-skills/candidates?agent=' + encodeURIComponent(agentId) + '&body=1')
-        .catch(e => ({ candidates: [], evaluationSuites: [], error: e.message || 'Could not load proposed revisions.' }))
+        .catch(e => ({ candidates: [], evaluationSuites: [], error: e.message || 'No se pudieron cargar las revisiones propuestas.' }))
     ]).then(([skills, review]) => {
       const h = $('#sk-agent'); if (h && load === skillPanelLoad) renderAgentSkills(h, skills || [], agentId, review);
-    }).catch(() => { const h = $('#sk-agent'); if (h && load === skillPanelLoad) h.innerHTML = '<div class="sk-loading">Could not load agent skills.</div>'; });
+    }).catch(() => { const h = $('#sk-agent'); if (h && load === skillPanelLoad) h.innerHTML = '<div class="sk-loading">No se pudieron cargar las habilidades del agente.</div>'; });
   }
 
   function renderSkillCandidates(host, agentId, review) {
@@ -4475,14 +4475,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       Array.isArray(r.cases) && r.cases.length && r.cases.every(c => c && c.before && c.before.completed === true && c.after && c.after.completed === true));
     const candidateResultText = (r, suite, tie) => {
       const status = r && r.status;
-      if (status === 'passed') return 'Passed: the proposal passed every check and did better than without it on at least one' + (suite.generic ? ', on a generic check (not specific to this skill).' : '.');
-      // "Without it" holds for a revision (the current version) and a new skill (no skill); owner checks already exist.
-      if (tie) return 'No improvement shown: the proposal passed every check, and so did the run without it, so this suite cannot show what the proposal adds. ' +
-        (suite.generic ? 'Register task checks for this skill to measure it.' : 'Add a check that fails without the proposal to measure the difference.');
-      if (status === 'regression') return 'Regression: the proposal failed a check the current version passed.';
-      if (status === 'failed') return 'Failed: the proposal did not pass every check.';
+      if (status === 'passed') return 'Aprobada: la propuesta pasó todas las comprobaciones y rindió mejor que sin ella en al menos una' + (suite.generic ? ', en una comprobación genérica (no específica de esta habilidad).' : '.');
+      // "Sin ella" rige para una revisión (la versión actual) y una habilidad nueva (sin habilidad); las comprobaciones del dueño ya existen.
+      if (tie) return 'Sin mejora mostrada: la propuesta pasó todas las comprobaciones, y también lo hizo la ejecución sin ella, así que esta suite no puede mostrar qué aporta la propuesta. ' +
+        (suite.generic ? 'Registra comprobaciones de tareas para esta habilidad para medirla.' : 'Añade una comprobación que falle sin la propuesta para medir la diferencia.');
+      if (status === 'regression') return 'Regresión: la propuesta falló una comprobación que la versión actual pasaba.';
+      if (status === 'failed') return 'Fallida: la propuesta no pasó todas las comprobaciones.';
       if (status === 'insufficient_evidence') return stoppedText(r);
-      return 'No confirmed result.';
+      return 'Sin resultado confirmado.';
     };
     // The runner writes 'policy-denied' for a run the station refused (skill-evaluation-runner.js): a budget limit,
     // paused spending, the evaluation's time limit, or an earlier run whose cost could not be settled
@@ -4491,10 +4491,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const stoppedText = r => {
       const runs = r && Array.isArray(r.cases) ? r.cases.flatMap(c => [c && c.before, c && c.after]).map(x => (x && x.reason) || '') : [];
       const held = runs.indexOf('policy-denied');
-      if (held < 0) return 'No result: not every run finished.';
+      if (held < 0) return 'Sin resultado: no todas las ejecuciones terminaron.';
       if (held > 0 && (runs[held - 1] === 'error' || runs[held - 1] === 'runner-error') && runs.slice(held).every(x => x === 'policy-denied'))
-        return 'No result: a run failed and the station held back every run after it, so not every run finished.';
-      return 'No result: the station stopped a run (a budget limit, paused spending, the time limit, or an earlier run whose cost could not be settled), so not every run finished.';
+        return 'Sin resultado: una ejecución falló y la estación retuvo cada ejecución posterior, así que no todas terminaron.';
+      return 'Sin resultado: la estación detuvo una ejecución (límite de presupuesto, gasto en pausa, límite de tiempo o una ejecución anterior cuyo costo no se pudo liquidar), así que no todas terminaron.';
     };
     for (const candidate of rows) {
       const skill = candidate.skill || {};
@@ -4505,18 +4505,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const card = mkEl('div', 'sk-card want open'); host.appendChild(card);
       card.dataset.skillCandidate = candidate.candidateId;
       card.innerHTML = '<div class="sk-card-head"><div class="sk-card-main"><div class="sk-name-row"><span class="sk-name">' + esc(skill.name || candidate.name) + '</span>' +
-        (outdated ? '<span class="sk-badge miss">OUTDATED</span></div><div class="sk-desc">The active skill changed after this was proposed. Reject it, or wait for the agent\'s next revision.</div></div></div>'
-          : '<span class="sk-badge want">PROPOSED REVISION</span></div><div class="sk-desc">Any existing active version stays available. This proposal needs a task evaluation and your approval. If a complete evaluation shows no improvement but the proposal passed every check, you can still approve it by confirming that.</div></div></div>') +
-        '<div class="sk-body"><div class="sk-attr">Proposed sharing: ' + esc(skillScopeText(skill.scope, skill.projectRoot)) + ' · revision ' + esc(candidate.revision) + '</div>' +
-        // skills-eval-07: a curator archive moves its steps into another skill, and the station holds it until that skill
-        // carries them, so the card names it
-        (skill.state === 'archived' && skill.absorbedInto ? '<div class="sk-attr">Archives into: ' + esc(skill.absorbedInto) + '</div>' : '') +
+        (outdated ? '<span class="sk-badge miss">DESBORRADA</span></div><div class="sk-desc">La habilidad activa cambió después de proponer esto. Recházala, o espera a la próxima revisión del agente.</div></div></div>'
+          : '<span class="sk-badge want">REVISIÓN PROPUESTA</span></div><div class="sk-desc">Cualquier versión activa existente sigue disponible. Esta propuesta necesita una evaluación de tareas y tu aprobación. Si una evaluación completa no muestra mejora pero la propuesta pasó todas las comprobaciones, puedes aprobarla de todos modos confirmando eso.</div></div></div>') +
+        '<div class="sk-body"><div class="sk-attr">Compartición propuesta: ' + esc(skillScopeText(skill.scope, skill.projectRoot)) + ' · revisión ' + esc(candidate.revision) + '</div>' +
+        // skills-eval-07: un archivo del curador mueve sus pasos a otra habilidad, y la estación lo retiene hasta que esa habilidad
+        // los lleve, así que la tarjeta lo nombra
+        (skill.state === 'archived' && skill.absorbedInto ? '<div class="sk-attr">Archiva en: ' + esc(skill.absorbedInto) + '</div>' : '') +
         '<pre>' + esc(skill.body || '') + '</pre>' +
-        '<details><summary>Proposed metadata and package files</summary><pre>' + esc(JSON.stringify({ candidateDigest: candidate.candidateDigest, baseDigest: candidate.baseDigest, summary: skill.summary, description: skill.description, setup: skill.setup, category: skill.category, requires: skill.requires, platforms: skill.platforms, state: skill.state, absorbedInto: skill.absorbedInto, scope: skill.scope, projectRoot: skill.projectRoot, packageFiles: skill.packageFiles }, null, 2)) + '</pre></details>' +
+        '<details><summary>Metadatos y archivos de paquete propuestos</summary><pre>' + esc(JSON.stringify({ candidateDigest: candidate.candidateDigest, baseDigest: candidate.baseDigest, summary: skill.summary, description: skill.description, setup: skill.setup, category: skill.category, requires: skill.requires, platforms: skill.platforms, state: skill.state, absorbedInto: skill.absorbedInto, scope: skill.scope, projectRoot: skill.projectRoot, packageFiles: skill.packageFiles }, null, 2)) + '</pre></details>' +
         (skill.files || []).map(f => '<details><summary>' + esc(f.path) + '</summary><pre>' + esc(f.content || '') + '</pre></details>').join('') +
-        (outdated ? '<div class="sk-attr" data-evaluation-result></div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-reject>Reject proposal</button></div></div>' :
-        '<div class="sk-attr">Evaluation checks only the selected task family. A passing result does not prove improvement for every use.</div><div data-evaluation-suites></div>' +
-        '<div class="sk-attr" data-evaluation-result>No evaluation run from this panel yet.</div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-approve disabled>Approve evaluated revision</button><button class="consent-btn" data-candidate-acknowledge hidden disabled>Approve without measured improvement</button><button class="consent-btn" data-candidate-reject>Reject proposal</button></div>' +
+        (outdated ? '<div class="sk-attr" data-evaluation-result></div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-reject>Rechazar propuesta</button></div></div>' :
+        '<div class="sk-attr">Las comprobaciones de evaluación solo cubren la familia de tareas seleccionada. Un resultado aprobado no demuestra mejora para cada uso.</div><div data-evaluation-suites></div>' +
+        '<div class="sk-attr" data-evaluation-result>Aún no se ha ejecutado ninguna evaluación desde este panel.</div><div class="consent-btns mc-acts"><button class="consent-btn" data-candidate-approve disabled>Aprobar revisión evaluada</button><button class="consent-btn" data-candidate-acknowledge hidden disabled>Aprobar sin mejora medida</button><button class="consent-btn" data-candidate-reject>Rechazar propuesta</button></div>' +
         '<details><summary>Registrar comprobaciones de tareas (JSON)</summary><div class="sk-attr">Declara tareas repetibles y comprobaciones exactas, incluido un caso reservado. La estación valida y ejecuta esta suite antes de aprobar.</div><textarea class="cf-ta mc-edit" data-suite-json spellcheck="false" aria-label="Suite de evaluación JSON" placeholder="' + esc(SUITE_EXAMPLE) + '"></textarea><button class="consent-btn" data-suite-register>Registrar comprobaciones</button></details></div>');
       const note = card.querySelector('[data-evaluation-result]');
       const reject = card.querySelector('[data-candidate-reject]');
@@ -4528,7 +4528,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         catch (e) { note.textContent = e.message; busy = false; reject.disabled = false; }
       };
       // Rejecting discards the proposal and whatever evaluation it had: arm, then confirm, like the acknowledgement.
-      if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(reject, { armedLabel: 'Confirm: reject proposal', onArm: () => sfx('bad'), onConfirm: doReject });
+      if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(reject, { armedLabel: 'Confirmar: rechazar propuesta', onArm: () => sfx('bad'), onConfirm: doReject });
       else reject.onclick = doReject;
       if (outdated) continue;
       const suiteHost = card.querySelector('[data-evaluation-suites]');
@@ -4539,7 +4539,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const showResult = (r, suite, lead) => {
         receipt = r;
         const tie = candidateTie(r);
-        note.textContent = lead + candidateResultText(r, suite, tie) + ' Approval remains a separate action.';
+        note.textContent = lead + candidateResultText(r, suite, tie) + ' La aprobación sigue siendo una acción separada.';
         const box = mkEl('details', ''), head = mkEl('summary', ''), raw = mkEl('pre', '');
         head.textContent = 'Recibo de evaluación'; raw.textContent = JSON.stringify(r, null, 2);
         box.appendChild(head); box.appendChild(raw); note.appendChild(box);
@@ -4547,13 +4547,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // The station re-checks the receipt; this only offers the owner's "accept it anyway" on a complete tie.
         acknowledge.hidden = !(tie && r.receiptId); acknowledge.disabled = acknowledge.hidden;
       };
-      if (!matching.length) suiteHost.textContent = 'No task checks registered for this skill yet.';
+      if (!matching.length) suiteHost.textContent = 'Aún no hay comprobaciones de tareas registradas para esta habilidad.';
       for (const suite of matching) {
-        const label = mkEl('div', 'sk-attr'); label.textContent = (suite.description || suite.skillName || suite.id) + (suite.generic ? ' · generic check (not specific to this skill)' : ''); suiteHost.appendChild(label);
+        const label = mkEl('div', 'sk-attr'); label.textContent = (suite.description || suite.skillName || suite.id) + (suite.generic ? ' · comprobación genérica (no específica de esta habilidad)' : ''); suiteHost.appendChild(label);
         const run = mkEl('button', 'consent-btn'); run.textContent = 'Ejecutar estas comprobaciones'; suiteHost.appendChild(run);
         run.onclick = async () => {
           if (busy) return; busy = true; run.disabled = true; approve.disabled = true; acknowledge.disabled = true; acknowledge.hidden = true; receipt = null;
-          note.textContent = 'Running the checks with and without the proposal…';
+          note.textContent = 'Ejecutando las comprobaciones con y sin la propuesta…';
           try {
             const r = await skillReviewPost('evaluate-candidate', Object.assign({}, request, { suiteId: suite.id }), { timeoutMs: evaluationWaitMs(suite) });
             showResult(r.receipt, suite, '');
@@ -4567,7 +4567,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // versions counts, and approval still re-verifies it by id.
       const last = candidate.latestEvaluation;
       if (last && last.receiptId && last.candidateDigest === candidate.candidateDigest && last.baselineDigest === candidate.baseDigest)
-        showResult(last, matching.find(s => s.id === last.suiteId) || {}, 'Last evaluation: ');
+        showResult(last, matching.find(s => s.id === last.suiteId) || {}, 'Última evaluación: ');
       const decide = async extra => {
         if (busy || !receipt) return; busy = true; approve.disabled = true; acknowledge.disabled = true;
         try { await skillReviewPost('approve-candidate', Object.assign({}, request, { evaluation: receipt.receiptId }, extra)); loadAgentSkills(agentId); }
@@ -4576,7 +4576,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       approve.onclick = () => decide({});
       // Accepting a revision the evaluation could not show to be better is a deliberate owner decision: arm, then confirm.
       if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
-        ArmConfirm.wire(acknowledge, { armedLabel: 'Confirm: approve with no measured improvement', onConfirm: () => decide({ acknowledgeNoImprovement: true }) });
+        ArmConfirm.wire(acknowledge, { armedLabel: 'Confirmar: aprobar sin mejora medida', onConfirm: () => decide({ acknowledgeNoImprovement: true }) });
       }
       const register = card.querySelector('[data-suite-register]');
       register.onclick = async () => {
@@ -4594,9 +4594,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // agent working in that project folder; station = every agent on the station.
   const SKILL_SCOPE_LABEL = { agent: 'Solo este agente', project: 'Este proyecto', station: 'Estación completa' };
   const skillScopeText = (scope, root) => (SKILL_SCOPE_LABEL[scope || 'agent'] || String(scope)) + (root ? ' · ' + root : '');
-  const SUITE_EXAMPLE = 'Example:\n{ "id": "owner:weekly-brief", "version": 1, "description": "Weekly brief",\n  "cases": [\n' +
-    '    { "id": "basic", "prompt": "Write brief.json for this week", "writablePaths": ["brief.json"],\n' +
-    '      "checks": [{ "id": "title", "kind": "artifact_json_equal", "path": "brief.json", "expected": { "title": "Week 41" } }] },\n' +
+  const SUITE_EXAMPLE = 'Ejemplo:\n{ "id": "dueño:brief-semanal", "version": 1, "description": "Brief semanal",\n  "cases": [\n' +
+    '    { "id": "basic", "prompt": "Escribe brief.json de esta semana", "writablePaths": ["brief.json"],\n' +
+    '      "checks": [{ "id": "title", "kind": "artifact_json_equal", "path": "brief.json", "expected": { "title": "Semana 41" } }] },\n' +
     '    { "id": "held", "heldOut": true, "prompt": "…", "writablePaths": ["brief.json"], "checks": [ … ] } ] }';
   // Share to market is a door to the community cloud: it is on the card only while communitymaps.js says sharing is
   // open (CommunityMaps.live, its COMMUNITY_LIVE switch). Until then the key is not drawn at all.
@@ -4604,7 +4604,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function renderAgentSkills(host, skills, agentId, review) {
     review = review || {};
     if (!skills.length && !(review.candidates || []).length && !review.error) {
-      host.innerHTML = '<div class="sk-loading">No agent-created skills yet.</div>'; return;
+      host.innerHTML = '<div class="sk-loading">Aún no hay habilidades creadas por el agente.</div>'; return;
     }
     const active = skills.filter(s => s.state !== 'archived').length;
     const archived = skills.length - active;
@@ -4612,11 +4612,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     skills.forEach(s => { byId[s.id] = s; });
     const sorted = skills.slice().sort((a, b) =>
       (!!b.pinned - !!a.pinned) || ((a.state === 'archived') - (b.state === 'archived')) || ((b.updatedAt || 0) - (a.updatedAt || 0)));
-    let html = (review.error ? '<div class="sk-attr sk-held">Proposed revisions unavailable: ' + esc(review.error) + '</div>' : '') + '<div class="sk-lib-sum">' + active + ' active' + (archived ? ' - ' + archived + ' archived' : '') + '</div>';
+    let html = (review.error ? '<div class="sk-attr sk-held">Revisiones propuestas no disponibles: ' + esc(review.error) + '</div>' : '') + '<div class="sk-lib-sum">' + active + ' activa' + (active === 1 ? '' : 's') + (archived ? ' - ' + archived + ' archivada' + (archived === 1 ? '' : 's') : '') + '</div>';
     for (const s of sorted) {
       const state = s.state === 'archived' ? 'off' : (s.state === 'stale' ? 'want' : 'on');
-      const when = s.updatedAt ? new Date(s.updatedAt).toLocaleDateString() : 'unknown';
-      const files = (s.files || []).length ? '<div class="sk-attr">Support files: ' + esc((s.files || []).map(f => f.path).join(', ')) + '</div>' : '';
+      const when = s.updatedAt ? new Date(s.updatedAt).toLocaleDateString() : 'desconocido';
+      const files = (s.files || []).length ? '<div class="sk-attr">Archivos de soporte: ' + esc((s.files || []).map(f => f.path).join(', ')) + '</div>' : '';
       /* WITHHELD IS THE ONE THING THIS CARD MUST NOT HIDE. The skill guard can keep a saved skill
          out of the agent's prompt entirely; a card that looks identical either way would have the
          Commander believe their agent is using a procedure it was never given. So: a badge, the
@@ -4626,45 +4626,45 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const held = !!s.withheld;
       const cats = (s.guardCategories || []).length ? ' (' + esc((s.guardCategories || []).join(', ')) + ')' : '';
       const heldBlock = held
-        ? '<div class="sk-attr sk-held">WITHHELD FROM THE AGENT: ' + esc(s.withheldReason || 'held by the skill guard') + cats +
-            '. This skill is saved, but its steps are not given to ' + esc(agentId) + '.</div>'
-        : (s.guardDecision === 'ask' ? '<div class="sk-attr">Approved by you for this exact content — an edit will ask again.</div>' : '');
+        ? '<div class="sk-attr sk-held">RETENIDA PARA EL AGENTE: ' + esc(s.withheldReason || 'retenida por el guardián de habilidades') + cats +
+            '. Esta habilidad está guardada, pero sus pasos no se dan a ' + esc(agentId) + '.</div>'
+        : (s.guardDecision === 'ask' ? '<div class="sk-attr">Aprobada por ti para este contenido exacto — una edición volverá a pedir.</div>' : '');
       const heldBtn = held && s.guardApprovable
-        ? '<button class="consent-btn" data-ag-act="allow" title="Give this skill to the agent — the approval covers this exact content">Approve</button>'
+        ? '<button class="consent-btn" data-ag-act="allow" title="Dale esta habilidad al agente — la aprobación cubre este contenido exacto">Aprobar</button>'
         : (!held && s.guardDecision === 'ask'
-          ? '<button class="consent-btn" data-ag-act="revoke" title="Withhold this skill from the agent again">Revoke</button>'
+          ? '<button class="consent-btn" data-ag-act="revoke" title="Retener esta habilidad del agente de nuevo">Revocar</button>'
           : '');
-      const absorbed = s.absorbedInto ? '<div class="sk-attr">Merged into: ' + esc(s.absorbedInto) + '</div>' : '';
+      const absorbed = s.absorbedInto ? '<div class="sk-attr">Fusionada en: ' + esc(s.absorbedInto) + '</div>' : '';
       const packageState = s.packageDigest
-        ? '<div class="sk-attr" data-package-status>Package <code>' + esc(s.packageDigest) + '</code> · ' + (s.packageFileCount || 0) + ' files' +
-            (s.packageDiverged ? ' · LOCAL CHANGES (update/export sealed generation disabled)' : ' · SEALED') + '</div>' : '';
+        ? '<div class="sk-attr" data-package-status>Paquete <code>' + esc(s.packageDigest) + '</code> · ' + (s.packageFileCount || 0) + ' archivo' + ((s.packageFileCount || 0) === 1 ? '' : 's') +
+            (s.packageDiverged ? ' · CAMBIOS LOCALES (generación sellada de actualización/exportación desactivada)' : ' · SELLADO') + '</div>' : '';
       const packageButtons = s.packageDigest
-        ? '<button class="consent-btn" data-ag-act="check">Check update</button>' +
-          '<button class="consent-btn" data-ag-act="export"' + (s.packageDiverged ? ' disabled' : '') + '>Export</button>' +
-          '<button class="consent-btn" data-ag-act="publish"' + (s.packageDiverged ? ' disabled' : '') + '>Share handoff</button>' +
-          '<button class="consent-btn" data-ag-act="generations">Generations</button>' : '';
+        ? '<button class="consent-btn" data-ag-act="check">Comprobar actualización</button>' +
+          '<button class="consent-btn" data-ag-act="export"' + (s.packageDiverged ? ' disabled' : '') + '>Exportar</button>' +
+          '<button class="consent-btn" data-ag-act="publish"' + (s.packageDiverged ? ' disabled' : '') + '>Compartir traspaso</button>' +
+          '<button class="consent-btn" data-ag-act="generations">Generaciones</button>' : '';
       html +=
         '<div class="sk-card ' + state + (held ? ' held' : '') + '" data-agent-skill="' + esc(s.id) + '">' +
           '<div class="sk-card-head">' +
-            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Quitar fijado' : 'Pin') + ' this skill">' + (s.pinned ? '*' : '+') + '</button>' +
+            '<button class="sk-toggle" data-ag-act="pin" title="' + (s.pinned ? 'Quitar fijado a' : 'Fijar') + ' esta habilidad">' + (s.pinned ? '*' : '+') + '</button>' +
             '<div class="sk-card-main">' +
               '<div class="sk-name-row"><span class="sk-name">' + esc(s.name) + '</span>' +
                 (s.category ? '<span class="sk-badge cat">' + esc(String(s.category).toUpperCase()) + '</span>' : '') +
-                (held ? '<span class="sk-badge want">WITHHELD</span>' : '') +
+                (held ? '<span class="sk-badge want">RETENIDA</span>' : '') +
                 '<span class="sk-badge free">' + esc((s.state || 'active').toUpperCase()) + '</span></div>' +
               '<div class="sk-desc">' + esc(s.summary || '') + '</div>' +
-              '<div class="sk-stat ' + state + '">used ' + (s.useCount || 0) + 'x - viewed ' + (s.viewCount || 0) + 'x - patched ' + (s.patchCount || 0) + 'x - updated ' + esc(when) + '</div>' +
+              '<div class="sk-stat ' + state + '">usada ' + (s.useCount || 0) + 'x - vista ' + (s.viewCount || 0) + 'x - parcheada ' + (s.patchCount || 0) + 'x - actualizada ' + esc(when) + '</div>' +
             '</div>' +
-            '<button class="sk-expand" data-ag-act="expand" title="Read the skill">&gt;</button>' +
+            '<button class="sk-expand" data-ag-act="expand" title="Leer la habilidad">&gt;</button>' +
           '</div>' +
-          '<div class="sk-body">' + heldBlock + '<div class="sk-attr">Shared with: ' + esc(skillScopeText(s.scope, s.projectRoot)) + '</div><pre>' + esc(s.body || '') + '</pre>' + files + absorbed + packageState +
+          '<div class="sk-body">' + heldBlock + '<div class="sk-attr">Compartida con: ' + esc(skillScopeText(s.scope, s.projectRoot)) + '</div><pre>' + esc(s.body || '') + '</pre>' + files + absorbed + packageState +
             '<div class="consent-btns mc-acts">' +
               heldBtn +
               packageButtons +
-              '<button class="consent-btn" data-ag-act="edit">Edit</button>' +
-              (held || s.createdBy === 'community' || s.sourceUrl || s.sourceAuthor || !communityLive() ? '' : '<button class="consent-btn" data-ag-act="market">Share to market</button>') +
-              '<button class="consent-btn" data-ag-act="sharing">Change sharing</button>' +
-              '<button class="consent-btn" data-ag-act="archive">' + (s.state === 'archived' ? 'Restore' : 'Archive') + '</button>' +
+              '<button class="consent-btn" data-ag-act="edit">Editar</button>' +
+              (held || s.createdBy === 'community' || s.sourceUrl || s.sourceAuthor || !communityLive() ? '' : '<button class="consent-btn" data-ag-act="market">Compartir en el mercado</button>') +
+              '<button class="consent-btn" data-ag-act="sharing">Cambiar compartir</button>' +
+              '<button class="consent-btn" data-ag-act="archive">' + (s.state === 'archived' ? 'Restaurar' : 'Archivar') + '</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -4687,7 +4687,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (r && r.ok && r.preview && previewHost) {
           renderSkillExchangePreview(previewHost, r.preview, agentId, { update: true });
           previewHost.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else notify((r && r.error) || 'Update check was refused.', 'warn');
+        } else notify((r && r.error) || 'La comprobación de actualización fue rechazada.', 'warn');
         return;
       }
       if (act === 'export') {
@@ -4696,7 +4696,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const url = URL.createObjectURL(new Blob([r.envelope], { type: 'application/json' }));
           const a = document.createElement('a'); a.href = url; a.download = r.filename || (skill.id + '.starnet-skill.json'); a.click();
           setTimeout(() => URL.revokeObjectURL(url), 1000); notify('Exportado paquete sellado ' + String(r.digest || '').slice(0, 12), 'good');
-        } else notify((r && r.error) || 'Export was refused.', 'warn');
+        } else notify((r && r.error) || 'La exportación fue rechazada.', 'warn');
         return;
       }
       if (act === 'publish') {
@@ -4705,7 +4705,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const text = JSON.stringify(r.handoff, null, 2) + '\n'; const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
           const a = document.createElement('a'); a.href = url; a.download = skill.id + '.publish-handoff.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
           notify('Preparado el traspaso local de publicación; nada se subió.', 'good');
-        } else notify((r && r.error) || 'Publish handoff was refused.', 'warn');
+        } else notify((r && r.error) || 'El traspaso de publicación fue rechazado.', 'warn');
         return;
       }
       if (act === 'generations') {
@@ -4713,11 +4713,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const status = card.querySelector('[data-package-status]');
         if (!status) return;
         const rows = r && r.ok && Array.isArray(r.generations) ? r.generations : [];
-        status.innerHTML = rows.length ? 'Offline generations: ' + rows.map(g => '<button class="consent-btn" data-rollback="' + esc(g.digest) + '">' + esc(String(g.digest).slice(0, 12)) + ' · ' + (g.fileCount || 0) + ' files</button>').join(' ') : esc((r && r.error) || 'No prior offline generations yet.');
+        status.innerHTML = rows.length ? 'Generaciones sin conexión: ' + rows.map(g => '<button class="consent-btn" data-rollback="' + esc(g.digest) + '">' + esc(String(g.digest).slice(0, 12)) + ' · ' + (g.fileCount || 0) + ' archivo' + ((g.fileCount || 0) === 1 ? '' : 's') + '</button>').join(' ') : esc((r && r.error) || 'Aún no hay generaciones sin conexión anteriores.');
         status.querySelectorAll('[data-rollback]').forEach(rb => rb.addEventListener('click', async () => {
-          rb.disabled = true; rb.textContent = 'ROLLING BACK…';
+          rb.disabled = true; rb.textContent = 'REVERTIENDO…';
           const rr = await Harness.skillExchangeRollback({ agentId, id: skill.id, digest: rb.dataset.rollback });
-          if (rr && rr.ok) { sfx('click'); loadAgentSkills(agentId); } else { rb.disabled = false; notify((rr && rr.error) || 'Rollback was refused.', 'warn'); }
+          if (rr && rr.ok) { sfx('click'); loadAgentSkills(agentId); } else { rb.disabled = false; notify((rr && rr.error) || 'La reversión fue rechazada.', 'warn'); }
         }));
         return;
       }
@@ -4730,7 +4730,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           // than no button, and the usual reason is a 'block' verdict that cannot be approved.
           btn.classList.remove('busy');
           const note = card.querySelector('.sk-held') || card.querySelector('.sk-body');
-          if (note) { const w = mkEl('div', 'sk-attr sk-held'); w.textContent = (r && r.error) || 'that decision was refused'; note.appendChild(w); }
+          if (note) { const w = mkEl('div', 'sk-attr sk-held'); w.textContent = (r && r.error) || 'esa decisión fue rechazada'; note.appendChild(w); }
         }
         return;
       }
@@ -4754,9 +4754,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (shown) { shown.remove(); return; }
     const panel = mkEl('div', ''); panel.dataset.skillSharing = '1'; body.appendChild(panel);
     const note = mkEl('div', 'sk-attr'); panel.appendChild(note);
-    note.textContent = 'Only this agent: just ' + agentId + ' uses it. This project: any agent working in that project folder. Whole station: every agent.';
+    note.textContent = 'Solo este agente: solo ' + agentId + ' la usa. Este proyecto: cualquier agente que trabaje en esa carpeta de proyecto. Estación completa: todos los agentes.';
     const row = mkEl('div', 'consent-btns mc-acts'); panel.appendChild(row);
-    const input = mkEl('input', 'key-input'); input.value = skill.projectRoot || ''; input.placeholder = 'Project folder (full path)';
+    const input = mkEl('input', 'key-input'); input.value = skill.projectRoot || ''; input.placeholder = 'Carpeta del proyecto (ruta completa)';
     input.setAttribute('aria-label', 'Carpeta del proyecto para compartir con'); input.hidden = (skill.scope || 'agent') !== 'project'; panel.appendChild(input);
     for (const scope of ['agent', 'project', 'station']) {
       const current = (skill.scope || 'agent') === scope;
@@ -4764,7 +4764,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       button.textContent = SKILL_SCOPE_LABEL[scope]; button.setAttribute('aria-pressed', current ? 'true' : 'false'); row.appendChild(button);
       button.onclick = async () => {
         if (scope === 'project' && input.hidden) {   // ask for the folder first; the next click shares it
-          input.hidden = false; note.textContent = 'Enter the project folder, then click This project again.'; input.focus(); return;
+          input.hidden = false; note.textContent = 'Introduce la carpeta del proyecto y luego vuelve a hacer clic en Este proyecto.'; input.focus(); return;
         }
         button.disabled = true;
         try { await skillReviewPost('share', { agentId, target: skill.id, scope, projectRoot: scope === 'project' ? input.value : '' }); loadAgentSkills(agentId); }
@@ -4776,7 +4776,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   /* SHARE TO MARKET (2026-10-18): one of this agent's skills, offered to the Skill Market for review. Opens IN the
      card (like Edit): the market name, the line on its card, a shelf, a license, the credit and the agreement. The
      sidecar sends the skill exactly as the library holds it; the line it prints is what the market answered. */
-  const MARKET_SHELVES = ['Communication', 'Creative', 'Engineering', 'Marketing', 'Planning', 'Productivity', 'Research', 'Writing'];
+  const MARKET_SHELVES = ['Comunicación', 'Creativo', 'Ingeniería', 'Marketing', 'Planificación', 'Productividad', 'Investigación', 'Escritura'];
   const SHARE_CREDIT_KEY = 'starnet.communityMapCredit';   // one credit name for everything this Commander shares
   function shareSkillToMarket(card, skill, agentId) {
     if (!communityLive()) return;
@@ -4792,13 +4792,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const uid = 'skm-' + String(skill.id || 'skill').replace(/[^A-Za-z0-9_-]/g, '_') + '-' + Date.now().toString(36);
     const form = mkEl('div', 'sk-share');
     form.innerHTML =
-      '<label for="' + uid + '-title">NAME ON THE MARKET</label><input id="' + uid + '-title" class="key-input" maxlength="60" autocomplete="off">' +
-      '<label for="' + uid + '-desc">WHAT IT DOES AND WHEN TO USE IT</label><textarea id="' + uid + '-desc" class="cf-ta skm-desc" maxlength="280"></textarea>' +
-      '<span class="skm-label" id="' + uid + '-shelf-l">SHELF</span><div class="skm-chips" role="group" aria-labelledby="' + uid + '-shelf-l" data-skm="shelf">' + MARKET_SHELVES.map(c => '<button type="button" class="consent-btn" aria-pressed="' + (c === shelf0) + '" data-v="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' +
-      '<span class="skm-label" id="' + uid + '-license-l">LICENSE</span><div class="skm-chips" role="group" aria-labelledby="' + uid + '-license-l" data-skm="license"><button type="button" class="consent-btn" aria-pressed="true" data-v="MIT">MIT</button><button type="button" class="consent-btn" aria-pressed="false" data-v="CC-BY-4.0">CC BY 4.0</button></div>' +
-      '<label for="' + uid + '-credit">CREDIT ME AS</label><input id="' + uid + '-credit" class="key-input" maxlength="60" autocomplete="off" placeholder="your name or handle">' +
-      '<label class="skm-agree"><input type="checkbox" id="' + uid + '-agree"> <span>I wrote this skill (or may share it) and publish it under the license above. Anyone may use and adapt it, with credit to me.</span></label>' +
-      '<div class="sk-attr">A person reads every line before it goes on the market. This station must be linked to your StarNet account.</div>' +
+      '<label for="' + uid + '-title">NOMBRE EN EL MERCADO</label><input id="' + uid + '-title" class="key-input" maxlength="60" autocomplete="off">' +
+      '<label for="' + uid + '-desc">QUÉ HACE Y CUÁNDO USARLA</label><textarea id="' + uid + '-desc" class="cf-ta skm-desc" maxlength="280"></textarea>' +
+      '<span class="skm-label" id="' + uid + '-shelf-l">ESTANTERÍA</span><div class="skm-chips" role="group" aria-labelledby="' + uid + '-shelf-l" data-skm="shelf">' + MARKET_SHELVES.map(c => '<button type="button" class="consent-btn" aria-pressed="' + (c === shelf0) + '" data-v="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' +
+      '<span class="skm-label" id="' + uid + '-license-l">LICENCIA</span><div class="skm-chips" role="group" aria-labelledby="' + uid + '-license-l" data-skm="license"><button type="button" class="consent-btn" aria-pressed="true" data-v="MIT">MIT</button><button type="button" class="consent-btn" aria-pressed="false" data-v="CC-BY-4.0">CC BY 4.0</button></div>' +
+      '<label for="' + uid + '-credit">CRÉDITO COMO</label><input id="' + uid + '-credit" class="key-input" maxlength="60" autocomplete="off" placeholder="tu nombre o seudónimo">' +
+      '<label class="skm-agree"><input type="checkbox" id="' + uid + '-agree"> <span>Escribí esta habilidad (o puedo compartirla) y la publico bajo la licencia de arriba. Cualquiera puede usarla y adaptarla, con crédito para mí.</span></label>' +
+      '<div class="sk-attr">Una persona lee cada línea antes de que suba al mercado. Esta estación debe estar vinculada a tu cuenta de StarNet.</div>' +
       '<div class="sk-attr skm-result" role="status"></div>';
     const $f = (k) => form.querySelector('#' + uid + '-' + k);
     $f('title').value = title;
@@ -4820,25 +4820,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     send.onclick = async () => {
       const fields = { agentId, id: skill.id, title: $f('title').value.trim(), description: $f('desc').value.trim(),
         category: picked('shelf'), license: picked('license'), credit: $f('credit').value.trim(), agree: $f('agree').checked };
-      if (!fields.title) { result.textContent = 'Give it a name on the market.'; $f('title').focus(); return; }
-      if (!fields.category) { result.textContent = 'Pick the shelf it belongs on.'; return; }
-      if (!fields.credit) { result.textContent = 'Add the name you want credited on the market.'; $f('credit').focus(); return; }
-      if (!fields.agree) { result.textContent = 'Turn on the agreement to share it: it is the license others use it under.'; $f('agree').focus(); return; }
-      send.disabled = true; send.textContent = 'Sending…'; result.textContent = '';
+      if (!fields.title) { result.textContent = 'Dale un nombre en el mercado.'; $f('title').focus(); return; }
+      if (!fields.category) { result.textContent = 'Elige la estantería donde pertenece.'; return; }
+      if (!fields.credit) { result.textContent = 'Añade el nombre que quieres como crédito en el mercado.'; $f('credit').focus(); return; }
+      if (!fields.agree) { result.textContent = 'Activa el acuerdo para compartirla: es la licencia bajo la que otros la usarán.'; $f('agree').focus(); return; }
+      send.disabled = true; send.textContent = 'Enviando…'; result.textContent = '';
       try { localStorage.setItem(SHARE_CREDIT_KEY, fields.credit); } catch (_) {}
       let r = null;
       try { r = await (await Harness.apiFetch('/api/skill-market/share', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(fields) })).json(); } catch (_) { r = null; }
       send.disabled = false; send.textContent = 'Enviar a revisión';
       if (r && r.ok && r.submission) {
-        result.textContent = 'Sent for review as "' + (r.submission.title || fields.title) + '". A person reads it next; your Skills tab on account.starnetos.com shows where it stands.'
-          + (r.referencesLeftOut ? ' ' + r.referencesLeftOut + (r.referencesLeftOut === 1 ? ' support file was' : ' support files were') + ' left out: the market takes up to five plain-text references.' : '');
+        result.textContent = 'Enviada a revisión como "' + (r.submission.title || fields.title) + '". Una persona la lee a continuación; tu pestaña de Habilidades en account.starnetos.com muestra en qué estado está.'
+          + (r.referencesLeftOut ? ' ' + r.referencesLeftOut + ' archivo' + (r.referencesLeftOut === 1 ? '' : 's') + ' de soporte quedó' + (r.referencesLeftOut === 1 ? ' fuera' : 'n fuera') + ': el mercado admite hasta cinco referencias de texto plano.' : '');
         send.remove(); cancel.textContent = 'Hecho'; cancel.focus(); sfx('click');
         return;
       }
-      if (!r) { result.textContent = 'The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again.'; return; }
-      if (r.outcome === 'unknown') { result.textContent = (r.error ? r.error + ' ' : '') + 'This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again.'; return; }
-      if (r.linked === false) { result.textContent = 'Link this station to your StarNet account first (STORE › LINK STATION). A free account works. Nothing was shared.'; return; }
-      result.textContent = r.code === 'token_rejected' ? r.error : (r.error || 'The market refused it.') + ' Nothing was shared.';
+      if (!r) { result.textContent = 'La estación no responde ahora mismo. Esta estación no puede saber si la habilidad llegó. Revisa tu pestaña de Habilidades en account.starnetos.com antes de enviarla de nuevo.'; return; }
+      if (r.outcome === 'unknown') { result.textContent = (r.error ? r.error + ' ' : '') + 'Esta estación no puede saber si la habilidad llegó. Revisa tu pestaña de Habilidades en account.starnetos.com antes de enviarla de nuevo.'; return; }
+      if (r.linked === false) { result.textContent = 'Vincula primero esta estación a tu cuenta de StarNet (TIENDA › VINCULAR ESTACIÓN). Una cuenta gratuita sirve. Nada se compartió.'; return; }
+      result.textContent = r.code === 'token_rejected' ? r.error : (r.error || 'El mercado la rechazó.') + ' Nada se compartió.';
     };
     $f('title').focus();
   }
@@ -4852,7 +4852,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const ta = mkEl('textarea', 'cf-ta mc-edit'); ta.value = skill.body || ''; ta.spellcheck = false;
     if (pre) body.replaceChild(ta, pre);
     if (actions) actions.innerHTML = '';
-    const save = mkEl('button', 'consent-btn'); save.textContent = 'Save'; actions.appendChild(save);
+    const save = mkEl('button', 'consent-btn'); save.textContent = 'Guardar'; actions.appendChild(save);
     const cancel = mkEl('button', 'consent-btn'); cancel.textContent = 'Cancelar'; actions.appendChild(cancel);
     save.onclick = async () => {
       const r = await Harness.agentSkillManage({ agentId, action: 'edit', target: skill.id, summary: skill.summary || '', body: ta.value, category: skill.category || 'General', force: true });   // the human author may edit their own pinned skill (see force note above)

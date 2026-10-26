@@ -30,7 +30,7 @@ A.ok(introMatch, 'the AGENT SKILLS intro helper is present');
 const weakSrc = (source.match(/  const weakWin = [^\n]*\n/) || [''])[0] + (source.match(/function shownInOpenWindow\(\) \{[\s\S]*?\n  \}/) || [''])[0];
 A.ok(/new WeakRef\(w\)/.test(weakSrc) && /function shownInOpenWindow/.test(weakSrc), 'the weak window tie helpers are present');
 vm.runInNewContext(weakSrc + '\n' + (introMatch ? introMatch[0] : '') + '\n' + laneSource + '\nresult = abilitySkillsLane({});', context);
-A.ok(/Reusable procedures <b>Agent<\/b> created or learned/.test(context.result.sections.find(s => s.id === 'agent') ? (() => { const el = { innerHTML: '' }; context.result.sections.find(s => s.id === 'agent').build(el); return el.innerHTML; })() : ''),
+A.ok(/Procedimientos reutilizables creados o aprendidos por <b>Agent<\/b>/.test(context.result.sections.find(s => s.id === 'agent') ? (() => { const el = { innerHTML: '' }; context.result.sections.find(s => s.id === 'agent').build(el); return el.innerHTML; })() : ''),
   'AGENT SKILLS names the agent it shows');
 
 // org P21 fix (review): the dossier's SKILLS pick is ONE-SHOT. Run the shipped lane builder through a sequence of
@@ -70,19 +70,19 @@ A.ok(/const openOn = typeof H\.skillsAgentId === 'function' \? H\.skillsAgentId\
 
 A.eq(context.result.sections.map(section => section.id), ['market', 'library', 'agent', 'exchange'],
   'the live lane builds all four Skills sections without throwing');
-A.eq(context.result.sections.map(section => section.label), ['SKILL MARKET', 'SKILL LIBRARY', 'AGENT SKILLS', 'SKILL EXCHANGE'],
+A.eq(context.result.sections.map(section => section.label), ['MERCADO DE HABILIDADES', 'BIBLIOTECA DE HABILIDADES', 'HABILIDADES DEL AGENTE', 'INTERCAMBIO DE HABILIDADES'],
   'the live lane exposes the four promised labels');
 A.ok(/function\s+scanFindingText\s*\(/.test(source), 'Skill Exchange scan findings renderer is defined');
 A.ok(/function\s+renderSkillExchangePreview\s*\(/.test(source), 'Skill Exchange preview renderer is defined');
 A.ok(/function\s+wireSkillExchange\s*\(/.test(source), 'Skill Exchange controls are wired');
 A.ok(/window\.AbilityLanes\.push\(abilitySkillsLane\)/.test(source), 'the Skills lane registers with HABILIDADES');
-A.ok(source.includes("skills.length + ' skill'"), 'the library count calls these procedures skills, not launchable recipes');
+A.ok(source.includes("skills.length + ' habilidad'"), 'the library count calls these procedures skills, not launchable recipes');
 A.ok(/id="sk-exchange-preview"[^>]*role="status"[^>]*aria-live="polite"/.test(source),
   'Skill Exchange inspection and validation feedback is announced');
-A.ok(source.includes('PACKAGE SHA-256') && source.includes('sk-package-file'), 'review exposes the complete package manifest and exact digest');
-A.ok(source.includes('IMPORT EXPORTED PACKAGE') && source.includes('data-ag-act="export"'), 'lossless import and export controls are present');
+A.ok(source.includes('SHA-256 DEL PAQUETE') && source.includes('sk-package-file'), 'review exposes the complete package manifest and exact digest');
+A.ok(source.includes('IMPORTAR PAQUETE EXPORTADO') && source.includes('data-ag-act="export"'), 'lossless import and export controls are present');
 A.ok(source.includes('data-ag-act="generations"') && source.includes('data-rollback='), 'offline generation rollback is exposed');
-A.ok(source.includes('DISCOVER SITE') && source.includes('SAVE TAP'), 'registry discovery and user-managed taps are exposed');
+A.ok(source.includes('DESCUBRIR SITIO') && source.includes('GUARDAR TAP'), 'registry discovery and user-managed taps are exposed');
 A.ok(!source.includes('referenced package files remain at the source'), 'the obsolete single-document limitation is gone');
 
 // A Full Access user must not be sent to place a cabinet just to load FILES instructions.
@@ -111,7 +111,7 @@ async function checkAvailability() {
   A.ok(!restricted.rendered.includes('cabinet'), 'restricted station without FILES does not invent that ability');
   const unavailable = await run(null);
   A.eq(unavailable.requested, '', 'unavailable authority never produces a guessed skill query');
-  A.ok(unavailable.host.innerHTML.includes('Could not load'), 'unavailable authority renders recovery instead of missing-prop advice');
+  A.ok(unavailable.host.innerHTML.includes('No se pudo cargar'), 'unavailable authority renders recovery instead of missing-prop advice');
   await checkCandidateReview();
   await checkSkillSharing();
 }
@@ -148,14 +148,14 @@ async function checkCandidateReview() {
   const card = host.children[0], approve = card.querySelector('[data-candidate-approve]');
   // Fake DOM does not parse disabled attributes, but the actual markup must start disabled.
   A.ok(card.html.includes('data-candidate-approve disabled'), 'pending approval starts disabled');
-  A.ok(card.html.includes('does not prove improvement for every use'), 'UI states evaluation scope honestly');
-  A.ok(card.html.includes('Proposed sharing: Solo este agente · revision 3'), 'proposed sharing reads in plain words, not the raw scope id');
-  A.ok(/data-suite-json[^>]*placeholder="Example:/.test(card.html), 'the task-check editor shows an example suite');
+  A.ok(card.html.includes('no demuestra mejora para cada uso'), 'UI states evaluation scope honestly');
+  A.ok(card.html.includes('Compartición propuesta: Solo este agente · revisión 3'), 'proposed sharing reads in plain words, not the raw scope id');
+  A.ok(/data-suite-json[^>]*placeholder="Ejemplo:/.test(card.html), 'the task-check editor shows an example suite');
   A.ok(card.html.includes('data-candidate-acknowledge hidden disabled'), 'no-improvement approval starts hidden and disabled');
   // The header states the gate the station enforces: a passing evaluation, or a complete no-improvement one the owner confirms.
   A.ok(!card.html.includes('needs a passing task evaluation'), 'header does not claim a pass is the only way through');
-  A.ok(card.html.includes('needs a task evaluation and your approval. If a complete evaluation shows no improvement but the proposal passed every check, you can still approve it by confirming that.'), 'header names the confirmed no-improvement exit');
-  A.ok(card.querySelector('[data-evaluation-suites]').children[2].textContent.includes('generic check (not specific to this skill)'), 'built-in suite is labeled a generic check');
+  A.ok(card.html.includes('necesita una evaluación de tareas y tu aprobación. Si una evaluación completa no muestra mejora pero la propuesta pasó todas las comprobaciones, puedes aprobarla de todos modos confirmando eso.'), 'header names the confirmed no-improvement exit');
+  A.ok(card.querySelector('[data-evaluation-suites]').children[2].textContent.includes('comprobación genérica (no específica de esta habilidad)'), 'built-in suite is labeled a generic check');
   A.ok(!card.querySelector('[data-evaluation-suites]').children[0].textContent.includes('generic check'), 'owner task checks are not labeled generic');
   const run = card.querySelector('[data-evaluation-suites]').children[1];
   await run.onclick();
@@ -180,7 +180,7 @@ async function checkCandidateReview() {
   const rejectBtn = card2.querySelector('[data-candidate-reject]');
   A.ok(rejectBtn.armed && typeof rejectBtn.armed.onConfirm === 'function', 'reject is an armed two-step confirm');
   A.ok(!rejectBtn.onclick, 'reject has no one-click path when ArmConfirm is present');
-  A.eq(rejectBtn.armed.armedLabel, 'Confirm: reject proposal', 'the armed reject says what the second click does');
+  A.eq(rejectBtn.armed.armedLabel, 'Confirmar: rechazar propuesta', 'the armed reject says what the second click does');
   await rejectBtn.armed.onConfirm();
   A.ok(requests.at(-1).path.endsWith('/reject-candidate'), 'reject has a separate server decision');
   // A complete tie (every candidate case passed, no regression) offers ONLY the armed owner acknowledgement,
@@ -194,12 +194,12 @@ async function checkCandidateReview() {
   A.eq(card4.querySelector('[data-candidate-approve]').disabled, true, 'a tie never enables the measured-improvement approval');
   A.eq(ack.hidden, false, 'a complete tie shows the acknowledgement');
   A.eq(ack.disabled, false, 'a complete tie enables the acknowledgement');
-  A.ok(/no improvement/i.test(card4.querySelector('[data-evaluation-result]').textContent), 'panel says the evaluation showed no improvement');
+  A.ok(/sin mejora/i.test(card4.querySelector('[data-evaluation-result]').textContent), 'panel says the evaluation showed no improvement');
   // The owner already registered these checks: the advice is to add one that separates the versions.
   const ownerTieText = card4.querySelector('[data-evaluation-result]').textContent;
   A.ok(!ownerTieText.includes('Register task checks'), 'an owner-suite tie does not ask for checks the owner already registered');
-  A.ok(ownerTieText.includes('Add a check that fails without the proposal to measure the difference.'), 'an owner-suite tie says how to measure the difference');
-  A.ok(ownerTieText.includes('and so did the run without it'), 'tie copy holds for a new skill as well as a revision');
+  A.ok(ownerTieText.includes('Añade una comprobación que falle sin la propuesta para medir la diferencia.'), 'an owner-suite tie says how to measure the difference');
+  A.ok(ownerTieText.includes('y también lo hizo la ejecución sin ella'), 'tie copy holds for a new skill as well as a revision');
   A.ok(ack.armed && typeof ack.armed.onConfirm === 'function', 'acknowledgement is an armed two-step confirm');
   await ack.armed.onConfirm();
   A.eq(requests.at(-1).body.acknowledgeNoImprovement, true, 'acknowledgement is sent explicitly');
@@ -220,7 +220,7 @@ async function checkCandidateReview() {
   A.eq(requests.at(-1).body.suiteId, 'task-handoff:Brief', 'generic suite is the one evaluated');
   // A suite listed without waitMs gets the station's own rule: 2 runs a case at 90 s, 2 to 20 min, plus a 30 s margin.
   A.eq(requests.at(-1).opts && requests.at(-1).opts.timeoutMs, 3 * 2 * 90000 + 30000, 'a suite without waitMs waits by its case count');
-  A.ok(card6.querySelector('[data-evaluation-result]').textContent.includes('Register task checks for this skill to measure it.'), 'a generic-suite tie suggests registering task checks');
+  A.ok(card6.querySelector('[data-evaluation-result]').textContent.includes('Registra comprobaciones de tareas para esta habilidad para medirla.'), 'a generic-suite tie suggests registering task checks');
   status = 'passed'; extra = {};
   const host3 = element(); ctx.host = host3;
   vm.runInNewContext('renderSkillCandidates(host, "agent", review);', ctx);
@@ -245,7 +245,7 @@ async function checkCandidateReview() {
   vm.runInNewContext('renderSkillCandidates(host, "agent", review);', ctx);
   const card8 = host8.children[0];
   await card8.querySelector('[data-evaluation-suites]').children[1].onclick();
-  A.ok(card8.querySelector('[data-evaluation-result]').textContent.includes('the station stopped a run (a budget limit, paused spending, the time limit, or an earlier run whose cost could not be settled)'), 'a refused run lists what can stop one');
+  A.ok(card8.querySelector('[data-evaluation-result]').textContent.includes('la estación detuvo una ejecución (límite de presupuesto, gasto en pausa, límite de tiempo o una ejecución anterior cuyo costo no se pudo liquidar)'), 'a refused run lists what can stop one');
   A.ok(!card8.querySelector('[data-evaluation-result]').textContent.includes('insufficient_evidence'), 'no enum status reaches the owner');
   // The host's stored receipt for this exact revision (latestEvaluation) seeds the card after a reload.
   // Contract: latestEvaluation is the WHOLE stored receipt row, the same object evaluate-candidate returns as
@@ -273,7 +273,7 @@ async function checkCandidateReview() {
     return h.children[0];
   };
   const card7 = reload(passedRow), sent = requests.length;
-  A.ok(/^Last evaluation: Passed/.test(card7.querySelector('[data-evaluation-result]').textContent), 'a reloaded panel shows the last evaluation of this revision');
+  A.ok(/^Última evaluación: Aprobada/.test(card7.querySelector('[data-evaluation-result]').textContent), 'a reloaded panel shows the last evaluation of this revision');
   A.eq(card7.querySelector('[data-candidate-approve]').disabled, false, 'a stored passing receipt keeps approval available');
   await card7.querySelector('[data-candidate-approve]').onclick();
   A.eq(requests.length, sent + 1, 'approval does not require paying for another evaluation');
@@ -282,10 +282,10 @@ async function checkCandidateReview() {
   const card9 = reload(tieRow);
   A.eq(card9.querySelector('[data-candidate-acknowledge]').hidden, false, 'a stored tie shows the acknowledgement');
   A.eq(card9.querySelector('[data-candidate-approve]').disabled, true, 'a stored tie never enables the measured approval');
-  A.ok(/^Last evaluation: No improvement shown/.test(card9.querySelector('[data-evaluation-result]').textContent), 'a stored tie says no improvement was shown');
+  A.ok(/^Última evaluación: Sin mejora mostrada/.test(card9.querySelector('[data-evaluation-result]').textContent), 'a stored tie says no improvement was shown');
   // A stored refused run reads the same after a reload.
   const card10 = reload(deniedRow);
-  A.ok(card10.querySelector('[data-evaluation-result]').textContent.includes('the station stopped a run (a budget limit'), 'a stored refused run lists what can stop one');
+  A.ok(card10.querySelector('[data-evaluation-result]').textContent.includes('la estación detuvo una ejecución (límite de presupuesto'), 'a stored refused run lists what can stop one');
   A.eq(card10.querySelector('[data-candidate-acknowledge]').hidden, true, 'a stored spend-denied run offers no acknowledgement');
   // A provider error (an HTTP 429) on the first run leaves its cost unsettled, so the real accounting refuses every
   // later run and the runner writes 'policy-denied' for them. No budget limit or paused spending was involved, so
@@ -308,7 +308,7 @@ async function checkCandidateReview() {
     'the real modules hold back every run after a failed one as policy-denied');
   const erroredText = reload(erroredRow).querySelector('[data-evaluation-result]').textContent;
   A.ok(!/budget|paused/i.test(erroredText), 'a run held back after a failed run names no budget limit or paused spending: ' + erroredText);
-  A.ok(/a run failed/i.test(erroredText) && /held back every run after it/.test(erroredText), 'it says a run failed and the runs after it were held back: ' + erroredText);
+  A.ok(/una ejecución falló/i.test(erroredText) && /retuvo cada ejecución posterior/.test(erroredText), 'it says a run failed and the runs after it were held back: ' + erroredText);
   // A receipt for another revision (or another active version) never reads as this proposal's result.
   const stale = Object.assign({}, passedRow, { candidateDigest: SkillEvaluation.digestSkill(Object.assign({}, proposed, { body: 'An older proposal' })) });
   const untouched = async (card, why) => {
@@ -327,8 +327,8 @@ async function checkCandidateReview() {
   ctx.review = { candidates: [Object.assign({}, listed(passedRow).review.candidates[0], { baseCurrent: false })], evaluationSuites: listed(passedRow).review.evaluationSuites };
   vm.runInNewContext('renderSkillCandidates(host, "agent", review);', ctx);
   const outdated = outdatedHost.children[0];
-  A.ok(outdated.html.includes('<span class="sk-badge miss">OUTDATED</span>') && !outdated.html.includes('PROPOSED REVISION'), 'an outdated proposal is badged OUTDATED');
-  A.ok(outdated.html.includes('The active skill changed after this was proposed. Reject it, or wait for the agent\'s next revision.'), 'it says why and what the Commander can do');
+  A.ok(outdated.html.includes('<span class="sk-badge miss">DESBORRADA</span>') && !outdated.html.includes('REVISIÓN PROPUESTA'), 'an outdated proposal is badged OUTDATED');
+  A.ok(outdated.html.includes('La habilidad activa cambió después de proponer esto. Recházala, o espera a la próxima revisión del agente.'), 'it says why and what the Commander can do');
   for (const attr of ['data-evaluation-suites', 'data-candidate-approve', 'data-candidate-acknowledge', 'data-suite-register', 'data-suite-json'])
     A.ok(!outdated.html.includes(attr), 'an outdated proposal has no ' + attr);
   A.ok(!/Last evaluation|Passed/.test(outdated.querySelector('[data-evaluation-result]').textContent), 'a stored receipt is not offered on an outdated proposal');
@@ -341,7 +341,7 @@ async function checkCandidateReview() {
     const h = element(); ctx.host = h;
     ctx.review = { candidates: [Object.assign({}, listed(null).review.candidates[0], { baseCurrent })], evaluationSuites: listed(null).review.evaluationSuites };
     vm.runInNewContext('renderSkillCandidates(host, "agent", review);', ctx);
-    A.ok(h.children[0].html.includes('PROPOSED REVISION') && h.children[0].html.includes('data-candidate-approve') && h.children[0].html.includes('data-suite-register'), 'baseCurrent ' + baseCurrent + ' keeps the full card');
+    A.ok(h.children[0].html.includes('REVISIÓN PROPUESTA') && h.children[0].html.includes('data-candidate-approve') && h.children[0].html.includes('data-suite-register'), 'baseCurrent ' + baseCurrent + ' keeps the full card');
   }
 
   // skills-eval-07: an archive proposal names the skill it archives into, so the Commander approves that one first.
@@ -350,9 +350,9 @@ async function checkCandidateReview() {
     skill: { id: 'weekly', name: 'Weekly brief', body: 'Old steps', scope: 'agent', files: [], state: 'archived', absorbedInto: 'Reports' } }], evaluationSuites: [] };
   vm.runInNewContext('renderSkillCandidates(host, "agent", review);', ctx);
   const archiveCard = archiveHost.children[0];
-  A.ok(archiveCard.html.includes('<div class="sk-attr">Archives into: Reports</div>'), 'an archive proposal shows its heir');
+  A.ok(archiveCard.html.includes('<div class="sk-attr">Archiva en: Reports</div>'), 'an archive proposal shows its heir');
   A.ok(archiveCard.html.includes('"absorbedInto": "Reports"'), 'the proposed metadata carries absorbedInto');
-  A.ok(!card.html.includes('Archives into'), 'a content revision shows no heir line');
+  A.ok(!card.html.includes('Archiva en'), 'a content revision shows no heir line');
 }
 
 // Review finding world-render-10: Change sharing speaks plain words, marks the current choice, asks for a
@@ -387,7 +387,7 @@ async function checkSkillSharing() {
   A.ok(/(^| )sel( |$)/.test(buttons[0].className), 'the current sharing has the selected skin');
   const input = panel.children.find(c => c.tag === 'input');
   A.eq(input.hidden, true, 'no folder field until Este proyecto is chosen');
-  A.ok(panel.children[0].textContent.includes('just nova uses it'), 'the note says who uses each choice');
+  A.ok(panel.children[0].textContent.includes('solo nova la usa'), 'the note says who uses each choice');
   await buttons[1].onclick();
   A.eq(posts.length, 0, 'choosing Este proyecto first asks for the folder');
   A.eq(input.hidden, false, 'the folder field appears for Este proyecto');
