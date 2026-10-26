@@ -1,6 +1,9 @@
 /* node test/battlepass.test.js — the quest-log battle pass is a pure, honest projection of Commander progression:
    tiers = levels, streak = local days with verified points, challenges = this week's verified awards, rewards cosmetic. */
 'use strict';
+// The pass is a fixed calendar projection (NOW below is a constant), so pin the timezone: hosts with a DST
+// transition inside the test window (e.g. Europe/Madrid, 2026-10-25) shift the day math by an hour.
+process.env.TZ = 'UTC';
 const A = require('./_assert.js');
 const BP = require('../frontend/app/battlepass.js');
 

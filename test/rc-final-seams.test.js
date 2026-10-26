@@ -118,13 +118,13 @@ function load(src, headers, globals, extra) {
     { id: 'home', title: null, agentId: 'agent', history: [] },
     { id: 'blank', title: null, agentId: 'agent', history: [], kind: 'chat' },
     { id: 'named', title: 'Launch prep', agentId: 'agent', history: [{ role: 'user', content: 'Launch prep' }] }] });
-  A.eq(['home', 'blank', 'named'].map(id => W.titleOf(id)), ['General', 'New session', 'Launch prep'], 'only the General home reads "General"; an untitled other session is a "New session"');
+  A.eq(['home', 'blank', 'named'].map(id => W.titleOf(id)), ['General', 'Nueva sesión', 'Launch prep'], 'only the General home reads "General"; an untitled other session is a "New session"');
   const fresh = W.startSession({ reuseActive: false });
-  A.eq(W.titleOf(fresh), 'New session', '+ NEW reads "New session", never a second "General"');
+  A.eq(W.titleOf(fresh), 'Nueva sesión', '+ NEW reads "New session", never a second "General"');
   A.ok(W.autoTitle(fresh.id, 'Draft the launch email') && W.titleOf(fresh) === 'Draft the launch email', '…until its first message names it');
   // the exported file and search read the same name (the export heading said "General" for any untitled session)
   const md = W.exportConversation('blank', 'markdown', { exportedAt: 1 });
-  A.ok(/^# New session$/m.test(md.text) && md.filename === 'starnet-new-session.md', 'an untitled session exports as "New session": ' + md.filename);
+  A.ok(/^# Nueva sesión$/m.test(md.text) && md.filename === 'starnet-nueva-sesi-n.md', 'an untitled session exports as "New session": ' + md.filename);
   A.ok(/^# General$/m.test(W.exportConversation('home', 'markdown', { exportedAt: 1 }).text), '…the General home exports as "General"');
   A.eq(W.search('general').map(h => h.id), ['home'], 'searching "general" finds the General home only, not every untitled session');
   // the voice call hears the rail's names: one "General", the untitled session as "New session"
@@ -135,8 +135,8 @@ function load(src, headers, globals, extra) {
   const instructions = A.fnBody(voice, 'function voiceInstructions() {');
   const spoken = new Function('Personas', 'Workstreams', 'stationContext', nameLine + instructions + '; return voiceInstructions();')(P, W,
     () => ({ agent: { name: 'NOVA' }, crew: [], streams: [W.get('home'), W.get('blank'), W.get('named')], activeWs: W.get('blank') }));
-  A.ok(/Open sessions: General; New session; Launch prep\./.test(spoken), 'the voice model hears one General: ' + (/Open sessions: [^\n.]*\./.exec(spoken) || [''])[0]);
-  A.ok(/The active session is "New session"\./.test(spoken), '…and the active untitled session by the rail\'s name');
+  A.ok(/Open sessions: General; Nueva sesión; Launch prep\./.test(spoken), 'the voice model hears one General: ' + (/Open sessions: [^\n.]*\./.exec(spoken) || [''])[0]);
+  A.ok(/The active session is "Nueva sesión"\./.test(spoken), '…and the active untitled session by the rail\'s name');
   A.ok(!/\btitle \|\| 'General'/.test(voice), 'voice-live never falls back to "General" for an untitled session');
   W.init({});
   const app = rd('frontend/app/app.js');

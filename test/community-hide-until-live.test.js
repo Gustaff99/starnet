@@ -244,23 +244,23 @@ async function skillCase(live, on) {
   const own = host.querySelector('[data-agent-skill="meeting-recap"]'), installed = host.querySelector('[data-agent-skill="market-brief"]');
   A.ok(!!own && !!installed, label + 'both skill cards render');
   if (!own || !installed) return;
-  A.ok(['Edit', 'Change sharing', 'Archive'].every(k => texts(own, '.consent-btns button').includes(k)), label + 'the card keeps Edit, Change sharing and Archive: ' + JSON.stringify(texts(own, '.consent-btns button')));
+  A.ok(['Editar', 'Cambiar compartir', 'Archivar'].every(k => texts(own, '.consent-btns button').includes(k)), label + 'the card keeps Editar, Cambiar compartir and Archivar: ' + JSON.stringify(texts(own, '.consent-btns button')));
   A.ok(installed.querySelector('[data-ag-act="market"]') === null, label + 'a skill installed from the market never offers Share to market');
   const key = own.querySelector('[data-ag-act="market"]');
   if (!on) {
     A.ok(key === null, label + 'an own skill\'s card has no Share to market key');
-    A.ok(!texts(host, 'button').some(t => /share to market/i.test(t)), label + 'no key anywhere reads Share to market');
+    A.ok(!texts(host, 'button').some(t => /compartir en el mercado/i.test(t)), label + 'no key anywhere reads Compartir en el mercado');
     vm.runInContext('shareSkillToMarket(document.querySelector(\'[data-agent-skill="meeting-recap"]\'), ' + JSON.stringify(OWN) + ', "agent");', P.ctx);
     A.ok(own.querySelector('.sk-share') === null, label + 'and the share form cannot be opened on it by any other way in');
     A.eq(P.requests.filter(r => r.url === '/api/skill-market/share'), [], label + 'nothing is sent to the market');
     return;
   }
-  A.ok(!!key && key.textContent === 'Share to market' && !key.disabled, label + 'an own skill\'s card offers Share to market, a live key');
+  A.ok(!!key && key.textContent === 'Compartir en el mercado' && !key.disabled, label + 'an own skill\'s card offers Compartir en el mercado, a live key');
   if (!key) return;
   await press(key); await settle();
   const form = own.querySelector('.sk-body .sk-share');
-  A.ok(!!form && /NAME ON THE MARKET/.test(form.textContent), label + 'pressing it opens the share form in the card');
-  A.ok(texts(own, '.consent-btns button').includes('Send for review'), label + 'with its Send for review key');
+  A.ok(!!form && /NOMBRE EN EL MERCADO/.test(form.textContent), label + 'pressing it opens the share form in the card');
+  A.ok(texts(own, '.consent-btns button').includes('Enviar a revisión'), label + 'with its Enviar a revisión key');
 }
 
 (async () => {

@@ -100,7 +100,7 @@ A.ok(/function start\(\) \{[\s\S]{0,420}lineStatsSoon\(\);/.test(world), 'the fl
 }
 
 /* ---------- R2: the step note names the agent ---------- */
-A.ok(/after ' \+ String\(agentName\(hand\.from\)\)\.toUpperCase\(\)/.test(outbox), 'the OUTBOX step note says the upstream agent\'s NAME, not its id');
+A.ok(/después de ' \+ String\(agentName\(hand\.from\)\)\.toUpperCase\(\)/.test(outbox), 'the OUTBOX step note says the upstream agent\'s NAME, not its id');
 
 /* ---------- P1: a branch to a bay with no agent yet is named, never "nowhere" ---------- */
 {

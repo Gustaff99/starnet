@@ -258,7 +258,7 @@ function ctxFor(runId) {
     const guardAt = cont.indexOf('if (h.awaitingAnswer)'), sendAt = cont.indexOf('await send(');
     A.ok(guardAt > 0 && sendAt > guardAt && /App\.openWorkstream\(streamId\);[\s\S]{0,200}return false;/.test(cont.slice(guardAt, sendAt)), 'continueConnectorTask returns to the open question instead of answering it');
     const winSrc = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/connectors.js'), 'utf8');
-    A.ok(/const supported = !h\.awaitingAnswer && /.test(winSrc) && /btn\.textContent = h\.awaitingAnswer \? 'RETURN TO TASK'/.test(winSrc), 'HABILIDADES offers RETURN TO TASK, never CONTINUE TASK, while the question is open');
+    A.ok(/const supported = !h\.awaitingAnswer && /.test(winSrc) && /btn\.textContent = h\.awaitingAnswer \? 'VOLVER A LA TAREA'/.test(winSrc), 'HABILIDADES offers RETURN TO TASK, never CONTINUE TASK, while the question is open');
     {
       const W = require('../frontend/app/workstreams.js');
       W.reset();

@@ -91,7 +91,7 @@ A.ok(!/\['Alt \+ H'/.test(tutorial), 'CONTROLS never lists Alt+H: no handler for
 }
 
 // ---- NEEDS YOU first ----
-A.ok(/NEEDS YOU at the top of SESSIONS lists every one still waiting \(also NOTIFICATIONS › NEEDS YOU\)/.test(manualSrc),
+A.ok(/TE NECESITA at the top of SESSIONS lists every one still waiting \(also NOTIFICATIONS › TE NECESITA\)/.test(manualSrc),
   'the manual sends waiting approvals to NEEDS YOU at the top of SESSIONS first');
 A.ok(/<b>NEEDS YOU<\/b> at the top of SESSIONS lists every job waiting on you \(also <b>NOTIFICATIONS › NEEDS YOU<\/b>\)/.test(tutorial),
   'the HELP chapter\'s WAITING entry names NEEDS YOU');

@@ -36,10 +36,10 @@ A.ok(/document\.body\.style\.zoom\s*=\s*String\(tz\s*\/\s*100\)/.test(station), 
     v => Number(v) || 100, { settings: { textScale: 100 } }, () => {}, () => {}, () => {}, () => 100, text => toasts.push(text));
   const press = mods => handler(Object.assign({ key: '=', altKey: false, defaultPrevented: false, preventDefault() {} }, mods));
   press({ metaKey: true, ctrlKey: false });
-  A.ok(toasts[0] && toasts[0].includes('Cmd + and Cmd - change it, Cmd 0 resets'), 'Cmd+= teaches the Cmd chord: ' + toasts[0]);
+  A.ok(toasts[0] && toasts[0].includes('Cmd + y Cmd - lo cambian, Cmd 0 lo restablece'), 'Cmd+= teaches the Cmd chord: ' + toasts[0]);
   A.ok(toasts[0] && !toasts[0].includes('Ctrl'), 'a Mac toast never says Ctrl');
   press({ metaKey: false, ctrlKey: true });
-  A.ok(toasts[1] && toasts[1].includes('Ctrl + and Ctrl - change it, Ctrl 0 resets'), 'Ctrl+= teaches the Ctrl chord: ' + toasts[1]);
+  A.ok(toasts[1] && toasts[1].includes('Ctrl + y Ctrl - lo cambian, Ctrl 0 lo restablece'), 'Ctrl+= teaches the Ctrl chord: ' + toasts[1]);
   A.ok(toasts.every(t => !t.includes('−')), 'the toast uses the plain minus the user types');
 }
 A.report('readability.test');

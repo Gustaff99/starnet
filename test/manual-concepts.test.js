@@ -47,12 +47,12 @@ for (const [id, words] of listed) A.eq(words, Places.get(id).words, id + ': list
 A.ok(nav.indexOf('station.show') >= 0, 'navigation tells the agent to OPEN places with station.show');
 
 // ---- C. every MENU › TAB path in the manual exists ----
-const paths = [...new Set(full.match(/[A-Z][A-Z&\/ -]*[A-Z](?: › [A-Z][A-Z&\/ -]*[A-Z])+/g))];
+const paths = [...new Set(full.match(/[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ&\/ -]*[A-ZÁÉÍÓÚÑ](?: › [A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ&\/ -]*[A-ZÁÉÍÓÚÑ])+/g))];
 A.ok(paths.length >= 20, 'the manual names menu paths (' + paths.length + ')');
 // group/section labels that are real but are not themselves a place — each proven in its own source
 const LABELS = {
-  'INSTALLED': ['frontend/app/windows/connectors.js', "label: 'INSTALLED'"],
-  'NEEDS YOU': ['frontend/app/stationui.js', '>NEEDS YOU <']
+  'INSTALADO': ['frontend/app/windows/connectors.js', "label: 'INSTALADO'"],
+  'TE NECESITA': ['frontend/app/stationui.js', '>TE NECESITA <']
 };
 for (const [label, [file, needle]] of Object.entries(LABELS)) A.ok(read(file).indexOf(needle) >= 0, 'label ' + label + ' still exists in ' + file);
 const words = Places.PLACES.map(p => p.words);

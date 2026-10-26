@@ -54,7 +54,7 @@
     const previous = Array.isArray(j.previous) ? j.previous.filter(p => typeof p === 'string' && p) : [];
     const where = (typeof j.movedTo === 'string' && j.movedTo) || previous[0] || 'la carpeta de conectores';
     const earlier = previous.filter(p => p !== where);
-    return 'Connector storage started fresh. Old files kept in ' + where + (earlier.length ? ' (earlier copies in ' + earlier.join(', ') + ')' : '');
+    return 'El almacenamiento de conectores empezó de cero. Archivos antiguos en ' + where + (earlier.length ? ' (copias anteriores en ' + earlier.join(', ') + ')' : '');
   }
 
   /* ============== CONNECTORS — attach MCP servers so agents gain external tools ==============

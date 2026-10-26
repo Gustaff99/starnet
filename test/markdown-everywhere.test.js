@@ -179,7 +179,7 @@ A.eq(cascadeWhiteSpace(['cmsg', 'body']).value, 'pre-wrap', 'cascade sanity: COM
   const host = { appendChild: n => appended.push(n) };
   answerCut(host, 'x'.repeat(4000));
   answerCut(host, '```\n' + 'x'.repeat(4100));
-  A.eq(appended.map(n => [n.tag, n.className, n.textContent]), [['div', 'ob-cut', '… output truncated — ↗ OPEN SESSION opens the conversation.']], 'only a cut reply gets the note, as its own element after the answer');
+  A.eq(appended.map(n => [n.tag, n.className, n.textContent]), [['div', 'ob-cut', '… salida truncada — ↗ ABRIR SESIÓN abre la conversación.']], 'only a cut reply gets the note, as its own element after the answer');
   A.ok(!/output truncated/.test(answerInto), 'the note never rides inside the rendered text');
   A.ok(/\.ob-cut \{[^}]*color: var\(--ph-dim\)/.test(rd('frontend/css/app.css')) && !/\.ob-cut \{[^}]*font-size/.test(rd('frontend/css/app.css')), 'the note reads dim at the answer’s own size (never shrunk)');
   /* a PLAIN reply with single line breaks takes renderProse's textContent fast path (no marker, no link) — its lines survive only

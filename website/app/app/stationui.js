@@ -2854,8 +2854,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       : env.requestedBackend === 'ssh' ? 'Guarda y sondea un destino SSH, o cambia el perfil de ejecución.'
       : 'Cambia el perfil de ejecución.';
     const why = String(env.mismatchReason || (requested + ' backend unavailable'));
-    const mode = env.refusing === false ? 'commands are running on this computer instead' : 'commands are REFUSED until it is fixed';
-    return '<span class="sandbox-chip" data-sandbox-unavailable="' + esc(String(env.requestedBackend || '')) + '" title="' + esc(why + ' — ' + mode + '. ' + fix) + '">▲ SANDBOX UNAVAILABLE</span>' +
+    const mode = env.refusing === false ? 'los comandos se ejecutan en este equipo en su lugar' : 'los comandos quedan RECHAZADOS hasta arreglarlo';
+    return '<span class="sandbox-chip" data-sandbox-unavailable="' + esc(String(env.requestedBackend || '')) + '" title="' + esc(why + ' — ' + mode + '. ' + fix) + '">▲ SANDBOX NO DISPONIBLE</span>' +
       '<span class="sandbox-chip-fix">' + esc(why) + ' — ' + esc(mode) + '. ' + esc(fix) + '</span>';
   }
   function executionProfileCard(a) {
@@ -2863,11 +2863,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const p = executionProfileOf(current);
     const chips = EXECUTION_PROFILES.map(x => '<button type="button" class="ov-vchip' + (x.id === current ? ' sel' : '') + '" data-execution-profile="' + x.id + '" data-name="' + esc(x.label) + '" data-reach="' + x.reach + '" title="' + esc(x.plain) + '" aria-pressed="' + (x.id === current ? 'true' : 'false') + '">' + reachMeter(x.reach) + esc(x.label) + '</button>').join('');
     return '<div class="cf-card" id="ag-execution-card">' +
-      '<div class="cf-head"><span class="cf-file">▣ execution profile</span></div>' +
-      '<div class="cf-desc">Choose an execution profile. Changing the profile alone never grants real mouse, keyboard, or screen control; that requires Full Power or a live desktop-control grant. The effective-access summary above includes Full Power overrides; service connections and operating-system limits still apply.</div>' +
+      '<div class="cf-head"><span class="cf-file">▣ perfil de ejecución</span></div>' +
+      '<div class="cf-desc">Elige un perfil de ejecución. Cambiar el perfil por sí solo nunca otorga control real de ratón, teclado o pantalla; eso requiere POTENCIA TOTAL o una concesión viva de control de escritorio. El resumen de acceso efectivo de arriba incluye las anulaciones de POTENCIA TOTAL; siguen aplicando las conexiones de servicio y los límites del sistema operativo.</div>' +
       '<div class="ov-vchips" id="ag-execution-chips">' + chips + '</div>' +
       '<div class="cf-desc pc-plain" id="ag-execution-plain">' + esc(p.plain) + '</div>' +
-      '<div class="mc-hint" id="ag-execution-truth">ROUTES NEXT COMMAND TO <b>' + esc(p.backend.toUpperCase()) + '</b> · FILES: ' + esc(p.files) + ' · TOOLS: ' + esc(p.tools) + ' · DESKTOP: ' + esc(p.desktop) + ' · checking availability…</div>' +
+      '<div class="mc-hint" id="ag-execution-truth">ENVIÁ EL PRÓXIMO COMANDO A <b>' + esc(p.backend.toUpperCase()) + '</b> · ARCHIVOS: ' + esc(p.files) + ' · HERRAMIENTAS: ' + esc(p.tools) + ' · ESCRITORIO: ' + esc(p.desktop) + ' · comprobando disponibilidad…</div>' +
       '<div id="ag-execution-msg" class="msg"></div>' +
     '</div>';
   }
@@ -9065,7 +9065,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         glanceWrap.classList.toggle('loud', bypassOn);
         glanceWrap.innerHTML =
           '<p class="pg-line">' + esc(head) + '</p>' +
-          ((bypassOn || noPrompt) ? '<p class="pg-floor">FULL POWER is host-wide: it may use protected files, arbitrary commands, visible apps, and screen/input control. Full Power applies watched or unattended.' +
+          ((bypassOn || noPrompt) ? '<p class="pg-floor">POTENCIA TOTAL es de todo el equipo: puede usar archivos protegidos, comandos arbitrarios, apps visibles y control de pantalla/entrada. Se aplica con o sin supervisión.' +
             (bypassOn && !snap.envFullAccess ? ' Turn the whole-station override off under <b>Advanced</b> below.' : '') + '</p>' : '');
       };
       /* ── THE POSTURE FRONT DOOR ────────────────────────────────────────────────────────────────────
@@ -9214,12 +9214,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
              under MORE OPTIONS for the rare case a card is not enough. The badge reports the EFFECTIVE state:
              under the whole-station override every row reads FULL POWER, and the stored answer stays visible. */
           const AP = agentPostureOf(a);
-          const badge = effFull ? 'FULL POWER' : (AP ? AP.label : 'CUSTOM');
+          const badge = effFull ? 'FULL POWER' : (AP ? AP.label : 'PERSONALIZADO');
           // under the override the clause leads with what the agent returns to: the collapsed row ellipses it at ~40 characters,
           // and "whole-station override is ON · returns to FU…" cut off the one fact it is there for (the badge says FULL POWER)
           const stateLine = overridden
-            ? (AP ? 'returns to ' + AP.label : 'returns to its custom mix') + ' when the whole-station override is off'
-            : (AP ? AP.agentBlurb : full ? 'full power · the whole local computer' : 'asks first · ' + p.short);
+            ? (AP ? 'vuelve a ' + AP.label : 'vuelve a su mezcla personalizada') + ' cuando se apaga la anulación de toda la estación'
+            : (AP ? AP.agentBlurb : full ? 'potencia total · todo el equipo local' : 'pregunta primero · ' + p.short);
           const postureChips = STATION_POSTURES.map(P =>
             '<button class="ov-vchip pc-posture' + (AP && AP.id === P.id ? ' sel' : '') + (P.id === 'open' ? ' danger' : '') + '" data-agent-posture="' + P.id + '" data-agent="' + esc(String(a.id)) + '"' +
               ' title="' + esc(P.agentBlurb) + '" aria-pressed="' + (AP && AP.id === P.id ? 'true' : 'false') + '"' + (can && canAsk ? '' : ' disabled') + '>' + esc(P.label) + '</button>').join('');
@@ -9232,29 +9232,29 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
               '<span class="pc-caret" aria-hidden="true">▸</span>' +
             '</summary>' +
             '<div class="ov-vchips pc-chips pc-posture-chips">' + postureChips + '</div>' +
-            (AP ? '' : '<p class="pc-plain">A custom mix — ' + (full
+            (AP ? '' : '<p class="pc-plain">Una mezcla personalizada — ' + (full
               // approvalMode 'full' is the whole local computer (unrestrictedHostNow): the saved reach limits nothing, so it is never named as a limit
-              ? 'it has <b>full power</b> over the whole local computer; the saved reach below does not limit it'
-              : 'it reaches <b>' + esc(p.plainLabel.toLowerCase()) + '</b> and asks before risky steps') + '. Pick an answer above to reset it, or fine-tune below.</p>') +
-            '<details class="mc-adv pc-exact"' + (permExactOpen.has(String(a.id)) || id === 'remote-ssh' ? ' open' : '') + ' data-exact-agent="' + esc(String(a.id)) + '"><summary>More options — exact reach, asking, sandbox</summary>' +
+              ? 'tiene <b>POTENCIA TOTAL</b> sobre todo el equipo local; el alcance guardado de abajo no lo limita'
+              : 'alcanza <b>' + esc(p.plainLabel.toLowerCase()) + '</b> y pregunta antes de los pasos arriesgados') + '. Elige una respuesta de arriba para restablecerla, o ajusta abajo.</p>') +
+            '<details class="mc-adv pc-exact"' + (permExactOpen.has(String(a.id)) || id === 'remote-ssh' ? ' open' : '') + ' data-exact-agent="' + esc(String(a.id)) + '"><summary>Más opciones — alcance exacto, preguntas, sandbox</summary>' +
             '<div class="pc-axis">' +
               '<span class="pc-q">CAN REACH</span>' +
               // `pc-reach-chips` lays the five rungs out as an EVEN grid rather than a flex-wrap (an ordered scale
               // must read as one). (CSS-only; the chips themselves are unchanged.)
               (can ? '<div class="ov-vchips pc-chips pc-reach-chips">' + reachChips + '</div>' : '<span class="pc-plain">' + esc(p.label) + '</span>') +
-              '<p class="pc-plain">' + (effFull ? 'Full Power currently overrides this stored reach profile; the profile applies again when Full Power is turned off.' : esc(p.plain)) + '</p>' +
-              '<p class="mc-hint pc-truth">' + sandboxChip(row) + 'routes next command to <b>' + esc(routed) + '</b> · availability <b>' + esc(availability) + '</b> · files: ' + esc(p.files) + ' · tools: ' + esc(p.tools) + ' · desktop ' + esc(p.desktop) + '</p>' +
+              '<p class="pc-plain">' + (effFull ? 'POTENCIA TOTAL está anulando este perfil de alcance guardado; el perfil vuelve a aplicar cuando se apaga POTENCIA TOTAL.' : esc(p.plain)) + '</p>' +
+              '<p class="mc-hint pc-truth">' + sandboxChip(row) + 'envía el próximo comando a <b>' + esc(routed) + '</b> · disponibilidad <b>' + esc(availability) + '</b> · archivos: ' + esc(p.files) + ' · herramientas: ' + esc(p.tools) + ' · escritorio ' + esc(p.desktop) + '</p>' +
             '</div>' +
             '<div class="pc-axis pc-ask-axis">' +
-              '<span class="pc-q">AUTHORITY' + (overridden ? ' <span class="pc-ovr">— OVERRIDDEN BY WHOLE-STATION FULL POWER</span>' : '') + '</span>' +
+              '<span class="pc-q">AUTORIDAD' + (overridden ? ' <span class="pc-ovr">— ANULADO POR LA POTENCIA TOTAL DE TODA LA ESTACIÓN</span>' : '') + '</span>' +
               (canAsk ? '<div class="ov-vchips pc-chips">' + askChips + '</div>' : '') +
               '<p class="pc-plain">' + (overridden
-                ? 'The whole-station Full Power switch is ON, so this agent has host-wide authority right now. ' + (full
-                  ? 'It is also set to retain Full Power on its own.'
-                  : 'Turn that switch off and it goes back to stopping for your yes, as selected here.')
+                ? 'El interruptor de POTENCIA TOTAL de toda la estación está ON, así que este agente tiene autoridad de todo el equipo ahora mismo. ' + (full
+                  ? 'Además está configurado para conservar POTENCIA TOTAL por sí mismo.'
+                  : 'Apaga ese interruptor y vuelve a detenerse para tu sí, como se eligió aquí.')
                 : full
-                  ? 'It may use the whole local computer without pausing: available tools, host files, arbitrary commands, visible apps, and screen/input control.'
-                  : 'Before it writes a file, runs a command, or reaches outside, it stops and waits for your yes.') + '</p>' +
+                  ? 'Puede usar todo el equipo local sin pausar: herramientas disponibles, archivos del equipo, comandos arbitrarios, apps visibles y control de pantalla/entrada.'
+                  : 'Antes de escribir un archivo, ejecutar un comando o salir del equipo, se detiene y espera tu sí.') + '</p>' +
             '</div>' +
             (cell || ssh ? '<div class="pc-more">' + cell + ssh + '</div>' : '') +
             '</details>' +
@@ -9846,7 +9846,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         (dis ? '<button class="nf-x" data-ny-dismiss="' + esc(it.key) + '" data-tip="Descartar: sale de NECESITA DE TI aquí y del riel" aria-label="Dismiss ' + esc(line) + '">✕</button>' : '') + '</div>';
     };
     const needsRows = NY ? live.map(liveRow) : waiting.map(row);
-    const needsHtml = needsRows.length ? '<section class="nf-needs"><h4 class="ms-h">TE NECESITA <span class="dim">— ' + needsRows.length + ' waiting</span></h4><div class="nf-list nf-list-needs">' + needsRows.join('') + '</div></section>' : '';
+    const needsHtml = needsRows.length ? '<section class="nf-needs"><h4 class="ms-h">TE NECESITA <span class="dim">— ' + needsRows.length + ' pendientes</span></h4><div class="nf-list nf-list-needs">' + needsRows.join('') + '</div></section>' : '';
     body.innerHTML = '<header class="utility-head"><h2>Notificaciones</h2><p>Lo que necesita de ti, y lo que terminó o falló mientras estabas en otra parte. Haz clic en una para ir allí.</p></header>' +
       needsHtml +
       '<div class="nf-toolbar"><div class="utility-tabs" role="group" aria-label="Mostrar notificaciones">' +

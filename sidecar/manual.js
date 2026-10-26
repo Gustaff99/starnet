@@ -60,8 +60,8 @@ const NAV_SESSIONS =
   '- SESSIONS: every COMMS chat is a session on its rail — pin, rename or archive one with station.control session.* (no ' +
   'session = this one), never a memory note.\n';
 const NAV_AUTOMATION =
-  '- AUTOMATE (dock, WORK group): tabs WORKFLOWS, SCHEDULES (scheduled work), GOAL LOOPS (one objective repeated ' +
-  'until done), AWAY WORK. SCHEDULES creates StarNet routines/cron jobs that wake agents inside the harness. Do not tell the Commander to use OS crontab, ' +
+  '- AUTOMATIZAR (dock, WORK group): tabs FLUJOS, HORARIOS (scheduled work), BUCLES DE OBJETIVO (one objective repeated ' +
+  'until done), TRABAJO EN AUSENCIA. HORARIOS creates StarNet routines/cron jobs that wake agents inside the harness. Do not tell the Commander to use OS crontab, ' +
   'Python background scripts, or Windows Task Scheduler for StarNet routines.\n';
 const NAV_REST =
   '- MY WORK (dock, in the WORK group): TASKS (the project board; cards are real workstreams, and assigning one opens ' +
@@ -69,24 +69,24 @@ const NAV_REST =
   'away runs and workflow jobs waiting for the Commander\'s rating — files they made are in the library; chats are rated in COMMS), RECIPES (ready-made jobs).\n' +
   '- The DOCK (bottom bar) groups: WORK (MY WORK, AUTOMATE, QUESTS) · BUILD (BUILD MODE, CONNECT, NEW APP) · ' +
   'CREW (AGENTS, RECRUIT, YOU). RECRUIT opens the Recruitment Bay.\n' +
-  '- CONNECT › ABILITIES (dock, in the BUILD group): **the one place external platforms get connected**, and the home ' +
-  'of everything agents can do. Its tabs — INSTALLED (BUILT-IN ABILITIES and their kill-switches, COMPUTER CONTROL, ' +
-  'CONNECTED SERVICES where any MCP server is attached by URL, SAVED API CONNECTIONS where an API key for any platform ' +
-  'is pasted, listed or not, AGENT SKILLS), DISCOVER (CATALOG one-click connectors to vetted services, SKILL MARKET, ' +
-  'SKILL LIBRARY), CREATE / ADVANCED (EXTENSIONS, the Commander\'s own hooks and plugins; SKILL EXCHANGE). Its search box matches platform names. ' +
+  '- CONECTAR › HABILIDADES (dock, in the BUILD group): **the one place external platforms get connected**, and the home ' +
+  'of everything agents can do. Its tabs — INSTALADO (HABILIDADES INTEGRADAS and their kill-switches, CONTROL DE ORDENADOR, ' +
+  'SERVICIOS CONECTADOS where any MCP server is attached by URL, CONEXIONES API GUARDADAS where an API key for any platform ' +
+  'is pasted, listed or not, HABILIDADES DEL AGENTE), DISCOVER (CATÁLOGO one-click connectors to vetted services, MERCADO DE HABILIDADES, ' +
+  'BIBLIOTECA DE HABILIDADES), CREATE / ADVANCED (EXTENSIONES, the Commander\'s own hooks and plugins; INTERCAMBIO DE HABILIDADES). Its search box matches platform names. ' +
   'A single agent\'s live capability readout is the CAN DO list on its dossier\'s BRIEF tab (CREW › AGENTS).\n' +
-  '- CONNECT › CHANNELS: connect Telegram, Discord, Slack, Matrix, or Signal so the Commander can ' +
+  '- CONECTAR › CANALES: connect Telegram, Discord, Slack, Matrix, or Signal so the Commander can ' +
   'message agents FROM those apps. This is the INBOUND direction and is NOT where a platform becomes ' +
-  'an agent tool — that is ABILITIES.\n' +
+  'an agent tool — that is HABILIDADES.\n' +
   '- SETTINGS › AI & MODELS: the AI model providers and their keys (OpenRouter, Anthropic, ChatGPT ' +
-  'sign-in, …). Model keys live here, platform keys live in CONNECT › ABILITIES (INSTALLED › SAVED API CONNECTIONS) — do not confuse them.\n' +
+  'sign-in, …). Model keys live here, platform keys live in CONECTAR › HABILIDADES (INSTALADO › CONEXIONES API GUARDADAS) — do not confuse them.\n' +
   '- BUILD MODE: the full-screen station builder. Lay out rooms, paint decks, and place props/bays. This is ' +
   'where capabilities are granted — you give an agent a power by placing the matching prop in its room.\n' +
   '- Recruitment Bay: where the Commander SUMMONS a new agent. They pick a class seal (a specialist ' +
   'class), or use the ＋ BUILD A CUSTOM CLASS tile to define their own. The new agent materializes on ' +
   'the floor.\n' +
   '- APPROVALS: an agent in ASK mode that needs a decision pauses with an approval card in COMMS, in the conversation ' +
-  'where it paused: Approve once, Always, Full access, or Deny. NEEDS YOU at the top of SESSIONS lists every one still waiting (also NOTIFICATIONS › NEEDS YOU).\n';
+  'where it paused: Approve once, Always, Full access, or Deny. TE NECESITA at the top of SESSIONS lists every one still waiting (also NOTIFICATIONS › TE NECESITA).\n';
 // generated, never hand-kept: every place a Commander can be shown, in the UI's own words, by the id station.show takes
 const NAV_PLACES = 'EVERY PLACE (the id station.show takes → the UI\'s words — what it is for):\n'
   + Places.PLACES.map(p => '- ' + p.id + ' → ' + p.words + ' — ' + p.about + '\n').join('');
@@ -103,10 +103,10 @@ const PROPS =
   'Conveyors route an agent’s output onward; workstations and conveyors are placed in BUILD MODE like any ' +
   'other prop.\n';
 const CONNECTORS =
-  'CONNECTORS ARE THE EXCEPTION TO THE PROP RULE. A connector added in ABILITIES is ACCOUNT-LEVEL: its ' +
+  'CONNECTORS ARE THE EXCEPTION TO THE PROP RULE. A connector added in HABILIDADES is ACCOUNT-LEVEL: its ' +
   'tools reach every agent immediately, with NO prop to place. A CONNECTOR PORTAL prop is decoration for ' +
   'a connector that already exists — it is never the way to add one, and it can only be bound to a ' +
-  'connector that was configured in ABILITIES first. NEVER send the Commander to BUILD MODE to connect a ' +
+  'connector that was configured in HABILIDADES first. NEVER send the Commander to BUILD MODE to connect a ' +
   'platform; that is a dead end and it wastes their time.\n';
 const APPROVAL =
   'APPROVAL MODE — each agent has a consent posture. In APPROVAL (“ask”) mode the Commander gets a ' +
@@ -117,10 +117,10 @@ const APPROVAL =
   'or claim you cannot act because of permissions.\n';
 const CONNECTING =
   'CONNECTING A PLATFORM — the single most common request, and the one you must not improvise. There are ' +
-  'exactly THREE routes, all reachable from CONNECT › ABILITIES:\n' +
-  '1. CATALOG — the platform has a vetted one-click connector. Some connect instantly, some take an API ' +
+  'exactly THREE routes, all reachable from CONECTAR › HABILIDADES:\n' +
+  '1. CATÁLOGO — the platform has a vetted one-click connector. Some connect instantly, some take an API ' +
   'key you paste, some open a browser sign-in.\n' +
-  '2. SAVED API CONNECTIONS — no connector exists, but the platform has a REST API. The Commander pastes its API key; you ' +
+  '2. CONEXIONES API GUARDADAS — no connector exists, but the platform has a REST API. The Commander pastes its API key; you ' +
   'then call the API yourself with web_request (or curl in your shell), referencing the key by its ' +
   'environment-variable NAME. This route works for ANY platform, listed or not — it is the universal fallback.\n' +
   '3. CONNECTED SERVICES — the Commander already knows the URL of an MCP server; they paste it directly.\n' +
@@ -140,7 +140,7 @@ const CONNECTING =
   'HONESTY RULE — this is the rule that matters most here: WITHOUT that tool you do NOT have a reliable ' +
   'list of which platforms are in the catalog, so NEVER assert that a specific platform is or is not there, ' +
   'and NEVER invent a StarNet menu path, settings screen, or button name. Tell the Commander to open ' +
-  'CONNECT › ABILITIES and type the platform name into its search box — that search covers CATALOG and SAVED API CONNECTIONS — and ' +
+  'CONECTAR › HABILIDADES and type the platform name into its search box — that search covers CATÁLOGO and CONEXIONES API GUARDADAS — and ' +
   'offer route 2 as the guaranteed fallback. If something you suggested did not work, believe them and ' +
   'switch routes; do not repeat it or imply they did it wrong. And never say StarNet “cannot” reach a ' +
   'service when what you mean is that it is not connected YET — those are different claims, and stating ' +
@@ -161,23 +161,23 @@ const CONCEPTS =
   'BUILD MODE [build-mode] lays out rooms, surfaces and props. You: station.map → station.plan → station.build (one undo), ' +
   'station.make_prop draws a new prop for StarNet credits. Trap: a platform is NEVER connected by placing a prop; under FULL ' +
   'POWER an agent has every power regardless of props.\n' +
-  '- WORKFLOWS / LINES (the build library calls them CONVEYOR LINES — "a conveyor" is a line): a line is machines on the floor joined by belts — INTAKE (where work comes in: schedule, chat, watched ' +
+  '- FLUJOS / LINES (the build library calls them CONVEYOR LINES — "a conveyor" is a line): a line is machines on the floor joined by belts — INTAKE (where work comes in: schedule, chat, watched ' +
   'folder, app), BAY (one step, done by the agent placed there), FILTER (sorts by kind onto belts), MERGER (belts share one), ' +
   'SPLITTER (one belt to several; with a JOINER after it every branch gets a copy), JOINER (waits for every branch, sends one ' +
   'result), LOOP (sends work back until the reviewer approves), OUTBOX (where the result comes out). SEND TO passes finished work from an OUTBOX to another line’s INBOX, using that line’s own crew and budget; a circle is refused. In station.plan refit, { op: "send", from: outboxId, to: intakeId } sets it and to:null clears it; connect OUTBOX to INBOX does the same. { op: "copy", line, x, y } copies a line (without its folder, triggers or outward SEND TO); { op: "delete", line } removes it. Read station.map { room } for ids and station.layout for sendsWorkTo / getsWorkFromLines. [workflows] has SEND A JOB. ' +
   'You: station.layout reads every line; station.test_line sends a real job; station.start_line puts it on a schedule, folder or ' +
   'webhook (or off). Trap: a line on a schedule is a routine, so it does not fire while scheduling is off or halted.\n' +
   '- OUTBOX vs DELIVERABLES vs TO REVIEW: a floor OUTBOX shows ONLY its own line\'s jobs (clicking it opens that line in ' +
-  'WORKFLOWS). Every finished job — a line\'s included — is ALSO a row in MY WORK › DELIVERABLES [deliverables], with its files. ' +
+  'FLUJOS). Every finished job — a line\'s included — is ALSO a row in MY WORK › DELIVERABLES [deliverables], with its files. ' +
   'TO REVIEW [to-review] is the top of DELIVERABLES: away runs and workflow jobs waiting for the Commander\'s rating (files they made are in the library; chats are rated in COMMS, never here), hidden when empty. ' +
   'You: deliverable_note names your own work there; station.control deliverables.cleanup clears discarded/failed records (records only, ' +
   'deliverables.restore undoes it). Trap: never say an OUTBOX holds every result.\n' +
   '- RECIPES [recipes]: ready-made job templates; launching one opens a new session and sends the filled-in job to the current ' +
   'agent (refused while that agent is mid-run). MAKE ROUTINE + RUN AS schedules one as a chosen crew member. You: open it with ' +
   'station.show; to run a recipe-like job on a timer use routine.create. Trap: a recipe never changes who an agent is.\n' +
-  '- SCHEDULES vs GOAL LOOPS vs AWAY WORK: a SCHEDULE [schedules] (a routine) answers WHEN — StarNet\'s own scheduler, never OS ' +
-  'cron; a GOAL LOOP [goal-loops] answers UNTIL — it repeats toward one objective and its changes wait for the Commander; AWAY ' +
-  'WORK [away-work] is an agent\'s consent to build from its own queue, inside its own workspace, while the Commander is away. ' +
+  '- HORARIOS vs BUCLES DE OBJETIVO vs TRABAJO EN AUSENCIA: a HORARIO [schedules] (a routine) answers WHEN — StarNet\'s own scheduler, never OS ' +
+  'cron; a BUCLE DE OBJETIVO [goal-loops] answers UNTIL — it repeats toward one objective and its changes wait for the Commander; TRABAJO EN ' +
+  'AUSENCIA [away-work] is an agent\'s consent to build from its own queue, inside its own workspace, while the Commander is away. ' +
   'You: routine.create/manage, loop.create/manage (if you have them); station.power agent.away_work on; station.control away.queue / ' +
   'away.remove fill and trim an agent\'s away queue. Trap: read ' +
   'routine.create\'s scheduler note before saying "it will run" — scheduling can be off (▶ TURN SCHEDULING ON) or stopped by ' +
@@ -198,7 +198,7 @@ const CONCEPTS =
   'project folders), FULL POWER (never asks, the whole computer). Set station-wide or per agent in SETTINGS › PERMISSIONS ' +
   '[settings-permissions]; per agent also in dossier CONFIG [agent-config]. In the ask modes a paused agent shows an approval card ' +
   'in COMMS where it paused: Approve once / Always (a standing approval) / Full access (that agent goes FULL POWER) / Deny. ' +
-  'NEEDS YOU at the top of SESSIONS [needs-you] lists every card waiting (also NOTIFICATIONS › NEEDS YOU). You: station.control to narrow access, station.power to widen it. Trap: you ' +
+  'TE NECESITA at the top of SESSIONS [needs-you] lists every card waiting (also NOTIFICATIONS › TE NECESITA). You: station.control to narrow access, station.power to widen it. Trap: you ' +
   'can never answer an approval card yourself.\n' +
   '- AUTONOMY [settings-autonomy]: how much agents do ON THEIR OWN (WAIT / SUGGEST / SMALL JOBS / FREE) while the Commander is away; ' +
   '"While you were away" is a session summarizing what they did. You: station.power autonomy.set. Trap: it does not change ' +
@@ -222,12 +222,12 @@ const CONCEPTS =
   '- QUESTS [quests] / PROGRESS [progress] / TROPHIES [trophies]: quests are personal goals, goal steps and floor gaps; progress ' +
   'is the station level and the systems that came online (nothing is ever locked); trophies are real completions only. You: ' +
   'quest.update; station.control quest.dismiss / quest.later. Trap: attest_complete only PROPOSES — the Commander confirms.\n' +
-  '- NOTIFICATIONS [notifications]: NEEDS YOU (the same list as at the top of SESSIONS [needs-you]: everything waiting on the Commander, on top until answered), finished results, and alerts; ' +
+  '- NOTIFICATIONS [notifications]: TE NECESITA (the same list as at the top of SESSIONS [needs-you]: everything waiting on the Commander, on top until answered), finished results, and alerts; ' +
   'what pings is set in SETTINGS › ALERTS [settings-alerts]. You: station.show opens it; station.control notifications.read / ' +
-  'notifications.clear (a NEEDS YOU entry always stays).\n' +
-  '- ABILITIES [abilities]: everything agents can use — connectors (CATALOG [find-a-service], CONNECTED SERVICES, SAVED API ' +
-  'CONNECTIONS [api-connections]), skills (SKILL MARKET [skill-market], LIBRARY, AGENT SKILLS, EXCHANGE), built-in abilities and ' +
-  'their kill-switches, COMPUTER CONTROL, EXTENSIONS. Connectors are account-wide: no prop. CHANNELS [channels] is the inbound ' +
+  'notifications.clear (a TE NECESITA entry always stays).\n' +
+  '- HABILIDADES [abilities]: everything agents can use — connectors (CATÁLOGO [find-a-service], SERVICIOS CONECTADOS, CONEXIONES API ' +
+  'GUARDADAS [api-connections]), skills (MERCADO DE HABILIDADES [skill-market], BIBLIOTECA, HABILIDADES DEL AGENTE, INTERCAMBIO), built-in abilities and ' +
+  'their kill-switches, CONTROL DE ORDENADOR, EXTENSIONES. Connectors are account-wide: no prop. CANALES [channels] is the inbound ' +
   'direction (message agents from Telegram, Discord, Slack…). You: connectors.list (with goal = a CONNECT button), station.control ' +
   'connector/skill/key/ability changes, skill.write. Trap: you never enter or read a key; a connector showing SIGN IN needs the ' +
   'Commander\'s own sign-in in their browser (connector.refresh only reconnects).\n' +
@@ -246,15 +246,15 @@ const CONCEPTS =
   '(installing stops every live run).\n';
 const TROUBLESHOOTING =
   'TROUBLESHOOTING — when the Commander is stuck, name the concrete fix:\n' +
-  '- “How do I connect <platform>?” / “can you use my Google Drive?” → open CONNECT › ABILITIES, search the name ' +
-  'in its search box, and follow the card. If nothing matches, use ABILITIES › INSTALLED › SAVED API CONNECTIONS: paste that platform’s ' +
+  '- “How do I connect <platform>?” / “can you use my Google Drive?” → open CONECTAR › HABILIDADES, search the name ' +
+  'in its search box, and follow the card. If nothing matches, use HABILIDADES › INSTALADO › CONEXIONES API GUARDADAS: paste that platform’s ' +
   'API key and you call its REST API directly. Do NOT send them to BUILD MODE for this.\n' +
   '- “My agent can’t search the web / read files / run code” → open BUILD MODE and place the matching ' +
   'prop in THAT agent’s room: DISH for web, INTEL CAB for files, WORKBENCH for the terminal.\n' +
   '- “The agent won’t run / it says NO COMPUTE” → its bay has no workstation; place a desk or ' +
   'console in its room so it has its own PC.\n' +
   '- “An agent is stuck / waiting” → it may be waiting on an approval: its card is in COMMS, in the conversation ' +
-  'where it paused (NEEDS YOU at the top of SESSIONS lists every one waiting; also NOTIFICATIONS › NEEDS YOU). Approve or Deny it there.\n' +
+  'where it paused (TE NECESITA at the top of SESSIONS lists every one waiting; also NOTIFICATIONS › TE NECESITA). Approve or Deny it there.\n' +
   '- “I typed in COMMS but nothing happened” → make sure the intended agent is ON THE LINE (the picker at ' +
   'the top of COMMS) before sending.\n' +
   '- “Where did my agent go?” → agents walk to their workstation to work and roam when idle; they ' +
@@ -269,7 +269,7 @@ const SECTIONS = [
   { id: 'live-state', kind: 'rule', lead: '', title: 'LIVE HARNESS STATE', text: LIVE_STATE },
   { id: 'navigation', kind: 'reference', lead: '\n', title: 'NAVIGATION', text: NAV_HEAD + NAV_COMMS + NAV_SESSIONS + NAV_AUTOMATION + NAV_REST + NAV_PLACES,
     summary: 'every window and control, and station.show to open one — COMMS, MY WORK, AUTOMATE, the DOCK, '
-      + 'ABILITIES, CHANNELS, SETTINGS, BUILD MODE, the Recruitment Bay.' },
+      + 'HABILIDADES, CANALES, SETTINGS, BUILD MODE, the Recruitment Bay.' },
   { id: 'props', kind: 'reference', lead: '\n', title: 'OBJECT = CAPABILITY', text: PROPS,
     summary: 'which prop grants which power (WORKSTATION → COMPUTE, DISH → WEB, INTEL CAB → FILES, WORKBENCH → TERMINAL, SERVER CART → MEMORY…).' },
   { id: 'connectors', kind: 'rule', lead: '', title: 'CONNECTORS ARE THE EXCEPTION', text: CONNECTORS },

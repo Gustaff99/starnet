@@ -25,16 +25,16 @@ const render = (crew, agent) => vm.runInNewContext(delSrc + '\n agDeleteRow;', {
 
 const live = render(3, { id: 'scout', role: 'researcher' });
 A.ok(/id="ag-del-card"/.test(live), 'the delete row is its own card');
-A.ok(/<button class="bb sm ag-del" id="ag-del-btn" title=[^>]*>✕ DELETE AGENT<\/button>/.test(live), 'a crew agent gets a live DELETE AGENT button');
+A.ok(/<button class="bb sm ag-del" id="ag-del-btn" title=[^>]*>✕ ELIMINAR AGENTE<\/button>/.test(live), 'a crew agent gets a live ELIMINAR AGENTE button');
 A.ok(!/disabled/.test(live), 'a crew agent’s delete is not disabled');
 
 const hero = render(3, { id: 'agent', role: 'orchestrator' });
 A.ok(/id="ag-del-btn" disabled/.test(hero), 'the overseer’s delete is disabled');
-A.ok(hero.includes('the overseer can’t be deleted'), 'and says why');
+A.ok(hero.includes('el supervisor no se puede eliminar'), 'and says why');
 
 const last = render(1, { id: 'scout', role: 'researcher' });
 A.ok(/id="ag-del-btn" disabled/.test(last), 'the last agent’s delete is disabled');
-A.ok(last.includes('the last agent can’t be deleted'), 'and says why');
+A.ok(last.includes('el último agente no se puede eliminar'), 'and says why');
 
 const cmdSrc = slice('  function agCommand(a) {', '\n  function agGrowth(a) {');
 A.ok(!cmdSrc.includes('ag-del-btn') && !cmdSrc.includes('agDeleteRow'), 'APPEARANCE (agCommand) no longer holds the delete button');

@@ -36,7 +36,7 @@ const t = P.handoffPrompt('Write the weekly newsletter.', 'writer', 'the draft',
 A.eq(P.parseHandoff(t), { stage: 2, original: 'Write the weekly newsletter.', from: 'writer' }, 'parseHandoff inverts handoffPrompt');
 A.eq(P.parseHandoff('Write the weekly newsletter.'), null, 'an ordinary request is not a hand-off');
 A.ok(/Pipeline\.parseHandoff\(users\[0\]\.content\)/.test(outbox) && /firstLine\(hand \? hand\.original : users\[0\]\.content, 64\)/.test(outbox), 'the OUTBOX titles a line result by the original request');
-A.ok(/lineTitle \? 'work line result'/.test(outbox), '…and never shows the machine prompt as the provisional title');
+A.ok(/lineTitle \? 'resultado de línea de trabajo'/.test(outbox), '…and never shows the machine prompt as the provisional title');
 const NL = String.fromCharCode(10);
 A.eq(P.stripVerdictLine(['the post', '', 'VERDICT: approved'].join(NL)), 'the post', 'the OUTBOX shows a line result without its VERDICT control line');
 A.eq(P.stripVerdictLine('VERDICT: approved'), 'VERDICT: approved', 'a reply that is only the verdict is left as it is');

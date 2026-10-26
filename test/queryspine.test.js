@@ -172,8 +172,8 @@ async function rejects(p, label) {
      REAL pollgate.js, queryspine.js, journeystore.js and topbar.js in one page (vm), on one fake monotonic + wall clock and
      timer queue, with an /api/journey that answers after 40 ms. Away, journey (12 s TTL, 4 s poll) is read only once its
      value is 30 s old, so for part of the stretch the value is past its TTL. The snapshot says so by trunk's own formula
-     (age >= TTL), and the topbar's COMMANDER label reads "Lv N · saved" whenever the value it shows is that old: in its own
-     repaint while away, and from the catch-up read's pending snapshot on return, until that answer lands ("Lv N"). No
+     (age >= TTL), and the topbar's COMMANDER label reads "Nv N · guardado" whenever the value it shows is that old: in its own
+     repaint while away, and from the catch-up read's pending snapshot on return, until that answer lands ("Nv N"). No
      formula stretches the TTL across the away stretch: the station may have levelled up while the page did not ask. */
   async function topbarAcrossAway({ awayMs, frozenMs = 0, failAway = false }) {
     const vm = require('node:vm'), fs = require('node:fs'), path = require('node:path');
@@ -240,37 +240,37 @@ async function rejects(p, label) {
   const QS_SRC = require('node:fs').readFileSync(require('node:path').join(__dirname, '../frontend/app/queryspine.js'), 'utf8');
   A.ok(!/awayCover|ttlOf/.test(QS_SRC) && /\(r\.ttlMs > 0 && ageMs >= r\.ttlMs\)/.test(QS_SRC), 'stale is trunk\'s age >= ttlMs: no formula vouches for a value across an away stretch');
   const JOURNEY_TTL = 12000;
-  const truthOf = ageMs => (ageMs >= JOURNEY_TTL ? 'Lv 3 · saved' : 'Lv 3');
+  const truthOf = ageMs => (ageMs >= JOURNEY_TTL ? 'Nv 3 · guardado' : 'Nv 3');
   const across = {};
   for (const awayMs of [20000, 60000, 240000]) {
     const r = across[awayMs] = await topbarAcrossAway({ awayMs });
-    A.eq(r.before, 'Lv 3', 'fixture: on screen, the COMMANDER label reads the live level');
+    A.eq(r.before, 'Nv 3', 'fixture: on screen, the COMMANDER label reads the live level');
     A.ok(r.readsAway <= Math.ceil(awayMs / 30000) + 1, 'fixture: away, journey is read on the 30 s floor (' + r.readsAway + ' reads in ' + awayMs / 1000 + ' s)');
     A.ok(r.away.every(p => !p.error && p.label === truthOf(p.ageMs)), 'AWAY ' + awayMs / 1000 + ' s: each repaint reads "· saved" exactly when the value is past its 12 s TTL: ' + JSON.stringify(r.away));
     A.ok(r.atReturn.length >= 1 && r.atReturn.every(t => t === truthOf(r.ageAtReturn)), 'BACK after ' + awayMs / 1000 + ' s: the catch-up read\'s pending snapshot paints the value\'s real age (' + r.ageAtReturn + ' ms): ' + JSON.stringify(r.atReturn));
     A.ok(r.catchUp, '…the catch-up read went out on return');
-    A.eq(r.after, 'Lv 3', '…and after the answer lands the label reads the live level');
+    A.eq(r.after, 'Nv 3', '…and after the answer lands the label reads the live level');
   }
   {
     // the defect this pins: a value the page chose not to re-read while away is NOT vouched for. Back after 60 s, journey's
-    // value is past its TTL, so the pending catch-up paints "· saved" (a stretched away TTL painted "Lv 3") until it lands
+    // value is past its TTL, so the pending catch-up paints "· saved" (a stretched away TTL painted "Nv 3") until it lands
     const r = across[60000];
     A.ok(r.ageAtReturn >= JOURNEY_TTL && r.pendingAtReturn, 'fixture: back after 60 s, the value is ' + r.ageAtReturn + ' ms old and the catch-up read is out');
-    A.ok(r.atReturn.length >= 1 && r.atReturn.every(t => t === 'Lv 3 · saved'), 'BACK after 60 s: "· saved" while the catch-up read is out (no away formula vouches for it): ' + JSON.stringify(r.atReturn));
-    A.eq(r.after, 'Lv 3', '…then "Lv 3" once it lands');
-    A.ok(Object.values(across).some(x => x.away.some(p => p.label === 'Lv 3 · saved')), 'away, a repaint over a value past its TTL reads "· saved" (no stretched TTL)');
+    A.ok(r.atReturn.length >= 1 && r.atReturn.every(t => t === 'Nv 3 · guardado'), 'BACK after 60 s: "· saved" while the catch-up read is out (no away formula vouches for it): ' + JSON.stringify(r.atReturn));
+    A.eq(r.after, 'Nv 3', '…then "Nv 3" once it lands');
+    A.ok(Object.values(across).some(x => x.away.some(p => p.label === 'Nv 3 · guardado')), 'away, a repaint over a value past its TTL reads "· saved" (no stretched TTL)');
   }
   {
     // a value a sleep left an hour old is stale until the catch-up answer lands
     const r = await topbarAcrossAway({ awayMs: 20000, frozenMs: 3600000 });
-    A.ok(r.atReturn.length >= 1 && r.atReturn.every(t => t === 'Lv 3 · saved'), 'an hour-old value after a sleep reads "· saved" while the catch-up read is out: ' + JSON.stringify(r.atReturn));
-    A.eq(r.after, 'Lv 3', '…until it answers');
+    A.ok(r.atReturn.length >= 1 && r.atReturn.every(t => t === 'Nv 3 · guardado'), 'an hour-old value after a sleep reads "· saved" while the catch-up read is out: ' + JSON.stringify(r.atReturn));
+    A.eq(r.after, 'Nv 3', '…until it answers');
   }
   {
     // an away read the station failed is stale (an error, not an age)
     const r = await topbarAcrossAway({ awayMs: 40000, failAway: true });
-    A.ok(r.away.some(p => p.error && p.label === 'Lv 3 · saved'), 'an away read that failed reads "· saved": ' + JSON.stringify(r.away));
-    A.eq(r.after, 'Lv 3', '…and the catch-up answer on return makes it live again');
+    A.ok(r.away.some(p => p.error && p.label === 'Nv 3 · guardado'), 'an away read that failed reads "· saved": ' + JSON.stringify(r.away));
+    A.eq(r.after, 'Nv 3', '…and the catch-up answer on return makes it live again');
   }
   A.report('queryspine.test');
 })().catch(err => { console.error(err && err.stack ? err.stack : err); process.exit(1); });

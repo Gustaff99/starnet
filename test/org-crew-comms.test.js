@@ -15,7 +15,7 @@ const read = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
 const SUI = read('frontend/app/stationui.js');
 
 /* ---------- P23: say where each instruction applies ---------- */
-A.ok(/desc: n => 'What ' \+ n \+ ' is for\. It rides only ' \+ n \+ '’s prompt[^']*' \+ n \+ ' does\. In a workflow, a step’s DOES adds to it for that step only\.'/.test(SUI), 'P23: PURPOSE names the one agent it shapes and that a DOES adds to it for its step (D14: one plain sentence each, no ·)');
+A.ok(/desc: n => 'Para qué sirve ' \+ n \+ '\. Viaja solo en el prompt de ' \+ n \+ ', así que da color a todo lo que ' \+ n \+ ' hace\. En un flujo, el HACE de un paso lo suma solo para ese paso\.'/.test(SUI), 'P23: PURPOSE names the one agent it shapes and that a DOES adds to it for its step (D14: one plain sentence each, no ·)');
 A.ok(/desc: n => 'Reglas de la casa que solo ' \+ n \+ ' sigue: tono, formato, lo que no se debe hacer\. Las reglas para todos los agentes viven en TÚ › PREFERENCES\.'/.test(SUI), 'P23: the house-rules card says only this agent follows it and where every-agent rules live');
 A.ok(SUI.includes("typeof f.desc === 'function' ? f.desc(esc((a && a.name) || 'this agent'))"), 'P23: fileCard renders the reach with the agent name escaped');
 A.ok(SUI.includes('your standing orders (every agent follows these)'), 'P23: YOU › PREFERENCES says every agent follows the standing orders');
@@ -36,17 +36,17 @@ A.ok(/With one agent a crew-manifest row click opens its dossier; with 2\+ it sh
 /* ---------- P21: the dossier says where each per-agent setting lives ---------- */
 const CONN = read('frontend/app/windows/connectors.js');
 A.ok(!SUI.includes('title="change this in CONFIG"') && /data-goconfig="' \+ r\.go \+ '" data-tip="' \+ esc\(r\.tip\) \+ '"/.test(SUI), 'P21: each BRIEF setup row carries its own data-tip (no native title)');
-A.ok(SUI.includes("tip: 'opens AUTOMATE › AWAY WORK'"), 'P21: AWAY WORK says it opens AUTOMATE › AWAY WORK');
-A.ok(/lbl: 'VOICE',[^\n]*go: 'ag-voice'/.test(SUI) && /lbl: 'SKILLS',[^\n]*go: 'ag-skills'/.test(SUI), 'P21: the BRIEF strip has VOICE and SKILLS rows');
+A.ok(SUI.includes("tip: 'abre AUTOMATE › TRABAJO EN AUSENCIA'"), 'P21: AWAY WORK says it opens AUTOMATE › AWAY WORK');
+A.ok(/lbl: 'VOZ',[^\n]*go: 'ag-voice'/.test(SUI) && /lbl: 'HABILIDADES',[^\n]*go: 'ag-skills'/.test(SUI), 'P21: the BRIEF strip has VOICE and SKILLS rows');
 A.ok(/if \(anchor === 'ag-voice'\) \{ sfx\('click'\); openVoiceFor\(a\.id\); return; \}/.test(SUI) && /openTerm\('settings', 'appearance'\);/.test(SUI) && /pick\.value = agentId; if \(typeof pick\.onchange === 'function'\) pick\.onchange\(\);/.test(SUI),
   'P21: VOICE opens LOOK & SOUND with VOICE FOR preselected on this agent (and refreshes its voice list)');
 A.ok(/if \(anchor === 'ag-skills'\) \{ sfx\('click'\); skillsPick = a\.id; openTerm\('connectors', 'agent'\); return; \}/.test(SUI), 'P21: SKILLS opens ABILITIES › AGENT SKILLS for this agent');
-A.ok(SUI.includes('AWAY WORK ▸</button>') && !SUI.includes('WHILE I’M AWAY → AUTOMATE'), 'P21: CONFIG\'s away door reads AWAY WORK ▸');
-A.ok(SUI.includes('REFLECTION <b id="mc-reflect-state">…</b> (all agents)') && SUI.includes("st.textContent = o.checked ? 'ON' : 'OFF'") && !SUI.includes('> REFLECTION ON <'), 'P21: the MEMORY reflection switch says it is station-wide and reads ON / OFF in words');
+A.ok(SUI.includes('TRABAJO EN AUSENCIA ▸</button>') && !SUI.includes('WHILE I’M AWAY → AUTOMATE'), 'P21: CONFIG\'s away door reads AWAY WORK ▸');
+A.ok(SUI.includes('REFLEXIÓN <b id="mc-reflect-state">…</b> (todos los agentes)') && SUI.includes("st.textContent = o.checked ? 'ON' : 'OFF'") && !SUI.includes('> REFLEXIÓN ON <'), 'P21: the MEMORY reflection switch says it is station-wide and reads ON / OFF in words');
 A.ok(/function workshopCard\(a\)/.test(SUI) && /H\.workshopCard\(/.test(read('frontend/app/windows/automation.js')), 'P21: workshopCard stays — AUTOMATE › AWAY WORK renders with it');
-A.ok(/'Reusable procedures ' \+ n \+ ' created or learned\./.test(SUI) && SUI.includes('id="sk-agent-pick" class="ab-agent-pick"'), 'P21: AGENT SKILLS names the agent shown and has an agent picker');
+A.ok(/'Procedimientos reutilizables creados o aprendidos por ' \+ n \+ '\./.test(SUI) && SUI.includes('id="sk-agent-pick" class="ab-agent-pick"'), 'P21: AGENT SKILLS names the agent shown and has an agent picker');
 A.ok(/const shownId = skillsAgentId\(\);\n\s+if \(\(p\.agentId \|\| 'agent'\) !== shownId\) return;/.test(SUI), 'P21: the live skills refresh follows the agent the lane shows (one-shot pick behaviour in test/abilities.skills-lane.test.js)');
-A.ok(SUI.includes("return (AP && AP.approval === 'ask') ? AP.label : 'custom'; };") && SUI.includes("authority.unrestricted ? 'FULL POWER' : askingPosture()") && SUI.includes("'FULL POWER — on for every agent by ' + overrideBy") && SUI.includes('data-tip-below>'), 'P21: the ACCESS summary speaks the posture words, gated on the live authority');
+A.ok(SUI.includes("return (AP && AP.approval === 'ask') ? AP.label : 'personalizado'; };") && SUI.includes("authority.unrestricted ? 'POTENCIA TOTAL' : askingPosture()") && SUI.includes("'POTENCIA TOTAL — activada para todos los agentes por ' + overrideBy") && SUI.includes('data-tip-below>'), 'P21: the ACCESS summary speaks the posture words, gated on the live authority');
 A.ok(CONN.includes('id="ts-agent" class="ab-agent-pick"') && /select\.ab-agent-pick \{[^}]*appearance: none/.test(read('frontend/css/interface.css')), 'P21: the ABILITIES agent pickers are glass fields with a drawn chevron, not key-input/OS paint');
 A.ok(/cada interruptor activa o desactiva una habilidad integrada para todos los agentes; COMPROBAR CONMIGO y DEJARLO TRABAJAR obedecen los interruptores, PODER TOTAL los anula/i.test(CONN), 'P21: HABILIDADES INTEGRADAS says its switches are for every agent, in ONE ACCESS words');
 A.ok(CONN.includes("data-tip=\"Activa o desactiva ' + esc(t.label) + ' para todos los agentes\"") && CONN.includes("notify((tsLabels[id] || id) + (enabled ? ' activado' : ' desactivado') + ' para todos los agentes'"),'P21: the switch tip and toast name the ability and say every agent');

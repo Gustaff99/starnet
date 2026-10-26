@@ -107,7 +107,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
     fetch: async (url) => (!/\?id=/.test(String(url))
       ? { status: 200, ok: true, json: async () => ({ ok: true, result: { roster: [{ id: 'agent', name: 'NOVA' }, { id: 'copy', name: 'COPY' }], groups: [group] } }) }
       : { status: 200, ok: true, json: async () => ({ ok: true, result: group }) }),
-    Chat: { consentPhrase: p => 'create a loop: ' + JSON.parse(p.argsSummary).name, consentInspect: () => null, clockLabel: () => '', breakLabel: () => '' },
+    Chat: { consentPhrase: p => 'iniciar un bucle de objetivo: ' + JSON.parse(p.argsSummary).name, consentInspect: () => null, clockLabel: () => '', breakLabel: () => '' },
     App: { pushRoster: async () => {}, agents: () => [{ id: 'agent', name: 'NOVA' }, { id: 'copy', name: 'COPY' }], persist() {}, refreshRail() {}, openWorkstream() {} },
     StationUI: { notify() {}, toggleTerm() {}, closeTerm() {} },
     Workstreams: { get: id => (id === 'g1' ? ws : null), list: () => [ws], activeId: () => 'g1', adopt: o => Object.assign(ws, o), generalId: () => 'home' }
@@ -123,7 +123,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   const retired = rows.filter(r => r._cls && r._cls.has('consent'));
   A.eq(retired.length, 1, 'the approval that was waiting is in the transcript, retired');
   const card = retired[0];
-  A.ok(card && /▣ NOVA wants to create a loop: Launch post/.test(card.textContent), 'it names who asked and what, in the desk card\'s words: ' + (card && card.textContent));
+  A.ok(card && /▣ NOVA quiere iniciar un bucle de objetivo: Launch post/.test(card.textContent), 'it names who asked and what, in the desk card\'s words: ' + (card && card.textContent));
   A.ok(card && byClass(card, 'consent-result').length === 1 && byClass(card, 'consent-result')[0].textContent === '■ the run ended before an answer — nothing was approved' && byClass(card, 'consent-result')[0]._cls.has('err'),
     'and retires with the one-on-one line: ■ the run ended before an answer — nothing was approved');
   A.ok(card && !all(card).some(e => e.tagName === 'button'), 'a retired card has no keys');

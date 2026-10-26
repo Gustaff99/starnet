@@ -21,10 +21,10 @@ const html = read('frontend/index.html');
 const journey = (html.match(/<ol class="ov-journey"[^>]*>([\s\S]*?)<\/ol>/) || [])[1] || '';
 A.eq((journey.match(/<b>0[1-3]<\/b>/g) || []).length, 3, 'the journey strip keeps its 01-03');
 const nav = (html.match(/<nav class="ov-setup-nav"[^>]*>([\s\S]*?)<\/nav>/) || [])[1] || '';
-A.ok(/data-setup-step="identity" aria-controls="ov-identity">Your Overseer<\/button>/.test(nav), 'YOUR OVERSEER stays a stepper button, no digit');
-A.ok(/data-setup-step="brain" aria-controls="ov-brain">Connect a brain<\/button>/.test(nav), 'CONNECT A BRAIN stays a stepper button, no digit');
+A.ok(/data-setup-step="identity" aria-controls="ov-identity">Tu Overseer<\/button>/.test(nav), 'YOUR OVERSEER stays a stepper button, no digit');
+A.ok(/data-setup-step="brain" aria-controls="ov-brain">Conecta una mente<\/button>/.test(nav), 'CONNECT A BRAIN stays a stepper button, no digit');
 A.ok(!/<span>0\d<\/span>/.test(nav), 'no numerals in the setup nav');
-A.ok(/<div class="ov-step">APPEARANCE </.test(html) && /<div class="ov-step">THE BRAIN </.test(html), 'column heads read APPEARANCE / THE BRAIN');
+A.ok(/<div class="ov-step">ASPECTO </.test(html) && /<div class="ov-step">LA MENTE </.test(html), 'column heads read ASPECTO / LA MENTE');
 A.ok(!/<div class="ov-step"><b>\d/.test(html), 'no column head carries a numeral');
 
 // ---- B. the nav coach waits for the arrival ----

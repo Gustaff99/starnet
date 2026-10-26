@@ -375,7 +375,7 @@ const root = path.resolve(__dirname, '..');
   // plaintext fallback) and the UI says so honestly — no scary modal, one short line.
   A.ok(/isDesktop/.test(harness), 'harness.js exposes isDesktop() so the UI can tell a desktop store failure from a browser no-op');
   A.ok((ui.match(/localFallback = true/g) || []).length >= 1, 'the generic connect handler flags a desktop keychain-store failure');
-  A.ok(/token saved locally, not the OS keychain/.test(ui), 'the connect handler notes a local (non-keychain) save honestly');
+  A.ok(/token guardado localmente, no en el keychain del SO/.test(ui), 'the connect handler notes a local (non-keychain) save honestly');
   A.ok(/storeChannelToken\('telegram:' \+ j\.botId, token\)/.test(ui), 'agent-bound Telegram tokens move into their per-bot keychain slot after getMe reveals the stable id');
   A.ok(/storeChannelToken\('telegram:' \+ botId, ''\)/.test(ui), 'forget clears the agent bot keychain slot as well as its saved record');
 }

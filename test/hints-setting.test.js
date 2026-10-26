@@ -10,7 +10,7 @@ const ui = read('frontend/app/stationui.js');
 
 // ---- 1. the setting: default on, rendered in DISPLAY, wired, applied live, carried by backups ----------
 A.ok(/function defaults\(\) \{ return \{[^}]*\bhints: true\b/.test(ui), 'HINTS defaults to on (existing users keep today\'s help)');
-A.ok(/<input type="checkbox" id="set-hints" ' \+ \(s\.hints \? 'checked' : ''\) \+ '> HINTS <span class="dim">— explain station terms when you hover them<\/span>/.test(ui),
+A.ok(/<input type="checkbox" id="set-hints" ' \+ \(s\.hints \? 'checked' : ''\) \+ '> PISTAS <span class="dim">— explican los términos de la estación al pasar el cursor<\/span>/.test(ui),
   'a HINTS checkbox with a one-line purpose is rendered in Settings');
 const display = ui.indexOf("id=\"set-stationdock\""), crt = ui.indexOf('// CRT — its own section', display), row = ui.indexOf('id="set-hints"');
 A.ok(display > 0 && row > display && row < crt, 'it sits in LOOK & SOUND › DISPLAY (after STATION DOCK, before CRT)');

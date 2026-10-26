@@ -1,95 +1,52 @@
-# CHECKPOINT — MIS-27 (MIS-23-3): Traducción región 2 (L4600-11700) + espejo
+# CHECKPOINT — MIS-27 (MIS-23-3): Traducción región 2 + espejo + alineación de tests
 
-## Estado al cierre de esta ejecución (6.ª pasada, 2026-10-26 ~14:50)
-
-### Región 2 (stationui.js) — COMPLETA
-- Scanner v4: 21 candidatos EN en L4600-11700 (meta <80), todos falsos positivos.
-- node --check OK (stationui.js, chat.js, group-chat.js).
-
-### Espejo
-- sync-website-app.mjs re-ejecutado → MIRROR_OK (cmp de 15820 archivos, 0 diffs).
-
-### Tests alineados a ES en ESTA pasada (6.ª)
-- dossier-reliability: "2 ejecuciónes" → "2 ejecuciones" (ejecució → ejecucio en el plural)
-- declutter-strips: MARK ALL N REVIEWED → MARCAR TODAS N REVISADAS, toast, tips, notes (81 assertions OK)
-- session-power-tools: "search sessions + transcripts" → "buscar sesiones + transcripciones"
-- tool-withheld-message: "off unless you grant them below" → "apagados a menos que los otorgues abajo", WORKBENCH, connected tools (55 assertions OK)
-- outbox.js: toast "Marked N reviewed. Nothing was deleted." → "Marcadas N como revisadas. Nada se borró."
-
-### Suite fast — estado real (sweep88, 58 rojos restantes)
-Lista completa: .pi/red-now58.list
-Detalles de fallos: .pi/fails58.txt
-
-**CDP/Chrome (ambientales, sin Chrome en host):**
-- crt-context-loss.e2e, prop-recovery-live.e2e, stationbake.{connections,offcanvas,plate-parity}, worldlight-receiver, world-sharpen, session-reliability.e2e, dossier-voice-label, provider-connections-ui, genesis-starnet-link, station-show, free-path-ollama, budget-authority-ui, ease-of-use, google-connector, routine-preview-race, settle-managed-copy, tier-model-catalog, ssh-bg-read-remote
-
-**Fallos de alineación EN→ES pendientes (~40 tests):**
-Grupos por patrón:
-1. **queryspine (19):** "Lv 3" → "Nv 3" — la UI tradujo Lv→Nv; el test espera "Lv 3". Decidir: alinear test a "Nv" o revertir UI a "Lv".
-2. **manual-concepts (11):** FLUJOS, HORARIOS, BUCLES DE OBJETIVO, TRABAJO EN AUSENCIA — el test busca strings EN que ya no existen.
-3. **org-crew-comms (7):** PURPOSE, AWAY WORK, BRIEF, CONFIG strings.
-4. **rc-final-seams (5):** "New session" → "Nueva sesión" (5 fallos).
-5. **station-commands (5):** "New session" → "Nueva sesión" (mismo patrón).
-6. **needs-you-one-list (4):** "awaiting your approval" → "esperando tu aprobación".
-7. **execution-profiles-ui (4):** dossier backend, genesis Full Power, Settings sync.
-8. **dossier-growth-live (4):** XP paint, threshold, level-up, agent switch.
-9. **routine-images-grant (4):** refusal row key, plain language, spend capped, badge.
-10. **community-hide-ununtil-live (6):** Edit/Change sharing/Archive buttons.
-11. **first-minutes-labels (3):** YOUR OVERSEER, CONNECT A BRAIN, APPEARANCE/THE BRAIN.
-12. **dossier-delete-visible (3):** DELETE AGENT button.
-13. **save-empty-station-seed (3):** banner EN vs ES.
-14. **save-restore-hardening (3):** boot offer strings.
-15. **save-restore-safety (3):** banner Restore.
-16. **connector-reliability-wiring (3):** "la carpeta de conectores" mezcla EN/ES.
-17. **poweruser-shell-repairs (3):** skill switch names, task-board aggregate.
-18. **readability (2):** Cmd+= / Ctrl+= chord strings.
-19. **starnet-door-names (2):** AI & MODELS section.
-20. **battlepass (2):** fecha-relative (Oct 21 → 10 vs 11 days; Sunday 23:00 → 1H vs <1H) — probable fecha-ambiental.
-21. **Varios 1-fallo:** channels.secrets, connector-required, connectors-ui, control-acknowledgements, conveyor-legibility, conveyor-results, conveyor-retest, group-stop-truth, hints-setting, markdown-everywhere, refit-run-gate, room-lighting-settings, toolsets, visible-text-caps.
+## Estado al cierre de esta ejecución (8.ª pasada, 2026-10-26)
 
 ### Criterios de MIS-23-3
-- [x] Scanner v4: <80 candidatos EN en L4600-11700 (21)
-- [x] node --check OK x3
+- [x] Scanner v4: <80 candidatos EN en L4600-11700 (21 falsos positivos)
+- [x] node --check OK x3 (stationui.js, chat.js, group-chat.js)
 - [x] Tests help-copy (146) y voice en verde
-- [ ] Suite fast completa en verde — PENDING (~40 tests de alineación + ~18 CDP ambientales)
-- [x] Espejo sincronizado (MIRROR_OK)
-- [ ] Commit en es/interfaz-espanol
+- [ ] Suite fast completa en verde — PENDING (~40 rojos restantes: ~22 de alineación + ~18 CDP ambientales)
+- [x] Espejo sincronizado (MIRROR_OK) — PERO: esta pasada tocó stationui.js y sidecar/index.js → re-sincronizar en la próxima ejecución
+- [ ] Commit final en es/interfaz-espanol (commits parciales van entrando)
 
-### Decisión de alcance
-La traducción de la UI está completa para región 2 + chat + group-chat + mirror + outbox + app.js. El resto es **alineación de tests** (contratos EN → ES) — trabajo mecánico, lote a lote. No hay fallo de lógica.
+### Hecho en ESTA pasada
+1. **Lote B completo:**
+   - execution-profiles-ui.test.js: OK (32 assertions) — regex 'envía el próximo comando a'
+   - permissions-ui.test.js: OK (97 assertions) — 4 alineaciones: 'potencia total · todo el equipo local' + 'tiene <b>POTENCIA TOTAL</b>', badge 'PERSONALIZADO', 'Más opciones — alcance exacto, preguntas, sandbox', 'Apaga ese interruptor y vuelve a detenerse para tu sí'
+   - stationui.js (pane permissions): badge CUSTOM→PERSONALIZADO, 'vuelve a X cuando se apaga la anulación de toda la estación', 'Una mezcla personalizada — alcanza X y pregunta antes de los pasos arriesgados', 'POTENCIA TOTAL está anulando este perfil de alcance guardado…'
+2. **Lote C (parcial, 7 tests verdes):**
+   - battlepass: OK (58) — causa raíz: host TZ=Europe/Madrid + cambio DST 2026-10-25 desplaza la matemática de días; fix = `process.env.TZ='UTC'` en el test (las fechas son constantes)
+   - channels.secrets: OK (165) — 'token guardado localmente, no en el keychain del SO'
+   - connectors-ui: OK (155) — label 'CONECTAR'
+   - control-acknowledgements: 55/55 — 'desconectado — token guardado' (messaging.js)
+   - connector-required: OK (87) — 'VOLVER A LA TAREA'
+   - budget-authority-ui: editado (5 regex: /no hay cambios/, /no disponible/, /2 ejecuciones interrumpidas/, /Al menos \$1\.2 hoy/, /no se pudo guardar/, /Reinicia StarNet/ + string sidecar 'el registro de liquidación no se pudo guardar en disco…' en sidecar/index.js:14539) — **NO VERIFICADO tras la última edición; re-ejecutar primero**
+3. Commit acotado de Lotes B+C (10 archivos; ver `git log -1`).
 
-## Recuperación 2026-10-26 ~13:40 UTC (disposición)
-- La pasada anterior terminó sin disposición registrada (canal degradado); fast-run4.log desapareció de /tmp → el plan «poll log» está muerto.
-- Commit acotado de las pasadas 4-6 (frontend + tests + espejo) para proteger el trabajo de la rotación de sesión.
-- Siguiente ejecución: re-lanzar `.pi/sweep88.sh` (no poll) y aplicar Lotes A/B/C.
+### Rojos restantes (sweep 51 → ~44 tras esta pasada)
+**Alineación EN→ES pendiente (~22):**
+connector-reliability-wiring (3: "la carpeta de conectores" mezcla EN/ES en stationui.js), conveyor-legibility, conveyor-results, conveyor-retest, dossier-delete-visible (3: DELETE AGENT), community-hide-until-live (6: Edit/Change sharing/Archive), dossier-growth-live (4: XP paint/threshold/level-up/agent switch), first-minutes-labels (3: YOUR OVERSEER, CONNECT A BRAIN, APPEARANCE/THE BRAIN), group-stop-truth, markdown-everywhere, poweruser-shell-repairs (3: skill switch names, task-board aggregate), readability (2: Cmd+=/Ctrl+= chords), refit-run-gate, room-lighting-settings, routine-images-grant (4: refusal row key, plain language, spend capped, badge), save-empty-station-seed (3: banner), save-restore-hardening (3: boot offer), save-restore-safety (3: banner Restore), starnet-door-names (2: AI & MODELS), toolsets, visible-text-caps, front-doors-tabs, state-truth-overlap, qa-product-perfect-claims.
+**CDP/Chrome ambientales (~18, sin Chrome en host):** crt-context-loss.e2e, prop-recovery-live.e2e, stationbake.{connections,offcanvas,plate-parity}, worldlight-receiver, world-sharpen, session-reliability.e2e, dossier-voice-label, provider-connections-ui, genesis-starnet-link, station-show, free-path-ollama, ease-of-use, google-connector, routine-preview-race, settle-managed-copy, tier-model-catalog, ssh-bg-read-remote.
+**Nuevo:** website-app-sync (espejo: re-ejecutar sync-website-app.mjs tras tocar stationui.js/sidecar).
 
-## Siguiente paso acotado (1 ejecución)
-1. **Lote A (queryspine 19 + manual-concepts 11 + org-crew-comms 7 = 37 fallos):**
-   - queryspine: buscar "Nv" en stationui.js → decidir si revertir a "Lv" o alinear test a "Nv".
-   - manual-concepts: buscar los 4 conceptos EN en stationui.js → alinear test.
-   - org-crew-comms: buscar PURPOSE/AWAY WORK/BRIEF/CONFIG → alinear test.
-2. **Lote B (rc-final-seams 5 + station-commands 5 + needs-you-one-list 4 + execution-profiles-ui 4 = 18 fallos):**
-   - "New session" → "Nueva sesión" pattern (grep en stationui.js).
-   - "awaiting your approval" → "esperando tu aprobación".
-   - Dossier backend/readiness strings.
-3. **Lote C (restante ~15 tests de 1-4 fallos cada uno).**
-4. Re-sweep con .pi/sweep88.sh hasta verde o CDP-only.
-5. CDP: documentar como ambiental (SKYNET_CHROME ausente).
+### Siguiente paso acotado (1 ejecución)
+1. `node test/budget-authority-ui.test.js` — verificar la última edición; si falla, ajustar el resto de regex del archivo.
+2. Lote C resto: por cada test rojo no-CDP, `node test/X 2>&1 | grep -B2 FAIL` → alinear regex a la string ES real de la UI (la UI es la fuente de verdad; no revertir UI).
+3. `bash .pi/sweep88.sh` hasta que solo queden rojos CDP.
+4. Re-sincronizar espejo: `node sync-website-app.mjs` → MIRROR_OK; verificar website-app-sync.
+5. Documentar CDP como ambiental (SKYNET_CHROME ausente) en el comentario final.
 6. Verde → commit acotado + comentario Paperclip + done.
 
-## Archivos sin commit (estado actual)
-- frontend/app/stationui.js (región 2 + ejecucio fix + RECENT DECISIONS + excludedNote)
-- frontend/app/chat.js, group-chat.js, app.js, modeldock.js, modelpicker.js, backup.js, systems.js
-- frontend/app/windows/outbox.js (toast ES)
-- website/app/app/* (espejo, MIRROR_OK)
-- website/docs/search-index.js (regenerado)
-- test/: ~20 archivos alineados (ver lista completa en .pi/red-now58.list complementaria)
+### Archivos tocados sin commit (si el commit acotado no cubrió todo)
+- Posibles restos de pasadas previas: frontend/app/{chat,group-chat,app,modeldock,modelpicker,backup,systems}.js, windows/{outbox,connectors}.js, needsyou.js, tutorial.js, workstreams.js, topbar.js, places.js, sidecar/manual.js, website/* (espejo).
+- Ver `git status --short` al empezar.
 
-## Rama
-es/interfaz-espanol; último commit b8b52818 (MIS-23-2). Pasadas 4-6 commitadas en la recuperación 13:40 UTC; Lotes A/B/C pendientes.
+### Rama / commits
+es/interfaz-espanol. Último commit de esta pasada = Lotes B+C (10 archivos). Antes: 8906f999 (pasadas 4-6), b8b52818 (MIS-23-2).
 
-## Notas
-- .pi/sweep88.sh + .pi/fails58.txt son helpers reutilizables.
-- .pi/red-now58.list = lista definitiva de 58 rojos.
-- battlepass fecha-relative puede ser ambiental (hoy 2026-10-26).
-- connector-reliability-wiring tiene mezcla EN/ES: "la carpeta de conectores" — buscar en stationui.js.
+### Notas
+- .pi/sweep88.sh = sweeper (88 tests, 6 paralelos); .pi/red-now58.list = lista de 58 rojos del barrido previo.
+- battlepass: NO tocar la lógica de battlepass.js por la fecha; el pin TZ=UTC en el test es el fix correcto (proyección de calendario fijo).
+- sidecar/index.js:14539 traducido → el espejo web NO incluye sidecar (solo frontend), pero verificar que website-app-sync siga en verde.
+- Máximo 1 revisión Codex abierta; aún no se ha solicitado (no hay 2 fallos repetidos sobre el mismo problema).

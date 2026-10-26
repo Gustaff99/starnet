@@ -218,10 +218,10 @@ const hardline = (call) => (call && call.args && /(^|\/)(\.env|permissions\.allo
   {
     const fs = require('fs'); const path = require('path');
     const tutorial = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'tutorial.js'), 'utf8');
-    A.ok(/local file reads and private notebook saves do not prompt/i.test(tutorial), 'Field Manual names both no-prompt local exceptions');
-    A.ok(/already approved or FULL ACCESS is on/i.test(tutorial), 'Field Manual names standing-grant and Full Access exceptions');
-    A.ok(/ASK and narrower reach modes retain their restrictions/i.test(tutorial), 'Field Manual scopes restrictions to the selected reach and posture');
-    A.ok(/FULL POWER is host-wide/i.test(tutorial), 'Field Manual describes current host-wide Full Power authority');
+    A.ok(/la lectura de archivos locales y el guardado en el cuaderno privado no preguntan/i.test(tutorial), 'Field Manual names both no-prompt local exceptions');
+    A.ok(/ya estén aprobadas o esté activada el ACCESO TOTAL/i.test(tutorial), 'Field Manual names standing-grant and Full Access exceptions');
+    A.ok(/Los modos ASK y de alcance más estrecho conservan sus restricciones/i.test(tutorial), 'Field Manual scopes restrictions to the selected reach and posture');
+    A.ok(/POTENCIA TOTAL es de todo el equipo/i.test(tutorial), 'Field Manual describes current host-wide Full Power authority');
     A.ok(!/protected actions stay blocked/i.test(tutorial), 'Field Manual does not apply the retired universal floor to Full Power');
     A.ok(/prop grants a CAPABILITY[^']+not blanket consent/i.test(tutorial), 'Field Manual distinguishes capabilities from consent');
     A.ok(/Settings &gt; Permissions decides whether an action asks or runs without another prompt/i.test(tutorial), 'Field Manual assigns prompting to the real Settings posture');

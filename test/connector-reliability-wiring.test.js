@@ -16,7 +16,7 @@ A.ok(/fn harness_store_provider_key_pool[\s\S]*rollback_error\(e, failures\)/.te
 A.eq((rust.match(/let _ = push_provider_(?:config|key_pool)/g) || []).length, 0, 'provider rollback acknowledgement failures are never swallowed');
 A.ok(/async function validateAndSetKey[\s\S]{0,1000}providers\/validate[\s\S]{0,1000}setKey\(candidate/.test(harness), 'candidate key is probed before persistence');
 A.ok(/previous key is unchanged/.test(harness), 'rejected key replacement reports the preserved old credential');
-A.ok(/validateAndSetKeyPool/.test(settings) && /keeps your previous spare keys or reports an incomplete rollback/.test(settings) && !/REPLACE POOL|CLEAR POOL|prior pool/.test(settings), 'Settings describes the provider-pool rollback boundary truthfully');
+A.ok(/validateAndSetKeyPool/.test(settings) && /conserva tus claves de respaldo anteriores o informa de un retroceso incompleto/.test(settings) && !/REPLACE POOL|CLEAR POOL|prior pool/.test(settings), 'Settings describes the provider-pool rollback boundary truthfully');
 A.ok(/KEY_POOL_' \+ id\.toUpperCase/.test(host), 'runtime pool environment lookup includes the provider id');
 A.eq(/ENV\('KEY_POOL'\)/.test(host), false, 'global cross-provider key pool is no longer consumed');
 A.ok(/connectorOauthAttempts/.test(host) && /oauth\/cancel/.test(connectors), 'OAuth cancellation reaches both UI and backend discovery');
@@ -81,14 +81,14 @@ A.ok(/migrateConnectorCatalogKeyHeaders/.test(host) && /headers\[catalogEntry\.k
   vm.createContext(ctx);
   if (body) vm.runInContext(body + '\nthis.kept = startFreshKeptText;', ctx);
   const kept = j => (ctx.kept ? ctx.kept(j) : '');
-  A.eq(kept({ movedTo: 'C:/c/unreadable-2', previous: [] }), 'Connector storage started fresh. Old files kept in C:/c/unreadable-2', 'a plain START FRESH names its folder');
+  A.eq(kept({ movedTo: 'C:/c/unreadable-2', previous: [] }), 'El almacenamiento de conectores empezó de cero. Archivos antiguos en C:/c/unreadable-2', 'a plain START FRESH names its folder');
   A.eq(kept({ movedTo: 'C:/c/unreadable-2', previous: ['C:/c/unreadable-1', 'C:/c/unreadable-0'] }),
-    'Connector storage started fresh. Old files kept in C:/c/unreadable-2 (earlier copies in C:/c/unreadable-1, C:/c/unreadable-0)', 'a resumed one names the earlier folders too');
-  A.eq(kept({ movedTo: '', previous: ['C:/c/unreadable-1'] }), 'Connector storage started fresh. Old files kept in C:/c/unreadable-1', 'nothing left to move: the earlier folder holds them');
+    'El almacenamiento de conectores empezó de cero. Archivos antiguos en C:/c/unreadable-2 (copias anteriores en C:/c/unreadable-1, C:/c/unreadable-0)', 'a resumed one names the earlier folders too');
+  A.eq(kept({ movedTo: '', previous: ['C:/c/unreadable-1'] }), 'El almacenamiento de conectores empezó de cero. Archivos antiguos en C:/c/unreadable-1', 'nothing left to move: the earlier folder holds them');
   A.eq(kept({ movedTo: '', previous: ['C:/c/unreadable-1', 'C:/c/unreadable-0'] }),
-    'Connector storage started fresh. Old files kept in C:/c/unreadable-1 (earlier copies in C:/c/unreadable-0)', 'each folder named once');
-  A.eq(kept(null), 'Connector storage started fresh. Old files kept in the connectors folder', 'an answer with no folders keeps the old wording');
-  const sf = connectors.slice(connectors.indexOf("armedLabel: 'SURE? SIGN IN AGAIN'"), connectors.indexOf("armedLabel: 'SURE? SIGN IN AGAIN'") + 1200);
+    'El almacenamiento de conectores empezó de cero. Archivos antiguos en C:/c/unreadable-1 (copias anteriores en C:/c/unreadable-0)', 'each folder named once');
+  A.eq(kept(null), 'El almacenamiento de conectores empezó de cero. Archivos antiguos en la carpeta de conectores', 'an answer with no folders keeps the old wording');
+  const sf = connectors.slice(connectors.indexOf("armedLabel: '¿SEGURO? VOLVER A INICIAR SESIÓN'"), connectors.indexOf("armedLabel: '¿SEGURO? VOLVER A INICIAR SESIÓN'") + 1200);
   A.ok(/notify\(startFreshKeptText\(r\.j\)\)/.test(sf), 'the START FRESH toast uses it');
 }
 // tests-04: the connector key policy tests (credentials.rs connector_key_policy*) and the harness's acceptance_guards are

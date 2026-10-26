@@ -84,8 +84,8 @@ ok(/accWrap\.querySelectorAll\('\[data-access-posture\]'\)/.test(src) && /if \(P
   ok(/chip\.textContent = 'PODER TOTAL — ¿SEGURO\?'/.test(src) && !/NEVER ASKS — SURE/.test(src), 'FULL POWER keeps its two-press confirm');
   // a custom mix on approvalMode full: the saved reach limits nothing (unrestrictedHostNow), so the row never says
   // "it reaches <reach> and never asks" — reach wording is kept for the asks-first case only
-  ok(/AP \? AP\.agentBlurb : full \? 'full power · the whole local computer' : 'asks first · ' \+ p\.short/.test(src)
-    && /\? 'it has <b>full power<\/b> over the whole local computer; the saved reach below does not limit it'\s*: 'it reaches <b>' \+ esc\(p\.plainLabel\.toLowerCase\(\)\) \+ '<\/b> and asks before risky steps'/.test(src)
+  ok(/AP \? AP\.agentBlurb : full \? 'potencia total · todo el equipo local' : 'pregunta primero · ' \+ p\.short/.test(src)
+    && /\? 'tiene <b>POTENCIA TOTAL<\/b> sobre todo el equipo local; el alcance guardado de abajo no lo limita'\s*: 'alcanza <b>' \+ esc\(p\.plainLabel\.toLowerCase\(\)\) \+ '<\/b> y pregunta antes de los pasos arriesgados'/.test(src)
     && !/'never asks · '|\(full \? 'never asks' :/.test(src),
     'a FULL POWER custom mix says full power over the whole local computer; only an asks-first mix names its reach');
   ok(!/postureRung|levelSet/.test(src) && !/accessPostures:/.test(src), 'no struck P08 posture-notice rung and no create-screen table export');
@@ -101,7 +101,7 @@ ok(/const paintGlance = \(\) =>/.test(src) && /present\.filter\(a => a && a\.app
 // bypass card — so ONE flip moves the card, every row, and the summary together.
 ok(/const paintCrew = \(\) => \{\s*if \(!crewList\) return;\s*paintGlance\(\);/.test(src),
   'the glance repaints with the crew (summary and rows can never disagree)');
-ok(/FULL POWER is host-wide: it may use protected files, arbitrary commands, visible apps, and screen\/input control/.test(src),
+ok(/POTENCIA TOTAL es de todo el equipo: puede usar archivos protegidos, comandos arbitrarios, apps visibles y control de pantalla\/entrada/.test(src),
   'the glance states the host-wide Full Power meaning in plain words');
 // ONE crew row per agent carrying BOTH axes — the two-tables-forty-rows-apart layout is the defect this
 // lane closed, so a future split has to break this lock deliberately.
@@ -110,7 +110,7 @@ ok(!/id="perm-execution"/.test(src) && !/id="perm-approval"/.test(src),
   'reach and approval are NOT two separate crew lists any more');
 ok(/data-perm-profile=/.test(src) && /data-ap-flip=/.test(src) && /class="perm-agent perm-crew-row/.test(src),
   'one row carries both the reach chips and the asks-first chips');
-ok(/<span class="pc-q">CAN REACH<\/span>/.test(src) && /<span class="pc-q">AUTHORITY'/.test(src),
+ok(/<span class="pc-q">CAN REACH<\/span>/.test(src) && /<span class="pc-q">AUTORIDAD'/.test(src),
   'each control is preceded by the plain question it answers');
 // the reach ladder must stay ORDERED and self-describing: a meter plus one ordinary sentence per rung.
 ok(/const reachMeter = \(n\) =>/.test(src) && /class="pc-dots"/.test(src), 'each reach chip wears a reach meter');
@@ -128,9 +128,9 @@ ok(/plain: 'Nada de tus archivos\./.test(src) && /plain: 'Todo el equipo local/.
 ok(/const effFull = full \|\| overridden;/.test(src), 'the row reports the EFFECTIVE approval posture, not the stored one alone');
 ok(/const overridden = !!\(snap\.loaded && \(snap\.masterBypass \|\| snap\.envFullAccess\)\);/.test(src),
   'the override state is read from SERVER truth, never guessed locally');
-ok(/OVERRIDDEN BY WHOLE-STATION FULL POWER/.test(src) && /The whole-station Full Power switch is ON, so this agent has host-wide authority/.test(src),
+ok(/ANULADO POR LA POTENCIA TOTAL DE TODA LA ESTACIÓN/.test(src) && /El interruptor de POTENCIA TOTAL de toda la estación está ON, así que este agente tiene autoridad de todo el equipo/.test(src),
   'an overridden row says so in plain words instead of contradicting the glance');
-ok(/Turn that switch off and it goes back to stopping for your yes/.test(src),
+ok(/Apaga ese interruptor y vuelve a detenerse para tu sí/.test(src),
   'the stored setting stays visible as what it returns to (never hidden)');
 ok(/paintBypass\(snap\);[\s\S]{0,220}paintCrew\(\);/.test(src),
   'flipping the master switch repaints every crew row, not just the card');
@@ -160,8 +160,8 @@ ok(/data-agent-posture="/.test(src) && /class="ov-vchips pc-chips pc-posture-chi
 ok(/setExecutionProfile\(id, P\.profile\)\)\s*\.then\(okP => !!okP && !!access\.config\.setApproval\(id, P\.approval\)\)/.test(src),
   'a per-agent answer writes reach THEN asking, and never half-applies after a refused reach change');
 ok(/if \(P\.id === 'open'\) ArmConfirm\.wire\(b, \{ armedLabel: 'SURE\? WHOLE COMPUTER'/.test(src), 'a per-agent FULL POWER keeps the two-press confirm');
-ok(/const badge = effFull \? 'FULL POWER' : \(AP \? AP\.label : 'CUSTOM'\)/.test(src), 'the row badge reports the EFFECTIVE answer (override first), else CUSTOM');
-ok(/<details class="mc-adv pc-exact"/.test(src) && /More options — exact reach, asking, sandbox/.test(src), 'the exact reach ladder / asking / sandbox fold under MORE OPTIONS');
+ok(/const badge = effFull \? 'FULL POWER' : \(AP \? AP\.label : 'PERSONALIZADO'\)/.test(src), 'the row badge reports the EFFECTIVE answer (override first), else CUSTOM');
+ok(/<details class="mc-adv pc-exact"/.test(src) && /Más opciones — alcance exacto, preguntas, sandbox/.test(src), 'the exact reach ladder / asking / sandbox fold under MORE OPTIONS');
 
 // the standing-grant list + grant/revoke wiring
 ok(/id="perm-grants"/.test(src), '#perm-grants standing-grant list present');
@@ -179,7 +179,7 @@ ok(/emptyApprovals|No standing approvals yet/.test(src), 'teaching empty state (
 ok(/\[data-perm-revoke\]'\)\.forEach\(b => ArmConfirm\.wire\(b/.test(src), 'REVOKE uses the two-step arm/confirm idiom (destructive-action guard)');
 ok(/held\.filter\(k => curated\.indexOf\(k\) < 0\)/.test(src), 'NON-curated standing grants are listed too (nothing hidden/irrevocable)');
 ok(/pre-approve a capability|pre-bless/i.test(src), 'the curated GRANT offer is kept separate from the active-approvals ledger');
-ok(/Full Power applies watched or unattended/.test(src),
+ok(/Se aplica con o sin supervisión/.test(src),
   'the permissions panel explicitly applies Full Power to unattended tasks too');
 ok(!/unattended runs[^.]*never inherit it/.test(src),
   'the panel never contradicts the persisted Full Access contract');

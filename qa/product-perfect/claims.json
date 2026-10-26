@@ -2043,7 +2043,7 @@
       "surfaceLocators": [
         {
           "path": "frontend/app/stationui.js",
-          "needle": "any /v1 base URL"
+          "needle": "cualquier URL base /v1"
         }
       ],
       "authorityChecks": [
@@ -2374,7 +2374,7 @@
       "surfaceLocators": [
         {
           "path": "frontend/app/stationui.js",
-          "needle": "ASK respects the selected reach profile and pauses before risky calls."
+          "needle": "PEDIR respeta el perfil de alcance elegido y se detiene antes de llamadas arriesgadas."
         }
       ],
       "authorityChecks": [
@@ -2510,7 +2510,7 @@
       "surfaceLocators": [
         {
           "path": "frontend/app/stationui.js",
-          "needle": "{ id: 'deliverables', k: 'deliverables', label: 'DELIVERABLES'"
+          "needle": "{ id: 'deliverables', k: 'deliverables', label: 'ENTREGABLES'"
         }
       ],
       "authorityChecks": [
@@ -2619,7 +2619,7 @@
       "surfaceLocators": [
         {
           "path": "frontend/app/windows/messaging.js",
-          "needle": "Keep StarNet running."
+          "needle": "Mantén StarNet en marcha."
         }
       ],
       "authorityChecks": [
@@ -2693,7 +2693,7 @@
       "surfaceLocators": [
         {
           "path": "frontend/app/stationui.js",
-          "needle": "created or learned. These appear as a compact index in"
+          "needle": "Aparecen como un índice compacto en las ejecuciones futuras"
         }
       ],
       "authorityChecks": [
@@ -2829,7 +2829,7 @@
         {
           "kind": "contains",
           "path": "frontend/app/windows/messaging.js",
-          "needle": "Both tokens are saved on this machine and never displayed."
+          "needle": "Ambos tokens se guardan en esta máquina y nunca se muestran."
         }
       ],
       "verdict": "PARTIAL",
@@ -3225,7 +3225,7 @@
         {
           "kind": "contains",
           "path": "frontend/app/stationui.js",
-          "needle": "Limits apply to recorded agent spending."
+          "needle": "Los límites aplican al gasto registrado de los agentes."
         }
       ],
       "verdict": "SHIPPED",
@@ -3653,7 +3653,7 @@
         {
           "kind": "contains",
           "path": "frontend/app/windows/messaging.js",
-          "needle": "Keep StarNet running."
+          "needle": "Mantén StarNet en marcha."
         },
         {
           "kind": "contains",

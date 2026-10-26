@@ -195,7 +195,7 @@ const NY = require('../frontend/app/needsyou.js');
   ctx.api.buildNotifs(body);
   const h = body.innerHTML;
   const needsSec = h.slice(h.indexOf('<section class="nf-needs">'), h.indexOf('</section>'));
-  A.ok(/<h4 class="ms-h">NEEDS YOU <span class="dim">— 7 waiting<\/span><\/h4>/.test(needsSec), 'NOTIFICATIONS › NEEDS YOU counts what the rail counts (6 live + the stored question)');
+  A.ok(/<h4 class="ms-h">TE NECESITA <span class="dim">— 7 pendientes<\/span><\/h4>/.test(needsSec), 'NOTIFICATIONS › NEEDS YOU counts what the rail counts (6 live + the stored question)');
   A.eq((needsSec.match(/class="nf [^"]*nf-live/g) || []).length, 7, 'one row per wait');
   A.ok(/data-ny-key="stepin:h1"/.test(needsSec) && /data-ny-key="build:b1"/.test(needsSec) && /data-ny-key="attest:q7@/.test(needsSec), 'STEP-IN, builds and quest attests are in it too');
   A.ok(/<span class="nf-kind">in STEP-IN<\/span>/.test(needsSec) && /<span class="nf-kind">in EXTENSIONS<\/span>/.test(needsSec) && !/<span class="nf-kind">NEEDS YOU</.test(needsSec) && !/Waiting on you/.test(h),
@@ -214,7 +214,7 @@ const NY = require('../frontend/app/needsyou.js');
   // only the live section says NEEDS YOU: a history row tagged NEEDS YOU below it (outside the section, absent from the rail)
   // contradicted the one-list promise (wiring review 2026-10-14)
   A.ok(!/<span class="nf-kind">NEEDS YOU</.test(hist) && !/Asked you/.test(hist), 'no history row carries the NEEDS YOU tag, and nothing waiting sits below as "Asked you"');
-  A.ok(/>All · 10</.test(h) && />New · 8</.test(h), 'All / New count the NEEDS YOU rows plus the history (New = 7 waiting + 1 unread result)');
+  A.ok(/>Todas · 10</.test(h) && />Nuevas · 8</.test(h), 'All / New count the NEEDS YOU rows plus the history (New = 7 waiting + 1 unread result)');
   ctx.api.badges();
   A.eq(badge.textContent, '8', 'the bell: unread history (1 result) PLUS the NEEDS YOU count (7, the stored question once) — never one instead of the other');
   A.eq(ctx.api.notifsMarkRead().waiting, 7, 'notifications.read reports what is really still waiting (the NEEDS YOU list)');
@@ -235,8 +235,8 @@ const NY = require('../frontend/app/needsyou.js');
     A.ok(!NY.items(NOW).some(i => i.key === 'asked:n5'), 'settled: it leaves the rail\'s NEEDS YOU');
     ctx.api.buildNotifs(body);
     const h2 = body.innerHTML, sec2 = h2.slice(h2.indexOf('<section class="nf-needs">'), h2.indexOf('</section>')), hist2 = h2.slice(h2.indexOf('</section>'));
-    A.ok(/— 6 waiting</.test(sec2) && !/asked:n5/.test(sec2), '…and NOTIFICATIONS › NEEDS YOU');
-    A.ok(/<span class="nf-kind">Asked you<\/span>[\s\S]{0,200}NOVA has a question for you — Launch plan/.test(hist2), 'it stays in the history as what it was: Asked you (never "Handled": nobody answered it)');
+    A.ok(/— 6 pendientes</.test(sec2) && !/asked:n5/.test(sec2), '…and NOTIFICATIONS › NEEDS YOU');
+    A.ok(/<span class="nf-kind">Te preguntó<\/span>[\s\S]{0,200}NOVA has a question for you — Launch plan/.test(hist2), 'it stays in the history as what it was: Asked you (never "Handled": nobody answered it)');
     ctx.api.badges();
     A.eq(badge.textContent, '6', 'the bell drops it with the list (counted once, settled once)');
   }
@@ -315,9 +315,9 @@ const NY = require('../frontend/app/needsyou.js');
   A.ok(/notifsMarkRead, notifsClear, badges,/.test(su), 'StationUI exposes badges() for it');
   // a place the agent can show
   const Places = require('../frontend/app/places.js');
-  A.eq(Places.get('needs-you') && Places.get('needs-you').words, 'SESSIONS › NEEDS YOU', 'station.show knows the needs-you place');
+  A.eq(Places.get('needs-you') && Places.get('needs-you').words, 'SESSIONS › TE NECESITA', 'station.show knows the needs-you place');
   const M = require('../sidecar/manual.js');
-  A.ok(/NEEDS YOU at the top of SESSIONS \[needs-you\] lists every card waiting \(also NOTIFICATIONS › NEEDS YOU\)/.test(M.manualSection('concepts')), 'the agent manual points at the rail first, NOTIFICATIONS second');
+  A.ok(/TE NECESITA at the top of SESSIONS \[needs-you\] lists every card waiting \(also NOTIFICATIONS › TE NECESITA\)/.test(M.manualSection('concepts')), 'the agent manual points at the rail first, NOTIFICATIONS second');
   A.ok(!/NOTIFICATIONS › NEEDS YOU lists every/.test(M.starnetManual()), 'no manual line points only at NOTIFICATIONS any more');
   A.report('needs-you-one-list.test');
 })().catch(e => { console.error(e); process.exit(1); });

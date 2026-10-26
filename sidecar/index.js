@@ -14536,7 +14536,7 @@ async function handleBudgetSettle(req, res) {
     if (e && e.code === 'not_unsettled') return json(404, { error: 'that run has no unsettled spend', code: 'not_unsettled' });
     if (e && e.code === 'bad_usd') return json(400, { error: 'enter the charge in USD (0 or more)' });
     failNote('budget.settle', e);
-    return json(500, { error: 'the settlement could not be saved to disk — restart StarNet to recover it', code: 'spend_history_unavailable' });
+    return json(500, { error: 'el registro de liquidación no se pudo guardar en disco — reinicia StarNet para recuperarlo', code: 'spend_history_unavailable' });
   }
   // The spend is KNOWN now: restamp the run's history row (fsync'd append) so INSIGHTS and the run row stop calling it
   // spend-unknown. The ledger row above is the authority — a row this could not restamp (not scanned yet, or a failed
