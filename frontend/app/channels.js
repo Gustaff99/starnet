@@ -46,7 +46,7 @@
                                   // visible elapsed is real RUN time, not connect/queue latency counted as work.
       pausedMs: 0,                // accumulated wall-clock spent PAUSED awaiting human approval (excluded from elapsed)
       pausedAt: 0,                // if >0, the instant the current approval pause began (still paused now)
-      status: 'online'            // 'online' | 'connecting…' | 'thinking…' | 'working…' | 'awaiting your approval…'
+      status: 'en línea'          // 'en línea' | 'conectando…' | 'pensando…' | 'trabajando…' | 'esperando tu aprobación…'
     };
   }
 
@@ -71,9 +71,9 @@
     c.pausedMs = 0; c.pausedAt = 0;
     // TRUTHFUL TELEMETRY: at send time the sidecar has confirmed NOTHING — the request may still be
     // connecting/queued (or the sidecar may be down). The channel says so; setRunId (the sidecar's
-    // agent.run.start) is what upgrades it to a real 'thinking…'. Callers that begin() off an event
-    // that IS server truth (e.g. a cron fire) should setStatus('thinking…') themselves right after.
-    c.status = 'connecting…';
+    // agent.run.start) is what upgrades it to a real 'pensando…'. Callers that begin() off an event
+    // that IS server truth (e.g. a cron fire) should setStatus('pensando…') themselves right after.
+    c.status = 'conectando…';
     return c;
   }
   // the run finished (or errored/aborted) — drop transient state; the turn now lives in Workstreams.history.
@@ -82,7 +82,7 @@
     c.busy = false; c.runId = null; c.acc = ''; c.tools = []; c.toolEvents = []; keepBackgroundAsks(c);
     c.startedAt = 0;
     c.pausedMs = 0; c.pausedAt = 0;
-    c.status = c.pending ? 'awaiting your approval…' : 'online';
+    c.status = c.pending ? 'esperando tu aprobación…' : 'en línea';
   }
   /* A BACKGROUND WORKER'S ASK OUTLIVES THE RUN (2026-10-13). A run's start/end/stop clears that run's own asks, but an ask
      filed with background:true belongs to a worker the conversation handed off in the background (team.dispatch
@@ -94,11 +94,11 @@
   }
   // the sidecar confirmed the run (agent.run.start arrived). ts (optional, caller-injected wall-clock)
   // RE-STAMPS startedAt so the elapsed timer measures the confirmed run, not send-click → first-byte
-  // latency; 'connecting…' upgrades to 'thinking…' (a later status like 'working…' is never downgraded).
+  // latency; 'conectando…' upgrades to 'pensando…' (a later status like 'trabajando…' is never downgraded).
   function setRunId(wsId, runId, ts) {
     const c = get(wsId); c.runId = runId;
     if (ts) c.startedAt = ts;
-    if (c.status === 'connecting…') c.status = 'thinking…';
+    if (c.status === 'conectando…') c.status = 'pensando…';
     return runId;
   }
   function setStatus(wsId, s) { const c = get(wsId); c.status = s; return s; }
@@ -107,7 +107,7 @@
   function addTool(wsId, text, isErr) {
     const c = get(wsId);
     c.tools.push({ text: String(text == null ? '' : text), isErr: !!isErr });
-    c.status = 'working…';
+    c.status = 'trabajando…';
     return c.tools.length;
   }
   // STRUCTURED tool events — so a stream re-rendered after a switch draws the SAME chip UI a live run does
@@ -115,7 +115,7 @@
   function addToolCall(wsId, ev) {
     const c = get(wsId); ev = ev || {};
     c.toolEvents.push({ t: 'call', callId: (ev.callId == null ? null : ev.callId), name: String(ev.name || 'tool'), argsSummary: String(ev.argsSummary == null ? '' : ev.argsSummary) });
-    c.status = 'working…';
+    c.status = 'trabajando…';
     return c.toolEvents.length;
   }
   function addToolResult(wsId, ev) {
@@ -136,8 +136,8 @@
     c.pendings = c.pendings.filter(x => !(x && p.promptId && x.promptId === p.promptId)).concat([p]);
     c.pending = p;
     // a background worker's ask: the conversation's own run (if any) is not the one paused on it
-    if (p.background === true) { if (!c.busy) c.status = 'awaiting your approval…'; return c.pending; }
-    c.status = 'awaiting your approval…'; if (ts && !c.pausedAt) c.pausedAt = ts;
+    if (p.background === true) { if (!c.busy) c.status = 'esperando tu aprobación…'; return c.pending; }
+    c.status = 'esperando tu aprobación…'; if (ts && !c.pausedAt) c.pausedAt = ts;
     return c.pending;
   }
   // the newest ask the conversation's OWN run is paused on (a background worker's ask never pauses it)
@@ -149,7 +149,7 @@
     c.pending = c.pendings.length ? c.pendings[c.pendings.length - 1] : null;
     if (runAsk(c)) return;
     if (c.pausedAt) { c.pausedMs += Math.max(0, (ts || c.pausedAt) - c.pausedAt); c.pausedAt = 0; }
-    c.status = c.busy ? 'working…' : (c.pending ? 'awaiting your approval…' : 'online');
+    c.status = c.busy ? 'trabajando…' : (c.pending ? 'esperando tu aprobación…' : 'en línea');
   }
 
   // ---------- queries ----------
@@ -163,7 +163,7 @@
     const pausedOpen = c.pausedAt ? Math.max(0, now - c.pausedAt) : 0;
     return Math.max(0, now - c.startedAt - c.pausedMs - pausedOpen);
   }
-  function statusOf(wsId) { const c = peek(wsId); return c ? c.status : 'online'; }
+  function statusOf(wsId) { const c = peek(wsId); return c ? c.status : 'en línea'; }
   function pendingOf(wsId) { const c = peek(wsId); return c ? c.pending : null; }
   // what the conversation's own live run is paused on (null while it is working, even if a background worker is waiting)
   function runPendingOf(wsId) { return runAsk(peek(wsId)); }

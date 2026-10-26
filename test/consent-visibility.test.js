@@ -21,7 +21,7 @@ const F = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
   Channels.setRunId('ws-bg', 'run-1');
   Channels.setPending('ws-bg', { promptId: 'pp1', tool: 'fs.write', argsSummary: 'notes.md', runId: 'run-1' });
   A.eq(Channels.pendingIds(), ['ws-bg'], 'store seam: the planted background pending is discoverable via pendingIds');
-  A.eq(Channels.statusOf('ws-bg'), 'awaiting your approval…', 'store seam: status flips to the approval string the rail keys off (channels.js is the source of truth, EN; full ES channel statuses are a later phase)');
+  A.eq(Channels.statusOf('ws-bg'), 'esperando tu aprobación…', 'store seam: status flips to the approval string the rail keys off (channels.js is the source of truth, ES)');
   A.ok(Channels.snapshot('ws-bg').pending.promptId === 'pp1', 'store seam: the snapshot re-render path carries the prompt');
   Channels.reset();
 }

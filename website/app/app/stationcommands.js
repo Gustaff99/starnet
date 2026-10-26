@@ -1106,7 +1106,7 @@ const StationCommands = (() => {
       if (typeof Channels === 'undefined' || !Channels.begin || !Channels.setRunId) throw new Error('session activity is not ready yet');
       Channels.begin(ws.id, Date.now());
       Channels.setRunId(ws.id, runId, Date.now());
-      if (Channels.setStatus) Channels.setStatus(ws.id, 'working…');
+      if (Channels.setStatus) Channels.setStatus(ws.id, 'trabajando…');
       try { if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } catch (_) {}
       return { started: true, session: sessionName(ws), runId, resolvedBy: hit.resolvedBy };
     },

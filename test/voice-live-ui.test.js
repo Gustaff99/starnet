@@ -386,14 +386,14 @@ function approvalFixture(opts = {}) {
     assert.deepEqual(f.events, [['permission.response', { promptId: 'worker-second', decision, via: 'voice' }]], 'the bus names the confirmed prompt');
     assert.deepEqual(f.pending(), ['worker-first'], 'voice answer preserves the other pending prompt');
     assert.equal(f.Channels.peek(f.ws.id).pausedAt, 2000, 'the outstanding prompt keeps the original pause open');
-    assert.equal(f.Channels.statusOf(f.ws.id), 'awaiting your approval…', 'the channel still truthfully waits (status string: channels.js is the source of truth; 4 tests key the English form — full ES translation of channel statuses is a later phase)');
+    assert.equal(f.Channels.statusOf(f.ws.id), 'esperando tu aprobación…', 'the channel still truthfully waits (status string: channels.js is the source of truth, ES)');
     assert.equal(f.Channels.elapsedOf(f.ws.id, 9000), 1000, 'waiting on the sibling is not counted as run time');
     assert.equal(f.answer(speech), true); await flushApproval();
     assert.deepEqual(f.calls[1], ['lead-run', 'worker-first', decision], 'the next answer reaches the remaining prompt');
     assert.deepEqual(f.pending(), []);
     assert.equal(f.Channels.peek(f.ws.id).pausedAt, 0, 'answering the final prompt closes the pause');
     assert.equal(f.Channels.peek(f.ws.id).pausedMs, 6000, 'the pause closes once when all prompts settle');
-    assert.equal(f.Channels.statusOf(f.ws.id), 'working…');
+    assert.equal(f.Channels.statusOf(f.ws.id), 'trabajando…');
     assert.equal(f.answer(speech), false, 'a settled conversation cannot submit the same prompt again');
     assert.equal(f.calls.length, 2);
   }

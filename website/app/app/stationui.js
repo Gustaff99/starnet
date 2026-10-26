@@ -81,7 +81,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return n > 0 && n >= (runningAgents.get(id) || 0);
   }
   function dropTestRuns(id) { for (const [r, a] of Array.from(testRunIds)) if (a === id) testRunIds.delete(r); }
-  const LINE_TEST_TIP = 'working on a workflow — it shows in WORK › AUTOMATE › WORKFLOWS (a step test: in BUILD › the line’s TEST view), not in COMMS; ■ STOP there ends it';
+  const LINE_TEST_TIP = 'trabajando en un flujo de trabajo — se ve en WORK › AUTOMATE › WORKFLOWS (una prueba de paso: en BUILD › la vista TEST de la línea), no en COMMS; ■ STOP ahí lo termina';
   let crewLiveWired = false;         // the crew-status live listener is registered exactly once
   let repaintAutonomyDial = null;    // GROWTH Tier 3: the open Settings AUTONOMY panel's paint fn (null when closed) — lets an accepted trust offer repaint the EARNED badge live
   // Same idiom for the open Settings PERMISSIONS panel's per-agent APPROVAL list. The list is painted from
@@ -539,11 +539,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return false;
   }
   function pillFor(act) {
-    if (linkDown()) return ['LINK DOWN', 'down'];   // link gone → the pill can't honestly assert ONLINE
-    if (!linkUp()) return ['STANDBY', 'standby'];   // bridge not yet proven up → STANDBY, never a premature ONLINE
-    return act === 'task' ? ['WORKING', 'working']
-      : act === 'talk' ? ['THINKING', 'thinking']
-      : ['ONLINE', ''];
+    if (linkDown()) return ['ENLACE CAÍDO', 'down'];   // link gone → the pill can't honestly assert EN LÍNEA
+    if (!linkUp()) return ['EN ESPERA', 'standby'];   // bridge not yet proven up → EN ESPERA, never a premature EN LÍNEA
+    return act === 'task' ? ['TRABAJANDO', 'working']
+      : act === 'talk' ? ['PENSANDO', 'thinking']
+      : ['EN LÍNEA', ''];
   }
 
   /* ============== FLOATING TERMINAL WINDOWS (ported v7 ui.js) ============== */
@@ -1885,9 +1885,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (live) working++;
       const e = $('#cs-' + a.id);
       if (e) {
-        const status = live ? (a.id === focusedId && act === 'talk' ? 'IN CONVERSATION' : lineTestOnly(a.id) ? 'ON A WORKFLOW' : 'WORKING') : 'IDLE';
+        const status = live ? (a.id === focusedId && act === 'talk' ? 'EN CONVERSACIÓN' : lineTestOnly(a.id) ? 'EN UN FLUJO' : 'TRABAJANDO') : 'EN ESPERA';
         if (e.textContent !== status) e.textContent = status;
-        const tip = status === 'ON A WORKFLOW' ? LINE_TEST_TIP : '';
+        const tip = status === 'EN UN FLUJO' ? LINE_TEST_TIP : '';
         if ((e.getAttribute('data-tip') || '') !== tip) { if (tip) e.setAttribute('data-tip', tip); else e.removeAttribute('data-tip'); }
         const row = e.closest('.crew-row');
         row.classList.toggle('selected', a.id === focusedId);
@@ -1902,10 +1902,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const sum = $('#crew-sum');
     const empty = $('#crew-search-empty');
     if (empty) empty.hidden = !crewQuery || visible > 0;
-    // crewcards.js seats this beside the CREW title ("2 WORKING · 1 IDLE"); the ▮ ▯ marks were fallback-font glyphs
+    // crewcards.js seats this beside the CREW title ("2 TRABAJANDO · 1 EN ESPERA"); the ▮ ▯ marks were fallback-font glyphs
     if (sum) sum.innerHTML =
-      '<span class="pos">' + working + ' WORKING</span>' +
-      '<span class="dim">' + (present.length - working) + ' IDLE</span>';
+      '<span class="pos">' + working + ' TRABAJANDO</span>' +
+      '<span class="dim">' + (present.length - working) + ' EN ESPERA</span>';
     // #8: keep the canvas's screen-reader live region in sync (the <canvas> itself is opaque to AT).
     // Update only when the text actually changes so the region doesn't spam announcements every tick.
     const stageSum = $('#stage-summary');
@@ -2008,7 +2008,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     let focused = false;
     try { focused = !!(a && typeof App !== 'undefined' && App.currentAgent && App.currentAgent() && App.currentAgent().id === a.id); } catch (_) {}
     const dotCls = dn ? 'down' : live ? 'working' : (focused && act === 'talk') ? 'thinking' : 'on';
-    const statusText = dn ? 'OFFLINE' : live ? 'WORKING' : (focused && act === 'talk') ? 'THINKING' : 'ONLINE';
+    const statusText = dn ? 'SIN LÍNEA' : live ? 'TRABAJANDO' : (focused && act === 'talk') ? 'PENSANDO' : 'EN LÍNEA';
     const lv = (typeof Xp !== 'undefined' && a.stats) ? Xp.compute(a.stats).level : null;   // always-visible level chip
     return '<div class="ag-hero">' +
       // recessed portrait WELL: corner ticks + a slow scan-sweep overlay (v2 hero pattern). The sweep +

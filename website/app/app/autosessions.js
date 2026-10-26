@@ -128,7 +128,7 @@ const AutoSessions = (() => {
     if (!ws) return null;   // a session the Commander DELETED stays deleted (adopt refused the tombstoned id)
     // mark the row busy via the SAME per-workstream channel state chat.js drives (Channels.begin) so the
     // rail's railRowState paints the pulsing "running" dot — reused, not a bespoke busy flag.
-    if (hasCh() && !Channels.isBusy(id)) { Channels.begin(id, Date.now()); Channels.setStatus(id, 'thinking…'); }   // cron.fire IS server truth — skip the 'connecting…' unconfirmed state
+    if (hasCh() && !Channels.isBusy(id)) { Channels.begin(id, Date.now()); Channels.setStatus(id, 'pensando…'); }   // cron.fire IS server truth — skip the 'conectando…' unconfirmed state
     armReconcilePoll();   // a live cron run → keep a bounded poll ready to heal it if the result event is lost
     refreshRail();
     persist();

@@ -151,7 +151,7 @@ A.eq(titleFor({ id: 's3' }, { displayName: () => '' }).text, 'COMMS · New sessi
   const fill = rail.indexOf('railShownNames = new Map(rows.map((w, i) => [w.id, { base: baseTitles[i], shown: titles[i] }]));');
   A.ok(fill > 0 && rail.indexOf('Chat.paintTitle();   // ORG P26') > fill, 'renderRail records this pass\'s names BEFORE it repaints the COMMS title');
   A.ok(/refreshRail: renderRail, sessionDisplayName,/.test(APPSRC), 'App exports the shared name');
-  A.ok(/' IS BUSY IN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(CHAT), 'P25 x D12: the busy row names the session as the rail does');
+  A.ok(/' OCUPADO EN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(CHAT), 'P25 x D12: the busy row names the session as the rail does');
 }
 A.ok(/activeWs = nextWs;\n    paintTitle\(\);/.test(CHAT) && /return \{ init, load, paintTitle,/.test(CHAT), 'P26: Chat.load paints the title and Chat exports the writer');
 A.ok(/if \(typeof Chat !== 'undefined' && Chat\.paintTitle\) Chat\.paintTitle\(\);   \/\/ ORG P26/.test(read('frontend/app/app.js')), 'P26: the rail repaint (rename / auto-title) repaints the title');
@@ -179,7 +179,7 @@ A.ok(/if \(!ws\) ws = Workstreams\.create\(a\.name, \{ agentId: id, activate: fa
 A.ok(/start\.onclick = \(\) => newWorkstream\(\)/.test(APP) && /'sessions with ' \+ name \+ ' yet\.'/.test(APP), 'P25: the narrowed rail offers START ONE for an agent with no session yet');
 A.ok(!/switch to its stream to task it/.test(APP) && /pick it ON THE LINE in COMMS to talk to it/.test(APP) && APP.includes("' recruited — ' + deskLine") && !/' summoned — /.test(APP), 'P25: the background-hire toast no longer promises a stream that does not exist');
 A.ok(/ws = blank \? cur : Workstreams\.create\(st\.label/.test(CHAT), 'P25: a starter on a blank open session fills it (behaviour in test/starters.test.js)');
-A.ok(/String\(busyName\)\.toUpperCase\(\) \+ ' IS BUSY IN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(CHAT) && !/'ALSO RUNNING IN '/.test(CHAT), 'P25: the busy row reads <NAME> IS BUSY IN <SESSION> · VIEW ACTIVE RUN');
+A.ok(/String\(busyName\)\.toUpperCase\(\) \+ ' OCUPADO EN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(CHAT) && !/'ALSO RUNNING IN '/.test(CHAT), 'P25: the busy row reads <NAME> OCUPADO EN <SESSION> · VER EJECUCIÓN ACTIVA');
 A.ok(/function\s+maybeEmptyState[\s\S]{0,300}busyPeerFor\(activeWs\)/.test(CHAT), 'P25: the busy row stays visible in an empty session (it explains why a first message queues)');
 
 /* ---------- P33: starter-room machines show what they are (the shipped hit-test, run against the real catalogs) ---------- */

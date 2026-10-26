@@ -37,26 +37,26 @@ const App = (() => {
   }
   function paintBridgeConnecting() {
     const chat = el('chat-status');
-    if (chat) { if (chat.textContent !== 'connecting…') chat.textContent = 'connecting…'; if (chat.className !== 'status-connecting') chat.className = 'status-connecting'; }
+    if (chat) { if (chat.textContent !== 'conectando…') chat.textContent = 'conectando…'; if (chat.className !== 'status-connecting') chat.className = 'status-connecting'; }
     const pill = el('status-pill');
-    if (pill) { if (pill.textContent !== 'CONNECTING') pill.textContent = 'CONNECTING'; if (pill.className !== 'standby') pill.className = 'standby'; }
+    if (pill) { if (pill.textContent !== 'CONECTANDO') pill.textContent = 'CONECTANDO'; if (pill.className !== 'standby') pill.className = 'standby'; }
     const empty = document.querySelector('.cmsg-empty-line');
-    if (empty && empty.textContent !== 'COMMS connecting…') empty.textContent = 'COMMS connecting…';
+    if (empty && empty.textContent !== 'COMMS conectando…') empty.textContent = 'COMMS conectando…';
     const sig = el('sig'), bars = sig && sig.querySelector('b');
-    if (sig && bars) { sig.classList.remove('down'); sig.classList.add('standby'); if (sig.childNodes[0].nodeValue !== 'CONNECTING ') sig.childNodes[0].nodeValue = 'CONNECTING '; if (bars.textContent !== '▃▃▃▃') bars.textContent = '▃▃▃▃'; }
+    if (sig && bars) { sig.classList.remove('down'); sig.classList.add('standby'); if (sig.childNodes[0].nodeValue !== 'CONECTANDO ') sig.childNodes[0].nodeValue = 'CONECTANDO '; if (bars.textContent !== '▃▃▃▃') bars.textContent = '▃▃▃▃'; }
     // Do not let our own corrective mutations recursively re-enter the observer and starve the
     // EventSource/timers that are supposed to earn authority.
     if (bridgeAuthorityObserver) bridgeAuthorityObserver.takeRecords();
   }
   function paintBridgeUnavailable() {
     const chat = el('chat-status');
-    if (chat) { chat.textContent = 'station unreachable'; chat.className = 'status-down'; }
+    if (chat) { chat.textContent = 'estación inalcanzable'; chat.className = 'status-down'; }
     const pill = el('status-pill');
-    if (pill) { pill.textContent = 'LINK DOWN'; pill.className = 'down'; }
+    if (pill) { pill.textContent = 'ENLACE CAÍDO'; pill.className = 'down'; }
     const empty = document.querySelector('.cmsg-empty-line');
-    if (empty) empty.textContent = 'COMMS unavailable — reconnecting to the station.';
+    if (empty) empty.textContent = 'COMMS no disponible — reconectando a la estación.';
     const sig = el('sig'), bars = sig && sig.querySelector('b');
-    if (sig && bars) { sig.classList.remove('standby'); sig.classList.add('down'); sig.childNodes[0].nodeValue = 'LINK DOWN '; bars.textContent = '▁▁▁▁'; }
+    if (sig && bars) { sig.classList.remove('standby'); sig.classList.add('down'); sig.childNodes[0].nodeValue = 'ENLACE CAÍDO '; bars.textContent = '▁▁▁▁'; }
   }
   function beginBridgeAuthorityGate() {
     if (bridgeAuthorityTimer) clearTimeout(bridgeAuthorityTimer);
@@ -74,10 +74,10 @@ const App = (() => {
         bridgeAuthorityTimer = null;
         if (bridgeAuthorityObserver) { bridgeAuthorityObserver.disconnect(); bridgeAuthorityObserver = null; }
         try { if (typeof Topbar !== 'undefined' && Topbar._paintSig) Topbar._paintSig(); } catch (_) {}
-        if (typeof Chat !== 'undefined' && Chat.status && !(Chat.isBusy && Chat.isBusy())) Chat.status('online');
-        const pill = el('status-pill'); if (pill) { pill.textContent = 'ONLINE'; pill.className = ''; }
+        if (typeof Chat !== 'undefined' && Chat.status && !(Chat.isBusy && Chat.isBusy())) Chat.status('en línea');
+        const pill = el('status-pill'); if (pill) { pill.textContent = 'EN LÍNEA'; pill.className = ''; }
         const empty = document.querySelector('.cmsg-empty-line');
-        if (empty && agent) empty.textContent = 'What would you like to work on?';
+        if (empty && agent) empty.textContent = '¿En qué quieres trabajar?';
         return;
       }
       // EventSource.CONNECTING is not a fault. Only call the link unavailable after it has failed to
@@ -4198,10 +4198,10 @@ const App = (() => {
       const ask = !gs.approvals;
       return { dot: ask ? 'ws-dot needsyou reply' : 'ws-dot needsyou approval', meta: ask ? 'Respuesta pendiente' : 'Aprobación pendiente', busy: !!gs.busy, attn: true, status: ask ? 'esperando tu respuesta' : 'esperando tu aprobación' };
     }
-    if (gs && gs.busy) return { dot: 'ws-dot working', meta: 'Working', busy: true, attn: false, status: 'agents are working in this group' };
+    if (gs && gs.busy) return { dot: 'ws-dot working', meta: 'Trabajando', busy: true, attn: false, status: 'los agentes están trabajando en este grupo' };
     if (typeof Channels !== 'undefined' && Channels.isBusy(w.id)) {
       if (!Channels.runIdOf(w.id)) {
-        return { dot: 'ws-dot connecting', meta: 'Connecting', busy: true, attn: false, status: 'connecting to the model' };
+        return { dot: 'ws-dot connecting', meta: 'Conectando', busy: true, attn: false, status: 'conectando al modelo' };
       }
       const status = Channels.statusOf(w.id);
       const started = Channels.startedAtOf(w.id);
@@ -4212,23 +4212,23 @@ const App = (() => {
     const ov = typeof Overseer !== 'undefined' && Overseer.snapshot ? Overseer.snapshot() : null;
     const crew = ((ov && ov.workers) || []).filter(x => x && x.status === 'running' && x.parentStreamId === w.id).length;
     // …a ledger the station has stopped answering for cannot vouch that they still run: say unknown, never "working"
-    if (crew && Overseer.fresh && !Overseer.fresh()) return { dot: 'ws-dot', meta: 'crew · unknown', busy: false, attn: false, status: 'station unreachable — crew state unknown' };
-    if (crew) return { dot: 'ws-dot working', meta: crew + ' working', busy: true, attn: false, status: crew + ' of the crew working on what you delegated' };
+    if (crew && Overseer.fresh && !Overseer.fresh()) return { dot: 'ws-dot', meta: 'tripulación · desconocido', busy: false, attn: false, status: 'estación inalcanzable — estado de la tripulación desconocido' };
+    if (crew) return { dot: 'ws-dot working', meta: crew + ' trabajando', busy: true, attn: false, status: crew + ' de la tripulación trabajando en lo que delegaste' };
     // A settled failure uses the crossed lamp; only a live approval/question earns the action row.
-    if (w.lastRunOk === false) return { dot: 'ws-dot failed', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'last run failed — open to inspect' };
+    if (w.lastRunOk === false) return { dot: 'ws-dot failed', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'la última ejecución falló — ábrela para inspeccionar' };
     // a DELIVERY session ('workshop-<runId>' — idle-built work) that hasn't been reviewed is a decision the
     // Commander owes, not just an unread chat: say REVIEW on the row itself (2026-07-15 UX audit — the ⚒ prefix
     // alone didn't distinguish "your agent made you something" from ordinary unread activity).
     if (String(w.id).indexOf('workshop-') === 0 && Workstreams.unread(w)) {
-      return { dot: 'ws-dot unseen', meta: '⚒ REVIEW', busy: false, attn: false, status: 'a build is waiting for your review' };
+      return { dot: 'ws-dot unseen', meta: '⚒ REVISAR', busy: false, attn: false, status: 'una construcción espera tu revisión' };
     }
     // UNSEEN vs SEEN is the whole idle axis now. `unread` is two real stored timestamps
     // (lastActiveAt > lastReadAt) and is never true for the stream you have open, so the dot goes
     // faded the instant you actually look at it — which is what makes a glance down the rail mean
     // something. The ⚒ REVIEW branch above keeps its own wording: a BUILD waiting is a different
     // errand from a reply waiting, even though both are "unseen".
-    if (Workstreams.unread(w)) return { dot: 'ws-dot unseen', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'unread activity' };
-    return { dot: 'ws-dot seen', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'read' };
+    if (Workstreams.unread(w)) return { dot: 'ws-dot unseen', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'actividad sin leer' };
+    return { dot: 'ws-dot seen', meta: railRelTime(w.lastActiveAt), busy: false, attn: false, status: 'leído' };
   }
   /* ---------- INBOX row extras (SESSION ROWS = inbox) + shared group identity ----------
      Both spans are rendered ALWAYS; CSS keeps group identity visible in every row layout, so switching is a pure repaint —
@@ -4331,19 +4331,19 @@ const App = (() => {
   function railModelFull(w) { return (w.lastModel || '').trim(); }
   function railRowLabel(w, st, project = false) {
     const title = Workstreams.titleOf(w), name = railAgentName(w);
-    return title + (w.conversationMode === 'group' ? ' group chat' : ' session') + (name === title ? '' : ', ' + name) + (st.status ? ', ' + st.status : '')
-      + (Workstreams.unread(w) && !st.dot.includes('unseen') ? ', unread activity' : '')
-      + (project ? '; Enter to open' : '; Enter to open; Shift+F10 for actions');
+    return title + (w.conversationMode === 'group' ? ' chat de grupo' : ' sesión') + (name === title ? '' : ', ' + name) + (st.status ? ', ' + st.status : '')
+      + (Workstreams.unread(w) && !st.dot.includes('unseen') ? ', actividad sin leer' : '')
+      + (project ? '; Enter para abrir' : '; Enter para abrir; Shift+F10 para acciones');
   }
   function railRowTip(w, st, project = false) {
     const full = railModelFull(w);
     // the latest line rides the hover tip: the row itself is name + agent + time (NO SENTENCES UNDER TILES)
     const latest = !project && typeof railReceipt === 'function' ? railReceipt(w) : '';
-    return Workstreams.titleOf(w) + (latest ? ' — ' + latest : '') + (w.archived ? ' · archived' : '') + (st.status ? ' · ' + st.status : '')
-      + (Workstreams.unread(w) && !st.dot.includes('unseen') ? ' · unread activity' : '')
-      + (w.kind === 'task' ? ' · board: ' + w.lane : '')
-      + (full ? ' · last run on ' + full : '')
-      + (project ? ' — open this session' : ' — Shift+F10 or right-click for actions');
+    return Workstreams.titleOf(w) + (latest ? ' — ' + latest : '') + (w.archived ? ' · archivado' : '') + (st.status ? ' · ' + st.status : '')
+      + (Workstreams.unread(w) && !st.dot.includes('unseen') ? ' · actividad sin leer' : '')
+      + (w.kind === 'task' ? ' · tablero: ' + w.lane : '')
+      + (full ? ' · última ejecución con ' + full : '')
+      + (project ? ' — abrir esta sesión' : ' — Shift+F10 o clic derecho para acciones');
   }
   /* a routine's rows on the rail, head first: its NEWEST run carries the runs key, the rest list under it as older.
      Workstreams.list sorts pinned rows first, so a pinned OLDER run arrived first, took the head and the key, and the
@@ -5098,7 +5098,7 @@ const App = (() => {
         const w = byId[s.id];
         const st = w ? railRowState(w) : { dot: 'ws-dot', meta: s.rel, busy: false, attn: false };
         const cls = w ? rowClass(w, st, activeId) : ('ws-row' + (s.id === activeId ? ' sel' : ''));
-        return '<li class="' + cls + ' proj-sess-full" data-ws="' + U.esc(s.id) + '" tabindex="0" role="button" aria-label="' + U.esc(w ? railRowLabel(w, st, true) : s.title + ' session; Enter to open') + '"' + (s.id === activeId ? ' aria-current="true"' : '') + ' title="' + U.esc(w ? railRowTip(w, st, true) : s.title + ' — open this session') + '">' +
+        return '<li class="' + cls + ' proj-sess-full" data-ws="' + U.esc(s.id) + '" tabindex="0" role="button" aria-label="' + U.esc(w ? railRowLabel(w, st, true) : s.title + ' sesión; Enter para abrir') + '"' + (s.id === activeId ? ' aria-current="true"' : '') + ' title="' + U.esc(w ? railRowTip(w, st, true) : s.title + ' — abrir esta sesión') + '">' +
           '<span class="' + st.dot + '" aria-hidden="true"></span>' +
           '<span class="ws-title">' + U.esc(s.title) + '</span>' +
           '<span class="ws-meta">' + U.esc(st.meta || s.rel) + '</span>' +

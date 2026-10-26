@@ -87,7 +87,7 @@ A.ok(/U\.bus\.on\('agent\.run\.start', p => \{ if \(p && p\.agentId\) \{ if \(p\
   && /U\.bus\.on\('agent\.run\.end', p => \{ if \(p && p\.agentId\) \{ if \(p\.runId\) testRunIds\.delete\(p\.runId\);/.test(station), 'the crew listener keeps which live runs are line tests, from the run events');
 A.ok(/else \{ runningAgents\.delete\(id\); runSeenAt\.delete\(id\); dropTestRuns\(id\); \}/.test(station) && /runningAgents\.delete\(id\); runSeenAt\.delete\(id\); dropTestRuns\(id\);   \/\/ self-heal/.test(station), '…and forgets them whenever the agent\'s run count is cleared (an end, or the world\'s self-heal)');
 {
-  // the real crewTick, as state-truth-overlap runs it: a line test reads LINE TEST with its tip; a mix or other work reads WORKING
+  // the real crewTick, as state-truth-overlap runs it: a line test reads EN UN FLUJO with its tip; a mix or other work reads TRABAJANDO
   const ids = ['tester', 'worker', 'idle'];
   const rows = Object.fromEntries(ids.map(id => [id, { hidden: false, classList: { toggle() {} } }]));
   const tips = {};
@@ -100,9 +100,9 @@ A.ok(/else \{ runningAgents\.delete\(id\); runSeenAt\.delete\(id\); dropTestRuns
     $: sel => sel.startsWith('#cs-') ? labels[sel.slice(4)] : null
   });
   vm.runInContext(A.fnBody(station, 'function crewTick()') + '\ncrewTick();', ctx);
-  A.eq([labels.tester.textContent, labels.worker.textContent, labels.idle.textContent], ['ON A WORKFLOW', 'WORKING', 'IDLE'], 'a workflow job or a line test reads ON A WORKFLOW; other work WORKING; no run IDLE');
-  A.ok(/WORK › AUTOMATE › WORKFLOWS/.test(tips.tester || '') && /TEST view/.test(tips.tester || '') && /STOP/.test(tips.tester || '') && !tips.worker,
-    'the ON A WORKFLOW row says where it shows (the WORKFLOWS window, or a step test in the TEST view) and how it stops; the others carry no such tip');
+  A.eq([labels.tester.textContent, labels.worker.textContent, labels.idle.textContent], ['EN UN FLUJO', 'TRABAJANDO', 'EN ESPERA'], 'a workflow job or a line test reads EN UN FLUJO; other work TRABAJANDO; no run EN ESPERA');
+  A.ok(/WORK › AUTOMATE › WORKFLOWS/.test(tips.tester || '') && /la vista TEST/.test(tips.tester || '') && /STOP/.test(tips.tester || '') && !tips.worker,
+    'the EN UN FLUJO row says where it shows (the WORKFLOWS window, or a step test in the TEST view) and how it stops; the others carry no such tip');
 }
 {
   // lineTestOnly: only when EVERY live run of the agent is a line test
@@ -110,9 +110,9 @@ A.ok(/else \{ runningAgents\.delete\(id\); runSeenAt\.delete\(id\); dropTestRuns
   A.ok(!!src, 'lineTestOnly exists');
   const ctx = vm.createContext({ testRunIds: new Map([['r1', 'a'], ['r2', 'b']]), runningAgents: new Map([['a', 1], ['b', 2]]) });
   vm.runInContext(src, ctx);
-  A.ok(vm.runInContext('lineTestOnly("a")', ctx) === true, 'an agent whose only live run is a line test reads LINE TEST');
-  A.ok(vm.runInContext('lineTestOnly("b")', ctx) === false, 'an agent with a line test AND other live work reads WORKING');
-  A.ok(vm.runInContext('lineTestOnly("c")', ctx) === false, 'an agent with no line test reads WORKING');
+  A.ok(vm.runInContext('lineTestOnly("a")', ctx) === true, 'an agent whose only live run is a line test reads EN UN FLUJO');
+  A.ok(vm.runInContext('lineTestOnly("b")', ctx) === false, 'an agent with a line test AND other live work reads TRABAJANDO');
+  A.ok(vm.runInContext('lineTestOnly("c")', ctx) === false, 'an agent with no line test reads TRABAJANDO');
 }
 
 A.report('line-test-stop.test');

@@ -11,11 +11,11 @@ const station = read('frontend/app/stationui.js');
 
 A.ok(/function workerFoot\([\s\S]{0,700}seen\.add\(ht\.x \+ ',' \+ ht\.y\)/.test(world),
   'summoned-worker occupancy includes the hero, so the first worker cannot hide underneath it');
-A.ok(/function agHead\(a, act\)[\s\S]{0,500}const live = !!\(a && agentLive\(a\.id\)\)[\s\S]{0,700}live \? 'WORKING'/.test(station),
-  'the dossier headline derives WORKING from the selected agent');
+A.ok(/function agHead\(a, act\)[\s\S]{0,500}const live = !!\(a && agentLive\(a\.id\)\)[\s\S]{0,700}live \? 'TRABAJANDO'/.test(station),
+  'the dossier headline derives TRABAJANDO from the selected agent');
 A.ok(/x\.id === focusedId && act === 'talk' \? 'talking' : 'working'/.test(station),
   'a different worker never inherits the focused agent conversation label');
-A.ok(/const selectedLive = !!\(selected && agentLive\(selected\.id\)\)[\s\S]{0,500}selectedLive \? 'WORKING'/.test(station),
+A.ok(/const selectedLive = !!\(selected && agentLive\(selected\.id\)\)[\s\S]{0,500}selectedLive \? 'TRABAJANDO'/.test(station),
   'live dossier repaint remains scoped to the selected worker');
 // Exercise the crew projection instead of locking the old presentation wording.
 // Three concurrent agents include one pending approval; a fourth agent is idle.
@@ -31,10 +31,10 @@ const crewContext = vm.createContext({
   $: selector => selector.startsWith('#cs-') ? crewLabels[selector.slice(4)] : null
 });
 vm.runInContext(A.fnBody(station, 'function crewTick()') + '\ncrewTick();', crewContext);
-A.eq(crewLabels.hero.textContent, 'IN CONVERSATION', 'the focused running agent owns the conversation label');
-A.eq(crewLabels.worker.textContent, 'WORKING', 'a background worker never inherits the conversation label');
-A.eq(crewLabels.approval.textContent, 'WORKING', 'crew keeps its activity summary; approval details belong to the session');
-A.eq(crewLabels.idle.textContent, 'IDLE', 'an idle agent does not inherit a different agent’s run or approval');
+A.eq(crewLabels.hero.textContent, 'EN CONVERSACIÓN', 'the focused running agent owns the conversation label');
+A.eq(crewLabels.worker.textContent, 'TRABAJANDO', 'a background worker never inherits the conversation label');
+A.eq(crewLabels.approval.textContent, 'TRABAJANDO', 'crew keeps its activity summary; approval details belong to the session');
+A.eq(crewLabels.idle.textContent, 'EN ESPERA', 'an idle agent does not inherit a different agent’s run or approval');
 crewContext.crewQuery = 'work'; vm.runInContext('crewTick()', crewContext);
 A.eq(crewIds.filter(id => !crewRows[id].hidden), ['worker'], 'search narrows the roster by identity');
 crewContext.crewQuery = 'idle'; vm.runInContext('crewTick()', crewContext);

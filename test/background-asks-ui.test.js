@@ -29,10 +29,10 @@ const rd = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
   A.eq(C.runPendingOf('ws_a'), null, 'with only a background ask left, the run is not paused');
   A.eq(C.pendingOf('ws_a').promptId, 'bg1', 'the background ask is still filed on the conversation');
   A.eq(C.elapsedOf('ws_a', 9000), 9000 - 1000 - 3000, 'the run clock paused only for its own ask (2000→5000), never for the worker\'s');
-  A.eq(C.statusOf('ws_a'), 'working…', 'the busy run reads working, not awaiting');
+  A.eq(C.statusOf('ws_a'), 'trabajando…', 'the busy run reads trabajando, not esperando');
   C.end('ws_a');
   A.eq(C.pendingAllOf('ws_a').map(p => p.promptId), ['bg1'], 'the reply ending keeps the background ask (the worker still waits)');
-  A.eq(C.statusOf('ws_a'), 'awaiting your approval…', 'an idle conversation with a waiting worker says so');
+  A.eq(C.statusOf('ws_a'), 'esperando tu aprobación…', 'an idle conversation with a waiting worker says so');
   C.begin('ws_a', 10000);
   A.eq(C.pendingAllOf('ws_a').map(p => p.promptId), ['bg1'], 'a new message in the conversation keeps it too');
   A.eq(C.runPendingOf('ws_a'), null, '…and the new run is not paused on it');
@@ -42,7 +42,7 @@ const rd = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
   C.clearPending('ws_a', 13000, 'bg1');
   A.eq(C.pendingAllOf('ws_a').length, 0, 'its own answer (by promptId) clears it');
   C.end('ws_a');
-  A.eq(C.statusOf('ws_a'), 'online', 'nothing waits: online');
+  A.eq(C.statusOf('ws_a'), 'en línea', 'nothing waits: en línea');
   C.reset();
 }
 

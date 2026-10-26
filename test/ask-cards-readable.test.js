@@ -222,7 +222,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   }
   const statusEl = new El('span'), sc = vm.createContext({ statusEl, String });
   vm.runInContext(part(chat, '  function status(s) {', '  // derive the DISPLAYED stream'), sc);
-  for (const st of ['awaiting your answer…', 'awaiting your context…', 'awaiting your approval…']) { sc.status(st); A.ok(statusEl._cls.has('status-approval'), st + ': hidden in the COMMS header (the card and the presence line say it)'); }
+  for (const st of ['esperando tu respuesta…', 'esperando tu contexto…', 'esperando tu aprobación…']) { sc.status(st); A.ok(statusEl._cls.has('status-approval'), st + ': hidden in the COMMS header (the card and the presence line say it)'); }
 
   /* ---- C. the presence line + LET'S SHAPE THIS ---- */
   A.ok(/pend\.tool === 'brief\.ask' \? 'see the question above' : 'to ' \+ glance\(actionPhrase\(pend\), 70\)/.test(chat) && !/waiting for you to approve ' \+ shortName/.test(chat), 'the paused line names the request in the card\'s words, never a raw tool id');

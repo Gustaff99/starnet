@@ -33,10 +33,10 @@ const HIDDEN = ['status-thinking', 'status-working', 'status-connecting', 'statu
 A.ok(HIDDEN.indexOf('status-approval') >= 0 && HIDDEN.indexOf('status-thinking') >= 0, 'the stylesheet still hides the run-state classes');
 const hidden = (text) => classesFor(text).some(c => HIDDEN.indexOf(c) >= 0);
 
-for (const s of ['thinking…', 'working…', 'connecting…', 'stopping…', 'awaiting your approval…', 'awaiting your context…', 'awaiting your answer…', 'waking…', 'online']) {
+for (const s of ['pensando…', 'trabajando…', 'conectando…', 'deteniendo…', 'esperando tu aprobación…', 'esperando tu contexto…', 'esperando tu respuesta…', 'despertando…', 'en línea']) {
   A.ok(hidden(s), 'the header never shows run state: "' + s + '" lands on a hidden class (' + classesFor(s).join(' ') + ')');
 }
-A.ok(!hidden('station unreachable'), 'a fault still shows in the header');
+A.ok(!hidden('estación inalcanzable'), 'a fault still shows in the header');
 A.ok(!/'online · also running in '/.test(chat), 'the header never names another session\'s run ("online · also running in …")');
 
 A.report('comms-header-no-run-state.test');

@@ -29,9 +29,9 @@ const sidecarSrc = fs.readFileSync(path.join(__dirname, '../sidecar/index.js'), 
 A.ok(/World\.linkState\s*\(\)/.test(chatSrc), 'chat.js reads World.linkState() (the E1 bridge-health predicate)');
 A.ok(/ls\.bridged\s*&&\s*!ls\.paused\s*&&\s*ls\.down/.test(chatSrc), 'only a bridged-but-dead link downgrades (pre-entry / deliberate pause never false-alarm)');
 // the downgraded claim is the honest one, and it can never mask live run-state (busy/approval win the ternary).
-A.ok(/down\s*\?\s*'station unreachable'\s*:\s*'online'/.test(chatSrc), "the idle claim is 'station unreachable' when the link is provably dead — 'online' only when it isn't");
+A.ok(/down\s*\?\s*'estación inalcanzable'\s*:\s*'en línea'/.test(chatSrc), "the idle claim is 'estación inalcanzable' when the link is provably dead — 'en línea' only when it isn't");
 // the status classifier maps the downgraded label onto a distinct fault class.
-A.ok(/unreachable[^:]*\?\s*'status-down'/.test(chatSrc), "status() maps 'unreachable' onto the status-down class");
+A.ok(/inalcanzable[^:]*\?\s*'status-down'/.test(chatSrc), "status() maps 'inalcanzable' onto the status-down class");
 A.ok(/'status-online'\s*,\s*'status-down'/.test(chatSrc) || /'status-down'\s*,\s*'status-online'/.test(chatSrc) || /status-down/.test(chatSrc.match(/statusEl\.classList\.remove\([^)]*\)/)[0]), 'status-down is in the class reset list (no sticky fault paint)');
 // a link that dies with NO run in flight still gets noticed: the once-armed idle re-derive interval.
 A.ok(/__chatLinkStatusTimer/.test(chatSrc) && /setInterval\([\s\S]{0,120}?syncStatus/.test(chatSrc), 'an idle re-derive interval re-checks the link (a dead sidecar flips the label without any run event)');

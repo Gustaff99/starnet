@@ -354,13 +354,13 @@ const Chat = (() => {
     // A clarify question rides the SAME consent transport as a permission grant, but it is not one:
     // "AWAITING APPROVAL / approve brief.ask" told the Commander to approve an internal tool name when
     // the run is simply waiting for them to answer a question (caught in shot review, 2026-08-14).
-    if (p) return p.tool === 'brief.ask' ? 'AWAITING YOUR ANSWER' : 'AWAITING APPROVAL';
+    if (p) return p.tool === 'brief.ask' ? 'ESPERANDO TU RESPUESTA' : 'ESPERANDO TU APROBACIÓN';
     const cs = (activeWs && typeof Channels !== 'undefined' && Channels.statusOf) ? Channels.statusOf(activeWs.id) : '';
-    // TRUTHFUL TELEMETRY: until the sidecar's agent.run.start lands the card says CONNECTING — it never
+    // TRUTHFUL TELEMETRY: until the sidecar's agent.run.start lands the card says CONECTANDO — it never
     // claims the agent is thinking/working on the strength of a click alone (a downed sidecar would
-    // otherwise show "THINKING" forever).
-    if (cs && /connect/i.test(cs)) return 'CONNECTING';
-    return (cs && /work/i.test(cs)) ? 'WORKING' : 'THINKING';
+    // otherwise show "PENSANDO" forever).
+    if (cs && /conectando/i.test(cs)) return 'CONECTANDO';
+    return (cs && /trabajando/i.test(cs)) ? 'TRABAJANDO' : 'PENSANDO';
   }
   function renderPresence() {
     if (!log) return;
@@ -2525,10 +2525,10 @@ const Chat = (() => {
     const label = document.createElement('span'); label.className = 'dim';
     // ORG P25: say WHO is busy and WHERE — it explains why a first message here queues (kept visible in an empty session)
     const busyName = peer ? ((typeof App !== 'undefined' && App.agentName && App.agentName(peer.agentId || 'agent')) || name || 'Este agente') : '';
-    label.textContent = peer ? (String(busyName).toUpperCase() + ' IS BUSY IN ' + shownName(peer).toUpperCase()) : String(detail || 'AGENT BUSY');
+    label.textContent = peer ? (String(busyName).toUpperCase() + ' OCUPADO EN ' + shownName(peer).toUpperCase()) : String(detail || 'AGENTE OCUPADO');
     rowEl.appendChild(label);
     if (peer) {
-      const view = document.createElement('button'); view.type = 'button'; view.className = 'choice'; view.textContent = 'VIEW ACTIVE RUN';
+      const view = document.createElement('button'); view.type = 'button'; view.className = 'choice'; view.textContent = 'VER EJECUCIÓN ACTIVA';
       view.onclick = () => { if (typeof App !== 'undefined' && App.openWorkstream) App.openWorkstream(peer.id); };
       rowEl.appendChild(view);
     }
@@ -2542,21 +2542,21 @@ const Chat = (() => {
     // NO RUN STATE IN THE COMMS HEADER (Andrew, asked 5x; locked 10-03): 'awaiting your answer…' / 'awaiting your context…'
     // are the same pause as an approval (the card + presence line say it), and 'waking…' is a run state too — every one
     // lands on a class the header hides. Faults (unreachable, voice errors) still show.
-    statusEl.classList.add(low.indexOf('approval') >= 0 || low.indexOf('awaiting') >= 0 ? 'status-approval'
-      : /^waking\b/.test(low.trim()) ? 'status-thinking'
-      : low.indexOf('stopping') >= 0 ? 'status-stopping'
-      : low.indexOf('working') >= 0 ? 'status-working'
-      : low.indexOf('thinking') >= 0 ? 'status-thinking'
-      : low.indexOf('connecting') >= 0 ? 'status-connecting'
-      : low.indexOf('unreachable') >= 0 ? 'status-down'
+    statusEl.classList.add(low.indexOf('aprobación') >= 0 || low.indexOf('esperando') >= 0 ? 'status-approval'
+      : /^despertando\b/.test(low.trim()) ? 'status-thinking'
+      : low.indexOf('deteniendo') >= 0 ? 'status-stopping'
+      : low.indexOf('trabajando') >= 0 ? 'status-working'
+      : low.indexOf('pensando') >= 0 ? 'status-thinking'
+      : low.indexOf('conectando') >= 0 ? 'status-connecting'
+      : low.indexOf('inalcanzable') >= 0 ? 'status-down'
       : 'status-online');
-    // a plain idle 'online' is hidden in the header (css); every run-state and fault still shows.
-    if (low.trim() === 'online') statusEl.classList.add('status-idle');
+    // a plain idle 'en línea' is hidden in the header (css); every run-state and fault still shows.
+    if (low.trim() === 'en línea') statusEl.classList.add('status-idle');
   }
   // derive the DISPLAYED stream's status from real state, so a low-priority write (a finishing turn) can't
   // clobber the high-priority 'awaiting your approval…' after a switch-back. One source of truth.
   function syncStatus() {
-    if (interview) { status('waking…'); stopElapsedTimer(); return; }
+    if (interview) { status('despertando…'); stopElapsedTimer(); return; }
     // a working run reads its OWN ask (a background worker waiting does not pause it); an idle one reads any ask filed here
     const p = isBusy() ? runPendingOf(activeWs) : ((activeWs && typeof Channels !== 'undefined') ? Channels.pendingOf(activeWs.id) : null);
     const channelStatus = (activeWs && typeof Channels !== 'undefined' && Channels.statusOf) ? Channels.statusOf(activeWs.id) : '';
@@ -2567,10 +2567,10 @@ const Chat = (() => {
     let down = false;
     try { const ls = (typeof World !== 'undefined' && World.linkState) ? World.linkState() : null; down = !!(ls && ls.bridged && !ls.paused && ls.down); } catch (_) {}
     const peer = !isBusy() ? busyPeerFor(activeWs) : null;
-    // a peer run no longer blocks THIS session — the status stays an honest 'online' (send is allowed) with
+    // a peer run no longer blocks THIS session — the status stays an honest 'en línea' (send is allowed) with
     // the peer named beside it; the soft #comms-agent-busy row below carries the VIEW ACTIVE RUN route.
     // ('running', not 'busy'/'working': status() classifies by substring and this session is NOT the one working.)
-    status(p ? 'awaiting your approval…' : (isBusy() ? (channelStatus || 'thinking…') : (down ? 'station unreachable' : 'online')));
+    status(p ? 'esperando tu aprobación…' : (isBusy() ? (channelStatus || 'pensando…') : (down ? 'estación inalcanzable' : 'en línea')));
     renderAgentBusy(peer);
     // keep the elapsed readout matched to the DISPLAYED stream — switching to a busy stream picks up its
     // live count, switching to an idle one clears it. (send() also starts it the instant a run begins.)
@@ -2715,7 +2715,7 @@ const Chat = (() => {
     if (s && ((s.toolEvents && s.toolEvents.length) || s.tools.length || s.acc || s.pending)) return;
     const d = document.createElement('div'); d.className = 'cmsg-empty';
     const line = document.createElement('div'); line.className = 'cmsg-empty-line';
-    line.textContent = 'What would you like to work on?';
+    line.textContent = '¿En qué quieres trabajar?';
     d.appendChild(line);
     const hint = document.createElement('div'); hint.className = 'cmsg-empty-hint';
     d.appendChild(hint);
@@ -4142,7 +4142,7 @@ const Chat = (() => {
         };
         U.bus.on('permission.response',onElsewhere);
       }
-      status('awaiting your context…');revealCard(r.d);return;
+      status('esperando tu contexto…');revealCard(r.d);return;
     }
     // A batched ask shows its place ("asks (2 of 3)") so the Commander knows one more tap ends it —
     // three unannounced sequential cards would read as an interrogation with no visible bottom.
@@ -4299,7 +4299,7 @@ const Chat = (() => {
     // question (a deny makes no sense here), matching the end-run card's skip chip semantics.
     r.d.tabIndex = -1;
     r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); answer('use your judgment', '✓ your call'); } });
-    status('awaiting your answer…');
+    status('esperando tu respuesta…');
     const asker = (p && p.workerAgentId) ? askerName(p, ws) : name;   // a delegated worker's question names the worker, like its card
     if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(asker + ' has a quick question for you' + sessionNote(ws), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId });
     else if (!ws && typeof StationUI !== 'undefined') StationUI.notify(asker + ' has a quick question for you' + sessionNote(ws), 'warn', 'needsApproval');
@@ -4576,7 +4576,7 @@ const Chat = (() => {
     // not a button — so a reflexive Enter never lands on Approve and greenlights a write the user didn't read).
     r.d.tabIndex = -1;
     r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); decide('deny', '✕ denied', true); } });
-    status('awaiting your approval…');
+    status('esperando tu aprobación…');
     const asker = (p && p.workerAgentId) ? askerName(p, ws) : name;   // a delegated worker's ask names the worker
     // ONE APPROVAL, ONE PLACE YOU ARE LOOKING (live walkthrough 2026-10-13: one file write was announced in 7 places). The
     // Commander already has this card in front of them when its conversation is open and the page is visible: the bell
@@ -8568,7 +8568,7 @@ const Chat = (() => {
     // what this run itself is paused on, read before the bulk clear (a background worker's ask outlives the run: not one of them)
     const ownAsks = (typeof Channels !== 'undefined' && Channels.pendingAllOf) ? Channels.pendingAllOf(id).filter(p => p && p.promptId && p.background !== true) : [];
     if (typeof Channels !== 'undefined' && Channels.clearPending) Channels.clearPending(id, Date.now());   // a pending approval is moot once stopped
-    status('stopping…'); updateControls();
+    status('deteniendo…'); updateControls();
     if (typeof SFX !== 'undefined') (SFX.close || SFX.press)();   // STOP winds a run down: the docks' close() cue
     // runs only once the stop is CONFIRMED (or there was no run id to kill): the run's open approval cards go dead with it,
     // and every other surface holding one of its asks (the bell, CREW, the floor) is told it is over
@@ -8638,7 +8638,7 @@ const Chat = (() => {
         : reason;
       if (activeWs && activeWs.id === id) {
         localLine('⚠ STOP was not confirmed by the station — the run may still be working. ' + verdict);
-        status(isBusy() ? 'stopping… not confirmed' : 'online'); updateControls();
+        status(isBusy() ? 'deteniendo… sin confirmar' : 'en línea'); updateControls();
       }
     });
   }
@@ -11007,7 +11007,7 @@ const Chat = (() => {
       // TRUTHFUL TELEMETRY: 'working…' is only claimed once the sidecar has confirmed the run (runId set).
       // The eager isTask walk fires before that — the walk happens, but the status stays 'connecting…' until
       // agent.run.start lands (onRunId then upgrades it, honoring the task ruling: a confirmed task = working).
-      if (typeof Channels !== 'undefined' && Channels.setStatus && Channels.runIdOf(ws.id)) Channels.setStatus(ws.id, 'working…');
+      if (typeof Channels !== 'undefined' && Channels.setStatus && Channels.runIdOf(ws.id)) Channels.setStatus(ws.id, 'trabajando…');
       if (isActiveWs(ws)) syncStatus();
     }
     // turn to face the Commander and listen (no camera yank); a spoken CHAT also softly frames the agent.
@@ -11150,7 +11150,7 @@ const Chat = (() => {
         projectRoot: runRoot || undefined,   // project-anchored session: the sidecar injects the folder context ONLY if the root is still a standing blessed grant (truthful)
         placed: (typeof World !== 'undefined' && World.heroCaps) ? World.heroCaps(ws.agentId || 'agent') : [],   // THE MOAT: this run's TOOL reach = the agent's REAL placed props (dish→web · cabinet→files · workbench→terminal · …); compute is the freebie
         stationPlaced: (typeof World !== 'undefined' && World.stationCaps) ? World.stationCaps() : [],   // Class Loadouts (shared-gear): station-wide gear for SKILL availability — a desk-only specialist still gets its class skills when the STATION has the gear (tools stay room-scoped via `placed`)
-        onRunId: id => { retirePriorRatings(ws.id); thisRunId = id; if (retryDirectiveTurn && !retryDirectiveTurn.sourceRunId) retryDirectiveTurn.sourceRunId = id; if (starterId) StarterStore.started(starterId, id); runStartedAt = Date.now(); try { RUN_META.set(id, { streamId: ws.id, focusVersion: runFocusVersion, isTask: !!isTask, title: (ws && ws.title) || '', directive: String(text || ''), correctionOf: correctionOf, intentOfferText: intentOfferText, fromRecipe: fromRecipe, recipeId: recipeId, agentId: ws.agentId || 'agent', rec: recClaimRun(id, ws.agentId || 'agent') }); if (RUN_META.size > 60) RUN_META.delete(RUN_META.keys().next().value); } catch (_) {} Channels.setRunId(ws.id, id, Date.now()); if (walkedToDesk && Channels.setStatus) Channels.setStatus(ws.id, 'working…'); if (isActiveWs(ws)) { syncStatus(); renderPresence(); } if (typeof Workstreams !== 'undefined') { Workstreams.appendRun(ws.id, id); if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } },
+        onRunId: id => { retirePriorRatings(ws.id); thisRunId = id; if (retryDirectiveTurn && !retryDirectiveTurn.sourceRunId) retryDirectiveTurn.sourceRunId = id; if (starterId) StarterStore.started(starterId, id); runStartedAt = Date.now(); try { RUN_META.set(id, { streamId: ws.id, focusVersion: runFocusVersion, isTask: !!isTask, title: (ws && ws.title) || '', directive: String(text || ''), correctionOf: correctionOf, intentOfferText: intentOfferText, fromRecipe: fromRecipe, recipeId: recipeId, agentId: ws.agentId || 'agent', rec: recClaimRun(id, ws.agentId || 'agent') }); if (RUN_META.size > 60) RUN_META.delete(RUN_META.keys().next().value); } catch (_) {} Channels.setRunId(ws.id, id, Date.now()); if (walkedToDesk && Channels.setStatus) Channels.setStatus(ws.id, 'trabajando…'); if (isActiveWs(ws)) { syncStatus(); renderPresence(); } if (typeof Workstreams !== 'undefined') { Workstreams.appendRun(ws.id, id); if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } },
         onToken: d => { acc += d; Channels.appendToken(ws.id, d); if (thisRunId && d && d.indexOf('[steering] ') >= 0) markSentNowLanded(ws.id, thisRunId, d); if (isActiveWs(ws)) { if (activeLiveRow) activeLiveRow.append(d); if (!isTask) World.say(acc); } if (willSpeak) pushSpeech(false); App.refreshUsage(); },
         onTerminalReset: () => { clearTimeout(speechTimer); speechTimer = null; speechPendingSince = 0; acc = ''; spokenIdx = 0; Channels.setAcc(ws.id, ''); },
         onUsage: (u) => { if (u && u.model) ranModel = u.model; App.refreshUsage(); },
@@ -11661,14 +11661,14 @@ const Chat = (() => {
     interview = onAnswer || null;
     opts = opts || {};
     clearChoices();
-    if (input) input.placeholder = opts.placeholder || 'answer to wake your agent…';
-    status(opts.status || 'waking…');
+    if (input) input.placeholder = opts.placeholder || 'responde para despertar a tu agente…';
+    status(opts.status || 'despertando…');
   }
   function endInterview() {
     interview = null;
     clearChoices();
-    if (input) input.placeholder = 'speak to your agent · / commands';   // must stay byte-identical to index.html's attribute (see PLACEHOLDER WIDTH LAW there)
-    status('online');
+    if (input) input.placeholder = 'habla con tu agente · / comandos';   // must stay byte-identical to index.html's attribute (see PLACEHOLDER WIDTH LAW there)
+    status('en línea');
     // a memory deck that arrived MID-interview queued behind the focused flow — drain it now that the
     // question is answered (short hold so the interview's closing line lands first, not under the deck).
     setTimeout(() => showNextTurnin(), 700);

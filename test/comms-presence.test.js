@@ -50,9 +50,9 @@ A.ok(/clearPending\(\s*(ws\.id|id)\s*,\s*Date\.now\(\)\s*\)/.test(src), 'consent
 /* ---------- 4. the state model itself (real behavior, not source shape) ---------- */
 C.reset();
 C.begin('w', 1000);
-A.eq(C.statusOf('w'), 'connecting…', 'begin claims only connecting… — a click proves nothing');
+A.eq(C.statusOf('w'), 'conectando…', 'begin claims only conectando… — a click proves nothing');
 C.setRunId('w', 'r1', 1800);
-A.eq(C.statusOf('w'), 'thinking…', 'server confirmation upgrades to thinking…');
+A.eq(C.statusOf('w'), 'pensando…', 'server confirmation upgrades to pensando…');
 A.eq(C.startedAtOf('w'), 1800, 'confirmation re-stamps the start (connect latency excluded)');
 C.setPending('w', { promptId: 'p', tool: 't', argsSummary: '', runId: 'r1' }, 3800);
 C.clearPending('w', 6800);
@@ -67,7 +67,8 @@ A.eq(C.elapsedOf('w', 9000), 0, 'end zeroes the honest elapsed');
 A.ok(/function\s+busyPeerFor\s*\(ws\)[\s\S]{0,700}Workstreams\.list[\s\S]{0,1200}Channels\.isBusy/.test(src),
   'COMMS still resolves a same-agent peer run (the soft indicator\'s source of truth)');
 // org P25 (2026-10-14): the row reads '<NAME> IS BUSY IN <SESSION>' (who and where) — was 'ALSO RUNNING IN <SESSION>'
-A.ok(/' IS BUSY IN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(src) && /VIEW ACTIVE RUN/.test(src),
+// (MIS-23-1: ES form '<NAME> OCUPADO EN <SESSION>' + 'VER EJECUCIÓN ACTIVA')
+A.ok(/' OCUPADO EN ' \+ shownName\(peer\)\.toUpperCase\(\)/.test(src) && /VER EJECUCIÓN ACTIVA/.test(src),
   'a session with a busy peer names who is busy and where, and offers a route to the active run');
 A.ok(/function\s+maybeEmptyState[\s\S]{0,300}busyPeerFor\(activeWs\)/.test(src),
   'an empty busy-peer session shows the peer row, not competing starter chips');

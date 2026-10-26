@@ -90,13 +90,13 @@ const Voice = (() => {
   // reached the COMMS status line and the Commander had nothing to act on.
   function micErrorText(code) {
     const c = String(code || '');
-    if (c === 'native-unavailable') return 'Windows dictation isn’t responding';
-    if (c === 'network') return 'the speech service can’t be reached';
-    if (c === 'audio-capture') return 'no microphone was found';
-    if (c === 'stt-failed') return 'transcription failed';
-    if (c === 'start-failed') return 'the microphone couldn’t start';
-    if (c === 'unsupported') return 'speech input isn’t available here';
-    return 'speech input failed';
+    if (c === 'native-unavailable') return 'la dictación de Windows no responde';
+    if (c === 'network') return 'no se puede alcanzar el servicio de voz';
+    if (c === 'audio-capture') return 'no se encontró ningún micrófono';
+    if (c === 'stt-failed') return 'falló la transcripción';
+    if (c === 'start-failed') return 'el micrófono no pudo arrancar';
+    if (c === 'unsupported') return 'la entrada de voz no está disponible aquí';
+    return 'falló la entrada de voz';
   }
   let sentThisListen = false;       // did the just-finished listen actually send a message?
   let discarding = false;           // teardown in progress → drop any buffered transcript (don't send)
@@ -726,7 +726,7 @@ const Voice = (() => {
       if (p && p.catch) p.catch(err => {
         if (done) return;
         // browser still blocking audio (no gesture yet) → tell the user instead of going silently quiet
-        if (err && err.name === 'NotAllowedError') setStatus('🔇 tap anywhere to turn on the agent\'s voice');
+        if (err && err.name === 'NotAllowedError') setStatus('🔇 toca en cualquier parte para activar la voz del agente');
         endFailed(err);
       });
     } catch (error) { endFailed(error); }
@@ -823,9 +823,9 @@ const Voice = (() => {
     const desktop = !!(window.__TAURI__ || window.__TAURI_INTERNALS__);
     const mac = /Mac/i.test(navigator.platform || navigator.userAgent || '');
     return desktop && mac
-      ? 'Microphone blocked — enable StarNet in System Settings → Privacy & Security → Microphone, then quit and reopen StarNet. If it is missing or still blocked, install the latest StarNet build.'
-      : desktop ? 'Microphone blocked — allow microphone access for desktop apps in your system privacy settings, then try again.'
-        : 'Microphone blocked — allow microphone access for this page in your browser, then try again.';
+      ? 'Micrófono bloqueado — habilita StarNet en Ajustes del sistema → Privacidad y seguridad → Micrófono, y luego cierra y reabre StarNet. Si sigue faltando o bloqueado, instala la versión más reciente de StarNet.'
+      : desktop ? 'Micrófono bloqueado — permite el acceso al micrófono para las aplicaciones de escritorio en los ajustes de privacidad del sistema, y luego inténtalo de nuevo.'
+        : 'Micrófono bloqueado — permite el acceso al micrófono para esta página en tu navegador, y luego inténtalo de nuevo.';
   }
   // A Live Voice room pins each agent's identity when it first joins the conversation, then pins whichever
   // engine actually serves the first audible chunk (Kokoro or its mapped Edge floor). Without both locks,
@@ -1213,7 +1213,7 @@ const Voice = (() => {
       emptyStreak = 0; micErrStreak = 0;
       reflectMode();
       if ((!busyNow() || coordinator) && !listening && !speaking) startListening();
-      else setStatus('voice mode on');
+      else setStatus('modo de voz activado');
     } else {
       savePref(LS_CONVO, false);   // deliberate exit — don't nag to resume next session
       stopConvo();
@@ -1234,7 +1234,7 @@ const Voice = (() => {
     // clobber a deliberate preference (only if the user didn't manually re-touch the speaker meanwhile).
     if (forcedSpeak) { forcedSpeak = false; speakReplies = false; savePref(LS_SPEAK, false); speakerOffClearsNote(); reflectToggle(); }
     reflectMode();
-    if (was && !busyNow()) setStatus('online');
+    if (was && !busyNow()) setStatus('en línea');
     if (was) coordinatorEvent('onState', 'ended');
   }
 
@@ -1244,7 +1244,7 @@ const Voice = (() => {
     if (coordinator && !pendingDiag) { maybeRearm(); return; }
     // Hands-free gave up after three "empty" listens without ever naming why. If those listens failed for a
     // REASON (a 403 after a respawn, a provider 500), say that instead of implying nobody spoke.
-    if (emptyStreak >= MAX_EMPTY) { emptyStreak = 0; setStatus(takeDiag() || 'voice mode — tap 🎤 when ready'); return; }
+    if (emptyStreak >= MAX_EMPTY) { emptyStreak = 0; setStatus(takeDiag() || 'modo de voz — pulsa 🎤 cuando estés listo'); return; }
     maybeRearm();
   }
 
@@ -1738,7 +1738,7 @@ const Voice = (() => {
     }
     if (!canListen() || listening) return;
     if (!coordinator) sttProvider = classicSttProvider;
-    if (busyNow() && !coordinator) { setStatus('busy — wait for the reply'); return; }  // classic mode stays half-duplex
+    if (busyNow() && !coordinator) { setStatus('ocupado — espera la respuesta'); return; }  // classic mode stays half-duplex
     clearTimeout(rearmTimer); rearmTimer = null;
     // Don't let the agent's voice bleed into the mic — but only cut speech that EXISTS. An unconditional stop
     // bumped the reply token on every Live re-arm (coordinator mode re-opens the mic while the run thinks),
@@ -1747,7 +1747,7 @@ const Voice = (() => {
     listening = true; sentThisListen = false; discarding = false; takeErr = false; setMicState(true);
     dictShown = '';   // fresh listen: dictation has written nothing yet — a typed draft in the box stays untouchable
     savedStatus = currentStatusText();
-    setStatus(convoMode ? 'voice mode — listening…' : 'recording — click the mic when finished');
+    setStatus(convoMode ? 'modo de voz — escuchando…' : 'grabando — pulsa el micrófono al terminar');
     if (typeof SFX !== 'undefined') SFX.open();
     sttProvider.start({
       onInterim: t => {
@@ -1780,7 +1780,7 @@ const Voice = (() => {
         // its own passive give-up (handleEmptyListen), which never looped.
         if (hard && coordinator && convoMode && ++micErrStreak >= MAX_MIC_ERRORS) {
           micErrStreak = 0;
-          const why = 'Voice input paused — ' + micErrorText(msg) + '. Resume the mic to try again.';
+          const why = 'Entrada de voz en pausa — ' + micErrorText(msg) + '. Reanuda el micrófono para reintentar.';
           listening = false; setMicState(false);
           clearTimeout(rearmTimer); rearmTimer = null;
           coordinatorPaused = true;
@@ -1791,8 +1791,8 @@ const Voice = (() => {
         endListening();
         // a failed mic OPEN (timeout on a dismissed prompt, getUserMedia error, recorder start failure) is
         // recoverable — say so plainly and invite a retry, rather than a cryptic 'mic: mic-failed' dead end.
-        if (msg === 'mic-failed' || msg === 'rec-failed' || msg === 'rec-error') setStatus('mic didn\'t open — click 🎤 to try again');
-        else if (hard) setStatus('Voice input: ' + micErrorText(msg) + ' — click 🎤 to try again');
+        if (msg === 'mic-failed' || msg === 'rec-failed' || msg === 'rec-error') setStatus('el micrófono no abrió — pulsa 🎤 para reintentar');
+        else if (hard) setStatus('Entrada de voz: ' + micErrorText(msg) + ' — pulsa 🎤 para reintentar');
       },
       onEnd: () => { endListening(); }
     });
@@ -1802,7 +1802,7 @@ const Voice = (() => {
     if (!listening) return;
     // The take is finished but not yet transcribed — say so instead of leaving 'recording — click the mic when
     // finished' up for the whole round-trip (the button looked dead after the second click).
-    if (!convoMode) { setStatus('transcribing…'); if (micBtn) micBtn.title = 'transcribing…'; }
+    if (!convoMode) { setStatus('transcribiendo…'); if (micBtn) micBtn.title = 'transcribiendo…'; }
     sttProvider.stop();
   }
 
@@ -1817,7 +1817,7 @@ const Voice = (() => {
     // 'thinking…'/'working…' via Chat, so this only fires for a plain idle stop).
     // A diagnostic written by this listen OUTRANKS the restore — savedStatus was captured at startListening,
     // before the failure existed, so it can never carry it.
-    if (!busyNow() && !speaking) setStatus(takeDiag() || savedStatus || (convoMode ? 'voice mode on' : 'online'));
+    if (!busyNow() && !speaking) setStatus(takeDiag() || savedStatus || (convoMode ? 'modo de voz activado' : 'en línea'));
     coordinatorEvent('onState', busyNow() ? 'thinking' : 'ready');
     if (coordinator && convoMode) maybeRearm();
   }
@@ -1858,7 +1858,7 @@ const Voice = (() => {
     clearResumeCue();
     // A second click while the capability probe is still resolving cancels the queued take. Without this,
     // two quick clicks could open the microphone late, after the Commander believed they had stopped it.
-    if (!coordinator && startAfterProbe && !listening) { startAfterProbe = false; setStatus('online'); return; }
+    if (!coordinator && startAfterProbe && !listening) { startAfterProbe = false; setStatus('en línea'); return; }
     // barge-in: interrupt whenever the agent is making OR about to make sound (talking() also covers the
     // neural-fetch gap, where `speaking` is still false but a reply is imminent) — stopSpeaking aborts it.
     if (talking()) { stopSpeaking('microphone_button'); setTimeout(() => { if (!busyNow() && !listening) startListening(); }, 150); return; }
@@ -1928,8 +1928,8 @@ const Voice = (() => {
     if (toggleBtn) toggleBtn.classList.toggle('speaking', on);
     // a spoken reply streams as several chunks — don't flip back to 'online' between them (draining),
     // and don't clobber a still-running task's 'working…' status.
-    if (on) { if (!busyNow()) setStatus('speaking…'); }
-    else if (!listening && !busyNow() && !draining) setStatus('online');
+    if (on) { if (!busyNow()) setStatus('hablando…'); }
+    else if (!listening && !busyNow() && !draining) setStatus('en línea');
   }
   function reflectToggle() {
     if (!toggleBtn) return;
@@ -1965,7 +1965,7 @@ const Voice = (() => {
     modeBtn.classList.add('resume');
     modeBtn.title = 'tap to resume hands-free voice mode';
     modeBtn.setAttribute('aria-label', 'Resume hands-free voice mode');
-    setStatus('tap 🎙️ to resume voice mode');
+    setStatus('pulsa 🎙️ para reanudar el modo de voz');
   }
   function clearResumeCue() {
     if (!resumePending) return;

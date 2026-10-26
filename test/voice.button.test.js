@@ -407,7 +407,7 @@ async function opensWithin(t, ms) {
     gumMode = 'deny';
     t.Voice.startListening(); await tick();
     A.ok(t.Voice.isListening() === false, 'recorder: denial → listening false');
-    A.ok(t.statusLog.some(s => /blocked|allow/i.test(s)), 'recorder: denial → actionable cue shown');
+    A.ok(t.statusLog.some(s => /bloqueado|permite/i.test(s)), 'recorder: denial → actionable cue shown');
     gumMode = 'ok';
     t.Voice.startListening(); await tick();
     A.ok(t.Voice.isListening() === true, 'recorder: mic works after re-grant');
@@ -528,7 +528,7 @@ async function opensWithin(t, ms) {
     const instances = srInstances.length;
     await tick(300);
     A.eq(fatal.length, 1, 'mic errors: the loop reports ONE fatal stop to the Live panel');
-    A.ok(/can.t be reached/.test(fatal[0] && fatal[0].message || ''), 'mic errors: the reason is in plain words');
+    A.ok(/se puede alcanzar/.test(fatal[0] && fatal[0].message || ''), 'mic errors: the reason is in plain words');
     A.eq(srInstances.length, instances, 'mic errors: no further recognizer is spawned (the loop is paused)');
     A.ok(!t.statusLog.some(s => /^mic: /.test(String(s))), 'mic errors: no raw engine code reaches the status line');
     t.Voice.speakChunk('Here is the answer you asked for.', 'agent', { replyToken: token }); t.Voice.endReply();
@@ -944,7 +944,7 @@ async function opensWithin(t, ms) {
     t.sandbox.VoiceLive = {boundSessionId:()=> 'bound'};
     A.eq(t.Voice.currentAgentId(), 'scout', 'live voice follows its bound session despite browsing elsewhere');
     t.sandbox.window.__TAURI__ = {}; t.sandbox.navigator.platform = 'MacIntel';
-    A.ok(t.Voice.microphoneHelp().includes('Privacy & Security'), 'desktop Mac recovery directs to system microphone settings');
+    A.ok(t.Voice.microphoneHelp().includes('Privacidad y seguridad'), 'desktop Mac recovery directs to system microphone settings');
     t.sandbox.localStorage.setItem = () => { throw new Error('storage full'); };
     let refused = false;
     try { t.Voice.setVoiceChoice('af_nova', 'scout'); } catch (_) { refused = true; }

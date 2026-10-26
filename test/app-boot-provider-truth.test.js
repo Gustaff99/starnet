@@ -13,10 +13,10 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'app.j
 A.ok(/function bridgeAuthorityProven\s*\(/.test(src), 'app owns a bridge-authority predicate');
 A.ok(/ls\s*&&\s*ls\.bridged\s*&&\s*!ls\.paused\s*&&\s*!ls\.down/.test(src), 'bridge authority requires bridged + unpaused + not down');
 A.ok(/function paintBridgeConnecting\s*\(/.test(src), 'app owns the coherent connecting paint');
-A.ok(/chat-status[\s\S]{0,180}connecting\u2026/.test(src), 'connecting paint covers the COMMS status');
-A.ok(/status-pill[\s\S]{0,180}CONNECTING/.test(src), 'connecting paint covers the top status pill');
-A.ok(/COMMS connecting\u2026/.test(src), 'connecting paint retires the premature COMMS-online empty copy');
-A.ok(/sig[\s\S]{0,500}CONNECTING/.test(src), 'connecting paint covers the uplink instrument');
+A.ok(/chat-status[\s\S]{0,180}conectando\u2026/.test(src), 'connecting paint covers the COMMS status');
+A.ok(/status-pill[\s\S]{0,180}CONECTANDO/.test(src), 'connecting paint covers the top status pill');
+A.ok(/COMMS conectando\u2026/.test(src), 'connecting paint retires the premature COMMS-online empty copy');
+A.ok(/sig[\s\S]{0,500}CONECTANDO/.test(src), 'connecting paint covers the uplink instrument');
 A.ok(/new MutationObserver\([\s\S]{0,240}paintBridgeConnecting/.test(src), 'independent status timers cannot paint a contradictory frame during the gate');
 A.ok(/Chat\.init\([\s\S]{0,900}beginBridgeAuthorityGate\(\)/.test(src), 'bridge gate starts only after COMMS has mounted its boot DOM');
 
