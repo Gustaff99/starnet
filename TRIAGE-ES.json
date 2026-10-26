@@ -1,0 +1,61 @@
+{
+  "task": "MIS-20 triage acotado — 5 tests de UI traducida",
+  "date": "2026-10-26",
+  "checkout": "/home/gus/paperclip-projects/space-station/starnet-es",
+  "branch": "es/interfaz-espanol",
+  "method": "timeout 20 node <test> por test, salida a /tmp/triage-es/<test>.log",
+  "tests": [
+    {
+      "path": "test/voice-live-ui.test.js",
+      "command": "timeout 20 node test/voice-live-ui.test.js",
+      "exit": 1,
+      "durationSec": 0,
+      "ok": null,
+      "failures": 1,
+      "errorSummary": "AssertionError: 'the canonical hands-free control has an explicit accessible name' — el test espera aria-label=\"Start Local Live hands-free voice\" en index.html; la UI ya tiene aria-label=\"Iniciar voz local manos libres\".",
+      "classification": "texto-esperado"
+    },
+    {
+      "path": "test/workflows-window.test.js",
+      "command": "timeout 20 node test/workflows-window.test.js",
+      "exit": 1,
+      "durationSec": 2,
+      "ok": 128,
+      "failures": 5,
+      "errorSummary": "5 aserciones de texto: espera 'OPEN IN FLUJOS' y 'filed in ENTREGABLES' en outbox.js/workflows.js (UI aún 'OPEN IN WORKFLOWS', 'FOR YOUR GOAL'); espera 'BUCLES DE OBJETIVO' y 'COMMON FLUJOS' como encabezados.",
+      "classification": "texto-esperado (test alineado a español; fuente aún parcial en inglés)"
+    },
+    {
+      "path": "test/autonomy-ui.test.js",
+      "command": "timeout 20 node test/autonomy-ui.test.js",
+      "exit": 1,
+      "durationSec": 0,
+      "ok": 22,
+      "failures": 1,
+      "errorSummary": "FAIL: 'the leash rung reads SMALL JOBS' — expected \"SMALL JOBS\", got \"TAREAS PEQUEÑAS\" (stationui.js ya traducido, test no alineado).",
+      "classification": "texto-esperado"
+    },
+    {
+      "path": "test/line-sendto.test.js",
+      "command": "timeout 20 node test/line-sendto.test.js",
+      "exit": 1,
+      "durationSec": 0,
+      "ok": 100,
+      "failures": 2,
+      "errorSummary": "2 aserciones: espera 'FROM '/'SENT ON TO '/'NOT SENT ON TO ' + word(...) en outbox.js; la fuente ya usa 'DE '/'ENVIADO A '/'NO ENVIADO A ' + word(...).",
+      "classification": "texto-esperado"
+    },
+    {
+      "path": "test/needs-you.test.js",
+      "command": "timeout 20 node test/needs-you.test.js",
+      "exit": 1,
+      "durationSec": 0,
+      "ok": 77,
+      "failures": 1,
+      "errorSummary": "FAIL: 'the page has the NEEDS YOU section' — el test espera aria-label=\"Needs you\" en <section id=\"ws-needs\">; index.html ya dice aria-label=\"Necesita de ti\".",
+      "classification": "texto-esperado"
+    }
+  ],
+  "totals": { "executed": 5, "passed": 0, "failed": 5, "okAssertions": 329, "failAssertions": 9, "functionalRegressions": 0 },
+  "conclusion": "Los 9 fallos del lote son discrepancias de texto (traducción vs aserción exacta), en ambas direcciones. Sin evidencia de regresión funcional en este lote; el resto (329 aserciones) pasa, incluida la lógica de ventanas, handoffs, consent y voz."
+}
