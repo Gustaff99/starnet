@@ -40,7 +40,7 @@ const cmd = /function\s+modelCommand\s*\(args\)\s*\{([\s\S]*?)\n  \}/.exec(src);
 A.ok(cmd, 'modelCommand exists in chat.js');
 const body = cmd ? cmd[1] : '';
 A.ok(/if\s*\(set\)\s*warnUnknownModel\(next\)/.test(body), 'a successful set triggers the catalog check (warn path wired)');
-A.ok(/Model set to/.test(body), 'the ack line itself is unchanged — the id is still applied (never blocked)');
+A.ok(/Modelo puesto en/.test(body), 'the ack line itself is unchanged — the id is still applied (never blocked)');
 
 // warnUnknownModel must read the WARMED catalog through Harness.listModels, and stay fail-silent.
 const wum = /async function\s+warnUnknownModel\s*\(id\)\s*\{([\s\S]*?)\n  \}/.exec(src);

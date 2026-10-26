@@ -173,8 +173,8 @@ module.exports = (async () => {
   }
   {
     const dock = read('frontend', 'app', 'modeldock.js');
-    A.ok(/starnetDry\(\)\) \{\s*\n\s*const dry = document\.createElement\('i'\);[\s\S]{0,120}' · NO CREDITS'/.test(dock), 'the dock labels a dry STARNET group NO CREDITS');
-    A.ok(/p === 'starnet' && M\.starnetDry && M\.starnetDry\(\)\) return M\.labels\.provider\(p\) \+ ' · NO CREDITS'/.test(read('frontend', 'app', 'modelpicker.js')), 'the per-agent picker labels it the same way');
+    A.ok(/starnetDry\(\)\) \{\s*\n\s*const dry = document\.createElement\('i'\);[\s\S]{0,120}' · SIN CRÉDITOS'/.test(dock), 'the dock labels a dry STARNET group SIN CRÉDITOS (ES)');
+    A.ok(/p === 'starnet' && M\.starnetDry && M\.starnetDry\(\)\) return M\.labels\.provider\(p\) \+ ' · SIN CRÉDITOS'/.test(read('frontend', 'app', 'modelpicker.js')), 'the per-agent picker labels it the same way (ES)');
   }
 
   /* ---------- 3. desktop boot keeps the sidecar's starnet answer ---------- */

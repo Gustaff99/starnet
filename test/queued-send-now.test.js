@@ -171,7 +171,7 @@ const ok200 = { status: 200, json: () => Promise.resolve({ ok: true }) };
     r.answer({ status: 409, json: () => Promise.resolve({ ok: false }) }); await tick(); await tick();
     A.eq(r.ctx.queued.get('ws1'), ['use the blue folder', 'later'], 'a 409 puts it back at the front');
     A.eq(r.flushed, ['ws1'], 'and the queue drains (the run may have ended while we asked)');
-    A.ok(r.lines.some(l => /already finished its work — it stays queued as your next message/.test(l)), 'with the reason: ' + JSON.stringify(r.lines));
+    A.ok(r.lines.some(l => /ya había terminado su trabajo/.test(l)), 'with the reason: ' + JSON.stringify(r.lines));
   }
   {
     // the answer lands while another session is on screen: no line in that session's log

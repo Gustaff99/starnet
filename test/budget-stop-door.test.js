@@ -16,7 +16,7 @@ const DOOR = 'SETTINGS › SPENDING LIMITS';
 
 // the door exists: the SPENDING LIMITS section is the 'budget' pane every budget door opens
 const station = read('frontend/app/stationui.js');
-A.ok(/\{ id: 'budget', label: 'SPENDING LIMITS'/.test(station), 'SETTINGS has a SPENDING LIMITS section (id budget)');
+A.ok(/\{ id: 'budget', label: 'LÍMITES DE GASTO'/.test(station), 'SETTINGS has a SPENDING LIMITS section (id budget)');
 
 // ---- COMMS: the stop line ----
 const chat = read('frontend/app/chat.js');

@@ -87,12 +87,12 @@ module.exports = (async () => {
     A.eq(I.clampEffortForModel('none', items['grok-4.7']), 'high', 'a stored OFF (the old lock) lands on xAI\'s default, not a fake OFF');
     A.eq(I.clampEffortForModel('max', items['grok-4.5']), 'high', 'grok-4.5 tops out at high');
     A.eq(I.clampEffortForModel('none', items['grok-4.3']), 'none', 'grok-4.3 honors a real OFF');
-    A.eq(I.effortShown('none', items['grok-4.3']).label, 'OFF', 'grok-4.3 OFF is labeled OFF');
+    A.eq(I.effortShown('none', items['grok-4.3']).label, 'DES', 'grok-4.3 OFF is labeled OFF');
     A.eq(I.effortShown('none', items['grok-4.20-0309-reasoning']).label, 'AUTO', 'a dial-less model is AUTO (its own default), never OFF');
     A.eq(I.effortShown('none', items['grok-build-0.1']).label, 'AUTO', 'an unknown model is AUTO, never OFF');
-    A.eq(I.effortShown('none', { id: 'x', provider: 'kimi', supportsReasoning: false }).label, 'OFF', 'a model KNOWN not to reason keeps OFF');
-    A.ok(/Model default/.test(I.selectorLabel('grok-build-0.1', 'none', items['grok-build-0.1'])), 'the accessible name says model default, not "Reasoning off"');
-    A.eq(I.selectorLabel('', 'none'), 'Model selector: no model selected, Reasoning off', 'the item-less label is unchanged');
+    A.eq(I.effortShown('none', { id: 'x', provider: 'kimi', supportsReasoning: false }).label, 'DES', 'a model KNOWN not to reason keeps OFF');
+    A.ok(/Predeterminado del modelo/.test(I.selectorLabel('grok-build-0.1', 'none', items['grok-build-0.1'])), 'the accessible name says model default, not "Reasoning off"');
+    A.eq(I.selectorLabel('', 'none'), 'Selector de modelo: sin modelo seleccionado, Razonamiento desactivado', 'the item-less label is unchanged');
   }
 
   // ---- 4. the wire sends only what the model accepts ----

@@ -13,12 +13,12 @@ let n = 0; const ok = (c, m) => { assert.ok(c, m); n++; };
 // (no duplicated inner h4 for the SECTION — the PROVIDERS rule), topped by the master FULL BYPASS switch.
 // Each block header is a real .ms-h (the shared divider-rule idiom), not body-weight .set-row prose —
 // that flatness is exactly what made the pane unreadable before the 08-05 spacing pass.
-ok(/<h4 class="ms-h">EACH CREW MEMBER/.test(src), 'the crew list is a real section header');
+ok(/<h4 class="ms-h">CADA MIEMBRO DE LA TRIPULACIÓN/.test(src), 'the crew list is a real section header');
 // ONE QUESTION (2026-10-04, Andrew: "make it less confusing"): the unattended ladder lives in AUTONOMY only (a
 // posture still sets it), and the two sweep buttons that repeated the postures are gone.
 ok(!/ONE-STEP AUTONOMY/.test(src) && !/id="perm-level"/.test(src), 'no second copy of the AUTONOMY ladder on the permissions pane');
 ok(!/id="perm-full-all"/.test(src) && !/id="perm-ask-all"/.test(src), 'no whole-station sweep buttons repeating the postures');
-ok(/<h4 class="ms-h"[^>]*>STANDING APPROVALS/.test(src), 'standing-approvals header is a real section header');   // org P02: it carries an id + the consent-timeout data-tip
+ok(/<h4 class="ms-h"[^>]*>APROBACIONES PERMANENTES/.test(src), 'standing-approvals header is a real section header');   // org P02: it carries an id + the consent-timeout data-tip
 // Block NUMBERS are gone. They forced the reader to hold a cross-reference ("overridden by block 2")
 // and they only existed because the pane made a newcomer walk all four blocks in order.
 ok(!/ms-h">\d · /.test(src) && !/block 2/i.test(src), 'no numbered blocks and no cross-references to them');
@@ -54,7 +54,7 @@ ok(/<details class="perm-fold" id="perm-advanced">/.test(src), 'ADVANCED is one 
 ok(/const advFold = bypassWrap\.closest\('details'\);[\s\S]{0,160}advFold\.open = true;/.test(src),
   'an ON override opens its fold, so the switch outranking every row is on screen');
 ok(/Turn the whole-station override off under <b>Advanced<\/b> below/.test(src), 'the glance says where to turn the override off');
-ok(/id="perm-crew"[\s\S]{0,400}<h4 class="ms-h"[^>]*>STANDING APPROVALS[\s\S]{0,600}id="perm-advanced"/.test(src),
+ok(/id="perm-crew"[\s\S]{0,400}<h4 class="ms-h"[^>]*>APROBACIONES PERMANENTES[\s\S]{0,600}id="perm-advanced"/.test(src),
   'the pane runs question → crew → standing approvals → advanced, in that order');
 // TIER 2 MUST STAY VISIBLE. Folding the per-agent rows away over-corrected: a posture can only set
 // every agent the SAME way, so the "except this one" control may never hide behind a disclosure.
@@ -77,11 +77,11 @@ ok(/accWrap\.querySelectorAll\('\[data-access-posture\]'\)/.test(src) && /if \(P
 {
   const ap = /function approvalCard\(a\) \{[\s\S]*?\n  \}\n/.exec(src);
   ok(!!ap, 'the dossier asking pair is still its own card');
-  ok(ap && /chip\('ask', 'ASK FOR APPROVAL', 'stops to check with you before it writes, runs, or reaches out'/.test(ap[0]) && /chip\('full', 'FULL POWER', 'uses the whole local computer without approval prompts'/.test(ap[0]), 'the fold reads ASK FOR APPROVAL / FULL POWER, as the candidate had it');
-  ok(ap && /ASK respects the selected reach profile and pauses before risky calls\. FULL POWER authorizes the whole local computer/.test(ap[0]) && /<code>\/yolo<\/code> is the Full Power shortcut/.test(ap[0]), 'the fold keeps the candidate\'s copy');
+  ok(ap && /chip\('ask', 'PEDIR APROBACIÓN', 'se detiene a confirmarlo contigo antes de escribir, ejecutar o contactar'/.test(ap[0]) && /chip\('full', 'PODER TOTAL', 'usa todo el equipo local sin pedidos de aprobación'/.test(ap[0]), 'the fold reads ASK FOR APPROVAL / FULL POWER, as the candidate had it');
+  ok(ap && /PEDIR respeta el perfil de alcance elegido y se detiene antes de llamadas arriesgadas\. PODER TOTAL autoriza todo el equipo local/.test(ap[0]) && /<code>\/yolo<\/code> es el atajo de Poder Total/.test(ap[0]), 'the fold keeps the candidate\'s copy');
   ok(ap && !/ASKS FIRST|NEVER ASKS|never-ask|CHECK WITH ME|LET IT WORK/.test(ap[0]), 'the fold carries no struck P08 name');
   ok(ap && /data-tip="' \+ esc\(desc\)/.test(ap[0]) && !/title="/.test(ap[0]), 'the whole-computer warning is a station data-tip, never a native title');
-  ok(/chip\.textContent = 'FULL POWER — SURE\?'/.test(src) && !/NEVER ASKS — SURE/.test(src), 'FULL POWER keeps its two-press confirm');
+  ok(/chip\.textContent = 'PODER TOTAL — ¿SEGURO\?'/.test(src) && !/NEVER ASKS — SURE/.test(src), 'FULL POWER keeps its two-press confirm');
   // a custom mix on approvalMode full: the saved reach limits nothing (unrestrictedHostNow), so the row never says
   // "it reaches <reach> and never asks" — reach wording is kept for the asks-first case only
   ok(/AP \? AP\.agentBlurb : full \? 'full power · the whole local computer' : 'asks first · ' \+ p\.short/.test(src)
@@ -120,7 +120,7 @@ ok(/reach: 1,[\s\S]{0,900}reach: 1,[\s\S]{0,900}reach: 2,[\s\S]{0,900}reach: 3,[
   'the reach meter never decreases down the ladder');
 ok(/EXECUTION_PROFILE_DEFAULT = 'station-gear'/.test(src) && !/\|\| EXECUTION_PROFILES\[0\]/.test(src),
   'the profile fallback is the DEFAULT by id, never an index into the reach-ordered array');
-ok(/plain: 'None of your files\./.test(src) && /plain: 'The whole local computer/.test(src),
+ok(/plain: 'Nada de tus archivos\./.test(src) && /plain: 'Todo el equipo local/.test(src),
   'every rung carries a plain-English sentence about what it can touch');
 // The block-2 override outranks the per-agent ASKS FIRST axis. A row that still printed "ASKS" under an
 // ON override was the app asserting a posture the harness will not honour — the row must report the
@@ -148,7 +148,7 @@ ok(/btn\.disabled = true;/.test(src), 'a flip in flight disables its button (no 
 ok(/class="perm-m-err"/.test(src) && /bypassErr/.test(src), 'a refused flip reports AT the switch, not in another block');
 ok(/ArmConfirm\.wire\(onBtn/.test(src), 'turning station-wide Full Power ON keeps the two-press confirm');
 ok(/snap\.envFullAccess/.test(src), 'an env-forced bypass is explained (pinned switch), never a dead toggle');
-ok(/host-wide authority: protected files, arbitrary commands, visible apps/.test(src), 'the bypass copy names the authority it actually grants');
+ok(/autoridad de todo el host: archivos protegidos, comandos arbitrarios, apps visibles/.test(src), 'the bypass copy names the authority it actually grants');
 
 // ── 1 · per-agent APPROVAL chips ──
 ok(/setApproval/.test(src), 'rows apply through access.config.setApproval (the dossier/-yolo path)');

@@ -84,7 +84,7 @@ function stubs() {
   const freshBranch = "} else if (p.tool === 'station.power' || p.tool === 'plugin.submit') {";
   A.ok(chat.indexOf(freshBranch) >= 0, 'the station.power and plugin.submit cards share the fresh-consent branch');
   const card = chat.slice(chat.indexOf(freshBranch), chat.indexOf("} else {", chat.indexOf(freshBranch)));
-  A.ok(/'Aprobar una vez'/.test(card) && /'Deny'/.test(card) && !/'Always'|'Acceso total'/.test(card), 'the station.power card offers Aprobar una vez and Deny only');
+  A.ok(/'Aprobar una vez'/.test(card) && /'Denegar'/.test(card) && !/'Siempre'|'Acceso total'/.test(card), 'the station.power card offers Aprobar una vez and Denegar only');
 
   // ---- a phone / non-owner run never escalates ----
   A.ok(standingWorkEscalates('station.power', { action: 'budget.set', args: { perDay: 5 } }) && standingWorkEscalates('station_power', {}), 'station.power is withheld from phone and non-owner runs');

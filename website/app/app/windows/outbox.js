@@ -126,7 +126,7 @@
     const clearEvery = () => {
       const ids = Array.from(list.children).filter(r => r.dataset.collected !== '1').map(r => r.dataset.runId).filter(Boolean);
       if (RS && RS.resolveAll) RS.resolveAll(ids); else if (RS && RS.resolve) ids.forEach(id => RS.resolve(id));
-      notify('Marked ' + ids.length + ' reviewed. Nothing was deleted.', '');
+      notify('Marcadas ' + ids.length + ' como revisadas. Nada se borró.', '');
       renderEmpty();
     };
     if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(clearAll, { armedLabel: 'MARCAR TODAS REVISADAS — ¿SEGURO?', onArm: b => { b.textContent = 'MARCAR TODAS ' + list.children.length + ' REVISADAS — ¿SEGURO?'; }, onDisarm: paintFold, onConfirm: clearEvery });

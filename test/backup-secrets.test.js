@@ -78,8 +78,8 @@ const SECRET_ROWS = {
   }
 
   const appSource = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'app.js'), 'utf8');
-  ok(/r\.records\s*\+\s*' records'/.test(appSource), 'recovery export reports nonsecret records, not all localStorage keys');
-  ok(/secrets excluded/i.test(appSource), 'recovery export uses the Settings secret-excluded copy');
+  ok(/r\.records\s*\+\s*' registros'/.test(appSource), 'recovery export reports nonsecret records, not all localStorage keys (ES)');
+  ok(/sin claves ni tokens/i.test(appSource), 'recovery export uses the Settings secret-excluded copy (ES)');
 
   delete global.Harness;
   console.log('backup-secrets.test.js OK — ' + n + ' assertions');

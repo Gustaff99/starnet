@@ -35,7 +35,7 @@ const src = fs.readFileSync(path.join(__dirname, '../frontend/app/stationui.js')
 // ONE WORD: AUTONOMY (2026-09-29): the away status lives INSIDE Settings › AUTONOMY, and the focus steer exists ONCE —
 // the DIRECTION control (#auto-steer). The old NIGHT SHIFT section carried a second, identical steer box (#ns-steer)
 // on the same route; it is gone, and this locks that the surviving control keeps the full contract.
-A.ok(!/id="ns-steer"/.test(src) && (src.match(/>SET FOCUS</g) || []).length === 1, 'exactly ONE focus steer renders (the duplicate NIGHT SHIFT box is gone)');
+A.ok(!/id="ns-steer"/.test(src) && (src.match(/>FIJAR ENFOQUE</g) || []).length === 1, 'exactly ONE focus steer renders (the duplicate NIGHT SHIFT box is gone; ES)');
 A.ok(/id="auto-steer"/.test(src) && /id="auto-steer-set"/.test(src) && /id="auto-steer-clear"/.test(src), 'the AUTONOMY DIRECTION block renders the steer input + SET FOCUS + CLEAR');
 A.ok(/id="ns-report-btn"/.test(src) && /id="ns-report"/.test(src), 'the away block renders the LAST REPORT button + its container');
 A.ok(src.includes("build: frag(secAutonomy + secAwayActivity)") && !src.includes("id: 'nightshift', label:"), 'the away block renders inside the AUTONOMY section; no separate NIGHT SHIFT section');
@@ -47,7 +47,7 @@ A.ok(src.includes("const raw = dSteer ? String(dSteer.value).trim() : ''"), 'STE
 A.ok(src.includes("if (raw.toLowerCase() === 'goal') return { ref: 'goal', kind: 'goal' };"), 'the literal "goal" selects the goal kind');
 A.ok(src.includes("if (/^thread:/i.test(raw)) return { ref: raw.slice(7).trim(), kind: 'thread' };"), '"thread:<id>" selects the thread kind and strips the prefix');
 A.ok(src.includes("Harness.api.post('/api/nightshift/focus', parseRef(raw))"), 'the steer POSTs /api/nightshift/focus with the parsed { ref, kind? } — the value drives the request body');
-A.ok(src.includes("if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'could not steer'); sfx('bad'); return; }"), 'a rejected steer surfaces the route error (never an optimistic success)');
+A.ok(src.includes("if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'no se pudo guiar'); sfx('bad'); return; }"), 'a rejected steer surfaces the route error (never an optimistic success; ES)');
 A.ok(src.includes("if (dSteer) dSteer.value = '';") && src.includes("sfx('click'); refreshDirection();"), 'a successful steer repaints the FOCUS readout from the route (server truth)');
 // CLEAR: DELETE the steer
 { const clr = src.slice(src.indexOf('if (dSteerClear) dSteerClear.addEventListener'), src.indexOf('if (dSteerClear) dSteerClear.addEventListener') + 400);

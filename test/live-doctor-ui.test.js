@@ -27,5 +27,5 @@ test('settings keeps live probes behind a checkbox and renders the receipt as te
   assert.match(src, /id="diag-live-consent"/);
   assert.match(src, /!liveConsent \\|\\| !liveConsent\.checked/);
   assert.match(src, /liveOut\.textContent = result\.text/);
-  assert.match(src, /It sends no channel messages and exports no secrets/);
+  assert.match(src, /No envía mensajes de canal ni exporta secretos/);
 });

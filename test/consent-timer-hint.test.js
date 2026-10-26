@@ -44,11 +44,11 @@ A.ok(/\.consent-hint \{[^}]*flex-basis: 100%/.test(read('frontend/css/app.css'))
 const ui = read('frontend/app/stationui.js');
 const u = vm.createContext({ Number, Math });
 vm.runInContext(part(ui, '  function consentMinutes(ms)', '  function paintConsentTip(host)') + '\n;this.tip = consentTipText;', u);
-A.eq(u.tip(120000), 'unanswered asks are denied after 2 min (10 min once the card is on screen) · change it in APP & BACKUP › Runtime limits', 'the default: 2 min unseen, 10 min on screen');
-A.eq(u.tip(300000), 'unanswered asks are denied after 5 min (15 min once the card is on screen) · change it in APP & BACKUP › Runtime limits', 'the on-screen bound is capped at 15 min');
-A.eq(u.tip(90000), 'unanswered asks are denied after 1.5 min (7.5 min once the card is on screen) · change it in APP & BACKUP › Runtime limits', 'minutes, never MS');
-A.eq(u.tip(null), 'unanswered asks are denied on a timer · change it in APP & BACKUP › Runtime limits', 'unknown timeout: no number');
-A.eq(u.tip(120000, 600000, 300000), 'unanswered asks are denied after 2 min (10 min once the card is on screen) · changes to 5 min after a restart · change it in APP & BACKUP › Runtime limits',
+A.eq(u.tip(120000), 'las solicitudes sin respuesta se deniegan tras 2 min (10 min cuando la tarjeta está en pantalla) · cámbialo en APP Y RESPALDO › Límites de ejecución', 'the default: 2 min unseen, 10 min on screen');
+A.eq(u.tip(300000), 'las solicitudes sin respuesta se deniegan tras 5 min (15 min cuando la tarjeta está en pantalla) · cámbialo en APP Y RESPALDO › Límites de ejecución', 'the on-screen bound is capped at 15 min');
+A.eq(u.tip(90000), 'las solicitudes sin respuesta se deniegan tras 1.5 min (7.5 min cuando la tarjeta está en pantalla) · cámbialo en APP Y RESPALDO › Límites de ejecución', 'minutes, never MS');
+A.eq(u.tip(null), 'las solicitudes sin respuesta se deniegan por temporizador · cámbialo en APP Y RESPALDO › Límites de ejecución', 'unknown timeout: no number');
+A.eq(u.tip(120000, 600000, 300000), 'las solicitudes sin respuesta se deniegan tras 2 min (10 min cuando la tarjeta está en pantalla) · cambia a 5 min tras un reinicio · cámbialo en APP Y RESPALDO › Límites de ejecución',
   'a CONSENT TIMEOUT saved since boot is not the deadline yet: the tip states the enforced one and says the new one waits for a restart');
 A.eq(u.tip(120000, 600000, 120000), u.tip(120000), 'saved == enforced: no restart note');
 A.ok(/if \(f && Number\(f\.live\) > 0\) h\.setAttribute\('data-tip', consentTipText\(f\.live, f\.liveAckMs, f\.effective\)\);/.test(ui),
@@ -60,8 +60,8 @@ A.ok(/if \(f && Number\(f\.live\) > 0\) h\.setAttribute\('data-tip', consentTipT
     'GET /api/runtime/knobs reports the boot-frozen constants the consent waiters use');
   A.ok(/timeoutMs: CONSENT_TIMEOUT_MS, extendMs: CONSENT_ACK_EXTEND_MS/.test(side), 'those are the constants the waiters are handed');
 }
-A.ok(/<h4 class="ms-h" id="perm-standing-h" data-tip="' \+ esc\(consentTipText\(null\)\) \+ '">STANDING APPROVALS/.test(ui), 'the heading carries the tip as a data-tip (no new row, no native title)');
+A.ok(/<h4 class="ms-h" id="perm-standing-h" data-tip="' \+ esc\(consentTipText\(null\)\) \+ '">APROBACIONES PERMANENTES/.test(ui), 'the heading carries the tip as a data-tip (no new row, no native title)');
 A.ok(/st\.fields && st\.fields\.consentTimeoutMs/.test(ui) && /paintConsentTip\(host\);/.test(ui), 'the number is the sidecar\'s own consentTimeoutMs, read when PERMISSIONS opens');
-A.ok(/label: 'APP & BACKUP'/.test(ui) && /Runtime limits <span class="dim">/.test(ui), 'the tip names a place that exists');
+A.ok(/label: 'APP Y RESPALDO'/.test(ui) && /Límites de ejecución <span class="dim">/.test(ui), 'the tip names a place that exists');
 A.ok(/Math\.min\(CONSENT_TIMEOUT_MS \* 5, 900000\)/.test(read('sidecar/index.js')), 'the on-screen bound matches the sidecar (5×, 15 min cap)');
 A.report('consent-timer-hint.test');

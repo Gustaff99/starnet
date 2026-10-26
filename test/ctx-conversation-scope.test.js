@@ -206,6 +206,6 @@ const compressApi = vm.runInNewContext(
 compressApi.compressCommand();
 A.eq(compressCalls.length, 1, '/compress reads context exactly once');
 A.eq(compressCalls[0], ['agent', 'ws_measured', compressMessages], '/compress reads the active conversation, not the streamless agent bucket');
-A.ok(/13000 \/ 200000 tokens used \(7%/.test(compressLines[0] || ''), '/compress reports the same measured occupancy as the visible chat');
+A.ok(/13000 \/ 200000 tokens usados \(7%/.test(compressLines[0] || ''), '/compress reports the same measured occupancy as the visible chat');
 
 A.report('ctx-conversation-scope');

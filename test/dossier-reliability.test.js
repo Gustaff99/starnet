@@ -39,50 +39,50 @@ const draw = reasons => render({ id: 'a', name: 'NOVA', role: 'orchestrator', st
 
 /* ---- 1. an uncalibrated meter shows a dash, never a number ---- */
 const fresh = render({ id: 'a', name: 'NOVA', role: 'orchestrator', stats: Xp.fresh() });
-A.ok(/Reliability/.test(fresh), 'the growth dossier renders a Reliability section');
-A.ok(/CALIBRATING/.test(fresh.slice(fresh.indexOf('Reliability'))), 'an uncalibrated reliability renders CALIBRATING');
-A.ok(/0 of 3 attributable runs so far/.test(fresh), 'it says how many attributable runs are still needed');
-const freshTail = fresh.slice(fresh.indexOf('Reliability'));
+A.ok(/Fiabilidad/.test(fresh), 'the growth dossier renders a Reliability section (ES)');
+A.ok(/CALIBRANDO/.test(fresh.slice(fresh.indexOf('Fiabilidad'))), 'an uncalibrated reliability renders CALIBRANDO (ES)');
+A.ok(/0 de 3 ejecuciones atribuibles hasta ahora/.test(fresh), 'it says how many attributable runs are still needed (ES)');
+const freshTail = fresh.slice(fresh.indexOf('Fiabilidad'));
 A.ok(!/\d+<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(freshTail), 'an uncalibrated reliability renders NO percentage at all');
 
 /* ---- 2. a calibrated meter shows the engine's number, and the band that goes with it ---- */
 const clean = draw(['done', 'done', 'done']);
-const cleanTail = clean.slice(clean.indexOf('Reliability'));
+const cleanTail = clean.slice(clean.indexOf('Fiabilidad'));
 A.ok(/100<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(cleanTail), 'three clean runs render 100%');
 A.ok(/DEPENDABLE/.test(cleanTail), '100% renders its band');
 A.ok(/>3 <span class="gx-dim">\/<\/span> 3</.test(cleanTail), 'the finished/owned receipt shows the raw counts behind the %');
 
 const shortfall = draw(['done', 'done', 'max_iters']);
-const shortTail = shortfall.slice(shortfall.indexOf('Reliability'));
+const shortTail = shortfall.slice(shortfall.indexOf('Fiabilidad'));
 A.ok(/67<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(shortTail), 'a run the agent owned but did not finish drags the % down');
 A.ok(/>2 <span class="gx-dim">\/<\/span> 3</.test(shortTail), 'the receipt shows 2 of 3 finished');
 
 /* ---- 3. THE LIE OF OMISSION GUARD — an excluded run must be named on screen ---- */
 const faulted = draw(['done', 'done', 'done', 'error', 'cancelled']);
-const faultTail = faulted.slice(faulted.indexOf('Reliability'));
+const faultTail = faulted.slice(faulted.indexOf('Fiabilidad'));
 A.ok(/100<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(faultTail), 'provider faults + cancellations stay out of the ratio');
-A.ok(/2 runs set aside/.test(faultTail), 'but the excluded runs are NAMED, never silently dropped from the denominator');
-A.ok(/1 the provider failed/.test(faultTail), 'a provider fault is attributed to the provider, in words');
-A.ok(/1 you stopped or it asked a question/.test(faultTail), 'a Commander stop is attributed to the Commander, in words');
-A.ok(/never charged to this agent/.test(faultTail), 'and the readout says plainly that neither is the agent\'s fault');
-A.ok(!/set aside/.test(cleanTail), 'an agent with nothing excluded shows no set-aside line at all');
+A.ok(/2 ejecuciones apartadas/.test(faultTail), 'but the excluded runs are NAMED, never silently dropped from the denominator (ES)');
+A.ok(/1 falló el proveedor/.test(faultTail), 'a provider fault is attributed to the provider, in words (ES)');
+A.ok(/1 la detuviste o preguntó/.test(faultTail), 'a Commander stop is attributed to the Commander, in words (ES)');
+A.ok(/nunca imputada a este agente/.test(faultTail), 'and the readout says plainly that neither is the agent\'s fault (ES)');
+A.ok(!/apartada/.test(cleanTail), 'an agent with nothing excluded shows no set-aside line at all (ES)');
 
 /* ---- 4. the two meters stay legibly DISTINCT (they measure different things and may disagree) ---- */
-A.ok(/Satisfaction/.test(clean) && /Reliability/.test(clean), 'Satisfaction and Reliability are separate sections');
-A.ok(clean.indexOf('Satisfaction') < clean.indexOf('Reliability'), 'Reliability sits under Satisfaction (what you said, then what the station saw)');
-A.ok(/what the station observed — Satisfaction above is what you said/.test(clean), 'the dossier states the difference between the two meters');
+A.ok(/Satisfacción/.test(clean) && /Fiabilidad/.test(clean), 'Satisfaction and Reliability are separate sections (ES)');
+A.ok(clean.indexOf('Satisfacción') < clean.indexOf('Fiabilidad'), 'Reliability sits under Satisfaction (what you said, then what the station saw; ES)');
+A.ok(/lo que observó la estación — Satisfacción arriba es lo que tú dijiste/.test(clean), 'the dossier states the difference between the two meters (ES)');
 // the disagreement case is the whole point: a rated-well agent that keeps failing must show both truths
 let mixed = statsFrom(['done', 'max_iters', 'max_iters']);
 mixed = Xp.applyEvent(mixed, { name: 'memory.feedback', payload: { agentId: 'a', id: 'm1', delta: 2, reason: 'work_great' } }).stats;
 const dis = render({ id: 'a', name: 'NOVA', role: 'orchestrator', stats: mixed });
-A.ok(/33<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(dis.slice(dis.indexOf('Reliability'))), 'a well-rated agent can still show a poor reliability — the meters are allowed to disagree');
-A.ok(/FALTERING/.test(dis.slice(dis.indexOf('Reliability'))), 'and it bands honestly rather than softening it');
+A.ok(/33<span style="font-size:18px;color:var\(--ph-dim\);">%/.test(dis.slice(dis.indexOf('Fiabilidad'))), 'a well-rated agent can still show a poor reliability — the meters are allowed to disagree');
+A.ok(/FALTERING/.test(dis.slice(dis.indexOf('Fiabilidad'))), 'and it bands honestly rather than softening it');
 
 /* ---- 5. a pre-S2 save renders calibrating, never a back-filled number ---- */
 const legacy = Xp.fresh(); legacy.counters = { runs: 40, tasksDone: 31, toolsOk: 90 };
 const leg = render({ id: 'a', name: 'NOVA', role: 'orchestrator', stats: legacy });
-const legTail = leg.slice(leg.indexOf('Reliability'));
-A.ok(/CALIBRATING/.test(legTail), 'a save written before S2 renders CALIBRATING, not a percentage derived from older counters');
+const legTail = leg.slice(leg.indexOf('Fiabilidad'));
+A.ok(/CALIBRANDO/.test(legTail), 'a save written before S2 renders CALIBRANDO, not a percentage derived from older counters (ES)');
 A.ok(!/100</.test(legTail), 'specifically: it never renders the fabricated 100% that reusing tasksDone would have produced');
 
 A.report('dossier-reliability.test');

@@ -46,10 +46,10 @@ test('a pathological payload is bounded, and the text says it was cut', () => {
 test('the desk card: a glance line in the phrase, the whole request in INSPECT', () => {
   const p = { tool: 'shell.exec', argsSummary: sidecar.consentSummary({ name: 'shell.exec', args: { cmd } }) };
   const phrase = card.actionPhrase(p);
-  assert.match(phrase, /^run a command: python /);
+  assert.match(phrase, /^ejecutar un comando: python /);
   assert.ok(phrase.length < 120 && !/\n/.test(phrase), 'the phrase (and every toast built from it) stays one short line: ' + phrase);
   const ins = card.consentInspect(p);
-  assert.match(ins.label, /Inspect the full request/);
+  assert.match(ins.label, /Inspeccionar la petición completa/);
   assert.equal(ins.text, 'cmd: ' + cmd, 'read as written: the command verbatim, a Windows path with single backslashes, the hidden tail included');
   assert.equal(ins.copy, cmd, 'COPY COMMAND hands over exactly the text that will run');
   assert.equal(ins.copyLabel, 'COPY COMMAND');
@@ -58,34 +58,34 @@ test('the desk card: a glance line in the phrase, the whole request in INSPECT',
   assert.equal(multi.copy, undefined, 'a non-command request copies the whole panel');
   // the generic fallback and a typed-in process use the same glance
   assert.ok(card.actionPhrase({ tool: 'team.configure', argsSummary: JSON.stringify({ brief: 'b'.repeat(500) }, null, 2) }).length < 140);
-  assert.match(card.actionPhrase({ tool: 'shell.bg.write', argsSummary: '{"id":"bg1","input":"y"}' }), /^type into a running process: y$/);
+  assert.match(card.actionPhrase({ tool: 'shell.bg.write', argsSummary: '{"id":"bg1","input":"y"}' }), /^escribir a un proceso en ejecución: y$/);
   // a hand-off names who gets the work, never the raw worker JSON (read by pattern: the summary may be clipped mid-object)
   assert.equal(card.actionPhrase({ tool: 'team.dispatch', argsSummary: '{"background":true,"workers":[{"agentId":"researcher","prompt":"a"},{"agentId":"writer","prompt":"b"},{"agentId":"designer","pro' }),
-    'hand work to researcher, writer and designer (in the background)');
-  assert.equal(card.actionPhrase({ tool: 'team.dispatch', argsSummary: '{"background":false}' }), 'hand work to the crew');
+    'entregar trabajo a researcher, writer y designer (en segundo plano)');
+  assert.equal(card.actionPhrase({ tool: 'team.dispatch', argsSummary: '{"background":false}' }), 'entregar trabajo a el equipo');
   /* THE CARD SAYS WHO GETS WHAT (rc walk 10-14: "NOVA wants to hand work to COPY and STRATEGY", the tasks raw JSON under
      Inspect). On the card itself each worker's task rides beside its name; every other surface keeps the short line. */
   const launch = { tool: 'team.dispatch', argsSummary: JSON.stringify({ background: true, workers: [
     { agentId: 'copywriter', prompt: 'Write a launch post for StarNet 0.13.5, a local-first AI agent station with a pixel-art UI. Keep it under 120 words.' },
     { agentId: 'strategist', prompt: 'Critique the positioning.\nName the one claim to cut.' }] }, null, 2) };
-  assert.equal(card.actionPhrase(launch, true), 'hand copywriter “Write a launch post for StarNet 0.13.5, a local-first AI agent…” and strategist “Critique the positioning” (in the background)');
-  assert.equal(card.actionPhrase(launch), 'hand work to copywriter and strategist (in the background)', 'toasts, the bell and NEEDS YOU keep the short line');
+  assert.equal(card.actionPhrase(launch, true), 'entregar a copywriter “Write a launch post for StarNet 0.13.5, a local-first AI agent…” y strategist “Critique the positioning” (en segundo plano)');
+  assert.equal(card.actionPhrase(launch), 'entregar trabajo a copywriter y strategist (en segundo plano)', 'toasts, the bell and NEEDS YOU keep the short line');
   const four = { tool: 'team.dispatch', argsSummary: JSON.stringify({ workers: ['a', 'b', 'c', 'd'].map(id => ({ agentId: id, prompt: 'Task for ' + id + ' with a fairly long description that keeps going' })) }) };
   const many = card.actionPhrase(four, true);
-  assert.match(many, /^hand a “Task for a with a fairly long description…”, b “[^”]+”, c “[^”]+” and 1 more$/, 'four workers: three tasks and a count, never a wall: ' + many);
+  assert.match(many, /^entregar a a “Task for a with a fairly long description…”, b “[^”]+”, c “[^”]+” y 1 más$/, 'four workers: three tasks and a count, never a wall: ' + many);
   assert.equal(card.actionPhrase({ tool: 'team.dispatch', argsSummary: '{"background":true,"workers":[{"agentId":"researcher","prompt":"a"},{"agentId":"wri' }, true),
-    'hand work to researcher (in the background)', 'a capped summary falls back to the names it can read');
+    'entregar trabajo a researcher (en segundo plano)', 'a capped summary falls back to the names it can read');
   assert.equal(card.actionPhrase({ tool: 'team.spawn', argsSummary: JSON.stringify({ tasks: [{ prompt: 'Check the API docs.' }, { prompt: 'Check the SDK.' }] }) }, true),
-    'run 2 copies of itself on “Check the API docs” and “Check the SDK”', 'a spawn is copies of the lead, never "the crew"');
+    'ejecutar 2 copias de sí mismo en “Check the API docs” y “Check the SDK”', 'a spawn is copies of the lead, never "the crew"');
   // the file a task names is its deliverable: a cut keeps it, losing the middle instead (review 10-14: "…into a file called…")
   const tagline = { tool: 'team.dispatch', argsSummary: JSON.stringify({ background: true, workers: [
     { agentId: 'copywriter', prompt: 'Write a 2-line launch tagline for StarNet 0.13.5 into a file called tagline.md.' },
     { agentId: 'strategist', prompt: 'Review the positioning of the StarNet 0.13.5 launch and name the one claim to cut.' }] }) };
-  assert.equal(card.actionPhrase(tagline, true), 'hand copywriter “Write a 2-line launch tagline for StarNet 0.13.5 into a … tagline.md” and strategist “Review the positioning of the StarNet 0.13.5 launch and name the one…” (in the background)');
+  assert.equal(card.actionPhrase(tagline, true), 'entregar a copywriter “Write a 2-line launch tagline for StarNet 0.13.5 into a … tagline.md” y strategist “Review the positioning of the StarNet 0.13.5 launch and name the one…” (en segundo plano)');
   assert.doesNotMatch(card.actionPhrase({ tool: 'team.dispatch', argsSummary: JSON.stringify({ workers: [{ agentId: 'a', prompt: 'Compare version 0.13.5 against 0.13.2 and list every regression you can find in the notes' }] }) }, true), / … 0\.13/, 'a version number is not a file');
   // a goal loop says what it repeats toward (it read "use loop create: …")
   assert.equal(card.actionPhrase({ tool: 'loop.create', argsSummary: JSON.stringify({ objective: 'Write and refine the final 2-sentence launch post', exitOn: 'never' }) }),
-    'start a goal loop: Write and refine the final 2-sentence launch post');
+    'iniciar un bucle de objetivo: Write and refine the final 2-sentence launch post');
 });
 
 test('cards the sidecar words itself, and a short bare value, get no panel; file changes keep theirs', () => {
@@ -93,36 +93,36 @@ test('cards the sidecar words itself, and a short bare value, get no panel; file
   assert.equal(card.consentInspect({ tool: 'path.trust', argsSummary: 'C:\\proj' }), null);
   assert.equal(card.consentInspect({ tool: 'station.control', argsSummary: 'turn the music off' }), null);
   assert.equal(card.consentInspect({ tool: 'brief.ask', argsSummary: '{"question":"q"}' }), null);
-  assert.match(card.consentInspect({ tool: 'fs.write', argsSummary: '{\n  "path": "a"\n}' }).label, /Inspect the change/);
+  assert.match(card.consentInspect({ tool: 'fs.write', argsSummary: '{\n  "path": "a"\n}' }).label, /Inspeccionar el cambio/);
   assert.equal(card.consentInspect({ tool: 'routine.create', argsSummary: '{"prompt":"check mail"}' }).text, 'check mail');
 });
 
 test('group chat clips its line and carries the whole request under it', () => {
-  assert.match(group, /'wants to ' \+ phrase/, 'the group row reads like the desk card ("MIRA wants to change …")');
+  assert.match(group, /'quiere ' \+ phrase/, 'the group row reads like the desk card ("MIRA quiere cambiar …")');
   assert.match(group, /Chat\.consentInspect\(t\.approval\)/, 'the group reads a request exactly as the desk card does');
-  assert.match(group, /h\('summary', \{\}, ins\.label \|\| 'Inspect the full request \(secrets redacted\)'\), h\('pre', \{\}, ins\.text\)/);
+  assert.match(group, /h\('summary', \{\}, ins\.label \|\| 'Inspeccionar la petición completa \(secretos enmascarados\)'\), h\('pre', \{\}, ins\.text\)/);
   assert.match(group, /const ins = typeof Chat !== 'undefined' && Chat\.consentInspect \? Chat\.consentInspect\(t\.approval\) : null;\s*if \(ins\) \{/, 'INSPECT only where the desk card has one');
   // a file change reads as a file: the path, then the text exactly as written (real line breaks, never \n escapes)
   const file = card.consentInspect({ tool: 'fs.write', argsSummary: JSON.stringify({ path: 'notes/brief.md', content: '# Brief\nline two' }, null, 2) });
   assert.equal(file.text, 'File: notes/brief.md\n\n# Brief\nline two');
   assert.equal(card.consentInspect({ tool: 'fs.edit', argsSummary: JSON.stringify({ path: 'a.md', find: 'old', replace: 'new' }) }).text, 'File: a.md\n\nFind:\nold\n\nReplace with:\nnew');
   // any other tool reads in words, never as raw JSON
-  assert.equal(card.actionPhrase({ tool: 'web_request', argsSummary: JSON.stringify({ method: 'post', url: 'https://api.example.com/v1/x' }) }), 'send a POST request to https://api.example.com/v1/x');
-  assert.equal(card.actionPhrase({ tool: 'image_generate', argsSummary: JSON.stringify({ prompt: 'a red fox' }) }), 'make an image: a red fox');
-  assert.equal(card.actionPhrase({ tool: 'skill.write', argsSummary: JSON.stringify({ path: 'skills/x.md', content: 'y' }) }), 'write skills/x.md');
-  assert.equal(card.actionPhrase({ tool: 'channel.send', argsSummary: JSON.stringify({ target: 'ops', text: 'hi', files: ['a.png', 'b.pdf'] }) }), 'send a message to ops with 2 files: hi');
+  assert.equal(card.actionPhrase({ tool: 'web_request', argsSummary: JSON.stringify({ method: 'post', url: 'https://api.example.com/v1/x' }) }), 'enviar una petición POST a https://api.example.com/v1/x');
+  assert.equal(card.actionPhrase({ tool: 'image_generate', argsSummary: JSON.stringify({ prompt: 'a red fox' }) }), 'crear una imagen: a red fox');
+  assert.equal(card.actionPhrase({ tool: 'skill.write', argsSummary: JSON.stringify({ path: 'skills/x.md', content: 'y' }) }), 'escribir skills/x.md');
+  assert.equal(card.actionPhrase({ tool: 'channel.send', argsSummary: JSON.stringify({ target: 'ops', text: 'hi', files: ['a.png', 'b.pdf'] }) }), 'enviar un mensaje a ops con 2 archivos: hi');
   // the argument that says what a tool will do is never dropped (audit P1)
-  assert.equal(card.actionPhrase({ tool: 'verify.run', argsSummary: JSON.stringify({ cmd: 'npm test' }) }), 'run a check: npm test');
-  assert.equal(card.actionPhrase({ tool: 'code.run', argsSummary: JSON.stringify({ code: 'print(1)' }) }), 'run code: print(1)');
-  assert.equal(card.actionPhrase({ tool: 'browser.eval', argsSummary: JSON.stringify({ expression: 'document.title' }) }), 'run a script in the browser page: document.title');
-  assert.equal(card.actionPhrase({ tool: 'browser.upload', argsSummary: JSON.stringify({ ref: 'e3', paths: ['cv.pdf'] }) }), 'upload cv.pdf to the page');
+  assert.equal(card.actionPhrase({ tool: 'verify.run', argsSummary: JSON.stringify({ cmd: 'npm test' }) }), 'ejecutar una verificación: npm test');
+  assert.equal(card.actionPhrase({ tool: 'code.run', argsSummary: JSON.stringify({ code: 'print(1)' }) }), 'ejecutar código: print(1)');
+  assert.equal(card.actionPhrase({ tool: 'browser.eval', argsSummary: JSON.stringify({ expression: 'document.title' }) }), 'ejecutar un script en la página del navegador: document.title');
+  assert.equal(card.actionPhrase({ tool: 'browser.upload', argsSummary: JSON.stringify({ ref: 'e3', paths: ['cv.pdf'] }) }), 'subir cv.pdf a la página');
   assert.equal(card.actionPhrase({ tool: 'task.manage', argsSummary: JSON.stringify({ task: 'Buy milk', action: 'remove' }) }), 'remove task Buy milk');
   // a connector's write is never "a file"; the tool name is matched by segment ("credit" is not "edit")
-  assert.equal(card.actionPhrase({ tool: 'mcp__google_sheets__write_values', argsSummary: JSON.stringify({ spreadsheetId: 'x1', range: 'Sheet1!A1:C3' }) }), 'use google sheets write values: Sheet1!A1:C3');
+  assert.equal(card.actionPhrase({ tool: 'mcp__google_sheets__write_values', argsSummary: JSON.stringify({ spreadsheetId: 'x1', range: 'Sheet1!A1:C3' }) }), 'usar google sheets write values: Sheet1!A1:C3');
   assert.ok(!/write/.test(card.actionPhrase({ tool: 'credit_check', argsSummary: '{}' })), 'credit is not edit');
   // a bare value the sidecar sends whole (a read's path) is what is approved: the card names it; a capped JSON gives nothing
-  assert.equal(card.actionPhrase({ tool: 'fs.read', argsSummary: sidecar.consentSummary({ name: 'fs.read', args: { path: 'notes/brief.md' } }) }), 'use fs read: notes/brief.md');
-  assert.equal(card.actionPhrase({ tool: 'kb.lookup', argsSummary: '{"path":"notes/brief.md","depth' }), 'use kb lookup');
+  assert.equal(card.actionPhrase({ tool: 'fs.read', argsSummary: sidecar.consentSummary({ name: 'fs.read', args: { path: 'notes/brief.md' } }) }), 'usar fs read: notes/brief.md');
+  assert.equal(card.actionPhrase({ tool: 'kb.lookup', argsSummary: '{"path":"notes/brief.md","depth' }), 'usar kb lookup');
   // plugin, summon and an argument-less shell write never show raw JSON
   for (const ev of [{ tool: 'plugin__acme__sync', argsSummary: JSON.stringify({ query: 'q1' }, null, 2) }, { tool: 'team.summon', argsSummary: JSON.stringify({ name: 'SCOUT', spec: 'researcher' }, null, 2) }, { tool: 'shell.bg.write', argsSummary: JSON.stringify({ id: 'bg1', eof: true }, null, 2) }])
     assert.ok(!/[{}"]/.test(card.actionPhrase(ev)), 'no JSON in: ' + card.actionPhrase(ev));
@@ -208,7 +208,7 @@ test('a phone answer settles only its question and keeps a parallel approval pau
   assert.equal(f.Channels.peek(f.ws.id).pausedMs, 0, 'the open span was not prematurely accumulated');
   assert.equal(buttons.removed, true, 'answered choices are removed');
   const tags = () => f.nodes[0].body.children.filter(n => n.className === 'consent-result');
-  assert.equal(tags()[0].textContent, '✓ answered from your phone');
+  assert.equal(tags()[0].textContent, '✓ respondido desde tu teléfono');
   assert.equal(f.listeners.has('permission.response'), false, 'settled listener is released');
   response({ promptId: 'q1', decision: 'once' });
   assert.equal(tags().length, 1, 'duplicate delivery cannot append a second receipt');
@@ -241,9 +241,9 @@ function permissionFixture(tool) {
   return { Channels, ws, p, nodes, listeners, ctx, synced: () => synced };
 }
 for (const [decision, expired, label] of [
-  ['once', false, '✓ approved once from your phone'],
-  ['session', false, '✓ approved for this session from your phone'],
-  ['deny', false, '✕ denied from your phone'],
+  ['once', false, '✓ aprobado una vez desde tu teléfono'],
+  ['session', false, '✓ aprobado para esta sesión desde tu teléfono'],
+  ['deny', false, '✕ denegado desde tu teléfono'],
   ['deny', true, '✕ no answer in time — denied']
 ]) test('phone permission ' + (expired ? 'expiry' : decision) + ' settles one card and preserves sibling asks', () => {
   const f = permissionFixture(), response = f.listeners.get('permission.response');
@@ -294,9 +294,9 @@ for (const kind of ['question', 'approval']) test(kind + ' submission failure pr
    answered on this page; only an answer that arrived from elsewhere still reads "from your phone". */
 const voice = fs.readFileSync(require.resolve('../frontend/app/voice-live.js'), 'utf8');
 for (const [said, applied, label] of [
-  ['always allow', 'always', '✓ always allowed by voice'],
-  ['approve', 'once', '✓ approved once by voice'],
-  ['deny', 'deny', '✕ denied by voice']
+  ['always allow', 'always', '✓ siempre permitido por voz'],
+  ['approve', 'once', '✓ aprobado una vez por voz'],
+  ['deny', 'deny', '✕ denegado por voz']
 ]) test('a spoken "' + said + '" settles the visible card as the grade the station applied, by voice', async () => {
   const f = permissionFixture(), spoken = [];
   f.Channels.clearPending(f.ws.id, 150, 'question-2'); f.Channels.clearPending(f.ws.id, 150, 'approval-3');
@@ -316,7 +316,7 @@ for (const [said, applied, label] of [
   // a later answer from the phone, on another card, still says so
   const g = permissionFixture();
   g.listeners.get('permission.response')({ promptId: g.p.promptId, decision: 'once' });
-  assert.equal(g.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ approved once from your phone');
+  assert.equal(g.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ aprobado una vez desde tu teléfono');
 });
 
 /* A CARD WITH NO ALWAYS KEY NEVER SETTLES AS A STANDING GRANT (review app-shell-ui-02 follow-up). Widening the leash
@@ -325,10 +325,10 @@ for (const [said, applied, label] of [
    downgraded on a fresh ask), so the card read "✓ always allowed by voice" and voice said "Always allowed." while the
    station granted this one call. Voice now answers these once, and the card settles any yes with its own yes receipt. */
 for (const [tool, said, sent, label, heard] of [
-  ['station.power', 'always allow', 'once', '✓ approved once by voice', 'This one can only be approved once. Approved once.'],
-  ['browser.login', 'always allow', 'once', '✓ window opened by voice', 'This one can only be approved once. Approved once.'],
-  ['browser.login.done', 'always allow', 'once', '✓ done by voice', 'This one can only be approved once. Approved once.'],
-  ['browser.login.done', 'deny', 'deny', '✕ cancelled by voice', 'Denied.']
+  ['station.power', 'always allow', 'once', '✓ aprobado una vez por voz', 'This one can only be approved once. Approved once.'],
+  ['browser.login', 'always allow', 'once', '✓ ventana abierta por voz', 'This one can only be approved once. Approved once.'],
+  ['browser.login.done', 'always allow', 'once', '✓ listo por voz', 'This one can only be approved once. Approved once.'],
+  ['browser.login.done', 'deny', 'deny', '✕ cancelado por voz', 'Denied.']
 ]) test('a spoken "' + said + '" on a ' + tool + ' card (no Always key) answers once and settles with the card\'s own receipt', async () => {
   const f = permissionFixture(tool), spoken = [], sentDecisions = [];
   f.Channels.clearPending(f.ws.id, 150, 'question-2'); f.Channels.clearPending(f.ws.id, 150, 'approval-3');
@@ -349,23 +349,23 @@ for (const [tool, said, sent, label, heard] of [
 test('a phone answer graded "always" on a station.power card still settles as approved once', () => {
   const f = permissionFixture('station.power');
   f.listeners.get('permission.response')({ promptId: f.p.promptId, decision: 'always' });
-  assert.equal(f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ approved once from your phone');
+  assert.equal(f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ aprobado una vez desde tu teléfono');
   const g = permissionFixture('browser.login.done');
   g.listeners.get('permission.response')({ promptId: g.p.promptId, decision: 'deny' });
-  assert.equal(g.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✕ cancelled from your phone');
+  assert.equal(g.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✕ cancelado desde tu teléfono');
 });
 
 /* A PLUGIN INSTALL IS ANSWERED FRESH EVERY TIME (review app-shell-ui-03). plugin.submit is a fresh-consent tool: the
    station grants any yes for this one install. Its desk card still offered Always and Acceso total and could settle as
-   "✓ always allowed", a standing grant the station never made. It now gets the station.power keys: Aprobar una vez, Deny. */
+   "✓ siempre permitido", a standing grant the station never made. It now gets the station.power keys: Aprobar una vez, Denegar. */
 for (const decision of ['always', 'full']) test('a plugin.submit card offers only a yes and a no, and a "' + decision + '" answer settles as approved once', () => {
   const f = permissionFixture('plugin.submit');
   const buttons = f.nodes[0].body.children.find(n => n.className === 'consent-btns');
-  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Deny'], 'no Always, no Acceso total on a card the station answers once');
+  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Denegar'], 'no Siempre, no Acceso total on a card the station answers once');
   f.listeners.get('permission.response')({ promptId: f.p.promptId, decision });
   const tag = f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent;
-  assert.equal(tag, '✓ approved once from your phone');
-  assert.ok(!/always allowed|full access/.test(tag), 'the receipt claims no standing grant: ' + tag);
+  assert.equal(tag, '✓ aprobado una vez desde tu teléfono');
+  assert.ok(!/siempre permitido|acceso total/.test(tag), 'the receipt claims no standing grant: ' + tag);
 });
 
 /* P08 STRUCK (Andrew 10-14: "the approval key was fine before"): a general approval card's standing key is the candidate's
@@ -375,12 +375,12 @@ test('a general approval card offers Acceso total, as the 0.13.5 candidate had i
   const f = permissionFixture('fs.read');
   const buttons = f.nodes[0].body.children.find(n => n.className === 'consent-btns');
   // org P02 (Andrew 10-14): no auto-deny line on the card — a first ask is the candidate's four keys and nothing else
-  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Always', 'Acceso total', 'Deny'], 'the standing key reads Acceso total, and no hint line rides a first ask');
+  assert.deepEqual(buttons.children.map(b => b.textContent), ['Aprobar una vez', 'Siempre', 'Acceso total', 'Denegar'], 'the standing key reads Acceso total, and no hint line rides a first ask');
   assert.ok(!buttons.children.some(b => /never ask|full power/i.test(String(b.textContent) + ' ' + String((b.dataset && b.dataset.tip) || b.title || ''))), 'no key or tip uses the struck Never ask / Full power names');
   const fullKey = buttons.children.find(b => b.textContent === 'Acceso total');
-  assert.ok(/^Give .+ full access: it stops asking before most actions, until you change it back$/.test(String(fullKey.title || '')), 'the Acceso total tip is the candidate\'s: ' + fullKey.title);
+  assert.ok(/^Da a .+ acceso total: dejará de preguntar antes de la mayoría de acciones, hasta que lo cambies$/.test(String(fullKey.title || '')), 'the Acceso total tip is the candidate\'s: ' + fullKey.title);
   f.listeners.get('permission.response')({ promptId: f.p.promptId, decision: 'full' });
-  assert.equal(f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ full access from your phone', 'the receipt names what was applied');
+  assert.equal(f.nodes[0].body.children.filter(n => /^consent-result/.test(n.className || ''))[0].textContent, '✓ acceso total desde tu teléfono', 'the receipt names what was applied');
 });
 
 // THE COMPOSER ANSWERS THE QUESTION (live walkthrough 2026-10-13): a lead's open question registers an answerer, so
@@ -396,9 +396,9 @@ test('a lead question is answerable from the composer, exactly once', async () =
 
 // a hire reads as a hire, never the raw JSON args (live walkthrough 2026-10-13: 'summon a new agent onto the crew ({"specId": …})')
 test('the hire approval names who is hired', () => {
-  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: JSON.stringify({ specId: 'researcher', name: 'Research' }) }), 'hire RESEARCH (researcher) onto the crew');
-  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: JSON.stringify({ specId: 'copywriter' }) }), 'hire a copywriter onto the crew');
-  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: '' }), 'hire a new agent onto the crew');
+  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: JSON.stringify({ specId: 'researcher', name: 'Research' }) }), 'contratar RESEARCH (researcher) en el equipo');
+  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: JSON.stringify({ specId: 'copywriter' }) }), 'contratar a copywriter en el equipo');
+  assert.equal(card.actionPhrase({ tool: 'team.summon', argsSummary: '' }), 'contratar un agente nuevo en el equipo');
   assert.ok(!/[{}"]/.test(card.actionPhrase({ tool: 'team.summon', argsSummary: JSON.stringify({ name: 'Nova2', specId: 'nova2' }) })), 'no JSON punctuation reaches the card');
 });
 
@@ -424,7 +424,7 @@ for (const mode of ['choice', 'conversation']) test(mode + ' confirmed local que
   assert.equal(responses[0].data.promptId, f.q.promptId);
   assert.equal(responses[0].data.via, 'desk');
   assert.equal(f.ctx.settledWhere(responses[0].data), '', 'another local card must not attribute this answer to a phone');
-  assert.equal(f.ctx.settledWhere({ promptId: f.q.promptId, decision: 'once' }), ' from your phone', 'legacy remote provenance is unchanged');
+  assert.equal(f.ctx.settledWhere({ promptId: f.q.promptId, decision: 'once' }), ' desde tu teléfono', 'legacy remote provenance is unchanged');
 });
 test('a conversation question answers the run that asked it, like the choice and approval cards', async () => {
   const f = clarificationFixture('conversation', { runId: 'worker-run' });
@@ -437,10 +437,10 @@ test('a conversation question answers the run that asked it, like the choice and
 test('a conversation question declined elsewhere says declined, never answered', () => {
   const f = clarificationFixture('conversation');
   f.listeners.get('permission.response')({ promptId: 'q1', decision: 'deny' });
-  assert.deepEqual(f.settledWith, ['Declined from your phone']);
+  assert.deepEqual(f.settledWith, ['Denegado desde tu teléfono']);
   const g = clarificationFixture('conversation');
   g.listeners.get('permission.response')({ promptId: 'q1', decision: 'once', via: 'voice' });
-  assert.deepEqual(g.settledWith, ['Answered by voice']);
+  assert.deepEqual(g.settledWith, ['Respondido por voz']);
 });
 
 // the tool row above a dispatch card reads WHO it hands work to, never the capped JSON (review 10-14)

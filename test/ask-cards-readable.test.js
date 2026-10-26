@@ -65,7 +65,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
       if (!/\?id=/.test(String(url)) && !b) return { status: 200, ok: true, json: async () => ({ ok: true, result: { roster: [{ id: 'agent', name: 'NOVA' }, { id: 'nova', name: 'MIRA' }], groups: [group()] } }) };
       return { status: 200, ok: true, json: async () => ({ ok: true, result: group() }) };
     },
-    Chat: { consentPhrase: p => 'change ' + JSON.parse(p.argsSummary).path, consentInspect: () => null, clockLabel: () => '', breakLabel: () => '' },
+    Chat: { consentPhrase: p => 'cambiar ' + JSON.parse(p.argsSummary).path, consentInspect: () => null, clockLabel: () => '', breakLabel: () => '' },
     App: { pushRoster: async () => {}, agents: () => [{ id: 'agent', name: 'NOVA' }, { id: 'nova', name: 'MIRA' }], persist() {}, refreshRail() {}, openWorkstream() {} },
     StationUI: { notify() {}, toggleTerm() {}, closeTerm() {} },
     Workstreams: { get: id => (id === 'g1' ? ws : null), list: () => [ws], activeId: () => 'g1', adopt: o => Object.assign(ws, o), generalId: () => 'home' }
@@ -95,7 +95,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   const rowsBefore = byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Aprobar una vez/.test(r.textContent));
   tick++; await pollFn(); await settle();
   A.ok(byClass(ctx.document.getElementById('gc-states'), 'gc-state').find(r => /Aprobar una vez/.test(r.textContent)) === rowsBefore, 'the approval row is kept too');
-  A.ok(/^●NOVA|MIRAwants to change brief\.md/.test(rowsBefore.textContent) && byClass(rowsBefore, 'gc-asks')[0].textContent === 'wants to change brief.md', 'the approval reads like the desk card: "MIRA wants to change brief.md"');
+  A.ok(/^●NOVA|MIRAquiere cambiar brief\.md/.test(rowsBefore.textContent) && byClass(rowsBefore, 'gc-asks')[0].textContent === 'quiere cambiar brief.md', 'the approval reads like the desk card: "MIRA quiere cambiar brief.md"');
   A.ok(byClass(rowsBefore, 'gc-ok-row').length === 1 && !byClass(rowsBefore, 'gc-inspect').length, 'its keys sit on their own row under it; no INSPECT where the desk card has none');
   // one tap answers: every key waits and the hint says so; a refusal frees them and restores the hint
   let refuse; answerReply = new Promise(r => { refuse = r; });
@@ -225,7 +225,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   for (const st of ['esperando tu respuesta…', 'esperando tu contexto…', 'esperando tu aprobación…']) { sc.status(st); A.ok(statusEl._cls.has('status-approval'), st + ': hidden in the COMMS header (the card and the presence line say it)'); }
 
   /* ---- C. the presence line + LET'S SHAPE THIS ---- */
-  A.ok(/pend\.tool === 'brief\.ask' \? 'see the question above' : 'to ' \+ glance\(actionPhrase\(pend\), 70\)/.test(chat) && !/waiting for you to approve ' \+ shortName/.test(chat), 'the paused line names the request in the card\'s words, never a raw tool id');
+  A.ok(/pend\.tool === 'brief\.ask' \? 'mira la pregunta de arriba' : 'a ' \+ glance\(actionPhrase\(pend\), 70\)/.test(chat) && !/waiting for you to approve ' \+ shortName/.test(chat), 'the paused line names the request in the card\'s words, never a raw tool id');
   const tc = read('frontend/app/taskconversation.js');
   A.ok(/fold\('tc-why',q\.asker \? 'Why '\+q\.asker\+' is asking'/.test(tc) && /fold\('tc-draft',q\.asker \? 'See the draft '\+q\.asker\+' suggests'/.test(tc), 'LET\'S SHAPE THIS folds its reason and its draft, named like every other card');
   A.ok(/:is\(\.cmsg\.nudge, \.cmsg\.consent\) \.task-conversation \{/.test(read('frontend/css/comms-layout.css')), 'the conversation card is ONE frame inside the decision card, never a card inside a card');

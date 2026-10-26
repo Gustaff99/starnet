@@ -141,7 +141,7 @@ const Backup = (() => {
                 exactly that: the file name, and that it went to the browser's downloads.
      A desktop save the sidecar could not make (folder permission denied, an older sidecar) falls back to the browser
      hand-off and says why. `post` is Harness.api.post ({ ok, status, j }); `download` defaults to triggerDownload. */
-  const SECRETS_NOTE = 'secrets excluded, re-enter keys after importing';
+  const SECRETS_NOTE = 'sin claves ni tokens — reintrodúcelos tras importar';
   function stationFileName(now) {
     return 'starnet-station-' + new Date(now == null ? Date.now() : Number(now)).toISOString().slice(0, 10) + '.json';
   }
@@ -153,39 +153,39 @@ const Backup = (() => {
     let refused = '';
     if (o.desktop) {
       let r = null;
-      try { r = await post('/api/config/export/save', body); } catch (e) { r = null; refused = 'the station did not answer'; }
+      try { r = await post('/api/config/export/save', body); } catch (e) { r = null; refused = 'la estación no respondió'; }
       const j = r && r.j;
       if (r && r.ok && j && j.ok && j.path) {
-        return { ok: true, where: 'disk', path: String(j.path), file: String(j.file || ''), line: '✓ saved to ' + j.path + ' — ' + SECRETS_NOTE };
+        return { ok: true, where: 'disk', path: String(j.path), file: String(j.file || ''), line: '✓ guardado en ' + j.path + ' — ' + SECRETS_NOTE };
       }
       if (j && j.error && r.status !== 404) refused = String(j.error);
-      else if (!refused) refused = 'this station cannot save files yet';
+      else if (!refused) refused = 'esta estación aún no puede guardar archivos';
     }
     let r;
     try { r = await post('/api/config/export', body); }
-    catch (e) { return { ok: false, line: 'export failed — the station did not answer' }; }
+    catch (e) { return { ok: false, line: 'la exportación falló — la estación no respondió' }; }
     if (!r || !r.ok || !r.j || typeof r.j !== 'object') {   // never download an error body as a "backup"
       const why = (r && r.j && r.j.error) ? String(r.j.error) : ('http ' + (r ? r.status : '?'));
-      return { ok: false, line: 'export failed — ' + why };
+      return { ok: false, line: 'la exportación falló — ' + why };
     }
     const file = stationFileName(o.now);
-    if (!download(file, JSON.stringify(r.j, null, 2))) return { ok: false, line: 'export failed — the file could not be handed to the browser' };
+    if (!download(file, JSON.stringify(r.j, null, 2))) return { ok: false, line: 'la exportación falló — no se pudo entregar el archivo al navegador' };
     const handed = refused
-      ? 'could not save it (' + refused + ') — handed to the app\'s downloads as ' + file + ' instead (usually your Downloads folder)'
-      : 'sent to your browser\'s downloads as ' + file;
+      ? 'no se pudo guardar (' + refused + ') — se entregó a las descargas de la app como ' + file + ' en su lugar (normalmente tu carpeta de Descargas)'
+      : 'enviado a las descargas de tu navegador como ' + file;
     return { ok: true, where: 'browser', file, line: handed + ' — ' + SECRETS_NOTE };
   }
 
   // validate a parsed bundle WITHOUT mutating anything — callers decide whether to apply.
   function validate(doc) {
-    if (!doc || typeof doc !== 'object') return 'not a JSON object';
-    if (doc.schema !== SCHEMA && doc.schema !== LEGACY_SCHEMA) return 'not a StarNet backup file';
+    if (!doc || typeof doc !== 'object') return 'no es un objeto JSON';
+    if (doc.schema !== SCHEMA && doc.schema !== LEGACY_SCHEMA) return 'no es un archivo de copia de StarNet';
     // FORWARD-VERSION GUARD (P0.3): a backup file whose envelope version is NEWER than this build understands
     // was exported by a later StarNet. Its store may carry key shapes/save schemas this code can't restore
     // faithfully, so refuse rather than importing a half-understood bundle. The import UI surfaces this string.
-    if (Number(doc.version || 0) > VERSION) return 'backup was made by a newer StarNet (v' + Number(doc.version) + ') — update the app to import it';
-    if (!doc.store || typeof doc.store !== 'object') return 'backup has no data';
-    if (typeof doc.store[SAVE_KEY] !== 'string' && typeof doc.store['skynet.save'] !== 'string') return 'backup has no agent';
+    if (Number(doc.version || 0) > VERSION) return 'la copia se hizo con una StarNet más nueva (v' + Number(doc.version) + ') — actualiza la app para importarla';
+    if (!doc.store || typeof doc.store !== 'object') return 'la copia no tiene datos';
+    if (typeof doc.store[SAVE_KEY] !== 'string' && typeof doc.store['skynet.save'] !== 'string') return 'la copia no tiene un agente';
     return null;   // ok
   }
 
@@ -203,7 +203,7 @@ const Backup = (() => {
         if (isCredentialKey(k)) continue;                                        // portable files never grant credential authority
         localStorage.setItem(toCurrentKey(k), store[k]); n++;                       // map skynet.* -> starnet.* on the way in
       }
-    } catch (e) { return { ok: false, error: (e && e.message) || 'write failed' }; }
+    } catch (e) { return { ok: false, error: (e && e.message) || 'fallo al escribir' }; }
     return { ok: true, records: n, keys: n, agentName: doc.agentName || agentName(), memories: Array.isArray(doc.notebook) ? doc.notebook.length : 0 };
   }
 
@@ -212,7 +212,7 @@ const Backup = (() => {
       try {
         const fr = new FileReader();
         fr.onload = () => resolve(String(fr.result || ''));
-        fr.onerror = () => reject(fr.error || new Error('read failed'));
+        fr.onerror = () => reject(fr.error || new Error('fallo al leer'));
         fr.readAsText(file);
       } catch (e) { reject(e); }
     });
@@ -235,7 +235,7 @@ const Backup = (() => {
   async function importFile(file) {
     let doc;
     try { doc = JSON.parse(await readFileText(file)); }
-    catch (_) { return { ok: false, error: 'file is not valid JSON' }; }
+    catch (_) { return { ok: false, error: 'el archivo no es un JSON válido' }; }
     const res = applyBundle(doc);
     if (res.ok) {
       // A portable backup is an explicit restore, unlike an ordinary page load.
@@ -244,8 +244,8 @@ const Backup = (() => {
       if (posture && typeof AutonomyStore !== 'undefined' && AutonomyStore.importState) {
         try {
           const result = await AutonomyStore.importState(JSON.parse(posture));
-          if (!result.ok) return { ok: false, error: 'Backup partly restored; autonomy was not confirmed. ' + (result.error || 'Try again when the station is connected.') };
-        } catch (_) { return { ok: false, error: 'Backup partly restored; its autonomy setting could not be restored.' }; }
+          if (!result.ok) return { ok: false, error: 'Copia restaurada en parte; la autonomía no se confirmó. ' + (result.error || 'Vuelve a intentarlo cuando la estación esté conectada.') };
+        } catch (_) { return { ok: false, error: 'Copia restaurada en parte; no se pudo restaurar su ajuste de autonomía.' }; }
       }
     }
     if (res.ok) {

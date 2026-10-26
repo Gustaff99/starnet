@@ -56,22 +56,22 @@ function fixture({ native, get, post } = {}) {
 (async () => {
   const native = fixture({ native: async () => { throw new Error('sensitive native error'); } });
   await native.read(); await native.unlink();
-  assert.match(native.host.innerHTML, /Could not clear the saved account credential/);
+  assert.match(native.host.innerHTML, /No se pudo borrar la credencial de cuenta guardada/);
   assert.doesNotMatch(native.host.innerHTML, /sensitive native error/);
   assert.ok(!native.calls.includes('/api/credits/unlink'), 'failed native deletion must not claim sidecar unlink');
   await native.read();
-  assert.match(native.host.innerHTML, /Unlink was not completed/, 'failure survives a Settings repaint');
+  assert.match(native.host.innerHTML, /La desvinculación no se completó/, 'failure survives a Settings repaint');
   assert.ok(native.host.querySelector('#credits-unlink'), 'failed native deletion remains retryable');
   const thrown = fixture({ native: () => { throw new Error('bridge unavailable'); } });
-  await thrown.read(); await thrown.unlink(); assert.match(thrown.host.innerHTML, /Could not clear/);
+  await thrown.read(); await thrown.unlink(); assert.match(thrown.host.innerHTML, /No se pudo borrar/);
 
   for (const response of [{ ok: false, j: { ok: false } }, { ok: true, j: { ok: true, unlinked: false } }, { ok: true, j: {} }]) {
     const f = fixture({ post: async () => response }); await f.read(); await f.unlink();
-    assert.match(f.host.innerHTML, /Could not confirm that unlink completed/);
+    assert.match(f.host.innerHTML, /No se pudo confirmar que la desvinculación se completara/);
     assert.ok(!f.calls.includes('refresh'), 'failed acknowledgement cannot enter the success path');
   }
   const dropped = fixture({ post: async () => { throw new Error('network'); } });
-  await dropped.read(); await dropped.unlink(); assert.match(dropped.host.innerHTML, /Could not confirm/);
+  await dropped.read(); await dropped.unlink(); assert.match(dropped.host.innerHTML, /No se pudo confirmar/);
 
   for (const failureAt of ['status', 'linkable', 'malformed']) {
     let failed = true;
@@ -84,7 +84,7 @@ function fixture({ native, get, post } = {}) {
       if (failed && failureAt === 'linkable') throw new Error('network');
       return { available: true, cloud: true };
     } });
-    await f.read(); assert.match(f.host.innerHTML, /Could not check your account connection/);
+    await f.read(); assert.match(f.host.innerHTML, /No se pudo comprobar la conexión de tu cuenta/);
     assert.ok(f.host.querySelector('#credits-retry'));
     failed = false; f.host.querySelector('#credits-retry').click(); await flush();
     assert.ok(f.host.querySelector('#credits-link'), 'retry restores linking after ' + failureAt + ' failure');
@@ -102,8 +102,8 @@ function fixture({ native, get, post } = {}) {
     get: async route => route === '/api/credits' ? (unlinked ? { configured: false } : linked) : { available: true, cloud: true },
     post: async () => { unlinked = true; return { ok: true, j: { ok: true, unlinked: true } }; }
   });
-  await success.read(); await success.unlink(); assert.match(success.host.innerHTML, /Unlinking this station/);
-  await success.read(); assert.match(success.host.innerHTML, /Unlinking this station/, 'repaint preserves pending status');
+  await success.read(); await success.unlink(); assert.match(success.host.innerHTML, /Desvinculando esta estación/);
+  await success.read(); assert.match(success.host.innerHTML, /Desvinculando esta estación/, 'repaint preserves pending status');
   resolveNative(); await flush(); assert.ok(success.host.querySelector('#credits-link'));
   assert.ok(success.calls.includes('refresh') && success.calls.includes('provider'));
 

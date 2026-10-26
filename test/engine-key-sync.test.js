@@ -184,7 +184,7 @@ function sandbox(opts) {
   A.ok(/Promise\.resolve\(h\.setKey\('', row\.provider\)\)\.then\(warnIfStationLacksKey\)/.test(station), 'after REMOVE');
   A.ok(/Promise\.resolve\(h\.setBaseUrl\('', 'custom'\)\)\.then\(warnIfStationLacksKey\)/.test(station), 'and after the keyless CUSTOM endpoint REMOVE');
   A.ok(/const count = \(res && typeof res === 'object'\) \? Number\(res\.count\) \|\| 0 : res;/.test(station), 'the backup-pool toast reads the count out of { count, engine }');
-  A.ok(/'stored in this browser and on this station, so routines can use it'/.test(station) && /keyStoreClause\(res\)/.test(station) && !/keyStoreClause\(\)/.test(station),
+  A.ok(/'guardada en este navegador y en esta estación, para que las rutinas puedan usarla'/.test(station) && /keyStoreClause\(res\)/.test(station) && !/keyStoreClause\(\)/.test(station),
     'a key the station proved it holds is never described as "stored locally in this browser" only');
   A.ok(/notify, warnIfStationLacksKey, settleNotifs,/.test(station), 'StationUI exports the warning for onboarding');
   const app = read('frontend', 'app', 'app.js');

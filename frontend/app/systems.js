@@ -34,7 +34,7 @@ const Systems = (() => {
     // ONE MENU (2026-10-01): MI TRABAJO / AUTOMATIZAR / CONECTAR son cada uno un botón del dock sobre varias ventanas
     // (FAMILIES de stationui) — el key de cada ventana miembro está en terms, así que abrirla por cualquier puerta cuenta.
     { id: 'mywork', label: 'MI TRABAJO', group: 'work', sel: '#bb-mywork', terms: ['tasks', 'work', 'deliverables', 'outbox'], start: true, tip: 'tareas, trabajo terminado y trabajos listos' },
-    { id: 'automate', label: 'AUTOMATIZAR', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATIZAR', 'AUTOMATION', 'FLUJOS', 'WORKFLOW', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'cuando pides algo con horario', tip: 'flujos de trabajo, horarios, bucles y trabajo remoto' },
+    { id: 'automate', label: 'AUTOMATIZAR', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATIZAR', 'AUTOMATION', 'AUTOMATE', 'FLUJOS', 'WORKFLOW', 'WORKFLOWS', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'cuando pides algo con horario', tip: 'flujos de trabajo, horarios, bucles y trabajo remoto' },
     { id: 'quests', label: 'MISIONES', group: 'work', sel: '.bb[data-term="quests"]', terms: ['quests'], start: true, tip: 'pequeños pasos hacia tus metas y progreso registrado' },
     { id: 'refit', label: 'MODO CONSTRUCCIÓN', group: 'build', sel: '#bb-build', start: true, tip: 'salas, pasillos, equipo y líneas de trabajo' },
     { id: 'connect', label: 'CONECTAR', group: 'build', sel: '#bb-connect', terms: ['connectors', 'skills', 'messaging'], words: ['HABILIDADES', 'CANALES'], start: true, tip: 'servicios que usan tus agentes y dónde les escribes' },

@@ -45,19 +45,19 @@ A.ok(/unknown tool: /.test(fs.readFileSync(path.join(root, 'sidecar', 'tools', '
   'a genuinely unknown tool still answers "unknown tool"');
 
 // ---- 2. the ROUTINES panel ----
-A.ok(/off unless you grant them below/i.test(panel), 'the ROUTINES brief states the extra powers are off by default');
-A.ok(/placing a WORKBENCH on the floor does not grant them/i.test(panel), 'it kills the workaround users actually reach for');
+A.ok(/apagados a menos que los otorgues abajo/i.test(panel), 'the ROUTINES brief states the extra powers are off by default');
+A.ok(/Colocar un WORKBENCH en la planta no los otorga/i.test(panel), 'it kills the workaround users actually reach for');
 A.ok(/id="rt-term"/.test(panel), 'the CREATE form carries the terminal-grant control');
 A.ok(/id="rt-conn"/.test(panel), 'the CREATE form carries the connected-tools grant control');
 A.ok(/unattendedGrants: grants\.length \? grants : undefined/.test(panel), 'grants are sent ONLY when ticked (an untouched form posts the old body)');
 A.ok(/\['#rt-term', '#rt-conn', '#rt-img'\]\.forEach/.test(panel), 'no grant is sticky across creates');
 A.ok(/mc-term-grant/.test(panel), 'a routine holding a standing grant is visibly badged on its row');
-A.ok(/connected tools/.test(panel), 'the connector grant is described in plain language, not as "MCP"');
+A.ok(/herramientas conectadas/.test(panel), 'the connector grant is described in plain language, not as "MCP"');
 
 // the mirror the website build serves must carry the same copy (website/app is GENERATED)
 const mirror = path.join(root, 'website', 'app', 'app', 'windows', 'routines.js');
 if (fs.existsSync(mirror)) {
-  A.ok(/off unless you grant them below/i.test(fs.readFileSync(mirror, 'utf8')), 'the generated website mirror carries the terminal-honesty copy');
+  A.ok(/apagados a menos que los otorgues abajo/i.test(fs.readFileSync(mirror, 'utf8')), 'the generated website mirror carries the terminal-honesty copy');
 }
 
 /* ---- THE SELF-GRANT HOLE (must stay closed) ----

@@ -14,7 +14,7 @@ vm.runInContext(src.slice(start, end) + '\nthis.api = { save, flashSaved };', ct
 const elm = { textContent: '', className: '', isConnected: true };
 assert.equal(ctx.api.save(), false);
 ctx.api.flashSaved(elm);
-assert.match(elm.textContent, /Could not save/); assert.equal(elm.className, 'msg bad');
+assert.match(elm.textContent, /No se pudo guardar/); assert.equal(elm.className, 'msg bad');
 assert.equal(warnings.length, 1);
 ctx.api.save(); assert.equal(warnings.length, 1, 'repeat write failures do not flood notifications');
 ctx.api.flashSaved(elm, undefined, true); assert.equal(elm.textContent, '✓ saved', 'independent OS preference acknowledgement has its own truth');

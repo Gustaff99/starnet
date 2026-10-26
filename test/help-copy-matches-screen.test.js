@@ -119,7 +119,7 @@ A.ok(app && !/START FRESH/.test(app.about) && /ERASE EVERYTHING/.test(app.about)
 A.ok(/const WORK_LABELS = \{ tasks: 'TAREAS', deliverables: 'ENTREGABLES', agents: 'AGENT DOSSIER', notifs: 'NOTIFICATIONS' \}/.test(station),
   'MY WORK\'s trail words read TAREAS / AGENT DOSSIER, keyed by the unchanged window ids');
 A.ok(/tasks:\s+\['TAREAS',\s+buildTasks,/.test(station) && /agents:\s+\['AGENT DOSSIER',\s+buildAgents,/.test(station), 'window titles: TAREAS and AGENT DOSSIER');
-A.ok(/Manage planned tasks under MY WORK › TASKS/.test(station) && !/on the TASK BOARD and saved/.test(station), 'ABOUT names MY WORK › TASKS');
+A.ok(/tareas planificadas en MI TRABAJO › TAREAS/.test(station) && !/on the TASK BOARD and saved/.test(station), 'ABOUT names MI TRABAJO › TAREAS');
 
 // ---- BROWSER promises only what it offers ----
 A.ok(!/or in your own Chrome/.test(station), 'BROWSER settings never promise "your own Chrome"');

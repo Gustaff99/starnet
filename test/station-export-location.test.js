@@ -89,7 +89,7 @@ const DAY = '2026-10-18';
     eq(r.where, 'disk', 'desktop export is a file the station wrote');
     eq(r.path, path.join(fakeHome, 'Downloads', 'starnet-station-' + DAY + '.json'), 'desktop result carries the real path');
     ok(r.line.indexOf(r.path) >= 0, 'the line names the exact path: ' + r.line);
-    ok(/secrets excluded/.test(r.line), 'the line still says secrets are excluded');
+    ok(/sin claves ni tokens/.test(r.line), 'the line still says secrets are excluded (ES)');
     eq(downloads.length, 0, 'desktop never also drops a WebView download');
     eq(calls, ['/api/config/export/save'], 'desktop asks the sidecar to save');
     ok(fs.existsSync(r.path), 'the named file is really there');
@@ -104,7 +104,7 @@ const DAY = '2026-10-18';
     eq(downloads, ['starnet-station-' + DAY + '.json'], 'the browser is handed the dated file');
     eq(JSON.parse(texts[0]).starnetExport, 1, 'the handed file is the real envelope');
     ok(r.line.indexOf('starnet-station-' + DAY + '.json') >= 0, 'the browser line names the file: ' + r.line);
-    ok(/browser's downloads/.test(r.line), 'the browser line points at the browser downloads');
+    ok(/descargas de tu navegador/.test(r.line), 'the browser line points at the browser downloads (ES)');
     ok(!/✓/.test(r.line) && !/^exported/.test(r.line), 'the browser line claims no delivery it cannot see');
     eq(calls, ['/api/config/export'], 'the browser never asks the sidecar to write a file on the host');
 
@@ -135,7 +135,7 @@ const DAY = '2026-10-18';
       download: f => { downloads.push(f); return true; }, now: NOW });
     eq(r.ok, false, 'a refused export fails');
     eq(downloads.length, 0, 'an error body is never downloaded as a backup');
-    ok(/export failed/.test(r.line) && /cannot export safely/.test(r.line), 'the failure line carries the reason: ' + r.line);
+    ok(/exportación falló/.test(r.line) && /cannot export safely/.test(r.line), 'the failure line carries the reason (ES): ' + r.line);
 
     // the hand-off itself failed
     r = await Backup.exportStation({ sections: {}, desktop: false, post: routes([]), download: () => false, now: NOW });

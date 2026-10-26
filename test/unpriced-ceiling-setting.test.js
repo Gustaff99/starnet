@@ -191,10 +191,10 @@ function runSubscription(maxSubscriptionTokens, perTurn, maxIters) {
   const row = uc.F.find(f => f.key === 'maxUnpricedTokens');
   const sib = uc.F.find(f => f.key === 'maxSubscriptionTokens');
   A.ok(!!row, 'Runtime limits has a maxUnpricedTokens row');
-  A.eq(row && row.label, 'UNPRICED MODEL TOKEN CEILING', 'labelled for what it is');
+  A.eq(row && row.label, 'TOPE DE TOKENS DE MODELO SIN PRECIO', 'labelled for what it is');
   A.eq(row && [row.min, row.max, row.step], sib && [sib.min, sib.max, sib.step], 'same bounds and step as CLAUDE CODE TOKEN CEILING');
-  A.ok(row && /0 = no ceiling/.test(row.hint) && /next run/.test(row.hint) && !/restart/.test(row.hint) && /price/.test(row.hint), 'the hint says what it governs, 0 = no ceiling, and when it applies: ' + (row && row.hint));
-  A.ok(sib && /next run/.test(sib.hint) && !/restart/.test(sib.hint), 'and so does CLAUDE CODE TOKEN CEILING: ' + (sib && sib.hint));
+  A.ok(row && /0 = sin tope/.test(row.hint) && /próxima ejecución/.test(row.hint) && !/reinicio/.test(row.hint) && /sin precio/.test(row.hint), 'the hint says what it governs, 0 = no ceiling, and when it applies: ' + (row && row.hint));
+  A.ok(sib && /próxima ejecución/.test(sib.hint) && !/reinicio/.test(sib.hint), 'and so does CLAUDE CODE TOKEN CEILING: ' + (sib && sib.hint));
   A.eq(uc.F.length, 6, 'one new row, nothing else added');
 
   // ---- limits.set (station.power) carries every Runtime limits key ----

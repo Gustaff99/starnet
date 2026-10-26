@@ -24,7 +24,7 @@ A.ok(src.includes(`data-init="' + r.id + '"`) && src.includes('INITIATIVE_RUNGS.
 // call #57 copy: the leash rung reads SMALL JOBS (BUILD clashed with the BUILD dock; DRAFT is untrue in build mode),
 // and REACH sandbox reads LOCAL ONLY (the stored value stays 'sandbox').
 A.eq((rungs.find(r => r.id === 'leash') || {}).label, 'TAREAS PEQUEÑAS', 'the leash rung reads TAREAS PEQUEÑAS');
-A.ok(/data-reach="sandbox"[^>]*>LOCAL ONLY<\/button>/.test(src), 'REACH sandbox reads LOCAL ONLY on the button');
+A.ok(/data-reach="sandbox"[^>]*>SOLO LOCAL<\/button>/.test(src), 'REACH sandbox reads SOLO LOCAL on the button (ES)');
 A.ok(!/>BUILD<\/button>/.test(src) && !/>SANDBOX<\/button>/.test(src), 'no dial button still reads BUILD or SANDBOX');
 A.ok(/initiativeLabel,/.test(src), 'StationUI exports initiativeLabel for trust offers and notices');
 A.ok(!/data-reach="(observe|sandbox|reach)" title=/.test(src) && /data-reach="sandbox" data-tip="/.test(src), 'the REACH rungs carry station data-tips, never a native title');
@@ -32,7 +32,7 @@ A.ok(!/data-reach="(observe|sandbox|reach)" title=/.test(src) && /data-reach="sa
 // lifecycle note kept a private copy that still said BUILD (org pass fix).
 const autoSrc = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/automation.js'), 'utf8');
 A.ok(autoSrc.includes('StationUI.initiativeLabel(sum.initiative)') && !autoSrc.includes("leash: 'BUILD'"), 'AUTOMATIZAR names the rung through StationUI.initiativeLabel, never a private BUILD copy');
-A.ok(!src.includes('autonomy to BUILD or FREE') && src.includes("initiativeLabel('leash') + ' or ' + initiativeLabel('free')"), 'the lifecycle note names the arming rungs by their rendered labels');
+A.ok(!src.includes('autonomy to BUILD or FREE') && src.includes("initiativeLabel('leash') + ' o ' + initiativeLabel('free')"), 'the lifecycle note names the arming rungs by their rendered labels (ES)');
 for (const lvl of Au.REACH) A.ok(new RegExp('data-reach="' + lvl + '"').test(src), 'the dial has a Reach button for "' + lvl + '"');
 
 // the PACE row surfaces the leashPerDay knob: a #auto-pace container plus a button for each of the four presets

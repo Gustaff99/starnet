@@ -25,12 +25,12 @@ A.ok(app.indexOf('Harness.setReasoningEffort(eff)') >= 0, 'the effort patch reac
 A.ok(app.indexOf('a.reasoningEffort = eff') >= 0, 'the effort is kept on the TARGETED agent so it persists and reaches the roster');
 A.ok(chat.indexOf("App.applyConfig({ reasoningEffort: want })") >= 0, '/reasoning writes through the config seam');
 A.ok(chat.indexOf("App.applyConfig({ reasoningEffort: 'minimal' })") >= 0, '/fast drives the same real dial instead of announcing a mode that does not exist');
-A.ok(chat.indexOf('is not a reasoning level') >= 0, 'an unknown level is refused, never silently normalized to medium');
+A.ok(chat.indexOf('no es un nivel de razonamiento') >= 0, 'an unknown level is refused, never silently normalized to medium');
 A.ok(chat.indexOf('MEDIUM_ALIASES') >= 0, 'the silent normalize-to-medium default is distinguished from a real request');
 // truthful telemetry: the confirmation is only printed after the store agrees
 A.ok(/const now = Harness\.getReasoningEffort/.test(chat), '/reasoning reads the level back before claiming it changed');
-A.ok(chat.indexOf('Could not set reasoning effort to') >= 0, 'a write that did not land is reported as a failure');
-A.ok(chat.indexOf("doesn't appear to expose a reasoning dial") >= 0, 'a model with no reasoning dial is warned about (warn-not-block)');
+A.ok(chat.indexOf('No se pudo poner el esfuerzo de razonamiento en') >= 0, 'a write that did not land is reported as a failure');
+A.ok(chat.indexOf('no parece exponer un dial de razonamiento') >= 0, 'a model with no reasoning dial is warned about (warn-not-block)');
 // The two lies that were there before must not come back. Needled on the localLine( call, not the bare phrase —
 // the handlers quote the old wording in a comment explaining WHY they changed, and that must stay allowed.
 A.ok(chat.indexOf("localLine('Reasoning effort is not a separate") === -1, 'the false "no reasoning toggle" claim is gone');

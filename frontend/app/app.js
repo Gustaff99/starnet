@@ -2053,8 +2053,8 @@ const App = (() => {
       // sidecar's runWindow): name THAT window and why, never the 1M a 200k-tier run folds inside (final-polish 10-23). The
       // tier belongs to the ROUTE: an id the picked catalog does not list names none (only another route's catalog has it)
       const run = row ? (Number(row.runWindow) || 0) : 0;
-      if (limit && run > 0 && run < limit) bits.push('remembers up to ' + fmt(run) + ' tokens of chat (the model can hold ' + fmt(limit) + ', pero cobra un precio más alto para un prompt de más de ' + fmt(run) + ')');
-      else if (limit) bits.push('remembers up to ' + fmt(limit) + ' tokens of chat');
+      if (limit && run > 0 && run < limit) bits.push('recuerda hasta ' + fmt(run) + ' tokens de chat (el modelo puede sostener ' + fmt(limit) + ', pero cobra un precio más alto para un prompt de más de ' + fmt(run) + ')');
+      else if (limit) bits.push('recuerda hasta ' + fmt(limit) + ' tokens de chat');
       if (price) bits.push('costs ' + usdPerM(price.in) + ' in · ' + usdPerM(price.out) + ' out per million tokens (a token ≈ ¾ of a word)');
       hint.textContent = bits.join('  ·  ');
       return;
@@ -5945,12 +5945,12 @@ const App = (() => {
     // starnet.* records + a memory snapshot into one file; import restores them on any browser.
     const dataStatus = m => { const n = el('data-status'); if (n) n.textContent = m || ''; };
     el('btn-export').onclick = async () => {
-      SFX.click(); dataStatus('exporting…');
+      SFX.click(); dataStatus('exportando…');
       const r = await Backup.exportAll();
       dataStatus(r && r.ok
         // #134: the page only HANDS the file over (where it lands is never reported back) — name it, never claim "saved"
-        ? 'handed ' + r.file + ' to your downloads — secrets excluded; ' + r.records + ' records' + (r.notes ? ' + ' + r.notes + ' memories' : '')
-        : 'export failed');
+        ? 'entregado ' + r.file + ' a tus descargas — sin claves ni tokens; ' + r.records + ' registros' + (r.notes ? ' + ' + r.notes + ' memorias' : '')
+        : 'la exportación falló');
     };
     const fileImport = el('file-import');
     el('btn-import').onclick = () => { SFX.click(); fileImport.value = ''; fileImport.click(); };
@@ -5960,14 +5960,14 @@ const App = (() => {
       const r = await Backup.importFile(f);
       // bad(), not a bespoke error() — that cue never existed, so the `&&` guard silently swallowed
       // the only audible signal a restore had failed. bad() is the station's negative-outcome voice.
-      if (!r.ok) { dataStatus('import failed — ' + r.error); SFX.bad(); return; }
+      if (!r.ok) { dataStatus('la importación falló — ' + r.error); SFX.bad(); return; }
       SFX.boot();
       const mem = (typeof r.memoriesRestored === 'number') ? r.memoriesRestored
-        : (r.memories ? r.memories + ' in file' : 0);
-      dataStatus('restored ' + (r.agentName || 'agent') + ' — ' + (r.records == null ? r.keys : r.records) + ' records'
-        + (mem ? ' + ' + mem + ' memories' : '')
+        : (r.memories ? r.memories + ' en el archivo' : 0);
+      dataStatus('restaurado ' + (r.agentName || 'agente') + ' — ' + (r.records == null ? r.keys : r.records) + ' registros'
+        + (mem ? ' + ' + mem + ' memorias' : '')
         // a memory the Commander forgot is not resurrected by an old backup (Memory Core › declined can restore it)
-        + (r.memoriesForgotten ? ' · ' + r.memoriesForgotten + ' forgotten ' + (r.memoriesForgotten > 1 ? 'memories' : 'memory') + ' left out' : ''));
+        + (r.memoriesForgotten ? ' · ' + r.memoriesForgotten + ' memoria' + (r.memoriesForgotten > 1 ? 's' : '') + ' olvidada' + (r.memoriesForgotten > 1 ? 's' : '') + ' fuera' : ''));
       gateActive = false;
       reentry();   // resume straight into the restored agent (or its RESUME screen if creds are still missing)
     };

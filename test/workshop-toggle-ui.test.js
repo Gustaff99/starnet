@@ -54,7 +54,7 @@ const writeDurable = ({ fs }, file, data) => { fs.writeFileSync(file, data); };
   const ui = app('stationui.js'), appjs = app('app.js');
 
   A.ok(/id="ag-workshop-on"/.test(ui), 'the dossier renders the #ag-workshop-on away-workshop checkbox');
-  A.ok(/aria-label="Build things while I am away"/.test(ui), 'the toggle carries an accessible name');
+  A.ok(/aria-label="Construir cosas mientras estoy fuera"/.test(ui), 'the toggle carries an accessible name');
   A.ok(/#ag-workshop-on/.test(ui) && /access\.config\.setWorkshop\(/.test(ui), 'flipping the toggle calls access.config.setWorkshop');
   // truthful telemetry: the checkbox reverts if the station did not record the grant
   A.ok(/setWorkshop\(a && a\.id, next\)\)\.then\(ok =>/.test(ui) || /setWorkshop\([\s\S]{0,60}\)\)\.then\(ok =>/.test(ui), 'the toggle resolves off the REAL setWorkshop result (does not assume success)');

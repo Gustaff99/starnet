@@ -628,7 +628,7 @@ const wrongServerCase = (async () => {
   const ui = require('fs').readFileSync(require('path').join(__dirname, '../frontend/app/stationui.js'), 'utf8');
   A.ok(/function focusProvider\(pid, opts\)/.test(ui) && /openTerm, focusProvider,/.test(ui), 'StationUI.focusProvider is defined and exported');
   A.ok(/querySelector\('\[data-act="prov-oauth-signin"\]'\); if \(b\) b\.click\(\)/.test(ui), 'a sign-in door presses the card\'s own prov-oauth-signin key');
-  A.ok(/the provider answered but did not confirm this key/.test(ui) && /the check got no answer from the provider/.test(ui), 'an empty probe error prints a fallback reason');
+  A.ok(/el proveedor respondió pero no confirmó esta clave/.test(ui) && /la comprobación no obtuvo respuesta del proveedor/.test(ui), 'an empty probe error prints a fallback reason');
 }
 
 /* ---- org P03 (final round): a sign-in SUBSCRIPTION has no wallet ----

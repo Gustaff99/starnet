@@ -36,7 +36,7 @@ const ModelDock = (() => {
     { id: 'low', label: 'BAJO', title: 'Razonamiento bajo' },
     { id: 'medium', label: 'MED', title: 'Razonamiento medio' },
     { id: 'high', label: 'ALTO', title: 'Razonamiento alto' },
-    { id: 'xhigh', label: 'XHIGH', title: 'Extra-high reasoning' },
+    { id: 'xhigh', label: 'XHIGH', title: 'Razonamiento extra-alto' },
     { id: 'max', label: 'MÁX', title: 'Razonamiento máximo' }
   ];
   // Codex fallback when a catalog omits per-model levels. Declared metadata takes precedence below.

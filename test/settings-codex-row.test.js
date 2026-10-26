@@ -24,21 +24,21 @@ A.ok(/codexStatusKnown\s*=\s*next/.test(ui) && /expired:\s*!!\(j && j\.expired\)
 A.ok(/function codexExpired\(\)/.test(ui), 'stationui exposes the codexExpired predicate');
 
 // ---- dead sign-in renders EXPIRED, never SIGNED IN ----
-A.ok(/SIGN-IN EXPIRED — RECONNECT/.test(ui), 'the provider card renders SIGN-IN EXPIRED — RECONNECT when known-dead');
+A.ok(/SESIÓN CADUCADA — RECONECTAR/.test(ui), 'the provider card renders SESIÓN CADUCADA — RECONECTAR when known-dead (ES)');
 A.ok(/codexDead \? 'avail expired'/.test(ui), 'a dead codex card drops the conn styling (never green)');
 A.ok(/&& !codexDead/.test(ui), 'a dead sign-in can never satisfy the card\'s connected predicate (SIGNED IN gated on !dead)');
 A.ok(/codexConnected\(\) \|\| codexExpired\(\)/.test(ui), 'the API KEYS row still exists while expired (recovery lives there — hiding it was the escape)');
-A.ok(/⚠ EXPIRED/.test(ui) && /key-mask-dead/.test(ui), 'the expired key row masks show the fault, not "ChatGPT OAuth"');
+A.ok(/⚠ CADUCADA/.test(ui) && /key-mask-dead/.test(ui), 'the expired key row masks show the fault, not "ChatGPT OAuth" (ES)');
 A.ok(/\.prov-card\.expired/.test(css) && /\.key-mask\.key-mask-dead/.test(css), 'the expired states have the --bad styling vocabulary');
 
 // ---- the row always carries actions wired to the real endpoints ----
 A.ok(/data-act="codex-resign"/.test(ui), 'the codex row renders a ⏼ RE-SIGN-IN action');
 A.ok(/data-act="codex-logout"/.test(ui), 'the codex row renders a ✕ DISCONNECT action');
-A.ok(/⏼ RE-SIGN-IN/.test(ui) && /✕ DISCONNECT/.test(ui), 'the action labels are the locked vocabulary');
+A.ok(/⏼ REINICIAR SESIÓN/.test(ui) && /✕ DESCONECTAR/.test(ui), 'the action labels are the locked vocabulary (ES)');
 // (org P03 wiring) RE-SIGN-IN is the card's ONE flow: startCardSignin → OAuthSignIn.for('codex') = CodexSignIn, so the row and
 // the RECONNECT door can never show two different codes (a start cancels the flow before it)
-A.ok(/if \(act === 'codex-resign'\) \{ startCardSignin\('codex', '⏼ RE-SIGN-IN'\); return; \}/.test(ui) && !/CodexSignIn\.start\(/.test(ui), 'RE-SIGN-IN drives the shared CodexSignIn engine through the one card flow');
-A.ok(/if \(oauthAct\[2\] === 'resign'\) \{ if \(engine\) startCardSignin\(pid, '⏼ RE-SIGN-IN'\); return; \}/.test(ui), 'grok/kimi RE-SIGN-IN rides the same flow');
+A.ok(/if \(act === 'codex-resign'\) \{ startCardSignin\('codex', '⏼ REINICIAR SESIÓN'\); return; \}/.test(ui) && !/CodexSignIn\.start\(/.test(ui), 'REINICIAR SESIÓN drives the shared CodexSignIn engine through the one card flow (ES)');
+A.ok(/if \(oauthAct\[2\] === 'resign'\) \{ if \(engine\) startCardSignin\(pid, '⏼ REINICIAR SESIÓN'\); return; \}/.test(ui), 'grok/kimi REINICIAR SESIÓN rides the same flow (ES)');
 A.ok(/act === 'codex-logout'/.test(ui) && /CodexSignIn(\.logout\(\)|.*logout)/.test(ui), 'DISCONNECT drives the logout endpoint');
 A.ok(/oauthRowFlowHtml\('codex'\);/.test(ui) && /id="' \+ esc\(pid\) \+ '-inline-code"/.test(ui) && /id="' \+ esc\(pid\) \+ '-inline-status"/.test(ui), 'the inline device-code surface (code + URL status) renders in the settings row');
 // ---- behavioral: the row box and the card box are two views of ONE flow state (org P03 wiring) ----

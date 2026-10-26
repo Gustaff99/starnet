@@ -31,15 +31,15 @@ A.ok(/fetch\('\/api\/auth\/'\s*\+\s*pid\s*\+\s*'\/status'/.test(ui), 'the shared
 A.ok(/function isOAuthProvider/.test(ui) && /isOAuthProvider\(p\.id\)/.test(ui), 'the provider card render is generalized over the OAuth providers (not codex-only branches)');
 
 // ---- dead sign-in renders EXPIRED, never SIGNED IN; the row survives so recovery is reachable ----
-A.ok(/const connLabel = isOAuthProvider\(p\.id\) \? '● SIGNED IN'/.test(ui), 'SIGNED IN is reserved for a live OAuth sign-in (all providers), gated below on !dead');
+A.ok(/const connLabel = isOAuthProvider\(p\.id\) \? '● SESIÓN ACTIVA'/.test(ui), 'SESIÓN ACTIVA is reserved for a live OAuth sign-in (all providers), gated below on !dead');
 A.ok(/const codexDead = isOAuthProvider\(p\.id\) && oauthExpiredFor\(p\.id\)/.test(ui), 'a dead sign-in flag covers every OAuth provider, not just codex');
 A.ok(/oauthProvConnected\(pid\) \|\| oauthProvExpired\(pid\)/.test(ui), 'an expired grok/kimi sign-in still earns its row (RE-SIGN-IN lives there)');
-A.ok(/key-mask-dead/.test(ui) && /⚠ EXPIRED/.test(ui), 'the expired oauth row masks the fault, never a live label');
+A.ok(/key-mask-dead/.test(ui) && /⚠ CADUCADA/.test(ui), 'the expired oauth row masks the fault, never a live label');
 
 // ---- the shared row carries actions wired to the real endpoints, id'd per provider ----
 A.ok(/data-act="'\s*\+\s*esc\(pid\)\s*\+\s*'-resign"/.test(ui), 'the shared oauth row renders a per-provider ⏼ RE-SIGN-IN action');
 A.ok(/data-act="'\s*\+\s*esc\(pid\)\s*\+\s*'-logout"/.test(ui), 'the shared oauth row renders a per-provider ✕ DISCONNECT action');
-A.ok(/⏼ RE-SIGN-IN/.test(ui) && /✕ DISCONNECT/.test(ui), 'the action labels are the locked vocabulary');
+A.ok(/⏼ REINICIAR SESIÓN/.test(ui) && /✕ DESCONECTAR/.test(ui), 'the action labels are the locked vocabulary (ES)');
 A.ok(/id="'\s*\+\s*esc\(pid\)\s*\+\s*'-inline-code"/.test(ui) && /id="'\s*\+\s*esc\(pid\)\s*\+\s*'-inline-status"/.test(ui), 'each oauth row gets its OWN inline device-code surface (no id collision between grok + kimi)');
 
 // ---- ONE shared engine, no bespoke poll loops in the UI ----
@@ -103,7 +103,7 @@ A.ok(/p !== 'codex' && p !== 'grok' && p !== 'kimi'/.test(keycta), 'keycta treat
   const ui = read('frontend', 'app', 'stationui.js');
   A.ok(/data-act="prov-oauth-signin"/.test(ui), 'the provider card renders a ⏼ SIGN IN action for a not-signed-in device-code provider');
   A.ok(/wantsOAuthSignin\s*=\s*p\.live\s*&&\s*isOAuthProvider\(p\.id\)\s*&&\s*!credentialSaved/.test(ui), 'the card sign-in covers EVERY device-code provider (codex included) without a stored sign-in — never just OAUTH_EXTRA');
-  A.ok(!/wantsOAuthSignin\s*=[^;]*!codexDead/.test(ui) && /codexDead \? '⏼ RECONNECT' : '⏼ SIGN IN'/.test(ui), '#92: a KNOWN-dead sign-in keeps the card button, labelled ⏼ RECONNECT (the RE-SIGN-IN row under API KEYS was the only way back in)');
+  A.ok(!/wantsOAuthSignin\s*=[^;]*!codexDead/.test(ui) && /codexDead \? '⏼ RECONECTAR' : '⏼ INICIAR SESIÓN'/.test(ui), '#92: a KNOWN-dead sign-in keeps the card button, labelled ⏼ RECONECTAR (the REINICIAR SESIÓN row under API KEYS was the only way back in)');
   A.ok(/prov-oauth-signin"\]'\)/.test(ui) && /OAuthSignIn\.for\(pid\)/.test(ui), 'the card sign-in drives the SAME shared engine (OAuthSignIn.for), no bespoke fetch loop');
   A.ok(/id="prov-oauth-code-'\s*\+\s*esc\(p\.id\)/.test(ui) && /id="prov-oauth-status-'\s*\+\s*esc\(p\.id\)/.test(ui), 'the card owns a per-provider inline device-code surface (no id collision)');
   const signinHandler = ui.slice(ui.indexOf("querySelector('[data-act=\"prov-oauth-signin\"]')"));
@@ -135,10 +135,10 @@ A.ok(/p !== 'codex' && p !== 'grok' && p !== 'kimi'/.test(keycta), 'keycta treat
   // desktop keychain writes: configured flips ONLY after the invoke proves itself; Settings callers await and
   // render the honest failure (the optimistic flip toasted "stored in your OS keychain" over a rejected write).
   A.ok(/\.then\(r => \{ setDesktopConfigured\(p, on\); return r; \}\)/.test(harness), 'setKey flips configured only after the keychain write resolves');
-  A.ok(/err && err\.message/.test(ui) && /could not verify and store the ' \+ provName\(provider\) \+ ' key/.test(ui), 'Settings key save renders the exact validation/keychain failure copy');
+  A.ok(/err && err\.message/.test(ui) && /no se pudo verificar y guardar la clave de ' \+ provName\(provider\)/.test(ui), 'Settings key save renders the exact validation/keychain failure copy (ES)');
   // Settings OAuth state changes mirror into the desktop configured-map (genesis already did; Settings must too).
   // (org P03 wiring) every sign-in — card, door, or the API KEYS row's RE-SIGN-IN, codex included — finishes in startCardSignin
-  A.ok(/function startCardSignin\(pid, retryLabel\) \{[\s\S]*?Harness\.setDesktopConfigured\(pid, true\)/.test(ui) && /if \(act === 'codex-resign'\) \{ startCardSignin\('codex', '⏼ RE-SIGN-IN'\); return; \}/.test(ui), 'Settings sign-in feeds the desktop configured-map');
+  A.ok(/function startCardSignin\(pid, retryLabel\) \{[\s\S]*?Harness\.setDesktopConfigured\(pid, true\)/.test(ui) && /if \(act === 'codex-resign'\) \{ startCardSignin\('codex', '⏼ REINICIAR SESIÓN'\); return; \}/.test(ui), 'Settings sign-in feeds the desktop configured-map');
   A.ok(/Harness\.setDesktopConfigured\('codex', false\)/.test(ui) && /Harness\.setDesktopConfigured\(pid, false\)/.test(ui), 'Settings disconnect clears the desktop configured-map');
   // model reconcile on OAuth card select: a foreign global model slug must not ride to the new endpoint.
   A.ok(/isOAuthProvider\(p\) && typeof fetch === 'function'/.test(ui) && /\/api\/auth\/' \+ p \+ '\/models/.test(ui), 'selecting an OAuth provider card reconciles the model against that provider\'s catalog');

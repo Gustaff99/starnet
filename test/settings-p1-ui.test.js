@@ -19,23 +19,23 @@ let n = 0; const ok = (c, m) => { assert.ok(c, m); n++; };
 ok(/function modelCard\(/.test(ui), 'P1-6: the dossier CONFIG tab renders a per-agent MODEL card');
 ok(/id="ag-model-in"/.test(ui) && /id="ag-prov-in"/.test(ui), 'P1-6: the model card has model + provider inputs');
 ok(/access\.config\.setModel/.test(ui), 'P1-6: the model card calls config.setModel');
-ok(/FOLLOW STATION DEFAULT/.test(ui), 'P1-6: the card offers "follow station default" (clear the pin)');
+ok(/USAR PREDETERMINADO DE LA ESTACIÓN/.test(ui), 'P1-6: the card offers "usar predeterminado de la estación" (clear the pin, ES)');
 ok(/function setAgentModelPin\(/.test(appjs), 'P1-6: App implements setAgentModelPin');
 ok(/setModel:\s*setAgentModelPin/.test(appjs), 'P1-6: setModel is exposed on the config access surface');
 ok(/setAgentModelPin[\s\S]{0,1500}pushRoster\(\)/.test(appjs), 'P1-6: the pin pushes the roster so the sidecar records it');
 
 // ---- P1-7 station backup export/import/reset ----
-ok(/STATION BACKUP/.test(ui), 'P1-7: SETTINGS has a STATION BACKUP card');
+ok(/COPIA DE SEGURIDAD/.test(ui), 'P1-7: SETTINGS has a COPIA DE SEGURIDAD card (ES)');
 ok(/function wireBackup\(/.test(ui), 'P1-7: wireBackup is wired');
 // #134: the export request + its truthful "where did it go" line live in Backup.exportStation (backup.js)
 ok(/Backup\.exportStation\(/.test(ui) && /'\/api\/config\/export'/.test(app('backup.js')), 'P1-7: export hits /api/config/export (via Backup.exportStation)');
 ok(/\/api\/config\/import/.test(ui), 'P1-7: import hits /api/config/import');
 ok(/secretsNeeded/.test(ui), 'P1-7: import surfaces re-enter-your-key states from secretsNeeded');
 ok(/n\.fields\.join\(', '\)/.test(ui), 'P1-7: import names the exact connector fields that still need re-entry');
-ok(/already applied:/.test(ui), 'P1-7: a failed multi-section import reports any sections already applied');
+ok(/ya aplicado:/.test(ui), 'P1-7: a failed multi-section import reports any sections already applied (ES)');
 ok(/const freshMsg = document\.querySelector\('#bk-msg'\)/.test(ui), 'P1-7: the import result remains visible after Settings repaints');
-ok(/your keys and tokens are never included|keys and tokens are excluded|secrets excluded/i.test(ui), 'P1-7: the card discloses secrets are excluded');
-ok(/secrets excluded, re-enter keys after importing/.test(app('backup.js')), 'P1-7: the export result line repeats that secrets are excluded (#134: Backup.exportStation)');
+ok(/Las claves y tokens se excluyen/i.test(ui), 'P1-7: the card discloses secrets are excluded (ES)');
+ok(/sin claves ni tokens — reintrodúcelos tras importar/.test(app('backup.js')), 'P1-7: the export result line repeats that secrets are excluded (ES, #134: Backup.exportStation)');
 ok(/AutonomyStore\.exportState/.test(ui) && /AutonomyStore\.importState/.test(ui), 'P1-7: browser-owned autonomy slice round-trips');
 ok(/function exportState\(/.test(auto) && /function importState\(/.test(auto), 'P1-7: AutonomyStore exposes export/import');
 
@@ -74,7 +74,7 @@ ok(/'runComplete'[,)]/.test(chat), 'P1-8: a run-produced-a-deliverable notify is
 ok(/'cronDigest'[,)]/.test(appjs), 'P1-8: the while-you-were-away digest is tagged cronDigest');
 
 // ---- P1-9 advanced runtime knobs ----
-ok(/Runtime limits\s*<span class="dim">/.test(ui), 'P1-9: SETTINGS has an ADVANCED card');
+ok(/Límites de ejecución\s*<span class="dim">/.test(ui), 'P1-9: SETTINGS has an ADVANCED card (ES)');
 ok(/function wireAdvanced\(/.test(ui), 'P1-9: wireAdvanced is wired');
 ok(/\/api\/runtime\/knobs/.test(ui), 'P1-9: the card reads/writes /api/runtime/knobs');
 ok(/environment variable always overrides|env-locked|envLocked/i.test(ui), 'P1-9: precedence (env wins) is disclosed + env-locked fields are shown');

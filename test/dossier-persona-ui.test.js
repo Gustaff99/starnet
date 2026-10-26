@@ -30,7 +30,7 @@ ok(/setAgentPersona[\s\S]{0,1500}pushRoster\(\)/.test(appjs), 'the recomposed pr
 ok(/setAgentPersona[\s\S]{0,1500}persist\(\)/.test(appjs), 'the pick persists');
 
 // ---- honesty details ----
-ok(/UNHINGED — SURE\? it swears, for real/.test(ui), 'UNHINGED keeps the two-press confirm in the dossier');
+ok(/SIN FRENO — ¿SEGURO\? maldice, de verdad/.test(ui), 'UNHINGED keeps the two-press confirm in the dossier (ES)');
 ok(/setPersona\(a && a\.id, id\);[\s\S]{0,400}rerender\('agents'\)/.test(ui), 'the applied state re-renders from recorded truth, never an optimistic highlight');
 
 console.log('dossier-persona-ui.test.js OK —', n, 'assertions');

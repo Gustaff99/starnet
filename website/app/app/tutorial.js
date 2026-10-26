@@ -1250,7 +1250,7 @@ const Tutorial = (() => {
         + fmMission('Start with a layout', 'In BUILD MODE, press <kbd>' + e(R.lineKey) + '</kbd> or open <b>' + e(R.tab) + ' › ' + e(R.lines) + '</b>: ' + (typeof R.lineCount === 'number' ? R.lineCount + ' ' : '') + 'ready-made layouts. Stamp one, then inspect its bays and feed before running your job.')
         + '<p class="fm-note"><b>Recipes = WHAT.</b> A job to launch. <b>Skills = HOW.</b> Reusable instructions. <b>Routines = WHEN.</b> Scheduled work. <b>Loops = UNTIL.</b> Repeated work with a stopping condition.</p>'
         + stagedNote()
-        + fmAction('workflows', 'OPEN WORKFLOWS');
+        + fmAction('workflows', 'OPEN FLUJOS');
     }
     if (tab === 'PROGRESS') {
       return '<p class="fm-lead">The campaign is your real life. Set a goal, take useful steps, and record what changed.</p>'

@@ -190,7 +190,7 @@ A.ok(/\+ taskDoctrineNote/.test(sidecar), 'the task doctrine is actually wired i
   // and the counter surface reads through the outcome-preserving one.
   const ui = fs.readFileSync(path.join(__dirname, '../frontend/app/stationui.js'), 'utf8');
   A.ok(/Harness\.agentSkillsRead\(agentId/.test(ui), 'the PRACTICE meter reads through agentSkillsRead');
-  A.ok(/if \(!r \|\| !r\.ok\) return fail\('could not read the skillbase'\)/.test(ui), 'a failed read renders UNREAD, never a 0');
+  A.ok(/if \(!r \|\| !r\.ok\) return fail\('no se pudo leer el skillbase'\)/.test(ui), 'a failed read renders UNREAD, never a 0');
   A.ok(/if \(!now \|\| now\.id !== agentId\) return;/.test(ui), 'a late read never paints a different agent’s dossier');
 }
 

@@ -95,7 +95,7 @@ const sui = fs.readFileSync(require.resolve('../frontend/app/stationui.js'), 'ut
 A.ok(!/data-term="sessiontools"/.test(html) && !/ws-tools-park/.test(html), 'the SESSION TOOLS window entry and parked panel are fully removed');
 A.ok(!/buildSessionTools|parkSessionTools|sessiontools:/.test(sui), 'stationui no longer builds a SESSION TOOLS window');
 A.ok(!/ws-tools-btn/.test(html), 'rail head stays SESSIONS/PROJECTS + NEW only (no inline TOOLS button)');
-A.ok(/id="ws-rail-search"[\s\S]*id="ws-search"[\s\S]*search sessions \+ transcripts/.test(html), 'one labelled rail search surface covers sessions and transcripts');
+A.ok(/id="ws-rail-search"[\s\S]*id="ws-search"[\s\S]*buscar sesiones \+ transcripciones/.test(html), 'one labelled rail search surface covers sessions and transcripts (ES)');
 A.ok(/sessions\.hidden = railView !== 'sessions' \|\| !!q/.test(app), 'an active search replaces ordinary session rows instead of leaving unrelated rows visible below the results');
 A.ok(/input\.value = ''; renderSessionSearch\(\)/.test(app), 'opening a search hit clears search mode and restores the ordinary session rail');
 A.ok(/searchActive = view === 'sessions' && !!\(search && search\.value\.trim\(\)\)/.test(app)

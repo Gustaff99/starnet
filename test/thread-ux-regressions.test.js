@@ -342,11 +342,11 @@ test('a keyboard scroll forgets an earlier reveal like a wheel or touch does (re
 
 test('a card settled by another surface says what was APPLIED and where it came from (voice "always" is not "once from your phone")', () => {
   const c = ctx(part(chat, '  function settledWhere(resp)', '  async function answerConsent('));
-  assert.equal(c.settledLabel({ decision: 'always', via: 'voice' }), '✓ always allowed by voice');
-  assert.equal(c.settledLabel({ decision: 'once', via: 'needs-you' }), '✓ approved once from NEEDS YOU');
-  assert.equal(c.settledLabel({ decision: 'deny', via: 'row' }), '✕ denied');
-  assert.equal(c.settledLabel({ decision: 'session' }), '✓ approved for this session from your phone', 'no via = the sidecar\'s remote (phone) answer');
-  assert.equal(c.settledLabel({ decision: 'once' }), '✓ approved once from your phone');
+  assert.equal(c.settledLabel({ decision: 'always', via: 'voice' }), '✓ siempre permitido por voz');
+  assert.equal(c.settledLabel({ decision: 'once', via: 'needs-you' }), '✓ aprobado una vez desde NECESITA DE TI');
+  assert.equal(c.settledLabel({ decision: 'deny', via: 'row' }), '✕ denegado');
+  assert.equal(c.settledLabel({ decision: 'session' }), '✓ aprobado para esta sesión desde tu teléfono', 'no via = the sidecar\'s remote (phone) answer');
+  assert.equal(c.settledLabel({ decision: 'once' }), '✓ aprobado una vez desde tu teléfono');
   assert.ok(/U\.bus\.emit\('permission\.response', \{ promptId: p\.promptId, decision: appliedDecision, via: via \|\| 'desk' \}\)/.test(chat), 'every local answer names its surface on the bus');
   assert.ok(/Chat\.answerConsent\(pending, ws, decision, 'voice'\)/.test(fs.readFileSync('frontend/app/voice-live.js', 'utf8')), 'voice answers say they were spoken');
 });

@@ -23,24 +23,24 @@ const t = Workstreams.create('Halted task', { kind: 'task', activate: false });
 Workstreams.appendRun(t.id, 'run-1', 5000);
 A.eq(Workstreams.get(t.id).lane, 'active', 'a real run advanced the task card');
 busy.add(t.id);
-A.ok(/RUNNING/.test(board.stateChip(Workstreams.get(t.id))), 'a live run reads RUNNING');
+A.ok(/EN CURSO/.test(board.stateChip(Workstreams.get(t.id))), 'a live run reads RUNNING');
 busy.delete(t.id);
 
 // the stop path settles the outcome as STOPPED: no verdict either way, the terminal reason recorded
 A.ok(Workstreams.noteRunEnd(t.id, 'run-1', null, 'stopped'), 'the stopped outcome is recorded on the run that owns the card');
 A.eq(Workstreams.get(t.id).lastRunOk, null, 'a stop is neither a success nor a failure');
 const chip = board.stateChip(Workstreams.get(t.id));
-A.ok(/STOPPED/.test(chip), 'a stopped run reads STOPPED on its card');
-A.ok(!/FINISHED|RESULT READY|FAILED/.test(chip), 'a stopped run never claims FINISHED or FAILED');
+A.ok(/DETENIDA/.test(chip), 'a stopped run reads STOPPED on its card');
+A.ok(!/TERMINÓ|RESULTADO LISTO|FALLO/.test(chip), 'a stopped run never claims FINISHED or FAILED');
 const agg = board.activeAggregate([Workstreams.get(t.id)]);
-A.ok(/1 STOPPED/.test(agg) && !/READY TO OPEN/.test(agg), 'the IN PROGRESS header counts it as stopped, not ready');
+A.ok(/1 DETENIDA/.test(agg) && !/LISTA PARA ABRIR/.test(agg), 'the IN PROGRESS header counts it as stopped, not ready');
 
 // the outcome survives a save round-trip (restart), and the next real run clears it
 Workstreams.init(Workstreams.serialize());
-A.ok(/STOPPED/.test(board.stateChip(Workstreams.get(t.id))), 'the STOPPED chip survives save hydration');
+A.ok(/DETENIDA/.test(board.stateChip(Workstreams.get(t.id))), 'the STOPPED chip survives save hydration');
 Workstreams.appendRun(t.id, 'run-2', 6000);
 Workstreams.noteRunEnd(t.id, 'run-2', true);
-A.ok(/FINISHED/.test(board.stateChip(Workstreams.get(t.id))), 'a later completed run reads FINISHED again');
+A.ok(/TERMINÓ/.test(board.stateChip(Workstreams.get(t.id))), 'a later completed run reads FINISHED again');
 
 // the producer: both of chat.js's stop paths settle the outcome through noteStopReason — run the REAL helper
 const chat = fs.readFileSync(path.join(__dirname, '../frontend/app/chat.js'), 'utf8');
@@ -55,12 +55,12 @@ const u = Workstreams.create('Stopped from COMMS', { kind: 'task', activate: fal
 Workstreams.appendRun(u.id, 'run-u', 7000);
 u.history.push({ role: 'assistant', content: 'tick0 tick1', stopped: true });
 helper.noteStopReason(u, 'stopped by you', 'run-u');
-A.ok(/STOPPED/.test(board.stateChip(Workstreams.get(u.id))) && u.history[u.history.length - 1].stopNote === 'stopped by you', 'a Commander Stop reads STOPPED and keeps its note');
+A.ok(/DETENIDA/.test(board.stateChip(Workstreams.get(u.id))) && u.history[u.history.length - 1].stopNote === 'stopped by you', 'a Commander Stop reads STOPPED and keeps its note');
 const v = Workstreams.create('Budget stop', { kind: 'task', activate: false });
 Workstreams.appendRun(v.id, 'run-v', 7000);
 Workstreams.noteRunEnd(v.id, 'run-v', true);                // the in-band envelope settled "completed" first
 helper.noteStopReason(v, 'budget reached', 'run-v', 'budget');
 A.eq([Workstreams.get(v.id).lastRunOk, Workstreams.get(v.id).lastRunReason], [null, 'budget'], 'an in-band stop keeps its own reason');
-A.ok(/STOPPED/.test(board.stateChip(Workstreams.get(v.id))), 'a budget-stopped run is not FINISHED either');
+A.ok(/DETENIDA/.test(board.stateChip(Workstreams.get(v.id))), 'a budget-stopped run is not FINISHED either');
 
 A.report('board-stopped-run.test');

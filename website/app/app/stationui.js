@@ -2232,9 +2232,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        an honest bad number belongs. Excluded runs are NAMED, not silently dropped from the denominator. */
     const rl = Xp.reliability ? Xp.reliability(a.stats) : null;
     const excludedNote = rl && rl.excluded
-      ? '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">' + rl.excluded + ' ejecución' + (rl.excluded === 1 ? '' : 'es') + ' apartada' + ' — ' +
+      ? '<div class="gx-row gx-dim" style="font-size:11px;margin-top:4px;">' + rl.excluded + ' ejecucio' + (rl.excluded === 1 ? 'n apartada' : 'nes apartadas') + ' — ' +
         (rl.faulted ? rl.faulted + ' falló el proveedor' : '') + (rl.faulted && rl.neutral ? ', ' : '') +
-        (rl.neutral ? rl.neutral + ' la detuviste o preguntó' : '') + ' — nunca le imputada a este agente</div>'
+        (rl.neutral ? rl.neutral + ' la detuviste o preguntó' : '') + ' — nunca imputada a este agente</div>'
       : '';
     const reliabilityBlk = !rl ? '' :
       // spans both columns of the existing .gx-2 grid (no CSS change; still correct under the 1-col media query)
@@ -4867,7 +4867,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      TO DO -> IN PROGRESS the instant a real run fires (Workstreams.appendRun); SHIPPED is only ever a
      deliberate human turn-in (the ✓ SHIP button). The General chat home isn't a project, so it shows
      in the rail but never on this board. App owns persistence + the rail; we drive both via sync(). */
-  const COLS = [['todo', 'TO DO'], ['active', 'IN PROGRESS'], ['shipped', 'COMPLETED']];
+  const COLS = [['todo', 'PENDIENTE'], ['active', 'EN CURSO'], ['shipped', 'COMPLETADA']];
   const WS = () => (typeof Workstreams === 'object' && Workstreams) ? Workstreams : null;
   function boardStreams() {
     const w = WS(); if (!w) return [];
@@ -4902,7 +4902,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const w = WS(); if (!w) return;
     if (!w.setLane(id, 'shipped')) return;
     const s = w.get(id); persistWS(); sync();
-    notify('marked complete: ' + ((s && s.title) || 'workstream'), 'gold'); sfx('notify');
+    notify('marcada como completa: ' + ((s && s.title) || 'flujo de trabajo'), 'gold'); sfx('notify');
   }
   function reopenTask(id) { const w = WS(); if (!w) return; w.setLane(id, 'active'); persistWS(); sync(); }
   function archiveCard(id) { const w = WS(); if (!w) return; w.archive(id, true); persistWS(); sync(); }
@@ -4963,7 +4963,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // whoever happens to be first, not who this workstream actually runs as.
     const bound = (Array.isArray(present) ? present.find(a => a && a.id === s.agentId) : null);
     const boundName = bound ? (bound.name || bound.id) : (s.agentId || 'agent');
-    notify('assigned to ' + boundName + ': ' + (s.title || 'workstream'), 'gold');
+    notify('asignada a ' + boundName + ': ' + (s.title || 'flujo de trabajo'), 'gold');
     sfx('notify');
   }
 
@@ -4971,15 +4971,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // add-a-task input (focus only — no new functionality); ACTIVE/SHIPPED just explain what lands here.
   function kbEmpty(lane) {
     if (lane === 'todo') return '<div class="kb-empty-col"><div class="empty-state">' +
-      '<span class="es-glyph">▧</span><b>NO TASKS</b>' +
-      '<span>Queue a planned task for an agent.</span>' +
-      '<button class="es-cta" type="button">+ ADD ONE</button></div></div>';
+      '<span class="es-glyph">▧</span><b>SIN TAREAS</b>' +
+      '<span>Coloca aquí una tarea planificada para un agente.</span>' +
+      '<button class="es-cta" type="button">+ AÑADIR UNA</button></div></div>';
     if (lane === 'active') return '<div class="kb-empty-col"><div class="empty-state">' +
-      '<span class="es-glyph">▶</span><b>NOTHING IN FLIGHT</b>' +
-      '<span>Start a To do task to begin work. Review its result here afterward.</span></div></div>';
+      '<span class="es-glyph">▶</span><b>NADA EN CURSO</b>' +
+      '<span>Inicia una tarea de Pendiente para empezar. Revisa aquí su resultado después.</span></div></div>';
     return '<div class="kb-empty-col"><div class="empty-state">' +
-      '<span class="es-glyph">✓</span><b>NO COMPLETED TASKS YET</b>' +
-      '<span>Tasks you review and mark complete appear here.</span></div></div>';
+      '<span class="es-glyph">✓</span><b>AÚN SIN TAREAS COMPLETADAS</b>' +
+      '<span>Las tareas que revisas y marcas como completas aparecen aquí.</span></div></div>';
   }
   // TRUTHFUL RUN-STATE: the chip maps to a PROVABLE backend state — RUNNING when a run is actually in flight
   // on this stream (Channels.isBusy), else DONE — REVIEW & SHIP once at least one run has landed (the human's
@@ -4994,15 +4994,15 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // card's history stays legible in its run count.
   function stateChip(s) {
     const running = (typeof Channels !== 'undefined' && Channels.isBusy && Channels.isBusy(s.id));
-    if (running) return '<div class="kb-state running"><span class="kb-live"></span>RUNNING</div>';
+    if (running) return '<div class="kb-state running"><span class="kb-live"></span>EN CURSO</div>';
     if (s.lane !== 'active') return '';
     if (s.runIds && s.runIds.length) {
       // a run that DIED must never read as DONE (truthful telemetry): lastRunOk=false is settled by
       // chat.js's in-band error branch. null (no outcome recorded — legacy save / delegated run) keeps
       // the DONE chip: we only claim FAILED when the failure is provable, never by inference.
-      if (s.lastRunOk === false) return '<div class="kb-state failed">✗ RUN FAILED — REVIEW</div>';
-      if (s.lastRunOk == null && s.lastRunReason) return '<div class="kb-state stopped">■ STOPPED — REVIEW</div>';   // stopped before it finished (noteStopReason)
-      return '<div class="kb-state done">FINISHED — RESULT READY</div>';
+      if (s.lastRunOk === false) return '<div class="kb-state failed">✗ FALLO — REVISAR</div>';
+      if (s.lastRunOk == null && s.lastRunReason) return '<div class="kb-state stopped">■ DETENIDA — REVISAR</div>';   // stopped before it finished (noteStopReason)
+      return '<div class="kb-state done">TERMINÓ — RESULTADO LISTO</div>';
     }
     return '';
   }
@@ -5014,10 +5014,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       else if (s.runIds && s.runIds.length) { if (s.lastRunOk === false) failed++; else if (s.lastRunOk == null && s.lastRunReason) stopped++; else ready++; }
     });
     const parts = [];
-    if (running) parts.push(running + ' RUNNING');
-    if (failed) parts.push(failed + ' FAILED');
-    if (stopped) parts.push(stopped + ' STOPPED');
-    if (ready) parts.push(ready + ' READY TO OPEN');
+    if (running) parts.push(running + ' EN CURSO');
+    if (failed) parts.push(failed + ' FALLOS');
+    if (stopped) parts.push(stopped + ' DETENIDAS');
+    if (ready) parts.push(ready + ' LISTAS PARA ABRIR');
     return parts.length ? '<small class="kb-col-state">' + parts.join(' · ') + '</small>' : '';
   }
   // the card's bound-agent chip: the workstream's OWN agent (s.agentId) resolved to a name + color from the live
@@ -5027,36 +5027,36 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const a = (Array.isArray(present) ? present.find(x => x && x.id === s.agentId) : null);
     const nm = a ? (a.name || a.id) : (s.agentId || 'agent');
     const col = (a && a.color) || 'var(--ph-dim)';
-    return '<span class="kb-agent" title="runs as ' + esc(nm) + '"><span class="kb-agent-dot" style="background:' + esc(col) + '"></span>' + esc(nm) + '</span>';
+    return '<span class="kb-agent" title="se ejecuta como ' + esc(nm) + '"><span class="kb-agent-dot" style="background:' + esc(col) + '"></span>' + esc(nm) + '</span>';
   }
   function card(s, i) {
-    const n = s.runIds.length, runs = n ? n + (n === 1 ? ' run' : ' runs') : '';
+    const n = s.runIds.length, runs = n ? n + (n === 1 ? ' ejecución' : ' ejecuciones') : '';
     const dv = (s.deliverables && s.deliverables.length) || 0;   // real produced artifacts (workstreams.recordDeliverable)
     // shared tail: rename + pin + archive on every lane (title= is adopted into the station tooltip).
     // One .kb-meta-keys unit so the housekeeping cluster right-aligns AND wraps as a whole — never
     // a stranded ⌫ on its own row (the raggedness the keycap restyle made visible).
-    const tail = '<details class="kb-more"><summary>More</summary><span class="kb-meta-keys">' +
-      '<button data-act="rename">Rename</button>' +
+    const tail = '<details class="kb-more"><summary>Más</summary><span class="kb-meta-keys">' +
+      '<button data-act="rename">Renombrar</button>' +
       '<button data-act="pin">' + (s.pinned ? 'Quitar fijado' : 'Fijar arriba') + '</button>' +
-      (s.lane === 'active' ? '<button data-act="queue">Back to To do</button>' : '') +
-      (s.lane === 'shipped' ? '<button data-act="repeat" title="Review a schedule; nothing runs until you save and enable it">Repeat on a schedule</button>' : '') +
-      '<button data-act="arch" title="Recover from the COMMS rail’s Archived view">Archive</button></span></details>';
+      (s.lane === 'active' ? '<button data-act="queue">Volver a Pendiente</button>' : '') +
+      (s.lane === 'shipped' ? '<button data-act="repeat" title="Revisa el horario; nada se ejecuta hasta que lo guardes y actives">Repetir por horario</button>' : '') +
+      '<button data-act="arch" title="Recupérala desde la vista Archivadas del rail de COMMS">Archivar</button></span></details>';
     const started = (s.history || []).some(m => m.role === 'user');
     const acts = s.lane === 'todo'
-      ? '<button class="assign" data-act="assign">' + (started ? 'CONTINUE' : 'START') + '</button><button data-act="open">OPEN</button>' + tail
+      ? '<button class="assign" data-act="assign">' + (started ? 'CONTINUAR' : 'INICIAR') + '</button><button data-act="open">ABRIR</button>' + tail
       : s.lane === 'active'
-        ? '<button data-act="open">OPEN</button><button data-act="ship" title="Mark this task complete; this does not publish or send anything">MARK COMPLETE</button>' + tail
-        : '<button data-act="open">OPEN RESULT</button><button data-act="reopen">REOPEN</button>' + tail;
+        ? '<button data-act="open">ABRIR</button><button data-act="ship" title="Marca esta tarea como completa; no publica ni envía nada">MARCAR COMPLETA</button>' + tail
+        : '<button data-act="open">ABRIR RESULTADO</button><button data-act="reopen">REABRIR</button>' + tail;
     const messages = (typeof Workstreams !== 'undefined' && Workstreams.visibleMessages) ? Workstreams.visibleMessages(s) : (s.history || []);
     const last = messages.filter(m => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim()).slice(-1)[0];
     const preview = last ? last.content.replace(/\s+/g, ' ').trim() : '';
-    return '<div class="kb-card' + (s.pinned ? ' pinned' : '') + '" draggable="true" data-id="' + s.id + '" role="button" tabindex="0" aria-label="' + esc(s.title || 'untitled') + ' — open conversation" style="--ci:' + (i || 0) + '">' +
-      '<div class="kb-title">' + esc(s.title || 'untitled') + '</div>' +
+    return '<div class="kb-card' + (s.pinned ? ' pinned' : '') + '" draggable="true" data-id="' + s.id + '" role="button" tabindex="0" aria-label="' + esc(s.title || 'sin título') + ' — abrir conversación" style="--ci:' + (i || 0) + '">' +
+      '<div class="kb-title">' + esc(s.title || 'sin título') + '</div>' +
       '<div class="kb-meta">' + agentChip(s) + '<span class="kb-time" data-t="' + (s.lastActiveAt || s.createdAt) + '">' + clock(s.lastActiveAt || s.createdAt) + '</span>' +
       (runs ? '<span>' + runs + '</span>' : '') +
-      (dv ? '<span class="kb-deliv">' + dv + ' deliverable' + (dv === 1 ? '' : 's') + '</span>' : '') + '</div>' +
+      (dv ? '<span class="kb-deliv">' + dv + ' entregable' + (dv === 1 ? '' : 's') + '</span>' : '') + '</div>' +
       stateChip(s) +
-      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Última respuesta' : 'Request') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
+      (preview ? '<p class="kb-preview"><span>' + (last.role === 'assistant' ? 'Última respuesta' : 'Solicitud') + '</span>' + esc(preview.slice(0, 180)) + (preview.length > 180 ? '…' : '') + '</p>' : '') +
       '<div class="kb-acts">' + acts + '</div></div>';
   }
   // LIVE board refresh (P1, 2026-08-04): renderRail pokes the board on EVERY rail change (run start/end,
@@ -5091,9 +5091,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const streams = boardStreams();
     const openMenus = live ? Array.from(body.querySelectorAll('.kb-more[open]')).map(d => d.closest('.kb-card').dataset.id) : [];
     body.innerHTML =
-      '<div class="kb-heading"><header class="kb-header"><p>Plan a task, start it, and open what comes back.</p></header></div>' +   // OUTBOX / DELIVERABLES are this window's MY WORK tabs now (FAMILIES) — no second pair of doors here
+      '<div class="kb-heading"><header class="kb-header"><p>Planifica una tarea, iníciala y abre lo que devuelve.</p></header></div>' +   // OUTBOX / DELIVERABLES are this window's MY WORK tabs now (FAMILIES) — no second pair of doors here
       '<div class="kb-add"><input id="kb-in" data-draft aria-label="Nueva tarea" maxlength="80" placeholder="¿Qué te gustaría lograr?" autocomplete="off">' +
-      '<button class="bb sm" id="kb-add">ADD TASK</button></div><p class="kb-add-note">Adding saves your plan. Start sends the task to its agent.</p>' +
+      '<button class="bb sm" id="kb-add">AÑADIR TAREA</button></div><p class="kb-add-note">Añadir guarda tu plan. Iniciar envía la tarea a su agente.</p>' +
       '<div class="kb-cols">' +
       COLS.map(([lane, label]) => {
         const items = streams.filter(s => s.lane === lane);
@@ -5107,7 +5107,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // hunting HERE, but this board only holds queued directives — finished routine/away runs are
       // readable sessions in COMMS and collectable on the OUTBOX. Shown only when the board is empty
       // (that's exactly when the hunt strands); openTerm('outbox') is the one-click door.
-      (streams.length ? '' : '<div class="win-note" style="margin-top:8px">This board holds tasks you plan here or launch from Recipes and goals. Chats, routines, and while-away runs live as Sessions in COMMS; finished work waits in <button type="button" class="lb-tx-btn" id="kb-outbox-link">▸ DELIVERABLES</button>.</div>');
+      (streams.length ? '' : '<div class="win-note" style="margin-top:8px">Este tablero guarda las tareas que planificas aquí o lanzas desde Recetas y metas. Los chats, rutinas y ejecuciones mientras no estás viven como Sesiones en COMMS; el trabajo terminado espera en <button type="button" class="lb-tx-btn" id="kb-outbox-link">▸ DELIVERABLES</button>.</div>');
     // entrance motion belongs to USER-initiated opens only — a background data poke must not re-animate.
     // (body persists across rebuilds, so the class must be actively toggled both ways.)
     body.classList.toggle('kb-live-refresh', live);
@@ -5209,25 +5209,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // runs on the credits balance a linked station already has. It is also the one provider that must be able
     // to DISAPPEAR — see creditsProviderState() — because offering it on a station with no cloud configured
     // would advertise an account the user cannot create.
-    { id: 'starnet',       name: 'STARNET MANAGED',   endpoint: 'managed inference · credits', blurb: 'no API key — runs on your balance', live: true, credits: true },
-    { id: 'openrouter',    name: 'OPENROUTER',        endpoint: 'openrouter.ai/api/v1',      blurb: 'one key · 300+ models',  live: true },
-    { id: 'codex',         name: 'CHATGPT (CODEX)',   endpoint: 'OAuth · ChatGPT subscription', blurb: 'sign-in, no API key',  live: true },
-    { id: 'grok',          name: 'GROK (XAI)',        endpoint: 'OAuth · SuperGrok / X Premium+', blurb: 'sign-in, no API key', live: true },
-    { id: 'kimi',          name: 'KIMI FOR CODING',   endpoint: 'OAuth · Moonshot subscription', blurb: 'sign-in, no API key', live: true },
-    { id: 'openai',        name: 'OPENAI API',        endpoint: 'api.openai.com/v1',          blurb: 'OpenAI-compatible', live: true },
-    { id: 'anthropic',     name: 'ANTHROPIC',         endpoint: 'api.anthropic.com/v1',       blurb: 'Claude native API', live: true },
-    { id: 'gemini',        name: 'GEMINI',            endpoint: 'generativelanguage.googleapis.com/v1beta', blurb: 'Google native API', live: true },
+    { id: 'starnet',       name: 'STARNET MANAGED',   endpoint: 'inferencia gestionada · créditos', blurb: 'sin clave API — funciona con tu saldo', live: true, credits: true },
+    { id: 'openrouter',    name: 'OPENROUTER',        endpoint: 'openrouter.ai/api/v1',      blurb: 'una clave · 300+ modelos',  live: true },
+    { id: 'codex',         name: 'CHATGPT (CODEX)',   endpoint: 'OAuth · suscripción de ChatGPT', blurb: 'inicia sesión, sin clave API',  live: true },
+    { id: 'grok',          name: 'GROK (XAI)',        endpoint: 'OAuth · SuperGrok / X Premium+', blurb: 'inicia sesión, sin clave API', live: true },
+    { id: 'kimi',          name: 'KIMI FOR CODING',   endpoint: 'OAuth · suscripción de Moonshot', blurb: 'inicia sesión, sin clave API', live: true },
+    { id: 'openai',        name: 'OPENAI API',        endpoint: 'api.openai.com/v1',          blurb: 'compatible con OpenAI', live: true },
+    { id: 'anthropic',     name: 'ANTHROPIC',         endpoint: 'api.anthropic.com/v1',       blurb: 'API nativa de Claude', live: true },
+    { id: 'gemini',        name: 'GEMINI',            endpoint: 'generativelanguage.googleapis.com/v1beta', blurb: 'API nativa de Google', live: true },
     { id: 'xai',           name: 'XAI',               endpoint: 'api.x.ai/v1',                blurb: 'Grok API', live: true },
-    { id: 'groq',          name: 'GROQ',              endpoint: 'api.groq.com/openai/v1',     blurb: 'fast inference', live: true },
+    { id: 'groq',          name: 'GROQ',              endpoint: 'api.groq.com/openai/v1',     blurb: 'inferencia rápida', live: true },
     { id: 'mistral',       name: 'MISTRAL',           endpoint: 'api.mistral.ai/v1',          blurb: 'Mistral API', live: true },
     { id: 'deepseek',      name: 'DEEPSEEK',          endpoint: 'api.deepseek.com',           blurb: 'DeepSeek API', live: true },
     { id: 'together',      name: 'TOGETHER',          endpoint: 'api.together.ai/v1',         blurb: 'Together API', live: true },
     { id: 'fireworks',     name: 'FIREWORKS',         endpoint: 'api.fireworks.ai/inference/v1', blurb: 'Fireworks API', live: true },
     { id: 'perplexity',    name: 'PERPLEXITY',        endpoint: 'api.perplexity.ai',          blurb: 'Sonar API', live: true },
     { id: 'cerebras',      name: 'CEREBRAS',          endpoint: 'api.cerebras.ai/v1',         blurb: 'Cerebras API', live: true },
-    { id: 'ollama',        name: 'OLLAMA',            endpoint: '127.0.0.1:11434/v1',         blurb: 'local models', live: true },
-    { id: 'claude-cli',    name: 'CLAUDE CODE',       endpoint: 'local `claude` command',     blurb: 'your Claude subscription', live: true },
-    { id: 'custom',        name: 'CUSTOM',            endpoint: 'any /v1 base URL',           blurb: 'bring your endpoint', live: true }
+    { id: 'ollama',        name: 'OLLAMA',            endpoint: '127.0.0.1:11434/v1',         blurb: 'modelos locales', live: true },
+    { id: 'claude-cli',    name: 'CLAUDE CODE',       endpoint: 'comando local `claude`',     blurb: 'tu suscripción de Claude', live: true },
+    { id: 'custom',        name: 'CUSTOM',            endpoint: 'cualquier URL base /v1',     blurb: 'trae tu endpoint', live: true }
   ];
   const H = () => (typeof Harness === 'object' && Harness) ? Harness : null;
   function provName(id) { const p = PROVIDERS.find(x => x.id === id); return p ? p.name : String(id || '').toUpperCase(); }
@@ -5453,16 +5453,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (e && e.ok === false && e.error) notify('⚠ ' + e.error, 'warn', undefined, { key: 'engine-key' });
   }
   function keyStoreClause(res) {
-    if (keychainModeKnown === true) return 'stored in your OS keychain';
+    if (keychainModeKnown === true) return 'guardada en la cadena de llaves de tu sistema operativo';
     // #89: the station proved it holds its own copy (presence only) — say both places, and which key routines use
     const e = res && res.engine;
     if (e && e.ok === true && !e.skipped && !e.stale) {
       return e.keySource === 'environment'
-        ? 'stored in this browser and on this station (routines use the API key variable this station was started with)'
-        : 'stored in this browser and on this station, so routines can use it';
+        ? 'guardada en este navegador y en esta estación (las rutinas usan la variable de clave API con la que se inició esta estación)'
+        : 'guardada en este navegador y en esta estación, para que las rutinas puedan usarla';
     }
-    if (keychainModeKnown === false) return 'stored locally in this browser';
-    return 'stored on this machine';
+    if (keychainModeKnown === false) return 'guardada localmente en este navegador';
+    return 'guardada en esta máquina';
   }
   const providerHealth = Object.create(null);   // last no-generation sidecar probe, keyed by provider id
   const providerProbePending = Object.create(null);
@@ -5524,12 +5524,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function claudeFlowBoxHtml(flowing, show, dismissable) {
     return '<div class="key-edit codex-inline prov-oauth-inline prov-claude-inline" id="prov-claude-inline"' + (show ? '' : ' hidden') + '>' +
       '<span class="dim" id="prov-claude-status">' + esc(claudeCard.msg) + '</span>' +
-      (!flowing && dismissable ? '<button class="bb sm" id="prov-claude-dismiss">✕ DISMISS</button>' : '') +
+      (!flowing && dismissable ? '<button class="bb sm" id="prov-claude-dismiss">✕ DESCARTAR</button>' : '') +
       (flowing
-        ? '<button class="bb sm" id="prov-claude-open"' + (claudeCard.url ? '' : ' style="display:none"') + '>↗ OPEN SIGN-IN PAGE</button>' +
-          '<button class="bb sm" id="prov-claude-cancel">✕ CANCEL</button>' +
-          '<input type="text" class="key-input" id="prov-claude-code" placeholder="page showed a code? paste it here" autocomplete="off" spellcheck="false">' +
-          '<button class="bb sm" id="prov-claude-code-go">SUBMIT</button>'
+        ? '<button class="bb sm" id="prov-claude-open"' + (claudeCard.url ? '' : ' style="display:none"') + '>↗ ABRIR PÁGINA DE SESIÓN</button>' +
+          '<button class="bb sm" id="prov-claude-cancel">✕ CANCELAR</button>' +
+          '<input type="text" class="key-input" id="prov-claude-code" placeholder="¿la página mostró un código? pégalo aquí" autocomplete="off" spellcheck="false">' +
+          '<button class="bb sm" id="prov-claude-code-go">ENVIAR</button>'
         : '') +
       '</div>';
   }
@@ -5545,11 +5545,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const next = KimiRegion.get();
     const s = oauthStatus.kimi;
     const stored = s && (s.connected || s.expired) && s.region ? KimiRegion.label(s.region) : '';
-    return '<div class="prov-region" role="group" aria-label="Kimi account region">' +
-      '<span class="dim">ACCOUNT REGION</span>' +
+    return '<div class="prov-region" role="group" aria-label="región de la cuenta Kimi">' +
+      '<span class="dim">REGIÓN DE CUENTA</span>' +
       KimiRegion.OPTIONS.map(o => '<button class="bb sm' + (o.id === next ? ' active' : '') + '" data-act="kimi-region" data-region="' + esc(o.id) + '" aria-pressed="' + (o.id === next) + '"' +
-        ' title="sign in with a ' + esc(o.host) + ' account">' + esc(o.label + ' · ' + o.host) + '</button>').join('') +
-      '<span class="dim">' + (stored ? 'signed in on ' + esc(stored) + ' · ' : '') + 'pick where your Kimi account lives before you sign in</span>' +
+        ' title="inicia sesión con una cuenta de ' + esc(o.host) + '">' + esc(o.label + ' · ' + o.host) + '</button>').join('') +
+      '<span class="dim">' + (stored ? 'sesión iniciada en ' + esc(stored) + ' · ' : '') + 'elige dónde vive tu cuenta de Kimi antes de iniciar sesión</span>' +
     '</div>';
   }
   const STACKABLE_OAUTH = ['codex', 'grok', 'kimi'];
@@ -5568,23 +5568,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // ONE account row (both blocks): label + email, what the provider proved, the station's cooldown, a same-account
   // warning (two rows with one email add no usage), and the extra account's own actions.
   function stackRowHtml(a, i, all, o) {
-    const label = String((a && a.label) || ('account ' + (i + 1))).toUpperCase();
+    const label = String((a && a.label) || ('cuenta ' + (i + 1))).toUpperCase();
     const dupAt = o.signedIn && a.email ? all.findIndex(x => x && x.email === a.email && o.isIn(x)) : -1;
-    const state = !o.signedIn ? '<span class="key-stat bad">' + (o.outLabel || '○ NOT SIGNED IN') + '</span>'
-      : a.coolingUntil > Date.now() ? '<span class="key-stat">◐ HIT A LIMIT · NEXT TRY AFTER ' + esc(stackClock(a.coolingUntil)) + '</span>'
-      : '<span class="key-stat on">● SIGNED IN</span>';
+    const state = !o.signedIn ? '<span class="key-stat bad">' + (o.outLabel || '○ SIN SESIÓN') + '</span>'
+      : a.coolingUntil > Date.now() ? '<span class="key-stat">◐ LÍMITE ALCANZADO · PRÓB INTENTO TRAS ' + esc(stackClock(a.coolingUntil)) + '</span>'
+      : '<span class="key-stat on">● SESIÓN ACTIVA</span>';
     return '<div class="key-row prov-acct' + (o.signedIn ? '' : ' expired') + '" data-account="' + esc((a && a.account) || '') + '">' +
       '<span class="conn-dot"></span>' +
       '<div class="key-main">' +
-        '<div class="key-top"><span class="key-prov">' + esc(label) + (i === 0 ? ' · DEFAULT' : '') + '</span>' +
-        '<code class="key-mask">' + esc(o.signedIn ? (a.email || 'signed in') : (o.outMask || 'not signed in')) + '</code></div>' +
+        '<div class="key-top"><span class="key-prov">' + esc(label) + (i === 0 ? ' · PRINCIPAL' : '') + '</span>' +
+        '<code class="key-mask">' + esc(o.signedIn ? (a.email || 'sesión iniciada') : (o.outMask || 'sin sesión')) + '</code></div>' +
         '<div class="key-meta">' + state + (o.plan ? '<span class="key-stat">' + esc(o.plan) + '</span>' : '') +
-          (dupAt >= 0 && dupAt < i ? '<span class="key-stat bad">⚠ SAME ACCOUNT AS ' + esc(String(all[dupAt].label || '').toUpperCase()) + ' — ADDS NO USAGE</span>' : '') +
+          (dupAt >= 0 && dupAt < i ? '<span class="key-stat bad">⚠ MISMA CUENTA QUE ' + esc(String(all[dupAt].label || '').toUpperCase()) + ' — NO AÑADE USO</span>' : '') +
         '</div>' +
       '</div>' +
       (i === 0 ? '' : '<div class="key-acts">' +
-        (!o.signedIn ? '<button class="bb sm" data-act="' + o.signInAct + '" aria-label="Sign in ' + esc(label) + '">⏼ SIGN IN</button>' : '') +
-        '<button class="bb sm danger" data-act="' + o.removeAct + '" aria-label="Remove ' + esc(label) + '">✕ REMOVE</button>' +
+        (!o.signedIn ? '<button class="bb sm" data-act="' + o.signInAct + '" aria-label="Iniciar sesión en ' + esc(label) + '">⏼ INICIAR SESIÓN</button>' : '') +
+        '<button class="bb sm danger" data-act="' + o.removeAct + '" aria-label="Quitar ' + esc(label) + '">✕ QUITAR</button>' +
       '</div>') +
     '</div>';
   }
@@ -5596,23 +5596,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (!all[0].connected && !extras.length && !st.box) return '';   // nothing signed in yet: the card's own ⏼ SIGN IN is the door
     const isIn = x => !!x.connected;
     const rows = extras.length ? all.map((a, i) => stackRowHtml(a, i, all, {
-      signedIn: isIn(a), isIn, outLabel: a.expired ? '⚠ SIGN-IN EXPIRED' : '○ NOT SIGNED IN', outMask: a.expired ? 'sign in again' : '',
+      signedIn: isIn(a), isIn, outLabel: a.expired ? '⚠ SESIÓN CADUCADA' : '○ SIN SESIÓN', outMask: a.expired ? 'inicia sesión de nuevo' : '',
       signInAct: 'prov-oauth-acct-signin', removeAct: 'prov-oauth-acct-remove' })).join('') : '';
     const flowing = OAuthAccounts.for(pid).active();
     const b = st.box;
     const box = b ? '<div class="key-edit codex-inline prov-oauth-inline" id="prov-oauth-acct-box-' + esc(pid) + '">' +
         '<span class="dim">' + esc(b.msg) + '</span>' +
         (b.code ? '<code class="key-mask">' + esc(b.code) + '</code>' : '') +
-        (b.openUri && flowing ? '<button class="bb sm" data-act="prov-oauth-acct-open">↗ OPEN PAGE</button>' : '') +
-        '<button class="bb sm" data-act="prov-oauth-acct-cancel">' + (flowing ? '✕ CANCEL' : '✕ DISMISS') + '</button>' +
+        (b.openUri && flowing ? '<button class="bb sm" data-act="prov-oauth-acct-open">↗ ABRIR PÁGINA</button>' : '') +
+        '<button class="bb sm" data-act="prov-oauth-acct-cancel">' + (flowing ? '✕ CANCELAR' : '✕ DESCARTAR') + '</button>' +
       '</div>' : '';
     const canAdd = !flowing && all.length < (j.max || 8);
     return '<div class="prov-accounts">' + rows + box +
       '<div class="prov-accounts-add">' +
-        (canAdd ? '<button class="bb sm" data-act="prov-oauth-acct-add" title="sign in another ' + esc(provName(pid)) + ' account">＋ ADD ACCOUNT</button>' : '') +
+        (canAdd ? '<button class="bb sm" data-act="prov-oauth-acct-add" title="inicia sesión con otra cuenta de ' + esc(provName(pid)) + '">＋ AÑADIR CUENTA</button>' : '') +
         '<span class="dim">' + (extras.length
-          ? 'runs start on the first ready account; when it hits its usage limit they continue on the next'
-          : 'connect more ' + esc(provName(pid)) + ' accounts — when one hits its usage limit, runs continue on the next') + '</span>' +
+          ? 'las ejecuciones comienzan en la primera cuenta lista; cuando alcanza su límite de uso, continúan en la siguiente'
+          : 'conecta más cuentas de ' + esc(provName(pid)) + ' — cuando una alcance su límite de uso, las ejecuciones continúan en la siguiente') + '</span>' +
       '</div>' +
     '</div>';
   }
@@ -5632,10 +5632,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       (extras.length ? all.map(row).join('') : '') +
       box +
       '<div class="prov-accounts-add">' +
-        (canAdd ? '<button class="bb sm" data-act="prov-claude-add" title="sign in another Claude account — Claude Code keeps each sign-in, StarNet never sees them">＋ ADD ACCOUNT</button>' : '') +
+        (canAdd ? '<button class="bb sm" data-act="prov-claude-add" title="inicia sesión con otra cuenta de Claude — Claude Code conserva cada sesión; StarNet nunca las ve">＋ AÑADIR CUENTA</button>' : '') +
         '<span class="dim">' + (extras.length
-          ? 'runs start on the first ready account; when it hits its usage limit they continue on the next'
-          : 'connect more Claude accounts — when one hits its usage limit, runs continue on the next') + '</span>' +
+          ? 'las ejecuciones comienzan en la primera cuenta lista; cuando alcanza su límite de uso, continúan en la siguiente'
+          : 'conecta más cuentas de Claude — cuando una alcance su límite de uso, las ejecuciones continúan en la siguiente') + '</span>' +
       '</div>' +
     '</div>';
   }
@@ -5701,18 +5701,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      provider, the ENDPOINT for CUSTOM (its key is optional; the card reads ○ NO ENDPOINT), the LINK for STARNET MANAGED (the
      card reads ○ NOT LINKED and offers ↗ LINK STATION). A saved or live StarNet link owes no line — the card says its state. */
   function selectedSetupLineHtml(pid, name, creditsState) {
-    const what = pid === 'starnet' ? (creditsState === 'linked' || creditsState === 'saved' ? '' : ' isn’t linked yet.')
-      : pid === 'custom' ? ', has no endpoint yet.' : ', has no key yet.';
+    const what = pid === 'starnet' ? (creditsState === 'linked' || creditsState === 'saved' ? '' : ' aún no está vinculada.')
+      : pid === 'custom' ? ', aún no tiene endpoint.' : ', aún no tiene clave.';
     if (!what) return '';
-    const verb = pid === 'starnet' ? 'LINK IT' : pid === 'custom' ? 'SET IT' : 'ADD IT';
-    return '<div class="key-empty key-goto"><p>The selected provider, ' + esc(name) + (pid === 'starnet' ? ',' : '') + what + '</p>'
-      + '<div class="mc-acts"><button type="button" class="bb sm" data-act="to-prov-card" data-provider="' + esc(pid) + '">▸ ' + verb + ' ON THE ' + esc(name) + ' CARD</button></div></div>';
+    const verb = pid === 'starnet' ? 'VÍNCULA' : pid === 'custom' ? 'CONFIGÚRALA' : 'AÑÁDELA';
+    return '<div class="key-empty key-goto"><p>El proveedor seleccionado, ' + esc(name) + (pid === 'starnet' ? ',' : '') + what + '</p>'
+      + '<div class="mc-acts"><button type="button" class="bb sm" data-act="to-prov-card" data-provider="' + esc(pid) + '">▸ ' + verb + ' EN LA TARJETA ' + esc(name) + '</button></div></div>';
   }
   /* A CUSTOM ENDPOINT NEEDS ITS ADDRESS (GitHub #113, confirmed live 2026-10-13): the CUSTOM card promised "any /v1 base
      URL", but every add form offered only "paste CUSTOM key…" — the endpoint could be set only during onboarding. The
      add forms now take the endpoint (required) with the key optional; the copy no longer claims a ChatGPT sign-in. */
   function customEndpointInputHtml(id) {
-    return '<input type="url" class="key-input base-input" id="' + id + '" placeholder="endpoint URL, e.g. http://localhost:1234/v1" autocomplete="off" spellcheck="false" aria-label="Custom endpoint URL">';
+    return '<input type="url" class="key-input base-input" id="' + id + '" placeholder="URL del endpoint, p. ej. http://localhost:1234/v1" autocomplete="off" spellcheck="false" aria-label="URL del endpoint personalizado">';
   }
   // the URL the CUSTOM endpoint is stored as: a bare host gets a scheme (http:// for this machine or the LAN, https:// otherwise)
   function normEndpoint(raw) {
@@ -5725,7 +5725,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function saveCustomEndpoint(baseInp, keyInp) {
     const h = H();
     const norm = normEndpoint(baseInp ? baseInp.value : '');
-    if (!norm) { sfx('bad'); notify(norm === null ? '✕ that endpoint does not look like a URL' : '✕ enter the endpoint URL (e.g. http://localhost:1234/v1)', 'bad'); if (baseInp) baseInp.focus(); return; }
+    if (!norm) { sfx('bad'); notify(norm === null ? '✕ ese endpoint no parece una URL' : '✕ introduce la URL del endpoint (p. ej. http://localhost:1234/v1)', 'bad'); if (baseInp) baseInp.focus(); return; }
     if (!h || !h.setBaseUrl) { sfx('bad'); return; }
     const key = keyInp ? keyInp.value.trim() : '';
     Promise.resolve(h.setBaseUrl(norm, 'custom')).then(res => {
@@ -5734,7 +5734,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     }).then(() => {
       invalidateProviderHealth('custom');
       const done = (pr) => {
-        notify(pr && pr.reachable ? '✓ custom endpoint saved — reachable' + (pr.credentialVerified ? ' · credentials verified' : '') : '✓ custom endpoint saved — not reachable yet' + (pr && pr.error ? ' (' + pr.error + ')' : ''), pr && pr.reachable ? 'good' : 'warn');
+        notify(pr && pr.reachable ? '✓ endpoint personalizado guardado — alcanzable' + (pr.credentialVerified ? ' · credenciales verificadas' : '') : '✓ endpoint personalizado guardado — aún no alcanzable' + (pr && pr.error ? ' (' + pr.error + ')' : ''), pr && pr.reachable ? 'good' : 'warn');
         if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
         if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();
         rerender('settings');
@@ -5742,7 +5742,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (!h.probeProvider) return done(null);
       return h.probeProvider('custom').then(pr => { providerHealth.custom = pr || null; done(pr); }, () => done(null));
     }).catch(err => {
-      notify('✕ ' + ((err && err.message) || 'could not save the custom endpoint'), 'bad');
+      notify('✕ ' + ((err && err.message) || 'no se pudo guardar el endpoint personalizado'), 'bad');
       sfx('bad');
       rerender('settings');
     });
@@ -5751,7 +5751,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      "Add a <provider> key" box under API KEYS left users unsure which one counted. This list-side form survives only for a
      provider with no such card key (cardOffersAdd false), and CUSTOM never gets one: its card's ＋ ADD KEY takes the
      endpoint URL (#113). */
-  const ADD_ON_CARD = 'Add a key on a provider card above.';
+  const ADD_ON_CARD = 'Añade una clave en una tarjeta de proveedor de arriba.';
   function cardOffersAdd(provider) {
     const p = PROVIDERS.find(x => x.id === provider);
     return !!(p && p.live && (providerAcceptsKey(provider) || isOAuthProvider(provider)));
@@ -5761,11 +5761,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (provider === 'custom') return '<div class="key-empty"><p>' + ADD_ON_CARD + '</p></div>';
     return '<div class="key-empty">' +
       '<p>' + (empty
-          ? 'No API keys connected. Paste a key here to reconnect - it stays on this machine.'
-          : 'Add a ' + esc(provName(provider)) + ' key — it stays on this machine.') + '</p>' +
+          ? 'No hay claves API conectadas. Pega una clave aquí para reconectar — se queda en esta máquina.'
+          : 'Añade una clave de ' + esc(provName(provider)) + ' — se queda en esta máquina.') + '</p>' +
       '<div class="key-edit">' +
-      '<input type="password" class="key-input" id="key-in-new" placeholder="paste ' + esc(provName(provider)) + ' key..." autocomplete="off" spellcheck="false">' +
-      '<button class="bb sm" data-act="add" data-provider="' + esc(provider) + '">SAVE</button>' +
+      '<input type="password" class="key-input" id="key-in-new" placeholder="pega la clave de ' + esc(provName(provider)) + '..." autocomplete="off" spellcheck="false">' +
+      '<button class="bb sm" data-act="add" data-provider="' + esc(provider) + '">GUARDAR</button>' +
       '</div></div>';
   }
 
@@ -5802,18 +5802,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // rate-limited, or wrong, and we haven't round-tripped it. Label it "KEY SAVED" (or SIGNED IN for
       // the codex OAuth path, which IS real auth) rather than the over-claiming "CONNECTED". The
       // ACTIVE/runnable badge logic below is unchanged — that already gates on selected provider + model.
-      const connLabel = isOAuthProvider(p.id) ? '● SIGNED IN' : '● KEY SAVED';
+      const connLabel = isOAuthProvider(p.id) ? '● SESIÓN ACTIVA' : '● CLAVE GUARDADA';
       const keyless = p.id === 'ollama' || p.id === 'claude-cli' || (p.id === 'custom' && endpointConfigured && !credentialSaved);
-      const localStat = !endpointConfigured ? '○ NO ENDPOINT' : health === undefined ? '◐ LOCAL ENDPOINT CONFIGURED · CHECKING…'
-        : health && health.reachable ? '● LOCAL ENDPOINT CONFIGURED · REACHABLE' : '○ LOCAL ENDPOINT CONFIGURED · OFFLINE';
-      const keyStat = health === undefined ? connLabel + ' · CHECKING…'
-        : health && health.credentialVerified ? connLabel + ' · VERIFIED' : health && health.reachable ? connLabel + ' · NOT VERIFIED' : connLabel + ' · CHECK FAILED';
+      const localStat = !endpointConfigured ? '○ SIN ENDPOINT' : health === undefined ? '◐ ENDPOINT LOCAL CONFIGURADO · COMPROBANDO…'
+        : health && health.reachable ? '● ENDPOINT LOCAL CONFIGURADO · ALCANZABLE' : '○ ENDPOINT LOCAL CONFIGURADO · SIN LÍNEA';
+      const keyStat = health === undefined ? connLabel + ' · COMPROBANDO…'
+        : health && health.credentialVerified ? connLabel + ' · VERIFICADA' : health && health.reachable ? connLabel + ' · NO VERIFICADA' : connLabel + ' · FALLO LA COMPROBACIÓN';
       const isClaude = p.id === 'claude-cli';
-      const claudeStat = claudeCliSt === undefined ? '◐ CHECKING CLAUDE CODE…' : claudeCliSt === null ? '○ COULDN’T CHECK CLAUDE CODE'
-        : !claudeCliSt.installed ? '○ CLAUDE CODE NOT INSTALLED' : !claudeCliSt.loggedIn ? '○ NOT SIGNED IN'
-        : '● SIGNED IN' + claudeCliPlan(claudeCliSt);
-      const stat = !p.live ? '○ COMING SOON' : codexDead ? '⚠ SIGN-IN EXPIRED — RECONNECT'
-        : isClaude ? claudeStat : keyless ? localStat : credentialSaved ? keyStat : (isOAuthProvider(p.id) ? '○ NOT SIGNED IN' : (p.id === 'custom' ? '○ NO ENDPOINT' : '○ NO KEY'));
+      const claudeStat = claudeCliSt === undefined ? '◐ COMPROBANDO CLAUDE CODE…' : claudeCliSt === null ? '○ NO SE PUDO COMPROBAR CLAUDE CODE'
+        : !claudeCliSt.installed ? '○ CLAUDE CODE NO INSTALADO' : !claudeCliSt.loggedIn ? '○ SIN SESIÓN'
+        : '● SESIÓN ACTIVA' + claudeCliPlan(claudeCliSt);
+      const stat = !p.live ? '○ PRÓXIMAMENTE' : codexDead ? '⚠ SESIÓN CADUCADA — RECONECTAR'
+        : isClaude ? claudeStat : keyless ? localStat : credentialSaved ? keyStat : (isOAuthProvider(p.id) ? '○ SIN SESIÓN' : (p.id === 'custom' ? '○ SIN ENDPOINT' : '○ SIN CLAVE'));
       // #62: NOT VERIFIED / CHECK FAILED says WHY (the probe's own reason: "credential probe HTTP 401", a station
       // refusal, a timeout) — a bare verdict left a valid-key user with nothing to act on.
       // org P03: a probe that gave no reason still says what it saw — never a bare NOT VERIFIED / CHECK FAILED.
@@ -5821,7 +5821,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // the NOT VERIFIED line it explains; only a real failure (HTTP 401, a refusal, no answer) keeps the error red
       const statWhy = p.live && !codexDead && credentialSaved && !isClaude && !keyless && health && !health.credentialVerified
         ? '<span class="prov-stat-why' + (!health.error && health.reachable ? ' soft' : '') + '">' + esc(health.error ? String(health.error).slice(0, 200)
-          : health.reachable ? 'the provider answered but did not confirm this key' : 'the check got no answer from the provider') + '</span>' : '';
+          : health.reachable ? 'el proveedor respondió pero no confirmó esta clave' : 'la comprobación no obtuvo respuesta del proveedor') + '</span>' : '';
       const n = ks.length;
       // NO-KEY cards that accept a key get an inline, collapsible paste-and-save row so the user never has to hunt
       // for where keys live. It reuses the SAME save path (Harness.setKey) as the key list below — no duplicate logic.
@@ -5840,24 +5840,24 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const wantsClaudeInstall = p.id === 'claude-cli' && !!(claudeCliSt && !claudeCliSt.installed);
       const claudeFlowing = wantsClaudeSignin && !claudeCard.account && typeof ClaudeCliSignIn !== 'undefined' && ClaudeCliSignIn.active();
       const claudeBox = wantsClaudeSignin && (claudeFlowing || (claudeCard.failed && !!claudeCard.msg));
-      return '<div class="prov-card ' + cls + '" data-provider="' + esc(p.id) + '" data-configured="' + (configured ? '1' : '0') + '" role="group" aria-label="' + esc(p.name) + ' provider" style="--ci:' + pi + '">' +
-        '<button class="prov-select" data-act="prov-select" aria-label="Select ' + esc(p.name) + ' provider">' +
+      return '<div class="prov-card ' + cls + '" data-provider="' + esc(p.id) + '" data-configured="' + (configured ? '1' : '0') + '" role="group" aria-label="proveedor ' + esc(p.name) + '" style="--ci:' + pi + '">' +
+        '<button class="prov-select" data-act="prov-select" aria-label="Seleccionar proveedor ' + esc(p.name) + '">' +
           providerLogoHtml(p.id) +
           '<span class="prov-main">' +
-            '<span class="prov-name">' + esc(p.name) + (runnable ? '<span class="prov-badge">ACTIVE</span>' : '') + '</span>' +
+            '<span class="prov-name">' + esc(p.name) + (runnable ? '<span class="prov-badge">ACTIVO</span>' : '') + '</span>' +
             '<span class="prov-ep">' + esc(p.endpoint) + ' · ' + esc(p.blurb) + '</span>' +
           '</span>' +
         '</button>' +
-          '<span class="prov-stat"><span class="prov-stat-t">' + stat + statWhy + (credentialSaved && !isOAuthProvider(p.id) ? '<i>' + n + (n === 1 ? ' key' : ' keys') + '</i>' : '') + '</span></span>' +   // org P03: the reason sits right under the verdict it explains, above the key count
-        (wantsInline ? '<button class="bb sm prov-addkey" data-act="prov-add-toggle" data-provider="' + esc(p.id) + '" aria-label="Add a ' + esc(p.name) + ' key" title="paste a ' + esc(p.name) + ' key without leaving this card">＋ ADD KEY</button>' : '') +
-        (wantsClaudeSignin && !claudeFlowing && !(typeof ClaudeCliSignIn !== 'undefined' && ClaudeCliSignIn.active()) ? '<button class="bb sm prov-addkey" data-act="prov-claude-signin" aria-label="Sign in with Claude" title="opens Claude in your browser — Claude Code keeps the sign-in, StarNet never sees it">' + (claudeCard.failed ? '⏼ TRY AGAIN' : '⏼ SIGN IN') + '</button>' : '') +
-        (wantsClaudeInstall ? '<button class="bb sm prov-addkey" data-act="prov-claude-install" aria-label="Get Claude Code" title="Claude Code needs a Pro, Max, Team or Enterprise plan">↗ GET CLAUDE CODE</button>' : '') +
-        (wantsOAuthSignin ? '<button class="bb sm prov-addkey" data-act="prov-oauth-signin" data-provider="' + esc(p.id) + '" aria-label="Sign in to ' + esc(p.name) + '" title="device-code sign-in — no API key needed">' + (codexDead ? '⏼ RECONNECT' : '⏼ SIGN IN') + '</button>' : '') +
+          '<span class="prov-stat"><span class="prov-stat-t">' + stat + statWhy + (credentialSaved && !isOAuthProvider(p.id) ? '<i>' + n + (n === 1 ? ' clave' : ' claves') + '</i>' : '') + '</span></span>' +   // org P03: the reason sits right under the verdict it explains, above the key count
+        (wantsInline ? '<button class="bb sm prov-addkey" data-act="prov-add-toggle" data-provider="' + esc(p.id) + '" aria-label="Añadir una clave de ' + esc(p.name) + '" title="pega una clave de ' + esc(p.name) + ' sin salir de esta tarjeta">＋ AÑADIR CLAVE</button>' : '') +
+        (wantsClaudeSignin && !claudeFlowing && !(typeof ClaudeCliSignIn !== 'undefined' && ClaudeCliSignIn.active()) ? '<button class="bb sm prov-addkey" data-act="prov-claude-signin" aria-label="Iniciar sesión con Claude" title="abre Claude en tu navegador — Claude Code conserva la sesión; StarNet nunca la ve">' + (claudeCard.failed ? '⏼ INTENTAR OTRA VEZ' : '⏼ INICIAR SESIÓN') + '</button>' : '') +
+        (wantsClaudeInstall ? '<button class="bb sm prov-addkey" data-act="prov-claude-install" aria-label="Obtener Claude Code" title="Claude Code necesita un plan Pro, Max, Team o Enterprise">↗ OBTENER CLAUDE CODE</button>' : '') +
+        (wantsOAuthSignin ? '<button class="bb sm prov-addkey" data-act="prov-oauth-signin" data-provider="' + esc(p.id) + '" aria-label="Iniciar sesión en ' + esc(p.name) + '" title="sesión con código de dispositivo — sin clave API">' + (codexDead ? '⏼ RECONECTAR' : '⏼ INICIAR SESIÓN') + '</button>' : '') +
         (wantsInline
           ? '<div class="key-edit prov-key-edit" id="prov-key-edit-' + esc(p.id) + '" hidden>' +
             (p.id === 'custom' ? customEndpointInputHtml('prov-base-in-custom') : '') +
-            '<input type="password" class="key-input" id="prov-key-in-' + esc(p.id) + '" placeholder="paste ' + esc(p.name) + ' key' + (p.id === 'custom' ? ' (optional)' : '') + '…" autocomplete="off" spellcheck="false">' +
-            '<button class="bb sm" data-act="prov-add-save" data-provider="' + esc(p.id) + '">SAVE</button>' +
+            '<input type="password" class="key-input" id="prov-key-in-' + esc(p.id) + '" placeholder="pega la clave de ' + esc(p.name) + (p.id === 'custom' ? ' (opcional)' : '') + '…" autocomplete="off" spellcheck="false">' +
+            '<button class="bb sm" data-act="prov-add-save" data-provider="' + esc(p.id) + '">GUARDAR</button>' +
             '</div>'
           : '') +
         (wantsClaudeSignin && !claudeCard.account ? claudeFlowBoxHtml(claudeFlowing, claudeBox) : '') +
@@ -5870,7 +5870,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           ? '<div class="key-edit codex-inline prov-oauth-inline" id="prov-oauth-inline-' + esc(p.id) + '"' + (cardFlow ? '' : ' hidden') + '>' +
             '<span class="dim" id="prov-oauth-status-' + esc(p.id) + '">' + (cardFlow ? cardFlow.statusHtml : '') + '</span>' +
             '<code class="key-mask" id="prov-oauth-code-' + esc(p.id) + '"' + (cardFlow && cardFlow.code ? '>' + esc(cardFlow.code) : ' hidden>') + '</code>' +
-            '<button class="bb sm" id="prov-oauth-open-' + esc(p.id) + '"' + (cardFlow && cardFlow.openUri ? '' : ' hidden') + '>↗ OPEN PAGE</button>' +
+            '<button class="bb sm" id="prov-oauth-open-' + esc(p.id) + '"' + (cardFlow && cardFlow.openUri ? '' : ' hidden') + '>↗ ABRIR PÁGINA</button>' +
             '</div>'
           : '') +
         '</div>';
@@ -5885,21 +5885,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const cls = linked ? 'conn' : 'avail';
     const bal = (creditsProv.balanceUsd == null) ? null : fmtUsd(creditsProv.balanceUsd);
     const stat = linked
-      ? ('● LINKED · ' + esc(bal == null ? 'BALANCE UNAVAILABLE' : bal) + (creditsProv.tier ? ' · $' + esc(creditsProv.tier) + '/MO' : ''))
-      : (saved ? '◌ LINK SAVED · SERVICE UNAVAILABLE' : '○ NOT LINKED');
-    return '<div class="prov-card ' + cls + '" data-provider="' + esc(p.id) + '" role="group" aria-label="' + esc(p.name) + ' provider" style="--ci:' + pi + '">' +
-      '<button class="prov-select" data-act="prov-select" aria-label="Select ' + esc(p.name) + ' provider">' +
+      ? ('● VINCULADA · ' + esc(bal == null ? 'SALDO NO DISPONIBLE' : bal) + (creditsProv.tier ? ' · $' + esc(creditsProv.tier) + '/MES' : ''))
+      : (saved ? '◌ VÍNCULO GUARDADO · SERVICIO NO DISPONIBLE' : '○ SIN VÍNCULO');
+    return '<div class="prov-card ' + cls + '" data-provider="' + esc(p.id) + '" role="group" aria-label="proveedor ' + esc(p.name) + '" style="--ci:' + pi + '">' +
+      '<button class="prov-select" data-act="prov-select" aria-label="Seleccionar proveedor ' + esc(p.name) + '">' +
         providerLogoHtml(p.id) +
         '<span class="prov-main">' +
-          '<span class="prov-name">' + esc(p.name) + (runnable ? '<span class="prov-badge">ACTIVE</span>' : '') + '</span>' +
+          '<span class="prov-name">' + esc(p.name) + (runnable ? '<span class="prov-badge">ACTIVO</span>' : '') + '</span>' +
           '<span class="prov-ep">' + esc(p.endpoint) + ' · ' + esc(p.blurb) + '</span>' +
         '</span>' +
       '</button>' +
         '<span class="prov-stat"><span class="prov-stat-t">' + stat + '</span></span>' +
       '<button class="bb sm prov-addkey" data-act="credits-store" data-provider="' + esc(p.id) + '" ' +
       'aria-label="' + ((linked || saved) ? 'Abrir la TIENDA' : 'Vincular esta estación a una cuenta de StarNet') + '" ' +
-      'title="' + ((linked || saved) ? 'balance, plan and history live in the STORE' : 'link this station to a StarNet account') + '">' +
-      ((linked || saved) ? '◆ STORE' : '↗ LINK STATION') + '</button>' +
+      'title="' + ((linked || saved) ? 'saldo, plan e historial viven en la TIENDA' : 'vincula esta estación a una cuenta de StarNet') + '">' +
+      ((linked || saved) ? '◆ TIENDA' : '↗ VINCULAR ESTACIÓN') + '</button>' +
       '</div>';
   }
 
@@ -5911,22 +5911,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const pid = k.provider;
     const dead = !!k.expired;
     const meta = dead
-      ? '<span class="key-stat bad">⚠ SIGN-IN EXPIRED — ' + esc(oauthProvReason(pid) || 'the stored sign-in no longer works; reconnect to run again') + '</span>'
-      : 'model <b>' + esc(k.model || '—') + '</b> · ' +
+      ? '<span class="key-stat bad">⚠ SESIÓN CADUCADA — ' + esc(oauthProvReason(pid) || 'la sesión guardada ya no funciona; reconecta para volver a ejecutar') + '</span>'
+      : 'modelo <b>' + esc(k.model || '—') + '</b> · ' +
         runState +
-        ' · <span class="key-stat">no API key needed</span>';
+        ' · <span class="key-stat">sin clave API</span>';
     return '<div class="key-row' + (dead ? ' expired' : '') + '">' +
       '<span class="conn-dot"></span>' +
       '<div class="key-main">' +
       '<div class="key-top"><span class="key-prov">' + esc(provName(pid)) + '</span>' +
       (dead
-        ? '<code class="key-mask key-mask-dead" title="the sidecar recorded a dead refresh token — a re-sign-in is the only cure">⚠ EXPIRED</code>'
-        : '<code class="key-mask" title="authenticated by OAuth sign-in — no API key is stored">' + esc(oauthMaskLabel(pid)) + '</code>') + '</div>' +
+        ? '<code class="key-mask key-mask-dead" title="el sidecar registró un token de refresco muerto — reiniciar sesión es la única cura">⚠ CADUCADA</code>'
+        : '<code class="key-mask" title="autenticada por sesión OAuth — no se guarda clave API">' + esc(oauthMaskLabel(pid)) + '</code>') + '</div>' +
       '<div class="key-meta">' + meta + '</div>' +
       '</div>' +
       '<div class="key-acts">' +
-      '<button class="bb sm" data-act="' + esc(pid) + '-resign">⏼ RE-SIGN-IN</button>' +
-      '<button class="bb sm danger" data-act="' + esc(pid) + '-logout">✕ DISCONNECT</button>' +
+      '<button class="bb sm" data-act="' + esc(pid) + '-resign">⏼ REINICIAR SESIÓN</button>' +
+      '<button class="bb sm danger" data-act="' + esc(pid) + '-logout">✕ DESCONECTAR</button>' +
       '</div></div>' +
       // the inline device-code surface the RE-SIGN-IN action fills — drawn from the ONE card-flow state (oauthRowFlowHtml)
       oauthRowFlowHtml(pid);
@@ -5941,7 +5941,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return '<div class="key-edit codex-inline" id="' + esc(pid) + '-inline-signin"' + (v ? '' : ' hidden') + '>' +
       '<span class="dim" id="' + esc(pid) + '-inline-status">' + (v ? v.statusHtml : '') + '</span>' +
       '<code class="key-mask" id="' + esc(pid) + '-inline-code"' + (v && v.code ? '>' + esc(v.code) : ' hidden>') + '</code>' +
-      '<button class="bb sm" data-act="oauth-row-open" data-provider="' + esc(pid) + '" id="' + esc(pid) + '-inline-open"' + (v && v.openUri ? '' : ' hidden') + '>↗ OPEN PAGE</button>' +
+      '<button class="bb sm" data-act="oauth-row-open" data-provider="' + esc(pid) + '" id="' + esc(pid) + '-inline-open"' + (v && v.openUri ? '' : ' hidden') + '>↗ ABRIR PÁGINA</button>' +
       '</div>';
   }
   function keysHtml() {
@@ -5968,18 +5968,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const selected = k.provider === active && !!k.model;
       // CLAUDE CODE has no key to verify: its row exists only while the CLI proves the sign-in (same rule as its card)
       const runnable = !!(selected && health && health.reachable && (health.credentialVerified || k.claude));
-      const runState = runnable ? '<span class="key-stat on">ACTIVE</span>'
-        : selected ? '<span class="key-stat">SELECTED</span>' : '<span class="key-stat">idle</span>';
+      const runState = runnable ? '<span class="key-stat on">ACTIVO</span>'
+        : selected ? '<span class="key-stat">SELECCIONADO</span>' : '<span class="key-stat">inactivo</span>';
       if (k.claude) {
         const plan = claudeCliPlan(claudeCliSt).replace(/^ · /, '');
         return '<div class="key-row">' +
           '<span class="conn-dot"></span>' +
           '<div class="key-main">' +
           '<div class="key-top"><span class="key-prov">' + esc(provName(k.provider)) + '</span>' +
-          '<code class="key-mask" title="signed in through Claude Code, which keeps the sign-in; StarNet never holds it">' + esc(claudeCliSt.email || 'Claude sign-in') + '</code></div>' +
-          '<div class="key-meta">model <b>' + esc(k.model || '—') + '</b> · ' + runState +
+          '<code class="key-mask" title="sesión iniciada a través de Claude Code, que conserva la sesión; StarNet nunca la guarda">' + esc(claudeCliSt.email || 'sesión de Claude') + '</code></div>' +
+          '<div class="key-meta">modelo <b>' + esc(k.model || '—') + '</b> · ' + runState +
           (plan ? ' · <span class="key-stat">' + esc(plan) + '</span>' : '') +
-          ' · <span class="key-stat">no API key needed</span></div>' +
+          ' · <span class="key-stat">sin clave API</span></div>' +
           '</div></div>';
       }
       // grok/kimi (the other keyless device-code sign-ins) render through the SHARED oauth row below — same
@@ -5991,22 +5991,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (k.oauth) {
         const dead = !!k.expired;
         const meta = dead
-          ? '<span class="key-stat bad">⚠ SIGN-IN EXPIRED — ' + esc(codexExpiredReason() || 'the stored sign-in no longer works; reconnect to run again') + '</span>'
-          : 'model <b>' + esc(k.model || '—') + '</b> · ' +
+          ? '<span class="key-stat bad">⚠ SESIÓN CADUCADA — ' + esc(codexExpiredReason() || 'la sesión guardada ya no funciona; reconecta para volver a ejecutar') + '</span>'
+          : 'modelo <b>' + esc(k.model || '—') + '</b> · ' +
             runState +
-            ' · <span class="key-stat">no API key needed</span>';
+            ' · <span class="key-stat">sin clave API</span>';
         return '<div class="key-row' + (dead ? ' expired' : '') + '">' +
           '<span class="conn-dot"></span>' +
           '<div class="key-main">' +
           '<div class="key-top"><span class="key-prov">' + esc(provName(k.provider)) + '</span>' +
           (dead
-            ? '<code class="key-mask key-mask-dead" title="the sidecar recorded a dead refresh token — a re-sign-in is the only cure">⚠ EXPIRED</code>'
-            : '<code class="key-mask" title="authenticated by ChatGPT sign-in (OAuth) — no API key is stored">ChatGPT OAuth</code>') + '</div>' +
+            ? '<code class="key-mask key-mask-dead" title="el sidecar registró un token de refresco muerto — reiniciar sesión es la única cura">⚠ CADUCADA</code>'
+            : '<code class="key-mask" title="autenticada por sesión de ChatGPT (OAuth) — no se guarda clave API">ChatGPT OAuth</code>') + '</div>' +
           '<div class="key-meta">' + meta + '</div>' +
           '</div>' +
           '<div class="key-acts">' +
-          '<button class="bb sm" data-act="codex-resign">⏼ RE-SIGN-IN</button>' +
-          '<button class="bb sm danger" data-act="codex-logout">✕ DISCONNECT</button>' +
+          '<button class="bb sm" data-act="codex-resign">⏼ REINICIAR SESIÓN</button>' +
+          '<button class="bb sm danger" data-act="codex-logout">✕ DESCONECTAR</button>' +
           '</div></div>' +
           // the inline device-code surface the RE-SIGN-IN action fills — drawn from the ONE card-flow state (oauthRowFlowHtml)
           oauthRowFlowHtml('codex');
@@ -6016,10 +6016,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           '<span class="conn-dot"></span>' +
           '<div class="key-main">' +
           '<div class="key-top"><span class="key-prov">' + esc(provName(k.provider)) + '</span>' +
-          '<code class="key-mask" title="local OpenAI-compatible endpoint">Local endpoint</code></div>' +
-          '<div class="key-meta">model <b>' + esc(k.model || '—') + '</b> · ' +
+          '<code class="key-mask" title="endpoint local compatible con OpenAI">endpoint local</code></div>' +
+          '<div class="key-meta">modelo <b>' + esc(k.model || '—') + '</b> · ' +
           runState +
-          ' · <span class="key-stat">no API key needed</span></div>' +
+          ' · <span class="key-stat">sin clave API</span></div>' +
           '</div></div>';
       }
       // ENDPOINT URL / base-URL edit (post-onboarding, EL-11 #12): a custom OpenAI-compatible endpoint carries an
@@ -6028,12 +6028,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const isCustomEp = k.provider === 'custom';
       const poolCount = H() && H().keyPoolSize ? H().keyPoolSize(k.provider) : 0;
       const baseBtn = isCustomEp
-        ? '<button class="bb sm" data-act="baseurl-edit" data-i="' + i + '" data-tip="change this endpoint URL without re-onboarding">✎ ENDPOINT URL</button>'
+        ? '<button class="bb sm" data-act="baseurl-edit" data-i="' + i + '" data-tip="cambia la URL de este endpoint sin rehacer la incorporación">✎ URL DEL ENDPOINT</button>'
         : '';
       const baseBlock = isCustomEp
         ? '<div class="key-edit" id="base-edit-' + i + '" hidden>' +
-            '<input type="url" class="key-input base-input" id="base-in-' + i + '" placeholder="https://your-endpoint/v1" value="' + esc(k.baseUrl || '') + '" autocomplete="off" spellcheck="false">' +
-            '<button class="bb sm" data-act="baseurl-apply" data-i="' + i + '">APPLY</button>' +
+            '<input type="url" class="key-input base-input" id="base-in-' + i + '" placeholder="https://tu-endpoint/v1" value="' + esc(k.baseUrl || '') + '" autocomplete="off" spellcheck="false">' +
+            '<button class="bb sm" data-act="baseurl-apply" data-i="' + i + '">APLICAR</button>' +
             '<span class="msg" id="base-msg-' + i + '"></span>' +
           '</div>'
         : '';
@@ -6041,28 +6041,28 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         '<span class="conn-dot"></span>' +
         '<div class="key-main">' +
         '<div class="key-top"><span class="key-prov">' + esc(provName(k.provider)) + '</span>' +
-        '<code class="key-mask" title="shown masked when a key exists — the full key is never displayed">' + esc(k.key ? maskKey(k.key) : (k.baseUrl || (k.stored ? 'stored securely' : 'keyless endpoint'))) + '</code></div>' +
-        '<div class="key-meta">model <b>' + esc(k.model || '—') + '</b> · ' +
+        '<code class="key-mask" title="se muestra enmascarada cuando existe una clave — la clave completa nunca se muestra">' + esc(k.key ? maskKey(k.key) : (k.baseUrl || (k.stored ? 'guardada con seguridad' : 'endpoint sin clave'))) + '</code></div>' +
+        '<div class="key-meta">modelo <b>' + esc(k.model || '—') + '</b> · ' +
         runState + '</div>' +
         '</div>' +
         '<div class="key-acts">' +
-        '<button class="bb sm" data-act="edit" data-i="' + i + '">✎ UPDATE</button>' +
-        '<button class="bb sm" data-act="pool-edit" data-i="' + i + '">↻ SPARE KEYS' + (poolCount ? ' (' + poolCount + ')' : '') + '</button>' +
+        '<button class="bb sm" data-act="edit" data-i="' + i + '">✎ ACTUALIZAR</button>' +
+        '<button class="bb sm" data-act="pool-edit" data-i="' + i + '">↻ CLAVES DE RESPALDO' + (poolCount ? ' (' + poolCount + ')' : '') + '</button>' +
         baseBtn +
-        '<button class="bb sm danger" data-act="rm" data-i="' + i + '">✕ REMOVE</button>' +
+        '<button class="bb sm danger" data-act="rm" data-i="' + i + '">✕ QUITAR</button>' +
         '</div></div>' +
         '<div class="key-edit" id="key-edit-' + i + '" hidden>' +
-        '<input type="password" class="key-input" id="key-in-' + i + '" placeholder="paste new ' + esc(provName(k.provider)) + ' key…" autocomplete="off" spellcheck="false">' +
-        '<button class="bb sm" data-act="save" data-i="' + i + '">SAVE</button>' +
+        '<input type="password" class="key-input" id="key-in-' + i + '" placeholder="pega la nueva clave de ' + esc(provName(k.provider)) + '…" autocomplete="off" spellcheck="false">' +
+        '<button class="bb sm" data-act="save" data-i="' + i + '">GUARDAR</button>' +
         '</div>' +
         '<div class="key-edit" id="pool-edit-' + i + '" hidden>' +
-        '<input type="password" class="key-input" id="pool-in-' + i + '" placeholder="paste spare keys, separated by commas…" autocomplete="off" spellcheck="false">' +
+        '<input type="password" class="key-input" id="pool-in-' + i + '" placeholder="pega claves de respaldo, separadas por comas…" autocomplete="off" spellcheck="false">' +
         // org P04: the save/clear pair is one unit — side by side at equal widths, or stacked full width when the pane is narrow
         '<div class="key-edit-pair">' +
-        '<button class="bb sm" data-act="pool-save" data-i="' + i + '">SAVE SPARE KEYS</button>' +
-        '<button class="bb sm danger" data-act="pool-clear" data-i="' + i + '">CLEAR SPARE KEYS</button>' +
+        '<button class="bb sm" data-act="pool-save" data-i="' + i + '">GUARDAR CLAVES DE RESPALDO</button>' +
+        '<button class="bb sm danger" data-act="pool-clear" data-i="' + i + '">LIMPIAR CLAVES DE RESPALDO</button>' +
         '</div>' +
-        '<span class="dim">up to 8 · scoped only to ' + esc(provName(k.provider)) + ' · a failed save keeps your previous spare keys or reports an incomplete rollback</span>' +
+        '<span class="dim">hasta 8 · solo para ' + esc(provName(k.provider)) + ' · un guardado fallido conserva tus claves de respaldo anteriores o informa de un retroceso incompleto</span>' +
         '</div>' +
         baseBlock;
     });
@@ -6084,7 +6084,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (act !== 'rm') sfx('click');   // destructive REMOVE owns its own 'bad' cue (matches the CLEAR control)
         // ---- ChatGPT (Codex) OAuth row actions — no Harness store involved; they drive the sidecar's
         //      device-flow endpoints through the SAME shared engine as the brain screen (codexsignin.js). ----
-        if (act === 'codex-resign') { startCardSignin('codex', '⏼ RE-SIGN-IN'); return; }   // the ONE card flow (oauthRowFlowHtml)
+        if (act === 'codex-resign') { startCardSignin('codex', '⏼ REINICIAR SESIÓN'); return; }   // the ONE card flow (oauthRowFlowHtml)
         // the row box's ↗ OPEN PAGE reopens the page the shared flow's code belongs to
         if (act === 'oauth-row-open') {
           const f = oauthCardFlow[b.dataset.provider];
@@ -6097,7 +6097,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           Promise.resolve(drop).then(() => {
             codexStatusKnown = { connected: false, expired: false, reason: '' };   // the sidecar just confirmed the drop
             if (typeof Harness !== 'undefined' && Harness.setDesktopConfigured) Harness.setDesktopConfigured('codex', false);
-            notify('disconnected ChatGPT — sign in again anytime from PROVIDERS', 'warn');
+            notify('ChatGPT desconectado — puedes iniciar sesión de nuevo cuando quieras desde PROVEEDORES', 'warn');
             sfx('bad');
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
             if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();
@@ -6111,14 +6111,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (oauthAct) {
           const pid = oauthAct[1];
           const engine = (typeof OAuthSignIn !== 'undefined') ? OAuthSignIn.for(pid) : null;
-          if (oauthAct[2] === 'resign') { if (engine) startCardSignin(pid, '⏼ RE-SIGN-IN'); return; }   // the ONE card flow
+          if (oauthAct[2] === 'resign') { if (engine) startCardSignin(pid, '⏼ REINICIAR SESIÓN'); return; }   // the ONE card flow
           // logout
           if (engine) engine.cancel(); delete oauthCardFlow[pid];
           const drop = engine ? engine.logout() : Harness.api.post('/api/auth/' + pid + '/logout').catch(() => {});
           Promise.resolve(drop).then(() => {
             oauthStatus[pid] = { connected: false, expired: false, reason: '' };   // the sidecar just confirmed the drop
             if (typeof Harness !== 'undefined' && Harness.setDesktopConfigured) Harness.setDesktopConfigured(pid, false);
-            notify('disconnected ' + provName(pid) + ' — sign in again anytime from PROVIDERS', 'warn');
+            notify(provName(pid) + ' desconectado — puedes iniciar sesión de nuevo cuando quieras desde PROVEEDORES', 'warn');
             sfx('bad');
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
             if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();
@@ -6137,13 +6137,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           // keychain" over a rejected write — a keyless station that claimed connected with no re-entry hint.
           Promise.resolve(h.validateAndSetKey ? h.validateAndSetKey(v, provider) : h.setKey(v, provider)).then(res => {
             invalidateProviderHealth(provider);
-            notify('✓ connected ' + provName(provider) + ' API key — ' + keyStoreClause(res), 'good');
+            notify('✓ clave API de ' + provName(provider) + ' conectada — ' + keyStoreClause(res), 'good');
             warnIfStationLacksKey(res);
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();   // clear the dock's no-key warning the instant a key lands
             if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();             // …and the world's keyless-brain banner
             rerender('settings');
           }).catch(err => {
-            notify('✕ ' + ((err && err.message) || ('could not verify and store the ' + provName(provider) + ' key')), 'bad');
+            notify('✕ ' + ((err && err.message) || ('no se pudo verificar y guardar la clave de ' + provName(provider))), 'bad');
             sfx('bad');
             rerender('settings');
           });
@@ -6160,13 +6160,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         } else if (act === 'pool-save' || act === 'pool-clear') {
           const inp = body.querySelector('#pool-in-' + i);
           const keys = act === 'pool-clear' ? [] : String((inp && inp.value) || '').split(/[\n,;]+/).map(v => v.trim()).filter(Boolean);
-          if (act === 'pool-save' && !keys.length) { notify('paste at least one spare key, or use CLEAR SPARE KEYS', 'bad'); sfx('bad'); return; }
+          if (act === 'pool-save' && !keys.length) { notify('pega al menos una clave de respaldo o usa LIMPIAR CLAVES DE RESPALDO', 'bad'); sfx('bad'); return; }
           Promise.resolve(h.validateAndSetKeyPool ? h.validateAndSetKeyPool(keys, row.provider) : h.setKeyPool(keys, row.provider)).then(res => {
             const count = (res && typeof res === 'object') ? Number(res.count) || 0 : res;   // { count, engine } (#89); a bare count from older hosts
-            notify(count ? ('✓ ' + count + ' verified spare key' + (count === 1 ? '' : 's') + ' active only for ' + provName(row.provider)) : ('cleared spare keys for ' + provName(row.provider)), count ? 'good' : 'warn');
+            notify(count ? ('✓ ' + count + (count === 1 ? ' clave de respaldo verificada activa solo para ' : ' claves de respaldo verificadas activas solo para ') + provName(row.provider)) : ('claves de respaldo de ' + provName(row.provider) + ' limpiadas'), count ? 'good' : 'warn');
             warnIfStationLacksKey(res);   // #89: …and whether the station's copy for routines followed
             rerender('settings');
-          }).catch(err => { notify('✕ ' + ((err && err.message) || 'could not update spare keys'), 'bad'); sfx('bad'); });
+          }).catch(err => { notify('✕ ' + ((err && err.message) || 'no se pudieron actualizar las claves de respaldo'), 'bad'); sfx('bad'); });
         } else if (act === 'baseurl-edit') {
           const ed = body.querySelector('#base-edit-' + i);
           if (ed) { ed.hidden = !ed.hidden; if (!ed.hidden) { const inp = body.querySelector('#base-in-' + i); if (inp) inp.focus(); } }
@@ -6176,26 +6176,26 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const msg = body.querySelector('#base-msg-' + i);
           const setMsg = (t, cls) => { if (msg && msg.isConnected) { msg.textContent = t; msg.className = 'msg' + (cls ? ' ' + cls : ''); } };
           const v = inp ? inp.value.trim() : '';
-          if (!v) { sfx('bad'); setMsg('enter your endpoint URL', 'bad'); return; }
+          if (!v) { sfx('bad'); setMsg('introduce la URL de tu endpoint', 'bad'); return; }
           // Same validation/normalization onboarding relies on: a non-empty URL; a bare host gets an https:// scheme
           // so the endpoint is well-formed before we store it. Reject anything that still isn't a parseable URL.
           let norm = v; if (!/^https?:\/\//i.test(norm)) norm = 'https://' + norm.replace(/^\/+/, '');
-          try { new URL(norm); } catch (_) { sfx('bad'); setMsg('that doesn\'t look like a URL', 'bad'); return; }
+          try { new URL(norm); } catch (_) { sfx('bad'); setMsg('eso no parece una URL', 'bad'); return; }
           if (inp) inp.value = norm;
           sfx('click');
-          setMsg('saved — probing endpoint…', '');
+          setMsg('guardado — explorando endpoint…', '');
           Promise.resolve(h.setBaseUrl ? h.setBaseUrl(norm, row.provider) : null).then(res => {
             warnIfStationLacksKey(res);   // #89: the endpoint saved, but the station could not keep its copy for routines
             invalidateProviderHealth(row.provider);
             // HONEST reachability check against the REAL endpoint — never claim connected without proof. probeProvider
             // round-trips /api/providers/probe; the same probe result feeds the provider card badge cache.
-            if (!h.probeProvider) { setMsg('saved', 'ok'); return; }
+            if (!h.probeProvider) { setMsg('guardado', 'ok'); return; }
             return h.probeProvider(row.provider).then(pr => {
               providerHealth[row.provider] = pr || null;   // keep the card badges consistent with this probe
-              if (pr && pr.reachable) setMsg(pr.credentialVerified ? '✓ endpoint reachable · credentials verified' : '✓ endpoint reachable — not verified', 'ok');
-              else setMsg('✕ endpoint unreachable' + (pr && pr.error ? ' — ' + pr.error : ''), 'bad');
+              if (pr && pr.reachable) setMsg(pr.credentialVerified ? '✓ endpoint alcanzable · credenciales verificadas' : '✓ endpoint alcanzable — no verificado', 'ok');
+              else setMsg('✕ endpoint no alcanzable' + (pr && pr.error ? ' — ' + pr.error : ''), 'bad');
             });
-          }).catch(() => setMsg('✕ could not reach the sidecar to apply', 'bad'));
+          }).catch(() => setMsg('✕ no se pudo alcanzar el sidecar para aplicar', 'bad'));
         } else if (act === 'save') {
           const inp = body.querySelector('#key-in-' + i);
           const v = inp ? inp.value.trim() : '';
@@ -6203,13 +6203,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           // same proven-store contract as the add path: no success toast over a rejected keychain write.
           Promise.resolve(h.validateAndSetKey ? h.validateAndSetKey(v, row.provider) : h.setKey(v, row.provider)).then(res => {
             invalidateProviderHealth(row.provider);
-            notify('✓ updated ' + provName(row.provider) + ' API key — ' + keyStoreClause(res), 'good');
+            notify('✓ clave API de ' + provName(row.provider) + ' actualizada — ' + keyStoreClause(res), 'good');
             warnIfStationLacksKey(res);
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();   // keep the dock's no-key warning honest after an edit
             if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();
             rerender('settings');
           }).catch(err => {
-            notify('✕ ' + ((err && err.message) || ('could not verify and store the ' + provName(row.provider) + ' key')), 'bad');
+            notify('✕ ' + ((err && err.message) || ('no se pudo verificar y guardar la clave de ' + provName(row.provider))), 'bad');
             sfx('bad');
             rerender('settings');
           });
@@ -6218,18 +6218,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           // otherwise the armed confirm would "remove" nothing and the row would immortally re-render.
           const keylessCustomRm = row.provider === 'custom' && !row.key && !!row.baseUrl;
           if (b.dataset.armed) {
-            if (keylessCustomRm && h.setBaseUrl) { Promise.resolve(h.setBaseUrl('', 'custom')).then(warnIfStationLacksKey); notify('removed the custom endpoint — add it again anytime from the CUSTOM card', 'warn'); }
-            else { if (h.setKey) Promise.resolve(h.setKey('', row.provider)).then(warnIfStationLacksKey); notify('removed ' + provName(row.provider) + ' key — paste a new one here to reconnect', 'warn'); }
+            if (keylessCustomRm && h.setBaseUrl) { Promise.resolve(h.setBaseUrl('', 'custom')).then(warnIfStationLacksKey); notify('endpoint personalizado quitado — puedes añadirlo de nuevo cuando quieras desde la tarjeta CUSTOM', 'warn'); }
+            else { if (h.setKey) Promise.resolve(h.setKey('', row.provider)).then(warnIfStationLacksKey); notify('clave de ' + provName(row.provider) + ' quitada — pega una nueva aquí para reconectar', 'warn'); }
             invalidateProviderHealth(row.provider); if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect(); if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh(); sfx('bad'); rerender('settings'); return;
           }
           // Arm: make the destructive state impossible to miss — filled --bad button + pulse, red hairline on the row,
           // and an inline "click again to confirm" hint. Disarms after 5s, restoring the calm state.
           const rowEl = b.closest('.key-row');
-          b.dataset.armed = '1'; b.textContent = '✕ CONFIRM'; b.classList.add('armed'); sfx('bad');
+          b.dataset.armed = '1'; b.textContent = '✕ CONFIRMAR'; b.classList.add('armed'); sfx('bad');
           if (rowEl) rowEl.classList.add('rm-armed');
           let hint = b.parentElement && b.parentElement.querySelector('.rm-hint');
-          if (!hint && b.parentElement) { hint = document.createElement('span'); hint.className = 'rm-hint'; hint.textContent = 'click again to confirm removal'; b.parentElement.appendChild(hint); }
-          const disarm = () => { if (!b.isConnected) return; delete b.dataset.armed; b.textContent = '✕ REMOVE'; b.classList.remove('armed'); if (rowEl) rowEl.classList.remove('rm-armed'); const hn = b.parentElement && b.parentElement.querySelector('.rm-hint'); if (hn) hn.remove(); };
+          if (!hint && b.parentElement) { hint = document.createElement('span'); hint.className = 'rm-hint'; hint.textContent = 'haz clic de nuevo para confirmar la eliminación'; b.parentElement.appendChild(hint); }
+          const disarm = () => { if (!b.isConnected) return; delete b.dataset.armed; b.textContent = '✕ QUITAR'; b.classList.remove('armed'); if (rowEl) rowEl.classList.remove('rm-armed'); const hn = b.parentElement && b.parentElement.querySelector('.rm-hint'); if (hn) hn.remove(); };
           setTimeout(disarm, 4000);   // one shared disarm window (ArmConfirm.DEFAULT_TIMEOUT); this site keeps bespoke logic for its row hairline + hint
         }
       });
@@ -6256,7 +6256,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // same proven-store contract as the key-list paths: success UI only after setKey resolves.
       Promise.resolve(h.validateAndSetKey ? h.validateAndSetKey(v, provider) : h.setKey(v, provider)).then(res => {
         invalidateProviderHealth(provider);
-        notify('✓ connected ' + provName(provider) + ' API key — ' + keyStoreClause(res), 'good');
+        notify('✓ clave API de ' + provName(provider) + ' conectada — ' + keyStoreClause(res), 'good');
         warnIfStationLacksKey(res);
         if (typeof ModelDock !== 'undefined' && ModelDock.reconcile) ModelDock.reconcile().catch(() => ModelDock.reflect && ModelDock.reflect());
         else if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
@@ -6264,7 +6264,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         sfx('click');
         rerender('settings');
       }).catch(err => {
-        notify('✕ ' + ((err && err.message) || ('could not verify and store the ' + provName(provider) + ' key')), 'bad');
+        notify('✕ ' + ((err && err.message) || ('no se pudo verificar y guardar la clave de ' + provName(provider))), 'bad');
         sfx('bad');
         rerender('settings');
       });
@@ -6285,7 +6285,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (card.dataset.configured === '0' && p !== activeProv()) {
           const ed = card.querySelector('.prov-key-edit');
           if (ed) { ed.hidden = false; const f = ed.querySelector('input'); if (f) f.focus(); }
-          notify(provName(p) + ' is not set up yet — ' + (ed ? 'add it here first' : 'sign in on its card first') + '. Your agents stay on ' + provName(activeProv()) + '.', 'warn');
+          notify(provName(p) + ' aún no está configurado — ' + (ed ? 'añádelo aquí primero' : 'inicia sesión en su tarjeta primero') + '. Tus agentes se quedan en ' + provName(activeProv()) + '.', 'warn');
           sfx('click');
           return;
         }
@@ -6308,7 +6308,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             const def = (j && j.default) || ids[0];
             if (!def || !h.setModel) return;
             h.setModel(def);
-            notify('model → ' + def + ' (from the ' + provName(p) + ' catalog — your old model belongs to another provider)', 'good');
+            notify('modelo → ' + def + ' (del catálogo de ' + provName(p) + ' — tu modelo anterior pertenece a otro proveedor)', 'good');
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
             rerender('settings');
           }).catch(() => {});
@@ -6318,7 +6318,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // keep their account-specific defaulting path above.
         if (!isOAuthProvider(p) && typeof ModelDock !== 'undefined' && ModelDock.reconcile) ModelDock.reconcile().catch(() => ModelDock.reflect && ModelDock.reflect());
         else if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
-        notify('selected ' + provName(p) + ' provider', 'good');
+        notify('proveedor ' + provName(p) + ' seleccionado', 'good');
         sfx('click');
         rerender('settings');
       };
@@ -6334,7 +6334,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         sfx('click');
         const r = await ClaudeCliSignIn.submitCode(code);
         if (r.ok && claudeCodeIn) claudeCodeIn.value = '';
-        claudeCard.msg = r.ok ? 'checking the code with Claude…' : r.error;
+        claudeCard.msg = r.ok ? 'comprobando el código con Claude…' : r.error;
         paintClaudeCard();
       };
       const claudeCancel = card.querySelector('#prov-claude-cancel');
@@ -6359,14 +6359,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
          (＋ ADD ACCOUNT → opts.add) and an extra account that is signed out (its row's ⏼ SIGN IN → opts.account). */
       const startClaudeFlow = (btn, opts) => {
         opts = opts || {};
-        claudeCard.msg = 'starting Claude sign-in…'; claudeCard.url = ''; claudeCard.failed = false;
+        claudeCard.msg = 'iniciando sesión de Claude…'; claudeCard.url = ''; claudeCard.failed = false;
         claudeCard.account = opts.add ? '+' : String(opts.account || '');
         const started = ClaudeCliSignIn.start({
           onPending: pend => {
             if (opts.add || opts.account) claudeCard.account = pend.account || claudeCard.account;
             claudeCard.msg = opts.add || opts.account
-              ? 'in the browser window Claude Code just opened, sign in with a DIFFERENT Claude account — if it goes straight through, switch accounts on claude.ai first'
-              : 'finish signing in in the browser window Claude Code just opened…';
+              ? 'en la ventana del navegador que Claude Code acaba de abrir, inicia sesión con una cuenta de Claude DISTINTA — si pasa directamente, cambia de cuenta primero en claude.ai'
+              : 'termina de iniciar sesión en la ventana del navegador que Claude Code acaba de abrir…';
             claudeCard.url = pend.url || '';
             rerender('settings');   // the box (CANCEL, paste-a-code) renders from the now-active flow
           },
@@ -6380,16 +6380,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             claudeCard.msg = ''; claudeCard.url = ''; claudeCard.failed = false; claudeCard.account = '';
             if (!extra) claudeCliSt = Object.assign({ installed: true, loggedIn: true }, res);
             notify(extra
-              ? '✓ another Claude account connected' + (res.email ? ' (' + res.email + ')' : '') + ' — runs continue on it when an account hits its limit'
+              ? '✓ otra cuenta de Claude conectada' + (res.email ? ' (' + res.email + ')' : '') + ' — las ejecuciones continúan en ella cuando una cuenta alcanza su límite'
               : activeProv() === 'claude-cli'
-                ? '✓ signed in to Claude — your agents can run on your subscription'
-                : '✓ signed in to Claude — click the CLAUDE CODE card to make it your active brain', 'good');
+                ? '✓ sesión iniciada en Claude — tus agentes pueden ejecutarse con tu suscripción'
+                : '✓ sesión iniciada en Claude — haz clic en la tarjeta CLAUDE CODE para hacerla tu cerebro activo', 'good');
             if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
             refreshClaudeCliCard(true); invalidateProviderHealth('claude-cli'); rerender('settings');
           }
         }, opts);
         // until the sidecar answers, the button itself says what is happening (a double press would restart the flow)
-        if (btn) { btn.disabled = true; btn.textContent = '◐ STARTING…'; }
+        if (btn) { btn.disabled = true; btn.textContent = '◐ INICIANDO…'; }
         Promise.resolve(started).catch(() => {});
       };
       if (claudeSignin && typeof ClaudeCliSignIn !== 'undefined') claudeSignin.addEventListener('click', ev => {
@@ -6404,7 +6404,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         claudeAcctsEl.querySelectorAll('.prov-acct').forEach(rowEl => {
           const id = rowEl.dataset.account;
           if (!id) return;
-          const label = (rowEl.querySelector('.key-prov') || {}).textContent || 'account';
+          const label = (rowEl.querySelector('.key-prov') || {}).textContent || 'cuenta';
           const inBtn = rowEl.querySelector('[data-act="prov-claude-acct-signin"]');
           if (inBtn) inBtn.onclick = () => { sfx('click'); startClaudeFlow(inBtn, { account: id }); };
           const rmBtn = rowEl.querySelector('[data-act="prov-claude-acct-remove"]');
@@ -6431,20 +6431,20 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const eng = OAuthAccounts.for(acctPid);
         const st = oauthAcctState(acctPid);
         const flow = (btn, account) => {
-          st.box = { account: account || '+', msg: 'requesting a sign-in code…', code: '', openUri: '' };
-          if (btn) { btn.disabled = true; btn.textContent = '◐ STARTING…'; }
+          st.box = { account: account || '+', msg: 'solicitando un código de sesión…', code: '', openUri: '' };
+          if (btn) { btn.disabled = true; btn.textContent = '◐ INICIANDO…'; }
           const cb = {
             onError: msg => { st.box = { account: '', msg, code: '', openUri: '' }; sfx('bad'); rerender('settings'); },
-            onTimeout: () => { st.box = { account: '', msg: 'sign-in timed out — start it again', code: '', openUri: '' }; rerender('settings'); },
+            onTimeout: () => { st.box = { account: '', msg: 'la sesión caducó por tiempo — vuelve a empezar', code: '', openUri: '' }; rerender('settings'); },
             onCode: c => {
               st.box = { account: account || '+', code: c.user_code, openUri: c.open_uri || c.verification_uri,
-                msg: 'enter this code at ' + c.verification_uri + ' — sign in with a DIFFERENT ' + provName(acctPid) + ' account' };
+                msg: 'introduce este código en ' + c.verification_uri + ' — inicia sesión con una cuenta DISTINTA de ' + provName(acctPid) + '' };
               openExternal(c.open_uri || c.verification_uri);
               rerender('settings');
             },
             onConnected: () => {
               st.box = null;
-              notify('✓ another ' + provName(acctPid) + ' account connected — runs continue on it when an account hits its limit', 'good');
+              notify('✓ otra cuenta de ' + provName(acctPid) + ' conectada — las ejecuciones continúan en ella cuando una cuenta alcanza su límite', 'good');
               refreshOAuthAccounts(acctPid, true); rerender('settings');
             }
           };
@@ -6459,18 +6459,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         oauthAcctsEl.querySelectorAll('.prov-acct').forEach(rowEl => {
           const id = rowEl.dataset.account;
           if (!id) return;
-          const label = (rowEl.querySelector('.key-prov') || {}).textContent || 'account';
+          const label = (rowEl.querySelector('.key-prov') || {}).textContent || 'cuenta';
           const inBtn = rowEl.querySelector('[data-act="prov-oauth-acct-signin"]');
           if (inBtn) inBtn.onclick = () => { sfx('click'); flow(inBtn, id); };
           const rmBtn = rowEl.querySelector('[data-act="prov-oauth-acct-remove"]');
           if (rmBtn && typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
             ArmConfirm.wire(rmBtn, {
-              armedLabel: '✕ REMOVE — sure?', timeoutMs: 4000,
+              armedLabel: '✕ QUITAR — ¿seguro?', timeoutMs: 4000,
               onArm: () => sfx('bad'),
               onConfirm: async () => {
                 rmBtn.disabled = true;
                 const r = await eng.remove(id);
-                notify(r.ok ? '✓ ' + label.toLowerCase() + ' removed' : 'couldn’t remove ' + label.toLowerCase() + ' — try again', r.ok ? 'good' : 'bad');
+                notify(r.ok ? '✓ ' + label.toLowerCase() + ' quitada' : 'no se pudo quitar ' + label.toLowerCase() + ' — intenta de nuevo', r.ok ? 'good' : 'bad');
                 refreshOAuthAccounts(acctPid, true); rerender('settings');
               }
             });
@@ -6552,7 +6552,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // a code is only worth showing while the engine still polls for it (a sign-in started elsewhere supersedes it)
     if (f.phase === 'code' && !(engine && engine.active())) { delete oauthCardFlow[pid]; return null; }
     return {
-      statusHtml: f.phase === 'code' ? 'enter this code at <b>' + esc(f.uri) + '</b>' + (f.fresh ? ' (opening it now)…' : '') : esc(f.msg),
+      statusHtml: f.phase === 'code' ? 'introduce este código en <b>' + esc(f.uri) + '</b>' + (f.fresh ? ' (abriéndola ahora)…' : '') : esc(f.msg),
       code: f.phase === 'code' ? f.code : '',
       openUri: f.phase === 'code' ? f.openUri : ''
     };
@@ -6584,8 +6584,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function startCardSignin(pid, retryLabel) {
     const engine = (typeof OAuthSignIn !== 'undefined') ? OAuthSignIn.for(pid) : null;
     if (!engine) return;
-    const retry = retryLabel || '⏼ RE-SIGN-IN';
-    const mine = oauthCardFlow[pid] = { phase: 'requesting', msg: 'requesting a sign-in code…', code: '', uri: '', openUri: '' };
+    const retry = retryLabel || '⏼ REINICIAR SESIÓN';
+    const mine = oauthCardFlow[pid] = { phase: 'requesting', msg: 'solicitando un código de sesión…', code: '', uri: '', openUri: '' };
     const mineNow = () => oauthCardFlow[pid] === mine;   // a newer start (or a finished one) owns the box now
     // the box the RECONNECT door starts on a card that shows no sign-in key exists only while a flow is shown
     if (open.settings && !open.settings.querySelector('#prov-oauth-inline-' + pid)) scheduleSettingsRepaint();
@@ -6593,7 +6593,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     engine.start({
       onRequesting: () => { if (mineNow()) paintOAuthCardFlow(pid); },
       onError: msg => { if (!mineNow()) return; mine.phase = 'ended'; mine.endedAt = Date.now(); mine.msg = msg; paintOAuthCardFlow(pid); sfx('bad'); },
-      onTimeout: () => { if (!mineNow()) return; mine.phase = 'ended'; mine.endedAt = Date.now(); mine.msg = 'sign-in timed out — hit ' + retry + ' to start again'; paintOAuthCardFlow(pid); },
+      onTimeout: () => { if (!mineNow()) return; mine.phase = 'ended'; mine.endedAt = Date.now(); mine.msg = 'la sesión caducó por tiempo — pulsa ' + retry + ' para volver a empezar'; paintOAuthCardFlow(pid); },
       onCode: c => {
         if (!mineNow()) return;
         // DISPLAY the bare address, OPEN the code-carrying one — kimi's page REQUIRES ?user_code=.
@@ -6612,8 +6612,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // honest claim: runs ride the ACTIVE provider. A sign-in on a non-active card must say the extra
         // step, not promise "your agents can run on your subscription" while runs continue elsewhere.
         notify(activeProv() === pid
-          ? '✓ signed in to ' + provName(pid) + ' — your agents can run on your subscription'
-          : '✓ signed in to ' + provName(pid) + ' — click its card to make it your active brain', 'good');
+          ? '✓ sesión iniciada en ' + provName(pid) + ' — tus agentes pueden ejecutarse con tu suscripción'
+          : '✓ sesión iniciada en ' + provName(pid) + ' — haz clic en su tarjeta para hacerla tu cerebro activo', 'good');
         if (typeof ModelDock !== 'undefined' && ModelDock.reflect) ModelDock.reflect();
         if (typeof KeyCTA !== 'undefined' && KeyCTA.refresh) KeyCTA.refresh();
         rerender('settings');
@@ -6684,10 +6684,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     stopLinkPoll();        // any in-flight link poll from a prior render is stale now
     if (_creditsUnlinkPending) {
       host.innerHTML = '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
-        '<p class="set-about" role="status">Unlinking this station…</p>';
+        '<p class="set-about" role="status">Desvinculando esta estación…</p>';
       return Promise.resolve();
     }
-    host.innerHTML = '<p class="set-about" role="status">Checking your account connection…</p>';
+    host.innerHTML = '<p class="set-about" role="status">Comprobando la conexión de tu cuenta…</p>';
     // /api/credits 404s when credits are unconfigured — that is the honesty law, not an error, and
     // api.get throws on any non-2xx. Catching to {configured:false} keeps the 404 on the normal path.
     // The wait outlasts the sidecar's worst case for this FULL read: a link self-heal (/v1/whoami 8s + one /v1/balance
@@ -6708,7 +6708,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             if (!current()) return;
             if (lk && lk.available === true) renderCreditsLinkCard(body, host,
               lk.reason === 'link_revoked'
-                ? 'This station’s previous link was removed from your account. Link it again to reconnect your balance.'
+                ? 'El vínculo anterior de esta estación fue retirado de tu cuenta. Vínculala de nuevo para reconectar tu saldo.'
                 : '');
             else if (lk && lk.available === false && lk.cloud === false && !_creditsUnlinkError) host.innerHTML = '';
             else renderCreditsUnavailable(body, host);
@@ -6725,22 +6725,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function renderCreditsUnavailable(body, host) {
     host.innerHTML = '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
-      '<p class="set-about" role="alert">Could not check your account connection. Retry to load your balance or linking options.</p>' +
-      '<button class="bb sm" id="credits-retry">↻ RETRY</button>';
+      '<p class="set-about" role="alert">No se pudo comprobar la conexión de tu cuenta. Reintenta para cargar tu saldo o las opciones de vinculación.</p>' +
+      '<button class="bb sm" id="credits-retry">↻ REINTENTAR</button>';
     host.querySelector('#credits-retry').addEventListener('click', () => { sfx('click'); forgetCreditsReads(); wireCredits(body); });
   }
 
   // A ledger entry's own name for itself. The backend sends `label` for rows that are not model calls
   // ('expiry', 'topup', 'sub_renewal', …) and `model` for the ones that are; `kind` is the last resort.
   const CREDIT_ENTRY_LABELS = {
-    topup: 'top-up', sub_init: 'subscription', sub_renewal: 'monthly credits',
-    expiry: 'expired — 90 days after cancelling', adjustment: 'adjustment'
+    topup: 'recarga', sub_init: 'suscripción', sub_renewal: 'créditos mensuales',
+    expiry: 'expirados — 90 días después de cancelar', adjustment: 'ajuste'
   };
   function creditEntryLabel(e) {
     const lab = e && e.label;
     if (lab) return CREDIT_ENTRY_LABELS[lab] || String(lab);
     if (e && e.model) return String(e.model);
-    return String((e && e.kind) || 'entry');
+    return String((e && e.kind) || 'entrada');
   }
 
   // The PLAN rows — tier, what it grants, and the next date that matters. Rendered ONLY from a real
@@ -6755,10 +6755,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // While cancelled the date that matters is when the leftover credits STOP working, not a renewal that
     // is never coming. Saying "renews" on a cancelled plan would be the app asserting something false.
     const when = cancelled
-      ? (s.graceUntil ? '<span class="dim">credits usable through ' + esc(day(s.graceUntil)) + '</span>' : '')
-      : (s.currentPeriodEnd ? '<span class="dim">renews ' + esc(day(s.currentPeriodEnd)) + '</span>' : '');
-    return '<div class="set-row"><span class="dim">PLAN</span><b style="margin-left:auto">$' + esc(String(s.tier)) + '/mo' +
-      (cancelled ? ' <span class="dim">· CANCELLED</span>' : '') + '</b></div>' +
+      ? (s.graceUntil ? '<span class="dim">créditos usables hasta ' + esc(day(s.graceUntil)) + '</span>' : '')
+      : (s.currentPeriodEnd ? '<span class="dim">se renueva ' + esc(day(s.currentPeriodEnd)) + '</span>' : '');
+    return '<div class="set-row"><span class="dim">PLAN</span><b style="margin-left:auto">$' + esc(String(s.tier)) + '/mes' +
+      (cancelled ? ' <span class="dim">· CANCELADA</span>' : '') + '</b></div>' +
       (grant || when
         ? '<div class="set-row"><span class="dim" style="font-size:.85em">' + esc(grant) + '</span>' +
           '<span style="margin-left:auto;font-size:.85em">' + when + '</span></div>'
@@ -6779,32 +6779,32 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const amt = (e && e.usd != null) ? fmtUsd(e.usd) : '';
       return '<div class="mc-row"><div class="mc-top"><b>' + kind + '</b> <span class="dim">' + esc(when) + '</span></div>' +
         '<div class="mc-url dim">' + esc(amt) + (e && e.runId ? ' · ' + esc(creditRunTag(e.runId)) : '') + '</div></div>';
-    }).join('') : '<div class="fb-empty">No credit activity yet.</div>';
+    }).join('') : '<div class="fb-empty">Aún no hay actividad de créditos.</div>';
     // A LINKED station is somebody's own subscription; an env-configured one is an operator's prepaid pool.
     // Same balance, completely different sentence — describing a subscriber's own account as something "the
     // operator tops up" is just wrong on the surface that is supposed to be the truthful one.
     const about = j.linkSaved
-      ? 'This station runs on <b>your StarNet credits</b> — agents work without you bringing a provider key. Each run reserves up to your <b>PER RUN</b> budget and refunds whatever it doesn’t spend. You can always switch to your own key: add it on a provider card above, then select that card.'
-      : 'This station runs on <b>managed credits</b> — a prepaid balance the operator tops up, so your agents can work without you bringing your own provider key. Each run reserves up to your <b>PER RUN</b> budget and refunds whatever it doesn’t spend. You can always switch to your own key: add it on a provider card above, then select that card.';
+      ? 'Esta estación funciona con <b>tus créditos de StarNet</b> — los agentes trabajan sin que aportes una clave de proveedor. Cada ejecución reserva hasta tu presupuesto de <b>POR EJECUCIÓN</b> y devuelve lo que no gasta. Puedes cambiar a tu propia clave cuando quieras: añádela en una tarjeta de proveedor arriba y luego selecciónala.'
+      : 'Esta estación funciona con <b>créditos gestionados</b> — un saldo prepago que recarga el operador, para que tus agentes trabajen sin que aportes tu propia clave de proveedor. Cada ejecución reserva hasta tu presupuesto de <b>POR EJECUCIÓN</b> y devuelve lo que no gasta. Puedes cambiar a tu propia clave cuando quieras: añádela en una tarjeta de proveedor arriba y luego selecciónala.';
     host.innerHTML =
       '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
       '<p class="set-about">' + about + '</p>' +
-      (j.linkSaved && j.accountId ? '<div class="set-row"><span class="dim">ACCOUNT</span><span class="dim" style="margin-left:auto">' + esc(String(j.accountId)) + '</span></div>' : '') +
+      (j.linkSaved && j.accountId ? '<div class="set-row"><span class="dim">CUENTA</span><span class="dim" style="margin-left:auto">' + esc(String(j.accountId)) + '</span></div>' : '') +
       creditsPlanRows(j) +
-      '<div class="set-row"><span class="dim">BALANCE</span><b class="credits-bal" style="margin-left:auto">' + esc(bal) + '</b></div>' +
-      (reach ? '<div class="set-row dim">⚠ the credits service didn’t answer — the balance shown may be stale.</div>' : '') +
+      '<div class="set-row"><span class="dim">SALDO</span><b class="credits-bal" style="margin-left:auto">' + esc(bal) + '</b></div>' +
+      (reach ? '<div class="set-row dim">⚠ el servicio de créditos no respondió — el saldo mostrado puede estar desactualizado.</div>' : '') +
       '<div class="mc-acts">' +
-        '<button class="bb sm" id="credits-buy">＋ ADD CREDITS ↗</button>' +
-        (j.subscription ? '<button class="bb xs" id="credits-manage" title="change or cancel your plan in the browser">MANAGE PLAN ↗</button>' : '') +
-        '<button class="bb xs" id="credits-refresh" title="re-read the balance">↻ REFRESH</button>' +
+        '<button class="bb sm" id="credits-buy">＋ AÑADIR CRÉDITOS ↗</button>' +
+        (j.subscription ? '<button class="bb xs" id="credits-manage" title="cambia o cancela tu plan en el navegador">GESTIONAR PLAN ↗</button>' : '') +
+        '<button class="bb xs" id="credits-refresh" title="volver a leer el saldo">↻ ACTUALIZAR</button>' +
       '</div>' +
-      '<div class="mc-hint">Adding credits opens your browser — StarNet never handles your payment details.</div>' +
-      '<div class="set-row"><span class="dim">RECENT ACTIVITY</span></div>' +
+      '<div class="mc-hint">Añadir créditos abre tu navegador — StarNet nunca maneja tus datos de pago.</div>' +
+      '<div class="set-row"><span class="dim">ACTIVIDAD RECIENTE</span></div>' +
       '<div class="mc-list">' + rows + '</div>' +
       (j.linkSaved ? '<div class="set-row" style="margin-top:.6em"><span class="dim" style="font-size:.85em">' +
-        (j.linked ? 'This station is linked to your account.' : 'Link saved locally; the cloud check is unavailable, so runs wait for verification.') + '</span>' +
-        '<button class="bb xs" id="credits-unlink" title="forget this station’s link" style="margin-left:auto">UNLINK</button></div>' : '');
+        (j.linked ? 'Esta estación está vinculada a tu cuenta.' : 'Vínculo guardado localmente; la comprobación en la nube no está disponible, así que las ejecuciones esperan verificación.') + '</span>' +
+        '<button class="bb xs" id="credits-unlink" title="olvidar el vínculo de esta estación" style="margin-left:auto">DESUNIR</button></div>' : '');
     const buy = host.querySelector('#credits-buy');
     if (buy) buy.addEventListener('click', () => { sfx('click'); openExternal(j.purchaseUrl); });
     const manage = host.querySelector('#credits-manage');
@@ -6832,13 +6832,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       let stage = 'keychain';
       return forgetKeychain
         .then(ok => {
-          if (!ok && kcInvoke) throw new Error('keychain unlink failed');
+          if (!ok && kcInvoke) throw new Error('falló la desvinculación de la cadena de llaves');
           stage = 'station';
           return Harness.api.post('/api/credits/unlink', {});
         })
         .then(r => {
           // api.post resolves HTTP errors. Neither HTTP 200 alone nor a missing payload proves unlink.
-          if (!r || !r.ok || !r.j || r.j.ok !== true || r.j.unlinked !== true) throw new Error('unlink not confirmed');
+          if (!r || !r.ok || !r.j || r.j.ok !== true || r.j.unlinked !== true) throw new Error('desvinculación no confirmada');
           stage = 'refresh';
         })
         // Symmetric to the link path: a station that just gave up its credential must stop reporting
@@ -6849,10 +6849,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         .catch(() => {
           _creditsUnlinkPending = false;
           _creditsUnlinkError = stage === 'keychain'
-            ? 'Could not clear the saved account credential. Unlink was not completed. Try UNLINK again; if it still fails, fully quit and reopen StarNet.'
+            ? 'No se pudo borrar la credencial de cuenta guardada. La desvinculación no se completó. Prueba DESUNIR de nuevo; si sigue fallando, cierra StarNet por completo y vuelve a abrirla.'
             : stage === 'station'
-              ? 'Could not confirm that unlink completed. Refresh the account connection, then retry UNLINK if it is still linked.'
-              : 'Unlink completed, but the account display could not refresh. Retry to load the linking options.';
+              ? 'No se pudo confirmar que la desvinculación se completara. Actualiza la conexión de la cuenta y reintenta DESUNIR si sigue vinculada.'
+              : 'La desvinculación se completó, pero la vista de la cuenta no se pudo actualizar. Reintenta para cargar las opciones de vinculación.';
           scheduleSettingsRepaint();
           forgetCreditsReads(); wireCredits(body);
         });
@@ -6861,7 +6861,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
         // No restLabel: the helper restores whatever text the button already had.
         ArmConfirm.wire(unlink, {
-          armedLabel: '✕ CONFIRM UNLINK', timeoutMs: 4000,
+          armedLabel: '✕ CONFIRMAR DESUNIR', timeoutMs: 4000,
           onArm: () => sfx('bad'),
           onConfirm: () => { sfx('bad'); doUnlink(); }
         });
@@ -6888,10 +6888,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     host.innerHTML =
       '<h4 class="ms-h">TIENDA <span class="dim">— créditos gestionados</span></h4>' +
       creditsUnlinkErrorMarkup() +
-      '<p class="set-about">Link this station to your <b>StarNet account</b> to run agents on managed credits — no provider key needed. You will confirm a short code in your browser.</p>' +
+      '<p class="set-about">Vincula esta estación a tu <b>cuenta de StarNet</b> para ejecutar agentes con créditos gestionados — sin clave de proveedor. Confirmarás un código breve en tu navegador.</p>' +
       (note ? '<div class="set-row" style="color:var(--gold,#e8c15a)">' + esc(note) + '</div>' : '') +
-      '<div class="mc-acts"><button class="bb sm" id="credits-link">🔗 LINK STATION</button></div>' +
-      '<div class="mc-hint">Linking opens your browser to confirm — StarNet never handles your payment details.</div>' +
+      '<div class="mc-acts"><button class="bb sm" id="credits-link">🔗 VINCULAR ESTACIÓN</button></div>' +
+      '<div class="mc-hint">Vincular abre tu navegador para confirmar — StarNet nunca maneja tus datos de pago.</div>' +
       '<div id="credits-link-state"></div>';
     const btn = host.querySelector('#credits-link');
     if (btn) btn.addEventListener('click', () => { sfx('click'); startCreditsLink(body, host); });
@@ -6905,7 +6905,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const state = host.querySelector('#credits-link-state');
     const btn = host.querySelector('#credits-link');
     if (btn) btn.disabled = true;
-    if (state) state.innerHTML = '<div class="set-row dim">Requesting a link code…</div>';
+    if (state) state.innerHTML = '<div class="set-row dim">Solicitando un código de vinculación…</div>';
     // Same failure facts as the genesis LINK (app.js startStarnetLink): a dead local engine is never "the link service".
     const startFail = info => Object.assign(new Error('start failed'), { linkStart: info });
     Harness.api.post('/api/credits/link/start', { deviceName: 'StarNet Station' })
@@ -6914,7 +6914,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       .then(j => { if (generation !== _creditsLinkGeneration) return; if (!j || !j.code) throw new Error('no code'); showCreditsLinkCode(body, host, j); })
       .catch(e => {
         if (generation !== _creditsLinkGeneration) return;
-        const why = (typeof Friendly !== 'undefined' && Friendly.linkStartFailure) ? Friendly.linkStartFailure(e && e.linkStart) : 'could not reach the link service — try again';
+        const why = (typeof Friendly !== 'undefined' && Friendly.linkStartFailure) ? Friendly.linkStartFailure(e && e.linkStart) : 'no se pudo alcanzar el servicio de vinculación — intenta de nuevo';
         renderCreditsLinkCard(body, host, why.charAt(0).toUpperCase() + why.slice(1) + '.');
       });
   }
@@ -6925,11 +6925,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const generation = _creditsLinkGeneration;
     const expiresAt = Number(j.expiresAt) || 0;
     host.innerHTML =
-      '<h4 class="ms-h">ENLAZAR ESTACIÓN <span class="dim">— confirma en tu navegador</span></h4>' +
-      '<p class="set-about">Open the link page and confirm this code to connect your account:</p>' +
+      '<h4 class="ms-h">VINCULAR ESTACIÓN <span class="dim">— confirma en tu navegador</span></h4>' +
+      '<p class="set-about">Abre la página de vinculación y confirma este código para conectar tu cuenta:</p>' +
       '<div class="credits-link-code" style="font-family:\'VT323\',monospace;font-size:2.6em;line-height:1.1;letter-spacing:.14em;text-align:center;color:var(--gold,#e8c15a);text-shadow:0 0 10px rgba(232,193,90,.55);margin:.35em 0">' + esc(String(j.code)) + '</div>' +
-      '<div class="mc-acts"><button class="bb sm" id="credits-link-open">OPEN LINK PAGE ↗</button></div>' +
-      '<div class="set-row dim" id="credits-link-status" style="margin-top:.5em">Waiting for confirmation…</div>';
+      '<div class="mc-acts"><button class="bb sm" id="credits-link-open">ABRIR PÁGINA DE VINCULACIÓN ↗</button></div>' +
+      '<div class="set-row dim" id="credits-link-status" style="margin-top:.5em">Esperando confirmación…</div>';
     const open = host.querySelector('#credits-link-open');
     if (open) open.addEventListener('click', () => { sfx('click'); openExternal(j.verifyUrl); });
     openExternal(j.verifyUrl);   // auto-open once so the user lands straight on the confirm page
@@ -6940,7 +6940,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // expiresAt from the backend it POSTed /api/credits/link/poll every 2s for the life of the
       // page, and every terminal render below writes into a detached host nobody can read.
       if (!document.body.contains(host)) { stopLinkPoll(); return; }
-      if (expiresAt && Date.now() > expiresAt) { stopLinkPoll(); renderCreditsLinkCard(body, host, 'That code expired — start again.'); return; }
+      if (expiresAt && Date.now() > expiresAt) { stopLinkPoll(); renderCreditsLinkCard(body, host, 'Ese código expiró — vuelve a empezar.'); return; }
       _creditsLinkPollBusy = true;
       Harness.api.post('/api/credits/link/poll', { code: j.code })
         .then(r => (r && r.ok) ? r.j : {})
@@ -6963,8 +6963,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             return;
           }
           if (p && (p.status === 'expired' || p.status === 'consumed' || p.status === 'unknown' || p.status === 'invalid')) {
-            stopLinkPoll(); renderCreditsLinkCard(body, host, 'That code is no longer valid — start again.');
-          } else if (statusEl) { statusEl.textContent = 'Waiting for confirmation…'; }
+            stopLinkPoll(); renderCreditsLinkCard(body, host, 'Ese código ya no es válido — vuelve a empezar.');
+          } else if (statusEl) { statusEl.textContent = 'Esperando confirmación…'; }
         })
         .catch(() => {})
         .finally(() => { if (generation === _creditsLinkGeneration) _creditsLinkPollBusy = false; });
@@ -6981,7 +6981,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function creditRunTag(runId) {
     const s = String(runId == null ? '' : runId);
     const m = /^skill-eval-(.+)-(\d+)-([a-z]+)-[A-Za-z0-9]+$/.exec(s);
-    return m ? 'skill eval ' + m[1].slice(0, 8) + '-' + m[2] + '-' + m[3] : 'run ' + s.slice(0, 8);
+    return m ? 'eval-hab ' + m[1].slice(0, 8) + '-' + m[2] + '-' + m[3] : 'ejec ' + s.slice(0, 8);
   }
   function wireBudget(body) {
     const form = body.querySelector('#budget-form');
@@ -7023,11 +7023,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // override that silences a saved cap), so the badge says "environment default" — not "ignored".
         const savedHere = Object.prototype.hasOwnProperty.call(saved, k);
         painted[k] = { v: Number(v), saved: savedHere };
-        el.title = savedHere ? 'saved on this machine' : 'environment default (not yet saved here)';
+        el.title = savedHere ? 'guardado en este equipo' : 'predeterminado del entorno (aún no guardado aquí)';
         const badge = body.querySelector('#bg-src-' + k);
         if (badge) {
-          badge.textContent = savedHere ? 'saved here' : 'environment default';
-          badge.title = savedHere ? 'you saved this limit on this machine' : 'follows the environment default until you save your own value here';
+          badge.textContent = savedHere ? 'guardado aquí' : 'predeterminado del entorno';
+          badge.title = savedHere ? 'guardaste este límite en este equipo' : 'sigue el predeterminado del entorno hasta que guardes tu propio valor aquí';
           badge.classList.toggle('src-env', !savedHere);
           badge.classList.toggle('src-saved', savedHere);
           badge.hidden = false;
@@ -7040,7 +7040,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const md = st && st.managedRunDefaultUsd;
         const showManaged = typeof md === 'number' && Number.isFinite(md) && md > 0;
         managedHint.textContent = showManaged
-          ? 'On StarNet credits, a run with PER RUN at 0 still stops at ' + fmtUsd(md) + ', so one prompt can’t use up your balance. Set a per-run cap above 0 to use your own limit instead.'
+          ? 'Con créditos de StarNet, una ejecución con POR EJECUCIÓN en 0 sigue deteniéndose en ' + fmtUsd(md) + ', así que un solo prompt no puede agotar tu saldo. Fija un límite por ejecución mayor que 0 para usar tu propio límite.'
           : '';
         managedHint.hidden = !showManaged;
       }
@@ -7056,23 +7056,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // an unreadable line of the spend record (kind 'damaged') is not a run: say what it is
         const damagedLines = open ? st.unsettled.filter(r => r && r.kind === 'damaged').length : 0;
         const missing = damagedLines === open
-          ? (open === 1 ? 'a line of your spend record is damaged (what it recorded is unknown)' : open + ' lines of your spend record are damaged (what they recorded is unknown)')
+          ? (open === 1 ? 'una línea de tu registro de gasto está dañada (lo que registró es desconocido)' : open + ' líneas de tu registro de gasto están dañadas (lo que registraron es desconocido)')
           : evals === open
-          ? (open === 1 ? 'a skill evaluation run has no recorded price' : open + ' skill evaluation runs have no recorded price')
-          : damagedLines ? open + ' items in your spend history have no recorded charge'
-          : evals ? open + ' runs never recorded what they spent'
-            : (open === 1 ? 'an interrupted run never recorded what it spent' : open + ' interrupted runs never recorded what they spent');
-        const floor = (st.atLeast && typeof st.atLeast.today === 'number') ? ' At least ' + fmtUsd(st.atLeast.today) + ' today.' : '';
+          ? (open === 1 ? 'una ejecución de evaluación de habilidad no tiene precio registrado' : open + ' ejecuciones de evaluación de habilidad no tienen precio registrado')
+          : damagedLines ? open + ' elementos de tu historial de gasto no tienen cargo registrado'
+          : evals ? open + ' ejecuciones nunca registraron lo que gastaron'
+            : (open === 1 ? 'una ejecución interrumpida nunca registró lo que gastó' : open + ' ejecuciones interrumpidas nunca registraron lo que gastaron');
+        const floor = (st.atLeast && typeof st.atLeast.today === 'number') ? ' Al menos ' + fmtUsd(st.atLeast.today) + ' hoy.' : '';
         spendEl.textContent = acc.writeError
-          ? 'Spend history unavailable — it could not be saved to disk, so your spending limits can’t be checked. Restart StarNet to recover it.'
+          ? 'Historial de gasto no disponible — no se pudo guardar en disco, así que tus límites de gasto no se pueden comprobar. Reinicia StarNet para recuperarlo.'
           : (acc.readError === 'UNSETTLED_SPEND' && open)
-            ? 'Spend history unavailable — ' + missing +
-              ', so your spending limits can’t be checked. Settle ' + (open === 1 ? 'it' : 'each') + ' below.' + floor
-            : 'Spend history unavailable — the spend record could not be read, so your spending limits can’t be checked. Restart StarNet; if this stays, the spend files in your workspaces folder are damaged.';
+            ? 'Historial de gasto no disponible — ' + missing +
+              ', así que tus límites de gasto no se pueden comprobar. Ajusta ' + (open === 1 ? 'esta' : 'cada una') + ' abajo.' + floor
+            : 'Historial de gasto no disponible — no se pudo leer el registro de gasto, así que tus límites de gasto no se pueden comprobar. Reinicia StarNet; si persiste, los archivos de gasto en tu carpeta de espacios de trabajo están dañados.';
       } else if (spendEl) {
         const today = fmtUsd(st && st.spentToday), life = fmtUsd(st && st.lifetime);
         const runs = (st && typeof st.runs === 'number') ? st.runs : 0;
-        spendEl.innerHTML = 'SPENT TODAY <b>' + today + '</b> &nbsp;·&nbsp; LIFETIME <b>' + life + '</b> <span class="dim">(' + runs + ' run' + (runs === 1 ? '' : 's') + ')</span>';
+        spendEl.innerHTML = 'GASTADO HOY <b>' + today + '</b> &nbsp;·&nbsp; VITALICIO <b>' + life + '</b> <span class="dim">(' + runs + (runs === 1 ? ' ejecución' : ' ejecuciones') + ')</span>';
       }
       paintUnsettled(st);
       paintPools(st);
@@ -7178,29 +7178,29 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (p.usd < p.cap) continue;   // headroom left — the inputs above already tell the story
         const row = document.createElement('div');
         row.className = 'set-row bg-pool-hit';
-        const label = scope === 'day' ? 'DAY POOL' : 'GLOBAL POOL';
+        const label = scope === 'day' ? 'POOL DIARIO' : 'POOL GLOBAL';
         const txt = document.createElement('span');
-        txt.innerHTML = label + ' CAP HIT — <b>' + fmtUsd(p.usd) + '</b> of <b>' + fmtUsd(p.cap) + '</b>. New runs are paused by the governor.';
+        txt.innerHTML = label + ' LÍMITE ALCANZADO — <b>' + fmtUsd(p.usd) + '</b> de <b>' + fmtUsd(p.cap) + '</b>. Nuevas ejecuciones están en pausa por el gobernador.';
         const btn = document.createElement('button');
         btn.className = 'bb sm';
-        btn.textContent = 'RESUME (+' + fmtUsd(p.base) + ' headroom)';
-        btn.title = 'grant one more base-cap of ' + scope + ' headroom for the rest of this session';
+        btn.textContent = 'REANUDAR (+' + fmtUsd(p.base) + ' de margen)';
+        btn.title = 'concede una base de límite más de ' + scope + ' de margen para el resto de esta sesión';
         btn.addEventListener('click', () => {
-          btn.disabled = true; setMsg('resuming…');
+          btn.disabled = true; setMsg('reanudando…');
           Harness.api.post('/api/budget/resume', { scope })
             .then(({ ok, j }) => {
-              if (!ok) { setMsg((j && j.error) || 'could not resume'); sfx('bad'); btn.disabled = false; return; }
-              setMsg('✓ ' + scope + ' pool resumed — runs may continue this session', true); sfx('click');
+              if (!ok) { setMsg((j && j.error) || 'no se pudo reanudar'); sfx('bad'); btn.disabled = false; return; }
+              setMsg('✓ pool ' + scope + ' reanudado — las ejecuciones pueden continuar esta sesión', true); sfx('click');
               refresh();   // repaint pools + spend from the server truth (the hit row clears only when the governor says so)
             })
-            .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); btn.disabled = false; });
+            .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); btn.disabled = false; });
         });
         row.appendChild(txt); row.appendChild(btn);
         poolsEl.appendChild(row);
       }
     };
     const refresh = () => Harness.api.get('/api/budget/status').then(paint)
-      .catch(() => { loaded = false; enable(false); if (spendEl) spendEl.textContent = 'spend unavailable'; });   // never paint an error body as $0 spend
+      .catch(() => { loaded = false; enable(false); if (spendEl) spendEl.textContent = 'gasto no disponible'; });   // never paint an error body as $0 spend
     refresh();
     if (saveBtn) saveBtn.addEventListener('click', () => {
       if (!loaded) return;
@@ -7209,7 +7209,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const el = inputOf(k); if (!el) continue;
         const raw = String(el.value).trim();
         const n = raw === '' ? 0 : Number(raw);   // blank -> "no cap" (0), matching the placeholder semantics
-        if (!isFinite(n) || n < 0) { setMsg(k + ': enter a number ≥ 0 (leave blank or 0 for no cap)'); sfx('bad'); el.focus(); return; }
+        if (!isFinite(n) || n < 0) { setMsg(k + ': introduce un número ≥ 0 (en blanco o 0 para sin límite)'); sfx('bad'); el.focus(); return; }
         const was = painted[k];
         // Only a value the Commander CHANGED is a choice. Saving an untouched field turned the shipped soft day rail
         // into a strict saved cap (fail-closed whenever spend history is uncertain — DECISIONS.md "Strict vs soft").
@@ -7219,23 +7219,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (was && was.saved && typeof paintedEnv[k] === 'number' && n === paintedEnv[k]) { payload[k] = null; continue; }
         payload[k] = n;
       }
-      if (!Object.keys(payload).length) { setMsg('no changes to save', true); return; }
-      setMsg('saving…');
+      if (!Object.keys(payload).length) { setMsg('no hay cambios que guardar', true); return; }
+      setMsg('guardando…');
       Harness.api.post('/api/budget/caps', payload)
         .then(({ ok, j }) => {
-          if (!ok) { setMsg((j && j.error) || 'could not save limits'); sfx('bad'); return; }
-          paint(j); setMsg('✓ limits saved & applied', true); sfx('click');
+          if (!ok) { setMsg((j && j.error) || 'no se pudieron guardar los límites'); sfx('bad'); return; }
+          paint(j); setMsg('✓ límites guardados y aplicados', true); sfx('click');
         })
-        .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+        .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
     });
     if (resetBtn) resetBtn.addEventListener('click', () => {
       if (!loaded) return;
       // clear every saved override -> each cap falls back to its env default, live.
       const payload = {}; BG_KEYS.forEach(k => { payload[k] = null; });
-      setMsg('resetting…');
+      setMsg('restableciendo…');
       Harness.api.post('/api/budget/caps', payload)
-        .then(({ ok, j }) => { if (!ok) { setMsg((j && j.error) || 'reset failed'); sfx('bad'); return; } paint(j); setMsg('✓ reset to environment defaults', true); sfx('click'); })
-        .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+        .then(({ ok, j }) => { if (!ok) { setMsg((j && j.error) || 'falló el restablecimiento'); sfx('bad'); return; } paint(j); setMsg('✓ restablecido a los predeterminados del entorno', true); sfx('click'); })
+        .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
     });
   }
 
@@ -7278,19 +7278,19 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (resetBtn) resetBtn.style.display = savedFlag ? '' : 'none';
       if (!listEl) return;
       if (!chain.length) {
-        listEl.innerHTML = '<div class="fbc-row dim">— no fallback: if the model fails, the run fails —</div>';
+        listEl.innerHTML = '<div class="fbc-row dim">— sin respaldo: si el modelo falla, la ejecución falla —</div>';
       } else {
         listEl.innerHTML = chain.map((id, i) =>
           '<div class="fbc-row" data-i="' + i + '">' +
             '<span class="fbc-ord">' + (i + 1) + '.</span>' +
             '<span class="fbc-id" title="' + esc(id) + '">' + esc(id) + '</span>' +
-            '<button class="bb xs" data-act="up" title="try this model earlier"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
-            '<button class="bb xs" data-act="dn" title="try this model later"' + (i === chain.length - 1 ? ' disabled' : '') + '>▼</button>' +
-            '<button class="bb xs" data-act="rm" title="remove from the chain">✕</button>' +
+            '<button class="bb xs" data-act="up" title="probar este modelo antes"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+            '<button class="bb xs" data-act="dn" title="probar este modelo después"' + (i === chain.length - 1 ? ' disabled' : '') + '>▼</button>' +
+            '<button class="bb xs" data-act="rm" title="quitar de la cadena">✕</button>' +
           '</div>').join('');
       }
       // annotate the source honestly, mirroring the Budget panel's saved-vs-env truthfulness
-      listEl.title = savedFlag ? 'saved on this machine' : 'environment default (not yet saved here)';
+      listEl.title = savedFlag ? 'guardado en este equipo' : 'predeterminado del entorno (aún no guardado aquí)';
       listEl.querySelectorAll('button[data-act]').forEach(b => b.addEventListener('click', () => {
         const i = Number(b.closest('.fbc-row').dataset.i);
         const act = b.dataset.act;
@@ -7307,7 +7307,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       paint();
     };
     Harness.api.get('/api/fallback/chain').then(applyStatus)
-      .catch(() => { if (listEl) listEl.innerHTML = '<div class="fbc-row dim">chain unavailable — sidecar unreachable</div>'; });   // never paint an error body as an empty chain
+      .catch(() => { if (listEl) listEl.innerHTML = '<div class="fbc-row dim">cadena no disponible — sidecar inalcanzable</div>'; });   // never paint an error body as an empty chain
     // catalog for the ADD picker — the same warmed OpenRouter catalog the model dock uses. Best-effort: an empty
     // catalog just leaves the picker with its placeholder (the chain itself still paints + saves fine).
     openRouterCatalog().then(models => {
@@ -7324,23 +7324,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (addSel) addSel.addEventListener('change', () => {
       const id = addSel.value; addSel.value = '';
       if (!id) return;
-      if (chain.indexOf(id) >= 0) { setMsg('already in the chain'); sfx('bad'); return; }
-      if (chain.length >= maxEntries) { setMsg('the chain holds at most ' + maxEntries + ' models'); sfx('bad'); return; }
+      if (chain.indexOf(id) >= 0) { setMsg('ya está en la cadena'); sfx('bad'); return; }
+      if (chain.length >= maxEntries) { setMsg('la cadena admite como máximo ' + maxEntries + ' modelos'); sfx('bad'); return; }
       chain.push(id); setMsg(''); sfx('click'); paint();
     });
     const post = (models, okText) => {
-      setMsg('saving…');
+      setMsg('guardando…');
       Harness.api.post('/api/fallback/chain', { models: models })
         .then(({ ok, j }) => {
-          if (!ok) { setMsg((j && j.error) || 'could not save the chain'); sfx('bad'); return; }
+          if (!ok) { setMsg((j && j.error) || 'no se pudo guardar la cadena'); sfx('bad'); return; }
           applyStatus(j);
-          const warn = (j && j.warnings && j.warnings.length) ? ' — not in the catalog (kept anyway): ' + j.warnings.join(', ') : '';
+          const warn = (j && j.warnings && j.warnings.length) ? ' — no está en el catálogo (se mantiene igualmente): ' + j.warnings.join(', ') : '';
           setMsg('✓ ' + okText + warn, true); sfx('click');
         })
-        .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+        .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
     };
-    if (saveBtn) saveBtn.addEventListener('click', () => post(chain, 'chain saved & applied'));
-    if (resetBtn) resetBtn.addEventListener('click', () => post(null, 'reset to environment default'));
+    if (saveBtn) saveBtn.addEventListener('click', () => post(chain, 'cadena guardada y aplicada'));
+    if (resetBtn) resetBtn.addEventListener('click', () => post(null, 'restablecido al predeterminado del entorno'));
   }
 
   // CLASS TIER MODELS (Class Loadouts S3) — the three tier->model pins the summon path (app.resolveTierModel)
@@ -7368,7 +7368,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const sel = selOf(tier); if (!sel) return;
       const want = String(map[tier] || '');
       sel.replaceChildren();
-      const inherited = document.createElement('option'); inherited.value = ''; inherited.textContent = '(station default)'; sel.appendChild(inherited);
+      const inherited = document.createElement('option'); inherited.value = ''; inherited.textContent = '(predeterminado de la estación)'; sel.appendChild(inherited);
       const seen = new Set();
       (models || []).forEach(m => {
         if (!m || !m.id || seen.has(m.id)) return;
@@ -7379,7 +7379,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       });
       if (want && !seen.has(want)) {
         const o = document.createElement('option'); o.value = want;
-        o.textContent = want + (confirmed ? '  ·  (not in catalog)' : '  ·  (catalog unverified)'); sel.appendChild(o);
+        o.textContent = want + (confirmed ? '  ·  (no está en el catálogo)' : '  ·  (catálogo sin verificar)'); sel.appendChild(o);
       }
       sel.value = want;
     });
@@ -7388,14 +7388,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     Harness.api.get('/api/models/' + encodeURIComponent(provider) + (baseUrl ? '?baseUrl=' + encodeURIComponent(baseUrl) : '')).then(j => {
       if (!j || j.error || !Array.isArray(j.models)) throw new Error('catalog unavailable');
       paint(j.models.slice().sort((a, b) => String(a.id).localeCompare(String(b.id))), true);
-    }).catch(() => { paint(); setMsg('Model catalog unavailable — saved choices are preserved.'); });
+    }).catch(() => { paint(); setMsg('Catálogo de modelos no disponible — las selecciones guardadas se conservan.'); });
     TM_TIERS.forEach(tier => {
       const sel = selOf(tier); if (!sel) return;
       sel.addEventListener('change', () => {
         const v = String(sel.value || '').trim();
         if (v) map[tier] = v; else delete map[tier];
         writeTierModels(map); sfx('click');
-        setMsg(v ? ('✓ ' + tier.toUpperCase() + '-class agents will summon on ' + v) : ('✓ ' + tier.toUpperCase() + ' follows the station default'), true);
+        setMsg(v ? ('✓ los agentes de clase ' + tier.toUpperCase() + ' se invocarán con ' + v) : ('✓ ' + tier.toUpperCase() + ' sigue el predeterminado de la estación'), true);
       });
     });
   }
@@ -7418,7 +7418,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       if (modelSel) {
         const want = optVal(setting.provider, setting.model);
         modelSel.replaceChildren();
-        const same = document.createElement('option'); same.value = ''; same.textContent = '(same as the agent)'; modelSel.appendChild(same);
+        const same = document.createElement('option'); same.value = ''; same.textContent = '(igual que el agente)'; modelSel.appendChild(same);
         const seen = new Set();
         (catalog || []).forEach(m => {
           if (!m || !m.id || seen.has(m.id)) return;
@@ -7429,7 +7429,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         });
         if (want && !Array.from(modelSel.options).some(o => o.value === want)) {
           const o = document.createElement('option'); o.value = want;
-          o.textContent = setting.model + '  ·  ' + (setting.provider && setting.provider !== active ? 'via ' + setting.provider : (catalog ? '(not in catalog)' : '(catalog unverified)'));
+          o.textContent = setting.model + '  ·  ' + (setting.provider && setting.provider !== active ? 'vía ' + setting.provider : (catalog ? '(no está en el catálogo)' : '(catálogo sin verificar)'));
           modelSel.appendChild(o);
         }
         modelSel.value = want;
@@ -7440,9 +7440,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         effortSel.value = e;
       }
       if (hintEl) {
-        hintEl.textContent = !setting.model ? 'Spoken replies use the agent’s own model.'
-          : configured === false ? '⚠ ' + (setting.provider || active) + ' isn’t connected — spoken replies stay on the agent’s model until it is.'
-          : 'Spoken replies run on ' + setting.model + ' via ' + (setting.provider || active) + '.';
+        hintEl.textContent = !setting.model ? 'Las respuestas habladas usan el propio modelo del agente.'
+          : configured === false ? '⚠ ' + (setting.provider || active) + ' no está conectado — las respuestas habladas se quedan en el modelo del agente hasta que lo esté.'
+          : 'Las respuestas habladas se ejecutan con ' + setting.model + ' vía ' + (setting.provider || active) + '.';
       }
     };
     const apply = (st) => {
@@ -7450,9 +7450,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       configured = st ? st.configured : null;
       paint();
     };
-    if (hintEl) hintEl.textContent = 'reading the voice chat model…';
+    if (hintEl) hintEl.textContent = 'leyendo el modelo de voz…';
     Harness.api.get('/api/voice/chat-model').then(apply)
-      .catch(() => { if (hintEl) hintEl.textContent = 'voice chat model unavailable — sidecar unreachable'; });
+      .catch(() => { if (hintEl) hintEl.textContent = 'modelo de voz no disponible — sidecar inalcanzable'; });
     const baseUrl = active === 'custom' && Harness.getBaseUrl ? Harness.getBaseUrl(active) : '';
     Harness.api.get('/api/models/' + encodeURIComponent(active) + (baseUrl ? '?baseUrl=' + encodeURIComponent(baseUrl) : '')).then(j => {
       if (!j || j.error || !Array.isArray(j.models)) throw new Error('catalog unavailable');
@@ -7463,14 +7463,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const v = modelSel ? String(modelSel.value || '') : '';
       const cut = v.indexOf('|');
       const next = { provider: cut > 0 ? v.slice(0, cut) : '', model: cut > 0 ? v.slice(cut + 1) : '', reasoningEffort: effortSel ? String(effortSel.value) : 'none' };
-      setMsg('saving…');
+      setMsg('guardando…');
       Harness.api.post('/api/voice/chat-model', next)
         .then(({ ok, j }) => {
-          if (!ok) { setMsg((j && j.error) || 'could not save the voice chat model'); sfx('bad'); paint(); return; }
+          if (!ok) { setMsg((j && j.error) || 'no se pudo guardar el modelo de voz'); sfx('bad'); paint(); return; }
           apply(j);
-          setMsg('✓ ' + (next.model ? 'spoken replies will use ' + next.model : 'spoken replies use the agent’s model'), true); sfx('click');
+          setMsg('✓ ' + (next.model ? 'las respuestas habladas usarán ' + next.model : 'las respuestas habladas usan el modelo del agente'), true); sfx('click');
         })
-        .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); paint(); });
+        .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); paint(); });
     };
     if (modelSel) modelSel.addEventListener('change', post);
     if (effortSel) effortSel.addEventListener('change', post);
@@ -7487,21 +7487,21 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     bind('#ntp-cronDigest', 'cronDigest');
     bind('#ntp-sound', 'sound');
     const test = body.querySelector('#ntp-test');
-    if (test) test.addEventListener('click', () => notify('test notification — this is what a ping looks like', 'good', 'runComplete'));
+    if (test) test.addEventListener('click', () => notify('notificación de prueba — así se ve un ping', 'good', 'runComplete'));
   }
 
   // P1-9 ADVANCED runtime knobs — fetch the server's current + effective values, render an editable form, POST
   // saved overrides. Precedence (env > saved > default) is enforced + reported by the sidecar; the UI just shows
   // whether a field is env-locked (read-only + a note) or a saved override.
   const ADV_FIELDS = [
-    { key: 'maxIters', label: 'MAX ITERATIONS', hint: 'optional tool-turn ceiling for one run. 0 = unlimited (default).', min: 0, max: 200, step: 1 },
-    { key: 'maxConcurrentAgents', label: 'MAX CONCURRENT AGENTS', hint: 'optional simultaneous-agent ceiling. 0 = unlimited (default).', min: 0, max: 32, step: 1 },
-    { key: 'consentTimeoutMs', label: 'CONSENT TIMEOUT (MS)', hint: 'how long a permission prompt waits for your answer before auto-denying (so a run never hangs).', min: 5000, max: 600000, step: 1000 },
-    { key: 'cronTickMs', label: 'ROUTINE TICK (MS)', hint: 'how often the scheduler checks for due routines.', min: 5000, max: 600000, step: 1000 },
-    { key: 'maxSubscriptionTokens', label: 'CLAUDE CODE TOKEN CEILING', hint: 'tokens one run may use on a Claude subscription sign-in (cache re-reads count 1/10). 0 = no ceiling. Applies from the next run.', min: 0, max: 100000000, step: 100000 },
+    { key: 'maxIters', label: 'MÁX. ITERACIONES', hint: 'tope opcional de giros de herramienta por ejecución. 0 = ilimitado (predeterminado).', min: 0, max: 200, step: 1 },
+    { key: 'maxConcurrentAgents', label: 'MÁX. AGENTES SIMULTÁNEOS', hint: 'tope opcional de agentes simultáneos. 0 = ilimitado (predeterminado).', min: 0, max: 32, step: 1 },
+    { key: 'consentTimeoutMs', label: 'TIEMPO DE CONSENTIMIENTO (MS)', hint: 'cuánto espera una solicitud de permiso por tu respuesta antes de denegar sola (para que una ejecución nunca se quede colgada).', min: 5000, max: 600000, step: 1000 },
+    { key: 'cronTickMs', label: 'PULSO DE RUTINAS (MS)', hint: 'con qué frecuencia el planificador comprueba rutinas vencidas.', min: 5000, max: 600000, step: 1000 },
+    { key: 'maxSubscriptionTokens', label: 'TOPE DE TOKENS DE CLAUDE CODE', hint: 'tokens que una ejecución puede usar con una sesión de suscripción de Claude (las relecturas de caché cuentan 1/10). 0 = sin tope. Aplica desde la próxima ejecución.', min: 0, max: 100000000, step: 100000 },
     // issue #135: the ceiling on a model StarNet can't price (a custom provider's model) was env-only. Both token ceilings
     // apply from the next run (the sidecar re-resolves them into CAPS on save); the other rows wait for a restart.
-    { key: 'maxUnpricedTokens', label: 'UNPRICED MODEL TOKEN CEILING', hint: 'tokens one run may use on a model StarNet has no price for. 0 = no ceiling. Applies from the next run.', min: 0, max: 100000000, step: 100000 }
+    { key: 'maxUnpricedTokens', label: 'TOPE DE TOKENS DE MODELO SIN PRECIO', hint: 'tokens que una ejecución puede usar en un modelo sin precio en StarNet. 0 = sin tope. Aplica desde la próxima ejecución.', min: 0, max: 100000000, step: 100000 }
   ];
   /* the STANDING APPROVALS heading's tip (org P02): when an ask nobody answers is denied, in minutes, and where to change
      it. The number is the deadline the sidecar ENFORCES now (GET /api/runtime/knobs consentTimeoutMs.live — frozen at
@@ -7510,11 +7510,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      deadline. Unknown → no number. */
   function consentMinutes(ms) { const m = Math.round(Number(ms) / 6000) / 10; return (m >= 10 ? Math.round(m) : m) + ' min'; }
   function consentTipText(ms, ackMs, nextMs) {
-    const where = ' · change it in APP & BACKUP › Runtime limits';
-    if (!(Number(ms) > 0)) return 'unanswered asks are denied on a timer' + where;
+    const where = ' · cámbialo en APP Y RESPALDO › Límites de ejecución';
+    if (!(Number(ms) > 0)) return 'las solicitudes sin respuesta se deniegan por temporizador' + where;
     const seen = Number(ackMs) > 0 ? Number(ackMs) : Math.min(Number(ms) * 5, 900000);
-    const next = Number(nextMs) > 0 && Number(nextMs) !== Number(ms) ? ' · changes to ' + consentMinutes(nextMs) + ' after a restart' : '';
-    return 'unanswered asks are denied after ' + consentMinutes(ms) + ' (' + consentMinutes(seen) + ' once the card is on screen)' + next + where;
+    const next = Number(nextMs) > 0 && Number(nextMs) !== Number(ms) ? ' · cambia a ' + consentMinutes(nextMs) + ' tras un reinicio' : '';
+    return 'las solicitudes sin respuesta se deniegan tras ' + consentMinutes(ms) + ' (' + consentMinutes(seen) + ' cuando la tarjeta está en pantalla)' + next + where;
   }
   function paintConsentTip(host) {
     const h = host && host.querySelector ? host.querySelector('#perm-standing-h') : null;
@@ -7536,14 +7536,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const d = fields[f.key] || {};
         const envLocked = !!d.envLocked;
         const val = (d.effective != null) ? d.effective : (d.default != null ? d.default : '');
-        const note = envLocked ? '<span class="dim"> — locked by an environment variable</span>'
-          : (d.saved != null ? '<span class="dim"> — saved override</span>' : '<span class="dim"> — default</span>');
+        const note = envLocked ? '<span class="dim"> — bloqueado por una variable de entorno</span>'
+          : (d.saved != null ? '<span class="dim"> — ajuste guardado</span>' : '<span class="dim"> — predeterminado</span>');
         return '<div class="set-row"><label for="adv-' + f.key + '">' + f.label + note + '</label>' +
           '<input id="adv-' + f.key + '" class="key-input adv-in" data-key="' + f.key + '" type="number" min="' + f.min + '" max="' + f.max + '" step="' + f.step + '" value="' + esc(String(val)) + '"' + (envLocked ? ' disabled' : '') + '></div>' +
           '<div class="mc-hint">' + esc(f.hint) + '</div>';
       }).join('') +
-        '<div class="mc-acts"><button class="bb sm" id="adv-save">SAVE</button>' +
-        '<button class="bb xs" id="adv-reset" title="clear every saved override so these follow the environment / built-in defaults again">RESET TO DEFAULTS</button></div>';
+        '<div class="mc-acts"><button class="bb sm" id="adv-save">GUARDAR</button>' +
+        '<button class="bb xs" id="adv-reset" title="borra cada ajuste guardado para que vuelvan a seguir los predeterminados del entorno / integrados">RESTABLECER PREDETERMINADOS</button></div>';
       const saveBtn = form.querySelector('#adv-save');
       if (saveBtn) saveBtn.addEventListener('click', () => {
         const payload = {};
@@ -7552,27 +7552,27 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const raw = String(el.value).trim();
           if (raw === '') { payload[f.key] = null; continue; }   // blank -> clear override
           const n = Number(raw);
-          if (!isFinite(n) || n < f.min || n > f.max) { setMsg(f.label + ': enter ' + f.min + '–' + f.max); sfx('bad'); el.focus(); return; }
+          if (!isFinite(n) || n < f.min || n > f.max) { setMsg(f.label + ': introduce ' + f.min + '–' + f.max); sfx('bad'); el.focus(); return; }
           payload[f.key] = Math.floor(n);
         }
-        setMsg('saving…');
+        setMsg('guardando…');
         Harness.api.post('/api/runtime/knobs', payload)
           .then(({ ok, j }) => {
-            if (!ok) { setMsg((j && j.error) || 'could not save'); sfx('bad'); return; }
-            render(j); setMsg('✓ saved (some limits apply on next restart)', true); sfx('click');
-          }).catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+            if (!ok) { setMsg((j && j.error) || 'no se pudo guardar'); sfx('bad'); return; }
+            render(j); setMsg('✓ guardado (algunos límites aplican en el próximo reinicio)', true); sfx('click');
+          }).catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
       });
       const resetBtn = form.querySelector('#adv-reset');
       if (resetBtn) resetBtn.addEventListener('click', () => {
         const payload = {}; ADV_FIELDS.forEach(f => { payload[f.key] = null; });
-        setMsg('resetting…');
+        setMsg('restableciendo…');
         Harness.api.post('/api/runtime/knobs', payload)
-          .then(({ ok, j }) => { if (!ok) { setMsg('reset failed'); sfx('bad'); return; } render(j); setMsg('✓ reset to defaults', true); sfx('click'); })
-          .catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+          .then(({ ok, j }) => { if (!ok) { setMsg('falló el restablecimiento'); sfx('bad'); return; } render(j); setMsg('✓ restablecido a los predeterminados', true); sfx('click'); })
+          .catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
       });
     };
     Harness.api.get('/api/runtime/knobs').then(render)
-      .catch(() => { form.innerHTML = '<div class="dim">runtime settings unavailable</div>'; });   // never render an error body as knobs
+      .catch(() => { form.innerHTML = '<div class="dim">ajustes de runtime no disponibles</div>'; });   // never render an error body as knobs
   }
 
   // P1-7 STATION BACKUP — export/import the whole station config to one JSON file. Export bundles the browser-owned
@@ -7597,20 +7597,20 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     (function paintSwallowed() {
       const el = body.querySelector('#diag-swallowed');
       if (!el || typeof Diag === 'undefined' || typeof Diag.fetchReport !== 'function') return;
-      el.textContent = 'swallowed errors: reading…';
+      el.textContent = 'errores tragados: leyendo…';
       Diag.fetchReport().then(rep => { el.textContent = Diag.formatSwallowed(rep); }).catch(() => { el.textContent = Diag.formatSwallowed(null); });
     })();
     if (!btn) return;
     const setMsg = (t, ok) => { if (msgEl) { msgEl.textContent = t || ''; msgEl.className = 'msg' + (ok ? ' ok' : ''); } };
     btn.addEventListener('click', () => {
-      if (typeof Diag === 'undefined' || !Diag.copy) { setMsg('diagnostics unavailable', false); return; }
+      if (typeof Diag === 'undefined' || !Diag.copy) { setMsg('diagnósticos no disponibles', false); return; }
       btn.disabled = true; sfx('click');
       Diag.copy({ notify: false, onDone: (ok, text) => {
         btn.disabled = false;
         // Name the support address only when one is really configured (Diag.supportEmail() gates out the unset/
         // placeholder case); otherwise just confirm the copy — never point a user at a fake/placeholder address.
         const diagDest = (typeof Diag !== 'undefined' && Diag.supportEmail) ? Diag.supportEmail() : '';
-        setMsg(ok ? (diagDest ? ('✓ copied — paste it into an email to ' + diagDest) : '✓ copied — paste it into a bug report') : (text ? 'copy blocked — report shown below' : 'could not read diagnostics — try again'), ok);
+        setMsg(ok ? (diagDest ? ('✓ copiado — pégalo en un correo a ' + diagDest) : '✓ copiado — pégalo en un informe de error') : (text ? 'copia bloqueada — informe mostrado abajo' : 'no se pudieron leer los diagnósticos — inténtalo de nuevo'), ok);
         // Clipboard-failure fallback: show the report the failed copy already read (onDone's text — no second fetch)
         // as a selectable block, so the user can select-and-copy it by hand.
         if (!ok && typeof Diag !== 'undefined' && typeof Diag.showBlock === 'function') {
@@ -7628,23 +7628,23 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const liveCopy = body.querySelector('#diag-live-copy');
     if (liveBtn) liveBtn.addEventListener('click', () => {
       if (!liveConsent || !liveConsent.checked) {
-        if (liveMsg) { liveMsg.textContent = 'check the live-probe consent first'; liveMsg.className = 'msg'; }
+        if (liveMsg) { liveMsg.textContent = 'marca primero el consentimiento de la sonda en vivo'; liveMsg.className = 'msg'; }
         return;
       }
       if (typeof Diag === 'undefined' || typeof Diag.runLive !== 'function') {
-        if (liveMsg) liveMsg.textContent = 'live doctor unavailable';
+        if (liveMsg) liveMsg.textContent = 'médico en vivo no disponible';
         return;
       }
       liveBtn.disabled = true; liveConsent.disabled = true;
-      if (liveMsg) { liveMsg.textContent = 'running bounded live probes…'; liveMsg.className = 'msg'; }
+      if (liveMsg) { liveMsg.textContent = 'ejecutando sondas en vivo acotadas…'; liveMsg.className = 'msg'; }
       if (liveOut) { liveOut.hidden = true; liveOut.textContent = ''; }
       if (liveCopy) liveCopy.hidden = true;
       Diag.runLive({ confirmed: true }).then(result => {
-        if (liveMsg) { liveMsg.textContent = 'live doctor finished — receipt is ready'; liveMsg.className = 'msg ok'; }
+        if (liveMsg) { liveMsg.textContent = 'médico en vivo terminado — el comprobante está listo'; liveMsg.className = 'msg ok'; }
         if (liveOut) { liveOut.textContent = result.text; liveOut.hidden = false; }
         if (liveCopy) { liveCopy.hidden = false; liveCopy.dataset.receipt = result.text; }
       }).catch(e => {
-        if (liveMsg) { liveMsg.textContent = String((e && e.message) || 'live doctor failed'); liveMsg.className = 'msg'; }
+        if (liveMsg) { liveMsg.textContent = String((e && e.message) || 'falló el médico en vivo'); liveMsg.className = 'msg'; }
       }).finally(() => {
         liveBtn.disabled = false; liveConsent.disabled = false; liveConsent.checked = false;
       });
@@ -7652,7 +7652,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (liveCopy) liveCopy.addEventListener('click', () => {
       const text = String(liveCopy.dataset.receipt || '');
       if (!text || typeof Diag === 'undefined' || typeof Diag.copyText !== 'function') return;
-      Diag.copyText(text).then(ok => { liveCopy.textContent = ok ? '✓ RECEIPT COPIED' : 'SELECT THE RECEIPT TO COPY'; });
+      Diag.copyText(text).then(ok => { liveCopy.textContent = ok ? '✓ COMPROMETIDO COPIADO' : 'SELECCIONA EL COMPROMETIDO PARA COPIAR'; });
     });
   }
 
@@ -7680,10 +7680,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // #134: the line names WHERE the file went, as far as the app can know it — the desktop sidecar writes it and
     // returns the real path; a browser is only handed it (Backup.exportStation owns both + the honest fallback).
     if (exportBtn) exportBtn.addEventListener('click', () => {
-      setMsg('building export…');
+      setMsg('preparando la exportación…');
       Backup.exportStation({ sections: browserSections(), post: Harness.api.post, desktop: !!tauriInvoke() })
         .then(r => { setMsg(r.line, r.ok); sfx(r.ok ? 'sale' : 'bad'); })
-        .catch(() => { setMsg('export failed'); sfx('bad'); });
+        .catch(() => { setMsg('falló la exportación'); sfx('bad'); });
     });
     if (importBtn && fileIn) {
       importBtn.addEventListener('click', () => fileIn.click());
@@ -7691,14 +7691,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const f = fileIn.files && fileIn.files[0]; if (!f) return;
         const reader = new FileReader();
         reader.onload = () => {
-          let env; try { env = JSON.parse(String(reader.result || '')); } catch (_) { setMsg('that is not a valid StarNet backup file'); sfx('bad'); fileIn.value = ''; return; }
-          setMsg('importing…');
+          let env; try { env = JSON.parse(String(reader.result || '')); } catch (_) { setMsg('eso no es un archivo de respaldo de StarNet válido'); sfx('bad'); fileIn.value = ''; return; }
+          setMsg('importando…');
           Harness.api.post('/api/config/import', { envelope: env })
             .then(async ({ ok, j }) => {
               fileIn.value = '';
               if (!ok) {
-                const partial = j && Array.isArray(j.applied) && j.applied.length ? ' (already applied: ' + j.applied.join(', ') + ')' : '';
-                setMsg(((j && j.error) || 'import failed') + partial); sfx('bad'); return;
+                const partial = j && Array.isArray(j.applied) && j.applied.length ? ' (ya aplicado: ' + j.applied.join(', ') + ')' : '';
+                setMsg(((j && j.error) || 'falló la importación') + partial); sfx('bad'); return;
               }
               // restore the browser-owned slices locally.
               const b = (j && j.browser) || {};
@@ -7707,7 +7707,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
               save(); applySettings();
               if (b.autonomy && typeof AutonomyStore !== 'undefined' && AutonomyStore.importState) {
                 const restored = await AutonomyStore.importState(b.autonomy);
-                if (!restored.ok) { setMsg('Backup partly imported. ' + restored.error); sfx('bad'); return; }
+                if (!restored.ok) { setMsg('Respaldo importado parcialmente. ' + restored.error); sfx('bad'); return; }
               }
               // GROWTH Tier 3: an import is a NON-DIAL posture writer — reconcile the earned-rung record against
               // the imported rung (a diverged record is retired; user override wins), so a stale earned record can
@@ -7721,11 +7721,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
               }).join('; ') : '';
               const freshMsg = document.querySelector('#bk-msg');
               if (freshMsg) {
-                freshMsg.textContent = '✓ imported ' + ((j.applied || []).length) + ' section' + (((j.applied || []).length) === 1 ? '' : 's') + needTxt;
+                freshMsg.textContent = '✓ importada ' + ((j.applied || []).length) + (((j.applied || []).length) === 1 ? ' sección' : ' secciones') + needTxt;
                 freshMsg.className = 'msg ok';
               }
               sfx('level');
-            }).catch(() => { setMsg('could not reach the sidecar'); sfx('bad'); });
+            }).catch(() => { setMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
         };
         reader.readAsText(f);
       });
@@ -7783,26 +7783,26 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       /* ONE QUESTION UP FRONT (2026-10-04, "make it less confusing"): what does it do on its own? The other two
          dials (how far, how often) and DIRECTION (where) are tuning, so they share ONE fold below — they used to
          be three equal rows plus a fold, which read as four questions a newcomer had to answer. */
-      '<div class="set-sub"><span class="set-sub-k">ON ITS OWN</span><span class="set-sub-d">what it does while you are away</span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">POR SUELO</span><span class="set-sub-d">qué hace mientras estás fuera</span></div>' +
       '<div class="set-themes" id="auto-init">' +
         // rung names come from INITIATIVE_RUNGS (the ONE table trust offers and PERMISSIONS notices read too)
         INITIATIVE_RUNGS.map(r => '<button class="set-theme" data-init="' + r.id + '" data-tip="' + esc(r.tip) + '">' + esc(r.label) + '</button>').join('') +
       '</div>' +
-      '<p class="mc-hint">The three answers in PERMISSIONS set this too.</p>' +
-      '<details class="cf-group set-fold" id="auto-direction-fold"><summary><h4 class="ms-h">AJUSTE FINO <span class="dim">— how far, how often, and where</span></h4></summary>' +
-      '<div class="set-sub"><span class="set-sub-k">REACH</span><span class="set-sub-d">how far an unattended action may go</span></div>' +
+      '<p class="mc-hint">Las tres respuestas en PERMISOS también fijan esto.</p>' +
+      '<details class="cf-group set-fold" id="auto-direction-fold"><summary><h4 class="ms-h">AJUSTE FINO <span class="dim">— hasta dónde, con qué frecuencia y hacia dónde</span></h4></summary>' +
+      '<div class="set-sub"><span class="set-sub-k">ALCANCE</span><span class="set-sub-d">hasta dónde puede llegar una acción desatendida</span></div>' +
       '<div class="set-themes" id="auto-reach">' +
-        '<button class="set-theme" data-reach="observe" data-tip="read / research only — writes nothing">OBSERVE</button>' +
+        '<button class="set-theme" data-reach="observe" data-tip="solo leer / investigar — no escribe nada">OBSERVAR</button>' +
         // LOCAL ONLY (org pass 10-14): "sandbox" read as a restriction, not as "stays on this machine"; the stored value is unchanged
-        '<button class="set-theme" data-reach="sandbox" data-tip="build &amp; write locally — nothing leaves the machine">LOCAL ONLY</button>' +
-        '<button class="set-theme" data-reach="reach" data-tip="the highest rung: unattended actions may leave the machine — send, publish, or contact external services">SEND &amp; PUBLISH</button>' +
+        '<button class="set-theme" data-reach="sandbox" data-tip="construye y escribe en local — nada sale de la máquina">SOLO LOCAL</button>' +
+        '<button class="set-theme" data-reach="reach" data-tip="el escalón más alto: las acciones desatendidas pueden salir de la máquina — enviar, publicar o contactar servicios externos">ENVIAR Y PUBLICAR</button>' +
       '</div>' +
-      '<div class="set-sub"><span class="set-sub-k">PACE</span><span class="set-sub-d">how many unattended jobs per day</span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">RITMO</span><span class="set-sub-d">cuántos trabajos desatendidos al día</span></div>' +
       '<div class="set-themes" id="auto-pace">' +
-        '<button class="set-theme" data-pace="1" title="one small job a day">LIGHT</button>' +
-        '<button class="set-theme" data-pace="3" title="a few small jobs a day — the default">STANDARD</button>' +
-        '<button class="set-theme" data-pace="6" title="a busier station — up to 6 jobs a day">BUSY</button>' +
-        '<button class="set-theme" data-pace="12" title="as much as it&#39;s allowed — up to 12 jobs a day">MAX</button>' +
+        '<button class="set-theme" data-pace="1" title="un trabajo pequeño al día">LIGERO</button>' +
+        '<button class="set-theme" data-pace="3" title="algunos trabajos pequeños al día — el predeterminado">ESTÁNDAR</button>' +
+        '<button class="set-theme" data-pace="6" title="una estación más activa — hasta 6 trabajos al día">ACTIVO</button>' +
+        '<button class="set-theme" data-pace="12" title="todo lo que se le permite — hasta 12 trabajos al día">MÁXIMO</button>' +
       '</div>' +
       // DIRECTION (autonomy-tuning 2026-07-17) — the dial says HOW MUCH it may run on its own; this block says
       // WHERE that work should go. Same server truth the away status below reads (GET/POST/DELETE
@@ -7811,22 +7811,22 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // honest, never an invented priority or a fake learned profile.
       // QUIETER (front doors, 2026-10-01): DIRECTION is set once and rarely revisited — it folds closed under its own
       // heading. Every control and id is unchanged; settings search opens the fold when a match is inside.
-      '<div class="set-sub"><span class="set-sub-k">DIRECTION</span><span class="set-sub-d">where its unattended work should go</span></div>' +
-      '<div class="set-sub"><span class="set-sub-k">FOCUS</span><span class="set-sub-d" id="auto-focus">…</span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">DIRECCIÓN</span><span class="set-sub-d">hacia dónde debe ir su trabajo desatendido</span></div>' +
+      '<div class="set-sub"><span class="set-sub-k">ENFOQUE</span><span class="set-sub-d" id="auto-focus">…</span></div>' +
       '<div class="set-row ns-steer"><input id="auto-steer" class="key-input" type="text" autocomplete="off" placeholder="Carpeta de proyecto, thread:&lt;id&gt;, o meta"><button class="bb xs" id="auto-steer-set">FIJAR ENFOQUE</button><button class="bb xs" id="auto-steer-clear" style="display:none">LIMPIAR</button></div>' +
-      '<div class="mc-hint">a steer outranks learned evidence (~7 days, or until cleared). It only redirects the unattended priority — no new access.</div>' +
-      '<div class="set-sub"><span class="set-sub-k">OFF-LIMITS</span><span class="set-sub-d">it will never pick these on its own</span></div>' +
-      '<div class="key-list" id="auto-avoid"><p class="set-about">reading directives…</p></div>' +
-      '<div class="set-row ns-steer"><input id="auto-avoid-ref" class="key-input" type="text" autocomplete="off" placeholder="a project folder, thread:&lt;id&gt;, or goal to rule out"><button class="bb xs" id="auto-avoid-add">ADD EXCLUSION</button></div>' +
-      '<div class="mc-hint">off-limits holds until you remove it. You can still work there yourself — it only stops the station choosing it unattended.</div>' +
-      '<div class="set-sub"><span class="set-sub-k">LEARNED INTERESTS</span><span class="set-sub-d">what it thinks you keep coming back to</span></div>' +
-      '<div class="key-list" id="auto-interests"><p class="set-about">reading interests…</p></div>' +
+      '<div class="mc-hint">un rumbo tiene prioridad sobre la evidencia aprendida (~7 días, o hasta que se limpie). Solo redirige la prioridad desatendida — no concede acceso nuevo.</div>' +
+      '<div class="set-sub"><span class="set-sub-k">PROHIBIDO</span><span class="set-sub-d">nunca elegirá estos por su cuenta</span></div>' +
+      '<div class="key-list" id="auto-avoid"><p class="set-about">leyendo directivas…</p></div>' +
+      '<div class="set-row ns-steer"><input id="auto-avoid-ref" class="key-input" type="text" autocomplete="off" placeholder="una carpeta de proyecto, thread:&lt;id&gt; o una meta para descartar"><button class="bb xs" id="auto-avoid-add">AÑADIR EXCLUSIÓN</button></div>' +
+      '<div class="mc-hint">lo prohibido se mantiene hasta que lo quites. Tú puedes seguir trabajando allí — solo impide que la estación lo elija desatendida.</div>' +
+      '<div class="set-sub"><span class="set-sub-k">INTERESES APRENDIDOS</span><span class="set-sub-d">a qué cree que sigues volviendo</span></div>' +
+      '<div class="key-list" id="auto-interests"><p class="set-about">leyendo intereses…</p></div>' +
       '</details>' +
       // LIVE HELPERS — the real background sub-agents (team.spawn) running RIGHT NOW, from GET /api/subagents
       // (server truth; the floor's ghost sprites are the same ledger). STOP rides POST /api/subagents/interrupt —
       // before this row a runaway helper could not be stopped from anywhere in the UI.
       // shown only while helpers are actually running (paintHelpers toggles it) — an empty "no helpers" row was noise
-      '<div class="set-sub" id="auto-helpers-sub" hidden><span class="set-sub-k">LIVE HELPERS</span><span class="set-sub-d">background sub-agents running now</span></div>' +
+      '<div class="set-sub" id="auto-helpers-sub" hidden><span class="set-sub-k">AYUDANTES EN VIVO</span><span class="set-sub-d">subagentes de fondo ejecutándose ahora</span></div>' +
       '<div class="key-list" id="auto-helpers" hidden></div>';
     /* ONE WORD: AUTONOMY (2026-09-29, Andrew: "should simply be autonomy"). What the Commander saw as two things —
        the AUTONOMY dial and a separate NIGHT SHIFT section — is one thing: the dial, and what it did while they were
@@ -7865,12 +7865,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // FOCUS lives ONCE, in DIRECTION above (same GET/POST/DELETE /api/nightshift/focus route, same status.focus
       // truth) — the second SET FOCUS box this section used to carry was the same control twice. The ns-focus /
       // ns-steer wiring below is null-guarded, so it simply finds nothing to paint.
-      '<div class="set-sub"><span class="set-sub-k">RECENT DECISIONS</span><span class="set-sub-d">each time it acted or held back</span></div>' +
-      '<div class="key-list" id="ns-trail"><p class="set-about">reading the decision trail…</p></div>' +
+      '<div class="set-sub"><span class="set-sub-k">DECISIONES RECIENTES</span><span class="set-sub-d">cada vez que actuó o se contuvo</span></div>' +
+      '<div class="key-list" id="ns-trail"><p class="set-about">leyendo la pista de decisiones…</p></div>' +
       // LAST REPORT (NS visibility 2026-07-13) — the morning-report beat is one-shot (fired=true spends it even on
       // dismiss, and vanish() loses the digest). This re-composes the most recent night's digest ON DEMAND from the
       // SAME routes (status + ledger + drafts) via the pure engine — server truth, never a cached frontend copy.
-      '<div class="set-row"><button class="bb sm" id="ns-report-btn">▤ LAST REPORT</button></div>' +
+      '<div class="set-row"><button class="bb sm" id="ns-report-btn">▤ ÚLTIMO INFORME</button></div>' +
       '<div id="ns-report"></div>';
     const secPermissions =
       /* PERMISSIONS — ONE QUESTION (2026-10-04, Andrew: "make it less confusing").
@@ -7910,24 +7910,24 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const secBudget =
       // BUDGET — the four real USD spend caps the sidecar enforces over the ledger (perRun hard stop + soft
       // per-agent / per-day / global pools). Persisted server-side + applied live; a live spend readout below.
-      '<h4 class="ms-h">Límites de gasto <span class="dim">— en USD</span></h4>' +
-      '<p class="set-about">Limits apply to recorded agent spending. <b>Blank or 0 means no cap.</b> Changes take effect when you save; unsaved limits follow their environment defaults.</p>' +
-      '<div id="budget-spend" class="set-row dim">reading spend…</div>' +
+      '<h4 class="ms-h">LÍMITES DE GASTO <span class="dim">— en USD</span></h4>' +
+      '<p class="set-about">Los límites aplican al gasto registrado de los agentes. <b>En blanco o 0 significa sin límite.</b> Los cambios entran en efecto al guardar; los límites sin guardar siguen sus predeterminados del entorno.</p>' +
+      '<div id="budget-spend" class="set-row dim">leyendo gasto…</div>' +
       '<div id="budget-unsettled"></div>' +   // interrupted runs whose charge is unknown + their SETTLE (only rendered when one exists)
       '<div id="budget-pools"></div>' +   // soft-pool cap state + the one-click RESUME (only rendered when a pool is actually hit)
       '<div class="mc-form" id="budget-form">' +
-        '<div class="set-row"><label for="bg-perRun">PER RUN <span class="src-badge" id="bg-src-perRun" hidden></span></label><input id="bg-perRun" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="blank or 0 = no cap"></div>' +
-        '<div class="mc-hint">Hard ceiling for a single agent run. The run stops the moment it would exceed this.</div>' +
+        '<div class="set-row"><label for="bg-perRun">POR EJECUCIÓN <span class="src-badge" id="bg-src-perRun" hidden></span></label><input id="bg-perRun" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="vacío o 0 = sin límite"></div>' +
+        '<div class="mc-hint">Techo duro para una ejecución de un agente. La ejecución se detiene en cuanto lo superaría.</div>' +
         '<div class="mc-hint" id="bg-managed-hint" hidden></div>' +   // #53: the StarNet-credit default, painted from /api/budget/status
-        '<div class="set-row"><label for="bg-perAgent">PER AGENT <span class="src-badge" id="bg-src-perAgent" hidden></span></label><input id="bg-perAgent" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="blank or 0 = no cap"></div>' +
-        '<div class="mc-hint">Lifetime cap on any one agent’s total spend across all its runs.</div>' +
-        '<div class="set-row"><label for="bg-perDay">PER DAY <span class="src-badge" id="bg-src-perDay" hidden></span></label><input id="bg-perDay" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="blank or 0 = no cap"></div>' +
-        '<div class="mc-hint">Total spend across every agent in a rolling 24-hour window.</div>' +
-        '<div class="set-row"><label for="bg-global">GLOBAL <span class="src-badge" id="bg-src-global" hidden></span></label><input id="bg-global" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="blank or 0 = no cap"></div>' +
-        '<div class="mc-hint">All-time ceiling across everything. The last line of defence.</div>' +
+        '<div class="set-row"><label for="bg-perAgent">POR AGENTE <span class="src-badge" id="bg-src-perAgent" hidden></span></label><input id="bg-perAgent" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="vacío o 0 = sin límite"></div>' +
+        '<div class="mc-hint">Techo vitalicio del gasto total de un agente en todas sus ejecuciones.</div>' +
+        '<div class="set-row"><label for="bg-perDay">POR DÍA <span class="src-badge" id="bg-src-perDay" hidden></span></label><input id="bg-perDay" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="vacío o 0 = sin límite"></div>' +
+        '<div class="mc-hint">Gasto total de todos los agentes en una ventana de 24 horas.</div>' +
+        '<div class="set-row"><label for="bg-global">GLOBAL <span class="src-badge" id="bg-src-global" hidden></span></label><input id="bg-global" class="key-input bg-cap" type="number" min="0" step="0.01" inputmode="decimal" autocomplete="off" placeholder="vacío o 0 = sin límite"></div>' +
+        '<div class="mc-hint">Techo histórico de todo. La última línea de defensa.</div>' +
         '<div class="mc-acts">' +
-          '<button class="bb sm" id="bg-save">SAVE LIMITS</button>' +
-          '<button class="bb xs" id="bg-reset" title="clear the saved value so this cap follows the environment default again" style="display:none">RESET TO DEFAULTS</button>' +
+          '<button class="bb sm" id="bg-save">GUARDAR LÍMITES</button>' +
+          '<button class="bb xs" id="bg-reset" title="borra el valor guardado para que este límite vuelva a seguir el predeterminado del entorno" style="display:none">RESTABLECER PREDETERMINADOS</button>' +
         '</div>' +
       '</div>' +
       '<div id="budget-msg" class="msg"></div>';
@@ -7936,14 +7936,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // sets what the loop tries NEXT if that model fails mid-run. Persisted server-side + applied live to every run
       // path (browser, cron, channels); env SKYNET_FALLBACK_MODELS is the default until you save one here.
       '<h4 class="ms-h">MODELOS DE RESPALDO <span class="dim">— se prueban en orden si tu modelo principal falla</span></h4>' +
-      '<p class="set-about">Choose your primary model in COMMS. If it fails mid-run because of availability, authentication, billing, or rate limits, StarNet tries this list from top to bottom. Saved models use your OpenRouter connection, or your StarNet connection when StarNet is the primary provider. <b>An empty list disables fallback.</b> Model changes appear in COMMS and the logbook.</p>' +
+      '<p class="set-about">Elige tu modelo principal en COMMS. Si falla a mitad de ejecución por disponibilidad, autenticación, facturación o límites de velocidad, StarNet prueba esta lista de arriba a abajo. Los modelos guardados usan tu conexión OpenRouter, o tu conexión StarNet cuando StarNet es el proveedor principal. <b>Una lista vacía desactiva el respaldo.</b> Los cambios de modelo aparecen en COMMS y en el bitácora.</p>' +
       '<div class="mc-form" id="fbc-form">' +
-        '<div id="fbc-list" class="mc-list-fb"><div class="dim">reading chain…</div></div>' +
-        '<div class="set-row"><select id="fbc-add" class="fbc-sel"><option value="">＋ add a model from the catalog…</option></select></div>' +
-        '<div class="mc-hint">Order is the retry order — the loop walks it top-to-bottom. Up to <span id="fbc-max">8</span> models. Unknown ids are allowed (the catalog can be stale) but flagged.</div>' +
+        '<div id="fbc-list" class="mc-list-fb"><div class="dim">leyendo cadena…</div></div>' +
+        '<div class="set-row"><select id="fbc-add" class="fbc-sel"><option value="">＋ añadir un modelo del catálogo…</option></select></div>' +
+        '<div class="mc-hint">El orden es el orden de reintentos — el bucle la recorre de arriba a abajo. Hasta <span id="fbc-max">8</span> modelos. Los ids desconocidos se permiten (el catálogo puede estar desactualizado) pero se marcan.</div>' +
         '<div class="mc-acts">' +
-          '<button class="bb sm" id="fbc-save">SAVE CHAIN</button>' +
-          '<button class="bb xs" id="fbc-reset" title="clear the saved chain so it follows the environment default again" style="display:none">RESET TO DEFAULT</button>' +
+          '<button class="bb sm" id="fbc-save">GUARDAR CADENA</button>' +
+          '<button class="bb xs" id="fbc-reset" title="borra la cadena guardada para que vuelva a seguir el predeterminado del entorno" style="display:none">RESTABLECER PREDETERMINADO</button>' +
         '</div>' +
       '</div>' +
       '<div id="fbc-msg" class="msg"></div>' +
@@ -7952,12 +7952,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // at "(station default)" a tier inherits the model dock's primary, so this is purely opt-in. Saved per-machine
       // (localStorage) and read live by the summon path (app.resolveTierModel) — no rerun/rebuild needed.
       '<h4 class="ms-h">Valores por defecto de agentes nuevos <span class="dim">— modelo según nivel de clase</span></h4>' +
-      '<p class="set-about">Choose the model used when recruiting each class tier. <b>Station default</b> follows your primary model in COMMS. Existing agents keep their model; you can change an individual agent in its dossier.</p>' +
+      '<p class="set-about">Elige el modelo usado al reclutar cada nivel de clase. <b>Defecto de la estación</b> sigue tu modelo principal en COMMS. Los agentes existentes conservan su modelo; puedes cambiar el de un agente individual en su dossier.</p>' +
       '<div class="mc-form" id="tm-form">' +
-        '<div class="set-row"><label for="tm-reasoning">◆◆◆ DEEP</label><select id="tm-reasoning" class="fbc-sel" data-tier="reasoning"><option value="">(station default)</option></select></div>' +
-        '<div class="set-row"><label for="tm-balanced">◆◆ BALANCED</label><select id="tm-balanced" class="fbc-sel" data-tier="balanced"><option value="">(station default)</option></select></div>' +
-        '<div class="set-row"><label for="tm-fast">◆ FAST</label><select id="tm-fast" class="fbc-sel" data-tier="fast"><option value="">(station default)</option></select></div>' +
-        '<div class="mc-hint">A pin applies to the next agent you summon of that tier. Empty = follow the model dock. This never overrides a model you set on a specific agent.</div>' +
+        '<div class="set-row"><label for="tm-reasoning">◆◆◆ DEEP</label><select id="tm-reasoning" class="fbc-sel" data-tier="reasoning"><option value="">(defecto de la estación)</option></select></div>' +
+        '<div class="set-row"><label for="tm-balanced">◆◆ BALANCED</label><select id="tm-balanced" class="fbc-sel" data-tier="balanced"><option value="">(defecto de la estación)</option></select></div>' +
+        '<div class="set-row"><label for="tm-fast">◆ FAST</label><select id="tm-fast" class="fbc-sel" data-tier="fast"><option value="">(defecto de la estación)</option></select></div>' +
+        '<div class="mc-hint">Un fijo aplica al siguiente agente que invoques de ese nivel. Vacío = seguir el dock de modelos. Nunca anula un modelo que fijaste en un agente concreto.</div>' +
       '</div>' +
       '<div id="tm-msg" class="msg"></div>' +
       // VOICE CHAT MODEL (Hermes parity auxiliary.voice_chat) — the model a SPOKEN reply runs on. Server-persisted
@@ -7978,44 +7978,44 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
        hardcoded here, so it can never drift from what the provider actually offers. */
     const secLiveVoice =
       '<h4 class="ms-h">VOZ HABLADA</h4>' +
-      '<p class="set-about">Choose a station default for LIVE VOICE, or assign each agent a built-in, keyless voice for spoken replies and hands-free conversations. Changes apply to the next reply or new Live Voice session. Saved in this app or browser.</p>' +
-      '<div class="set-row"><label for="set-lv-agent">VOICE FOR</label><select id="set-lv-agent" class="fbc-sel"><option value="">Station default</option>' +
+      '<p class="set-about">Elige un predeterminado de la estación para VOZ EN VIVO, o asigna a cada agente una voz integrada sin claves para respuestas habladas y conversaciones a manos libres. Los cambios aplican a la siguiente respuesta o a una nueva sesión de Voz en vivo. Se guarda en esta app o navegador.</p>' +
+      '<div class="set-row"><label for="set-lv-agent">VOZ PARA</label><select id="set-lv-agent" class="fbc-sel"><option value="">Predeterminado de la estación</option>' +
         present.map(a => '<option value="' + esc(a.id) + '">' + esc(a.name || a.id) + '</option>').join('') + '</select></div>' +
-      '<button class="bb sm" id="set-lv-inherit" hidden>USE STATION DEFAULT</button>' +
+      '<button class="bb sm" id="set-lv-inherit" hidden>USAR PREDETERMINADO DE LA ESTACIÓN</button>' +
       '<p id="set-lv-msg" class="msg" aria-live="polite"></p>' +
-      '<div class="set-themes" id="set-lv-voices"><span class="dim">reading the built-in voice list…</span></div>' +
+      '<div class="set-themes" id="set-lv-voices"><span class="dim">leyendo la lista de voces integradas…</span></div>' +
       // EFFECT — what the voice is played through. One choice for every voice; AUTO lets each wear its own.
       '<h4 class="ms-h">EFECTO DE VOZ</h4>' +
       '<div class="set-themes" id="set-lv-effect">' +
-        [['', 'AUTO', 'Each voice wears its own effect: built-in voices sound natural, the Ultron station voice keeps its machine shell.'],
-         ['natural', 'NATURAL', 'The voice itself, with a light room around it.'],
-         ['comms', 'COMMS', 'A subtle station comms-channel colour.'],
-         ['machine', 'MACHINE', 'The Ultron machine shell: metallic, digitized, robotic.']]
+        [['', 'AUTO', 'Cada voz usa su propio efecto: las voces integradas suenan naturales y la voz de estación de Ultron conserva su carcasa de máquina.'],
+         ['natural', 'NATURAL', 'La voz en sí, con una ligera acústica de sala.'],
+         ['comms', 'COMMS', 'Un sutil matiz de canal de comunicaciones de la estación.'],
+         ['machine', 'MACHINE', 'La carcasa de máquina de Ultron: metálica, digitalizada, robótica.']]
           .map(([v, label, tip]) => '<button type="button" class="set-theme" data-lv-effect="' + v + '" aria-pressed="false" title="' + esc(tip) + '">' + label + '</button>').join('') +
       '</div>' +
       '<p id="set-lv-effect-msg" class="msg" aria-live="polite"></p>';
 
     const secAppearance =
       '<h4 class="ms-h">TEMA FÓSFORO</h4><div class="set-themes">' +
-      THEMES.map(([t, c]) => '<button type="button" class="set-theme settings-swatch ' + (s.theme === t ? 'sel' : '') + '" aria-pressed="' + (s.theme === t ? 'true' : 'false') + '" data-t="' + t + '" aria-label="' + t + ' theme" title="' + t + '" style="--sw:' + c + '"></button>').join('') +
-      '<button type="button" class="set-theme settings-swatch settings-swatch-custom ' + (s.theme === 'custom' ? 'sel' : '') + '" aria-pressed="' + (s.theme === 'custom' ? 'true' : 'false') + '" data-t="custom" id="set-theme-custom" aria-label="Custom color theme" title="Custom color" style="--sw:' + customSw + '"></button>' +
+      THEMES.map(([t, c]) => '<button type="button" class="set-theme settings-swatch ' + (s.theme === t ? 'sel' : '') + '" aria-pressed="' + (s.theme === t ? 'true' : 'false') + '" data-t="' + t + '" aria-label="Tema ' + t + '" title="' + t + '" style="--sw:' + c + '"></button>').join('') +
+      '<button type="button" class="set-theme settings-swatch settings-swatch-custom ' + (s.theme === 'custom' ? 'sel' : '') + '" aria-pressed="' + (s.theme === 'custom' ? 'true' : 'false') + '" data-t="custom" id="set-theme-custom" aria-label="Tema de color personalizado" title="Color personalizado" style="--sw:' + customSw + '"></button>' +
       '</div>' +
       // CUSTOM PHOSPHOR — hue + saturation derive a full palette live (moving either switches to CUSTOM);
       // GLOW is independent and scales the bloom on EVERY theme, presets included. All instant-save.
       '<h4 class="ms-h">FÓSFORO PERSONALIZADO <span class="dim">— ajusta cualquier color</span></h4>' +
-      '<p class="set-about">Hue and saturation create a custom color. Glow controls the light around text; brightness takes the panel glass darker (left) or lighter (right). Changes preview and save immediately.</p>' +
-      '<label class="set-slider"><span class="set-slider-name">HUE</span><input type="range" id="set-hue" class="set-hue-track" min="0" max="359" step="1" value="' + clampN(s.themeHue, 0, 359, 35) + '"><span class="set-slider-val" id="set-hue-val">' + clampN(s.themeHue, 0, 359, 35) + '°</span></label>' +
-      '<label class="set-slider"><span class="set-slider-name">SATURATION</span><input type="range" id="set-sat" min="0" max="100" step="1" value="' + clampN(s.themeSat, 0, 100, 100) + '"><span class="set-slider-val" id="set-sat-val">' + clampN(s.themeSat, 0, 100, 100) + '%</span></label>' +
-      '<label class="set-slider"><span class="set-slider-name">GLOW</span><input type="range" id="set-glow" min="0" max="150" step="5" value="' + clampN(s.themeGlow, 0, 150, 100) + '"><span class="set-slider-val" id="set-glow-val">' + clampN(s.themeGlow, 0, 150, 100) + '%</span></label>' +
-      '<label class="set-slider"><span class="set-slider-name">BRIGHTNESS</span><input type="range" id="set-bright" min="-100" max="100" step="5" value="' + clampN(s.panelBright, -100, 100, 0) + '"><span class="set-slider-val" id="set-bright-val">' + clampN(s.panelBright, -100, 100, 0) + '%</span></label>' +
-      '<h4 class="ms-h" id="set-lighting-label">ROOM LIGHTING</h4>' +
-      '<p class="set-about">Drag right to light your rooms brighter. All the way left is the standard station lighting.</p>' +
-      '<div id="set-lighting"><label class="set-slider"><span class="set-slider-name">ROOM LIGHT</span><input type="range" id="set-room-light" aria-labelledby="set-lighting-label" min="0" max="100" step="1" value="' + resolveRoomLighting(s.roomLighting) + '"><span class="set-slider-val" id="set-room-light-val">' + resolveRoomLighting(s.roomLighting) + '%</span></label></div>' +
+      '<p class="set-about">El matiz y la saturación crean un color personalizado. El resplandor controla la luz alrededor del texto; la luminosidad oscurece (izquierda) o aligera (derecha) el cristal de los paneles. Los cambios se previsualizan y guardan al instante.</p>' +
+      '<label class="set-slider"><span class="set-slider-name">MATIZ</span><input type="range" id="set-hue" class="set-hue-track" min="0" max="359" step="1" value="' + clampN(s.themeHue, 0, 359, 35) + '"><span class="set-slider-val" id="set-hue-val">' + clampN(s.themeHue, 0, 359, 35) + '°</span></label>' +
+      '<label class="set-slider"><span class="set-slider-name">SATURACIÓN</span><input type="range" id="set-sat" min="0" max="100" step="1" value="' + clampN(s.themeSat, 0, 100, 100) + '"><span class="set-slider-val" id="set-sat-val">' + clampN(s.themeSat, 0, 100, 100) + '%</span></label>' +
+      '<label class="set-slider"><span class="set-slider-name">RESPLANDOR</span><input type="range" id="set-glow" min="0" max="150" step="5" value="' + clampN(s.themeGlow, 0, 150, 100) + '"><span class="set-slider-val" id="set-glow-val">' + clampN(s.themeGlow, 0, 150, 100) + '%</span></label>' +
+      '<label class="set-slider"><span class="set-slider-name">LUMINOSIDAD</span><input type="range" id="set-bright" min="-100" max="100" step="5" value="' + clampN(s.panelBright, -100, 100, 0) + '"><span class="set-slider-val" id="set-bright-val">' + clampN(s.panelBright, -100, 100, 0) + '%</span></label>' +
+      '<h4 class="ms-h" id="set-lighting-label">ILUMINACIÓN DE SALAS</h4>' +
+      '<p class="set-about">Arrastra a la derecha para iluminar tus salas con más luz. Todo a la izquierda es la iluminación estándar de la estación.</p>' +
+      '<div id="set-lighting"><label class="set-slider"><span class="set-slider-name">LUZ DE SALA</span><input type="range" id="set-room-light" aria-labelledby="set-lighting-label" min="0" max="100" step="1" value="' + resolveRoomLighting(s.roomLighting) + '"><span class="set-slider-val" id="set-room-light-val">' + resolveRoomLighting(s.roomLighting) + '%</span></label></div>' +
       // THE BACKDROP — what the station floats in. Swatches are painted by the REAL backdrop
       // renderer below (SpaceBG.paintSample), never by a stand-in gradient, so a preview can
       // not promise a sky the station won't deliver — the same law the deck/wall swatches follow.
       '<h4 class="ms-h">FONDO <span class="dim">— dónde está la estación</span></h4>' +
-      '<p class="set-about">Choose the scene around your station. Each tile previews the actual backdrop.</p>' +
+      '<p class="set-about">Elige la escena alrededor de tu estación. Cada mosaico previsualiza el fondo real.</p>' +
       '<div class="set-backdrops" id="set-backdrop">' +
       (typeof SpaceBG === 'undefined' ? '' : []
         .concat(SpaceBG.list())
@@ -8030,17 +8030,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<h4 class="ms-h">PANTALLA</h4>' +
       // TEXT SIZE — the laptop-readability dial (2026-07-19): scales every panel, window and COMMS
       // face together; the station view re-renders sharp at the new scale (world.js resize).
-      '<div class="set-row"><span class="dim">TEXT SIZE — AUTO matches this screen; scales all panels &amp; COMMS, the station view stays crisp</span></div>' +
+      '<div class="set-row"><span class="dim">TAMAÑO DE TEXTO — AUTO coincide con esta pantalla; escala todos los paneles y COMMS, la vista de la estación se mantiene nítida</span></div>' +
       '<div class="set-themes" id="set-textsize">' +
       TEXT_SCALES.map(([v, name]) => {
         const cur = Number(s.textScale) || 0;
-        const title = v === 0 ? 'match this screen — currently ' + autoTextScale() + '%' : v + '%';
+        const title = v === 0 ? 'coincide con esta pantalla — actualmente ' + autoTextScale() + '%' : v + '%';
         return '<button class="set-theme ' + (cur === v ? 'sel' : '') + '" aria-pressed="' + (cur === v ? 'true' : 'false') + '" data-ts="' + v + '" title="' + title + '">' + name + '</button>';
       }).join('') +
       '</div>' +
       // SESSION ROWS — what one row of the SESSIONS rail is allowed to say. Sits with TEXT SIZE
       // because it is the same kind of dial: how much of a fixed-width rail one entry may spend.
-      '<div class="set-row"><span class="dim">SESSION ROWS — COMPACT is one line each; INBOX shows the agent, a wrapping title, and the latest message so you can tell sessions apart without opening them</span></div>' +
+      '<div class="set-row"><span class="dim">FILAS DE SESIÓN — COMPACTA es una línea por sesión; BUZÓN muestra el agente, un título con salto de línea y el último mensaje para distinguir sesiones sin abrirlas</span></div>' +
       '<div class="set-themes" id="set-sessionrow">' +
       ROW_STEPS.map(([v, name, why]) => {
         const cur = resolveSessionRow(s.sessionRow);
@@ -8049,72 +8049,72 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '</div>' +
       // STATION DOCK (systems.js) — GROW WITH ME adds dock buttons as the station is used; SHOW EVERYTHING puts every
       // system in the dock now. Either way every window opens from every other door; this only shapes the dock.
-      '<div class="set-row"><span class="dim">STATION DOCK — GROW WITH ME adds a dock button the first time you need it; SHOW EVERYTHING puts every system in the dock now</span></div>' +
+      '<div class="set-row"><span class="dim">DOCK DE LA ESTACIÓN — CRECE CONMIGO añade un botón al dock la primera vez que lo necesitas; MOSTRAR TODO pone cada sistema en el dock ahora</span></div>' +
       '<div class="set-themes" id="set-stationdock">' +
-      [['staged', 'GROW WITH ME'], ['all', 'SHOW EVERYTHING']].map(([v, name]) => {
+      [['staged', 'CRECE CONMIGO'], ['all', 'MOSTRAR TODO']].map(([v, name]) => {
         const cur = (typeof Systems !== 'undefined' && Systems.staged && Systems.staged()) ? 'staged' : 'all';
         return '<button class="set-theme ' + (cur === v ? 'sel' : '') + '" aria-pressed="' + (cur === v ? 'true' : 'false') + '" data-sdock="' + v + '">' + name + '</button>';
       }).join('') +
       '</div>' +
       // HINTS (hint.js) — the glossary bubble on hover; once the station's words are familiar it can go quiet.
-      '<label class="set-row"><input type="checkbox" id="set-hints" ' + (s.hints ? 'checked' : '') + '> HINTS <span class="dim">— explain station terms when you hover them</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="set-hints" ' + (s.hints ? 'checked' : '') + '> PISTAS <span class="dim">— explican los términos de la estación al pasar el cursor</span></label>' +
       // CRT — its own section, and a LEVEL rather than a named mode. Framing this as an
       // accessibility fix ("easy read") tells the people who like the tube that they are enduring
       // something, which is not what most of them report. There is no OFF: the station is a CRT.
       // SCREEN FLICKER lives here too — it is a CRT effect, not a display one.
       '<h4 class="ms-h">CRT <span class="dim">— qué tan fuerte se lee el tubo</span></h4>' +
-      '<div class="set-row"><span class="dim">DULLED thins the glass over the panels &amp; COMMS so text sits clearer under it. The station keeps its tube either way.</span></div>' +
+      '<div class="set-row"><span class="dim">ATENUADO afina el cristal sobre los paneles y COMMS para que el texto se lea más claro. La estación conserva su tubo de todas formas.</span></div>' +
       '<div class="set-themes" id="set-crtglass">' +
       GLASS_STEPS.map(([v, name, why]) => {
         const cur = resolveGlass(s.crtGlass);
         return '<button class="set-theme ' + (cur === v ? 'sel' : '') + '" aria-pressed="' + (cur === v ? 'true' : 'false') + '" data-glass="' + v + '" title="' + why + '">' + name + '</button>';
       }).join('') +
       '</div>' +
-      '<label class="set-slider"><span class="set-slider-name">STATIC LEVEL</span><input type="range" id="set-static" min="0" max="200" step="5" aria-describedby="set-static-help" value="' + clampN(s.staticLevel, 0, 200, 100) + '"><span class="set-slider-val" id="set-static-val">' + clampN(s.staticLevel, 0, 200, 100) + '%</span></label>' +
-      '<p class="mc-hint" id="set-static-help">Film grain over the station view. 0% removes static; 100% is the default. Changes preview and save immediately.</p>' +
-      '<label class="set-row"><input type="checkbox" id="set-flicker" ' + (s.flicker ? 'checked' : '') + '> SCREEN FLICKER</label>' +
+      '<label class="set-slider"><span class="set-slider-name">NIVEL DE ESTÁTICA</span><input type="range" id="set-static" min="0" max="200" step="5" aria-describedby="set-static-help" value="' + clampN(s.staticLevel, 0, 200, 100) + '"><span class="set-slider-val" id="set-static-val">' + clampN(s.staticLevel, 0, 200, 100) + '%</span></label>' +
+      '<p class="mc-hint" id="set-static-help">Grano de película sobre la vista de la estación. 0% quita la estática; 100% es el predeterminado. Los cambios se previsualizan y guardan al instante.</p>' +
+      '<label class="set-row"><input type="checkbox" id="set-flicker" ' + (s.flicker ? 'checked' : '') + '> PARPADEO DE PANTALLA</label>' +
       // TERMINAL AUDIO is a sound control, not a display one — its own header (it also gates notification chimes).
       '<h4 class="ms-h">SONIDO</h4>' +
-      '<label class="set-row"><input type="checkbox" id="set-sound" ' + (s.sound ? 'checked' : '') + '> TERMINAL AUDIO <span class="dim">— UI &amp; notification sounds</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="set-sound" ' + (s.sound ? 'checked' : '') + '> AUDIO DE TERMINAL <span class="dim">— sonidos de interfaz y notificaciones</span></label>' +
       '<span class="msg" id="appearance-msg" aria-live="polite"></span>';
     const secNotifs =
       // NOTIFICATIONS — per-category on/off + a notification sound toggle (P1-8). Each is HONORED at emit time in
       // notify(): a muted category is dropped before it ever reaches the panel/toast (not decorative).
       '<h4 class="ms-h">NOTIFICACIONES <span class="dim">— qué te avisa y si suena</span></h4>' +
       '<p class="set-about">Choose which events appear in the notification panel and as pop-up alerts. Changes save immediately.</p>' +
-      '<label class="set-row"><input type="checkbox" id="ntp-runComplete"' + (npf('runComplete') ? ' checked' : '') + '> RUN COMPLETE <span class="dim">— a run saved or made something</span></label>' +
-      '<label class="set-row"><input type="checkbox" id="ntp-needsApproval"' + (npf('needsApproval') ? ' checked' : '') + '> NEEDS APPROVAL <span class="dim">— an agent is waiting on your yes/no</span></label>' +
-      '<label class="set-row"><input type="checkbox" id="ntp-cronDigest"' + (npf('cronDigest') ? ' checked' : '') + '> AUTONOMOUS DIGEST <span class="dim">— what it did while you were away</span></label>' +
-      '<label class="set-row"><input type="checkbox" id="ntp-sound"' + (npf('sound') ? ' checked' : '') + '> NOTIFICATION SOUND <span class="dim">— a chime on each ping (also needs TERMINAL AUDIO on)</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="ntp-runComplete"' + (npf('runComplete') ? ' checked' : '') + '> EJECUCIÓN COMPLETADA <span class="dim">— una ejecución guardó o creó algo</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="ntp-needsApproval"' + (npf('needsApproval') ? ' checked' : '') + '> NECESITA APROBACIÓN <span class="dim">— un agente espera tu sí/no</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="ntp-cronDigest"' + (npf('cronDigest') ? ' checked' : '') + '> RESUMEN AUTÓNOMO <span class="dim">— lo que hizo mientras no estabas</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="ntp-sound"' + (npf('sound') ? ' checked' : '') + '> SONIDO DE NOTIFICACIÓN <span class="dim">— un timbre en cada aviso (también requiere AUDIO DE TERMINAL activado)</span></label>' +
       // CLEAR NOTIFICATIONS lives WITH the notification controls (it was buried in SYSTEM ›  STATION DATA). Armed
       // 2-click confirm + a "cleared ✓" line so the wipe answers "did that stick?".
-      '<div class="set-save"><button class="bb xs" id="ntp-test">TEST NOTIFICATION</button>' +
-        '<button class="bb sm danger" id="set-clear">CLEAR NOTIFICATIONS</button></div>' +
+      '<div class="set-save"><button class="bb xs" id="ntp-test">PRUEBA DE NOTIFICACIÓN</button>' +
+        '<button class="bb sm danger" id="set-clear">LIMPIAR NOTIFICACIONES</button></div>' +
       '<span class="msg" id="notifs-msg" aria-live="polite"></span>';
     const secSystem =
       // "POWER" — this header held only KEEP COMPUTER AWAKE, so "SCHEDULED TASKS" mislabelled it.
       '<h4 class="ms-h">ENERGÍA</h4>' +
-      '<label class="set-row"><input type="checkbox" id="set-awake" ' + (awakeChecked ? 'checked' : '') + (awakeDesktop ? '' : ' disabled') + '> KEEP COMPUTER AWAKE <span class="dim">— ' + (awakeDesktop ? 'prevent idle sleep while StarNet is open' : 'desktop app only') + '</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="set-awake" ' + (awakeChecked ? 'checked' : '') + (awakeDesktop ? '' : ' disabled') + '> MANTENER EL ORDENADOR DESPIERTO <span class="dim">— ' + (awakeDesktop ? 'evita el sueño por inactividad mientras StarNet está abierta' : 'solo app de escritorio') + '</span></label>' +
       // Lane 4D — native startup/tray choices + the honest background-lifecycle explainer. All controls are
       // desktop-only; they stay disabled and the line names the browser reality otherwise. The explainer
       // is filled live from the tray supervisor's REAL armed state (wireLifecycle) so it never over-claims.
-      '<label class="set-row"><input type="checkbox" id="set-autostart" disabled> LAUNCH AT LOGIN <span class="dim">— ' + (lifecycleDesktop ? 'start StarNet automatically when you sign in' : 'desktop app only') + '</span></label>' +
-      '<label class="set-row"><input type="checkbox" id="set-start-minimized" disabled> START MINIMIZED TO TRAY <span class="dim">— ' + (lifecycleDesktop ? 'begin each launch hidden; open from the tray icon' : 'desktop app only') + '</span></label>' +
-      '<label class="set-row"><input type="checkbox" id="set-close-to-tray" disabled> CLOSE WINDOW TO TRAY <span class="dim">— ' + (lifecycleDesktop ? 'X hides StarNet; tray Quit stops it' : 'desktop app only') + '</span></label>' +
-      '<p class="set-about" id="lifecycle-desc">' + (lifecycleDesktop ? 'Checking what runs in the background…' : 'The desktop app can stay supervised in the system tray. This browser tab has no background process.') + '</p>' +
+      '<label class="set-row"><input type="checkbox" id="set-autostart" disabled> INICIAR AL INICIAR SESIÓN <span class="dim">— ' + (lifecycleDesktop ? 'inicia StarNet automáticamente al iniciar sesión' : 'solo app de escritorio') + '</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="set-start-minimized" disabled> INICIAR MINIMIZADO EN LA BANDEJA <span class="dim">— ' + (lifecycleDesktop ? 'cada inicio empieza oculto; ábrelo desde el icono de la bandeja' : 'solo app de escritorio') + '</span></label>' +
+      '<label class="set-row"><input type="checkbox" id="set-close-to-tray" disabled> CERRAR VENTANA A LA BANDEJA <span class="dim">— ' + (lifecycleDesktop ? 'la X oculta StarNet; Salir de la bandeja la detiene' : 'solo app de escritorio') + '</span></label>' +
+      '<p class="set-about" id="lifecycle-desc">' + (lifecycleDesktop ? 'Comprobando qué se ejecuta en segundo plano…' : 'La app de escritorio puede permanecer supervisada en la bandeja del sistema. Esta pestaña del navegador no tiene proceso en segundo plano.') + '</p>' +
       // ADVANCED — env-only runtime knobs, now editable + persisted server-side (P1-9). PRECEDENCE is spelled out
       // in the card: an explicit environment variable ALWAYS wins over a value saved here (a deploy stays in control).
       '<h4 class="ms-h">Límites de ejecución <span class="dim">— techos y timeouts opcionales</span></h4>' +
-      '<p class="set-about">StarNet does not limit agent concurrency or run iterations by default. Set a positive value only when you want a ceiling. Saved here on this machine and read by the sidecar at boot. <b>An environment variable always overrides a value saved here</b>. Blank a field to clear the override.</p>' +
-      '<div class="mc-form" id="adv-form"><div class="dim" id="adv-loading">reading runtime settings…</div></div>' +
+      '<p class="set-about">StarNet no limita la concurrencia de agentes ni las iteraciones de ejecución por defecto. Fija un valor positivo solo cuando quieras un techo. Se guarda aquí en esta máquina y lo lee el sidecar al arrancar. <b>Una variable de entorno siempre anula un valor guardado aquí</b>. Deja un campo en blanco para borrar la anulación.</p>' +
+      '<div class="mc-form" id="adv-form"><div class="dim" id="adv-loading">leyendo ajustes de ejecución…</div></div>' +
       '<div id="adv-msg" class="msg"></div>' +
       // DATA / STATION BACKUP — export the whole station config to one JSON file, import it back, reset a section.
       // Secrets NEVER leave the machine (configexport.js redacts to a configured-marker); import surfaces re-enter states.
       '<h4 class="ms-h">COPIA DE SEGURIDAD <span class="dim">— exporta / importa tu configuración</span></h4>' +
-      '<p class="set-about">Export your station configuration to a JSON file, or restore a saved configuration. <b>Keys and tokens are excluded</b> and must be entered again after importing.</p>' +
+      '<p class="set-about">Exporta la configuración de tu estación a un archivo JSON, o restaura una configuración guardada. <b>Las claves y tokens se excluyen</b> y hay que volver a introducirlos después de importar.</p>' +
       '<div class="set-save">' +
-        '<button class="bb sm" id="bk-export">EXPORT STATION</button>' +
-        '<button class="bb sm" id="bk-import">IMPORT STATION…</button>' +
+        '<button class="bb sm" id="bk-export">EXPORTAR ESTACIÓN</button>' +
+        '<button class="bb sm" id="bk-import">IMPORTAR ESTACIÓN…</button>' +
         '<input type="file" id="bk-file" accept="application/json,.json" style="display:none">' +
       '</div>' +
       '<div id="bk-msg" class="msg"></div>' +
@@ -8128,20 +8128,20 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       ((function () {
         const dest = (typeof Diag !== 'undefined' && Diag.supportEmail) ? Diag.supportEmail() : '';
         const lead = dest
-          ? ('If something breaks, copy a <b>diagnostic readout</b> and paste it into an email to <b>' + esc(dest) + '</b>. ')
-          : 'If something breaks, copy a <b>diagnostic readout</b> and paste it into your bug report. ';
+          ? ('Si algo se rompe, copia una <b>lectura diagnóstica</b> y pégala en un correo a <b>' + esc(dest) + '</b>. ')
+          : 'Si algo se rompe, copia una <b>lectura diagnóstica</b> y pégala en tu reporte de fallo. ';
         return '<p class="set-about">' + lead +
-          'It carries your app version, platform, provider &amp; model, and the tail of recent errors — ' +
-          '<b>never your keys, tokens, messages, or prompts</b>. Assembled and scrubbed by the local sidecar.</p>';
+          'Lleva tu versión de la app, la plataforma, el proveedor y el modelo, y el final de los errores recientes — ' +
+          '<b>nunca tus claves, tokens, mensajes o prompts</b>. Ensamblada y depurada por el sidecar local.</p>';
       })()) +
-      '<div class="set-save"><button class="bb sm" id="diag-copy">⧉ COPY DIAGNOSTICS</button></div>' +
+      '<div class="set-save"><button class="bb sm" id="diag-copy">⧉ COPIAR DIAGNÓSTICOS</button></div>' +
       '<div id="diag-msg" class="msg"></div>' +
       // fail-open pressure: per-tag swallowed-error counts since boot, from report.swallowed. Painted in wireDiagnostics().
-      '<div id="diag-swallowed" class="dim" style="margin-top:6px;font-size:11px">swallowed errors: reading…</div>' +
+      '<div id="diag-swallowed" class="dim" style="margin-top:6px;font-size:11px">errores tragados: leyendo…</div>' +
       '<h4 class="ms-h">MÉDICO EN VIVO <span class="dim">— prueba de ejecución opcional</span></h4>' +
-      '<p class="set-about">Runs one tiny response through the selected model, a harmless sentinel through the effective execution profile, an initialize/list round-trip for each enabled MCP server, and safe authentication/status checks for messaging channels. It sends no channel messages and exports no secrets.</p>' +
-      '<label class="set-check"><input type="checkbox" id="diag-live-consent"> I understand this performs real network and execution probes and may spend one tiny model response.</label>' +
-      '<div class="set-save"><button class="bb sm" id="diag-live-run">RUN LIVE DOCTOR</button><button class="bb sm" id="diag-live-copy" hidden>⧉ COPY RECEIPT</button></div>' +
+      '<p class="set-about">Ejecuta una respuesta diminuta a través del modelo seleccionado, un centinela inofensivo a través del perfil de ejecución efectivo, un ida-y-vuelta de inicializar/listar para cada servidor MCP habilitado, y comprobaciones seguras de autenticación/estado para los canales de mensajería. No envía mensajes de canal ni exporta secretos.</p>' +
+      '<label class="set-check"><input type="checkbox" id="diag-live-consent"> Entiendo que esto realiza sondas reales de red y ejecución y puede gastar una diminuta respuesta de modelo.</label>' +
+      '<div class="set-save"><button class="bb sm" id="diag-live-run">EJECUTAR MÉDICO EN VIVO</button><button class="bb sm" id="diag-live-copy" hidden>⧉ COPIAR COMPROBANTE</button></div>' +
       '<div id="diag-live-msg" class="msg"></div>' +
       '<pre id="diag-live-out" class="diag-pre" tabindex="0" hidden style="white-space:pre-wrap;overflow:auto;max-height:40vh"></pre>' +
       // P1.5 build provenance — the git commit this desktop binary was compiled from. Hidden until resolved (and
@@ -8149,7 +8149,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div id="diag-build" class="dim" style="margin-top:6px;font-size:11px" hidden></div>' +
       // CLEAR NOTIFICATIONS moved to the NOTIFICATIONS section (where it belongs); this is now just the about note.
       '<h4 class="ms-h">ACERCA DE</h4>' +
-      '<p class="set-about">STARNET — gamified AI-agent harness.<br>Theme, display & audio preferences are saved locally on this machine. Manage planned tasks under MY WORK › TASKS and saved conversations under SESSIONS in COMMS.</p>';
+      '<p class="set-about">STARNET — arnés de agentes de IA gamificado.<br>Las preferencias de tema, pantalla y audio se guardan localmente en esta máquina. Administra las tareas planificadas en MI TRABAJO › TAREAS y las conversaciones guardadas en SESIONES de COMMS.</p>';
 
     // Keep every control mounted and reachable; group existing nodes without replacing their IDs.
     function arrangeSettingsPane(el) {
@@ -8213,32 +8213,32 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const save = want => {
         try {
           VoiceLive.setVoice(want, target.value);
-          message.textContent = want ? 'Voice saved. Applies to the next reply or new Live Voice session.' : 'Using the station default. Applies to a new Live Voice session.';
+          message.textContent = want ? 'Voz guardada. Se aplica a la siguiente respuesta o a una nueva sesión de Voz en vivo.' : 'Usando el predeterminado de la estación. Se aplica a una nueva sesión de Voz en vivo.';
           refresh();
           try { SFX.click(); } catch (_) {}
-        } catch (_) { message.textContent = 'Voice could not be saved. Please try again.'; }
+        } catch (_) { message.textContent = 'No se pudo guardar la voz. Inténtalo de nuevo.'; }
       };
       const paint = (list, chosen, assigned) => {
         inherit.hidden = !target.value;
         inherit.disabled = !assigned;
-        if (!list.length) { wrap.innerHTML = '<span class="dim">the speech engine has not reported its voices yet</span>'; return; }
+        if (!list.length) { wrap.innerHTML = '<span class="dim">el motor de voz aún no ha reportado sus voces</span>'; return; }
         const group = sex => list.filter(v => v.sex === sex);
         const row = v => '<button class="set-theme ' + (v.id === chosen ? 'sel' : '') + '" aria-pressed="' +
           (v.id === chosen ? 'true' : 'false') + '" data-lv-voice="' + esc(v.id) + '" title="' + esc(v.accent + ' ' + v.sex) + '">' + esc(v.label) + '</button>';
         wrap.innerHTML =
-          '<div class="dim" style="width:100%">MALE</div>' + group('male').map(row).join('') +
-          '<div class="dim" style="width:100%;margin-top:6px">FEMALE</div>' + group('female').map(row).join('');
+          '<div class="dim" style="width:100%">MASCULINO</div>' + group('male').map(row).join('') +
+          '<div class="dim" style="width:100%;margin-top:6px">FEMENINO</div>' + group('female').map(row).join('');
         wrap.querySelectorAll('[data-lv-voice]').forEach(btn => {
           btn.onclick = () => save(btn.getAttribute('data-lv-voice'));
         });
       };
       const refresh = async () => {
         const seq = ++request;
-        wrap.innerHTML = '<span class="dim">reading the built-in voice list…</span>';
+        wrap.innerHTML = '<span class="dim">leyendo la lista de voces integradas…</span>';
         try {
           const v = await VoiceLive.voices(target.value);
           if (seq === request) paint(v.available || [], v.current || '', v.assigned);
-        } catch (_) { if (seq === request) wrap.innerHTML = '<span class="dim">voice list unavailable</span>'; }
+        } catch (_) { if (seq === request) wrap.innerHTML = '<span class="dim">lista de voces no disponible</span>'; }
       };
       target.onchange = () => { message.textContent = ''; refresh(); };
       inherit.onclick = () => save('');
@@ -8259,9 +8259,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           btn.onclick = () => {
             try {
               Voice.setVoiceEffect(btn.getAttribute('data-lv-effect'));
-              effectMsg.textContent = 'Effect saved. Applies to the next spoken reply.';
+              effectMsg.textContent = 'Efecto guardado. Se aplica a la próxima respuesta hablada.';
               try { SFX.click(); } catch (_) {}
-            } catch (_) { effectMsg.textContent = 'Effect could not be saved. Please try again.'; }
+            } catch (_) { effectMsg.textContent = 'No se pudo guardar el efecto. Inténtalo de nuevo.'; }
             paintEffect();
           };
         });
@@ -8275,39 +8275,39 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     let paintBackdropSwatches = () => {};
 
     const sections = [
-      { id: 'providers', label: 'AI & MODELS', glyph: '⌁', desc: 'Connect an AI service, manage its saved keys, and choose fallback models and agent defaults.', build: frag(secProviders + secModels) },
+      { id: 'providers', label: 'IA Y MODELOS', glyph: '⌁', desc: 'Conecta un servicio de IA, administra sus claves guardadas y elige modelos de respaldo y predeterminados de agente.', build: frag(secProviders + secModels) },
       // ONE WORD: AUTONOMY — the dial and what it did while you were away are one section (the old NIGHT SHIFT
       // section folded in; openTerm maps its id here so an old deep link still lands).
-      { id: 'autonomy', label: 'AUTONOMY', glyph: '◈', desc: 'Choose when agents work on their own, where that work goes, and see what they did while you were away.', build: frag(secAutonomy + secAwayActivity) },
-      { id: 'permissions', label: 'PERMISSIONS', glyph: '⊘', desc: 'Set access and approval rules for the station or individual agents.', build: frag(secPermissions) },
-      { id: 'budget', label: 'SPENDING LIMITS', glyph: '$', desc: 'Set spending limits and review recorded usage.', build: frag(secBudget) },
+      { id: 'autonomy', label: 'AUTONOMÍA', glyph: '◈', desc: 'Elige cuándo los agentes trabajan por su cuenta, hacia dónde va ese trabajo y mira qué hicieron mientras no estabas.', build: frag(secAutonomy + secAwayActivity) },
+      { id: 'permissions', label: 'PERMISOS', glyph: '⊘', desc: 'Fija reglas de acceso y aprobación para la estación o agentes individuales.', build: frag(secPermissions) },
+      { id: 'budget', label: 'LÍMITES DE GASTO', glyph: '$', desc: 'Fija límites de gasto y revisa el uso registrado.', build: frag(secBudget) },
       // build, not frag: the pane is created lazily when the section is opened, so wiring at MOUNT time
       // ran before this element existed and left the list stuck on its placeholder. Paint it when it is born.
-      { id: 'appearance', label: 'LOOK & SOUND', glyph: '☀', desc: 'Text size, room lighting, phosphor colour, CRT effects, terminal sound, and your agents’ spoken voices.', build: el => { el.innerHTML = secAppearance + secLiveVoice; arrangeSettingsPane(el); wireLiveVoice(el); }, onShow: () => paintBackdropSwatches() },
+      { id: 'appearance', label: 'ASPECTO Y SONIDO', glyph: '☀', desc: 'Tamaño de texto, iluminación de salas, color fósforo, efectos CRT, sonido de terminal y las voces habladas de tus agentes.', build: el => { el.innerHTML = secAppearance + secLiveVoice; arrangeSettingsPane(el); wireLiveVoice(el); }, onShow: () => paintBackdropSwatches() },
       // NAV CONDENSE (2026-08-04) — two label renames, ids untouched (remembered-section keys + wiring
       // bind to the id): 'NOTIFICATIONS' collided with the SYSTEM-dock NOTIFICATIONS panel (inbox vs
       // preferences — same word, two doors), and a 'SYSTEM' section inside SETTINGS inside the SYSTEM
       // dock read as a loop.
-      { id: 'notifs', label: 'ALERTS', glyph: '◔', desc: 'What pings you while you work, and whether it chimes.', build: frag(secNotifs) },
+      { id: 'notifs', label: 'AVISOS', glyph: '◔', desc: 'Qué te avisa mientras trabajas y si suena un timbre.', build: frag(secNotifs) },
       // STARNET REMOTE: pair a phone and drive the station from anywhere (app/remote-devices.js owns the pane)
-      { id: 'remote', label: 'REMOTE', glyph: '▯', desc: 'Pair your phone and control this station from anywhere.', build: el => { if (typeof RemoteDevices !== 'undefined') RemoteDevices.mount(el, arrangeSettingsPane); else el.textContent = 'Remote is not available in this build.'; } },
+      { id: 'remote', label: 'REMOTO', glyph: '▯', desc: 'Vincula tu teléfono y controla esta estación desde cualquier lugar.', build: el => { if (typeof RemoteDevices !== 'undefined') RemoteDevices.mount(el, arrangeSettingsPane); else el.textContent = 'Remoto no está disponible en esta build.'; } },
       // BROWSER: where the station browser lives — built-in / a Chrome window (YOUR CHROME is not offered yet; app/outputbrowser.js owns the pane)
-      { id: 'browser', label: 'BROWSER', glyph: '◎', desc: 'Where the station browser runs: inside StarNet, or as its own Chrome window.', build: el => {
+      { id: 'browser', label: 'NAVEGADOR', glyph: '◎', desc: 'Dónde se ejecuta el navegador de la estación: dentro de StarNet, o como su propia ventana de Chrome.', build: el => {
         if (typeof OutputBrowser !== 'undefined' && OutputBrowser.mountSettings) OutputBrowser.mountSettings(el, arrangeSettingsPane);
         // SAVED SIGN-INS: STEP-IN is no longer a standing dock button, so the sign-ins it keeps get a door here
         const row = mkEl('div', 'set-row');
-        row.appendChild(mkEl('span', 'dim', 'SAVED SIGN-INS — the browser sign-ins your agents reuse, from times you took the wheel '));
-        const b = mkEl('button', 'bb sm', 'OPEN SAVED SIGN-INS'); b.type = 'button'; b.id = 'set-open-signins';
+        row.appendChild(mkEl('span', 'dim', 'SESIONES GUARDADAS — las sesiones del navegador que reutilizan tus agentes, de cuando tomaste el control '));
+        const b = mkEl('button', 'bb sm', 'ABRIR SESIONES GUARDADAS'); b.type = 'button'; b.id = 'set-open-signins';
         b.addEventListener('click', () => { sfx('click'); openTerm('stepin'); });
         row.appendChild(b); el.appendChild(row);
         // #61 RESET STATION BROWSER (app/datareset.js owns it)
         if (typeof DataReset !== 'undefined' && DataReset.mountBrowserReset) DataReset.mountBrowserReset(el);
       } },
-      { id: 'system', label: 'APP & BACKUP', glyph: '⚙', desc: 'Startup, runtime limits, backups, updates, and troubleshooting.', build: el => { frag(secSystem)(el); if (typeof DataReset !== 'undefined' && DataReset.mountErase) DataReset.mountErase(el); } }   // #65 ERASE EVERYTHING (app/datareset.js)
+      { id: 'system', label: 'APP Y RESPALDO', glyph: '⚙', desc: 'Arranque, límites de ejecución, respaldos, actualizaciones y solución de problemas.', build: el => { frag(secSystem)(el); if (typeof DataReset !== 'undefined' && DataReset.mountErase) DataReset.mountErase(el); } }   // #65 BORRAR TODO (app/datareset.js)
     ];
     // ONE PLAIN LIST (Andrew 10-02): no intent-group buttons — a few natural pairs share a page instead (AI & MODELS,
     // LOOK & SOUND); every old section id still lands through SETTINGS_ALIAS in openTerm.
-    const host = mountConsole(body, 'settings', sections, { search: true, searchPlaceholder: 'search settings…' });
+    const host = mountConsole(body, 'settings', sections, { search: true, searchPlaceholder: 'buscar ajustes…' });
 
     wireProviderActions(host);
     wireKeyActions(host);
@@ -8504,18 +8504,18 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const paintLife = () => {
         if (!lifeDesc) return;
         Lifecycle.status().then(v => {
-          if (!v || !v.supervised) { lifeDesc.textContent = 'Closing the window keeps the station running only when armed work needs it — otherwise it fully quits.'; return; }
+          if (!v || !v.supervised) { lifeDesc.textContent = 'Cerrar la ventana deja la estación funcionando solo cuando el trabajo armado lo necesita — si no, se detiene por completo.'; return; }
           if (startMinimizedToggle) { startMinimizedToggle.disabled = false; startMinimizedToggle.checked = !!v.startMinimized; }
           if (closeToTrayToggle) { closeToTrayToggle.disabled = false; closeToTrayToggle.checked = !!v.closeToTray; }
           if (v.closeToTray) {
-            lifeDesc.textContent = 'Closing the window hides StarNet in the tray and keeps the station running. Use Quit StarNet in the tray menu to stop it.';
+            lifeDesc.textContent = 'Cerrar la ventana oculta StarNet en la bandeja y mantiene la estación funcionando. Usa «Salir de StarNet» en el menú de la bandeja para detenerla.';
           } else if (v.armed) {
-            const why = (v.reasons && v.reasons.length) ? v.reasons.join(', ') : 'armed background work';
-            lifeDesc.textContent = 'Right now, closing the window KEEPS the station running in the background (' + why + '). Quit fully from the tray icon. Otherwise closing would fully quit.';
+            const why = (v.reasons && v.reasons.length) ? v.reasons.join(', ') : 'trabajo de fondo armado';
+            lifeDesc.textContent = 'Ahora mismo, cerrar la ventana MANTIENE la estación en segundo plano (' + why + '). Para detenerla del todo, usa el icono de la bandeja. De lo contrario, cerrar la detendría por completo.';
           } else {
-            lifeDesc.textContent = 'Right now, nothing is armed — closing the window fully quits StarNet (no background process). Arm a routine, connect a channel, or set ON ITS OWN to ' + initiativeLabel('leash') + ' or ' + initiativeLabel('free') + ' in SETTINGS › AUTONOMY to keep it running while closed.';
+            lifeDesc.textContent = 'Ahora mismo, nada está armado — cerrar la ventana detiene StarNet por completo (sin proceso en segundo plano). Arma una rutina, conecta un canal, o fija A SU MANO en ' + initiativeLabel('leash') + ' o ' + initiativeLabel('free') + ' en AJUSTES › AUTONOMÍA para mantenerla funcionando mientras está cerrada.';
           }
-        }).catch(() => { lifeDesc.textContent = 'Closing the window keeps the station running only when armed work needs it — otherwise it fully quits.'; });
+        }).catch(() => { lifeDesc.textContent = 'Cerrar la ventana deja la estación funcionando solo cuando el trabajo armado lo necesita — si no, se detiene por completo.'; });
       };
       paintLife();
       if (autostartToggle) autostartToggle.addEventListener('change', ev => {
@@ -8542,13 +8542,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             const real = !!(st && st[field]);
             ev.target.checked = real;
             ev.target.disabled = false;
-            if (real !== desired) notify(label + ' could not be ' + (desired ? 'enabled' : 'disabled') + ' on this system.', 'warn');
+            if (real !== desired) notify(label + ' no se pudo ' + (desired ? 'activar' : 'desactivar') + ' en este sistema.', 'warn');
             else flashSaved(appMsg(), undefined, true);
             paintLife();
           }).catch(err => {
             ev.target.checked = !desired;
             ev.target.disabled = false;
-            notify(label + ' failed: ' + ((err && err.message) || err), 'warn');
+            notify(label + ' falló: ' + ((err && err.message) || err), 'warn');
             sfx('bad');
           });
         });
@@ -8572,12 +8572,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const trustProvText = (pv) => {
         if (!pv) return '';
         const parts = [];
-        if (pv.runs) parts.push(pv.runs + ' tasks');
-        if (pv.confidence) parts.push(pv.confidence + '% satisfaction');
-        if (pv.streak) parts.push(pv.streak + ' approvals in a row');
+        if (pv.runs) parts.push(pv.runs + ' tareas');
+        if (pv.confidence) parts.push(pv.confidence + '% de satisfacción');
+        if (pv.streak) parts.push(pv.streak + ' aprobaciones seguidas');
         let when = '';
-        try { if (pv.earnedAt && typeof Permissions !== 'undefined' && Permissions.grantAgeText) when = Permissions.grantAgeText(pv.earnedAt, Date.now()).replace(/^granted /, 'earned '); } catch (_) {}
-        return 'EARNED — ' + (parts.length ? parts.join(', ') : 'a demonstrated track record') + (when ? ' · ' + when : '');
+        try { if (pv.earnedAt && typeof Permissions !== 'undefined' && Permissions.grantAgeText) when = Permissions.grantAgeText(pv.earnedAt, Date.now()).replace(/^granted /, 'conseguido '); } catch (_) {}
+        return 'CONSEGUIDO — ' + (parts.length ? parts.join(', ') : 'un historial demostrado') + (when ? ' · ' + when : '');
       };
       const paintEarned = (a) => {
         if (!initWrap) return;
@@ -8599,7 +8599,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         if (reachWrap) reachWrap.querySelectorAll('[data-reach]').forEach(x => x.classList.toggle('sel', sync.loaded && x.dataset.reach === a.reach));
         if (paceWrap) paceWrap.querySelectorAll('[data-pace]').forEach(x => x.classList.toggle('sel', sync.loaded && Number(x.dataset.pace) === a.leashPerDay));
         for (const wrap of [initWrap, reachWrap, paceWrap]) if (wrap) wrap.querySelectorAll('button').forEach(x => { x.disabled = sync.pending; });
-        if (autoDesc) { autoDesc.setAttribute('role', 'status'); autoDesc.textContent = sync.pending ? 'Confirming autonomy settings…' : (sync.error ? sync.error + (sync.loaded ? ' Current setting: ' + AutonomyStore.describe() : ' Reopen this panel to retry.') : sync.loaded ? AutonomyStore.describe() : 'Autonomy settings have not been confirmed.'); }
+        if (autoDesc) { autoDesc.setAttribute('role', 'status'); autoDesc.textContent = sync.pending ? 'Confirmando ajustes de autonomía…' : (sync.error ? sync.error + (sync.loaded ? ' Ajuste actual: ' + AutonomyStore.describe() : ' Reabre este panel para reintentar.') : sync.loaded ? AutonomyStore.describe() : 'Los ajustes de autonomía aún no se han confirmado.'); }
         try { paintEarned(a); } catch (_) {}   // GROWTH Tier 3: the EARNED badge on an earned rung
         try { syncPerm(); } catch (_) {}   // keep the permissions level highlight + blurb in step with the dial
       };
@@ -8629,8 +8629,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       };
       const paintAvoid = (list) => {
         if (!dAvoid) return;
-        if (!Array.isArray(list)) { dAvoid.innerHTML = '<p class="set-about">directives unreachable right now.</p>'; return; }
-        if (!list.length) { dAvoid.innerHTML = '<p class="set-about">nothing ruled out — it may pick any trusted project, open thread, or your goal.</p>'; return; }
+        if (!Array.isArray(list)) { dAvoid.innerHTML = '<p class="set-about">las directivas no están al alcance ahora mismo.</p>'; return; }
+        if (!list.length) { dAvoid.innerHTML = '<p class="set-about">nada excluido — puede elegir cualquier proyecto de confianza, hilo abierto o tu objetivo.</p>'; return; }
         dAvoid.textContent = '';
         for (const e of list) {
           const row = document.createElement('div');
@@ -8642,30 +8642,30 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           const rm = document.createElement('button');
           rm.className = 'bb xs';
           rm.textContent = 'PERMITIR OTRA VEZ';
-          rm.title = 'remove this boundary — the station may pick it unattended again';
+          rm.title = 'quita este límite — la estación puede elegirlo de nuevo sin supervisión';
           rm.addEventListener('click', () => {
             rm.disabled = true;
             Harness.api.del('/api/nightshift/avoid?ref=' + encodeURIComponent(e.ref))
               .then(({ ok, j }) => {
-                if (!ok || !j || j.ok === false) { label.textContent = String(e.label || e.ref) + ' — could not remove: ' + ((j && j.error) || 'error'); sfx('bad'); rm.disabled = false; return; }
+                if (!ok || !j || j.ok === false) { label.textContent = String(e.label || e.ref) + ' — no se pudo quitar: ' + ((j && j.error) || 'error'); sfx('bad'); rm.disabled = false; return; }
                 sfx('click'); refreshDirection();   // repaint from the route's truth
               })
-              .catch(() => { label.textContent = String(e.label || e.ref) + ' — could not reach the sidecar'; sfx('bad'); rm.disabled = false; });
+              .catch(() => { label.textContent = String(e.label || e.ref) + ' — no se pudo alcanzar el sidecar'; sfx('bad'); rm.disabled = false; });
           });
           row.appendChild(label); row.appendChild(rm);
           dAvoid.appendChild(row);
         }
       };
       const paintDirection = (j) => {
-        if (!j || j.ok === false) { dMsg('directives unreachable right now'); paintAvoid(null); return; }
+        if (!j || j.ok === false) { dMsg('las directivas no están al alcance ahora mismo'); paintAvoid(null); return; }
         const f = j.focus;
         const liveSteer = !!(j.steer && j.steer.ref);
         if (dFocus) {
           if (f && (f.label || f.ref)) {
             const why = Array.isArray(f.why) ? f.why.filter(Boolean).join('; ') : '';
-            dFocus.textContent = String(f.label || f.ref) + (liveSteer ? ' · you steered this' : '') + (why ? ' — ' + why : '');
+            dFocus.textContent = String(f.label || f.ref) + (liveSteer ? ' · lo guiaste tú' : '') + (why ? ' — ' + why : '');
           } else {
-            dFocus.textContent = 'none declared — it improvises from evidence';
+            dFocus.textContent = 'ninguno declarado — improvisa a partir de evidencia';
           }
         }
         if (dSteerClear) dSteerClear.style.display = liveSteer ? '' : 'none';
@@ -8677,53 +8677,53 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       };
       if (dSteerSet) dSteerSet.addEventListener('click', () => {
         const raw = dSteer ? String(dSteer.value).trim() : '';
-        if (!raw) { dMsg('enter a trusted project path, thread:<id>, or goal'); sfx('bad'); return; }
-        dMsg('steering…');
+        if (!raw) { dMsg('introduce una ruta de proyecto de confianza, thread:<id> o un objetivo'); sfx('bad'); return; }
+        dMsg('guiando…');
         Harness.api.post('/api/nightshift/focus', parseRef(raw))
           .then(({ ok, j }) => {
-            if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'could not steer'); sfx('bad'); return; }
+            if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'no se pudo guiar'); sfx('bad'); return; }
             if (dSteer) dSteer.value = '';
             sfx('click'); refreshDirection();
           })
-          .catch(() => { dMsg('could not reach the sidecar'); sfx('bad'); });
+          .catch(() => { dMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
       });
       if (dSteerClear) dSteerClear.addEventListener('click', () => {
-        dMsg('clearing…');
+        dMsg('limpiando…');
         Harness.api.del('/api/nightshift/focus')
           .then(({ ok, j }) => {
-            if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'could not clear the steer'); sfx('bad'); return; }
+            if (!ok || !j || j.ok === false) { dMsg((j && j.error) || 'no se pudo limpiar la guía'); sfx('bad'); return; }
             sfx('click'); refreshDirection();
           })
-          .catch(() => { dMsg('could not reach the sidecar'); sfx('bad'); });
+          .catch(() => { dMsg('no se pudo alcanzar el sidecar'); sfx('bad'); });
       });
       if (dAvoidAdd) dAvoidAdd.addEventListener('click', () => {
         const raw = dAvoidRef ? String(dAvoidRef.value).trim() : '';
-        if (!raw) { sfx('bad'); if (dAvoid) dAvoid.innerHTML = '<p class="set-about">enter a trusted project path, thread:&lt;id&gt;, or goal to rule out.</p>'; return; }
+        if (!raw) { sfx('bad'); if (dAvoid) dAvoid.innerHTML = '<p class="set-about">introduce una ruta de proyecto de confianza, thread:&lt;id&gt; o un objetivo para excluirlo.</p>'; return; }
         dAvoidAdd.disabled = true;
         Harness.api.post('/api/nightshift/avoid', parseRef(raw))
           .then(({ ok, j }) => {
             dAvoidAdd.disabled = false;
-            if (!ok || !j || j.ok === false) { if (dAvoid) dAvoid.innerHTML = '<p class="set-about">' + esc((j && j.error) || 'could not rule that out') + '</p>'; sfx('bad'); return; }
+            if (!ok || !j || j.ok === false) { if (dAvoid) dAvoid.innerHTML = '<p class="set-about">' + esc((j && j.error) || 'no se pudo excluir eso') + '</p>'; sfx('bad'); return; }
             if (dAvoidRef) dAvoidRef.value = '';
             sfx('click'); refreshDirection();   // the avoid may have dethroned the focus — repaint both from truth
           })
-          .catch(() => { dAvoidAdd.disabled = false; if (dAvoid) dAvoid.innerHTML = '<p class="set-about">could not reach the sidecar.</p>'; sfx('bad'); });
+          .catch(() => { dAvoidAdd.disabled = false; if (dAvoid) dAvoid.innerHTML = '<p class="set-about">no se pudo alcanzar el sidecar.</p>'; sfx('bad'); });
       });
       // LEARNED INTERESTS — GET /api/scout's evidence-cited topic histogram. Every row shows the count it earned
       // and quotes the real activity behind it; an empty histogram renders the honest cold state, never a fake profile.
       const paintInterests = (rows) => {
         if (!dInterests) return;
-        if (!Array.isArray(rows)) { dInterests.innerHTML = '<p class="set-about">interests unreachable right now.</p>'; return; }
-        if (!rows.length) { dInterests.innerHTML = '<p class="set-about">nothing learned yet — it only counts what you actually work on.</p>'; return; }
+        if (!Array.isArray(rows)) { dInterests.innerHTML = '<p class="set-about">los intereses no están al alcance ahora mismo.</p>'; return; }
+        if (!rows.length) { dInterests.innerHTML = '<p class="set-about">aún no ha aprendido nada — solo cuenta en qué trabajas de verdad.</p>'; return; }
         dInterests.textContent = '';
         for (const r of rows.slice(0, 8)) {
           const row = document.createElement('div');
           row.className = 'set-row';
           const label = document.createElement('span');
           label.className = 'dim';
-          label.textContent = String(r.label || '') + ' · seen ' + (Number(r.count) || 0) + '×';
+          label.textContent = String(r.label || '') + ' · visto ' + (Number(r.count) || 0) + '×';
           const ev = Array.isArray(r.evidence) ? r.evidence.filter(Boolean) : [];
-          if (ev.length) label.title = 'because you said: ' + ev.map(q => '"' + q + '"').join(' · ');
+          if (ev.length) label.title = 'porque dijiste: ' + ev.map(q => '"' + q + '"').join(' · ');
           row.appendChild(label);
           dInterests.appendChild(row);
         }
@@ -8743,7 +8743,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // visible only while something is running (or the ledger can't be read — that is worth saying)
         const show = !Array.isArray(rows) || rows.length > 0;
         list.hidden = !show; if (helpersSub) helpersSub.hidden = !show;
-        if (!Array.isArray(rows)) { list.innerHTML = '<p class="set-about">helpers unreachable right now.</p>'; return; }
+        if (!Array.isArray(rows)) { list.innerHTML = '<p class="set-about">los ayudantes no están al alcance ahora mismo.</p>'; return; }
         if (!rows.length) { list.innerHTML = ''; return; }
         list.textContent = '';
         for (const r of rows) {
@@ -8753,19 +8753,19 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           label.className = 'dim';
           const title = String(r.prompt || '').slice(0, 72) || r.id;
           label.textContent = title + (r.usd ? ' · ' + fmtUsd(r.usd) : '');
-          label.title = 'lead: ' + (r.leadId || '—') + ' · started ' + (r.startedAt ? new Date(r.startedAt).toLocaleTimeString() : '—');
+          label.title = 'lleva: ' + (r.leadId || '—') + ' · empezó ' + (r.startedAt ? new Date(r.startedAt).toLocaleTimeString() : '—');
           const stop = document.createElement('button');
           stop.className = 'bb xs';
-          stop.textContent = 'STOP';
-          stop.title = 'interrupt this background helper (its work so far is kept; it can be resumed)';
+          stop.textContent = 'PARAR';
+          stop.title = 'interrompe este ayudante de fondo (su trabajo hasta ahora se conserva; se puede reanudar)';
           stop.addEventListener('click', () => {
             stop.disabled = true;
             Harness.api.post('/api/subagents/interrupt', { id: r.id })
               .then(({ ok, j }) => {
-                if (!ok || !j || j.ok === false) { label.textContent = title + ' — could not stop: ' + ((j && j.error) || 'error'); sfx('bad'); stop.disabled = false; return; }
+                if (!ok || !j || j.ok === false) { label.textContent = title + ' — no se pudo parar: ' + ((j && j.error) || 'error'); sfx('bad'); stop.disabled = false; return; }
                 sfx('click'); refreshHelpers();   // repaint from the ledger (the row leaves only when the server says interrupted)
               })
-              .catch(() => { label.textContent = title + ' — could not reach the sidecar'; sfx('bad'); stop.disabled = false; });
+              .catch(() => { label.textContent = title + ' — no se pudo alcanzar el sidecar'; sfx('bad'); stop.disabled = false; });
           });
           // STEER — redirect a RUNNING helper mid-flight instead of killing it (G6: previously STOP was the
           // Commander's only control). Inline station input (never window.prompt — OS-modal law); posts the
@@ -8774,8 +8774,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           // [from the Commander] steering note.
           const steerBtn = document.createElement('button');
           steerBtn.className = 'bb xs';
-          steerBtn.textContent = 'STEER';
-          steerBtn.title = 'send this running helper a mid-flight instruction (it keeps working; your note is read before its next model turn)';
+          steerBtn.textContent = 'GUIAR';
+          steerBtn.title = 'envía a este ayudante en marcha una instrucción a media tarea (sigue trabajando; tu nota se lee antes de su próximo turno de modelo)';
           let steerRow = null;
           steerBtn.addEventListener('click', () => {
             if (steerRow) { steerRow.remove(); steerRow = null; return; }   // second click folds the input away
@@ -8783,20 +8783,20 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             steerRow.className = 'set-row';
             const input = document.createElement('input');
             input.type = 'text'; input.className = 'key-input'; input.maxLength = 2000;
-            input.placeholder = 'new instruction for this helper…';
+            input.placeholder = 'nueva instrucción para este ayudante…';
             const send = document.createElement('button');
             send.className = 'bb xs';
-            send.textContent = 'SEND';
+            send.textContent = 'ENVIAR';
             const submit = () => {
               const text = input.value.trim();
               if (!text) return;
               send.disabled = true; input.disabled = true;
               Harness.api.post('/api/subagents/steer', { id: r.id, generation: r.generation, text })
                 .then(({ ok, j }) => {
-                  if (!ok || !j || j.ok === false) { label.textContent = title + ' — could not steer: ' + ((j && j.error) || 'error'); sfx('bad'); send.disabled = false; input.disabled = false; return; }
+                  if (!ok || !j || j.ok === false) { label.textContent = title + ' — no se pudo guiar: ' + ((j && j.error) || 'error'); sfx('bad'); send.disabled = false; input.disabled = false; return; }
                   sfx('click'); if (steerRow) { steerRow.remove(); steerRow = null; } refreshHelpers();   // repaint: the queued note shows from the ledger's own steerHistory
                 })
-                .catch(() => { label.textContent = title + ' — could not reach the sidecar'; sfx('bad'); send.disabled = false; input.disabled = false; });
+                .catch(() => { label.textContent = title + ' — no se pudo alcanzar el sidecar'; sfx('bad'); send.disabled = false; input.disabled = false; });
             };
             send.addEventListener('click', submit);
             input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
@@ -8854,7 +8854,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // twelve identical "declined · you were here" lines — pure noise. trailLines groups consecutive same-reason
         // rows into "4:26–4:37 PM · declined ×12 · …" (every row still derives from real ledger entries).
         const lines = NightReport.trailLines(Array.isArray(entries) ? entries : [], tz()).slice(0, 12);
-        if (!lines.length) { nsTrail.innerHTML = '<p class="set-about">no autonomy decisions yet — nothing has run unattended.</p>'; return; }
+        if (!lines.length) { nsTrail.innerHTML = '<p class="set-about">aún no hay decisiones de autonomía — nada se ha ejecutado sin supervisión.</p>'; return; }
         nsTrail.innerHTML = lines.map(t => '<div class="set-row"><span class="dim">' + esc(t) + '</span></div>').join('');
       };
       // paint honest "reading…" first, then replace with the live truth (or an honest unreachable/error state).
@@ -8863,7 +8863,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           .then(paintPanel);
         // limit 200 (was 12): collapsing eats duplicates, so 12 raw rows could cover only ~12 minutes of history.
         Harness.api.get('/api/autonomy/ledger?source=nightshift&limit=200').catch(() => null)
-          .then(j => { if (j && Array.isArray(j.entries)) paintTrail(j.entries); else if (nsTrail) nsTrail.innerHTML = '<p class="set-about">the decision trail is unreachable right now.</p>'; });
+          .then(j => { if (j && Array.isArray(j.entries)) paintTrail(j.entries); else if (nsTrail) nsTrail.innerHTML = '<p class="set-about">la pista de decisiones no está al alcance ahora mismo.</p>'; });
       };
       refreshPanel();
       // LAST REPORT — re-render the most recent night's digest on demand. Fetches the SAME three truthful-telemetry
@@ -8874,7 +8874,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const tzMin = () => { try { return -new Date().getTimezoneOffset(); } catch (_) { return 0; } };
       const renderLastReport = () => {
         if (!nsReport) return;
-        nsReport.innerHTML = '<p class="set-about">composing the last report…</p>';
+        nsReport.innerHTML = '<p class="set-about">componiendo el último informe…</p>';
         const now = Date.now();
         const awaySince = now - 24 * 3600 * 1000;   // the last day's night-shift window
         const getJSON = (u) => Harness.api.get(u).catch(() => null);
@@ -8897,13 +8897,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           if (!rep || !rep.hasReport) {
             // the still-learning line is a second sentence of the SAME grey status paragraph style, full stop and all —
             // an amber .dim row under a grey status read louder than the status it qualifies
-            nsReport.innerHTML = '<p class="set-about">no report to show — autonomy recorded no acts or declines in the last 24h.</p>' +
+            nsReport.innerHTML = '<p class="set-about">no hay informe que mostrar — la autonomía no registró actos ni rechazos en las últimas 24 h.</p>' +
               (readyLine ? '<p class="set-about">' + esc(readyLine.replace(/[.\s]*$/, '.')) + '</p>' : '');
             return;
           }
           const lines = [];
           if (rep.priorityLine) lines.push(rep.priorityLine);
-          lines.push('while you were away: ' + rep.headline);
+          lines.push('mientras no estabas: ' + rep.headline);
           for (const l of (rep.actLines || [])) lines.push(l);
           for (const l of (rep.declineLines || [])) lines.push(l);
           if (rep.idleReason) lines.push(rep.idleReason);
@@ -9177,9 +9177,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             '<div class="mc-hint">Uses the OS OpenSSH agent/config with batch authentication and strict known_hosts. StarNet stores no password or private key. Files push before each command and pull back afterward; sync never deletes either side.</div>' +
             '<div class="mc-hint" data-ssh-status>' + esc(sshStatus) + '</div>' +
             '<div class="mc-acts"><button class="bb sm" data-ssh-save>SAVE &amp; PROBE</button>' +
-              (sshConfigured ? '<button class="bb sm" data-ssh-sync="push">PUSH NOW</button><button class="bb sm" data-ssh-sync="pull">PULL NOW</button><button class="bb xs danger" data-ssh-clear>CLEAR TARGET</button>' : '') +
+              (sshConfigured ? '<button class="bb sm" data-ssh-sync="push">SUBIR AHORA</button><button class="bb sm" data-ssh-sync="pull">BAJAR AHORA</button><button class="bb xs danger" data-ssh-clear>LIMPIAR DESTINO</button>' : '') +
             '</div></details>';
-          const cell = id === 'safe-cell' ? '<div class="mc-acts"><button class="bb sm" data-cell-stop="' + esc(String(a.id)) + '">STOP IDLE CELL</button></div>' : '';
+          const cell = id === 'safe-cell' ? '<div class="mc-acts"><button class="bb sm" data-cell-stop="' + esc(String(a.id)) + '">PARAR CÉLULA EN REPOSO</button></div>' : '';
           // CAN REACH — the ladder, safest first, each chip wearing its own reach meter so the ordering is
           // legible without reading five labels. THIS COMPUTER arms before it applies (see wireCrew).
           const reachChips = EXECUTION_PROFILES.map(x =>
@@ -9362,7 +9362,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             if (!arms) { epDisarm(); sfx('click'); apply(); return; }
             if (epArmed === b) { epDisarm(); sfx('bad'); apply(); return; }
             epDisarm(); epArmed = b; b.classList.add('armed'); b.dataset.armed = '1';
-            b.textContent = 'SURE? IT COULD READ ANY FILE HERE'; sfx('bad');
+            b.textContent = '¿SEGURO? PODRÍA LEER CUALQUIER ARCHIVO DE AQUÍ'; sfx('bad');
             setTimeout(() => { if (epArmed === b) epDisarm(); }, 4000);
           });
         });
@@ -9423,30 +9423,30 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // so the switch that is outranking every crew row is on screen next to the rows it outranks.
         const advFold = bypassWrap.closest('details');
         if (advFold && snap.loaded && (snap.masterBypass || snap.envFullAccess)) advFold.open = true;
-        if (!snap.loaded) { bypassWrap.innerHTML = '<p class="perm-m-desc">The bypass switch is unavailable until the local permission service confirms it.</p>'; return; }
+        if (!snap.loaded) { bypassWrap.innerHTML = '<p class="perm-m-desc">El interruptor de bypass no está disponible hasta que el servicio de permisos local lo confirme.</p>'; return; }
         // the card: title + live state chip · one description paragraph · the control on its OWN line ·
         // a hairline-separated floor note. The button never sits inside the prose (it read as part of
         // the sentence), and the state is a chip so ON/OFF is legible without reading the paragraph.
-        const floorNote = 'When ON, this is host-wide authority: protected files, arbitrary commands, visible apps, and real mouse &amp; screen control are in scope.';
-        const head = (chip, chipCls) => '<div class="perm-m-head"><span class="perm-m-title">FULL POWER OVERRIDE</span>' +
+        const floorNote = 'Cuando está ON, es autoridad de todo el host: archivos protegidos, comandos arbitrarios, apps visibles y control real de ratón y pantalla entran en juego.';
+        const head = (chip, chipCls) => '<div class="perm-m-head"><span class="perm-m-title">ANULACIÓN DE PODER TOTAL</span>' +
           '<span class="perm-m-chip' + (chipCls ? ' ' + chipCls : '') + '">' + chip + '</span></div>';
-        const errLine = bypassErr ? '<p class="perm-m-err">⚠ ' + esc(bypassErr) + ' — the switch is unchanged.</p>' : '';
+        const errLine = bypassErr ? '<p class="perm-m-err">⚠ ' + esc(bypassErr) + ' — el interruptor no cambió.</p>' : '';
         if (snap.envFullAccess) {
-          bypassWrap.innerHTML = head('ON — FORCED BY ENVIRONMENT', 'on') +
-            '<p class="perm-m-desc">Forced ON by the <code>SKYNET_FULL_ACCESS</code> environment variable. Remove it and restart the station to hand control back to this switch.</p>' +
+          bypassWrap.innerHTML = head('ON — FORZADO POR EL ENTORNO', 'on') +
+            '<p class="perm-m-desc">Forzado a ON por la variable de entorno <code>SKYNET_FULL_ACCESS</code>. Quítala y reinicia la estación para devolver el control a este interruptor.</p>' +
             '<p class="perm-m-floor">' + floorNote + '</p>';
           return;
         }
         bypassWrap.innerHTML = snap.masterBypass
           ? (head('ON', 'on') +
-             '<p class="perm-m-desc">Every agent and surface receives Full Power over this local computer: all available tools, host paths, arbitrary commands, visible apps, and real screen/input control. Survives restarts until you turn it off.</p>' +
+             '<p class="perm-m-desc">Cada agente y superficie recibe Poder Total sobre este ordenador local: todas las herramientas disponibles, rutas del host, comandos arbitrarios, apps visibles y control real de pantalla/entrada. Sobrevive a reinicios hasta que lo apagues.</p>' +
              errLine +
-             '<div class="perm-m-act"><button class="bb sm" id="perm-bypass-off">✕ TURN OFF</button></div>' +
+             '<div class="perm-m-act"><button class="bb sm" id="perm-bypass-off">✕ APAGAR</button></div>' +
              '<p class="perm-m-floor">' + floorNote + '</p>')
           : (head('OFF', '') +
-             '<p class="perm-m-desc">One switch grants every agent Full Power over this local computer. Turn it on only when you want host-wide action without prompts.</p>' +
+             '<p class="perm-m-desc">Un interruptor concede a cada agente Poder Total sobre este ordenador local. Actívalo solo cuando quieras acción a nivel de host sin preguntas.</p>' +
              errLine +
-             '<div class="perm-m-act"><button class="bb sm danger" id="perm-bypass-on">TURN ON</button></div>' +
+             '<div class="perm-m-act"><button class="bb sm danger" id="perm-bypass-on">ENCENDER</button></div>' +
              '<p class="perm-m-floor">' + floorNote + '</p>');
         // A flip is in flight until the server answers: disable the button so a double-press can't post
         // twice, and record the outcome AT the card. setBypass never throws (the store catches), but a
@@ -9458,17 +9458,17 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             repaintPerm();
             if (!bypassErr) notify(okMsg, okCls);
           }).catch(e => {
-            bypassErr = String((e && e.message) || 'the bypass switch could not be reached');
+            bypassErr = String((e && e.message) || 'no se pudo alcanzar el interruptor de bypass');
             repaintPerm();
           });
         };
         const onBtn = bypassWrap.querySelector('#perm-bypass-on'), offBtn = bypassWrap.querySelector('#perm-bypass-off');
         if (onBtn) ArmConfirm.wire(onBtn, {
-          armedLabel: 'SURE? EVERYTHING, EVERYWHERE, NO PROMPTS', restLabel: 'TURN ON', timeoutMs: 4000,
+          armedLabel: '¿SEGURO? TODO, EN TODAS PARTES, SIN PREGUNTAS', restLabel: 'ENCENDER', timeoutMs: 4000,
           onArm: () => sfx('bad'),
-          onConfirm: () => { sfx('bad'); flip(onBtn, true, 'FULL POWER ON — every agent has host-wide authority until you turn it off', 'warn'); }
+          onConfirm: () => { sfx('bad'); flip(onBtn, true, 'PODER TOTAL ON — cada agente tiene autoridad de todo el host hasta que lo apagues', 'warn'); }
         });
-        if (offBtn) offBtn.addEventListener('click', () => { sfx('click'); flip(offBtn, false, 'FULL POWER off — approvals and reach profiles apply again', 'good'); });
+        if (offBtn) offBtn.addEventListener('click', () => { sfx('click'); flip(offBtn, false, 'PODER TOTAL OFF — vuelven a aplicar aprobaciones y perfiles de alcance', 'good'); });
       };
       const repaintPerm = () => {
         const snap = PermissionsStore.snapshot();
@@ -9589,7 +9589,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   }
   function goToNotif(go) {
     if (!go) return false;
-    if (go.ws && typeof Workstreams !== 'undefined' && Workstreams.get && !Workstreams.get(go.ws)) { toast('that session was deleted', 'warn'); return false; }   // the bell stays: it opened nothing
+    if (go.ws && typeof Workstreams !== 'undefined' && Workstreams.get && !Workstreams.get(go.ws)) { toast('esa sesión fue eliminada', 'warn'); return false; }   // the bell stays: it opened nothing
     if (go.ws && typeof App !== 'undefined' && App.openWorkstream) { App.openWorkstream(go.ws); if (open.notifs) workConversation('notifs'); return true; }   // the session is the point: step the bell aside, keep a way back
     if (go.term) { openTerm(go.term, go.section); return true; }
     return false;
@@ -9761,7 +9761,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   }
   function buildUpdates(body) {
     if (typeof Updates !== 'undefined' && Updates.render) Updates.render(body);
-    else body.innerHTML = '<div class="fb-empty">UPDATE CENTER UNAVAILABLE.<br><span>Restart the desktop app and try again.</span></div>';
+    else body.innerHTML = '<div class="fb-empty">CENTRO DE ACTUALIZACIONES NO DISPONIBLE.<br><span>Reinicia la app de escritorio e inténtalo de nuevo.</span></div>';
   }
   let notifView = 'all';
   // Entries from before 10-02 carry no kind: they were the toast-shaped confirmations the bell no longer keeps.
@@ -9820,9 +9820,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       /* a stored wait under the NEEDS YOU heading (no live list on this page) is tagged NEEDS YOU. In the history every wait
          is over: answered / its run ended (Handled), or a question you went and read without answering — its conversation
          opened, or dismissed with no conversation left — which says what it was: the agent asked you */
-      const tag = n.kind === 'needs' ? (!n.done ? 'NEEDS YOU' : n.opened ? 'Asked you' : 'Handled') : (n.kind === 'result' ? 'Finished' : 'Alert');
+      const tag = n.kind === 'needs' ? (!n.done ? 'NECESITA DE TI' : n.opened ? 'Te preguntó' : 'Atendida') : (n.kind === 'result' ? 'Terminada' : 'Alerta');
       return '<div class="nf ' + esc(n.cls || '') + ' sev-' + sev + ' nf-k-' + esc(n.kind || 'alert') + (n.read ? ' read' : '') + (door ? ' nf-door' : '') + '" style="--ci:' + i + '" data-nid="' + esc(n.id) + '"' +
-        (door ? ' role="button" tabindex="0" title="Open where this happened"' : '') + '>' +
+        (door ? ' role="button" tabindex="0" title="Abrir donde ocurrió esto"' : '') + '>' +
         '<span class="nf-sev" aria-hidden="true">' + esc(SEV_GLYPH[sev]) + '</span>' +
         '<div class="nf-copy"><div class="nf-meta"><span class="nf-kind">' + tag + '</span><span class="nf-ts">' + notifStamp(n.t) + '</span>' +
         (!n.read ? '<span class="nf-unread">New</span>' : '') + '</div><span class="nf-txt">' + esc(n.txt) + '</span>' +
@@ -9837,25 +9837,25 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // (a stored wait whose conversation is gone has no door: no OPEN, only its Dismiss)
       const dis = NY.canDismiss(it), sev = LIVE_SEV[it.kind] || 'warn', door = !it.noDoor;
       const line = (it.who ? it.who + ' ' : '') + NY.lineOf(it);
-      return '<div class="nf ' + sev + ' sev-' + sev + ' nf-k-needs' + (door ? ' nf-door' : '') + ' nf-live" style="--ci:' + i + '" data-ny-key="' + esc(it.key) + '"' + (door ? ' role="button" tabindex="0" data-tip="Open where this waits"' : '') + '>' +
+      return '<div class="nf ' + sev + ' sev-' + sev + ' nf-k-needs' + (door ? ' nf-door' : '') + ' nf-live" style="--ci:' + i + '" data-ny-key="' + esc(it.key) + '"' + (door ? ' role="button" tabindex="0" data-tip="Abrir donde esto espera"' : '') + '>' +
         '<span class="nf-sev" aria-hidden="true">' + esc(SEV_GLYPH[sev]) + '</span>' +
         // the tag says WHERE it waits (every row here is under the NEEDS YOU heading: repeating that told nothing), and the
         // line is who + what. A wait with no time (extensions: the sidecar's pending list carries none) shows no stamp.
         '<div class="nf-copy"><div class="nf-meta"><span class="nf-kind">in ' + esc(it.where) + '</span>' + (it.since ? '<span class="nf-ts">' + notifStamp(it.since) + '</span>' : '') + '</div>' +
         '<span class="nf-txt">' + esc(line) + '</span>' + (door ? '<span class="nf-go">OPEN ▸</span>' : '') + '</div>' +
-        (dis ? '<button class="nf-x" data-ny-dismiss="' + esc(it.key) + '" data-tip="Dismiss: it leaves NEEDS YOU here and on the rail" aria-label="Dismiss ' + esc(line) + '">✕</button>' : '') + '</div>';
+        (dis ? '<button class="nf-x" data-ny-dismiss="' + esc(it.key) + '" data-tip="Descartar: sale de NECESITA DE TI aquí y del riel" aria-label="Dismiss ' + esc(line) + '">✕</button>' : '') + '</div>';
     };
     const needsRows = NY ? live.map(liveRow) : waiting.map(row);
     const needsHtml = needsRows.length ? '<section class="nf-needs"><h4 class="ms-h">TE NECESITA <span class="dim">— ' + needsRows.length + ' waiting</span></h4><div class="nf-list nf-list-needs">' + needsRows.join('') + '</div></section>' : '';
-    body.innerHTML = '<header class="utility-head"><h2>Notifications</h2><p>What needs you, and what finished or went wrong while you were elsewhere. Click one to go there.</p></header>' +
+    body.innerHTML = '<header class="utility-head"><h2>Notificaciones</h2><p>Lo que necesita de ti, y lo que terminó o falló mientras estabas en otra parte. Haz clic en una para ir allí.</p></header>' +
       needsHtml +
-      '<div class="nf-toolbar"><div class="utility-tabs" role="group" aria-label="Show notifications">' +
+      '<div class="nf-toolbar"><div class="utility-tabs" role="group" aria-label="Mostrar notificaciones">' +
       // the counts include NEEDS YOU (shown above, in both views): "New" is the bell badge's own number, never fewer than the
       // rows on screen (self-driving lane 5 — it read "All · 0" with waiting rows listed, and New disagreed with the bell)
-      '<button type="button" data-nf-view="all" aria-pressed="' + (notifView === 'all') + '">All · ' + (rest.length + nWaiting) + '</button>' +
-      '<button type="button" data-nf-view="unread" aria-pressed="' + (notifView === 'unread') + '">New · ' + (unread + nWaiting) + '</button></div>' +
-      '<button class="bb sm" id="nf-clear"' + (!unread ? ' disabled' : '') + '>MARK ALL READ</button></div>' +
-      '<div class="nf-list">' + (rows.length ? rows.map(row).join('') : '<div class="empty-state"><span class="es-glyph">▮</span><b>' + (notifView === 'unread' ? 'You’re all caught up' : 'Nothing yet') + '</b><span>' + (notifView === 'unread' ? 'Switch to All to see earlier ones.' : 'When an agent needs your OK, or work finishes while you’re elsewhere, it lands here.') + '</span></div>') + '</div>';
+      '<button type="button" data-nf-view="all" aria-pressed="' + (notifView === 'all') + '">Todas · ' + (rest.length + nWaiting) + '</button>' +
+      '<button type="button" data-nf-view="unread" aria-pressed="' + (notifView === 'unread') + '">Nuevas · ' + (unread + nWaiting) + '</button></div>' +
+      '<button class="bb sm" id="nf-clear"' + (!unread ? ' disabled' : '') + '>MARCAR TODAS LEÍDAS</button></div>' +
+      '<div class="nf-list">' + (rows.length ? rows.map(row).join('') : '<div class="empty-state"><span class="es-glyph">▮</span><b>' + (notifView === 'unread' ? 'Estás al día' : 'Aún no hay nada') + '</b><span>' + (notifView === 'unread' ? 'Pásate a Todas para ver las anteriores.' : 'Cuando un agente necesite tu OK, o el trabajo termine mientras estás en otra parte, aparece aquí.') + '</span></div>') + '</div>';
     body.querySelectorAll('[data-nf-view]').forEach(b => b.addEventListener('click', () => {
       notifView = b.dataset.nfView; buildNotifs(body);
       const selected = body.querySelector('[data-nf-view="' + notifView + '"]'); if (selected) selected.focus();
@@ -9980,16 +9980,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // not just the raw token fraction. The projected wording says plainly that it is an estimate of the NEXT
     // request rather than a reading of one that happened — the app must never let a derived number read as
     // a measured one.
-    const tip = 'MEMORY OF THIS CHAT — ' + (s.known
-      ? (s.label + ' (' + s.pctLabel + ' full)' +
+    const tip = 'MEMORIA DE ESTE CHAT — ' + (s.known
+      ? (s.label + ' (' + s.pctLabel + ' llena)' +
          (s.projected
-           ? ', estimated for this chat’s next message from a real measurement of this model. It becomes exact the moment the agent replies.'
-           : ', measured on this chat’s last request.') +
+           ? ', estimado para el próximo mensaje de este chat a partir de una medición real de este modelo. Se vuelve exacto en el momento en que el agente responde.'
+           : ', medido en la última solicitud de este chat.') +
          (tier
-           ? ' The model can hold ' + CtxGauge.fmtTokens(cs.limit) + ', pero cobra un precio más alto para un prompt de más de ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, así que una ejecución trabaja en ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
+           ? ' El modelo puede sostener ' + CtxGauge.fmtTokens(cs.limit) + ', pero cobra un precio más alto para un prompt de más de ' + CtxGauge.fmtTokens(cs.runWindow) + ' tokens, así que una ejecución trabaja en ' + CtxGauge.fmtTokens(cs.runWindow) + '.'
            : '') +
-         ' How much of this conversation a run can still hold; when it nears full, older turns are folded into a summary automatically.')
-      : (s.limit ? 'measuring… send a message and this fills in' : 'measuring this model’s memory size…'));
+         ' Cuánto de esta conversación puede seguir sosteniendo una ejecución; cuando se acerca al lleno, los turnos antiguos se plegan en un resumen automáticamente.')
+      : (s.limit ? 'midiendo… envía un mensaje y esto se completa' : 'midiendo el tamaño de memoria de este modelo…'));
     // This runs every second. Writing `title` here would recreate the OS tooltip after Tooltip.adopt()
     // removed it, while the pointer was already resting on the gauge (no second pointerover to re-adopt).
     g.setAttribute('data-tip', tip);
@@ -10101,7 +10101,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const banner = document.createElement('div'); banner.id = 'save-preserved-notice'; banner.setAttribute('role', 'alert');
     banner.style.cssText = 'position:fixed;top:8px;left:10%;right:10%;z-index:100000;padding:16px;background:#281e12;color:#fff;border:2px solid #e8b35c';
     const label = document.createElement('p');
-    label.textContent = 'A window’s save preserved on the station (' + when + ') holds work in ' + n + (n === 1 ? ' session' : ' sessions') + ' that this station doesn’t have. Restoring brings it into the station; nothing in the station is removed, and the station file is copied aside first.';
+    label.textContent = 'El guardado de una ventana conservado en la estación (' + when + ') contiene trabajo de ' + n + (n === 1 ? ' sesión' : ' sesiones') + ' que esta estación no tiene. Restaurarlo lo trae a la estación; nada se elimina de la estación, y el archivo de la estación se copia a un lado antes.';
     const restore = document.createElement('button'); restore.className = 'bb'; restore.textContent = 'Restore ' + n + (n === 1 ? ' session' : ' sessions');
     restore.onclick = async () => { restore.disabled = true; try { await CloudSave.restoreConflict(offer.file); } catch (e) { label.textContent = e.message; restore.disabled = false; } };
     const later = document.createElement('button'); later.className = 'bb'; later.textContent = 'Not now'; later.onclick = () => { dismissPreserved(offer); banner.remove(); };
@@ -10144,14 +10144,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const banner = document.createElement('div'); banner.id = 'save-conflict-notice'; banner.setAttribute('role', 'alert');
         banner.style.cssText = 'position:fixed;top:8px;left:10%;right:10%;z-index:100000;padding:16px;background:#281e12;color:#fff;border:2px solid #e8b35c';
         const label = document.createElement('p'); label.textContent = d.title;
-        const exportButton = document.createElement('button'); exportButton.className = 'bb'; exportButton.textContent = 'Download this window’s save';
+        const exportButton = document.createElement('button'); exportButton.className = 'bb'; exportButton.textContent = 'Descargar el guardado de esta ventana';
         exportButton.onclick = () => { const blob = new Blob([JSON.stringify(CloudSave.localSnapshot() || {})], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'starnet-conflicting-save.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
         const reload = document.createElement('button'); reload.className = 'bb'; reload.textContent = reset ? 'Abrir la estación nueva' : 'Recargar la estación actual'; reload.onclick = async () => { try { await CloudSave.reloadCurrent(); } catch (e) { label.textContent = e.message; } };
         // the preserved copy's sessions go INTO the station (added, never removing any), then this window reloads onto it
         // never after a RESET, and never for erased work: the station was erased on purpose, and this copy is from before it
         // (the station refuses that restore, so the key is never shown for it)
         const file = h.conflict.recovery;
-        const restore = document.createElement('button'); restore.className = 'bb'; restore.textContent = 'Restore this window’s sessions';
+        const restore = document.createElement('button'); restore.className = 'bb'; restore.textContent = 'Restaurar las sesiones de esta ventana';
         restore.onclick = async () => { restore.disabled = true; try { await CloudSave.restoreConflict(file); } catch (e) { label.textContent = e.message; restore.disabled = false; } };
         banner.append(label); if (file && !reset && !erased && CloudSave.restoreConflict) banner.append(restore); banner.append(exportButton, reload); document.body.append(banner);
       }
@@ -10161,7 +10161,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // EL-11 FIX 1: the sidecar is REFUSING writes — this workspace was written by a NEWER StarNet. Persistent
       // red dot + a one-time visible line; never lets a refused write read as a healthy backup.
       d.classList.add('degraded');
-      d.title = 'this station’s data was written by a newer StarNet — update the app. Until then, changes are NOT being backed up.';
+      d.title = 'los datos de esta estación fueron escritos por un StarNet más nuevo — actualiza la app. Hasta entonces, los cambios NO se están respaldando.';
       if (!degradedNotified) {
         degradedNotified = true;
         try { notify('Los datos de esta estación los escribió un StarNet más nuevo — actualiza la app. Hasta que lo hagas, tus cambios NO están respaldados.', 'bad'); } catch (_) {}
@@ -10185,12 +10185,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     } else if (h && h.stale) {
       d.classList.add('stale');
       const since = h.lastPushOkAt ? new Date(h.lastPushOkAt).toLocaleString() : 'never';
-      d.title = 'world is saved locally; the durable backup copy hasn’t synced since ' + since;
+      d.title = 'el mundo se guarda en local; la copia de respaldo duradera no se sincroniza desde ' + since;
     } else if (h && h.warn) {
       // EL-11 FIX 4: a live streak of failed pushes (3+) warns IMMEDIATELY — no 60-minute blind window while
       // POST /api/save errors (disk full / EPERM / refused). Same amber vocabulary as stale, advising title.
       d.classList.add('stale');
-      d.title = 'saves are failing — check disk space / folder permissions (' + (h.consecutiveFailures || 0) + ' failed attempts in a row). Local play continues; the durable backup is not confirming writes.';
+      d.title = 'los guardados están fallando — revisa el espacio en disco / permisos de la carpeta (' + (h.consecutiveFailures || 0) + ' intentos fallidos seguidos). El juego local continúa; el respaldo duradero no está confirmando las escrituras.';
     } else {
       d.title = 'autosave';
     }
@@ -10260,7 +10260,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function buildCommander(body) {
     const ds = CDS();
     const sum = ds ? ds.summary() : null;
-    if (!ds || !sum) { body.innerHTML = '<p class="dim">The Commander Dossier warms up once your agent is awake.</p>'; return; }
+    if (!ds || !sum) { body.innerHTML = '<p class="dim">El Expediente del Comandante se calienta cuando tu agente despierta.</p>'; return; }
     const dims = ds.dims();
     body.innerHTML = '';
 
@@ -10284,7 +10284,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div class="cd-overview-copy"><b>A shared profile for your crew</b><p>Add what matters, correct anything wrong, and remove what you no longer want remembered.</p></div>' +
       '<div class="cd-familiarity"><span>Understanding</span><span class="cd-fam"><span class="cd-fk"><span class="cd-ff" style="width:' + pct + '%;"></span></span><span class="cd-fpct">' + (sum.known.length ? pct + '%' : 'Learning') + '</span></span>' +
       '<small>' + sum.known.length + ' of ' + dims.length + ' topics have details</small></div>');
-    head.querySelector('.cd-familiarity').title = 'Based on the source and recency of saved details, not just the number of topics filled in.';
+    head.querySelector('.cd-familiarity').title = 'Basado en el origen y la recencia de los detalles guardados, no solo en el número de temas rellenados.';
 
     // the active "get to know you" trigger — runs the intake interview in COMMS, folding answers into the
     // dossier through the same upsert path the cards use. Gated on a free agent + not-already-running.
@@ -10321,7 +10321,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       sec.appendChild(mkEl('div', 'cd-sech', '<span class="cd-dim">' + esc(d.label) + '</span><span class="cd-dn">' + (bs.length ? bs.length + (bs.length === 1 ? ' detail' : ' details') : '') + '</span>'));
       const addRow = cdAddRow(d.key);
       if (!bs.length) {
-        const e = mkEl('div', 'cd-empty'); e.textContent = 'Nothing saved yet. Add a detail or choose a starting point.'; sec.appendChild(e);
+        const e = mkEl('div', 'cd-empty'); e.textContent = 'Aún no hay nada guardado. Añade un detalle o elige un punto de partida.'; sec.appendChild(e);
         // an empty dimension shows its starter chips INLINE (tap → the editor opens prefilled) so filling
         // the dossier in is one tap + a finished sentence, not a blank textarea behind a "+ add".
         // (_open hides this row on hand-off — the editor renders its own chips.)
@@ -10384,7 +10384,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (block) {
       const meter = mkEl('span', 'cd-brief-meter');
       meter.textContent = block.length + ' / ' + cap + ' chars';
-      meter.title = 'the briefing composes from your beliefs below, capped at ' + cap + ' characters — past the cap, every known dimension keeps a fair share and the rest is trimmed';
+      meter.title = 'el briefing se compone de tus creencias de abajo, limitado a ' + cap + ' caracteres — pasados los límites, cada dimensión conocida conserva una parte equitativa y el resto se recorta';
       head.appendChild(meter);
     }
     wrap.appendChild(head);
@@ -10400,10 +10400,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // chips still state where the block WILL flow, phrased as wiring, since the paths exist regardless.
     const foot = mkEl('div', 'cd-brief-foot');
     const flows = mkEl('div', 'cd-flows',
-      '<span class="cd-flow" title="composeSystemPrompt folds this block into the system prompt of every agent on the station — including a freshly-summoned one">▸ every agent’s briefing</span>' +
-      '<span class="cd-flow" title="mirrored to the sidecar so autonomous scheduled runs (routines, autonomy) that compose their own persona still know who they serve">▸ autonomous &amp; scheduled runs</span>' +
-      '<span class="cd-flow" title="the pitch engine and recruitment matcher read your goals, pain points and ambitions to propose work and crew">▸ pitches &amp; recruitment</span>' +
-      '<span class="cd-flow" title="the quest board turns still-blank dimensions into get-to-know-you quests">▸ quest board</span>');
+      '<span class="cd-flow" title="composeSystemPrompt integra este bloque en el prompt de sistema de cada agente de la estación — incluso uno recién invocado">▸ el briefing de cada agente</span>' +
+      '<span class="cd-flow" title="espejado al sidecar para que las ejecuciones autónomas programadas (rutinas, autonomía) que componen su propia persona sepan a quién sirven">▸ ejecuciones autónomas y programadas</span>' +
+      '<span class="cd-flow" title="el motor de propuestas y el comparador de reclutamiento leen tus objetivos, puntos dolorosos y ambiciones para proponer trabajo y tripulación">▸ propuestas y reclutamiento</span>' +
+      '<span class="cd-flow" title="el tablero de aventuras convierte las dimensiones aún vacías en aventuras para conocerte">▸ tablero de aventuras</span>');
     foot.appendChild(flows);
     if (block) {
       const copy = mkEl('button', 'consent-btn cd-brief-copy'); copy.textContent = 'copy briefing';
@@ -10434,7 +10434,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     row.appendChild(lbl);
     if (st.stopped) {
       const rb = mkEl('button', 'consent-btn cd-reenable'); rb.textContent = 'ask me about this';
-      rb.title = 'turn this question back on — the station may ask about your ' + String(d.label).toLowerCase() + ' again';
+      rb.title = 'reabrir esta pregunta — la estación puede volver a preguntar por tu ' + String(d.label).toLowerCase();
       rb.onclick = () => { CuriosityStore.reEnable(d.key); sfx('click'); notify('the station will ask about your ' + String(d.label).toLowerCase() + ' again', 'good'); rerender('commander'); };
       row.appendChild(rb);
     }
@@ -10447,13 +10447,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const metaRow = mkEl('div', 'cd-meta');
     // GROWTH Tier 1: a STUDY-sourced belief (the station learned it from real work, not the Commander authoring it)
     // gets a distinct "observed" tag so the glass box stays honest about provenance.
-    if (b.source === 'study') { const tag = mkEl('span', 'cd-observed-tag'); tag.textContent = 'observed'; tag.title = 'the station proposed this from your work; you kept it'; metaRow.appendChild(tag); }
+    if (b.source === 'study') { const tag = mkEl('span', 'cd-observed-tag'); tag.textContent = 'observado'; tag.title = 'la estación propuso esto a partir de tu trabajo; tú lo conservaste'; metaRow.appendChild(tag); }
     // BRIEFING HONESTY: the composed block trims past its char cap (fair-share per dimension), so a belief can
     // exist in the dossier yet be shortened/dropped from the prompt. An exact-substring check against the LIVE
     // block flags that state — otherwise the panel implies every belief reaches the agents, which can be false.
     if (typeof block === 'string' && block && block.indexOf(b.text) < 0) {
       const tt = mkEl('span', 'cd-trim-tag'); tt.textContent = 'trimmed from briefing';
-      tt.title = 'the briefing hit its character cap, so this belief was shortened or dropped from what agents are told — pin or shorten what matters most';
+      tt.title = 'el briefing alcanzó su límite de caracteres, así que esta creencia se recortó o se descartó de lo que se cuenta a los agentes — fija o acorta lo que más importa';
       metaRow.appendChild(tt);
     }
     const meta = mkEl('span', 'cd-src');
@@ -10482,7 +10482,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   function cdCount(ta) {
     const max = cdTextMax();
     const c = mkEl('span', 'cd-brief-meter cd-count');
-    c.title = 'a detail holds up to ' + max + ' characters — add the rest as another detail';
+    c.title = 'un detalle admite hasta ' + max + ' caracteres — añade el resto como otro detalle';
     c.sync = () => { const n = ta.value.length; c.textContent = n + ' / ' + max + ' chars'; c.classList.toggle('warn', n >= max); };
     ta.addEventListener('input', c.sync); c.sync();
     return c;
@@ -10522,7 +10522,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const row = mkEl('div', 'cd-starters');
     for (const p of ps) {
       const b = mkEl('button', 'cd-starter'); b.textContent = p.c;
-      b.title = 'start with: “' + p.s + '…” — you finish the sentence';
+      b.title = 'empieza con: “' + p.s + '…” — tú terminas la frase';
       b.onclick = () => { sfx('click'); onPick(p.s); };
       row.appendChild(b);
     }
@@ -10533,13 +10533,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // station directly. row._open(starter) lets an empty dimension's inline chips jump straight into the editor.
   function cdAddRow(dim) {
     const row = mkEl('div', 'cd-add');
-    const btn = mkEl('button', 'cd-addbtn'); btn.textContent = '+ Add detail'; btn.setAttribute('aria-label', 'Add detail: ' + dim.replace(/_/g, ' ')); row.appendChild(btn);
+    const btn = mkEl('button', 'cd-addbtn'); btn.textContent = '+ Añadir detalle'; btn.setAttribute('aria-label', 'Añadir detalle: ' + dim.replace(/_/g, ' ')); row.appendChild(btn);
     const open = starter => {
       // hide a sibling inline starter row (empty-dim state) — the editor renders its own chips, and two
       // identical rows read as a bug. Covers BOTH entries: an inline chip tap and the plain "+ add".
       try { const sib = row.parentElement && row.parentElement.querySelector(':scope > .cd-starters'); if (sib) sib.style.display = 'none'; } catch (_) {}
       row.innerHTML = '';
-      const ta = mkEl('textarea', 'cd-edit'); ta.placeholder = 'What should your agents know?'; ta.spellcheck = false; ta.maxLength = cdTextMax(); ta.setAttribute('aria-label', 'New ' + dim.replace(/_/g, ' ') + ' detail');
+      const ta = mkEl('textarea', 'cd-edit'); ta.placeholder = '¿Qué deben saber tus agentes?'; ta.spellcheck = false; ta.maxLength = cdTextMax(); ta.setAttribute('aria-label', 'Nuevo detalle de ' + dim.replace(/_/g, ' '));
       const count = cdCount(ta);
       const chips = cdStarterChips(dim, s => { ta.value = s; count.sync(); ta.focus(); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (_) {} });
       if (chips) row.appendChild(chips);
@@ -10609,7 +10609,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
      work happens in a conversation with an agent, so that is where the button goes: its OWN session, opened
      on the quest, with the ask already typed. The other two destinations were already right and are
      unchanged: a dossier question is answered in the dossier, a floor gap is fixed in BUILD MODE. */
-  const GO_LABEL = { commander: '▶ ANSWER IT', session: '▶ START QUEST', refit: '▶ OPEN BUILD MODE', recruit: '▶ OPEN RECRUITMENT' };
+  const GO_LABEL = { commander: '▶ RESPÓNDELE', session: '▶ INICIAR AVENTURA', refit: '▶ ABRIR MODO CONSTRUCCIÓN', recruit: '▶ ABRIR RECLUTAMIENTO' };
   /* A one-word badge naming WHICH KIND of thing a card is. The log mixes six genuinely different sources —
      a personalized ledger quest, a goal-arc step, a capability gap on your floor, an accepted build, a
      recurring maintenance cause, a dossier question, a milestone — and rendering them identically is what
@@ -10724,7 +10724,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const jump = (view, label) => '<button class="consent-btn q-brief-view" data-view="' + view + '">' + label + '</button>';
     if (!goal) {
       const reached = brief && brief.completedGoal;
-      return '<section class="q-return-card" aria-label="Your next move"><span class="q-ns-eyebrow">' + (reached ? 'A CHAPTER TO KEEP' : 'YOUR NEXT MOVE') + '</span>'
+      return '<section class="q-return-card" aria-label="Tu siguiente movimiento"><span class="q-ns-eyebrow">' + (reached ? 'UN CAPÍTULO PARA GUARDAR' : 'TU SIGUIENTE MOVIMIENTO') + '</span>'
         + '<h3>' + (reached ? esc(reached.text) : 'Start with something that matters to you') + '</h3>'
         + (reached ? '<p>You confirmed this outcome.</p><details class="q-return-proof"><summary>Revisit the result</summary><p>' + esc(reached.outcomeEvidence || '') + '</p></details>'
           : '<p>Try an idea, make something, or take a recurring job off your plate. You can choose a longer-term goal when it helps.</p>')
@@ -10738,11 +10738,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       + (latest ? '<p>' + esc(latest.evidence || 'No detail was saved with this step.') + '</p>'
         + '<span class="sub dim">' + (latest.source === 'commander' ? 'You reported this action' : 'Trabajo completado registrado') + ' · ' + esc(qrRel(latest.doneAt)) + '</span>' : '<p>This is a step you chose toward ' + esc(goal.text) + '.</p>')
       + (latest ? '<div class="q-return-actions">' + jump('progress', 'VIEW PROGRESS')
-        + (latestWork && latestWork.runId ? '<button class="consent-btn q-step-outputs" data-run="' + esc(latestWork.runId) + '" data-label="' + esc(latest.text) + '">OPEN THIS STEP’S OUTPUTS</button>'
+        + (latestWork && latestWork.runId ? '<button class="consent-btn q-step-outputs" data-run="' + esc(latestWork.runId) + '" data-label="' + esc(latest.text) + '">ABRIR LOS RESULTADOS DE ESTA FASE</button>'
           : latest.source !== 'commander' ? '<button class="consent-btn q-go" data-dest="deliverables">OPEN DELIVERABLES</button>' : '') + '</div>' : '') + '</details>';
     const action = next && !brief.inFlight
-      ? '<button class="consent-btn q-arc-accept" data-gid="' + esc(goal.id) + '" data-mid="' + esc(next.id) + '">START THIS STEP</button>' : '';
-    return '<section class="q-return-card" aria-label="Your next move"><span class="q-ns-eyebrow">YOUR NEXT MOVE · ' + brief.progress.done + ' / ' + brief.progress.total + ' PLANNED STEPS</span>'
+      ? '<button class="consent-btn q-arc-accept" data-gid="' + esc(goal.id) + '" data-mid="' + esc(next.id) + '">INICIAR ESTA FASE</button>' : '';
+    return '<section class="q-return-card" aria-label="Tu siguiente movimiento"><span class="q-ns-eyebrow">TU SIGUIENTE MOVIMIENTO · ' + brief.progress.done + ' / ' + brief.progress.total + ' FASES PLANIFICADAS</span>'
       + '<h3>' + esc(goal.text) + '</h3>'
       + '<p class="q-return-next"><span class="q-ns-eyebrow">' + (next ? (brief.inFlight ? 'WORK ACCEPTED' : 'NEXT') : 'PLAN COMPLETE') + '</span> · '
       + (next ? esc(next.text) : 'Review the actual outcome, or add a step if there is more to do.') + '</p>'
@@ -10866,7 +10866,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         return '<div class="gx-sec q-track-sec"><span class="gx-title">YOUR GOAL</span><span class="gx-tag">GOAL SAVED · PATH PENDING</span></div>'
           + '<div class="q-track q-track-empty q-track-saved">'
           + '<div class="sub"><b class="q-track-goal">' + esc(savedGoal.text) + '</b><br>this goal is saved. plan it into milestones to make the path trackable here.</div>'
-          + '<button class="q-go q-track-setgoal" data-dest="' + dest + '" title="Open where you do this next">' + label + '</button>'
+          + '<button class="q-go q-track-setgoal" data-dest="' + dest + '" title="Abrir donde haces esto a continuación">' + label + '</button>'
           + '</div>';
       }
       /* A FINISHED PATH IS NOT AN EMPTY ONE. Goals.project surfaces nothing for a completed goal (a done arc
@@ -10911,9 +10911,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // the one actionable front, offered ONCE — withheld while its bound build is in flight.
     const next = steps.find(s => s.isNext && s.status !== 'done');
     const accept = (next && !next.inFlight)
-      ? '<button class="consent-btn q-arc-accept q-track-accept" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">▶ START THIS STEP</button><p class="sub dim">Starts work with your crew using your current model and permissions.</p>'
+      ? '<button class="consent-btn q-arc-accept q-track-accept" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">▶ INICIAR ESTA FASE</button><p class="sub dim">Arranca el trabajo con tu tripulación usando tu modelo y permisos actuales.</p>'
         + '<details class="q-life-report"><summary>HICE ESTE PASO</summary><label>¿Qué hiciste?<textarea class="q-step-evidence" maxlength="1000" placeholder="Describe la acción que completaste fuera de StarNet"></textarea></label>'
-        + '<button class="consent-btn q-step-report" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">RECORD MY ACTION</button></details>'
+        + '<button class="consent-btn q-step-report" data-gid="' + esc(next.arcGoalId) + '" data-mid="' + esc(next.milestoneId) + '">REGISTRAR MI ACCIÓN</button></details>'
       : (next && next.inFlight ? '<span class="sub q-track-running">the build for this step is running — finishing it completes the step.</span>' : '');
     const alternatives = steps.filter(s => s.status !== 'done' && !s.isNext);
     const choose = alternatives.length && !(next && next.inFlight)
@@ -10962,12 +10962,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return '<div class="q-life-goal" data-gid="' + esc(goalId) + '">'
       + '<details class="q-life-condition"' + (condition ? '' : ' open') + '><summary>' + (condition ? 'SUCCESS CONDITION: ' + esc(condition) : 'DEFINE WHAT SUCCESS MEANS') + '</summary>'
       + '<label>¿Qué resultado observable significa que alcanzaste esta meta?<textarea class="q-success-condition" maxlength="500" placeholder="Por ejemplo: acepté una oferta de trabajo">' + esc(condition) + '</textarea></label>'
-      + '<button class="consent-btn q-success-save">SAVE SUCCESS CONDITION</button></details>'
+      + '<button class="consent-btn q-success-save">GUARDAR CONDICIÓN DE ÉXITO</button></details>'
       + (registered ? '<details class="q-life-report"><summary>MY GOAL IS ACHIEVED</summary><div class="sub">Confirm only when this is true: ' + esc(condition) + '</div>'
         + '<label>¿Qué pasó?<textarea class="q-goal-evidence" maxlength="1000" placeholder="Describe el resultado y cuándo pasó"></textarea></label>'
         + '<button class="consent-btn q-goal-confirm">CONFIRM MY OUTCOME</button><div class="sub dim">Saved as your report. Completing the plan alone never confirms this outcome.</div></details>' : '')
-      + '<details class="q-life-next"><summary>ADD A NEXT STEP</summary><label>Next action<input class="q-next-step" maxlength="140" placeholder="A concrete action that helps this goal"></label>'
-      + '<button class="consent-btn q-step-add">ADD STEP</button></details></div>';
+      + '<details class="q-life-next"><summary>AÑADIR UNA FASE SIGUIENTE</summary><label>Siguiente acción<input class="q-next-step" maxlength="140" placeholder="Una acción concreta que ayude a este objetivo"></label>'
+      + '<button class="consent-btn q-step-add">AÑADIR FASE</button></details></div>';
   }
   // the celebration read, guarded once so questTrackHtml stays readable (the store may be absent)
   function QSS_CELEBRATING(id) {
@@ -10986,12 +10986,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       const ns = s.northStar;
       const srcTag = ns.source === 'goal' ? 'your goal' : 'inferred';
       const proposed = ns.status === 'proposed';
-      const unconf = proposed ? ' <span class="q-nstag q-unconf" title="the station inferred this — confirm or correct it">unconfirmed</span>' : '';
+      const unconf = proposed ? ' <span class="q-nstag q-unconf" title="la estación infirió esto — confírmalo o corrígelo">sin confirmar</span>' : '';
       // propose-and-confirm: an inferred star is never silently adopted — the Commander confirms (adopt) or
       // corrects (decline → denylisted, re-inferred next cycle). A Commander-set goal needs no verdict.
       const verdictRow = proposed
         ? '<div class="consent-btns q-mt q-ns-verdict">'
-          + '<button class="consent-btn q-ns-yes">That’s it ✓</button>'
+          + '<button class="consent-btn q-ns-yes">Eso es todo ✓</button>'
           + '<button class="consent-btn deny q-ns-no">Not quite</button>'
           + '</div>'
         : '';
@@ -11136,7 +11136,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         + '<span class="gx-tag">' + esc(String(m.current)) + unit + ' / ' + esc(String(m.target)) + unit + '</span></div>'
         + '<div class="sub dim q-metric-goal">' + esc(metricGoalLabel(m)) + '</div>'
         + (p ? '<div class="arc-bar q-bar"><div class="q-bar-fill" style="width:' + p.pct + '%"></div></div>' : '')
-        + '<div class="q-metric-actions"><input class="q-metric-current" type="number" step="any" value="' + esc(String(m.current)) + '" aria-label="Current value for ' + esc(m.label) + '">'
+        + '<div class="q-metric-actions"><input class="q-metric-current" type="number" step="any" value="' + esc(String(m.current)) + '" aria-label="Valor actual de ' + esc(m.label) + '">'
         + '<input class="q-metric-note" type="text" maxlength="240" placeholder="evidence note (optional)" aria-label="Evidence note">'
         + '<button class="consent-btn q-metric-update" data-mid="' + esc(m.id) + '">UPDATE</button>'
         + '<button class="consent-btn deny q-metric-retire" data-mid="' + esc(m.id) + '">RETIRE</button></div></div>';
@@ -11147,7 +11147,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       + (goal && goal.id ? 'Linked to your current focus: ' + esc(goal.text || 'your focused goal') : 'No focused goal. This metric will be tracked independently; choose a focus in Goals to link a new metric.')
       + '</div><div class="q-metric-create">'
       + '<label class="q-metric-name-field">Nombre de la métrica<input class="q-metric-label" maxlength="100" placeholder="Por ejemplo: ingresos mensuales"></label>'
-      + '<label>Starting value<input class="q-metric-baseline" type="number" step="any" placeholder="0"></label><label>Target value<input class="q-metric-target" type="number" step="any" placeholder="100"></label>'
+      + '<label>Valor inicial<input class="q-metric-baseline" type="number" step="any" placeholder="0"></label><label>Valor objetivo<input class="q-metric-target" type="number" step="any" placeholder="100"></label>'
       + '<label>Unidad<input class="q-metric-unit" maxlength="24" placeholder="Por ejemplo: USD"></label><button class="consent-btn q-metric-add">AÑADIR MÉTRICA</button></div></div></details></div></details>';
 
     const domainLabel = d => (typeof Journey !== 'undefined' && Journey.DOMAIN_LABEL && Journey.DOMAIN_LABEL[d]) || String(d || '').toUpperCase();
@@ -11200,16 +11200,16 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     goals.sort((a, b) => rank(a) - rank(b) || (b.updatedAt || 0) - (a.updatedAt || 0));
     const ideaRow = i => '<details class="q-idea q-life-goal" data-iid="' + esc(i.id) + '"><summary>◇ ' + esc(i.text) + '<span class="q-section-note">' + (i.goalId ? 'BECAME A GOAL' : i.archived ? 'SHELVED' : 'EXPLORING') + '</span></summary>'
       + '<label>Possibility<input class="q-idea-title" maxlength="280" value="' + esc(i.text) + '"></label>'
-      + '<label>What would you like to find out?<textarea class="q-idea-question" maxlength="500">' + esc(i.question) + '</textarea></label>'
-      + '<label>What have you learned?<textarea class="q-idea-learning" maxlength="1000">' + esc(i.learning) + '</textarea></label>'
+      + '<label>¿Qué te gustaría averiguar?<textarea class="q-idea-question" maxlength="500">' + esc(i.question) + '</textarea></label>'
+      + '<label>¿Qué has aprendido?<textarea class="q-idea-learning" maxlength="1000">' + esc(i.learning) + '</textarea></label>'
       + '<div class="q-journey-actions"><button class="consent-btn q-idea-save">SAVE NOTES</button><button class="consent-btn q-idea-explore">EXPLORE WITH MY CREW</button>'
-      + (!i.goalId ? '<button class="consent-btn q-idea-promote">MAKE A GOAL</button>' : '')
-      + '<button class="consent-btn deny q-idea-archive">' + (i.archived ? 'RESTORE IDEA' : 'SHELVE IDEA') + '</button></div></details>';
+      + (!i.goalId ? '<button class="consent-btn q-idea-promote">HACERLO UN OBJETIVO</button>' : '')
+      + '<button class="consent-btn deny q-idea-archive">' + (i.archived ? 'RESTAURAR IDEA' : 'APARTAR IDEA') + '</button></div></details>';
     const shelf = '<div class="q-possibilities"><div class="gx-sec"><span class="gx-title">POSSIBILITIES</span><span class="gx-tag">ROOM TO EXPLORE</span></div>'
       + '<p class="sub">An app, a creative project, a quieter week. Keep something here before deciding what it should become.</p>'
       + ideas.filter(i => !i.archived && !i.goalId).map(ideaRow).join('')
       + '<details class="q-life-goal q-idea-new"' + (!ideas.length && !goals.length ? ' open' : '') + '><summary>Capture a possibility</summary>'
-      + '<label>I wonder if…<input class="q-idea-title" maxlength="280" placeholder="I could turn my sketches into a short film"></label>'
+      + '<label>Me pregunto si…<input class="q-idea-title" maxlength="280" placeholder="Podría convertir mis bocetos en un cortometraje"></label>'
       + '<label>Un experimento pequeño<textarea class="q-idea-question" maxlength="500" placeholder="¿Qué podría probar o aprender antes de comprometerme?"></textarea></label>'
       + '<button class="consent-btn q-idea-save">SAVE POSSIBILITY</button></details>'
       + (ideas.some(i => i.archived || i.goalId) ? '<details class="q-shelf-history"><summary>Earlier possibilities</summary>' + ideas.filter(i => i.archived || i.goalId).map(ideaRow).join('') + '</details>' : '') + '</div>';
@@ -11219,40 +11219,40 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const ms = g.milestones || [], done = ms.filter(m => m.status === 'done').length;
         return '<details class="q-direction q-life-goal" data-gid="' + esc(g.id) + '"><summary><span>' + (focus ? '◆ ' : '◇ ') + esc(g.text) + '</span><span class="q-section-note">' + (focus ? 'FOCUS' : esc(g.status.toUpperCase())) + ' · ' + done + '/' + ms.length + ' STEPS</span></summary>'
           + '<p class="sub">Success: ' + esc(g.successCondition || 'Define el resultado que quieres') + '</p>'
-          + (g.status === 'active' && !focus ? '<button class="consent-btn q-goal-focus" data-gid="' + esc(g.id) + '">MAKE THIS MY FOCUS</button>' : '')
-          + '<div class="q-journey-actions"><button class="consent-btn q-goal-review" data-gid="' + esc(g.id) + '">REVIEW WITH MY CREW</button>'
+          + (g.status === 'active' && !focus ? '<button class="consent-btn q-goal-focus" data-gid="' + esc(g.id) + '">HACER ESTE MI ENFOQUE</button>' : '')
+          + '<div class="q-journey-actions"><button class="consent-btn q-goal-review" data-gid="' + esc(g.id) + '">REVISAR CON MI TRIPULACIÓN</button>'
           + (g.status === 'active' ? '<button class="consent-btn q-goal-disposition" data-state="paused">PAUSE</button>' : '<button class="consent-btn q-goal-disposition" data-state="active">RESUME &amp; FOCUS</button>')
-          + (g.status !== 'archived' ? '<button class="consent-btn deny q-goal-disposition" data-state="archived">KEEP FOR LATER</button>' : '') + '</div>'
+          + (g.status !== 'archived' ? '<button class="consent-btn deny q-goal-disposition" data-state="archived">CONSERVAR PARA DESPUÉS</button>' : '') + '</div>'
           + '<details class="q-context-editor"><summary>Why this matters &amp; boundaries</summary><label>Why this matters to me<textarea class="q-goal-motivation" maxlength="500"' + (g.status === 'archived' ? ' disabled' : '') + '>' + esc(g.motivation || '') + '</textarea></label>'
-          + '<label>Time, budget, or boundaries<textarea class="q-goal-constraints" maxlength="500"' + (g.status === 'archived' ? ' disabled' : '') + '>' + esc(g.constraints || '') + '</textarea></label>'
+          + '<label>Tiempo, presupuesto o límites<textarea class="q-goal-constraints" maxlength="500"' + (g.status === 'archived' ? ' disabled' : '') + '>' + esc(g.constraints || '') + '</textarea></label>'
           + (g.status !== 'archived' ? '<button class="consent-btn q-goal-context">SAVE CONTEXT</button>' : '') + '</details>'
           + '<details class="q-plan-editor"><summary>Revise upcoming steps</summary><p class="sub">Completed and accepted work keeps its original objective. Add a new step when that objective changes.</p>'
           + ms.map(m => '<div class="q-revise-row" data-mid="' + esc(m.id) + '"><span class="gx-tag">' + (m.status === 'done' ? 'DONE' : m.questRef ? 'ACCEPTED' : 'PLANNED') + '</span>'
-            + (m.status === 'open' && !m.questRef && g.status !== 'archived' ? '<input class="q-revise-text" maxlength="140" aria-label="Planned step" value="' + esc(m.text) + '"><button class="consent-btn q-step-revise">SAVE STEP</button>' : '<span class="sub">' + esc(m.text) + '</span>') + '</div>').join('') + '</details>'
+            + (m.status === 'open' && !m.questRef && g.status !== 'archived' ? '<input class="q-revise-text" maxlength="140" aria-label="Fase planificada" value="' + esc(m.text) + '"><button class="consent-btn q-step-revise">GUARDAR FASE</button>' : '<span class="sub">' + esc(m.text) + '</span>') + '</div>').join('') + '</details>'
           + '<details class="q-reflection-editor"><summary>Reflexiona o explica un cambio</summary><label>Reflexión o motivo del cambio de dirección<textarea class="q-goal-reflection" maxlength="1000" placeholder="¿Qué funcionó? ¿Qué te sorprendió? ¿Qué debe cambiar?"></textarea></label>'
           + '<button class="consent-btn q-goal-reflect">SAVE REFLECTION</button></details></details>';
       }).join('') + '</div>' : '';
     return '<details class="q-life-goal q-life-manage"' + (goals.length ? '' : ' open') + '><summary>Start a goal</summary>'
       + '<p class="sub">A rough idea is enough. Shape it with StarNet or write your own plan.</p>'
       + '<label>Quiero…<input class="q-new-goal" maxlength="280" placeholder="Aprender a tocar una canción, cambiar de carrera, construir un negocio…"></label>'
-      + '<button class="consent-btn q-goal-suggest">HELP SHAPE MY PLAN</button><p class="sub dim">Uses your current AI model to suggest an editable plan. Saving and starting work are separate actions.</p>'
+      + '<button class="consent-btn q-goal-suggest">AYÚDAME A DAR FORMA A MI PLAN</button><p class="sub dim">Usa tu modelo de IA actual para sugerir un plan editable. Guardar y arrancar el trabajo son acciones separadas.</p>'
       + '<div class="q-plan-feedback" role="status" aria-live="polite"></div><div class="q-plan-proposal"></div>'
-      + '<details class="q-goal-starters"><summary>Or adapt a starting point</summary><div class="q-journey-actions"><button class="consent-btn q-goal-template" data-template="app">BUILD &amp; LAUNCH</button><button class="consent-btn q-goal-template" data-template="automation">RECLAIM MY TIME</button><button class="consent-btn q-goal-template" data-template="creative">MAKE SOMETHING</button></div></details>'
-      + '<button class="consent-btn q-goal-draft-undo" hidden>RESTORE PREVIOUS DRAFT</button>'
+      + '<details class="q-goal-starters"><summary>O adapta un punto de partida</summary><div class="q-journey-actions"><button class="consent-btn q-goal-template" data-template="app">CONSTRUIR Y LANZAR</button><button class="consent-btn q-goal-template" data-template="automation">RECUPERAR MI TIEMPO</button><button class="consent-btn q-goal-template" data-template="creative">CREAR ALGO</button></div></details>'
+      + '<button class="consent-btn q-goal-draft-undo" hidden>RESTAURAR BORRADOR ANTERIOR</button>'
       + '<details class="q-goal-plan-editor"><summary>Your starting plan</summary>'
       + '<label>¿Cómo se ve el éxito?<textarea class="q-new-success" maxlength="500" placeholder="El resultado observable que quieres alcanzar"></textarea></label>'
       + '<label>Primeros pasos (uno por línea, hasta cinco)<textarea class="q-new-steps" placeholder="Empieza con una acción concreta. Puedes ampliar el plan después."></textarea></label>'
       + '<details class="q-goal-optional"><summary>What matters to you (optional)</summary>'
       + '<label>¿Por qué importa? (opcional)<textarea class="q-new-motivation" maxlength="500" placeholder="¿Qué cambiaría esto para ti?"></textarea></label>'
       + '<label>Restricciones (opcional)<input class="q-new-constraints" maxlength="500" placeholder="Dos tardes a la semana; usar herramientas que ya tengo"></label></details>'
-      + '<div class="q-journey-actions"><button class="consent-btn q-goal-create"' + (saving ? ' disabled aria-busy="true"' : '') + '>' + (saving ? 'SAVING YOUR GOAL…' : 'SAVE &amp; FOCUS ON THIS GOAL') + '</button></div></details></details>' + collection + shelf;
+      + '<div class="q-journey-actions"><button class="consent-btn q-goal-create"' + (saving ? ' disabled aria-busy="true"' : '') + '>' + (saving ? 'GUARDANDO TU OBJETIVO…' : 'GUARDAR Y ENFOCAR ESTE OBJETIVO') + '</button></div></details></details>' + collection + shelf;
   }
 
   function journeyChaptersHtml() {
     const goals = typeof GoalStore !== 'undefined' && GoalStore.listGoals ? GoalStore.listGoals().slice().reverse() : [];
     return '<div class="q-chapters"><div class="gx-sec"><span class="gx-title">YOUR JOURNEY ARCHIVE</span><span class="gx-tag">' + goals.length + ' CHAPTERS</span></div>'
       + '<p class="sub">Results, changes of direction, and things you learned. Your history belongs here even when a plan changes.</p>'
-      + (goals.length ? '<label class="q-archive-search-label">Find a chapter<input id="journey-archive-search" class="q-archive-search" type="search" placeholder="Search goals, outcomes, or reflections" aria-describedby="journey-archive-count"></label><p id="journey-archive-count" class="sub dim q-archive-count" role="status" aria-live="polite"></p>' : '')
+      + (goals.length ? '<label class="q-archive-search-label">Buscar un capítulo<input id="journey-archive-search" class="q-archive-search" type="search" placeholder="Buscar objetivos, resultados o reflexiones" aria-describedby="journey-archive-count"></label><p id="journey-archive-count" class="sub dim q-archive-count" role="status" aria-live="polite"></p>' : '')
       + goals.map(g => {
         const events = (g.journal || []).map(e => ({ ...e, label: e.kind }));
         (g.milestones || []).filter(m => m.status === 'done').forEach(m => events.push({ at: m.doneAt, label: m.source === 'commander' ? 'YOU REPORTED A STEP' : 'RECORDED WORK COMPLETION', text: m.text + '\n' + (m.evidence || '') }));
@@ -11262,7 +11262,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
           + '<p class="sub">' + esc(g.successCondition || '') + '</p>'
           + (g.motivation ? '<p class="sub">Why it matters: ' + esc(g.motivation) + '</p>' : '')
           + '<ol class="q-chapter-plan">' + (g.milestones || []).map(m => '<li><span class="gx-tag">' + (m.status === 'done' ? 'RECORDED' : m.questRef ? 'ACCEPTED' : 'PLANNED') + '</span> ' + esc(m.text) + '</li>').join('') + '</ol>'
-          + (g.status === 'active' ? '<button class="consent-btn q-goal-open-plan" data-gid="' + esc(g.id) + '">OPEN THIS PLAN</button>' : '')
+          + (g.status === 'active' ? '<button class="consent-btn q-goal-open-plan" data-gid="' + esc(g.id) + '">ABRIR ESTE PLAN</button>' : '')
           + '<ol class="q-history-line">' + (events.length ? events.map(e => '<li><span class="q-ns-eyebrow">' + esc(e.label.toUpperCase()) + '</span><time>' + esc(e.at ? new Date(e.at).toLocaleDateString() : '') + '</time><p>' + esc(e.text) + '</p></li>').join('') : '<li>The plan is saved. Results and reflections will appear as you work.</li>') + '</ol>'
           + '<button class="consent-btn q-goal-review" data-gid="' + esc(g.id) + '">REFLECT WITH MY CREW</button></details>';
       }).join('')
@@ -11319,7 +11319,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (typeof GoalStore !== 'undefined' && GoalStore.sync) { try { GoalStore.sync(); } catch (_) {} }   // Tier 2: retire drift + reconcile completed milestone work before the fold, so the arc meter is never stale
     if (QSS && QSS.sync) { try { QSS.sync(); } catch (_) {} }   // never render a stale diff — the log always reflects the memory it just folded
     const v = (typeof QuestStore !== 'undefined' && QuestStore.view) ? QuestStore.view() : null;
-    if (!v) { body.innerHTML = '<p class="dim">Quest log unavailable.</p>'; return; }
+    if (!v) { body.innerHTML = '<p class="dim">Registro de aventuras no disponible.</p>'; return; }
     const all = Array.isArray(v.quests) ? v.quests : [];
     const qs = (QSS && QSS.visible) ? QSS.visible(all) : all;   // dismissed = gone forever (degrades to the raw list if the store is absent)
     /* THE GOAL ARC IS RENDERED AS A TRACK, NOT AS CARDS. Its header + milestone steps are pulled out of the
@@ -11372,7 +11372,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // (the recovery path). Done steps show their evidence; later open steps are shown but not actionable.
       if (q.kind === 'arc-step') {
         const accept = (q.status !== 'done' && q.isNext && !q.inFlight)
-          ? '<button class="consent-btn q-arc-accept q-mt" data-gid="' + esc(q.arcGoalId) + '" data-mid="' + esc(q.milestoneId) + '">Start this step</button>'
+          ? '<button class="consent-btn q-arc-accept q-mt" data-gid="' + esc(q.arcGoalId) + '" data-mid="' + esc(q.milestoneId) + '">Iniciar esta fase</button>'
           : '';
         return '<div class="gx-tro arc-step q-indent ' + (q.status === 'done' ? 'on' : 'off') + (glow ? ' q-celebrate' : '') + '" style="--ci:' + (i || 0) + '">'
           + '<div class="q-hd"><span class="gl">' + (q.status === 'done' ? '&#9733;' : '&#9675;') + '</span><span class="nm">' + esc(q.title) + '</span></div>'
@@ -11383,12 +11383,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // grant is on for that agent (else it would queue into a lane the Commander never opened).
       const canQueue = q.status !== 'done' && (q.kind === 'work' || q.kind === 'station-gap') && workshopGrantOn();
       const queueBtn = canQueue
-        ? '<button class="q-queue" data-qid="' + esc(q.id) + '" title="Build this while I’m away — queue it for the sandbox">◈</button>'
+        ? '<button class="q-queue" data-qid="' + esc(q.id) + '" title="Construir esto mientras estoy lejos — encóralo para el sandbox">◈</button>'
         : '';
       // §C — a GO affordance where a real, openable destination exists (never invents a window): dossier asks →
       // the Commander dossier; work/build → the TASK BOARD; a floor gap → BUILD MODE. Absent target → no button.
       const goDest = questGoDest(q);
-      const goBtn = goDest ? '<button class="q-go" data-dest="' + esc(goDest) + '" data-qid="' + esc(q.id) + '" title="Open where you do this next">' + esc(q.executionMode === 'commander' || q.executionMode === 'together' ? '▶ HELP ME PREPARE' : (GO_LABEL[goDest] || 'GO')) + '</button>' : '';
+      const goBtn = goDest ? '<button class="q-go" data-dest="' + esc(goDest) + '" data-qid="' + esc(q.id) + '" title="Abrir donde haces esto a continuación">' + esc(q.executionMode === 'commander' || q.executionMode === 'together' ? '▶ AYÚDAME A PREPARARME' : (GO_LABEL[goDest] || 'IR')) + '</button>' : '';
       // §C — EVERY open row answers "what do I do next": the honest completion condition in words.
       const cw = q.status !== 'done' ? questCompletesWhen(q) : '';
       const cwHtml = cw ? '<div class="sub q-cw"><span class="q-field-label">OBJECTIVE</span><span class="q-objective-mark" aria-hidden="true">◇</span> ' + esc(cw) + '</div>' : '';
@@ -11420,13 +11420,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         + '<div class="sub q-owner">' + esc(q.executionMode === 'commander' ? 'YOUR ACTION' : q.executionMode === 'together' ? 'YOU + STARNET' : 'STARNET CAN HELP') + '</div>'
         + (q.whyNow ? '<div class="sub">Why now: ' + esc(q.whyNow) + '</div>' : '')
         + (isPaused(q) ? '<div class="sub">' + esc(q.disposition.type === 'later' ? 'Guardado para mañana' : q.disposition.type === 'too_big' ? 'Necesita un paso más pequeño' : 'Blocked') + (q.disposition.reason ? ': ' + esc(q.disposition.reason) : '') + '</div><button class="consent-btn q-quest-disposition" data-action="resume">RESUME</button>'
-          : '<details><summary>CHANGE THIS RECOMMENDATION</summary><label>What needs to change?<input id="q-reason-' + esc(q.id) + '" class="q-disposition-reason" value="' + esc(questDrafts.get(q.id)?.reason || '') + '" maxlength="240" placeholder="For example: waiting for a reply, or only 15 minutes available"></label>'
+          : '<details><summary>CAMBIAR ESTA RECOMENDACIÓN</summary><label>¿Qué necesita cambiar?<input id="q-reason-' + esc(q.id) + '" class="q-disposition-reason" value="' + esc(questDrafts.get(q.id)?.reason || '') + '" maxlength="240" placeholder="Por ejemplo: esperando una respuesta, o solo 15 minutos disponibles"></label>'
             + '<div class="consent-btns"><button class="consent-btn q-quest-disposition" data-action="later">TOMORROW</button><button class="consent-btn q-quest-disposition" data-action="blocked">BLOCKED</button><button class="consent-btn q-quest-disposition" data-action="too_big">TOO BIG</button></div></details>')
-        + (q.contract && q.contract.type === 'attest' ? '<details><summary>I COMPLETED THIS</summary><label>What happened?<textarea id="q-evidence-' + esc(q.id) + '" class="q-quest-evidence" data-dirty="' + (questDrafts.get(q.id)?.dirty ? '1' : '0') + '" maxlength="2000" placeholder="Describe your action and its result">' + esc(questDrafts.get(q.id)?.evidence || '') + '</textarea></label><button class="consent-btn q-quest-report">RECORD MY RESULT</button></details>' : '')
+        + (q.contract && q.contract.type === 'attest' ? '<details><summary>HE COMPLETADO ESTO</summary><label>¿Qué pasó?<textarea id="q-evidence-' + esc(q.id) + '" class="q-quest-evidence" data-dirty="' + (questDrafts.get(q.id)?.dirty ? '1' : '0') + '" maxlength="2000" placeholder="Describe tu acción y su resultado">' + esc(questDrafts.get(q.id)?.evidence || '') + '</textarea></label><button class="consent-btn q-quest-report">REGISTRAR MI RESULTADO</button></details>' : '')
         + '</div>' : '';
       return '<div class="gx-tro q-card ' + (q.status === 'done' ? 'on' : 'off') + (glow ? ' q-celebrate' : '') + '" style="--ci:' + (i || 0) + '">'
         + '<div class="q-card-meta">' + kindHtml + '<span class="q-card-state">' + (q.status === 'done' ? '✓ COMPLETED' : isPaused(q) ? 'SAVED / BLOCKED' : 'AVAILABLE QUEST') + '</span>'
-        + (dis ? '<button class="q-dismiss" data-qid="' + esc(q.id) + '" title="Dismiss — the station will never raise this again">&#10005;</button>' : '')
+        + (dis ? '<button class="q-dismiss" data-qid="' + esc(q.id) + '" title="Descartar — la estación nunca volverá a sacar esto">&#10005;</button>' : '')
         + '</div>'
         + '<div class="q-hd"><span class="gl" aria-hidden="true">' + (q.status === 'done' ? '&#9733;' : '&#9671;') + '</span><h3 class="nm">' + esc(q.title) + '</h3></div>'
         + '<div class="sub">' + esc(q.status === 'done' ? ('▸ ' + q.reward) : q.desc) + '</div>'
@@ -11453,8 +11453,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const milestoneDone = milestones.filter(q => q.status === 'done').length;
     const milestonesHtml = milestones.length
       // folded, with the TROPHY CASE door on the summary row itself so it is reachable without unfolding (org pass 10-14, P28)
-      ? '<details class="q-milestones q-progress-section"><summary><span>Station milestones</span><span class="q-section-count">' + milestoneDone + ' / ' + milestones.length + '</span>'
-        + '<button type="button" class="bb xs q-trophy-door" data-open-trophies>OPEN THE TROPHY CASE</button></summary>'
+      ? '<details class="q-milestones q-progress-section"><summary><span>Hitos de la estación</span><span class="q-section-count">' + milestoneDone + ' / ' + milestones.length + '</span>'
+        + '<button type="button" class="bb xs q-trophy-door" data-open-trophies>ABRIR LA VITRINA DE TROFEOS</button></summary>'
         + '<div class="q-section-body"><div class="gx-tros q-grid q-milestone-grid">' + milestones.map(tro).join('') + '</div></div></details>'
       : '';
     // Selection is presentation state only. Keep it on the stable window body across background data pokes;
@@ -11648,8 +11648,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (suggest) { suggest.disabled = suggest.disabled || !!body._journeyPlanning; suggest.setAttribute('aria-busy', String(!!body._journeyPlanning)); }
     const proposal = body._journeyPlan;
     if (proposal) {
-      body.querySelector('.q-plan-proposal').innerHTML = '<div class="q-return-card"><span class="q-ns-eyebrow">SUGGESTED PLAN · NOT SAVED</span><h3>' + esc(proposal.title) + '</h3><p>' + esc(proposal.successCondition) + '</p><ol>'
-        + proposal.steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ol><div class="q-journey-actions"><button class="consent-btn q-plan-use">USE &amp; EDIT THIS PLAN</button><button class="consent-btn q-plan-dismiss">DISMISS SUGGESTION</button></div></div>';
+      body.querySelector('.q-plan-proposal').innerHTML = '<div class="q-return-card"><span class="q-ns-eyebrow">PLAN SUGERIDO · SIN GUARDAR</span><h3>' + esc(proposal.title) + '</h3><p>' + esc(proposal.successCondition) + '</p><ol>'
+        + proposal.steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ol><div class="q-journey-actions"><button class="consent-btn q-plan-use">USAR Y EDITAR ESTE PLAN</button><button class="consent-btn q-plan-dismiss">DESCARTAR SUGERENCIA</button></div></div>';
       const use = body.querySelector('.q-plan-use');
       use.disabled = !!(typeof GoalStore !== 'undefined' && GoalStore.isCreatingGoal && GoalStore.isCreatingGoal()) || !!body._journeyPlanning;
       use.addEventListener('click', () => {

@@ -663,7 +663,7 @@ const GroupChat = (() => {
       for (const t of retiredAt.get(m.id) || []) {
         const ask = t.unansweredApproval;
         const phrase = typeof Chat !== 'undefined' && Chat.consentPhrase ? String(Chat.consentPhrase(ask) || '').trim() : '';
-        const said = '▣ ' + name(t.agentId) + ' wants to ' + (phrase || String(ask.tool || 'take an action')) + ' ';
+        const said = '▣ ' + name(t.agentId) + ' quiere ' + (phrase || String(ask.tool || 'una acción')) + ' ';
         keep('ra:' + t.id, said, () => {
           const card = h('div', { class: 'cmsg agent tool consent gc-retired', role: 'note' }), body = h('div', { class: 'body' });
           body.append(said, h('span', { class: 'consent-result err' }, '■ the run ended before an answer — nothing was approved'));
@@ -751,7 +751,7 @@ const GroupChat = (() => {
         : t.state === 'queued' && pendingQ && pendingQ.agentId !== t.agentId ? 'waits for your answer to ' + name(pendingQ.agentId)
         : t.reason && t.state === 'queued' ? t.reason : VERB[t.state] || t.state;
       const phrase = t.approval && typeof Chat !== 'undefined' && Chat.consentPhrase ? String(Chat.consentPhrase(t.approval) || '').trim() : '';
-      const said = t.approval ? (phrase ? 'wants to ' + phrase : 'needs approval: ' + String(t.approval.tool || 'an action')) : what;
+      const said = t.approval ? (phrase ? 'quiere ' + phrase : 'necesita aprobación: ' + String(t.approval.tool || 'una acción')) : what;
       row.append(h('span', { class: 'gc-dot', 'aria-hidden': 'true' }, '●'), h('span', { class: 'gc-verb', style: colorOf(t.agentId) && (!tone || t.approval) ? 'color:' + colorOf(t.agentId) : '' }, name(t.agentId)), h('span', { class: t.approval ? 'gc-what gc-asks' : 'gc-what' }, said));
       if (showContinue) row.append(button('CONTINUE', () => action('resume')));
       if (t.state === 'held' && t.reason) row.append(h('span', { class: 'gc-what' }, t.reason));
@@ -786,7 +786,7 @@ const GroupChat = (() => {
             const text = ins.copy || ins.text;   // Chat.copyText falls back to a selection copy where the clipboard API is refused
             try { (typeof Chat !== 'undefined' && Chat.copyText ? Chat.copyText(text) : navigator.clipboard.writeText(text).then(() => true)).then(done, () => done(false)); } catch (_) { done(false); }
           });
-          detail.append(h('summary', {}, ins.label || 'Inspect the full request (secrets redacted)'), h('pre', {}, ins.text), copy);
+          detail.append(h('summary', {}, ins.label || 'Inspeccionar la petición completa (secretos enmascarados)'), h('pre', {}, ins.text), copy);
           row.append(detail);
         }
       }

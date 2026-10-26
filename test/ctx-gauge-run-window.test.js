@@ -70,9 +70,9 @@ function gauge(cs) {
 {
   const atFold = gauge({ model: PRO, used: 130000, limit: 1048576, runWindow: 200000, measured: true, projected: false });
   A.eq([atFold.pct, atFold.cap], ['65%', '130k / 200k'], 'Gemini 2.5 Pro: at the fold (~130k) the gauge reads 65% of the 200k a run works in, not 12% of 1M: ' + JSON.stringify(atFold));
-  A.ok(atFold.tip.indexOf('The model can hold 1M, but it bills a higher rate for a prompt over 200k tokens, so a run works in 200k.') >= 0,
+  A.ok(atFold.tip.indexOf('El modelo puede sostener 1M, pero cobra un precio más alto para un prompt de más de 200k tokens, así que una ejecución trabaja en 200k.') >= 0,
     'the tooltip says why the window is smaller than the model’s, as /compress does: ' + atFold.tip);
-  A.ok(atFold.tip.indexOf('when it fills') < 0 && atFold.tip.indexOf('when it nears full, older turns are folded') >= 0, 'and promises the fold the way /compress words it');
+  A.ok(atFold.tip.indexOf('when it fills') < 0 && atFold.tip.indexOf('cuando se acerca al lleno, los turnos antiguos se plegan') >= 0, 'and promises the fold the way /compress words it');
   const warn = gauge({ model: PRO, used: 160000, limit: 1048576, runWindow: 200000, measured: true });
   A.eq(warn.level, 'warn', 'the gauge reaches WARN inside the run window (it never could against 1M)');
   const whole = gauge({ model: FLASH, used: 130000, limit: 1048576, runWindow: 1048576, measured: true });
@@ -110,12 +110,12 @@ function gauge(cs) {
     return nodes['model-hint'].textContent;
   }
   const pro = hint(PRO, GEMINI_ROWS);
-  A.eq(pro, 'remembers up to 200k tokens of chat (the model can hold 1M, but it bills a higher rate for a prompt over 200k)',
+  A.eq(pro, 'recuerda hasta 200k tokens de chat (el modelo puede sostener 1M, pero cobra un precio más alto para un prompt de más de 200k)',
     'Gemini 2.5 Pro on a key: the setup hint names the 200k a run works in and why: ' + pro);
-  A.eq(hint(FLASH, GEMINI_ROWS), 'remembers up to 1M tokens of chat', 'no price tier: the whole window, as before');
-  A.eq(hint(PRO, GEMINI_ROWS.map(r => ({ id: r.id, name: r.name, context_length: r.context_length }))), 'remembers up to 1M tokens of chat',
+  A.eq(hint(FLASH, GEMINI_ROWS), 'recuerda hasta 1M tokens de chat', 'no price tier: the whole window, as before');
+  A.eq(hint(PRO, GEMINI_ROWS.map(r => ({ id: r.id, name: r.name, context_length: r.context_length }))), 'recuerda hasta 1M tokens de chat',
     'a picked row without runWindow (an older sidecar): the model window, as before');
-  A.eq(hint(PRO, [{ id: FLASH, name: FLASH, context_length: LIMITS[FLASH], runWindow: RUNS[FLASH] }]), 'remembers up to 1M tokens of chat',
+  A.eq(hint(PRO, [{ id: FLASH, name: FLASH, context_length: LIMITS[FLASH], runWindow: RUNS[FLASH] }]), 'recuerda hasta 1M tokens de chat',
     'an id the picked catalog does not list: the window is the model’s (any catalog), but no tier is borrowed from another route');
 
   // THE CARD PICKED ON THIS SCREEN decides the route, not the station's stored provider. The REAL harness lookups
@@ -143,8 +143,8 @@ function gauge(cs) {
     }, { filename: 'app.js#updateHint' });
     return nodes['model-hint'].textContent;
   }
-  const TIER = 'remembers up to 200k tokens of chat (the model can hold 1M, but it bills a higher rate for a prompt over 200k)';
-  const WHOLE = 'remembers up to 1M tokens of chat';
+  const TIER = 'recuerda hasta 200k tokens de chat (el modelo puede sostener 1M, pero cobra un precio más alto para un prompt de más de 200k)';
+  const WHOLE = 'recuerda hasta 1M tokens de chat';
   A.eq(routedHint('starnet', 'openrouter'), WHOLE,
     'a StarNet-credits station picking the OPENROUTER card: an OpenRouter run keeps the whole window, so no 200k tier is named');
   A.eq(routedHint('openrouter', 'starnet'), TIER,
@@ -161,7 +161,7 @@ function gauge(cs) {
       el: k => nodes[k], window: {}, genesisModels: [{ id: 'gpt-5.5', name: 'gpt-5.5' }], pickedProvider: 'openai', codexConnected: true, syncModelPicks() {},
       isOAuthProviderId: () => false, OAUTH_GENESIS: {}, Harness, CtxGauge, usdPerM: String, genesisOffline: false
     }, { filename: 'app.js#updateHint' });
-    A.eq(nodes['model-hint'].textContent, 'remembers up to 400k tokens of chat',
+    A.eq(nodes['model-hint'].textContent, 'recuerda hasta 400k tokens de chat',
       'a picked row that carries no runWindow borrows no tier from another route’s catalog: ' + nodes['model-hint'].textContent);
   }
 }

@@ -379,7 +379,7 @@ const Chat = (() => {
       if (paused) {
         // e.g. "paused — waiting for your approval to change notes.md" (the card's own words, never a raw tool id like
         // fs.write — 2026-10-13); a clarify question is an ANSWER, not a grant
-        const t = pend.tool === 'brief.ask' ? 'see the question above' : 'to ' + glance(actionPhrase(pend), 70);
+        const t = pend.tool === 'brief.ask' ? 'mira la pregunta de arriba' : 'a ' + glance(actionPhrase(pend), 70);
         if (tool.textContent !== t) tool.textContent = t;
         tool.classList.add('has'); tool.classList.add('paused-note'); tool.classList.remove('wait-note');
       } else {
@@ -3886,7 +3886,7 @@ const Chat = (() => {
     const t = String((p && p.tool) || ''), raw = String((p && p.argsSummary) || '');
     if (/^fs[._](?:write|append|edit|patch)$/.test(t)) {
       // read as a file, not as JSON: the path, then the text exactly as it will be written (real line breaks, no \n)
-      const label = 'Inspect the change (secrets redacted)', o = requestArgs(raw);
+      const label = 'Inspeccionar el cambio (secretos enmascarados)', o = requestArgs(raw);
       if (!o) return { label, text: raw || '(payload unavailable)' };
       const heads = { content: '', find: 'Find:\n', replace: 'Replace with:\n', patch: 'Patch:\n' };
       const parts = typeof o.path === 'string' ? ['File: ' + o.path] : [];
@@ -3895,7 +3895,7 @@ const Chat = (() => {
     }
     if (/^routine[._](?:create|manage)$/.test(t)) { const o = requestArgs(raw); return { label: 'Qué hará en cada ejecución', text: (o && o.prompt) ? String(o.prompt) : raw || '(payload unavailable)' }; }
     if (!raw.trim() || /^station[._]/.test(t) || /^(?:path\.trust|browser\.login(?:\.done)?|brief\.ask)$/.test(t)) return null;
-    const o = requestArgs(raw), label = 'Inspect the full request (secrets redacted)';
+    const o = requestArgs(raw), label = 'Inspeccionar la petición completa (secretos enmascarados)';
     if (!o) return glance(raw) === raw.trim() ? null : { label, text: raw };
     // read as written, not as JSON: a Windows path shows C:\Users, never C:\\Users, and a command is the exact text
     // that will run — so COPY COMMAND hands over something you can paste into a terminal
@@ -3943,73 +3943,73 @@ const Chat = (() => {
       const host = typeof PluginHost !== 'undefined' ? PluginHost : null;
       const san = (s) => String(s || '').replace(/[^A-Za-z0-9_-]+/g, '_').replace(/^[_-]+|[_-]+$/g, '');   // plugin-tools.js sanitizePart
       const p = host && host.list ? host.list().find(x => x.id === pm[1] || san(x.id) === pm[1]) : null;
-      return 'use the ' + ((p && p.name) || pm[1]) + ' plugin tool “' + pm[2] + '”' + leadText(ev.argsSummary, ': ');
+      return 'usar la herramienta “' + pm[2] + '” del plugin ' + ((p && p.name) || pm[1]) + leadText(ev.argsSummary, ': ')
     }
     // the crew INSTALLING a plugin it wrote: say that it stays off until the Commander's own approval
     if (/^plugin[._]submit$/.test(t)) {
       let id = '';
       try { id = JSON.parse(ev.argsSummary || '{}').id || ''; } catch (_) {}
-      return 'install the plugin it built' + (id ? ' “' + id + '”' : '') + ' — it stays OFF until you approve its code in ABILITIES → EXTENSIONS';
+      return 'instalar el plugin que construyó' + (id ? ' “' + id + '”' : '') + ' — queda APAGADO hasta que apruebes su código en HABILIDADES → EXTENSIONES';
     }
-    if (/notebook/.test(t)) return 'save a note to its memory';
+    if (/notebook/.test(t)) return 'guardar una nota en su memoria';
     // a hire reads as a hire: "hire RESEARCH (researcher) onto the crew", never the raw JSON args (live walkthrough 2026-10-13);
     // anything else it names comes from leadText (a capped summary gives nothing — the card's INSPECT holds every character)
     if (/summon/.test(t)) {
       const o = requestArgs(ev.argsSummary) || {};
       const nm = String(o.name || '').trim(), spec = String(o.specId || o.class || o.role || '').trim();
-      if (nm || spec) return 'hire ' + (nm ? nm.toUpperCase() + (spec && spec.toLowerCase() !== nm.toLowerCase() ? ' (' + spec + ')' : '') : 'a ' + spec) + ' onto the crew';
-      return 'hire a new agent onto the crew' + leadText(ev.argsSummary, ': ');
+      if (nm || spec) return 'contratar ' + (nm ? nm.toUpperCase() + (spec && spec.toLowerCase() !== nm.toLowerCase() ? ' (' + spec + ')' : '') : 'a ' + spec) + ' en el equipo';
+      return 'contratar un agente nuevo en el equipo' + leadText(ev.argsSummary, ': ');
     }
     // a command: name it in words, its text clipped to a glance; the card's inspect panel holds every character of it
     if (/^(?:shell|terminal)[._]/.test(t)) {
       const o = requestArgs(ev.argsSummary) || {};
       const typed = /write$/.test(t), text = o.cmd || o.command || o.input || o.data;
-      return (typed ? 'type into a running process' : 'run a command') + (typeof text === 'string' && text ? ': ' + glance(text) : leadText(ev.argsSummary, ': '));
+      return (typed ? 'escribir a un proceso en ejecución' : 'ejecutar un comando') + (typeof text === 'string' && text ? ': ' + glance(text) : leadText(ev.argsSummary, ': '));
     }
     // NS-5 conversational path trust: a file was referenced OUTSIDE the agent's workspace — "Always" blesses
     // the whole project folder for future reads (revocable in Permissions); argsSummary is the proposed root.
-    if (t === 'path.trust') return 'work with files in ' + (ev.argsSummary || 'a project folder') + ' (reads; "Always" or "Full access" trusts it for later)';
+    if (t === 'path.trust') return 'trabajar con archivos en ' + (ev.argsSummary || 'una carpeta de proyecto') + ' (lectura; "Siempre" o "Acceso total" lo confía para el futuro)';
     // ATTENDED BROWSER LOGIN: two-phase takeover. Phase 1 asks to open a visible Chrome window the COMMANDER
     // drives; phase 2 holds the run until they click Done. Password honesty is part of the card copy.
-    if (t === 'browser.login') return 'open a browser window so YOU can log in to ' + (ev.argsSummary || 'a website') + ' (you type your password in that window — the agent never sees it)';
-    if (t === 'browser.login.done') return 'wait while you log in to ' + (ev.argsSummary || 'the website') + ' in the browser window — click Done here when you\'ve finished';
+    if (t === 'browser.login') return 'abrir una ventana del navegador para que TÚ inicies sesión en ' + (ev.argsSummary || 'un sitio') + ' (tú escribes tu contraseña en esa ventana — el agente nunca la ve)';
+    if (t === 'browser.login.done') return 'esperar mientras inicias sesión en ' + (ev.argsSummary || 'el sitio') + ' en la ventana del navegador — pulsa Listo aquí cuando termines';
     if (/^fs[._](?:write|append|edit|patch)$/.test(t)) {
       let target = ev.argsSummary || 'a file';
       try { target = JSON.parse(target).path || 'a file'; } catch (_) {}
-      return 'change ' + target;
+      return 'cambiar ' + target;
     }
     // code the agent runs: name it as the command it is (the card's INSPECT holds every character)
     if (/^(?:verify[._]run|code[._]run|browser[._]eval)$/.test(t)) {
       const o = requestArgs(ev.argsSummary) || {}, text = [o.cmd, o.code, o.expression].find(v => typeof v === 'string' && v.trim());
-      return ({ v: 'run a check', c: 'run code', b: 'run a script in the browser page' })[t[0]] + (text ? ': ' + glance(text, 80) : '');
+      return ({ v: 'ejecutar una verificación', c: 'ejecutar código', b: 'ejecutar un script en la página del navegador' })[t[0]] + (text ? ': ' + glance(text, 80) : '');
     }
-    if (/^browser[._]upload$/.test(t)) { const o = requestArgs(ev.argsSummary) || {}, files = Array.isArray(o.paths) ? o.paths.filter(x => typeof x === 'string') : []; return 'upload ' + (files.length ? glance(files.join(', '), 80) : 'files') + ' to the page'; }
+    if (/^browser[._]upload$/.test(t)) { const o = requestArgs(ev.argsSummary) || {}, files = Array.isArray(o.paths) ? o.paths.filter(x => typeof x === 'string') : []; return 'subir ' + (files.length ? glance(files.join(', '), 80) : 'archivos') + ' a la página'; }
     if (/^channel[._]send$/.test(t)) {
       const o = requestArgs(ev.argsSummary) || {}, n = Array.isArray(o.files) ? o.files.length : 0;
-      return 'send a message' + (typeof o.target === 'string' && o.target ? ' to ' + glance(o.target, 40) : '') + (n ? ' with ' + n + (n > 1 ? ' files' : ' file') : '') + (typeof o.text === 'string' && o.text ? ': ' + glance(o.text, 70) : '');
+      return 'enviar un mensaje' + (typeof o.target === 'string' && o.target ? ' a ' + glance(o.target, 40) : '') + (n ? ' con ' + n + (n > 1 ? ' archivos' : ' archivo') : '') + (typeof o.text === 'string' && o.text ? ': ' + glance(o.text, 70) : '');
     }
     // "write a file" only for the tools that write files (a connector's write_values or a credit_* tool never says that)
-    if (!/^mcp__/.test(t) && /(?:^|[._])(?:write|append|edit)(?:$|[._])/.test(t)) { const o = requestArgs(ev.argsSummary); return 'write ' + (o ? (typeof o.path === 'string' && o.path ? glance(o.path, 80) : 'a file') : leadText(ev.argsSummary, '') || 'a file'); }
-    if (t === 'web_request') { const o = requestArgs(ev.argsSummary) || {}; return 'send a ' + String(o.method || 'web').toUpperCase().replace(/^WEB$/, 'web') + ' request' + (typeof o.url === 'string' && o.url ? ' to ' + glance(o.url, 80) : ''); }
-    if (t === 'image_generate') { const o = requestArgs(ev.argsSummary) || {}; return 'make an image' + (typeof o.prompt === 'string' && o.prompt ? ': ' + glance(o.prompt, 80) : ''); }
-    if (t === 'brief.ask') return 'ask you a quick question about the task';   // clarify card renders its own body
+    if (!/^mcp__/.test(t) && /(?:^|[._])(?:write|append|edit)(?:$|[._])/.test(t)) { const o = requestArgs(ev.argsSummary); return 'escribir ' + (o ? (typeof o.path === 'string' && o.path ? glance(o.path, 80) : 'un archivo') : leadText(ev.argsSummary, '') || 'un archivo'); }
+    if (t === 'web_request') { const o = requestArgs(ev.argsSummary) || {}; return 'enviar una petición ' + String(o.method || 'web').toUpperCase().replace(/^WEB$/, 'web') + ' a' + (typeof o.url === 'string' && o.url ? ' ' + glance(o.url, 80) : ''); }
+    if (t === 'image_generate') { const o = requestArgs(ev.argsSummary) || {}; return 'crear una imagen' + (typeof o.prompt === 'string' && o.prompt ? ': ' + glance(o.prompt, 80) : ''); }
+    if (t === 'brief.ask') return 'hacerte una pregunta rápida sobre la tarea';   // clarify card renders its own body
     // ROUTINES: say WHAT will run and WHEN, never the raw JSON (argsSummary may be clipped mid-object, so read fields
     // by pattern rather than JSON.parse). "Always" here lets the agent add and change routines without asking.
     if (/^routine[._](?:create|manage)$/.test(t)) {
       const s = String(ev.argsSummary || '');
       const pick = k => { const m = new RegExp('"' + k + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"').exec(s); return m ? m[1].replace(/\\(["\\\\])/g, '$1') : ''; };
       const nm = pick('name'), when = pick('schedule');
-      if (/create$/.test(t)) return 'schedule a routine' + (nm ? ' “' + nm + '”' : '') + (when ? ' — ' + when : '') + ' (results come back here)';
+      if (/create$/.test(t)) return 'programar una rutina' + (nm ? ' “' + nm + '”' : '') + (when ? ' — ' + when : '') + ' (los resultados vuelven aquí)';
       const act = pick('action'), ref = pick('id');
-      return (act || 'change') + ' the routine' + (ref ? ' “' + ref + '”' : '') + (when ? ' — ' + when : '');
+      return (act || 'cambiar') + ' la rutina' + (ref ? ' “' + ref + '”' : '') + (when ? ' — ' + when : '');
     }
     // DELEGATION (2026-10-11): say WHO gets the work, by name, never the raw worker JSON (the inspect panel holds it).
     // Read the ids by pattern: argsSummary may be clipped mid-object.
     if (/^team[._](?:dispatch|spawn)$/.test(t)) {
       const s = String(ev.argsSummary || ''), ids = [...new Set([...s.matchAll(/"agentId"\s*:\s*"([^"]+)"/g)].map(m => m[1]))];
       const nameOf = id => (typeof App !== 'undefined' && App.agentName && App.agentName(id)) || id;
-      const and = list => list.length > 1 ? list.slice(0, -1).join(', ') + ' and ' + list[list.length - 1] : list[0] || '';
-      const bg = /"background"\s*:\s*true/.test(s) ? ' (in the background)' : '';
+      const and = list => list.length > 1 ? list.slice(0, -1).join(', ') + ' y ' + list[list.length - 1] : list[0] || '';
+      const bg = /"background"\s*:\s*true/.test(s) ? ' (en segundo plano)' : '';
       /* THE CARD SAYS WHO GETS WHAT (rc walk 10-14: "NOVA wants to hand work to COPY and STRATEGY" — the tasks were raw JSON
          under Inspect). On the card itself (`detail`) each worker's task rides beside its name, its first sentence at a
          glance — the shorter the more workers; the toast, the bell and NEEDS YOU keep the short line. The whole request is
@@ -4031,24 +4031,24 @@ const Chat = (() => {
           return '“' + head + (room < n && head.indexOf(file) < 0 ? ' … ' + file : '…') + '”';
         };
         const shown = jobs.slice(0, 3), more = jobs.length - shown.length;
-        if (/spawn$/.test(t)) return 'run ' + (jobs.length > 1 ? jobs.length + ' copies' : 'a copy') + ' of itself on ' + and(shown.map(w => task(w.prompt)).concat(more ? [more + ' more'] : [])) + bg;
-        return 'hand ' + and(shown.map(w => nameOf(String(w.agentId || 'the crew')) + ' ' + task(w.prompt)).concat(more ? [more + ' more'] : [])) + bg;
+        if (/spawn$/.test(t)) return 'ejecutar ' + (jobs.length > 1 ? jobs.length + ' copias' : 'una copia') + ' de sí mismo en ' + and(shown.map(w => task(w.prompt)).concat(more ? [more + ' más'] : [])) + bg;
+        return 'entregar a ' + and(shown.map(w => nameOf(String(w.agentId || 'el equipo')) + ' ' + task(w.prompt)).concat(more ? [more + ' más'] : [])) + bg;
       }
-      return 'hand work to ' + (and(ids.map(nameOf)) || 'the crew') + bg;
+      return 'entregar trabajo a ' + (and(ids.map(nameOf)) || 'el equipo') + bg;
     }
     // A GOAL LOOP (rc walk 10-14: the card read "use loop create: Write and refine…"): what it repeats toward, in words
     if (/^loop[._]create$/.test(t)) {
       const o = requestArgs(ev.argsSummary) || {}, what = [o.objective, o.name].find(v => typeof v === 'string' && v.trim());
-      return 'start a goal loop' + (typeof o.agentId === 'string' && o.agentId.trim() ? ' for ' + ((typeof App !== 'undefined' && App.agentName && App.agentName(o.agentId)) || o.agentId) : '') + (what ? ': ' + glance(what, 90) : '');
+      return 'iniciar un bucle de objetivo' + (typeof o.agentId === 'string' && o.agentId.trim() ? ' para ' + ((typeof App !== 'undefined' && App.agentName && App.agentName(o.agentId)) || o.agentId) : '') + (what ? ': ' + glance(what, 90) : '');
     }
     // THE STATION BUILDER (2026-09-29): the card IS the plan — what gets built, where, who works each step. The sidecar
     // sends the plan's own summary (its dry run on a copy of the station), never the model's words.
-    if (/^station[._]build$/.test(t)) { const plan = String(ev.argsSummary || '').split('\n')[0] || 'a planned change'; return 'build this on your station: ' + plan + (/\bUNDO\b/.test(plan) ? '' : ' One UNDO in Build mode takes it back.'); }
+    if (/^station[._]build$/.test(t)) { const plan = String(ev.argsSummary || '').split('\n')[0] || 'un cambio planificado'; return 'construir esto en tu estación: ' + plan + (/\bUNDO\b/.test(plan) ? '' : ' Un DESHACER en modo Construcción lo revierte.'); }
     // MAKE A PROP (2026-10-01): the card names the object and what it costs in StarNet credits (the sidecar's own words)
-    if (/^station[._]make_prop$/.test(t)) return 'make a new prop: ' + (String(ev.argsSummary || '').split('\n')[0] || 'a new prop');
+    if (/^station[._]make_prop$/.test(t)) return 'crear una nueva pieza: ' + (String(ev.argsSummary || '').split('\n')[0] || 'una pieza nueva');
     // TEST A LINE (2026-10-01): the card names the line and the job it will send (the sidecar's own words)
-    if (/^station[._]test_line$/.test(t)) return 'test ' + (String(ev.argsSummary || '').split('\n')[0] || 'a workflow line');
-    if (/^station[._]start_line$/.test(t)) return 'set what starts ' + (String(ev.argsSummary || '').split('\n')[0] || 'a workflow line');
+    if (/^station[._]test_line$/.test(t)) return 'probar ' + (String(ev.argsSummary || '').split('\n')[0] || 'una línea de trabajo');
+    if (/^station[._]start_line$/.test(t)) return 'definir qué arranca ' + (String(ev.argsSummary || '').split('\n')[0] || 'una línea de trabajo');
     // STATION CONTROL (2026-10-02): a settings change asked for in chat — the sidecar's catalog sentence, never raw JSON
     if (/^station[._](?:control|power)$/.test(t)) return String(ev.argsSummary || 'change a station setting').split('\n')[0];
     // ANY OTHER TOOL: its name in words and the one argument that says what it acts on — never raw JSON on the card or in a
@@ -4058,7 +4058,7 @@ const Chat = (() => {
     const o = requestArgs(ev.argsSummary);
     // a *.manage tool says its action first: "remove task Buy milk", never "use task manage"
     if (o && typeof o.action === 'string' && o.action.trim() && !mcp && /[._]manage$/.test(t)) return glance(o.action, 30) + ' ' + words.replace(/ manage$/, '') + leadText(Object.assign({}, o, { action: undefined }), ' ');
-    return 'use ' + words + leadText(ev.argsSummary, ': ');
+    return 'usar ' + words + leadText(ev.argsSummary, ': ');
   }
   // the one argument that says what a request acts on, in words; else its first one or two short values ("key: value");
   // a summary that does not parse (a capped one) gives nothing — the card's INSPECT holds every character. A bare value the
@@ -4137,7 +4137,7 @@ const Chat = (() => {
           if(answeredHere){releaseCard(r.d);return;}
           if(ws&&typeof Channels!=='undefined')Channels.clearPending(ws.id,Date.now(),p.promptId);
           if(isActiveWs(ws))renderPresence();
-          if(tc&&tc.settle)tc.settle(resp.stopped?askerName(p,ws)+' stopped before an answer':resp.expired?'No answer in time — '+askerName(p,ws)+' used its judgment':resp.decision==='deny'?'Declined'+settledWhere(resp):'Answered'+settledWhere(resp));
+          if(tc&&tc.settle)tc.settle(resp.stopped?askerName(p,ws)+' se detuvo antes de la respuesta':resp.expired?'Sin respuesta a tiempo — '+askerName(p,ws)+' usó su criterio':resp.decision==='deny'?'Denegado'+settledWhere(resp):'Respondido'+settledWhere(resp));
           releaseCard(r.d);syncStatus();
         };
         U.bus.on('permission.response',onElsewhere);
@@ -4289,7 +4289,7 @@ const Chat = (() => {
         btns.remove(); hint.remove(); releaseCard(r.d);
         const tag = document.createElement('span');
         tag.className = 'consent-result' + (resp.decision === 'deny' ? ' err' : '');
-        tag.textContent = resp.stopped ? '■ ' + askerName(p, ws) + ' stopped before an answer' : resp.expired ? '✕ no answer in time — the agent used its judgment' : resp.decision === 'deny' ? '✕ declined' + settledWhere(resp) : '✓ answered' + settledWhere(resp);
+        tag.textContent = resp.stopped ? '■ ' + askerName(p, ws) + ' se detuvo antes de la respuesta' : resp.expired ? '✕ sin respuesta a tiempo — el agente usó su criterio' : resp.decision === 'deny' ? '✕ denegado' + settledWhere(resp) : '✓ respondido' + settledWhere(resp);
         r.body.appendChild(tag); if (why) r.body.appendChild(why);
         syncStatus();
       };
@@ -4328,7 +4328,7 @@ const Chat = (() => {
     if (pending.length) {
       const next = pending[0], ws = (typeof Workstreams !== 'undefined' && Workstreams.get && Workstreams.get(wsId)) || { id: wsId, agentId: next.agentId };
       // quiet: the sibling was already announced; its bell entry moves to it without a second toast and chime
-      if (StationUI.notify) StationUI.notify(askerName(next, ws) + (next.tool === 'brief.ask' ? ' still needs your answer' : ' still wants to ' + actionPhrase(next)), 'warn', 'needsApproval', { kind: 'needs', go: { ws: wsId }, key: 'needs:' + wsId, prompt: next.promptId, quiet: true });
+      if (StationUI.notify) StationUI.notify(askerName(next, ws) + (next.tool === 'brief.ask' ? ' aún necesita tu respuesta' : ' aún quiere ' + actionPhrase(next)), 'warn', 'needsApproval', { kind: 'needs', go: { ws: wsId }, key: 'needs:' + wsId, prompt: next.promptId, quiet: true });
     } else if (StationUI.settleNotifs) StationUI.settleNotifs('needs:' + wsId);
   }
   /* A RUN'S END SETTLES ITS OWN WAITS, NEVER A BACKGROUND WORKER'S (2026-10-14): such a worker files under the same key, often
@@ -4341,14 +4341,14 @@ const Chat = (() => {
   // page's other surfaces (a worker's row, NEEDS YOU, voice) answer through answerConsent, which says which on the bus —
   // and the label names what was APPLIED ('always' is not 'once'; review app-shell-ui-02 / 2026-10-13: a spoken "always
   // allow" read "approved once from your phone").
-  function settledWhere(resp) { return resp.via === 'voice' ? ' by voice' : resp.via === 'needs-you' ? ' from NEEDS YOU' : resp.via ? '' : ' from your phone'; }
+  function settledWhere(resp) { return resp.via === 'voice' ? ' por voz' : resp.via === 'needs-you' ? ' desde NECESITA DE TI' : resp.via ? '' : ' desde tu teléfono'; }
   // `own` = a card's own receipts (decision -> its done label): a card with no Always key (station.power, plugin.submit,
   // the login window) grants this one call whatever grade another surface sent, so it settles in its own yes/no words
   function settledLabel(resp, own) {
-    if (resp.decision === 'deny') return ((own && own.deny) || '✕ denied') + settledWhere(resp);
-    const words = { always: '✓ always allowed', session: '✓ approved for this session', full: '✓ full access' };
+    if (resp.decision === 'deny') return ((own && own.deny) || '✕ denegado') + settledWhere(resp);
+    const words = { always: '✓ siempre permitido', session: '✓ aprobado para esta sesión', full: '✓ acceso total' };
     const grade = own ? own[resp.decision] || (resp.decision === 'session' && own.always ? words.session : own.once) : words[resp.decision];
-    return (grade || '✓ approved once') + settledWhere(resp);
+    return (grade || '✓ aprobado una vez') + settledWhere(resp);
   }
   async function answerConsent(p, ws, decision, via) {
     const rid = (p && p.runId) || ((ws && typeof Channels !== 'undefined') ? Channels.runIdOf(ws.id) : null);
@@ -4462,12 +4462,12 @@ const Chat = (() => {
     if (p && (p.workerStreamId || p.workerRunId) && typeof Delegated !== 'undefined' && Delegated.hosts && Delegated.hosts(p)) {
       Delegated.repaint();
       // the same one bell entry the lead's own ask gets, naming the worker (re-renders never re-toast: announcedPrompt)
-      if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(askerName(p, ws) + ' wants to ' + actionPhrase(p), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId });
+      if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(askerName(p, ws) + ' quiere ' + actionPhrase(p), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId });
       return null;
     }
     const r = row('agent'); r.d.classList.add('tool'); r.d.classList.add('consent'); r.d.dataset.liveAsk = '1';
     r.d.dataset.consentPrompt = String((p && p.promptId) || '');   // NEEDS YOU › Review lands here (revealAsk)
-    r.body.appendChild(document.createTextNode('▣ ' + ((p && p.workerAgentId) ? askerName(p, ws) : name) + ' wants to ' + actionPhrase(p, true) + ' '));
+    r.body.appendChild(document.createTextNode('▣ ' + ((p && p.workerAgentId) ? askerName(p, ws) : name) + ' quiere ' + actionPhrase(p, true) + ' '));
     const btns = document.createElement('span'); btns.className = 'consent-btns';
     let decided = false, submitting = false, received = null, applyElsewhere = null;
     async function decide(decision, doneLabel, isDeny) {
@@ -4512,21 +4512,21 @@ const Chat = (() => {
     // one-shot window open, and the done-wait card is a completion signal, not a permission grade.
     if (p.tool === 'browser.login') {
       mk('Abrir ventana de acceso', 'once', 'primary', '✓ ventana abierta', false);
-      mk('Deny', 'deny', 'deny', '✕ denied', true);
+      mk('Denegar', 'deny', 'deny', '✕ denegado', true);
     } else if (p.tool === 'browser.login.done') {
-      mk('Done — I\'ve logged in', 'once', 'primary', '✓ done', false);
-      mk('Cancelar', 'deny', 'deny', '✕ cancelled', true);
+      mk('Listo — inicié sesión', 'once', 'primary', '✓ listo', false);
+      mk('Cancelar', 'deny', 'deny', '✕ cancelado', true);
     } else if (p.tool === 'station.power' || p.tool === 'plugin.submit') {
       // widening the station's leash and installing a plugin are answered fresh every time (freshConsent tools,
       // permissions.js tier 1.5): the station grants any yes once, so no Always and no Full access
       mk('Aprobar una vez', 'once', 'primary', '✓ aprobado una vez', false);
-      mk('Deny', 'deny', 'deny', '✕ denied', true);
+      mk('Denegar', 'deny', 'deny', '✕ denegado', true);
     } else {
       const agentName = (p && p.workerAgentId) ? askerName(p, ws) : name;
       mk('Aprobar una vez', 'once', 'primary', '✓ aprobado una vez', false, 'Permitir solo esta');
-      mk('Always', 'always', '', '✓ always allowed', false, 'Allow this kind of action from now on, without asking');
+      mk('Siempre', 'always', '', '✓ siempre permitido', false, 'Permite esta clase de acción de ahora en adelante, sin preguntar');
       mk('Acceso total', 'full', 'danger', '✓ acceso total', false, 'Da a ' + agentName + ' acceso total: dejará de preguntar antes de la mayoría de acciones, hasta que lo cambies');
-      mk('Deny', 'deny', 'deny', '✕ denied', true);
+      mk('Denegar', 'deny', 'deny', '✕ denegado', true);
       // a repeat ask's one line (what Always does), inside the keys' row so it leaves with them once the card is answered
       const hintText = consentHintFor(p, ws);
       if (hintText) { const hint = document.createElement('span'); hint.className = 'consent-hint'; hint.textContent = hintText; btns.appendChild(hint); }
@@ -4583,8 +4583,8 @@ const Chat = (() => {
     // still files it (NEEDS YOU, the SYSTEM badge) but quietly — no corner toast, no chime. BUILD MODE hides COMMS, so
     // there (and in any other conversation, or a hidden window) it still toasts.
     const seenHere = !!(ws && isActiveWs(ws) && typeof document !== 'undefined' && !document.hidden && log && log.getClientRects && log.getClientRects().length);
-    if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(asker + ' wants to ' + actionPhrase(p), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId, quiet: seenHere });
-    else if (!ws && typeof StationUI !== 'undefined') StationUI.notify(asker + ' wants to ' + actionPhrase(p), 'warn', 'needsApproval');   // P1-8 category: consent prompt
+    if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(asker + ' quiere ' + actionPhrase(p), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId, quiet: seenHere });
+    else if (!ws && typeof StationUI !== 'undefined') StationUI.notify(asker + ' quiere ' + actionPhrase(p), 'warn', 'needsApproval');   // P1-8 category: consent prompt
     // FOCUS-STEAL GUARD (P0): a consent prompt must NEVER hijack focus from a Commander who is mid-typing or holds
     // a draft — a stolen focus + a reflexive Enter could approve a file write they never read. Only follow the
     // scroll when they were already at the bottom (honor stick), and only take focus (onto the row CONTAINER, so
@@ -4626,7 +4626,7 @@ const Chat = (() => {
     // the AGENT that asks — a delegated worker's ask names the worker, never the lead it rode in on
     const who = (typeof App !== 'undefined' && App.agentName && App.agentName((ev && ev.workerAgentId) || ws.agentId || 'agent')) || ws.agentId || 'an agent';
     if (!announcedPrompt(ev && ev.promptId, ws) && typeof StationUI !== 'undefined' && StationUI.notify) {
-      StationUI.notify(who + ' wants to ' + actionPhrase(ev) + sessionNote(ws), 'warn', 'needsApproval',
+      StationUI.notify(who + ' quiere ' + actionPhrase(ev) + sessionNote(ws), 'warn', 'needsApproval',
         { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: ev && ev.promptId });
     }
     try { if (typeof App !== 'undefined' && App.refreshRail) App.refreshRail(); } catch (_) {}
@@ -9990,9 +9990,9 @@ const Chat = (() => {
     const next = String(args || '').trim();
     if (next) {
       let set = false;
-      if (applyAgentPatch({ model: next })) { localLine('Modelo puesto en ' + next + ' for future runs.'); set = true; }
-      else if (typeof Harness !== 'undefined' && Harness.setModel) { Harness.setModel(next); localLine('Modelo puesto en ' + next + ' for this harness session.'); set = true; }
-      else localLine('Model setting is not available yet.');
+      if (applyAgentPatch({ model: next })) { localLine('Modelo puesto en ' + next + ' para las próximas ejecuciones.'); set = true; }
+      else if (typeof Harness !== 'undefined' && Harness.setModel) { Harness.setModel(next); localLine('Modelo puesto en ' + next + ' para esta sesión de harness.'); set = true; }
+      else localLine('La fijación de modelo aún no está disponible.');
       if (set) warnUnknownModel(next);
       refreshWorkflowViews();
       return;
@@ -10000,7 +10000,7 @@ const Chat = (() => {
     const a = activeAgent();
     const model = (typeof Harness !== 'undefined' && Harness.getModel) ? Harness.getModel() : ((a && a.model) || '');
     const provider = (typeof Harness !== 'undefined' && Harness.getProv) ? Harness.getProv() : '';
-    localLine('Model: ' + (model || 'no seleccionado') + (provider ? ' via ' + provider : '') + '. Use /model <model-id> to switch.');
+    localLine('Modelo: ' + (model || 'ninguno seleccionado') + (provider ? ' vía ' + provider : '') + '. Usa /model <modelo-id> para cambiar.');
   }
   function personalityCommand(args) {
     const raw = String(args || '').trim();
@@ -10060,45 +10060,45 @@ const Chat = (() => {
       const model = (Harness.getModel && Harness.getModel()) || '';
       if (!model) return '';
       const ok = ModelDock._internals.supportsReasoning({ id: model, provider: (Harness.getProv && Harness.getProv()) || '' });
-      return ok ? '' : ' Note: ' + model + " doesn't appear to expose a reasoning dial, so this may have no effect until you pick a model that does.";
+      return ok ? '' : ' Nota: ' + model + ' no parece exponer un dial de razonamiento, así que esto puede no tener efecto hasta que elijas un modelo que sí lo tenga.';
     } catch (_) { return ''; }
   }
   function reasoningCommand(args) {
-    if (typeof Harness === 'undefined' || !Harness.getReasoningEffort) return localLine('Reasoning controls are not available in this surface.');
+    if (typeof Harness === 'undefined' || !Harness.getReasoningEffort) return localLine('Los controles de razonamiento no están disponibles en esta superficie.');
     const raw = String(args || '').trim().toLowerCase();
     const prov = (Harness.getProv && Harness.getProv()) || '';
     const cur = Harness.getReasoningEffort(prov);
     if (!raw || raw === 'status') {
-      return localLine('Reasoning effort: ' + cur + (prov ? ' (for ' + prov + ')' : '') + '. Set it with /reasoning '
-        + REASONING_LEVELS.join('|') + ' — lower answers faster and cheaper, higher thinks longer first.' + reasoningModelNote());
+      return localLine('Esfuerzo de razonamiento: ' + cur + (prov ? ' (para ' + prov + ')' : '') + '. Fíjalo con /reasoning '
+        + REASONING_LEVELS.join('|') + ' — más bajo responde más rápido y barato; más alto, piensa más antes de responder.' + reasoningModelNote());
     }
     const want = reasoningLevelOf(raw);
-    if (!want) return localLine('"' + raw + '" is not a reasoning level. Pick one of: ' + REASONING_LEVELS.join(', ') + '.');
+    if (!want) return localLine('"' + raw + '" no es un nivel de razonamiento. Elige uno de: ' + REASONING_LEVELS.join(', ') + '.');
     if (want === cur) return localLine('El esfuerzo de razonamiento ya es ' + cur + '.' + reasoningModelNote());
-    if (typeof App === 'undefined' || !App.applyConfig) return localLine('Reasoning effort could not be changed on this surface.');
+    if (typeof App === 'undefined' || !App.applyConfig) return localLine('No se pudo cambiar el esfuerzo de razonamiento en esta superficie.');
     App.applyConfig({ reasoningEffort: want });
     // READ BACK before claiming it: only the store's own answer proves the write landed (truthful telemetry).
     const now = Harness.getReasoningEffort((Harness.getProv && Harness.getProv()) || prov);
-    if (now !== want) return localLine('No se pudo poner el esfuerzo de razonamiento en ' + want + ' — it is still ' + now + '.');
-    localLine('Reasoning effort: ' + cur + ' → ' + want + (prov ? ' (for ' + prov + ')' : '')
-      + '. Takes effect on your next message.' + reasoningModelNote());
+    if (now !== want) return localLine('No se pudo poner el esfuerzo de razonamiento en ' + want + ' — sigue siendo ' + now + '.');
+    localLine('Esfuerzo de razonamiento: ' + cur + ' → ' + want + (prov ? ' (para ' + prov + ')' : '')
+      + '. Entra en vigor en tu próximo mensaje.' + reasoningModelNote());
   }
   /* ---- /fast — a shortcut onto that SAME dial.
      StarNet has no separate "fast mode", and inventing one would be a lie — the old handler admitted as much and
      then did nothing at all. Minimal reasoning effort IS what makes replies come back quickly and cheaply, so
      /fast drives the real control instead of pretending to be its own switch. */
   function fastCommand() {
-    if (typeof Harness === 'undefined' || !Harness.getReasoningEffort) return localLine('Reasoning controls are not available in this surface.');
+    if (typeof Harness === 'undefined' || !Harness.getReasoningEffort) return localLine('Los controles de razonamiento no están disponibles en esta superficie.');
     const prov = (Harness.getProv && Harness.getProv()) || '';
     const cur = Harness.getReasoningEffort(prov);
     if (cur === 'minimal' || cur === 'none') {
-      return localLine('Already as fast as it gets — reasoning effort is ' + cur + '. /reasoning medium to let it think longer.');
+      return localLine('Ya va lo más rápido posible — el esfuerzo de razonamiento es ' + cur + '. /reasoning medium para que piense más.');
     }
-    if (typeof App === 'undefined' || !App.applyConfig) return localLine('Reasoning effort could not be changed on this surface.');
+    if (typeof App === 'undefined' || !App.applyConfig) return localLine('No se pudo cambiar el esfuerzo de razonamiento en esta superficie.');
     App.applyConfig({ reasoningEffort: 'minimal' });
     const now = Harness.getReasoningEffort((Harness.getProv && Harness.getProv()) || prov);
-    if (now !== 'minimal') return localLine('Could not switch to minimal reasoning — effort is still ' + now + '.');
-    localLine('Reasoning effort: ' + cur + ' → minimal — quicker, cheaper replies. /reasoning ' + cur + ' to put it back.' + reasoningModelNote());
+    if (now !== 'minimal') return localLine('No se pudo pasar a razonamiento mínimo — el esfuerzo sigue siendo ' + now + '.');
+    localLine('Esfuerzo de razonamiento: ' + cur + ' → minimal — respuestas más rápidas y baratas. /reasoning ' + cur + ' para volver.' + reasoningModelNote());
   }
   function voiceCommand(args) {
     if (typeof Voice === 'undefined') return localLine('Voice controls are not available in this surface.');

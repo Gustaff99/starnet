@@ -19,10 +19,10 @@ A.ok(/reconcile:\s*\(\)\s*=>\s*fetchModels\(false\)/.test(dock), 'provider switc
 A.ok(/async function computeCatalog\(/.test(dock), 'computeCatalog fans out across providers without touching the dock');
 A.ok(/labels:\s*\{/.test(dock) && /efforts:\s*\{/.test(dock), 'ModelDock exposes label + effort helpers for reuse');
 A.eq(ModelDock._internals.selectorLabel('anthropic/claude-haiku-4.5', 'medium'),
-  'Model selector: claude haiku 4.5, Medium reasoning',
+  'Selector de modelo: claude haiku 4.5, Razonamiento medio',
   'the model-chip accessible name includes the selected model and reasoning effort');
 A.eq(ModelDock._internals.selectorLabel('', 'none'),
-  'Model selector: no model selected, Reasoning off',
+  'Selector de modelo: sin modelo seleccionado, Razonamiento desactivado',
   'the model-chip accessible name stays honest when no model is selected');
 A.ok(/toggle\.setAttribute\('aria-label',\s*selectorLabel\(current,\s*effort(?:,\s*item)?\)\)/.test(dock),
   'every ModelDock reflect refreshes the toggle accessible name from live model state');
