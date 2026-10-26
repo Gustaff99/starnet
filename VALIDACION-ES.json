@@ -1,0 +1,39 @@
+{
+  "results": {
+    "test/voice-live-ui.test.js": {
+      "exitCode": 0,
+      "seconds": 0.056,
+      "sha256": "932da88f88350a87d10927acf6081cc8cfa0823cdf93536c68e1dad8036da582",
+      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "log": "validation-logs/6a7dd1d302998426.log"
+    },
+    "test/workflows-window.test.js": {
+      "exitCode": 0,
+      "seconds": 1.962,
+      "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
+      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "log": "validation-logs/586a6e32336d38a6.log"
+    },
+    "test/autonomy-ui.test.js": {
+      "exitCode": 0,
+      "seconds": 0.036,
+      "sha256": "1536dad5fab427a71077ffcc2305be5621b61c711a35c1d4e300bd3f68a7b5a1",
+      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "log": "validation-logs/432da7dfe80b52a2.log"
+    },
+    "test/line-sendto.test.js": {
+      "exitCode": 0,
+      "seconds": 0.234,
+      "sha256": "deafcff8b5f6467c051b8abc6383835800d404eabf5fd2ab2e3b46789f4b6b42",
+      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "log": "validation-logs/aaf4b1d61b727543.log"
+    },
+    "test/needs-you.test.js": {
+      "exitCode": 0,
+      "seconds": 0.077,
+      "sha256": "c93619ad350189dbe6f03eeb1446153e65e23c5e38671942db5d3c10c7c6d3e4",
+      "sourceSha256": "abf2493cf34307737d29753a589f2b802fcdf45bcc9b656c9bd25e02b4469107",
+      "log": "validation-logs/d4b7e36b1e7756d2.log"
+    }
+  }
+}
