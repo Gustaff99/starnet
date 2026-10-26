@@ -72,7 +72,7 @@ const WorkflowPanel = (() => {
   // (empty) roster says nothing, so the whole crew is never flagged just because the list has not loaded yet.
   const isCrew = aid => { const list = H.agents() || []; return !list.length || list.some(a => a && a.id === aid); };
   // the belt INTO an escalation column says when that lane is taken — never "on DONE" (station.layout audit 2026-09-28)
-  const escCarry = e => !e.live ? 'never: no pass condition' : 'if still ' + (e.when === 'approved' ? 'not approved' : 'unmet') + ' after ' + (e.max || 5);
+  const escCarry = e => !e.live ? 'nunca: sin condición de paso' : 'si sigue ' + (e.when === 'approved' ? 'sin aprobar' : 'sin cumplir') + ' después de ' + (e.max || 5);
   const thumb = (aid, w, h, cls) => (typeof AgentPortraits !== 'undefined' && AgentPortraits.thumbHTML) ? AgentPortraits.thumbHTML(agentOf(aid), w, h, cls) : '';
   const lineName = () => { const c = comp(); return c ? H.lineNameOf(c) : null; };
   function dockLabel(f, pid) {
@@ -93,9 +93,9 @@ const WorkflowPanel = (() => {
     api('/api/cron').then(r => { if (r.j && Array.isArray(r.j.jobs)) S.cron = r.j; paint(); }).catch(() => {});
     api('/api/channels/status').then(r => { if (r.j && typeof r.j === 'object' && r.status === 200) S.chans = r.j; paint(); }).catch(() => {});
     api('/api/projects').then(r => {
-      S.projects = (r.status === 200 && r.j && Array.isArray(r.j.projects)) ? { rows: r.j.projects.filter(x => x && x.blessed === true) } : { err: 'Could not load trusted projects.' };
+      S.projects = (r.status === 200 && r.j && Array.isArray(r.j.projects)) ? { rows: r.j.projects.filter(x => x && x.blessed === true) } : { err: 'No se pudieron cargar los proyectos de confianza.' };
       paint();
-    }).catch(() => { S.projects = { err: 'Could not load trusted projects.' }; paint(); });
+    }).catch(() => { S.projects = { err: 'No se pudieron cargar los proyectos de confianza.' }; paint(); });
     ltRefresh();
     H.pollFeed().then(() => paint(), () => {});   // the floor-wide FEED truth, re-asked now (never a 60 s-stale NO FEED)
   }
@@ -137,7 +137,7 @@ const WorkflowPanel = (() => {
     el = document.createElement('aside');
     el.className = 'wf-panel';
     el.setAttribute('role', 'region');
-    el.setAttribute('aria-label', 'Workflow');
+    el.setAttribute('aria-label', 'Flujo de trabajo');
     el.innerHTML = '<div class="wf-scroll" id="wf-scroll"><header class="wf-head" id="wf-head"></header><div class="wf-strip-wrap" id="wf-map"><div class="wf-strip" id="wf-strip"></div></div><div class="wf-ins" id="wf-ins"></div>'
       + '<div class="wf-body" id="wf-body"></div></div><footer class="wf-foot" id="wf-foot"></footer>';
     H.root().appendChild(el);
@@ -329,18 +329,18 @@ const WorkflowPanel = (() => {
     if (!tl) { row.innerHTML = ''; row.dataset.sig = ''; return; }
     if (row.dataset.sig === sig) return;
     row.dataset.sig = sig;
-    row.innerHTML = '<b>TOO LONG</b> — the longest way through this line runs <b>' + tl.stages + ' stages</b>, but its LINE BUDGET allows <b>' + (tl.maxHops + 1) + '</b> (the first + ' + tl.maxHops + ' more), so a job that goes that way would stop at stage ' + (tl.maxHops + 2) + '. '
+    row.innerHTML = '<b>DEMASIADO LARGO</b> — el camino más largo de esta línea hace <b>' + tl.stages + ' etapas</b>, pero su LINE BUDGET permite <b>' + (tl.maxHops + 1) + '</b> (la primera + ' + tl.maxHops + ' más), así que un trabajo que vaya por ahí se detendría en la etapa ' + (tl.maxHops + 2) + '. '
       + (to != null && ip && typeof H.station().setPropLimits === 'function'
-        ? '<button type="button" class="bb sm refit-primary" id="wf-raise" data-tip="sets this INBOX’s LINE BUDGET › max stages after the first to ' + to + ' — its $ limits stay as they are · one UNDO">▲ ALLOW ' + tl.stages + ' STAGES</button>'
-        : 'No LINE BUDGET allows that many (25 stages at most): shorten the line.');
+        ? '<button type="button" class="bb sm refit-primary" id="wf-raise" data-tip="sube el LINE BUDGET › máx. de etapas tras la primera de este INBOX a ' + to + ' — sus límites en $ se quedan como están · un UNDO">▲ ALLOW ' + tl.stages + ' ETAPAS</button>'
+        : 'No hay LINE BUDGET que permita tantas (25 etapas como máximo): acorta la línea.');
     const b = $('#wf-raise');
     if (b) b.onclick = () => {
       const p = prop(tl.propId);
       const cur = (p && p.limits && typeof p.limits === 'object') ? p.limits : {};
       const res = p ? H.station().setPropLimits(p.id, Object.assign({}, cur, { maxHops: to })) : null;
-      if (!res || !res.ok) { H.sfx('bad'); note('the LINE BUDGET could not be changed' + (res && res.msg ? ' — ' + res.msg : ''), true, b); return; }
+      if (!res || !res.ok) { H.sfx('bad'); note('no se pudo cambiar el LINE BUDGET' + (res && res.msg ? ' — ' + res.msg : ''), true, b); return; }
       H.sfx('chime');
-      note('✓ LINE BUDGET raised: ' + to + ' stages after the first — the line fits · UNDO takes it back', false, b);
+      note('✓ LINE BUDGET subido: ' + to + ' etapas tras la primera — la línea cabe · UNDO lo deshace', false, b);
       paint(true);
     };
   }
@@ -356,10 +356,10 @@ const WorkflowPanel = (() => {
     const quiet = !!st && !(st.runs | 0) && !(st.tests | 0) && !(+st.usdToday > 0);
     row.hidden = !cells || quiet;
     if (!cells || quiet) { row.innerHTML = ''; return; }
-    row.innerHTML = '<span class="wf-today-l">TODAY</span>' + cells.map(c => '<span data-tip="' + esc(todayTip(c[0], c[1])) + '"><span class="k">' + esc(c[0]) + '</span> <b' + (c[0] === 'FAILED' && c[1] !== '0' ? ' class="bad"' : '') + '>' + esc(c[1]) + '</b></span>').join('');
+    row.innerHTML = '<span class="wf-today-l">HOY</span>' + cells.map(c => '<span data-tip="' + esc(todayTip(c[0], c[1])) + '"><span class="k">' + esc(c[0]) + '</span> <b' + (c[0] === 'FAILED' && c[1] !== '0' ? ' class="bad"' : '') + '>' + esc(c[1]) + '</b></span>').join('');
   }
   // the delivered job card's word for a job SHIPPED leaves out (rc walk #30) — the same rule as the SHIPPED tip below
-  const NOT_SHIPPED_RULE = 'NOT IN SHIPPED\nSHIPPED counts jobs that reached the OUTBOX after a tool succeeded or a file was saved. ';
+  const NOT_SHIPPED_RULE = 'SIN CONTAR EN SHIPPED\nSHIPPED cuenta los trabajos que llegaron al OUTBOX tras triunfar una tool o guardarse un archivo. ';
   /* only what the server PROVED: shipped:false = no SHIPPED receipt for this job; the reason ("a text answer") is said only when the
      server's shippedWhy says no step had a tool succeed or saved a file — an empty final text or an unmatched run row has no
      receipt either, and is never called a text answer. */
@@ -368,10 +368,10 @@ const WorkflowPanel = (() => {
     const textOnly = mine.shippedWhy === 'no-proven-work';
     // (GitHub #122) the server's other proven reason: a review loop used all its passes without approving this job
     const unapproved = mine.shippedWhy === 'unapproved';
-    const tip = NOT_SHIPPED_RULE + (unapproved ? 'Its review loop used all its passes without an approval, and SHIPPED never counts unapproved work'
-      : textOnly ? 'No step of this job had a tool succeed or saved a file — it answered in text' : 'The station holds no SHIPPED receipt for this job')
-      + ': it is delivered (the result is below), just not counted there';
-    return ' · <span class="wf-noship" data-tip="' + esc(tip) + '">' + (unapproved ? 'unapproved: ' : textOnly ? 'a text answer: ' : '') + 'not counted in SHIPPED</span>';
+    const tip = NOT_SHIPPED_RULE + (unapproved ? 'Su loop de revisión usó todos sus pases sin aprobar, y SHIPPED nunca cuenta trabajo sin aprobar'
+      : textOnly ? 'Ningún paso de este trabajo tuvo una tool que triunfara o un archivo guardado — respondió en texto' : 'La estación no tiene un recibo SHIPPED para este trabajo')
+      + ': está entregado (el resultado está abajo), solo no se cuenta ahí';
+    return ' · <span class="wf-noship" data-tip="' + esc(tip) + '">' + (unapproved ? 'sin aprobar: ' : textOnly ? 'respuesta en texto: ' : '') + 'sin contar en SHIPPED</span>';
   }
   /* WHAT EACH TODAY NUMBER COUNTS: RUNS counts stages; SHIPPED counts recorded productive OUTBOX jobs.
      Older runs without shipment receipts cannot prove a historic delivery total. Each tip names its scope. */
@@ -381,12 +381,12 @@ const WorkflowPanel = (() => {
        restart, so the tip says so instead of promising the whole number back; N+ = a lower bound (line-stats shippedAtLeast) */
     if (k === 'SHIPPED' && v === '?') return 'SHIPPED\nunknown right now: the saved shipment history can\'t be read. RUNS, FAILED and $ TODAY still count. Jobs that ship meanwhile are counted once it can be read again, unless the station restarts first';
     if (k === 'SHIPPED' && /\+$/.test(String(v))) return 'SHIPPED\nat least this many: some jobs that shipped today have no saved record (more than the history keeps, or they shipped while it could not be read), so the real number is higher';
-    if (k === 'RUNS') return 'RUNS\nevery time a step of this line ran today: one job through a 3-step line is 3 runs';
-    if (k === 'SHIPPED') return 'SHIPPED\nrecorded jobs that reached the OUTBOX after a tool succeeded or a file was saved. Earlier deliveries without a saved shipment record are not included. Text-only answers still reach the OUTBOX, but do not count here, and neither does work a review loop sent on without an approval';
-    if (k === 'FAILED') return 'FAILED\nstep runs that ended in an error, a refusal, a budget stop or too many turns';
-    if (k === 'TESTS') return 'TESTS\nstep tests (TEST THIS STEP, STEP THROUGH): not jobs, but their cost is in $ TODAY';
-    if (k === 'MEDIAN') return 'MEDIAN\nthe middle time of a step run today';
-    return /^\$ TODAY/.test(k) ? '$ TODAY\nwhat this line spent today, against its daily cap when one is set (LINE BUDGET on the INBOX)' : '';
+    if (k === 'RUNS') return 'RUNS\ncada vez que un paso de esta línea corrió hoy: un trabajo por una línea de 3 pasos son 3 runs';
+    if (k === 'SHIPPED') return 'SHIPPED\ntrabajos registrados que llegaron al OUTBOX tras triunfar una tool o guardarse un archivo. Entregas anteriores sin registro de envío no entran. Las respuestas solo en texto llegan al OUTBOX pero no cuentan aquí, ni el trabajo que un loop de revisión pasó sin aprobar';
+    if (k === 'FAILED') return 'FAILED\nruns de paso que terminaron en error, una negativa, un paro de presupuesto o demasiados turns';
+    if (k === 'TESTS') return 'TESTS\ntests de paso (TEST THIS STEP, STEP THROUGH): no son trabajos, pero su coste está en $ HOY';
+    if (k === 'MEDIAN') return 'MEDIAN\nel tiempo medio de un run de paso hoy';
+    return /^\$ HOY/.test(k) ? '$ HOY\nlo que esta línea gastó hoy, frente a su tope diario si está (LINE BUDGET del INBOX)' : '';
   }
   let todayTimer = 0;
   function refreshToday() {
@@ -412,13 +412,13 @@ const WorkflowPanel = (() => {
     const headKey = (S.lineKey ? 'line:' + S.lineKey : 'lone:' + S.lone) + (intake ? '|' + intake.id : '');   // (a line's key can BE its first machine's id: tell a lone part from its line, and a line that gained its INBOX)
     if (!head.dataset.line || head.dataset.line !== headKey) {
       head.dataset.line = headKey;
-      head.innerHTML = '<div class="wf-head-row"><span class="wf-kick" id="wf-kick"></span><button type="button" class="bb sm wf-x" id="wf-close" aria-label="Close workflow panel">✕</button></div>'
+      head.innerHTML = '<div class="wf-head-row"><span class="wf-kick" id="wf-kick"></span><button type="button" class="bb sm wf-x" id="wf-close" aria-label="Cerrar panel de flujo">✕</button></div>'
         + '<div class="wf-name">' + (intake
-          ? '<input id="wf-name" data-name-for="' + esc(intake.id) + '" class="wf-name-in" type="text" maxlength="48" aria-label="Workflow name" placeholder="' + esc(H.stampName(intake.id) || 'Name this workflow') + '" value="' + esc(intake.label || '') + '" />'
+          ? '<input id="wf-name" data-name-for="' + esc(intake.id) + '" class="wf-name-in" type="text" maxlength="48" aria-label="Nombre del flujo" placeholder="' + esc(H.stampName(intake.id) || 'Nombra este flujo') + '" value="' + esc(intake.label || '') + '" />'
           : '<span class="wf-name-none">' + (c ? 'Unnamed line' : 'A single BAY') + '</span>') + '</div>'
-        + '<div class="wf-ready"><span class="wf-pill" id="wf-pill"></span><button type="button" class="bb sm refit-primary" id="wf-sendnow" hidden>▶ SEND A JOB</button><span class="wf-est" id="wf-est"></span></div>'
+        + '<div class="wf-ready"><span class="wf-pill" id="wf-pill"></span><button type="button" class="bb sm refit-primary" id="wf-sendnow" hidden>▶ ENVIAR UN TRABAJO</button><span class="wf-est" id="wf-est"></span></div>'
         + '<div class="wf-warnline wf-toolong" id="wf-toolong" role="status" hidden></div>'
-        + '<p class="wf-today" id="wf-today" aria-label="This line today"></p>'
+        + '<p class="wf-today" id="wf-today" aria-label="Esta línea hoy"></p>'
         + '<p class="wf-sentence" id="wf-sentence" aria-live="polite"></p><ul class="wf-hints" id="wf-hints"></ul>';
       $('#wf-close').onclick = () => { H.sfx('click'); close(); };
       const nameIn = $('#wf-name');
@@ -456,7 +456,7 @@ const WorkflowPanel = (() => {
         : s.t === 'loop' ? '<span class="wf-lp">' + esc(s.s) + '</span>'
         : (i === 0 && intake) ? '<span class="wf-st" data-go="' + esc(intake.id) + '">' + esc(s.s) + '</span>' : esc(s.s)).join('');
       sent.querySelectorAll('[data-go]').forEach(n => { n.onclick = () => { if (n.dataset.go) select(n.dataset.go); }; });
-    } else sent.textContent = 'This BAY isn’t on any line, so it only works when you message its agent directly. MAKE IT A LINE gives it a line of its own; JOIN A LINE belts it onto a line already on the floor.';
+    } else sent.textContent = 'Este BAY no está en ninguna línea, así que solo funciona cuando le mandas un mensaje a su agente. HACERLO LÍNEA le da una línea propia; UNIRSE A UNA LÍNEA lo engancha con cintas a una línea ya en el suelo.';
     const hints = $('#wf-hints');
     // the sentence above already says what starts the line, or that nothing does: that one is never said twice
     // (TOO LONG has its own row under the pill, with its key — never a second chip saying the same)
@@ -477,9 +477,9 @@ const WorkflowPanel = (() => {
       const sch = tr.schedules.length, ch = tr.channels.length, ev = tr.events.length, off = (tr.offSchedules || []).length;
       const kinds = (sch ? 1 : 0) + (ch ? 1 : 0) + (ev ? 1 : 0);
       nodes.push({ kind: 'trigger', propId: ip, mach: 'intake', cls: 'wf-term' + (ip ? '' : ' none'), ok: !!ip && (sch + ch + ev) > 0, name: 'INBOX', warn: !ip,
-        meta: !ip ? 'none yet' : kinds > 1 ? (sch + ch + ev) + ' ways in' : sch ? tr.schedules[0] : ch ? tr.channels[0] : ev ? (tr.events.length === 1 ? tr.events[0].replace(/^when /, '') : tr.events.length + ' events') : off ? 'schedule off' : 'by hand',
-        tip: 'INBOX · ' + (ip ? (kinds > 1 ? 'AUTO' : sch ? 'SCHEDULE' : ch ? 'CHANNEL' : ev ? 'TRIGGER' : off ? 'SCHEDULE · OFF' : 'BY HAND') : 'NO INBOX') + '\n'
-          + (ip ? (tr.channels.concat(tr.schedules, tr.events).join('\n') || (off ? tr.offSchedules[0] + ' · scheduling is off' : 'no trigger yet: it runs when you send it a job')) : 'add one on the floor') });
+        meta: !ip ? 'aún nada' : kinds > 1 ? (sch + ch + ev) + ' formas de entrar' : sch ? tr.schedules[0] : ch ? tr.channels[0] : ev ? (tr.events.length === 1 ? tr.events[0].replace(/^when /, '') : tr.events.length + ' eventos') : off ? 'programa apagado' : 'a mano',
+        tip: 'INBOX · ' + (ip ? (kinds > 1 ? 'AUTO' : sch ? 'PROGRAMA' : ch ? 'CANAL' : ev ? 'DISPARADOR' : off ? 'PROGRAMA · APAGADO' : 'A MANO') : 'SIN INBOX') + '\n'
+          + (ip ? (tr.channels.concat(tr.schedules, tr.events).join('\n') || (off ? tr.offSchedules[0] + ' · la programación está apagada' : 'aún sin disparador: corre cuando le mandas un trabajo')) : 'añade uno en el suelo') });
       f.cols.forEach(col => {
         nodes.push({ kind: 'col', col, ok: col.docks.every(d => d.agentId && H.hasCompute(d.agentId, d.propId)) });
         if (col.gate) nodes.push({ kind: 'gate', gate: col.gate, propId: col.gate.propId });
@@ -488,28 +488,28 @@ const WorkflowPanel = (() => {
       const endId = lastCol ? (lastCol.gate ? lastCol.gate.propId : lastCol.docks.length === 1 ? lastCol.docks[0].propId : null) : null;
       const sendsTo = sendTarget(f.outbox.propId);   // SEND TO: where this line's finished work rides on to (one short thing) — or OFF
       nodes.push({ kind: 'outbox', propId: f.outbox.propId, mach: 'outbox', addAfter: !f.outbox.propId && endId && H.lineEdit ? endId : null, cls: 'wf-term', ok: f.outbox.reached, name: 'OUTBOX',
-        meta: f.outbox.reached ? (sendsTo ? 'sends to ' + sendsTo.name + (sendsTo.off ? ' · OFF' : '') : 'the result') : f.outbox.reachedOnceCrewed ? 'needs crew' : 'not connected',
+        meta: f.outbox.reached ? (sendsTo ? 'envía a ' + sendsTo.name + (sendsTo.off ? ' · APAGADO' : '') : 'el resultado') : f.outbox.reachedOnceCrewed ? 'necesita tripulación' : 'no conectado',
         warn: (!f.outbox.reached && !f.outbox.reachedOnceCrewed) || !!(sendsTo && sendsTo.off),
-        tip: 'OUTBOX\n' + (f.outbox.reached ? (sendsTo ? (sendsTo.off ? 'the line ends here — its SEND TO ' + sendsTo.name + ' is off: nothing is sent on' : 'the line ends here — every job that finishes cleanly is sent on to ' + sendsTo.name) : 'the line ends here') : f.outbox.propId ? (f.outbox.reachedOnceCrewed ? 'connected · waiting on agents' : 'not connected yet') : 'no OUTBOX') });
+        tip: 'OUTBOX\n' + (f.outbox.reached ? (sendsTo ? (sendsTo.off ? 'la línea termina aquí — su SEND TO ' + sendsTo.name + ' está apagado: nada se envía' : 'la línea termina aquí — cada trabajo que termina bien se envía a ' + sendsTo.name) : 'la línea termina aquí') : f.outbox.propId ? (f.outbox.reachedOnceCrewed ? 'conectado · esperando agentes' : 'aún no conectado') : 'SIN OUTBOX') });
     } else if (S.lone) {
       nodes.push({ kind: 'col', col: { docks: [{ propId: S.lone, agentId: (prop(S.lone) || {}).agentId || null, role: (prop(S.lone) || {}).role || null, routed: false }], mode: 'single' }, ok: false });
     }
     let html = '';
     const machineOf = n => n.kind === 'trigger' || n.kind === 'outbox' ? n.propId : n.kind === 'col' && n.col.docks.length === 1 ? n.col.docks[0].propId : null;
     nodes.forEach((n, i) => {
-      if (i > 0 && n.kind === 'col' && n.col.detached) html += '<div class="wf-belt gap"><span class="carry">not connected</span></div>';
+      if (i > 0 && n.kind === 'col' && n.col.detached) html += '<div class="wf-belt gap"><span class="carry">no conectado</span></div>';
       else if (i > 0) {
         const prev = nodes[i - 1], a = machineOf(prev), b = machineOf(n);
-        const carry = n.kind === 'col' && n.col.escalation ? escCarry(n.col.escalation) : prev.kind === 'trigger' ? 'the job' : prev.kind === 'col' && prev.col.docks.length === 1 ? ((prop(prev.col.docks[0].propId) || {}).hands || '') : prev.kind === 'gate' ? (prev.gate.kind === 'loop' ? 'on DONE' : 'as one') : '';
+        const carry = n.kind === 'col' && n.col.escalation ? escCarry(n.col.escalation) : prev.kind === 'trigger' ? 'the job' : prev.kind === 'col' && prev.col.docks.length === 1 ? ((prop(prev.col.docks[0].propId) || {}).hands || '') : prev.kind === 'gate' ? (prev.gate.kind === 'loop' ? 'con DONE' : 'como uno') : '';
         const canPlus = !!(a && b && S.lineKey);
         // a + that can only refuse is shown OFF with its reason (2026-09-27 audit B3) — never a role picker that ends in an error
         const lined = canPlus && H.lineEdit ? canEdit('insertStep', a, { from: a, to: b }) : null;
         const chk = lined && lined.ok ? lined : canPlus && H.canInsertBay ? (H.canInsertBay(a, b) || { ok: true }) : { ok: true };
         html += '<div class="wf-belt">' + (carry ? '<span class="carry" data-tip="' + esc(carry) + '">' + esc(carry) + '</span>' : '') + '<span class="rail"></span>'
           + (canPlus ? (chk.ok
-            ? '<button type="button" class="wf-plus" data-plus="' + i + '" data-plus-at="' + i + '" data-from="' + esc(a) + '" data-to="' + esc(b) + '" aria-label="Add a step here" data-tip="Add a step here">+</button>'
+            ? '<button type="button" class="wf-plus" data-plus="' + i + '" data-plus-at="' + i + '" data-from="' + esc(a) + '" data-to="' + esc(b) + '" aria-label="Añadir un paso aquí" data-tip="Añadir un paso aquí">+</button>'
             // OFF: its reason is the hover tip (the station card, like every key here) and, clicked, the panel's own answer line
-            : '<button type="button" class="wf-plus off" aria-disabled="true" data-plus-at="' + i + '" data-plus-off="' + esc(plusWhy(chk)) + '" aria-label="' + esc('Adding a step here is not possible: ' + plusWhy(chk)) + '" data-tip="' + esc(plusWhy(chk)) + '">+</button>') : '')
+            : '<button type="button" class="wf-plus off" aria-disabled="true" data-plus-at="' + i + '" data-plus-off="' + esc(plusWhy(chk)) + '" aria-label="' + esc('Añadir un paso aquí no es posible: ' + plusWhy(chk)) + '" data-tip="' + esc(plusWhy(chk)) + '">+</button>') : '')
           + '</div>';
       }
       html += nodeHTML(n, f);
@@ -561,26 +561,26 @@ const WorkflowPanel = (() => {
   const STEP_ROLES = ['RESEARCHER', 'WRITER', 'REVIEWER', 'ENGINEER', 'TESTER', 'ANALYST', 'SHIPPER', 'GENERALIST'];
   function inserterHTML(from, to, f) {
     const roles = STEP_ROLES;
-    const nm = id => { const p = prop(id); return !p ? '?' : p.t === 'intake' ? 'the INBOX' : p.t === 'outbox' ? 'the OUTBOX' : dockLabel(f, id); };
+    const nm = id => { const p = prop(id); return !p ? '?' : p.t === 'intake' ? 'el INBOX' : p.t === 'outbox' ? 'el OUTBOX' : dockLabel(f, id); };
     const B = prop(to), JN = { splitter: 1, filter: 1, merger: 1, joiner: 1, loop: 1 };
     const lined = !!(H.lineEdit && canEdit('insertStep', from, { from, to }).ok);
-    const shapes = lined ? '<div class="wf-chips" aria-label="Or a junction">'
-      + editBtn('addBranch', from, { from, to, mode: 'copy' }, '⑂ BRANCH · COPY TO EACH', 'two new steps both get the job and a JOINER combines their results')
-      + editBtn('addBranch', from, { from, to, mode: 'turns' }, '⑂ BRANCH · TAKE TURNS', 'two new steps take turns and a MERGER passes each job on')
-      + (B && !JN[B.t] ? editBtn('addSorter', from, { from, to }, '⧩ SORT BY TASK TYPE', 'a FILTER: CODE work to an ENGINEER, RESEARCH to a RESEARCHER, everything else straight on') : '')
+    const shapes = lined ? '<div class="wf-chips" aria-label="O una unión">'
+      + editBtn('addBranch', from, { from, to, mode: 'copy' }, '⑂ RAMA · COPIAR A CADA', 'dos pasos nuevos reciben el trabajo y un JOINER combina sus resultados')
+      + editBtn('addBranch', from, { from, to, mode: 'turns' }, '⑂ RAMA · POR TURNOS', 'dos pasos nuevos se turnan y un MERGER pasa cada trabajo')
+      + (B && !JN[B.t] ? editBtn('addSorter', from, { from, to }, '⧩ ORDENAR POR TIPO DE TAREA', 'un FILTER: trabajo CODE a un ENGINEER, RESEARCH a un RESEARCHER, lo demás sigue directo') : '')
       + '</div>' : '';
-    return '<div class="wf-inserter" role="group" aria-label="Add to the line"><div class="h">' + (lined ? 'ADD BETWEEN ' : 'ADD A BAY BETWEEN ') + esc(nm(from)) + ' AND ' + esc(nm(to)) + '<button type="button" class="bb sm" data-ins-close aria-label="Cancel">✕</button></div>'
-      + '<div class="wf-chips" aria-label="A step">' + roles.concat(['']).map(r => {
+    return '<div class="wf-inserter" role="group" aria-label="Añadir a la línea"><div class="h">' + (lined ? 'AÑADIR ENTRE ' : 'AÑADIR UN BAY ENTRE ') + esc(nm(from)) + ' Y ' + esc(nm(to)) + '<button type="button" class="bb sm" data-ins-close aria-label="Cancelar">✕</button></div>'
+      + '<div class="wf-chips" aria-label="Un paso">' + roles.concat(['']).map(r => {
         // a chip whose step found no room where the line stands is ARMED: its second click lays the line out afresh round it
         const armed = lined && S.armTidy && S.armTidy.key === armKey('insertStep', from, { from, to, role: r || null }) && Date.now() - S.armTidy.t < ARM_MS;
-        return '<button type="button" class="wf-chip' + (armed ? ' armed' : '') + '" data-ins-role="' + r + '"' + (armed ? ' data-tidy-armed="1" data-rest="' + esc(r || 'NO ROLE') + '" data-tip="the line where it stands has no room for this: a second click lays the whole line out afresh with it (its INBOX stays put) — one UNDO"' : '') + '>' + esc(armed ? '⌗ TIDY LINE TO FIT IT?' : (r || 'NO ROLE')) + '</button>';
+        return '<button type="button" class="wf-chip' + (armed ? ' armed' : '') + '" data-ins-role="' + r + '"' + (armed ? ' data-tidy-armed="1" data-rest="' + esc(r || 'NO ROLE') + '" data-tip="la línea donde está no tiene hueco para esto: un segundo clic reorganiza toda la línea con él (su INBOX se queda) — un UNDO"' : '') + '>' + esc(armed ? '⌗ ¿ORGANIZAR LÍNEA PARA CABER?' : (r || 'SIN ROL')) + '</button>';
       }).join('') + '</div>' + shapes
-      + '<span class="n">' + (lined ? 'A step, or a branch or sorter with its steps: real machines are placed on the floor with their belts, and every other belt stays where it is — one UNDO takes it all back. If there is no room, nothing changes.'
-        : 'A real BAY is placed on the floor near this belt and the belts re-route through it — one UNDO takes it all back. If there is no room, nothing changes.') + '</span></div>';
+      + '<span class="n">' + (lined ? 'Un paso, o una rama o clasificador con sus pasos: se colocan máquinas reales en el suelo con sus cintas, y cada otra cinta se queda donde está — un UNDO lo deshace todo. Si no hay hueco, nada cambia.'
+        : 'Un BAY real se coloca en el suelo junto a esta cinta y las cintas re-rutean por él — un UNDO lo deshace todo. Si no hay hueco, nada cambia.') + '</span></div>';
   }
   function nodeHTML(n, f) {
     const isSel = id => !!id && id === S.sel;
-    if (n.kind === 'outbox' && n.addAfter) return editBtn('addOutbox', n.addAfter, { after: n.addAfter }, '+ OUTBOX', 'an OUTBOX after the last step — where finished work lands', 'wf-node wf-term wf-addend');
+    if (n.kind === 'outbox' && n.addAfter) return editBtn('addOutbox', n.addAfter, { after: n.addAfter }, '+ OUTBOX', 'un OUTBOX tras el último paso — donde cae el trabajo terminado', 'wf-node wf-term wf-addend');
     if (n.kind === 'trigger' || n.kind === 'outbox') {
       return tileHTML({ cls: n.cls, sel: isSel(n.propId), attrs: ' data-node="' + esc(n.propId || '') + '"' + (n.propId ? '' : ' disabled'),
         mach: n.propId ? n.mach : null, lamp: n.ok, name: n.name, meta: n.meta, warn: n.warn, tip: n.tip, label: n.name + ', ' + n.meta });
@@ -588,25 +588,25 @@ const WorkflowPanel = (() => {
     if (n.kind === 'gate') {
       const g = n.gate, back = g.backTo && f.docks[g.backTo], loop = g.kind === 'loop';
       const who = back ? (back.agentId ? nameOf(back.agentId) : back.role || 'BAY') : '?';
-      const txt = loop ? '⟲ back to ' + who + ' · up to ' + (g.max || 5) + '×' : 'waits for every part';
+      const txt = loop ? '⟲ volver a ' + who + ' · hasta ' + (g.max || 5) + '×' : 'espera a cada parte';
       return tileHTML({ cls: 'gate ' + g.kind, sel: isSel(g.propId), attrs: ' data-node="' + esc(g.propId || '') + '" data-gate="' + esc(g.key) + '"',
-        mach: loop ? 'loop' : 'joiner', lamp: null, name: loop ? 'LOOP' : 'JOINER', meta: loop ? 'back to ' + who : 'waits for all',   // (how many times: the way back's label and the tip)
-        tip: (loop ? 'LOOP GATE' : 'JOINER') + '\n' + txt, label: (loop ? 'LOOP, ' : 'JOINER, ') + txt });
+        mach: loop ? 'loop' : 'joiner', lamp: null, name: loop ? 'LOOP' : 'JOINER', meta: loop ? 'volver a ' + who : 'espera a todos',   // (cuántas veces: la etiqueta del camino de vuelta y el tip)
+        tip: (loop ? 'PUERTA LOOP' : 'JOINER') + '\n' + txt, label: (loop ? 'LOOP, ' : 'JOINER, ') + txt });
     }
     const col = n.col;
     const inner = col.docks.map(d => {
       const p = prop(d.propId) || {}, t = testOf(d.propId), i = f ? f.order.indexOf(d.propId) + 1 : 1;
-      const ok = !!(d.agentId && H.hasCompute(d.agentId, d.propId)), who = d.agentId ? nameOf(d.agentId) : null, role = (prop(d.propId) || {}).label || d.role || 'STEP';
+      const ok = !!(d.agentId && H.hasCompute(d.agentId, d.propId)), who = d.agentId ? nameOf(d.agentId) : null, role = (prop(d.propId) || {}).label || d.role || 'PASO';
       const brief = p.brief ? String(p.brief) : '';
-      const tip = 'BAY ' + i + ' · ' + role + '\n' + (who ? who + ' works this step' : 'no agent yet')
-        + (who && !ok ? '\nneeds a workstation' : '') + (d.agentId && !d.routed ? '\nnot routed yet' : '')
-        + '\n' + (brief ? '“' + brief.slice(0, 140) + (brief.length > 140 ? '…' : '') + '”' : 'no instructions yet') + (t ? '\n✓ tested' : '');
+      const tip = 'BAY ' + i + ' · ' + role + '\n' + (who ? who + ' trabaja este paso' : 'sin agente aún')
+        + (who && !ok ? '\nnecesita un puesto' : '') + (d.agentId && !d.routed ? '\naún no enrutado' : '')
+        + '\n' + (brief ? '“' + brief.slice(0, 140) + (brief.length > 140 ? '…' : '') + '”' : 'sin instrucciones aún') + (t ? '\n✓ probado' : '');
       return tileHTML({ cls: 'dock', sel: isSel(d.propId), attrs: ' data-node="' + esc(d.propId) + '"', badge: String(i) + (t ? ' ✓' : ''), badgeOk: !!t,
-        mach: 'bay', agent: d.agentId ? thumb(d.agentId, 26, 32, 'wf-nthumb') : '', lamp: ok, name: role, meta: who || 'needs an agent', warn: !who,
-        tip, label: 'BAY ' + i + ', ' + role + ', ' + (who || 'no agent yet') });
+        mach: 'bay', agent: d.agentId ? thumb(d.agentId, 26, 32, 'wf-nthumb') : '', lamp: ok, name: role, meta: who || 'necesita un agente', warn: !who,
+        tip, label: 'BAY ' + i + ', ' + role + ', ' + (who || 'sin agente aún') });
     }).join('');
     if (col.docks.length === 1) return inner;
-    return '<div class="wf-colgroup ' + col.mode + '"><span class="wf-colmode">' + (col.detached ? 'NOT CONNECTED' : col.mode === 'all' ? 'ALL RUN' : col.mode === 'turns' ? 'TAKE TURNS' : 'ONE BY CONTENT') + '</span>' + inner + '</div>';
+    return '<div class="wf-colgroup ' + col.mode + '"><span class="wf-colmode">' + (col.detached ? 'NO CONECTADO' : col.mode === 'all' ? 'TODOS CORREN' : col.mode === 'turns' ? 'POR TURNOS' : 'UNO POR CONTENIDO') + '</span>' + inner + '</div>';
   }
   function drawArcs(strip, f) {
     if (!f) return;
@@ -637,7 +637,7 @@ const WorkflowPanel = (() => {
     strip.appendChild(svg);
   }
   // why a + is off, in words (never the bare "not possible" its old label said)
-  const plusWhy = chk => (chk && chk.msg) || 'a step cannot be added on this belt automatically — add a BAY by hand (Conveyors › MACHINES › BAY) and connect it with BELT';
+  const plusWhy = chk => (chk && chk.msg) || 'no se puede añadir un paso en esta cinta automáticamente — añade un BAY a mano (Transportadoras › MÁQUINAS › BAY) y conéctalo con BELT';
   // a refusal: the bad sound and the panel's own answer line under the control that was clicked (note) — never an off-panel toast
   function refuse(msg, anchor) { H.sfx('bad'); note(msg, true, anchor); }
   /* a NAME's answer (line or step), said under its own field like every other panel answer (conveyor-ui-12: a refused name
@@ -652,8 +652,8 @@ const WorkflowPanel = (() => {
     // insert that lays its belts by the ring rule
     if (H.lineEdit && canEdit('insertStep', fromId, { from: fromId, to: toId }).ok) return lineEdit('insertStep', fromId, { from: fromId, to: toId, role: role || null }, 'step added', tidy ? { tidy: true } : null, anchor);
     const res = H.insertBay(fromId, toId, role || null);
-    if (res && res.ok) { S.insertAt = null; H.sfx('chime'); note('BAY placed on the floor · belts re-routed · UNDO removes it', false, anchor); S.sel = res.id; paint(true); H.highlight(res.id); H.focusProp(res.id); }
-    else { paintStrip(flow()); refuse((res && res.msg) || 'could not add a step here', anchor); }   // (the inserter stays open: try another step, or close it)
+    if (res && res.ok) { S.insertAt = null; H.sfx('chime'); note('BAY colocado en el suelo · cintas re-ruteadas · UNDO lo quita', false, anchor); S.sel = res.id; paint(true); H.highlight(res.id); H.focusProp(res.id); }
+    else { paintStrip(flow()); refuse((res && res.msg) || 'no se pudo añadir un paso aquí', anchor); }   // (the inserter stays open: try another step, or close it)
     return res;
   }
 
@@ -662,9 +662,9 @@ const WorkflowPanel = (() => {
      edit of the line's graph, laid out by the engine and written back in one UNDO slot (H.lineEdit → LineEdit). A button whose
      edit could only fail is shown OFF with the reason as its tip — never a click that ends in an error. */
   const canEdit = (op, id, args) => (H && H.canLineEdit) ? (H.canLineEdit(op, id, args) || { ok: false }) : { ok: false, msg: 'this station cannot edit lines' };
-  const EDIT_DONE = { insertStep: 'step added', appendStep: 'step added', addBranch: 'branch added', addLoop: 'review added', addSorter: 'sorter added',
-    removeStep: 'step removed', removeLoop: 'review removed', moveStep: 'step moved', tidy: 'line tidied', addOutbox: 'OUTBOX added', wrapLine: 'line made',
-    addArm: 'branch added', removeArm: 'branch removed', addRoute: 'route added', removeSorter: 'sorter removed' };
+  const EDIT_DONE = { insertStep: 'paso añadido', appendStep: 'paso añadido', addBranch: 'rama añadida', addLoop: 'revisión añadida', addSorter: 'clasificador añadido',
+    removeStep: 'paso quitado', removeLoop: 'revisión quitada', moveStep: 'paso movido', tidy: 'línea ordenada', addOutbox: 'OUTBOX añadido', wrapLine: 'línea creada',
+    addArm: 'rama añadida', removeArm: 'rama quitada', addRoute: 'ruta añadida', removeSorter: 'clasificador quitado' };
   /* NO ROOM WHERE THE LINE STANDS (the edit would fit with the line laid out afresh): the button ARMS in place — its label says
      what a second click does (TIDY the line round the change, one UNDO) and it rests again after a few seconds. Never a silent
      re-layout of the whole line: every machine of it may move, so that takes the Commander's second click. */
@@ -680,7 +680,7 @@ const WorkflowPanel = (() => {
     S.armTidy = null;
     if (res && res.ok) {
       S.insertAt = null;
-      H.sfx('chime'); note((okMsg || EDIT_DONE[op] || 'line changed') + (res.tidied ? ' · the whole line laid out afresh round it' : res.relaid ? ' · the belts round it re-routed' : '') + ' · UNDO takes it back', false, anchor);
+      H.sfx('chime'); note((okMsg || EDIT_DONE[op] || 'line changed') + (res.tidied ? ' · toda la línea reorganizada en torno a él' : res.relaid ? ' · las cintas en torno a él re-ruteadas' : '') + ' · UNDO takes it back', false, anchor);
       const focus = res.focus && prop(res.focus) ? res.focus : (prop(S.sel) ? S.sel : null);
       if (focus) { S.sel = focus; H.highlight(focus); }
       refresh(); paint(true);
@@ -691,7 +691,7 @@ const WorkflowPanel = (() => {
       paint(true);
       refuse('no room for that with the line where it stands — click it again to TIDY the line round it (every machine may move · one UNDO)', anchor);
       setTimeout(() => { if (S.armTidy && S.armTidy.key === key && Date.now() - S.armTidy.t >= ARM_MS - 50) { S.armTidy = null; if (el) el.querySelectorAll('[data-tidy-armed]').forEach(disarmBtn); } }, ARM_MS);
-    } else { paint(true); refuse((res && res.msg) || 'that change cannot be made here', anchor); }
+    } else { paint(true); refuse((res && res.msg) || 'ese cambio no se puede hacer aquí', anchor); }
     return res;
   }
   function disarmBtn(b) { b.textContent = b.dataset.rest || b.textContent; b.classList.remove('armed'); b.removeAttribute('data-tidy-armed'); }
@@ -718,19 +718,19 @@ const WorkflowPanel = (() => {
     if (!H.lineEdit) return '';
     /* A BAY ON NO LINE (2026-10-09 P0): its own line (MAKE IT A LINE), or a place on a line that already exists — JOIN A LINE arms
        the BELT tool with this BAY as the destination, so the next machine clicked on the floor is the one that hands it work */
-    if (S.lone === p.id) return '<section class="wf-sec wf-shape"><h3>Put it on a line</h3><div class="wf-chips">'
-      + editBtn('wrapLine', p.id, { id: p.id }, '▸ MAKE IT A LINE', 'an INBOX feeds this step and an OUTBOX takes its work')
-      + (H.joinLine ? '<button type="button" class="wf-chip" id="wf-join" data-tip="arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work">⊕ JOIN A LINE</button>' : '')
-      + '</div><p class="wf-help dim">MAKE IT A LINE places an INBOX before it and an OUTBOX after it, belts laid — one UNDO takes it back.'
-      + (H.joinLine ? ' JOIN A LINE belts it onto a line that is already on the floor: click the machine that should hand it work.' : '') + '</p></section>';
-    return '<section class="wf-sec wf-shape"><h3>Shape the line</h3><div class="wf-chips">'
-      + editBtn('moveStep', p.id, { id: p.id, dir: -1 }, '◂ EARLIER', 'swap this step with the one before it')
-      + editBtn('moveStep', p.id, { id: p.id, dir: 1 }, 'LATER ▸', 'swap this step with the one after it')
-      + editBtn('addLoop', p.id, { around: p.id }, '⟲ ADD A REVIEW', 'a REVIEWER checks this step\'s work and sends it back until it is approved (up to 3 times)')
-      + editBtn('addBranch', p.id, { around: p.id, mode: 'copy' }, '⑂ SECOND OPINION', 'a second step gets the same job and a JOINER combines both results (COPY TO EACH)')
-      + editBtn('addBranch', p.id, { around: p.id, mode: 'turns' }, '⑂ SHARE THE LOAD', 'a second step takes turns with this one and a MERGER passes each job on (TAKE TURNS)')
-      + editBtn('removeStep', p.id, { id: p.id }, '✕ REMOVE STEP', 'take this step out; the step before it hands straight on')
-      + '</div><p class="wf-help dim">Each change places real machines and belts on the floor and keeps every other belt where it is — one UNDO takes it back.</p></section>';
+    if (S.lone === p.id) return '<section class="wf-sec wf-shape"><h3>Ponlo en una línea</h3><div class="wf-chips">'
+      + editBtn('wrapLine', p.id, { id: p.id }, '▸ HACERLO LÍNEA', 'un INBOX alimenta este paso y un OUTBOX recoge su trabajo')
+      + (H.joinLine ? '<button type="button" class="wf-chip" id="wf-join" data-tip="arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work">⊕ UNIRSE A UNA LÍNEA</button>' : '')
+      + '</div><p class="wf-help dim">HACERLO LÍNEA coloca un INBOX antes y un OUTBOX después, con cintas — un UNDO lo deshace.'
+      + (H.joinLine ? ' UNIRSE A UNA LÍNEA lo engancha con cintas a una línea ya en el suelo: haz clic en la máquina que debe pasarle trabajo.' : '') + '</p></section>';
+    return '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
+      + editBtn('moveStep', p.id, { id: p.id, dir: -1 }, '◂ EARLIER', 'cambia este paso con el anterior')
+      + editBtn('moveStep', p.id, { id: p.id, dir: 1 }, 'LATER ▸', 'cambia este paso con el siguiente')
+      + editBtn('addLoop', p.id, { around: p.id }, '⟲ AÑADIR UNA REVISIÓN', 'a REVIEWER checks this step\'s work and sends it back until it is approved (up to 3 times)')
+      + editBtn('addBranch', p.id, { around: p.id, mode: 'copy' }, '⑂ SEGUNDA OPINIÓN', 'un segundo paso recibe el mismo trabajo y un JOINER combina ambos resultados (COPIAR A CADA)')
+      + editBtn('addBranch', p.id, { around: p.id, mode: 'turns' }, '⑂ REPARTIR LA CARGA', 'un segundo paso se turna con este y un MERGER pasa cada trabajo (POR TURNOS)')
+      + editBtn('removeStep', p.id, { id: p.id }, '✕ QUITAR PASO', 'saca este paso; el paso anterior traspasa directo')
+      + '</div><p class="wf-help dim">Cada cambio coloca máquinas y cintas reales en el suelo y deja cada otra cinta donde está — un UNDO lo deshace.</p></section>';
   }
 
   /* ---------- the footer: step-test the line (or the whole-line sample when the route is absent) ---------- */
@@ -742,11 +742,11 @@ const WorkflowPanel = (() => {
     /* ONE TEST CONTROL (2026-09-28): the footer's single TEST opens the TEST view, whose modes say what each test is —
        WATCH IT (free) · STEP THROUGH (real, pauses) · SEND A REAL JOB (real, lands in the OUTBOX). */
     if (c && S.seam !== null) {
-      html += S.view === 'test' ? '<button type="button" class="bb sm" id="wf-back">◂ SETUP</button>'
+      html += S.view === 'test' ? '<button type="button" class="bb sm" id="wf-back">◂ AJUSTES</button>'
         : '<button type="button" class="bb sm refit-primary" id="wf-test">' + (s && W.isLive(s) ? '▶ TEST · ' + s.state.toUpperCase() : '▶ TEST') + '</button>';
     }
-    if (c && S.view !== 'test' && H.lineEdit && S.sel) html += editBtn('tidy', S.sel, {}, '⌗ TIDY LINE', 'lay the whole line out afresh — its INBOX stays where it is', 'bb sm');
-    html += '<button type="button" class="bb sm" id="wf-done">✓ DONE</button>';
+    if (c && S.view !== 'test' && H.lineEdit && S.sel) html += editBtn('tidy', S.sel, {}, '⌗ TIDY LINE', 'reorganiza la línea entera — su INBOX se queda donde está', 'bb sm');
+    html += '<button type="button" class="bb sm" id="wf-done">✓ HECHO</button>';
     foot.innerHTML = html;
     wireEdits(foot);
     const b1 = $('#wf-test'); if (b1) b1.onclick = () => { H.sfx('click'); S.view = 'test'; paint(true); toCard(true); if (s && s.state === 'paused') refreshPaused(); };
@@ -770,7 +770,7 @@ const WorkflowPanel = (() => {
     // The picker owns capability fallback; an older sidecar still offers WATCH IT and SEND A REAL JOB.
     if (S.view === 'test' && comp()) { paintTest(body, f); restoreDrafts(); return; }
     const p = prop(S.sel);
-    if (!p) { body.innerHTML = '<p class="wf-help">Select a part of the line.</p>'; return; }
+    if (!p) { body.innerHTML = '<p class="wf-help">Selecciona una parte de la línea.</p>'; return; }
     if (p.t === 'bay') paintBay(body, f, p);
     else if (p.t === 'intake') paintTrigger(body, f, p);
     else if (p.t === 'loop' || p.t === 'joiner') paintGate(body, f, p);
@@ -817,7 +817,7 @@ const WorkflowPanel = (() => {
       else if (!d.agentId) to = 'decided once it has an agent';
       else if (f.outbox.reached && !d.deadEnd) to = 'the OUTBOX';
       // the belt IS there — the bay it leads to just has no agent yet (never "connect a belt" for a belt that exists)
-      else if (f.probeNext && f.probeNext[p.id]) to = 'nowhere yet — ' + f.probeNext[p.id].map(pid => dockLabel(f, pid)).join(' or ') + ' needs an agent';
+      else if (f.probeNext && f.probeNext[p.id]) to = 'aún a ninguna parte — ' + f.probeNext[p.id].map(pid => dockLabel(f, pid)).join(' o ') + ' necesita un agente';
       else to = d.deadEnd ? 'nowhere — connect a belt to the next BAY or the OUTBOX' : 'no onward connection confirmed yet';
     }
     return { gets, to };
@@ -1110,7 +1110,7 @@ const WorkflowPanel = (() => {
         + '</div><div class="trg-preview" id="trg-preview"></div>'
         + (docks.length > 1 ? '<details class="wf-more"><summary>Run by · ' + esc(nameOf(trgAgent())) + '</summary><p class="wf-help">Usually, start with the first step. Choosing a later step skips the steps before it.</p><div class="wf-chips" id="trg-docks">' + docks.map(dockChip).join('') + '</div><div class="wf-help trg-dock-hint" id="trg-dock-hint">' + esc(dockHint(S.trgDock)) + '</div></details>'
           : docks.length === 1 ? '<div class="wf-help">fires at ' + thumb(docks[0].agentId, 16, 20, 'wf-ithumb') + '<b>' + esc((firstName ? firstName + ' · ' : '') + nameOf(docks[0].agentId)) + '</b> — this line’s first step</div>'
-          : '<div class="wf-warnline">Assign an agent to a connected BAY first. A schedule needs an agent to start the work.</div>')
+          : '<div class="wf-warnline">Asigna un agente a un BAY conectado primero. Un programa necesita un agente para empezar el trabajo.</div>')
         /* ONE ARM RULE (org P16, 2026-10-14 — the SCHEDULES form's rule, one server seam): the first save on a scheduling switch nobody
            ever set turns it ON; after the Commander turned it OFF a save keeps it off and offers ▶ TURN SCHEDULING ON; an E-STOP is
            never lifted from here. One SAVE SCHEDULE key — the help line says which of the three this save will do (GET /api/cron armSet). */
@@ -1514,7 +1514,7 @@ const WorkflowPanel = (() => {
         + [['code', 'CODE'], ['research', 'RESEARCH'], ['general', 'GENERAL']].map(([tag, lbl]) => '<button type="button" class="bb sm loop-when' + (p.when === tag ? ' sel' : '') + '" data-tag="' + tag + '">' + lbl + '</button>').join('')
         + '</div></details>'
         + '<div class="wf-help" id="loop-note">' + esc(H.loopRuleTxt(p.when, p.maxIter || loopMaxDef)) + ' Blank max = ' + loopMaxDef + '.</div></section>'
-        + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Shape the line</h3><div class="wf-chips">'
+        + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
           + editBtn('removeLoop', p.id, { id: p.id }, '✕ REMOVE THE REVIEW', 'the LOOP gate and the REVIEWER it came with go; the step they reviewed hands straight on')
           + '</div></section>' : '')
       : '';
@@ -1718,7 +1718,7 @@ const WorkflowPanel = (() => {
         + '<h4 class="wf-sub">Branches</h4>' + branches('No branches yet. Run two belts OUT of the splitter: drag from the SPLITTER onto the next machine, then again for the second branch.')
         // (COPY TO EACH and SPLIT THE JOB both meet at a JOINER: only TAKE TURNS swaps it for a MERGER)
         + '<p class="wf-help" id="split-note">Switching to or from TAKE TURNS swaps the JOINER or MERGER where the branches meet; COPY TO EACH and SPLIT THE JOB share the JOINER. Same belts, one UNDO.</p></section>'
-        + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Shape the line</h3><div class="wf-chips">'
+        + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
           + editBtn('addArm', p.id, { split: p.id }, '⑂ ADD A BRANCH', mode === 'divide' ? 'one more step takes one more part of the job — the step before the splitter writes one part per branch, and the JOINER waits for it too'
             : copies ? 'one more step gets a copy of every job — the JOINER waits for it too' : 'one more step takes its turn with the others')
           + lanes.filter(l => l.dock).map(l => editBtn('removeArm', p.id, { split: p.id, head: l.dock }, '✕ ' + branchLabel(f, l.dock), 'take this branch out, every step on it; a split left with one branch folds away')).join('')
@@ -1759,11 +1759,11 @@ const WorkflowPanel = (() => {
       + '<div class="wf-routes">' + rows + '</div>'
       + '<p class="wf-help" id="flt-note">' + (cur.def ? 'Saved as you choose.' : 'Choose a belt for EVERYTHING ELSE so no task is left without a way out.') + '</p>'
       + '<p class="wf-help dim">The filter only knows these three types. A task already addressed to one agent follows that agent’s belt instead.</p></section>'
-      + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Shape the line</h3><div class="wf-chips">'
+      + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
         + [['code', 'CODE', 'an ENGINEER'], ['research', 'RESEARCH', 'a RESEARCHER']].filter(([tag]) => canEdit('addRoute', p.id, { id: p.id, tag }).error !== 'HAS_ROUTE')
           .map(([tag, lbl, who]) => editBtn('addRoute', p.id, { id: p.id, tag }, '+ A STEP FOR ' + lbl, who + ' takes ' + lbl + ' work, then hands on to where everything else goes')).join('')
         + editBtn('removeSorter', p.id, { id: p.id }, '✕ REMOVE THE SORTER', 'the FILTER and the steps it sorts work to go; the line runs straight on to where everything else went')
-        + '</div><p class="wf-help dim">Take out a route step (its card: ✕ REMOVE STEP) and that type goes with everything else. One UNDO takes any change back.</p></section>' : '');
+        + '</div><p class="wf-help dim">Saca un paso de ruta (su tarjeta: ✕ QUITAR PASO) y ese tipo va con todo lo demás. Un UNDO deshace cualquier cambio.</p></section>' : '');
     wireEdits(body);
     const note = $('#flt-note');
     body.querySelectorAll('[data-ftag]').forEach(b => { b.onclick = () => {
