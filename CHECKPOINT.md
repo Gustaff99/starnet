@@ -1,35 +1,41 @@
-# CHECKPOINT — MIS-27 (MIS-23-3): CIERRE
+# CHECKPOINT — MIS-23-4: app.js (criterios cumplidos, pendiente cierre)
 
-## Criterios de MIS-23-3 — TODOS CUMPLIDOS
-- [x] Scanner v4: 21 candidatos EN en L4600-11700 (<80; los 21 son falsos positivos: labels/aria/placeholders de campos numéricos o IDs, verificados en pasadas 7-10)
-- [x] node --check OK x3 (stationui.js, chat.js, group-chat.js)
-- [x] Tests help-copy (146) y voice en verde
-- [x] Suite fast: sweep2 final = 19 rojos, TODOS CDP/Chrome ambientales (host sin SKYNET_CHROME); claims verde con timeout 300
-- [x] Espejo sincronizado (sync-website-app: 0 escrituras; cmp OK x3)
-- [x] Commits en es/interfaz-espanol (cierre: este commit)
+## Estado
+- Subtarea activa: MIS-23-4 (app.js) — TODOS los criterios de traducción cumplidos
+- Rama: es/interfaz-espanol
+- Commits: 94a8e18b (lote A) + commit lotes B/C/D (este)
 
-## Rojos CDP ambientales del sweep final (19)
-crt-context-loss.e2e, prop-recovery-live.e2e, session-reliability.e2e,
-stationbake.{connections,offcanvas,plate-parity}, worldlight-receiver,
-world-sharpen, dossier-voice-label, provider-connections-ui,
-genesis-starnet-link, station-show, free-path-ollama, ease-of-use,
-google-connector, routine-preview-race, settle-managed-copy,
-tier-model-catalog, ssh-bg-read-remote.
-Evidencia: /tmp/sweep2.out (SWEEP88-DONE).
+## Criterios de MIS-23-4
+- [x] Lote A: model catalog + sign-in (L1700-2560) — commit 94a8e18b
+- [x] Lote B: StarNet linking + keys + recovery (L2635-3311)
+- [x] Lote C: projects region (L4425-5265)
+- [x] Lote D: updates + recovery (L5453-5906)
+- [x] Strings sueltos: BROWSER_HINT, Claude CLI, placeholders de búsqueda,
+      staging recovery, title "project actions" (L5080)
+- [x] node --check OK (frontend + espejo)
+- [x] Rescan: 112 → 4 candidatos; los 4 son falsos positivos:
+      - L40 'status-connecting' (id de máquina, no visible)
+      - L2186 'loading models…' (comentario de código)
+      - L4425 / L5080 fragmentos dinámicos de aria-label (texto real ya en ES)
+- [x] Tests: line-sendto 1/1, needs-you* 6/6 (needs-you, rail-fit, fold,
+      bell-settle, one-list, loop-review-needs-you)
+- [x] Espejo website/app/app/app.js sincronizado (cp + node --check)
+- [ ] Comentario Paperclip + cierre (done) o continuación
 
-## Resumen de la misión (10 pasadas)
-- Región 2 completa (L4600-11700): 21 FP restantes, UI traducida (save-light, PERMITIR IMÁGENES, IA Y MODELOS, etc.)
-- ~30 tests alineados EN→ES a lo largo de la misión
-- Espejo website sincronizado en cada pasada (MIRROR_OK)
-- claims: relock @540bd314 (6cfd891c) + timeout 300 en .pi/sweep88.sh → verde en sweep final
+## Notas de terminología aplicadas
+- WAKE→DESPERTAR, WAKING→DESPERTANDO, RESUME→REANUDAR, GENESIS→GÉNESIS
+- START FRESH→EMPEZAR NUEVO, START COMPLETELY FRESH→EMPEZAR POR COMPLETO DESDE CERO
+- bless→bendecir (coherente con el tono comisionar/tripulación de la app)
+- harness, sidecar, slug, keychain, staging: anglicismos técnicos conservados
+
+## Rojos conocidos (fuera de alcance MIS-23-4)
+19 CDP/Chrome ambientales (requieren SKYNET_CHROME en host). Ver checkpoint MIS-23-3.
+
+## Siguiente acción
+Comentar en Paperclip MIS-23-4 con evidencia (commits, scanner, tests) y marcar
+done; activar MIS-23-5 (chat/voice).
 
 ## Archivos clave
-- frontend/app/stationui.js + website/app/app/stationui.js (espejo)
-- sidecar/index.js (studioRefusal ES)
-- test/*.test.js (~30 alineados)
-- qa/product-perfect/claims.json (relock @540bd314)
-- .pi/sweep88.sh (timeout claims 300s)
-
-## Estado final
-DONE. Rama es/interfaz-espanol. Sin trabajo útil pendiente dentro del alcance de MIS-23-3.
-Los 19 rojos CDP dependen de SKYNET_CHROME en el host (fuera de alcance de esta subtarea).
+- frontend/app/app.js (traducido)
+- website/app/app/app.js (espejo)
+- .pi/inventory/scan-en3.py + en-strings3.json (scanner v3)

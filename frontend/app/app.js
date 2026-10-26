@@ -1700,11 +1700,11 @@ const App = (() => {
      turns the check off; for another account it would re-run the same failing check, so it is never offered. */
   function refusedPageLine() {
     if (Harness.tokenWithheld && Harness.tokenWithheld()) {
-      return 'this browser was not verified as running under your own user account, so StarNet won’t take commands from it — '
-        + (Harness.tokenWithheldRetryable && Harness.tokenWithheldRetryable() ? 'reload this page to run the check again; if it keeps failing and it is yours, ' : 'if it is yours, ')
-        + 'restart StarNet with STARNET_TRUST_LOCAL_PEERS=1';
+      return 'este navegador no se verificó como en marcha bajo tu propia cuenta de usuario, así que StarNet no acepta comandos de él — '
+        + (Harness.tokenWithheldRetryable && Harness.tokenWithheldRetryable() ? 'recarga esta página para repetir la comprobación; si sigue fallando y es tuyo, ' : 'si es tuyo, ')
+        + 'reinicia StarNet con STARNET_TRUST_LOCAL_PEERS=1';
     }
-    if (Harness.sessionStale && Harness.sessionStale()) return 'the station restarted; reload this page';
+    if (Harness.sessionStale && Harness.sessionStale()) return 'la estación se reinició; recarga esta página';
     return '';
   }
   async function loadModels(provider) {
@@ -2183,7 +2183,7 @@ const App = (() => {
     genesisOffline = false;
     el('model-count').textContent = '(suscripción a ChatGPT)';
     const mi = el('in-model'); if (!ids.includes(mi.value)) mi.value = def;
-    if (def) mi.placeholder = 'search models — e.g. ' + def;   // retire "loading models…" here too, so the field's accessible name matches the loaded catalog
+    if (def) mi.placeholder = 'buscar modelos — p. ej. ' + def;   // retire "loading models…" here too, so the field's accessible name matches the loaded catalog
     if (el('model-pop') && !el('model-pop').hidden) renderModelPop();
     updateHint();
   }
@@ -2371,7 +2371,7 @@ const App = (() => {
     el('model-count').textContent = '(' + c.sub + ')';
     const mi = el('in-model');
     if (!models.some(m => m.id === mi.value)) mi.value = def || '';
-    if (def) mi.placeholder = 'search models — e.g. ' + def;
+    if (def) mi.placeholder = 'buscar modelos — p. ej. ' + def;
     if (el('model-pop') && !el('model-pop').hidden) renderModelPop();
     updateHint();
   }
@@ -2454,25 +2454,25 @@ const App = (() => {
   function claudeCliWho(j) {
     if (j.authMethod === 'api_key' || j.authMethod === 'apiKey') return ' with an Anthropic API key';
     const plan = j.subscription ? ' (' + String(j.subscription).charAt(0).toUpperCase() + String(j.subscription).slice(1) + ')' : '';
-    return (j.email ? ' as ' + j.email : '') + plan;
+    return (j.email ? ' como ' + j.email : '') + plan;
   }
   async function refreshClaudeCliStatus() {
     const seq = ++claudeCliSeq;
     stopClaudeCliTimer();
-    if (!claudeCliState) paintClaudeCli('checking', 'checking for Claude Code on this computer…');
+    if (!claudeCliState) paintClaudeCli('checking', 'buscando Claude Code en este ordenador…');
     const j = await claudeCliCall('status');
     if (seq !== claudeCliSeq || pickedProvider !== 'claude-cli') return claudeCliState;
-    if (!j || typeof j.installed !== 'boolean') { paintClaudeCli('offline', '○ couldn’t check Claude Code right now — press CHECK AGAIN.'); return null; }
+    if (!j || typeof j.installed !== 'boolean') { paintClaudeCli('offline', '○ no se pudo comprobar Claude Code ahora mismo — pulsa COMPROBAR DE NUEVO.'); return null; }
     claudeCliState = j;
-    if (claudeCliFlow && j.signingIn) { paintClaudeCli('signing', '◐ finish signing in in the browser window Claude Code opened…'); pollClaudeCli(); return j; }
+    if (claudeCliFlow && j.signingIn) { paintClaudeCli('signing', '◐ termina de iniciar sesión en la ventana del navegador que abrió Claude Code…'); pollClaudeCli(); return j; }
     claudeCliFlow = null;
     if (!j.installed) {
-      paintClaudeCli('missing', '○ Claude Code isn’t installed on this computer yet.');
+      paintClaudeCli('missing', '○ Claude Code aún no está instalado en este ordenador.');
       claudeCliTimer = setTimeout(refreshClaudeCliStatus, 5000);   // installing it flips this tile on its own
       return j;
     }
-    if (!j.loggedIn) { paintClaudeCli('signedout', '○ Claude Code is installed — sign in with your Claude account.'); return j; }
-    paintClaudeCli('connected', '● Signed in to Claude' + claudeCliWho(j) + ' — pick a model and WAKE.');
+    if (!j.loggedIn) { paintClaudeCli('signedout', '○ Claude Code está instalado — inicia sesión con tu cuenta de Claude.'); return j; }
+    paintClaudeCli('connected', '● Sesión iniciada en Claude' + claudeCliWho(j) + ' — elige un modelo y DESPERTAR.');
     return j;
   }
   // THE STATUS IS THE TRUTH: before any sign-in error is painted, ask the CLI. A sign-in that already landed (the
@@ -2486,23 +2486,23 @@ const App = (() => {
     claudeCliFlow = null; stopClaudeCliTimer();
     claudeCliState = Object.assign({ installed: true, loggedIn: true, signingIn: false }, j);
     SFX.open(); clearClaudeWakeMsg();
-    paintClaudeCli('connected', '● Signed in to Claude' + claudeCliWho(claudeCliState) + ' — pick a model and WAKE.');
+    paintClaudeCli('connected', '● Sesión iniciada en Claude' + claudeCliWho(claudeCliState) + ' — elige un modelo y DESPERTAR.');
     loadModels('claude-cli');   // the catalog was offline while signed out; it is live now
   }
   async function startClaudeSignIn() {
     SFX.click(); stopClaudeCliTimer(); clearClaudeWakeMsg();
     claudeCliFlow = null;
-    paintClaudeCli('starting', '◐ starting Claude sign-in…');
+    paintClaudeCli('starting', '◐ iniciando la sesión de Claude…');
     const j = await claudeCliCall('start', {});
     if (pickedProvider !== 'claude-cli') return;
-    if (!j) { paintClaudeCli('error', '○ couldn’t start the Claude sign-in — press SIGN IN WITH CLAUDE to try again.'); return; }
+    if (!j) { paintClaudeCli('error', '○ no se pudo iniciar la sesión de Claude — pulsa INICIAR SESIÓN CON CLAUDE para reintentar.'); return; }
     if (j.status === 'connected') { onClaudeCliConnected(j); return; }
     if (j.status !== 'pending') {
       if (j.code === 'not_installed') { claudeCliState = null; refreshClaudeCliStatus(); return; }
-      paintClaudeCli('error', '○ ' + (j.error || 'Claude sign-in failed') ); return;
+      paintClaudeCli('error', '○ ' + (j.error || 'falló la sesión de Claude') ); return;
     }
     claudeCliFlow = { login_id: j.login_id, url: j.url || '' };
-    paintClaudeCli('signing', '◐ finish signing in in the browser window Claude Code just opened…');
+    paintClaudeCli('signing', '◐ termina de iniciar sesión en la ventana del navegador que acaba de abrir Claude Code…');
     pollClaudeCli();
   }
   function pollClaudeCli() {
@@ -2516,7 +2516,7 @@ const App = (() => {
       claudeCliFlow = null;
       if (j.status === 'connected') { onClaudeCliConnected(j); return; }
       if (await claudeCliProvenSignedIn()) return;   // a flow that ended on a finished sign-in is not an error
-      paintClaudeCli('error', '○ ' + (j.error || 'Claude sign-in did not finish — press SIGN IN WITH CLAUDE to try again.'));
+      paintClaudeCli('error', '○ ' + (j.error || 'la sesión de Claude no terminó — pulsa INICIAR SESIÓN CON CLAUDE para reintentar.'));
     }, 1500);
   }
   async function cancelClaudeSignIn() {
@@ -2533,13 +2533,13 @@ const App = (() => {
     const j = await claudeCliCall('code', { login_id: f.login_id, code });
     if (claudeCliFlow !== f) return;
     const st = el('claude-cli-status');
-    if (j && j.ok) { if (inp) inp.value = ''; if (st) { st.textContent = '◐ checking the code with Claude…'; st.className = 'codex-status'; } pollClaudeCli(); }
+    if (j && j.ok) { if (inp) inp.value = ''; if (st) { st.textContent = '◐ comprobando el código con Claude…'; st.className = 'codex-status'; } pollClaudeCli(); }
     else if (await claudeCliProvenSignedIn()) return;
-    else if (st) { st.textContent = '○ ' + ((j && j.error) || 'that code didn’t go through — try pasting it again.'); st.className = 'codex-status bad'; }
+    else if (st) { st.textContent = '○ ' + ((j && j.error) || 'ese código no pasó — intenta pegarlo de nuevo.'); st.className = 'codex-status bad'; }
   }
   function copyClaudeInstall() {
     const cmd = claudeCliInstallCommand().cmd, btn = el('btn-claude-copy');
-    const done = ok => { if (!btn) return; btn.textContent = ok ? '✓ COPIED' : 'SELECT IT ABOVE'; setTimeout(() => { btn.textContent = '⧉ COPY INSTALL COMMAND'; }, 2000); };
+    const done = ok => { if (!btn) return; btn.textContent = ok ? '✓ COPIADO' : 'SELECCIÓNALO ARRIBA'; setTimeout(() => { btn.textContent = '⧉ COPIAR COMANDO DE INSTALACIÓN'; }, 2000); };
     // the shared clipboard helper (Clipboard API, then the execCommand fallback a locked-down WebView still allows)
     const copy = (typeof Diag !== 'undefined' && Diag.copyText) ? Diag.copyText : (t => navigator.clipboard.writeText(t).then(() => true));
     try { Promise.resolve(copy(cmd)).then(ok => done(ok !== false), () => done(false)); } catch (_) { done(false); }
@@ -2632,7 +2632,7 @@ const App = (() => {
     if (pickedProvider !== 'starnet') { stopStarnetBalancePoll(); return result(); }   // pick moved on — don't repaint another provider's block
     if (starnetLinked && starnetLinkStatus === 'unavailable') {
       stopStarnetBalancePoll();
-      statusEl.textContent = 'link saved on this station, but StarNet could not verify it right now — check your connection and try again.';
+      statusEl.textContent = 'enlace guardado en esta estación, pero StarNet no pudo verificarlo ahora mismo — comprueba tu conexión e inténtalo de nuevo.';
       statusEl.className = 'codex-status bad';
       if (linkBtn) linkBtn.classList.add('hidden');
       if (creditsBtn) creditsBtn.classList.add('hidden');
@@ -2649,7 +2649,7 @@ const App = (() => {
     } else if (starnetLinked) {
       stopStarnetBalancePoll();
       const bal = (starnetBalanceUsd == null) ? '' : ' · $' + starnetBalanceUsd.toFixed(2) + ' available';
-      statusEl.innerHTML = '<span class="conn-dot"></span>linked to your StarNet account' + esc(bal) + ' — your agents run on your subscription';
+      statusEl.innerHTML = '<span class="conn-dot"></span>enlazado a tu cuenta de StarNet' + esc(bal) + ' — tus agentes funcionan con tu suscripción';
       statusEl.className = 'codex-status ok';
       if (linkBtn) linkBtn.classList.add('hidden');
       if (creditsBtn) creditsBtn.classList.add('hidden');
@@ -2660,7 +2660,7 @@ const App = (() => {
       if (switchBtn) switchBtn.classList.add('hidden');
       statusEl.textContent = starnetLinkStatus === 'revoked' || starnetLinkStatus === 'link_revoked'
         ? 'this station’s previous link was removed from your account — link it again to reconnect your credits.'
-        : 'not linked — connect the subscription you bought on starnetos.com (takes one click + a code)';
+        : 'sin enlace — conecta la suscripción que compraste en starnetos.com (un clic + un código)';
       statusEl.className = 'codex-status' + (starnetLinkStatus === 'revoked' || starnetLinkStatus === 'link_revoked' ? ' bad' : '');
       if (linkBtn) linkBtn.classList.remove('hidden');
     }
@@ -2675,7 +2675,7 @@ const App = (() => {
     stopStarnetLinkPoll(); stopStarnetBalancePoll(); _starnetStatusSeq++;
     const statusEl = el('starnet-status'), switchBtn = el('btn-starnet-switch');
     if (switchBtn) switchBtn.disabled = true;
-    if (statusEl) { statusEl.textContent = 'disconnecting this account so you can link the one with your credits…'; statusEl.className = 'codex-status'; }
+    if (statusEl) { statusEl.textContent = 'desconectando esta cuenta para que enlaces la que tiene tus créditos…'; statusEl.className = 'codex-status'; }
     try {
       const invoke = window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke;
       if (invoke) await invoke('harness_clear_credits_token');
@@ -2686,7 +2686,7 @@ const App = (() => {
       if (switchBtn) { switchBtn.classList.add('hidden'); switchBtn.disabled = false; }
       startStarnetLink();
     } catch (_) {
-      if (statusEl) { statusEl.textContent = 'could not disconnect this account safely — try again.'; statusEl.className = 'codex-status bad'; }
+      if (statusEl) { statusEl.textContent = 'no se pudo desconectar esta cuenta con seguridad — inténtalo de nuevo.'; statusEl.className = 'codex-status bad'; }
       if (switchBtn) switchBtn.disabled = false;
     }
   }
@@ -2701,9 +2701,9 @@ const App = (() => {
     const generation = _starnetLinkGeneration;
     const statusEl = el('starnet-status'), codeEl = el('starnet-code'), openBtn = el('btn-starnet-open');
     const progress = el('connect-msg');
-    if (progress) { progress.className = 'msg'; progress.textContent = 'Opening your StarNet account…'; }
+    if (progress) { progress.className = 'msg'; progress.textContent = 'Abriendo tu cuenta de StarNet…'; }
     const fail = t => { statusEl.textContent = t; statusEl.className = 'codex-status bad'; codeEl.classList.add('hidden'); openBtn.classList.add('hidden'); if (progress) { progress.className = 'msg bad'; progress.textContent = t; } };
-    statusEl.textContent = 'requesting a link code…'; statusEl.className = 'codex-status';
+    statusEl.textContent = 'solicitando un código de enlace…'; statusEl.className = 'codex-status';
     // A failure keeps WHAT failed (Friendly.linkStartFailure words it): the station's own POST never answering is a
     // local-engine fault, not "the link service"; a sidecar reply carries its classification of the cloud failure.
     const startFail = info => Object.assign(new Error('start failed'), { linkStart: info });
@@ -2714,15 +2714,15 @@ const App = (() => {
         if (generation !== _starnetLinkGeneration) return;
         if (!j || !j.code) throw new Error('no code');
         codeEl.textContent = j.code; codeEl.classList.remove('hidden');
-        if (progress) progress.textContent = 'Confirm the code in your browser to connect.';
+        if (progress) progress.textContent = 'Confirma el código en tu navegador para conectarte.';
         openBtn.classList.remove('hidden');
         openBtn.onclick = () => openExternalUrl(j.verifyUrl);
-        statusEl.textContent = 'confirm this code in your browser (opening the link page now)…';
+        statusEl.textContent = 'confirma este código en tu navegador (abriendo la página de enlace ahora)…';
         openExternalUrl(j.verifyUrl);
         const expiresAt = Number(j.expiresAt) || 0;
         const tick = () => {
           if (generation !== _starnetLinkGeneration || _starnetLinkPollBusy) return;
-          if (expiresAt && Date.now() > expiresAt) { stopStarnetLinkPoll(); fail('that code expired — start again'); return; }
+          if (expiresAt && Date.now() > expiresAt) { stopStarnetLinkPoll(); fail('ese código expiró — empieza de nuevo'); return; }
           _starnetLinkPollBusy = true;
           Harness.api.post('/api/credits/link/poll', { code: j.code })
             .then(r2 => (r2 && r2.ok) ? r2.j : {})
@@ -2730,7 +2730,7 @@ const App = (() => {
               if (generation !== _starnetLinkGeneration) return;
               if (p && p.linked) {
                 stopStarnetLinkPoll(); SFX.open();
-                if (progress) progress.textContent = 'StarNet connected.';
+                if (progress) progress.textContent = 'StarNet conectado.';
                 codeEl.classList.add('hidden'); openBtn.classList.add('hidden');
                 // desktop: move the fresh token file → OS keychain NOW (Rust reads + moves; the token
                 // never passes through here), then teach Harness the credential exists so
@@ -2749,7 +2749,7 @@ const App = (() => {
                 return;
               }
               if (p && (p.status === 'expired' || p.status === 'consumed' || p.status === 'unknown' || p.status === 'invalid')) {
-                stopStarnetLinkPoll(); fail('that code is no longer valid — start again');
+                stopStarnetLinkPoll(); fail('ese código ya no es válido — empieza de nuevo');
               }
             })
             .catch(() => {})
@@ -2759,7 +2759,7 @@ const App = (() => {
       })
       .catch(e => {
         if (generation !== _starnetLinkGeneration) return;
-        fail((typeof Friendly !== 'undefined' && Friendly.linkStartFailure) ? Friendly.linkStartFailure(e && e.linkStart) : 'could not reach the link service — try again');
+        fail((typeof Friendly !== 'undefined' && Friendly.linkStartFailure) ? Friendly.linkStartFailure(e && e.linkStart) : 'no se pudo alcanzar el servicio de enlace — inténtalo de nuevo');
       })
       .finally(() => { if (generation === _starnetLinkGeneration) _starnetLinkStarting = false; });
   }
@@ -2817,7 +2817,7 @@ const App = (() => {
     pickedPersona = Personas.resolve(pickedPersona);   // collapse any legacy id to its grounded archetype
     wrap.innerHTML = '';
     const personalityHelp = el('ov-personality-help');
-    const helpText = 'Fine-tune later in your Overseer’s settings.';
+    const helpText = 'Ajústalo con más detalle después en la configuración de tu Overseer.';
     if (personalityHelp) personalityHelp.textContent = helpText;
     let armedChip = null;   // the UNHINGED chip while it awaits its second press (house two-press confirm)
     const disarm = () => { if (personalityHelp) personalityHelp.textContent = helpText; if (armedChip) { armedChip.textContent = armedChip.dataset.name; armedChip.classList.remove('arm'); armedChip = null; } };
@@ -2837,8 +2837,8 @@ const App = (() => {
           disarm();
           armedChip = chip;
           chip.classList.add('arm');
-          if (personalityHelp) personalityHelp.textContent = 'Uses profanity. Select Unhinged again to confirm.';
-          else chip.textContent = 'UNHINGED — SURE? it swears, for real';
+          if (personalityHelp) personalityHelp.textContent = 'Usa palabrotas. Selecciona Unhinged de nuevo para confirmar.';
+          else chip.textContent = 'UNHINGED — ¿SEGURO? maldice de verdad';
           SFX.click();
           return;
         }
@@ -2895,7 +2895,7 @@ const App = (() => {
     unhingedConfirmed = false;   // each fresh create screen re-arms the UNHINGED two-press confirm
     // desktop: the key lives in the OS keychain (getKey returns ''); show that it's already set.
     if (Harness.configured && Harness.configured() && !el('in-key').value) {
-      el('in-key').placeholder = '•••••••• stored in keychain — leave blank to keep';
+      el('in-key').placeholder = '•••••••• guardada en el keychain — déjala en blanco para conservarla';
     }
     // RESUME pre-fills the saved agent's model; a fresh screen carries the last-used model.
     el('in-model').value = recovery ? (savedAgent.model || Harness.getModel()) : Harness.getModel();
@@ -2970,8 +2970,8 @@ const App = (() => {
     // BYOK key-safety note: collapsed by default, expanded by its own disclosure toggle (progressive disclosure).
     { const bt = el('byok-toggle'), bn = el('byok-note');
       if (bt && bn) {
-        bn.classList.add('hidden'); bt.setAttribute('aria-expanded', 'false'); bt.textContent = '▸ where does my key go?';
-        bt.onclick = () => { const open = !bn.classList.toggle('hidden'); bt.setAttribute('aria-expanded', String(open)); bt.textContent = (open ? '▾' : '▸') + ' where does my key go?'; SFX.click(); };
+        bn.classList.add('hidden'); bt.setAttribute('aria-expanded', 'false'); bt.textContent = '▸ ¿adónde va mi clave?';
+        bt.onclick = () => { const open = !bn.classList.toggle('hidden'); bt.setAttribute('aria-expanded', String(open)); bt.textContent = (open ? '▾' : '▸') + ' ¿adónde va mi clave?'; SFX.click(); };
       } }
     // RESUME/recovery honours the agent's saved provider; a FRESH create screen leads with the beginner-first
     // default (pickedProvider = 'codex' — sign in with ChatGPT, no API key), the top of the zero-to-value funnel.
@@ -3014,23 +3014,23 @@ const App = (() => {
       const nm = (savedAgent && savedAgent.name) || 'your agent';
       if (banner) {
         banner.classList.remove('hidden');
-        banner.innerHTML = '▮ RESUMING <b>' + U.esc(nm) + '</b> — your agent is safe. Enter your key to continue.';
+        banner.innerHTML = '▮ REANUDANDO <b>' + U.esc(nm) + '</b> — tu agente está a salvo. Introduce tu clave para continuar.';
       }
-      if (title) title.textContent = '▮ RESUME ' + nm.toUpperCase();
-      if (sub) sub.innerHTML = 'your station is intact — this only re-connects the <b>brain</b>. Identity stays as you left it.';
-      if (mode) mode.textContent = 'RESUME';
-      if (wake) wake.textContent = '⏼ RESUME STATION ▸';
+      if (title) title.textContent = '▮ REANUDAR ' + nm.toUpperCase();
+      if (sub) sub.innerHTML = 'tu estación está intacta — esto solo reconecta el <b>cerebro</b>. La identidad se queda como la dejaste.';
+      if (mode) mode.textContent = 'REANUDAR';
+      if (wake) wake.textContent = '⏼ REANUDAR ESTACIÓN ▸';
       // BACK here doesn't go "back" — onConnectBack() re-runs auto-resume (a fresh credential check may now pass
       // straight into the station). Label it for what it does so it doesn't read as a dead retreat button.
-      if (back) back.textContent = '↻ RETRY AUTO-RESUME';
+      if (back) back.textContent = '↻ REINTENTAR REANUDADO AUTOMÁTICO';
       locked.forEach(id => { const n = el(id); if (n) { n.classList.add('field-locked'); n.setAttribute('aria-disabled', 'true'); } });
       const nameIn = el('in-name'); if (nameIn) { nameIn.readOnly = true; nameIn.tabIndex = -1; }
     } else {
       if (banner) { banner.classList.add('hidden'); banner.innerHTML = ''; }
       if (title) title.textContent = 'Crea tu Overseer';
-      if (sub) sub.textContent = 'One mind to run your station. Build your crew from here.';
-      if (mode) mode.textContent = 'GENESIS';
-      if (wake) wake.textContent = '⏼ WAKE OVERSEER ▸';
+      if (sub) sub.textContent = 'Una sola mente para pilotar tu estación. Construye tu tripulación desde aquí.';
+      if (mode) mode.textContent = 'GÉNESIS';
+      if (wake) wake.textContent = '⏼ DESPERTAR OVERSEER ▸';
       locked.forEach(id => { const n = el(id); if (n) { n.classList.remove('field-locked'); n.removeAttribute('aria-disabled'); } });
       const nameIn = el('in-name'); if (nameIn) { nameIn.readOnly = false; nameIn.removeAttribute('tabindex'); }
     }
@@ -3099,7 +3099,7 @@ const App = (() => {
   let waking = false;
   function wakeBtnBusy(busy) {
     const b = el('btn-wake'); if (!b) return;
-    if (busy) { if (b.dataset.idleLabel == null) b.dataset.idleLabel = b.textContent; b.textContent = '⏼ WAKING…'; b.disabled = true; }
+    if (busy) { if (b.dataset.idleLabel == null) b.dataset.idleLabel = b.textContent; b.textContent = '⏼ DESPERTANDO…'; b.disabled = true; }
     else { if (b.dataset.idleLabel != null) { b.textContent = b.dataset.idleLabel; delete b.dataset.idleLabel; } b.disabled = false; }
   }
   async function onWake() {
@@ -3112,7 +3112,7 @@ const App = (() => {
       waking = false; wakeBtnBusy(false);
       // #39: after a sidecar restart the refusal surfaced as "Failed to fetch", which reads like the user's own network.
       const refused = refusedPageLine();
-      const msg = el('connect-msg'); if (msg) { msg.className = 'msg bad'; msg.textContent = 'could not start — ' + (refused || ((e && e.message) || 'try again')); }
+      const msg = el('connect-msg'); if (msg) { msg.className = 'msg bad'; msg.textContent = 'no se pudo iniciar — ' + (refused || ((e && e.message) || 'intenta de nuevo')); }
     }
   }
   // THE WIRE PREFLIGHT — one real reason-only round-trip through the exact path the awakening will use
@@ -3120,17 +3120,17 @@ const App = (() => {
   // an honest, console-renderable reason. Bounded at 30s so a stalled provider can never hang the button.
   async function preflightWire() {
     try {
-      if (typeof Harness === 'undefined' || !Harness.chat) return { ok: false, why: 'the harness is not loaded (reload the app)' };
+      if (typeof Harness === 'undefined' || !Harness.chat) return { ok: false, why: 'el harness no está cargado (recarga la app)' };
       // keepEffort: the Commander's own reasoning effort, the one the awakening runs on — not the aux effort self-talk uses
       const call = Harness.chat({ system: '', messages: [{ role: 'user', content: 'Reply with exactly: OK' }], agentId: 'agent', isTask: false, placed: [], internal: true, keepEffort: true })
         .catch(e => ({ error: true, text: String((e && e.message) || e) }));
       const res = await Promise.race([call, new Promise(r => setTimeout(() => r(null), 30000))]);
-      if (!res) return { ok: false, why: 'no reply within 30 seconds (network or provider stall)' };
+      if (!res) return { ok: false, why: 'sin respuesta en 30 segundos (red o proveedor atascado)' };
       // Harness.chat reports a refusal as a STRING in res.error with text '' (the run never produced output)
       // — read that first, or every up-front refusal (billing, sign-in, concurrency) collapses to the
       // useless "the provider returned an error" and the real reason never reaches the screen.
       const reason = (typeof res.error === 'string' && res.error.trim()) ? res.error : String(res.text || '');
-      if (res.error || !String(res.text || '').trim()) return { ok: false, why: (reason.trim() ? reason.replace(/\s+/g, ' ').slice(0, 160) : 'the provider returned an error') };
+      if (res.error || !String(res.text || '').trim()) return { ok: false, why: (reason.trim() ? reason.replace(/\s+/g, ' ').slice(0, 160) : 'el proveedor devolvió un error') };
       return { ok: true };
     } catch (e) { return { ok: false, why: String((e && e.message) || e).slice(0, 140) }; }
   }
@@ -3153,7 +3153,7 @@ const App = (() => {
     // must never make us coach the Commander to pick gpt-5.5 for an unrelated /v1 endpoint.
     const baseUrl = el('in-base-url') ? el('in-base-url').value.trim() : '';
     if (providerNeedsBaseUrl(pickedProvider) && !baseUrl) {
-      msg.textContent = 'enter your Custom /v1 base URL.';
+      msg.textContent = 'introduce tu URL base Custom /v1.';
       return false;
     }
     const model = el('in-model').value.trim();
@@ -3163,9 +3163,9 @@ const App = (() => {
       if (pickedProvider !== 'codex') {
         const def = defaultModelFor(pickedProvider);
         const inp = el('in-model'); if (inp && def) { inp.value = def; updateHint(); }
-        msg.textContent = 'pick a model — suggested ' + (def || 'a default') + '. edit it above, then WAKE.';
+        msg.textContent = 'elige un modelo — sugerido: ' + (def || 'un predeterminado') + '. Edítalo arriba y luego DESPERTAR.';
       } else {
-        msg.textContent = 'choose or type a model slug.';
+        msg.textContent = 'elige o escribe un slug de modelo.';
       }
       return false;
     }
@@ -3178,33 +3178,33 @@ const App = (() => {
       // relink; using that cached $0 here stranded a funded customer even though /v1/balance already held the
       // credits. GET /api/credits performs an awaited authoritative refresh for the ACTIVE linked account.
       // Only a successful finite zero may deny WAKE. A failed/unknown read is unavailable, never "$0".
-      msg.textContent = 'checking your StarNet credits…';
+      msg.textContent = 'comprobando tus créditos de StarNet…';
       const creditState = await refreshStarnetGenesisStatus();
       if (!creditState || !creditState.answered || (creditState.linked && creditState.balanceUsd == null)) {
         msg.className = 'msg bad';
-        msg.textContent = 'StarNet couldn’t confirm your credit balance right now. Your credits are safe — try WAKE again in a moment.';
+        msg.textContent = 'StarNet no pudo confirmar tu saldo de créditos ahora mismo. Tus créditos están a salvo — inténtalo con DESPERTAR de nuevo en un momento.';
         return false;
       }
-      if (!creditState.linked) { msg.textContent = 'link your StarNet account first — press CONNECT STARNET ACCOUNT above.'; return false; }
-      if (!(creditState.balanceUsd > 0)) { msg.className = 'msg bad'; msg.textContent = 'your StarNet account has no credits yet — waking your agent uses credits right away. Press ＄ ADD CREDITS above, then WAKE again.'; return false; }
+      if (!creditState.linked) { msg.textContent = 'enlaza primero tu cuenta de StarNet — pulsa CONECTAR CUENTA DE STARNET arriba.'; return false; }
+      if (!(creditState.balanceUsd > 0)) { msg.className = 'msg bad'; msg.textContent = 'tu cuenta de StarNet aún no tiene créditos — despertar a tu agente consume créditos al instante. Pulsa ＄ AÑADIR CRÉDITOS arriba y luego DESPERTAR de nuevo.'; return false; }
       Harness.setModel(model); Harness.setProv('starnet');
     } else if (pickedProvider === 'claude-cli') {
       const cst = (claudeCliState && claudeCliState.loggedIn) ? claudeCliState : await refreshClaudeCliStatus();
       if (!cst || !cst.loggedIn) {
-        msg.textContent = (cst && cst.installed === false) ? 'install Claude Code first — the command is above — then sign in with Claude.' : 'sign in with Claude first — press ⏼ SIGN IN WITH CLAUDE above.';
+        msg.textContent = (cst && cst.installed === false) ? 'instala primero Claude Code — el comando está arriba — y luego inicia sesión con Claude.' : 'inicia sesión con Claude primero — pulsa ⏼ INICIAR SESIÓN CON CLAUDE arriba.';
         return false;
       }
       Harness.setModel(model); Harness.setProv('claude-cli');
-      wireVia = 'your Claude sign-in';
+      wireVia = 'tu sesión de Claude';
     } else if (isOAuthProviderId(pickedProvider)) {
-      if (!oauthConnected[pickedProvider]) { msg.textContent = 'sign in with ' + OAUTH_GENESIS[pickedProvider].name + ' first, or switch to OpenRouter.'; return false; }
+      if (!oauthConnected[pickedProvider]) { msg.textContent = 'inicia sesión con ' + OAUTH_GENESIS[pickedProvider].name + ' primero, o cambia a OpenRouter.'; return false; }
       Harness.setModel(model); Harness.setProv(pickedProvider);
     } else if (pickedProvider === 'openai' && !el('in-key').value.trim() && codexConnected) {
       // MERGED OPENAI CARD, ChatGPT half: a LIVE sign-in with no key TYPED rides codex. A typed key wins
       // (explicit beats ambient); a key merely STORED does NOT — the green card is what the Commander sees,
       // this screen can't remove a stored key, and it stranded a Plus subscriber on an API 429 (09-16).
       Harness.setModel(model); Harness.setProv('codex');
-      wireVia = 'your ChatGPT sign-in';
+      wireVia = 'tu sesión de ChatGPT';
     } else {
       const key = el('in-key').value.trim();
       // #89 (browser build): each save also hands the station its copy for routines; when it could not, the same
@@ -3221,8 +3221,8 @@ const App = (() => {
         // The merged OPENAI card has a second door — say both, in the order the card shows them.
         const url = providerSignupUrl(pickedProvider);
         const host = String(url).replace(/^https?:\/\//, '').replace(/\/$/, '');
-        msg.innerHTML = (pickedProvider === 'openai' ? 'sign in with ChatGPT below, or ' : '')
-          + 'enter your ' + esc(providerLabel(pickedProvider)) + ' API key — get one at '
+        msg.innerHTML = (pickedProvider === 'openai' ? 'inicia sesión con ChatGPT abajo, o ' : '')
+          + 'introduce tu clave API de ' + esc(providerLabel(pickedProvider)) + ' — consigue una en '
           + '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer" class="connect-link">' + esc(host) + '</a>.';
         return false;
       }
@@ -3233,14 +3233,14 @@ const App = (() => {
       // (a no-op replace) so it never trips; a blank field keeps the stored key (handled below) so it never trips.
       if (prefilledKey && key && key !== prefilledKey && !keyOverwriteConfirmed) {
         keyOverwriteConfirmed = true;   // arm: this same WAKE press now goes through; a second press confirms
-        msg.textContent = 'this replaces the key already stored on this station. press WAKE again to confirm — or restore the old key to keep it.';
+        msg.textContent = 'esto reemplaza la clave ya guardada en esta estación. Pulsa DESPERTAR de nuevo para confirmar — o restaura la clave anterior para conservarla.';
         return false;
       }
       // Only (re)store when a key was actually typed — desktop keeps the existing keychain key on blank.
       // setKey is async in desktop (writes the keychain + pushes it to the sidecar); await so the run has it.
       if (key) warnStation(await (Harness.validateAndSetKey ? Harness.validateAndSetKey(key, pickedProvider, model) : Harness.setKey(key, pickedProvider)));
       Harness.setModel(model); Harness.setProv(pickedProvider);
-      if (pickedProvider === 'openai') wireVia = key ? 'the OpenAI API key you typed' : 'the OpenAI API key stored on this station';
+      if (pickedProvider === 'openai') wireVia = key ? 'la clave API de OpenAI que escribiste' : 'la clave API de OpenAI guardada en esta estación';
     }
 
     // V3 LAW — THE WIRE IS PROVEN AT THE DOOR (Andrew, 2026-07-19): the awakening AUTHORS this agent's whole
@@ -3249,7 +3249,7 @@ const App = (() => {
     // ANSWERED. A dead wire keeps the Commander at the console with the honest reason; there is no world where
     // the ceremony silently degrades because the model never actually spoke.
     wakeBtnBusy(true);
-    msg.textContent = 'testing the wire — one real call to ' + model + '…';
+    msg.textContent = 'probando el cable — una llamada real a ' + model + '…';
     const wire = await preflightWire();
     if (!wire.ok) {
       wakeBtnBusy(false);
@@ -3260,26 +3260,26 @@ const App = (() => {
         // the account REFUSED this station's link: retrying can't fix it and the wallet isn't empty — relink is the
         // door (friendlyerror's managed_credit_link; `.?` because a quote in a regex mis-slices the fnBody test helper)
         if (/refused this station.?s link|relink/i.test(wire.why)) {
-          msg.textContent = 'your StarNet account no longer accepts this station’s link (it was unlinked, or belongs to another account) — your credits are safe. '
-            + (pickedProvider === 'starnet' ? 'Press CONNECT STARNET ACCOUNT above, then WAKE again.' : 'Relink this station to your StarNet account, or use your own provider key.');
+          msg.textContent = 'tu cuenta de StarNet ya no acepta el enlace de esta estación (se desenlazó, o pertenece a otra cuenta) — tus créditos están a salvo. '
+            + (pickedProvider === 'starnet' ? 'Pulsa CONECTAR CUENTA DE STARNET arriba y luego DESPERTAR de nuevo.' : 'Vuelve a enlazar esta estación a tu cuenta de StarNet, o usa tu propia clave de proveedor.');
           refreshStarnetGenesisStatus();
           return false;
         }
         // the balance is HELD by this station's own running StarNet runs (friendlyerror's managed_credit_held, audit
         // B11): it reads $0 but it was read, so it is neither "no credits" nor "couldn't read" — waiting frees it
         if (/Managed credits are held|balance is held by/i.test(wire.why)) {
-          msg.textContent = 'your StarNet balance is held by runs still working on this station — each refunds what it doesn’t spend. Wait for them to finish, then WAKE again'
+          msg.textContent = 'tu saldo de StarNet está retenido por ejecuciones que aún trabajan en esta estación — cada una devuelve lo que no gaste. Espera a que terminen y luego DESPERTAR de nuevo'
             + (pickedProvider === 'starnet' ? ' (or press ＄ ADD CREDITS above).' : ', or use your own provider key.');
           refreshStarnetGenesisStatus();
           return false;
         }
         msg.textContent = /Out of managed credit/i.test(wire.why)
-          ? 'your StarNet account has no credits — waking your agent uses credits right away. Press ＄ ADD CREDITS above, then WAKE again.'
+          ? 'tu cuenta de StarNet no tiene créditos — despertar a tu agente consume créditos al instante. Pulsa ＄ AÑADIR CRÉDITOS arriba y luego DESPERTAR de nuevo.'
           : 'StarNet couldn’t read your credit balance right now — try WAKE again in a moment, or use your own provider key.';
         refreshStarnetGenesisStatus();
         return false;
       }
-      msg.textContent = 'your model didn’t answer' + (wireVia ? ' (via ' + wireVia + ')' : '') + ' — ' + wire.why + '. fix it here, then WAKE again; the awakening won’t start on a dead wire.';
+      msg.textContent = 'tu modelo no respondió' + (wireVia ? ' (vía ' + wireVia + ')' : '') + ' — ' + wire.why + '. Corrígelo aquí y luego DESPERTAR de nuevo; el despertar no empezará con el cable muerto.';
       return false;
     }
     msg.textContent = '';
@@ -3308,7 +3308,7 @@ const App = (() => {
       if (!journeyResetResult || !journeyResetResult.ok) {
         wakeBtnBusy(false);
         msg.className = 'msg bad';
-        msg.textContent = 'the prior Commander journey could not be cleared safely. retry WAKE before commissioning this agent.';
+        msg.textContent = 'no se pudo limpiar con seguridad el viaje del Commander anterior. Reintenta DESPERTAR antes de comisionar a este agente.';
         return false;
       }
     }
@@ -4422,7 +4422,7 @@ const App = (() => {
       // a routine is ONE row (Andrew 10-15: a header over its own newest run said the name twice, in an older style): its
       // newest run, with the run count as its fold key; its older runs list under it, set in, while the history is open
       const open = !!group && railExpanded.has(group.key), runs = group ? group.rows.length : 0;
-      const runsKey = group && runs > 1 ? '<button type="button" class="ws-runs" data-ws-group="' + U.esc(group.key) + '" aria-expanded="' + open + '" aria-label="' + U.esc((open ? 'Hide the older runs of ' : 'Show every run of ') + group.name) + '">' + runs + ' runs</button>' : '';
+      const runsKey = group && runs > 1 ? '<button type="button" class="ws-runs" data-ws-group="' + U.esc(group.key) + '" aria-expanded="' + open + '" aria-label="' + U.esc((open ? 'Ocultar las ejecuciones anteriores de ' : 'Mostrar todas las ejecuciones de ') + group.name) + '">' + runs + ' ejecuciones</button>' : '';
       const runAttr = group ? ' data-runs="head"' : olderRuns.has(w.id) ? ' data-runs="older"' : '';
       const tip = railRowTip(w, st);
       return '<li class="' + rowClass(w, st, activeId) + '" data-id="' + U.esc(w.id) + '"' + runAttr + ' tabindex="' + (w.id === railFocusId ? '0' : '-1') + '" role="option" aria-selected="' + (w.id === activeId ? 'true' : 'false') + '" aria-posinset="' + (i + 1) + '" aria-setsize="' + rows.length + '" aria-label="' + U.esc(railRowLabel(w, st)) + '" aria-keyshortcuts="Shift+F10" title="' + U.esc(tip) + '">' +
@@ -4432,7 +4432,7 @@ const App = (() => {
         '<span class="ws-title">' + U.esc(title) + '</span>' + runsKey +
         '<span class="ws-meta">' + U.esc(st.meta) + '</span>' +
         '<span class="ws-receipt" aria-hidden="true">' + U.esc(railReceipt(w)) + '</span>' +
-        '<button class="ws-kebab" tabindex="-1" aria-label="session actions" title="session actions">⋯</button>' +
+        '<button class="ws-kebab" tabindex="-1" aria-label="acciones de sesión" title="acciones de sesión">⋯</button>' +
         '</li>';
     }).join('');
     if (!rows.length && railAgentFilter) {
@@ -4700,8 +4700,8 @@ const App = (() => {
     let html = item('rename', 'Renombrar', '✎') + item('pin', w.pinned ? 'Quitar fijado' : 'Fijar arriba', w.pinned ? '☆' : '★')
       + item('export-md', 'Export .md', '⤓') + item('export-json', 'Export .json', '⤓');
     if (!isGeneral) {
-      html += item('archive', w.archived ? 'Unarchive' : 'Archive', w.archived ? '⇱' : '⇲') +
-        '<div class="ws-menu-sep"></div>' + item('delete', 'Delete', '✕', 'danger');
+      html += item('archive', w.archived ? 'Desarchivar' : 'Archivar', w.archived ? '⇱' : '⇲') +
+        '<div class="ws-menu-sep"></div>' + item('delete', 'Borrar', '✕', 'danger');
     }
     menu.innerHTML = html;
     document.body.appendChild(menu);
@@ -4720,9 +4720,9 @@ const App = (() => {
         btn.addEventListener('click', () => {
           if (btn.dataset.armed) { closeWsMenu(); deleteWorkstream(id); return; }
           btn.dataset.armed = '1'; btn.classList.add('armed');
-          btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Confirm delete';
+          btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Confirmar borrado';
           SFX.bad();
-          setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Delete'; } }, 4000);
+          setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Borrar'; } }, 4000);
         });
       } else {
         btn.addEventListener('click', () => { closeWsMenu(); wsMenuAction(act, id); });
@@ -4921,7 +4921,7 @@ const App = (() => {
     } else {
       b.textContent = '+ ADD';
       b.disabled = false;
-      b.title = 'bless a folder as a trusted project';
+      b.title = 'bendecir una carpeta como proyecto de confianza';
     }
   }
   function setRailView(view, opts) {
@@ -4970,25 +4970,25 @@ const App = (() => {
   }
   function renderProjectsUnavailable(ul) {
     if (!lastConfirmedProjects) {
-      ul.innerHTML = '<li class="proj-empty" role="status">Could not load projects. Reload to reconnect.</li>';
+      ul.innerHTML = '<li class="proj-empty" role="status">No se pudieron cargar los proyectos. Recarga para reconectar.</li>';
       return;
     }
     try { renderProjectRows(ul, lastConfirmedProjects); }
     catch (e) {
       // A renderer failure must not throw again from the promise rejection handler.
       console.error('[projects] could not render saved list', e);
-      ul.innerHTML = '<li class="proj-empty" role="status">Could not display projects. Reload to retry. Your saved data has not been changed.</li>';
+      ul.innerHTML = '<li class="proj-empty" role="status">No se pudieron mostrar los proyectos. Recarga para reintentar. Tus datos guardados no han cambiado.</li>';
       return;
     }
     const warning = document.createElement('li');
     warning.className = 'proj-empty';
     warning.setAttribute('role', 'status');
-    warning.textContent = 'Could not refresh projects — showing the last confirmed list. Reload to reconnect.';
+    warning.textContent = 'No se pudieron actualizar los proyectos — mostrando la última lista confirmada. Recarga para reconectar.';
     ul.insertBefore(warning, ul.firstChild);
   }
   function renderProjects() {
     const ul = el('projects'); if (!ul) return;
-    ul.innerHTML = '<li class="proj-empty">loading projects…</li>';
+    ul.innerHTML = '<li class="proj-empty">cargando proyectos…</li>';
     fetch('/api/projects', { cache: 'no-store' })
       .then(r => { if (!r.ok) throw new Error('projects unavailable'); return r.json(); })
       .then(j => {
@@ -5024,7 +5024,7 @@ const App = (() => {
             '<span class="ws-title">' + U.esc(r.name) + '</span>' +
             (r.blessed && r.isGitRepo ? '<span class="proj-git-badge" aria-hidden="true">git</span>' : '') +
             (r.blessed ? '<span class="ws-meta">' + U.esc(r.rel) + '</span>' : '<span class="proj-tag">REVOKED</span>') +
-            '<button class="ws-kebab" tabindex="-1" aria-label="project actions" title="project actions">⋯</button>' +
+            '<button class="ws-kebab" tabindex="-1" aria-label="acciones del proyecto" title="acciones del proyecto">⋯</button>' +
           '</span>' +
           '<span class="proj-line">' +
             '<span class="proj-path">' + U.esc(r.path) + '</span>' +
@@ -5033,11 +5033,11 @@ const App = (() => {
         '</span>' +
         '</li>' +
         sess.slice(0, 3).map(s =>
-          '<li class="proj-sess' + (s.id === activeId ? ' on' : '') + '" data-ws="' + U.esc(s.id) + '" data-root="' + U.esc(r.root) + '" tabindex="0" role="button" aria-label="' + U.esc(s.title + ' session; Enter to open') + '"' + (s.id === activeId ? ' aria-current="true"' : '') + ' title="open this session">' +
+          '<li class="proj-sess' + (s.id === activeId ? ' on' : '') + '" data-ws="' + U.esc(s.id) + '" data-root="' + U.esc(r.root) + '" tabindex="0" role="button" aria-label="' + U.esc(s.title + ' — sesión; Enter para abrir') + '"' + (s.id === activeId ? ' aria-current="true"' : '') + ' title="abrir esta sesión">' +
             '<span class="ws-title">' + U.esc(s.title) + '</span>' +
             '<span class="ws-meta">' + U.esc(s.rel) + '</span>' +
           '</li>').join('') +
-        (extra ? '<li class="proj-sess proj-more" data-root="' + U.esc(r.root) + '" tabindex="0" role="button" aria-label="Open ' + extra + ' more session' + (extra === 1 ? '' : 's') + ' in ' + U.esc(r.name) + '" title="open this project">▸ ' + extra + ' more session' + (extra === 1 ? '' : 's') + '</li>' : '');
+        (extra ? '<li class="proj-sess proj-more" data-root="' + U.esc(r.root) + '" tabindex="0" role="button" aria-label="Abrir ' + extra + ' sesión' + (extra === 1 ? '' : 'es') + ' más en ' + U.esc(r.name) + '" title="abrir este proyecto">▸ ' + extra + ' sesión' + (extra === 1 ? '' : 'es') + ' más' + '</li>' : '');
     }).join('');
     // preview sub-row click: open the session AND follow it into its project scope — the rail stays in PROJECTS.
     // The overflow "▸ N more" row just enters the project (where every session renders as a full row).
@@ -5076,15 +5076,15 @@ const App = (() => {
     const sess = projSessionsOf(row.root);
     const byId = {}; try { for (const w of Workstreams.all()) byId[w.id] = w; } catch (_) {}
     let html =
-      '<li class="proj-crumb"><button class="proj-back" title="back to all projects">◂ ALL PROJECTS</button></li>' +
-      '<li class="ws-row proj-row proj-head' + (row.blessed ? '' : ' proj-revoked') + '" data-root="' + U.esc(row.root) + '" tabindex="0" role="button" aria-label="' + U.esc(row.name + ' project actions; Enter to open actions') + '" aria-keyshortcuts="Shift+F10" title="project actions">' +
+      '<li class="proj-crumb"><button class="proj-back" title="volver a todos los proyectos">◂ TODOS LOS PROYECTOS</button></li>' +
+      '<li class="ws-row proj-row proj-head' + (row.blessed ? '' : ' proj-revoked') + '" data-root="' + U.esc(row.root) + '" tabindex="0" role="button" aria-label="' + U.esc(row.name + ' — acciones del proyecto; Enter para abrir acciones') + '" aria-keyshortcuts="Shift+F10" title="acciones del proyecto">' +
         '<span class="' + projDot(row) + '"></span>' +
         '<span class="proj-main">' +
           '<span class="proj-line">' +
             '<span class="ws-title">' + U.esc(row.name) + '</span>' +
             (row.blessed && row.isGitRepo ? '<span class="proj-git-badge" aria-hidden="true">git</span>' : '') +
             (row.blessed ? '' : '<span class="proj-tag">REVOKED</span>') +
-            '<button class="ws-kebab" tabindex="-1" aria-label="project actions" title="project actions">⋯</button>' +
+            '<button class="ws-kebab" tabindex="-1" aria-label="acciones del proyecto" title="acciones del proyecto">⋯</button>' +
           '</span>' +
           '<span class="proj-path">' + U.esc(row.path) + '</span>' +
         '</span>' +
@@ -5166,7 +5166,7 @@ const App = (() => {
       if (!projScope || !(Projects.sameRoot && Projects.sameRoot(r.root, projScope))) html += item('open', 'Abrir proyecto', '▸');
       html += item('newsess', typeof ProjectHome !== 'undefined' ? 'Abrir COMMS del proyecto' : 'Nueva sesión aquí', '▸');
     }
-    html += (r.blessed ? '<div class="ws-menu-sep"></div>' : '') + item('remove', r.blessed ? 'Remove (revoke trust)' : 'Forget (already revoked)', '✕', 'danger');
+    html += (r.blessed ? '<div class="ws-menu-sep"></div>' : '') + item('remove', r.blessed ? 'Eliminar (revocar la confianza)' : 'Olvidar (ya revocado)', '✕', 'danger');
     menu.innerHTML = html;
     document.body.appendChild(menu);
     // same visual→zoomed-space conversion as openWsMenu (TEXT SIZE).
@@ -5182,9 +5182,9 @@ const App = (() => {
         btn.addEventListener('click', () => {
           if (btn.dataset.armed) { closeProjectMenu(); removeProject(r); return; }
           btn.dataset.armed = '1'; btn.classList.add('armed');
-          btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Confirm remove';
+          btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>Confirmar eliminación';
           SFX.bad();
-          setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>' + (r.blessed ? 'Remove (revoke trust)' : 'Forget (already revoked)'); } }, 4000);
+          setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = '<span class="ws-menu-glyph" aria-hidden="true">✕</span>' + (r.blessed ? 'Eliminar (revocar la confianza)' : 'Olvidar (ya revocado)'); } }, 4000);
         });
       } else if (act === 'newsess') {
         btn.addEventListener('click', () => { closeProjectMenu(); setProjScope(r.root, r.blessed); newSessionInProject(r.root); });
@@ -5259,10 +5259,10 @@ const App = (() => {
         '<span class="proj-add-lbl">ADD PROJECT FOLDER</span>' +
         '<button class="proj-add-cancel" title="cancel" aria-label="cancel">✕</button>' +
       '</div>' +
-      '<input type="text" spellcheck="false" placeholder="C:\\Users\\you\\project" aria-label="project folder path">' +
+      '<input type="text" spellcheck="false" placeholder="C:\\Users\\tu\\proyecto" aria-label="ruta de la carpeta del proyecto">' +
       '<div class="proj-add-row">' +
-        '<button class="proj-add-pick" title="browse for a folder with the system dialog">BROWSE…</button>' +
-        '<button class="proj-add-discover" title="scan common project folders; grants nothing">DISCOVER</button>' +
+        '<button class="proj-add-pick" title="buscar una carpeta con el diálogo del sistema">EXPLORAR…</button>' +
+        '<button class="proj-add-discover" title="explorar carpetas de proyecto habituales; no concede nada">DESCUBRIR</button>' +
         '<button class="proj-add-go">ADD</button>' +
       '</div>' +
       '<div class="proj-discover-results" hidden></div>' +
@@ -5441,7 +5441,7 @@ const App = (() => {
       let dl = el('btn-future-download');
       if (!dl && btn && btn.parentNode) {
         dl = document.createElement('button');
-        dl.id = 'btn-future-download'; dl.className = 'btn-xl'; dl.textContent = 'DOWNLOAD LATEST ▸';
+        dl.id = 'btn-future-download'; dl.className = 'btn-xl'; dl.textContent = 'DESCARGAR ÚLTIMA ▸';
         btn.parentNode.appendChild(dl);
       }
       if (dl) dl.onclick = () => { SFX.click && SFX.click(); try { Updates.openReleasesPage(); } catch (_) {} };
@@ -5450,17 +5450,17 @@ const App = (() => {
       if (!msg) return;
       const runs = (snap && snap.confirmRuns) | 0;
       if (thrown || (snap && snap.error)) {
-        msg.textContent = 'the update could not install' + (snap && snap.error ? ' — ' + snap.error : '') + '. Download the full installer instead: reinstalling over the top keeps your station.';
+        msg.textContent = 'la actualización no pudo instalarse' + (snap && snap.error ? ' — ' + snap.error : '') + '. En su lugar descarga el instalador completo: reinstalar encima conserva tu estación.';
         offerInstaller();
-      } else if (runs > 0) msg.textContent = (runs === 1 ? '1 agent is' : runs + ' agents are') + ' still working — installing now would kill ' + (runs === 1 ? 'its run' : 'their runs') + '. Try again when ' + (runs === 1 ? 'it finishes.' : 'they finish.');
-      else if (snap && /^(downloading|installing|restarting)$/.test(String(snap.phase || ''))) msg.textContent = 'installing the update — StarNet restarts on its own when it is done.';
-      else msg.textContent = 'the update did not start — try again in a moment.';
+      } else if (runs > 0) msg.textContent = (runs === 1 ? '1 agente está' : runs + ' agentes están') + ' trabajando aún — instalar ahora interrumpiría ' + (runs === 1 ? 'su ejecución' : 'sus ejecuciones') + '. Vuelve a intentarlo cuando ' + (runs === 1 ? 'termine.' : 'terminen.');
+      else if (snap && /^(downloading|installing|restarting)$/.test(String(snap.phase || ''))) msg.textContent = 'instalando la actualización — StarNet se reinicia solo cuando termine.';
+      else msg.textContent = 'la actualización no ha empezado — inténtalo de nuevo en un momento.';
     };
     if (btn) {
       btn.onclick = async () => {
         SFX.click && SFX.click();
         if (hasUpdater) {
-          if (msg) msg.textContent = 'checking for an update…';
+          if (msg) msg.textContent = 'buscando una actualización…';
           try {
             const snap = await Updates.check(true, 'future-save-gate');
             const phase = (snap && snap.phase) || '';
@@ -5472,12 +5472,12 @@ const App = (() => {
             // idea that the one action on the screen didn't work. Name each state for what it is.
             if (phase === 'available') { let after = null, thrown = false; try { after = await Updates.install(); } catch (e) { thrown = true; } installOutcome(after, thrown); }
             else if (phase === 'current') { if (msg) msg.textContent = 'no newer build is published yet — check back shortly.'; }
-            else if (phase === 'error') { if (msg) msg.textContent = 'the update check failed' + (snap && snap.error ? ' — ' + snap.error : '') + '. Check your connection and try again.'; }
-            else if (phase === 'checking' || phase === 'downloading' || phase === 'installing' || phase === 'restarting') { if (msg) msg.textContent = 'an update check is already running — one moment…'; }
-            else if (msg) msg.textContent = 'this build cannot check for updates — download the latest StarNet from starnetos.com, then reopen.';
-          } catch (_) { if (msg) msg.textContent = 'update check failed — try again in a moment.'; }
+            else if (phase === 'error') { if (msg) msg.textContent = 'la comprobación de actualizaciones falló' + (snap && snap.error ? ' — ' + snap.error : '') + '. Comprueba tu conexión e inténtalo de nuevo.'; }
+            else if (phase === 'checking' || phase === 'downloading' || phase === 'installing' || phase === 'restarting') { if (msg) msg.textContent = 'ya hay una comprobación de actualizaciones en curso — un momento…'; }
+            else if (msg) msg.textContent = 'esta compilación no puede comprobar actualizaciones — descarga la última StarNet desde starnetos.com y vuelve a abrirla.';
+          } catch (_) { if (msg) msg.textContent = 'la comprobación de actualizaciones falló — inténtalo de nuevo en un momento.'; }
         } else if (msg) {
-          msg.textContent = 'Update StarNet to the latest version (in the desktop app: Update Center), then reopen.';
+          msg.textContent = 'Actualiza StarNet a la última versión (en la app de escritorio: Centro de actualizaciones) y vuelve a abrirla.';
         }
       };
     }
@@ -5517,35 +5517,35 @@ const App = (() => {
     const sub = el('unreachable-sub'), code = el('unreachable-code');
     // BROWSER MODE (no desktop shell, see below): the subtitle says so on every repaint, not only the first
     const core = tauriCore();
-    const notAnswering = 'station service not answering' + (core ? '' : ' (browser mode)');
+    const notAnswering = 'el servicio de la estación no responde' + (core ? '' : ' (modo navegador)');
     let diagnosis;
     // A retry can reach a different failure boundary; keep the screenshot and copied report current.
     const paintDiagnosis = reason => {
-      if (sub) sub.textContent = reason === 'forbidden' ? 'station service refused this window (stale session) — a relaunch usually clears it' : notAnswering;
-      if (sub && reason === 'unreadable') sub.textContent = 'saved station temporarily unreadable — retry without resetting';
-      if (sub && reason === 'cache') sub.textContent = 'saved station could not be restored into this window — retry without resetting';
+      if (sub) sub.textContent = reason === 'forbidden' ? 'el servicio de la estación rechazó esta ventana (sesión caducada) — normalmente lo resuelve relanzar' : notAnswering;
+      if (sub && reason === 'unreadable') sub.textContent = 'estación guardada temporalmente ilegible — reintenta sin restablecer';
+      if (sub && reason === 'cache') sub.textContent = 'no se pudo restaurar la estación guardada en esta ventana — reintenta sin restablecer';
       // Screenshot-readable diagnosis for a stranded beginner: support can distinguish an alive sidecar refusing
       // stale window auth from a fetch that died after the page loaded without asking for Terminal logs.
       diagnosis = reason === 'forbidden'
-        ? { code: 'SAVE-403 · STALE WINDOW SESSION', text: 'the station service is running, but it refused this app window' }
+        ? { code: 'SAVE-403 · SESIÓN DE VENTANA CADUCADA', text: 'el servicio de la estación está en marcha, pero rechazó esta ventana de la app' }
         : reason === 'unreadable'
-          ? { code: 'SAVE-READ · STATION FILE UNAVAILABLE', text: 'the station service is running, but could not read the saved station; your existing files are preserved' }
+          ? { code: 'SAVE-READ · ARCHIVO DE ESTACIÓN INACCESIBLE', text: 'el servicio de la estación está en marcha, pero no pudo leer la estación guardada; tus archivos existentes se conservan' }
           : reason === 'cache'
-            ? { code: 'SAVE-CACHE · LOCAL RESTORE FAILED', text: 'the saved station was received, but this window could not store or read it; the durable station is preserved' }
-            : { code: 'SAVE-NET · SAVE REQUEST LOST', text: 'the app loaded, but its saved-station request did not return' };
-      if (code) code.innerHTML = '<b>RECOVERY CODE: ' + diagnosis.code + '</b><br>' + diagnosis.text + '. Send a screenshot of this code to support.';
+            ? { code: 'SAVE-CACHE · RESTAURACIÓN LOCAL FALLIDA', text: 'la estación guardada se recibió, pero esta ventana no pudo almacenarla ni leerla; la estación durable se conserva' }
+            : { code: 'SAVE-NET · SOLICITUD DE GUARDADO PERDIDA', text: 'la app cargó, pero su solicitud de estación guardada no volvió' };
+      if (code) code.innerHTML = '<b>CÓDIGO DE RECUPERACIÓN: ' + diagnosis.code + '</b><br>' + diagnosis.text + '. Envía una captura de este código al soporte.';
     };
     paintDiagnosis(reason);
     const reportBtn = el('btn-unreachable-report'), reportHost = el('unreachable-report');
     if (reportBtn) reportBtn.onclick = () => {
       SFX.click && SFX.click();
-      if (typeof Diag === 'undefined' || !Diag.copy) { if (status) status.textContent = '＋ recovery details unavailable — send a screenshot of ' + diagnosis.code; return; }
-      reportBtn.disabled = true; reportBtn.textContent = '⧉ COPYING…';
+      if (typeof Diag === 'undefined' || !Diag.copy) { if (status) status.textContent = '＋ detalles de recuperación no disponibles — envía una captura de ' + diagnosis.code; return; }
+      reportBtn.disabled = true; reportBtn.textContent = '⧉ COPIANDO…';
       // No engineAlive here: this page is bundled into the desktop shell, so the gate rendering proves nothing about
       // the sidecar. Left unset, the report MEASURES /api/health (Harness.pingEngine) instead of always printing
       // "REACHABLE" — a 10-08 support report claimed a live engine while its crash ledger was still being written.
       Diag.copy({ notify: false, context: { kind: diagnosis.code, error: diagnosis.text }, onDone: (ok, text) => {
-        reportBtn.disabled = false; reportBtn.textContent = ok ? '✓ RECOVERY DETAILS COPIED' : '⧉ RECOVERY DETAILS SHOWN BELOW';
+        reportBtn.disabled = false; reportBtn.textContent = ok ? '✓ DETALLES DE RECUPERACIÓN COPIADOS' : '⧉ DETALLES DE RECUPERACIÓN ABAJO';
         if (!ok && reportHost && Diag.showBlock) Diag.showBlock(reportHost, { text });
       } });
     };
@@ -5573,7 +5573,7 @@ const App = (() => {
     // BROWSER MODE (no desktop shell): there is no sidecar to restart and no workspace to quarantine, so this
     // screen used to offer nothing but the 5s poll — a dead end (audit: "first run fails silently"). Say plainly
     // where the service lives, on the subtitle (paintDiagnosis) AND on every poll line, so the exit is never a mystery.
-    const BROWSER_HINT = 'the station service isn\'t answering. if you launched with `npm start`, check that terminal; otherwise open the desktop app.';
+    const BROWSER_HINT = 'el servicio de la estación no responde. si lo lanzaste con `npm start`, revisa esa terminal; si no, abre la app de escritorio.';
     if (!core) {
       if (reason === 'cache') setStatus('Your durable save is untouched. Retry after browser storage becomes available.');
       else if (reason === 'unreadable') setStatus('Your save is untouched. Retry when the station file becomes readable.');
@@ -5599,7 +5599,7 @@ const App = (() => {
       paintDiagnosis(r.reason);
       const degraded = await probeDegraded();
       const unreadable = r.reason === 'unreadable', cacheFailed = r.reason === 'cache';
-      setStatus((degraded ? degraded + ' — ' : unreadable ? 'saved station still unreadable — ' : cacheFailed ? 'local restore still unavailable — ' : 'still unreachable — ') + 'retrying every 5s (attempt ' + attempts + '). Your save is untouched.' + (core || unreadable || cacheFailed ? '' : ' ' + BROWSER_HINT));
+      setStatus((degraded ? degraded + ' — ' : unreadable ? 'estación guardada aún ilegible — ' : cacheFailed ? 'restauración local aún no disponible — ' : 'aún inaccesible — ') + 'reintentando cada 5 s (intento ' + attempts + '). Tu guardado está intacto.' + (core || unreadable || cacheFailed ? '' : ' ' + BROWSER_HINT));
       checking = false;
     };
     const btn = el('btn-unreachable-retry');
@@ -5614,11 +5614,11 @@ const App = (() => {
       if (restarting || resetting || browserResetBlocked || !core || !core.invoke) return;
       restarting = true;
       if (restartBtn) restartBtn.disabled = true;
-      setStatus((auto ? 'still unreachable — ' : '') + 'restarting the station service…');
+      setStatus((auto ? 'aún inaccesible — ' : '') + 'reiniciando el servicio de la estación…');
       let up = false;
       try { up = await Harness.restartEngine(); } catch (_) { up = false; }   // the same single-flight door the LINK DOWN chip uses
-      if (up) { setStatus('station service restarted — reconnecting…'); attempt(); }
-      else setStatus('the station service could not be restarted — quit StarNet fully (Cmd+Q / tray → Quit) and open it again. Your save is untouched.');
+      if (up) { setStatus('servicio de la estación reiniciado — reconectando…'); attempt(); }
+      else setStatus('no se pudo reiniciar el servicio de la estación — cierra StarNet por completo (Cmd+Q / bandeja → Salir) y ábrelo de nuevo. Tu guardado está intacto.');
       restarting = false;
       if (restartBtn) restartBtn.disabled = false;
     };
@@ -5641,10 +5641,10 @@ const App = (() => {
           const retryingBrowserClear = browserResetBlocked && preservedReset;
           if (!retryingBrowserClear && !armed) {
             armed = true;
-            freshBtn.textContent = '✦ CONFIRM — START COMPLETELY FRESH';
-            setStatus('your old local station will be moved to a quarantine folder. Your StarNet account link and purchased credits are not removed. Press again to confirm.');
+            freshBtn.textContent = '✦ CONFIRMAR — EMPEZAR POR COMPLETO DESDE CERO';
+            setStatus('tu antigua estación local se moverá a una carpeta de cuarentena. Tu vinculación con la cuenta de StarNet y los créditos comprados no se eliminan. Pulsa de nuevo para confirmar.');
             setTimeout(() => {
-              if (armed && !resetting) { armed = false; freshBtn.textContent = '✦ START COMPLETELY FRESH'; }
+              if (armed && !resetting) { armed = false; freshBtn.textContent = '✦ EMPEZAR POR COMPLETO DESDE CERO'; }
             }, 12000);
             return;
           }
@@ -5653,7 +5653,7 @@ const App = (() => {
           freshBtn.disabled = true;
           if (btn) btn.disabled = true;
           if (restartBtn) restartBtn.disabled = true;
-          setStatus(retryingBrowserClear ? 'retrying the browser-state clear; the preserved station will not be moved again…' : 'preserving the old station and preparing a clean one…');
+          setStatus(retryingBrowserClear ? 'reintentando la limpieza del estado del navegador; la estación preservada no se moverá de nuevo…' : 'preservando la estación antigua y preparando una limpia…');
           try {
             // Once native preservation has succeeded, a browser-clear retry must reuse that exact receipt.
             // Running the native transaction again would quarantine the new empty generation and obscure the
@@ -5661,33 +5661,33 @@ const App = (() => {
             const result = retryingBrowserClear
               ? FreshStart.retryBrowserClear(preservedReset)
               : await FreshStart.resetDesktop(core);
-            const where = result.quarantine ? ' Old files were preserved in ' + result.quarantine + '.' : '';
+            const where = result.quarantine ? ' Los archivos antiguos se preservaron en ' + result.quarantine + '.' : '';
             if (!result.browserDataCleared) {
               resetting = false;
               browserResetBlocked = true;
               preservedReset = result;
               freshBtn.disabled = false;
-              freshBtn.textContent = '✦ START COMPLETELY FRESH';
+              freshBtn.textContent = '✦ EMPEZAR POR COMPLETO DESDE CERO';
               if (btn) btn.disabled = true;
               if (restartBtn) restartBtn.disabled = true;
-              setStatus('the old station was safely preserved, but this window could not clear its browser data. Do not reload. Press START COMPLETELY FRESH again to retry.' + where);
+              setStatus('la estación antigua se preservó con seguridad, pero esta ventana no pudo limpiar sus datos del navegador. No recargues. Pulsa EMPEZAR POR COMPLETO DESDE CERO de nuevo para reintentar.' + where);
               return;
             }
             browserResetBlocked = false;
             preservedReset = null;
             if (result.listening) {
-              setStatus('clean station ready — reopening now. Your account link and purchased credits were kept.' + where);
+              setStatus('estación limpia lista — reabriendo ahora. Tu vinculación de cuenta y los créditos comprados se conservaron.' + where);
               try { location.reload(); } catch (_) {}
             } else {
-              setStatus('clean station prepared, but the station service is still blocked. Fully quit StarNet and reopen it. Your account link and purchased credits were kept.' + where);
+              setStatus('estación limpia preparada, pero el servicio de la estación sigue bloqueado. Cierra StarNet por completo y ábrelo de nuevo. Tu vinculación de cuenta y los créditos comprados se conservaron.' + where);
             }
           } catch (error) {
             resetting = false;
             freshBtn.disabled = false;
-            freshBtn.textContent = '✦ START COMPLETELY FRESH';
+            freshBtn.textContent = '✦ EMPEZAR POR COMPLETO DESDE CERO';
             if (btn) btn.disabled = browserResetBlocked;
             if (restartBtn) restartBtn.disabled = browserResetBlocked;
-            setStatus((browserResetBlocked ? 'the clean station is still protected from the uncleared window cache — retry START COMPLETELY FRESH. ' : 'nothing was reset — ') + String(error && error.message || error));
+            setStatus((browserResetBlocked ? 'la estación limpia sigue protegida de la caché no limpiada de la ventana — reintenta EMPEZAR POR COMPLETO DESDE CERO. ' : 'no se restableció nada — ') + String(error && error.message || error));
           }
         };
       } else if (!core && typeof FreshStart !== 'undefined' && FreshStart.clearBrowserState) {
@@ -5696,7 +5696,7 @@ const App = (() => {
         // StarNet state left in this browser is stale bookkeeping (prefs, a dead session token, a dev fault flag);
         // clearing it cannot lose a save. The sidecar's own files are never touched from here — the copy says so.
         // Two clicks, same arm/confirm shape as the desktop path. Honest label: it is NOT the desktop quarantine.
-        const LABEL = '✦ START FRESH (CLEAR BROWSER STATE)';
+        const LABEL = '✦ EMPEZAR NUEVO (LIMPIAR ESTADO DEL NAVEGADOR)';
         freshBtn.hidden = false;
         freshBtn.textContent = LABEL;
         freshBtn.onclick = () => {
@@ -5704,8 +5704,8 @@ const App = (() => {
           if (resetting) return;
           if (!armed) {
             armed = true;
-            freshBtn.textContent = '✦ CONFIRM — CLEAR BROWSER STATE';
-            setStatus('this clears only this browser\'s StarNet state (cached settings, any stale session) and reloads. The station service\'s own save files are not touched. Press again to confirm.');
+            freshBtn.textContent = '✦ CONFIRMAR — LIMPIAR ESTADO DEL NAVEGADOR';
+            setStatus('esto limpia solo el estado de StarNet de este navegador (ajustes en caché, cualquier sesión caducada) y recarga. Los archivos de guardado del propio servicio de la estación no se tocan. Pulsa de nuevo para confirmar.');
             setTimeout(() => { if (armed && !resetting) { armed = false; freshBtn.textContent = LABEL; } }, 12000);
             return;
           }
@@ -5715,14 +5715,14 @@ const App = (() => {
           if (btn) btn.disabled = true;
           try {
             const n = FreshStart.clearBrowserState();
-            setStatus('cleared ' + n + ' browser key(s) — reloading…');
+            setStatus('limpiadas ' + n + ' clave(s) del navegador — recargando…');
             try { location.reload(); } catch (_) {}
           } catch (error) {
             resetting = false;
             freshBtn.disabled = false;
             if (btn) btn.disabled = false;
             freshBtn.textContent = LABEL;
-            setStatus('nothing was cleared — ' + String(error && error.message || error));
+            setStatus('no se limpió nada — ' + String(error && error.message || error));
           }
         };
       } else freshBtn.hidden = true;
@@ -5791,16 +5791,16 @@ const App = (() => {
     if (recover) recover.onclick = async () => {
       if (!selected || recover.disabled) return;
       recover.disabled = true;
-      if (status) status.textContent = '＋ staging verified recovery; the prior source will be preserved';
+      if (status) status.textContent = '＋ recuperación verificada en staging; la fuente anterior se conservará';
       try {
         const response = await fetch('/api/lineage/recover', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ candidateId: selected })
         });
         const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) throw new Error(result.error || 'recovery request refused');
+        if (!response.ok || !result.ok) throw new Error(result.error || 'solicitud de recuperación rechazada');
         if (status) status.textContent = result.desktopWillRestart
-          ? '＋ recovery accepted — station service restarting now…'
-          : '＋ recovery accepted — restart the manual sidecar; this screen will resume automatically';
+          ? '＋ recuperación aceptada — el servicio de la estación se reinicia ahora…'
+          : '＋ recuperación aceptada — reinicia el sidecar manual; esta pantalla continuará automáticamente';
         const timer = setInterval(async () => {
           try {
             const probe = await fetch('/api/save?agent=agent', { cache: 'no-store' });
@@ -5813,23 +5813,23 @@ const App = (() => {
         }, 1500);
       } catch (error) {
         recover.disabled = false;
-        if (status) status.textContent = '＋ recovery paused — ' + String(error && error.message || error);
+        if (status) status.textContent = '＋ recuperación en pausa — ' + String(error && error.message || error);
       }
     };
     const report = el('btn-lineage-report');
     if (report) report.onclick = async () => {
       report.disabled = true;
-      if (status) status.textContent = '＋ preparing redacted recovery report…';
+      if (status) status.textContent = '＋ preparando el informe de recuperación redactado…';
       try {
         const response = await fetch('/api/lineage/report', { cache: 'no-store' });
-        if (!response.ok) throw new Error(refusedPageLine() || 'report unavailable');
+        if (!response.ok) throw new Error(refusedPageLine() || 'informe no disponible');
         const blob = await response.blob();
         const url = URL.createObjectURL(blob), a = document.createElement('a');
         a.href = url; a.download = 'starnet-recovery-report.json'; a.style.display = 'none';
         document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-        if (status) status.textContent = '＋ redacted recovery report exported — no credentials or save contents included';
+        if (status) status.textContent = '＋ informe de recuperación redactado exportado — sin credenciales ni contenido del guardado';
       } catch (error) {
-        if (status) status.textContent = '＋ report export failed — ' + String(error && error.message || error);
+        if (status) status.textContent = '＋ la exportación del informe falló — ' + String(error && error.message || error);
       } finally { report.disabled = false; }
     };
     const retry = el('btn-lineage-retry');
@@ -5839,7 +5839,7 @@ const App = (() => {
       SFX.click && SFX.click();
       if (validCandidates.length) { try { location.reload(); } catch (_) {} return; }
       retry.disabled = true;
-      if (status) status.textContent = '＋ checking again…';
+      if (status) status.textContent = '＋ comprobando de nuevo…';
       try {
         const response = await fetch('/api/lineage', { cache: 'no-store' });
         const body = response.ok ? await response.json().catch(() => null) : null;
@@ -5847,10 +5847,10 @@ const App = (() => {
         const nextRec = next && next.recovery && Array.isArray(next.recovery.candidates) ? next.recovery.candidates : [];
         if (next && (next.priorInstallEvidence === false || nextRec.some(row => row && row.recoverable))) { location.reload(); return; }
         if (status) status.textContent = next
-          ? '＋ checked again — still nothing recoverable here. START FRESH sets the leftovers aside; RESTORE BACKUP loads a backup file.'
-          : '＋ could not check again — ' + (refusedPageLine() || 'the station service did not answer');
+          ? '＋ comprobado de nuevo — aquí aún no hay nada recuperable. EMPEZAR NUEVO aparta los restos; RESTAURAR COPIA DE SEGURIDAD carga un archivo de copia.'
+          : '＋ no se pudo comprobar de nuevo — ' + (refusedPageLine() || 'el servicio de la estación no respondió');
       } catch (_) {
-        if (status) status.textContent = '＋ could not check again — the station service did not answer';
+        if (status) status.textContent = '＋ no se pudo comprobar de nuevo — el servicio de la estación no respondió';
       }
       retry.disabled = false;
     };
@@ -5871,22 +5871,22 @@ const App = (() => {
         SFX.click && SFX.click();
         if (!armed) {
           armed = true;
-          freshBtn.textContent = '✦ CONFIRM — START A NEW STATION';
+          freshBtn.textContent = '✦ CONFIRMAR — EMPEZAR UNA ESTACIÓN NUEVA';
           if (status) status.textContent = validCandidates.length
-            ? '＋ a recoverable station exists above — START FRESH sets it aside in a quarantine folder (nothing is deleted). Press again to confirm.'
-            : '＋ nothing here is recoverable. START FRESH moves the leftover files to a quarantine folder (nothing is deleted) and opens a new station. Press again to confirm.';
-          setTimeout(() => { if (armed) { armed = false; freshBtn.textContent = '✦ START FRESH'; } }, 12000);
+            ? '＋ existe una estación recuperable arriba — EMPEZAR NUEVO la aparta en una carpeta de cuarentena (nada se elimina). Pulsa de nuevo para confirmar.'
+            : '＋ aquí no hay nada recuperable. EMPEZAR NUEVO mueve los archivos restantes a una carpeta de cuarentena (nada se elimina) y abre una estación nueva. Pulsa de nuevo para confirmar.';
+          setTimeout(() => { if (armed) { armed = false; freshBtn.textContent = '✦ EMPEZAR NUEVO'; } }, 12000);
           return;
         }
         armed = false;
         freshBtn.disabled = true;
-        if (status) status.textContent = '＋ setting prior state aside…';
+        if (status) status.textContent = '＋ apartando el estado anterior…';
         try {
           const response = await fetch('/api/lineage/start-fresh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
           const result = await response.json().catch(() => ({}));
-          if (!response.ok || !result.ok) throw new Error(result.error || 'start-fresh request refused');
-          if (status) status.textContent = (result.moved && result.moved.length ? '＋ ' + result.moved.length + ' file(s) set aside in ' + result.quarantine + ' — ' : '＋ ') +
-            (result.desktopWillRestart ? 'station service restarting — opening your new station…' : 'restart the manual sidecar; this screen will continue automatically');
+          if (!response.ok || !result.ok) throw new Error(result.error || 'solicitud de inicio nuevo rechazada');
+          if (status) status.textContent = (result.moved && result.moved.length ? '＋ ' + result.moved.length + ' archivo(s) apartado(s) en ' + result.quarantine + ' — ' : '＋ ') +
+            (result.desktopWillRestart ? 'el servicio de la estación se reinicia — abriendo tu estación nueva…' : 'reinicia el sidecar manual; esta pantalla continuará automáticamente');
           // poll until the respawned sidecar answers, then reload: boot re-runs every gate and, with the
           // evidence gone, lands on the first-run ceremony.
           const timer = setInterval(async () => {
@@ -5902,8 +5902,8 @@ const App = (() => {
             } catch (_) {}
           }, 1500);
         } catch (error) {
-          freshBtn.disabled = false; freshBtn.textContent = '✦ START FRESH';
-          if (status) status.textContent = '＋ could not start fresh — ' + String(error && error.message || error);
+          freshBtn.disabled = false; freshBtn.textContent = '✦ EMPEZAR NUEVO';
+          if (status) status.textContent = '＋ no se pudo empezar de nuevo — ' + String(error && error.message || error);
         }
       };
     }

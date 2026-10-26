@@ -1,5 +1,689 @@
 [
 {
+"file": "frontend/skin-review-0914.js",
+"line": 48,
+"sink": "innerHTML",
+"text": ">0${i+1}</div><h2>${name}</h2></div><div class="
+},
+{
+"file": "frontend/skin-review-0914.js",
+"line": 48,
+"sink": "alt=",
+"text": "assets/skin-study-0914/${id}/south.png"
+},
+{
+"file": "frontend/skin-review-0914.js",
+"line": 56,
+"sink": "textContent",
+"text": ").length} / ${studies.length} skins shown"
+},
+{
+"file": "frontend/agent-motion-review.js",
+"line": 20,
+"sink": "textContent",
+"text": "${k}: ${Object.keys(v).length} directions / ${Object.values(v).reduce((n,a)=>n+a.length,0)} frames"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 12,
+"sink": "placeholder=",
+"text": "Name or ID"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 16,
+"sink": "button>",
+"text": "Previous room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 16,
+"sink": "button>",
+"text": "Next room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 18,
+"sink": "label>",
+"text": "World scale"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 20,
+"sink": "aria-*",
+"text": "Six catalog views in a furnished station room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 21,
+"sink": "aria-*",
+"text": "Props in this room"
+},
+{
+"file": "frontend/agent-proportion-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Play walking loops"
+},
+{
+"file": "frontend/agent-proportion-review.html",
+"line": 8,
+"sink": "aria-*",
+"text": "Four equal-height Secret Agent sprites in furnished StarNet comparison bays"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 84,
+"sink": "button>",
+"text": "▮ PRESS ANY KEY TO START"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 150,
+"sink": "aria-*",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 150,
+"sink": "placeholder=",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 165,
+"sink": "label>",
+"text": "Working style"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 166,
+"sink": "aria-*",
+"text": "Approval mode"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 234,
+"sink": "aria-*",
+"text": "ov-connection-head"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 237,
+"sink": "placeholder=",
+"text": "sk-or-…  —  openrouter.ai/keys"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 250,
+"sink": "button>",
+"text": "⏼ SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 251,
+"sink": "button>",
+"text": "↗ OPEN PAGE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 267,
+"sink": "button>",
+"text": "CONNECT STARNET ACCOUNT ↗"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 268,
+"sink": "button>",
+"text": "↗ OPEN PAGE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 269,
+"sink": "button>",
+"text": "＄ ADD CREDITS ▸"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 270,
+"sink": "button>",
+"text": "↻ USE A DIFFERENT ACCOUNT"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 287,
+"sink": "aria-*",
+"text": "ov-model-name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 292,
+"sink": "aria-*",
+"text": "Close model catalog"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 294,
+"sink": "label>",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 295,
+"sink": "placeholder=",
+"text": "loading models…"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 301,
+"sink": "button>",
+"text": "Use this model ID →"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 310,
+"sink": "button>",
+"text": "▸ where does my key go?"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 327,
+"sink": "button>",
+"text": "⭱ RESTORE BACKUP"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 338,
+"sink": "button>",
+"text": "CONNECT A BRAIN →"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 409,
+"sink": "button>",
+"text": "▶ CONTINUE WITH A FRESH STATION"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 446,
+"sink": "button>",
+"text": "⏻ RESTART STATION SERVICE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 448,
+"sink": "button>",
+"text": "⧉ COPY RECOVERY DETAILS"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 481,
+"sink": "button>",
+"text": "⇩ EXPORT RECOVERY REPORT"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 482,
+"sink": "button>",
+"text": "⭱ RESTORE BACKUP"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 483,
+"sink": "button>",
+"text": "⟳ RETRY STATE RECOVERY"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 518,
+"sink": "title=",
+"text": "Your Commander level grows through recorded progress toward your life goals. Open the quest log to see the achievements behind it."
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 526,
+"sink": "data-tip",
+"text": "Resume previously paused automation"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 539,
+"sink": "aria-*",
+"text": "Hide the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 539,
+"sink": "title=",
+"text": "Hide the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 541,
+"sink": "aria-*",
+"text": "Find an agent by name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 541,
+"sink": "placeholder=",
+"text": "Find an agent by name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 542,
+"sink": "aria-*",
+"text": "Close agent search"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 542,
+"sink": "title=",
+"text": "Close agent search"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 550,
+"sink": "title=",
+"text": "drag to resize CREW vs SESSIONS (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 552,
+"sink": "aria-*",
+"text": "ws-tab-sessions"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 552,
+"sink": "title=",
+"text": "your saved conversations"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 558,
+"sink": "placeholder=",
+"text": "⌕ search sessions + transcripts"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 559,
+"sink": "aria-*",
+"text": "Session view"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 559,
+"sink": "title=",
+"text": "Show all sessions"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 568,
+"sink": "aria-*",
+"text": "Live view of your agent station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 579,
+"sink": "aria-*",
+"text": "Show the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 579,
+"sink": "title=",
+"text": "Show the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 586,
+"sink": "title=",
+"text": "drag to resize the CREW rail (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 589,
+"sink": "title=",
+"text": "drag to resize COMMS"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 600,
+"sink": "aria-*",
+"text": "Select agent on the line"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 602,
+"sink": "title=",
+"text": "the model this agent runs on"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 605,
+"sink": "aria-*",
+"text": "Return to work"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 625,
+"sink": "aria-*",
+"text": "Message your agent"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 625,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 627,
+"sink": "aria-*",
+"text": "Send message"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 627,
+"sink": "title=",
+"text": "Send message"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "aria-*",
+"text": "Stop the running turn"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "title=",
+"text": "Stop the running turn (Esc)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "aria-*",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "title=",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 652,
+"sink": "aria-*",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 652,
+"sink": "placeholder=",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 654,
+"sink": "aria-*",
+"text": "Available models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 657,
+"sink": "aria-*",
+"text": "StarNet subscription (opens in your browser)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "aria-*",
+"text": "Start Local Live hands-free voice"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "title=",
+"text": "Local Live hands-free voice — local speech with your active Starnet agent"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 662,
+"sink": "aria-*",
+"text": "Click to talk"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 662,
+"sink": "title=",
+"text": "click to talk"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 681,
+"sink": "aria-*",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 681,
+"sink": "title=",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 689,
+"sink": "aria-*",
+"text": "The station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 689,
+"sink": "title=",
+"text": "The station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 703,
+"sink": "aria-*",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 703,
+"sink": "title=",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 714,
+"sink": "aria-*",
+"text": "Station systems — manual, settings, updates, notifications"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 714,
+"sink": "title=",
+"text": "Station systems — manual, settings, updates, notifications"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 747,
+"sink": "button>",
+"text": "GOT IT ✕"
+},
+{
+"file": "frontend/prop-atlas.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">All categories</option></select><button id="
+},
+{
+"file": "frontend/prop-atlas.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">All categories</option></select><button id="
+},
+{
+"file": "frontend/prop-sharpness-audit.html",
+"line": 3,
+"sink": "aria-*",
+"text": ">1× overview</option><option value="
+},
+{
+"file": "frontend/index.html",
+"line": 167,
+"sink": "aria-*",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/index.html",
+"line": 167,
+"sink": "placeholder=",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/index.html",
+"line": 254,
+"sink": "aria-*",
+"text": "ov-connection-head"
+},
+{
+"file": "frontend/index.html",
+"line": 257,
+"sink": "placeholder=",
+"text": "sk-or-…  —  openrouter.ai/keys"
+},
+{
+"file": "frontend/index.html",
+"line": 343,
+"sink": "aria-*",
+"text": "ov-model-name"
+},
+{
+"file": "frontend/index.html",
+"line": 608,
+"sink": "aria-*",
+"text": "ws-tab-sessions"
+},
+{
+"file": "frontend/index.html",
+"line": 608,
+"sink": "title=",
+"text": "ws-tab-projects"
+},
+{
+"file": "frontend/authored-machine-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": "Fabricator, pneumatic tube, and packing robot at station scale"
+},
+{
+"file": "frontend/agent-motion-review.html",
+"line": 6,
+"sink": "aria-*",
+"text": "Five animated crew members on an industrial station deck"
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">Refresh collection</button></div><div class="
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">Refresh collection</button></div><div class="
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Show at 4× world scale"
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 8,
+"sink": "innerHTML",
+"text": "designs shown. Transparent PNGs; click artwork for full resolution. Scale view uses the proposed envelope, not station lighting or interaction simulation."
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": ">2×</button><button data-scale="
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 10,
+"sink": "alt=",
+"text": "Supplied station art reference"
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 11,
+"sink": "textContent",
+"text": "current and candidate at equal game scale"
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 13,
+"sink": "textContent",
+"text": "Could not load:"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 9,
+"sink": "aria-*",
+"text": "Skin study batches"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 10,
+"sink": "aria-*",
+"text": "Find a skin"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 10,
+"sink": "placeholder=",
+"text": "Find a skin…"
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">Refresh revisions</button></div><div class="
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">Refresh revisions</button></div><div class="
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Show at 4× world scale"
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 8,
+"sink": "textContent",
+"text": ";const n=src.match(/-r(\\d)/)?.[1];link.textContent=({"
+},
+{
+"file": "frontend/prop-room-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": "Catalog props in a station room"
+},
+{
 "file": "frontend/app/deskscreen.js",
 "line": 340,
 "sink": "button>",
@@ -1317,199 +2001,7 @@
 "file": "frontend/app/app.js",
 "line": 2186,
 "sink": "placeholder=",
-"text": "search models — e.g."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2374,
-"sink": "placeholder=",
-"text": "search models — e.g."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2536,
-"sink": "textContent",
-"text": "◐ checking the code with Claude…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2542,
-"sink": "textContent",
-"text": "⧉ COPY INSTALL COMMAND"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2635,
-"sink": "textContent",
-"text": "link saved on this station, but StarNet could not verify it right now — check your connection and try again."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2652,
-"sink": "innerHTML",
-"text": "></span>linked to your StarNet account"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2678,
-"sink": "textContent",
-"text": "disconnecting this account so you can link the one with your credits…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2689,
-"sink": "textContent",
-"text": "could not disconnect this account safely — try again."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2704,
-"sink": "textContent",
-"text": "Opening your StarNet account…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2706,
-"sink": "textContent",
-"text": "requesting a link code…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2717,
-"sink": "textContent",
-"text": "Confirm the code in your browser to connect."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2720,
-"sink": "textContent",
-"text": "confirm this code in your browser (opening the link page now)…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2840,
-"sink": "textContent",
-"text": "Uses profanity. Select Unhinged again to confirm."
-},
-{
-"file": "frontend/app/app.js",
-"line": 2841,
-"sink": "textContent",
-"text": "UNHINGED — SURE? it swears, for real"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2898,
-"sink": "placeholder=",
-"text": "•••••••• stored in keychain — leave blank to keep"
-},
-{
-"file": "frontend/app/app.js",
-"line": 2973,
-"sink": "textContent",
-"text": "▸ where does my key go?"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3020,
-"sink": "innerHTML",
-"text": "your station is intact — this only re-connects the <b>brain</b>. Identity stays as you left it."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3022,
-"sink": "textContent",
-"text": "⏼ RESUME STATION ▸"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3025,
-"sink": "textContent",
-"text": "↻ RETRY AUTO-RESUME"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3031,
-"sink": "textContent",
-"text": "One mind to run your station. Build your crew from here."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3115,
-"sink": "textContent",
-"text": "could not start —"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3156,
-"sink": "textContent",
-"text": "enter your Custom /v1 base URL."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3166,
-"sink": "textContent",
-"text": ". edit it above, then WAKE."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3168,
-"sink": "textContent",
-"text": "choose or type a model slug."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3181,
-"sink": "textContent",
-"text": "checking your StarNet credits…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3185,
-"sink": "textContent",
-"text": "StarNet couldn’t confirm your credit balance right now. Your credits are safe — try WAKE again in a moment."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3188,
-"sink": "textContent",
-"text": "link your StarNet account first — press CONNECT STARNET ACCOUNT above."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3200,
-"sink": "textContent",
-"text": "sign in with"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3236,
-"sink": "textContent",
-"text": "this replaces the key already stored on this station. press WAKE again to confirm — or restore the old key to keep it."
-},
-{
-"file": "frontend/app/app.js",
-"line": 3252,
-"sink": "textContent",
-"text": "testing the wire — one real call to"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3271,
-"sink": "textContent",
-"text": "your StarNet balance is held by runs still working on this station — each refunds what it doesn’t spend. Wait for them to finish, then WAKE again"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3282,
-"sink": "textContent",
-"text": "your model didn’t answer"
-},
-{
-"file": "frontend/app/app.js",
-"line": 3311,
-"sink": "textContent",
-"text": "the prior Commander journey could not be cleared safely. retry WAKE before commissioning this agent."
+"text": "loading models…"
 },
 {
 "file": "frontend/app/app.js",
@@ -1519,291 +2011,9 @@
 },
 {
 "file": "frontend/app/app.js",
-"line": 4435,
-"sink": "aria-*",
-"text": "session actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4435,
-"sink": "title=",
-"text": "session actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4723,
-"sink": "innerHTML",
-"text": ">✕</span>Confirm delete"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4924,
-"sink": "title=",
-"text": "bless a folder as a trusted project"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4973,
-"sink": "innerHTML",
-"text": ">Could not load projects. Reload to reconnect.</li>"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4980,
-"sink": "innerHTML",
-"text": ">Could not display projects. Reload to retry. Your saved data has not been changed.</li>"
-},
-{
-"file": "frontend/app/app.js",
-"line": 4986,
-"sink": "textContent",
-"text": "Could not refresh projects — showing the last confirmed list. Reload to reconnect."
-},
-{
-"file": "frontend/app/app.js",
-"line": 4991,
-"sink": "innerHTML",
-"text": ">loading projects…</li>"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5027,
-"sink": "aria-*",
-"text": "project actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5027,
-"sink": "title=",
-"text": "project actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5036,
-"sink": "aria-*",
-"text": "open this session"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5036,
-"sink": "title=",
-"text": "open this session"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5040,
-"sink": "title=",
-"text": "open this project"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5079,
-"sink": "title=",
-"text": "back to all projects"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5079,
-"sink": "button>",
-"text": "◂ ALL PROJECTS"
-},
-{
-"file": "frontend/app/app.js",
 "line": 5080,
 "sink": "aria-*",
 "text": "+ U.esc(row.name +"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5080,
-"sink": "title=",
-"text": "project actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5087,
-"sink": "aria-*",
-"text": "project actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5087,
-"sink": "title=",
-"text": "project actions"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5185,
-"sink": "innerHTML",
-"text": ">✕</span>Confirm remove"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5187,
-"sink": "innerHTML",
-"text": "Remove (revoke trust)"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5262,
-"sink": "aria-*",
-"text": "project folder path"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5262,
-"sink": "placeholder=",
-"text": "C:\\\\Users\\\\you\\\\project"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5264,
-"sink": "title=",
-"text": "browse for a folder with the system dialog"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5265,
-"sink": "title=",
-"text": "scan common project folders; grants nothing"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5453,
-"sink": "textContent",
-"text": "the update could not install"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5456,
-"sink": "textContent",
-"text": "installing the update — StarNet restarts on its own when it is done."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5457,
-"sink": "textContent",
-"text": "the update did not start — try again in a moment."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5463,
-"sink": "textContent",
-"text": "checking for an update…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5475,
-"sink": "textContent",
-"text": "the update check failed"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5476,
-"sink": "textContent",
-"text": "an update check is already running — one moment…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5477,
-"sink": "textContent",
-"text": "this build cannot check for updates — download the latest StarNet from starnetos.com, then reopen."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5478,
-"sink": "textContent",
-"text": "update check failed — try again in a moment."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5480,
-"sink": "textContent",
-"text": "Update StarNet to the latest version (in the desktop app: Update Center), then reopen."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5525,
-"sink": "textContent",
-"text": "saved station temporarily unreadable — retry without resetting"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5526,
-"sink": "textContent",
-"text": "saved station could not be restored into this window — retry without resetting"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5536,
-"sink": "innerHTML",
-"text": ". Send a screenshot of this code to support."
-},
-{
-"file": "frontend/app/app.js",
-"line": 5542,
-"sink": "textContent",
-"text": "＋ recovery details unavailable — send a screenshot of"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5644,
-"sink": "textContent",
-"text": "✦ CONFIRM — START COMPLETELY FRESH"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5707,
-"sink": "textContent",
-"text": "✦ CONFIRM — CLEAR BROWSER STATE"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5794,
-"sink": "textContent",
-"text": "＋ staging verified recovery; the prior source will be preserved"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5816,
-"sink": "textContent",
-"text": "＋ recovery paused —"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5822,
-"sink": "textContent",
-"text": "＋ preparing redacted recovery report…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5832,
-"sink": "textContent",
-"text": "＋ report export failed —"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5853,
-"sink": "textContent",
-"text": "＋ could not check again — the station service did not answer"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5874,
-"sink": "textContent",
-"text": "✦ CONFIRM — START A NEW STATION"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5883,
-"sink": "textContent",
-"text": "＋ setting prior state aside…"
-},
-{
-"file": "frontend/app/app.js",
-"line": 5906,
-"sink": "textContent",
-"text": "＋ could not start fresh —"
 },
 {
 "file": "frontend/app/chat.js",
@@ -3928,5 +4138,5513 @@
 "line": 889,
 "sink": "innerHTML",
 "text": "+ r.job.name +"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 19,
+"sink": "innerHTML",
+"text": "> <output>19 px</output></label><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 19,
+"sink": "aria-*",
+"text": "> <output>19 px</output></label><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 20,
+"sink": "textContent",
+"text": "Normal station movement · visual review"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 26,
+"sink": "innerHTML",
+"text": ">Art mannequins beside live station furniture</div><button class="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 26,
+"sink": "button>",
+"text": "Close look"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 43,
+"sink": "textContent",
+"text": "Live agent skin"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 47,
+"sink": "textContent",
+"text": "Could not load the selected skins."
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 74,
+"sink": "innerHTML",
+"text": "<summary>Talking pose close-up</summary><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 86,
+"sink": "textContent",
+"text": "Station did not finish loading."
+},
+{
+"file": "frontend/agent-demo/review-world.js",
+"line": 1458,
+"sink": "textContent",
+"text": "FIRST CONTACT"
+},
+{
+"file": "frontend/agent-demo/review-world.js",
+"line": 6847,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "frontend/agent-demo/proportion-review.js",
+"line": 56,
+"sink": "textContent",
+"text": "Could not load comparison:"
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 5,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 6,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 7,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 8,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 9,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 10,
+"sink": "alt=",
+"text": "STONE texture"
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 11,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 12,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 13,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 14,
+"sink": "alt=",
+"text": "SLATE COURSES · STUDY texture"
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 7,
+"sink": "alt=",
+"text": "></a><small>REPEAT AT STATION SCALE</small><div class="
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 8,
+"sink": "alt=",
+"text": "></a><small>REPEAT AT STATION SCALE</small><div class="
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 9,
+"sink": "alt=",
+"text": "Pressure Panels texture"
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 1,
+"sink": "alt=",
+"text": "></div><h3>Repeating at 96px</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 2,
+"sink": "alt=",
+"text": "Titanium Ribs shell texture"
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 3,
+"sink": "alt=",
+"text": "></div><h3>Repeating at 96px</h3><div class="
+},
+{
+"file": "frontend/dev/session-indicators.html",
+"line": 22,
+"sink": "aria-*",
+"text": "Sample session states"
+},
+{
+"file": "frontend/dev/authored-furniture-review.html",
+"line": 1,
+"sink": "aria-*",
+"text": "Both authored heavy bags at station scale"
+},
+{
+"file": "frontend/dev/comms-layout-review.html",
+"line": 7,
+"sink": "aria-*",
+"text": "Preview window size"
+},
+{
+"file": "frontend/dev/comms-layout-review.html",
+"line": 9,
+"sink": "title=",
+"text": "Live StarNet layout preview"
+},
+{
+"file": "frontend/dev/authored-service-fixture.html",
+"line": 9,
+"sink": "button>",
+"text": "Reduced motion: on"
+},
+{
+"file": "frontend/dev/authored-mount-checks.js",
+"line": 33,
+"sink": "textContent",
+"text": "${checked} mounted source placements rendered across ${cases.length} view/mirror cases. Mode: ${authored?"
+},
+{
+"file": "frontend/dev/authored-content-fixture.html",
+"line": 11,
+"sink": "button>",
+"text": "Reduced motion: on"
+},
+{
+"file": "website/market.js",
+"line": 51,
+"sink": "textNode",
+"text": "· shared by a StarNet user"
+},
+{
+"file": "website/market.js",
+"line": 93,
+"sink": "textContent",
+"text": "Could not load this skill right now."
+},
+{
+"file": "website/market.js",
+"line": 122,
+"sink": "textContent",
+"text": "The catalog is empty right now."
+},
+{
+"file": "website/market.js",
+"line": 166,
+"sink": "textContent",
+"text": "Could not load the skill catalog right now. Refresh to try again, or browse it in the app under ABILITIES › DISCOVER › SKILL MARKET."
+},
+{
+"file": "website/market.html",
+"line": 69,
+"sink": "placeholder=",
+"text": "Search skills…"
+},
+{
+"file": "website/index.html",
+"line": 73,
+"sink": "aria-*",
+"text": "Scroll to the station"
+},
+{
+"file": "website/index.html",
+"line": 91,
+"sink": "aria-*",
+"text": ">Tools</span><span class="
+},
+{
+"file": "website/index.html",
+"line": 92,
+"sink": "aria-*",
+"text": ">Schedules &amp; channels</span><span class="
+},
+{
+"file": "website/index.html",
+"line": 93,
+"sink": "aria-*",
+"text": ">Models &amp; budgets</span><span class="
+},
+{
+"file": "website/index.html",
+"line": 97,
+"sink": "aria-*",
+"text": "StarNet station recorded from the real renderer, playing a scripted replay of harness events"
+},
+{
+"file": "website/index.html",
+"line": 225,
+"sink": "aria-*",
+"text": "Back to top"
+},
+{
+"file": "website/maps.js",
+"line": 34,
+"sink": "alt=",
+"text": "The station"
+},
+{
+"file": "website/maps.js",
+"line": 85,
+"sink": "textContent",
+"text": "The gallery could not be loaded. Try again in a moment."
+},
+{
+"file": "frontend/skin-review-0914.js",
+"line": 48,
+"sink": "innerHTML",
+"text": ">0${i+1}</div><h2>${name}</h2></div><div class="
+},
+{
+"file": "frontend/skin-review-0914.js",
+"line": 48,
+"sink": "alt=",
+"text": "assets/skin-study-0914/${id}/south.png"
+},
+{
+"file": "frontend/skin-review-0914.js",
+"line": 56,
+"sink": "textContent",
+"text": ").length} / ${studies.length} skins shown"
+},
+{
+"file": "frontend/agent-motion-review.js",
+"line": 20,
+"sink": "textContent",
+"text": "${k}: ${Object.keys(v).length} directions / ${Object.values(v).reduce((n,a)=>n+a.length,0)} frames"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 12,
+"sink": "placeholder=",
+"text": "Name or ID"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 16,
+"sink": "button>",
+"text": "Previous room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 16,
+"sink": "button>",
+"text": "Next room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 18,
+"sink": "label>",
+"text": "World scale"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 20,
+"sink": "aria-*",
+"text": "Six catalog views in a furnished station room"
+},
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 21,
+"sink": "aria-*",
+"text": "Props in this room"
+},
+{
+"file": "frontend/agent-proportion-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Play walking loops"
+},
+{
+"file": "frontend/agent-proportion-review.html",
+"line": 8,
+"sink": "aria-*",
+"text": "Four equal-height Secret Agent sprites in furnished StarNet comparison bays"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 84,
+"sink": "button>",
+"text": "▮ PRESS ANY KEY TO START"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 150,
+"sink": "aria-*",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 150,
+"sink": "placeholder=",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 165,
+"sink": "label>",
+"text": "Working style"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 166,
+"sink": "aria-*",
+"text": "Approval mode"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 234,
+"sink": "aria-*",
+"text": "ov-connection-head"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 237,
+"sink": "placeholder=",
+"text": "sk-or-…  —  openrouter.ai/keys"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 250,
+"sink": "button>",
+"text": "⏼ SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 251,
+"sink": "button>",
+"text": "↗ OPEN PAGE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 267,
+"sink": "button>",
+"text": "CONNECT STARNET ACCOUNT ↗"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 268,
+"sink": "button>",
+"text": "↗ OPEN PAGE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 269,
+"sink": "button>",
+"text": "＄ ADD CREDITS ▸"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 270,
+"sink": "button>",
+"text": "↻ USE A DIFFERENT ACCOUNT"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 287,
+"sink": "aria-*",
+"text": "ov-model-name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 292,
+"sink": "aria-*",
+"text": "Close model catalog"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 294,
+"sink": "label>",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 295,
+"sink": "placeholder=",
+"text": "loading models…"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 301,
+"sink": "button>",
+"text": "Use this model ID →"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 310,
+"sink": "button>",
+"text": "▸ where does my key go?"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 327,
+"sink": "button>",
+"text": "⭱ RESTORE BACKUP"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 338,
+"sink": "button>",
+"text": "CONNECT A BRAIN →"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 409,
+"sink": "button>",
+"text": "▶ CONTINUE WITH A FRESH STATION"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 446,
+"sink": "button>",
+"text": "⏻ RESTART STATION SERVICE"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 448,
+"sink": "button>",
+"text": "⧉ COPY RECOVERY DETAILS"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 481,
+"sink": "button>",
+"text": "⇩ EXPORT RECOVERY REPORT"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 482,
+"sink": "button>",
+"text": "⭱ RESTORE BACKUP"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 483,
+"sink": "button>",
+"text": "⟳ RETRY STATE RECOVERY"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 518,
+"sink": "title=",
+"text": "Your Commander level grows through recorded progress toward your life goals. Open the quest log to see the achievements behind it."
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 526,
+"sink": "data-tip",
+"text": "Resume previously paused automation"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 539,
+"sink": "aria-*",
+"text": "Hide the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 539,
+"sink": "title=",
+"text": "Hide the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 541,
+"sink": "aria-*",
+"text": "Find an agent by name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 541,
+"sink": "placeholder=",
+"text": "Find an agent by name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 542,
+"sink": "aria-*",
+"text": "Close agent search"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 542,
+"sink": "title=",
+"text": "Close agent search"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 550,
+"sink": "title=",
+"text": "drag to resize CREW vs SESSIONS (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 552,
+"sink": "aria-*",
+"text": "ws-tab-sessions"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 552,
+"sink": "title=",
+"text": "your saved conversations"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 558,
+"sink": "placeholder=",
+"text": "⌕ search sessions + transcripts"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 559,
+"sink": "aria-*",
+"text": "Session view"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 559,
+"sink": "title=",
+"text": "Show all sessions"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 568,
+"sink": "aria-*",
+"text": "Live view of your agent station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 579,
+"sink": "aria-*",
+"text": "Show the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 579,
+"sink": "title=",
+"text": "Show the crew rail"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 586,
+"sink": "title=",
+"text": "drag to resize the CREW rail (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 589,
+"sink": "title=",
+"text": "drag to resize COMMS"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 600,
+"sink": "aria-*",
+"text": "Select agent on the line"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 602,
+"sink": "title=",
+"text": "the model this agent runs on"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 605,
+"sink": "aria-*",
+"text": "Return to work"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 625,
+"sink": "aria-*",
+"text": "Message your agent"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 625,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 627,
+"sink": "aria-*",
+"text": "Send message"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 627,
+"sink": "title=",
+"text": "Send message"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "aria-*",
+"text": "Stop the running turn"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "title=",
+"text": "Stop the running turn (Esc)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "aria-*",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "title=",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 652,
+"sink": "aria-*",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 652,
+"sink": "placeholder=",
+"text": "Search models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 654,
+"sink": "aria-*",
+"text": "Available models"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 657,
+"sink": "aria-*",
+"text": "StarNet subscription (opens in your browser)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "aria-*",
+"text": "Start Local Live hands-free voice"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "title=",
+"text": "Local Live hands-free voice — local speech with your active Starnet agent"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 662,
+"sink": "aria-*",
+"text": "Click to talk"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 662,
+"sink": "title=",
+"text": "click to talk"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 681,
+"sink": "aria-*",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 681,
+"sink": "title=",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 689,
+"sink": "aria-*",
+"text": "The station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 689,
+"sink": "title=",
+"text": "The station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 703,
+"sink": "aria-*",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 703,
+"sink": "title=",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 714,
+"sink": "aria-*",
+"text": "Station systems — manual, settings, updates, notifications"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 714,
+"sink": "title=",
+"text": "Station systems — manual, settings, updates, notifications"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 747,
+"sink": "button>",
+"text": "GOT IT ✕"
+},
+{
+"file": "frontend/prop-atlas.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">All categories</option></select><button id="
+},
+{
+"file": "frontend/prop-atlas.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">All categories</option></select><button id="
+},
+{
+"file": "frontend/prop-sharpness-audit.html",
+"line": 3,
+"sink": "aria-*",
+"text": ">1× overview</option><option value="
+},
+{
+"file": "frontend/index.html",
+"line": 167,
+"sink": "aria-*",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/index.html",
+"line": 167,
+"sink": "placeholder=",
+"text": "ov-name-help"
+},
+{
+"file": "frontend/index.html",
+"line": 254,
+"sink": "aria-*",
+"text": "ov-connection-head"
+},
+{
+"file": "frontend/index.html",
+"line": 257,
+"sink": "placeholder=",
+"text": "sk-or-…  —  openrouter.ai/keys"
+},
+{
+"file": "frontend/index.html",
+"line": 343,
+"sink": "aria-*",
+"text": "ov-model-name"
+},
+{
+"file": "frontend/index.html",
+"line": 608,
+"sink": "aria-*",
+"text": "ws-tab-sessions"
+},
+{
+"file": "frontend/index.html",
+"line": 608,
+"sink": "title=",
+"text": "ws-tab-projects"
+},
+{
+"file": "frontend/authored-machine-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": "Fabricator, pneumatic tube, and packing robot at station scale"
+},
+{
+"file": "frontend/agent-motion-review.html",
+"line": 6,
+"sink": "aria-*",
+"text": "Five animated crew members on an industrial station deck"
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">Refresh collection</button></div><div class="
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">Refresh collection</button></div><div class="
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Show at 4× world scale"
+},
+{
+"file": "frontend/prop-batch-review.html",
+"line": 8,
+"sink": "innerHTML",
+"text": "designs shown. Transparent PNGs; click artwork for full resolution. Scale view uses the proposed envelope, not station lighting or interaction simulation."
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": ">2×</button><button data-scale="
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 10,
+"sink": "alt=",
+"text": "Supplied station art reference"
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 11,
+"sink": "textContent",
+"text": "current and candidate at equal game scale"
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 13,
+"sink": "textContent",
+"text": "Could not load:"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 9,
+"sink": "aria-*",
+"text": "Skin study batches"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 10,
+"sink": "aria-*",
+"text": "Find a skin"
+},
+{
+"file": "frontend/skin-review-0914.html",
+"line": 10,
+"sink": "placeholder=",
+"text": "Find a skin…"
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": ">Refresh revisions</button></div><div class="
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "placeholder=",
+"text": ">Refresh revisions</button></div><div class="
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 5,
+"sink": "button>",
+"text": "Show at 4× world scale"
+},
+{
+"file": "frontend/prop-style-review.html",
+"line": 8,
+"sink": "textContent",
+"text": ";const n=src.match(/-r(\\d)/)?.[1];link.textContent=({"
+},
+{
+"file": "frontend/prop-room-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": "Catalog props in a station room"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 340,
+"sink": "button>",
+"text": "OPEN PAGE"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 341,
+"sink": "aria-*",
+"text": "Previous screen"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 343,
+"sink": "aria-*",
+"text": "Next screen"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 366,
+"sink": "button>",
+"text": "' + (h.state === 'taken' ? 'OPEN STEP-IN' : 'STEP IN') + '"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 462,
+"sink": "innerHTML",
+"text": "data-state="
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 465,
+"sink": "aria-*",
+"text": "Tell this agent something mid-run"
+},
+{
+"file": "frontend/app/deskscreen.js",
+"line": 469,
+"sink": "button>",
+"text": "OPEN CHAT"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 20,
+"sink": "innerHTML",
+"text": "<summary>Sources StarNet can study for useful work</summary><div class="
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 26,
+"sink": "textContent",
+"text": "Reading your sources…"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 37,
+"sink": "button>",
+"text": "USE THIS FOLDER"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 39,
+"sink": "button>",
+"text": "'+(source.enabled?'PAUSE':'RESUME')+'"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 39,
+"sink": "button>",
+"text": "REMOVE SOURCE"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 40,
+"sink": "button>",
+"text": "REVIEW DRAFT SETUP"
+},
+{
+"file": "frontend/app/bootguard.js",
+"line": 295,
+"sink": "textContent",
+"text": "⧉ COPY FAILED — SELECT THE TEXT ABOVE"
+},
+{
+"file": "frontend/app/cratecard.js",
+"line": 94,
+"sink": "innerHTML",
+"text": "<header class="
+},
+{
+"file": "frontend/app/remaster-runtime-audit.js",
+"line": 31,
+"sink": "innerHTML",
+"text": ">Waiting for World…</output><details><summary>Measured results</summary><pre id="
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 78,
+"sink": "innerHTML",
+"text": "<form class="
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 82,
+"sink": "aria-*",
+"text": "Choose the first useful result"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 84,
+"sink": "placeholder=",
+"text": "For example: a short Friday update for the client, with next steps"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 84,
+"sink": "label>",
+"text": "What should the result do?"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 86,
+"sink": "placeholder=",
+"text": "Paste the real material to work from. Nothing is sent until you click Create draft."
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 86,
+"sink": "label>",
+"text": "Notes, messages, or a previous report"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 87,
+"sink": "aria-*",
+"text": "Approved source folder"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 87,
+"sink": "label>",
+"text": "Approved source folder"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 89,
+"sink": "button>",
+"text": "Model & connection"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 89,
+"sink": "button>",
+"text": "Connect my platforms"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 142,
+"sink": "textContent",
+"text": "Choose a task and provide the source you want to use."
+},
+{
+"file": "frontend/app/dialogue.js",
+"line": 447,
+"sink": "textContent",
+"text": "Need a starting point?"
+},
+{
+"file": "frontend/app/dialogue.js",
+"line": 477,
+"sink": "textContent",
+"text": "Send answer"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 269,
+"sink": "aria-*",
+"text": "Search classes"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 269,
+"sink": "placeholder=",
+"text": "Find a class…"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 465,
+"sink": "title=",
+"text": "turn notes or a sample into a useful draft"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 465,
+"sink": "button>",
+"text": "DRAFT FROM YOUR NOTES"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 466,
+"sink": "title=",
+"text": "import a recipe from a JSON file"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 484,
+"sink": "title=",
+"text": "bring an agent over from OpenClaw or Hermes"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 651,
+"sink": "button>",
+"text": "＋ SAVE THIS AGENT AS A CLASS"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 659,
+"sink": "aria-*",
+"text": "build a custom class"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 745,
+"sink": "aria-*",
+"text": "configure this agent"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 828,
+"sink": "button>",
+"text": "GOT IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 929,
+"sink": "title=",
+"text": "+ your ratings"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 942,
+"sink": "title=",
+"text": "host-checked acceptance"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 944,
+"sink": "title=",
+"text": "the latest run differs from its good history"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 990,
+"sink": "aria-*",
+"text": "back to the library"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1239,
+"sink": "title=",
+"text": "download this recipe as a portable JSON file"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1245,
+"sink": "title=",
+"text": "change this recipe in place"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1262,
+"sink": "aria-*",
+"text": "recipe-detail-panel-"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1263,
+"sink": "aria-*",
+"text": "data-recipe-panel="
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1265,
+"sink": "aria-*",
+"text": "recipe-detail-tab-"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1273,
+"sink": "button>",
+"text": "SET UP A SCHEDULE"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1282,
+"sink": "button>",
+"text": "▸ START SESSION"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1316,
+"sink": "button>",
+"text": "GOT IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1319,
+"sink": "button>",
+"text": "' + (on ? '❚❚ PAUSE LEARNING' : '▸ RESUME LEARNING') + '"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1486,
+"sink": "aria-*",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1486,
+"sink": "title=",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1584,
+"sink": "button>",
+"text": "▸ REVIEW &amp; SAVE"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1585,
+"sink": "aria-*",
+"text": "dismiss this drafted role forever"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1585,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2013,
+"sink": "button>",
+"text": "▸ HAND IT TO THE CREW"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2014,
+"sink": "aria-*",
+"text": "dismiss this finding forever"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2014,
+"sink": "title=",
+"text": "dismiss forever — this exact finding won’t come back"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2028,
+"sink": "button>",
+"text": "▸ REVIEW &amp; SAVE"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2029,
+"sink": "aria-*",
+"text": "dismiss this drafted recipe forever"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2029,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2037,
+"sink": "button>",
+"text": "▸ REVIEW &amp; SAVE"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2901,
+"sink": "title=",
+"text": "on this machine"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3005,
+"sink": "button>",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3007,
+"sink": "button>",
+"text": "▸ START SESSION"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3008,
+"sink": "title=",
+"text": "puts this recipe on a schedule — it becomes a ROUTINE you can manage in AUTOMATE › SCHEDULES"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3237,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3241,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3242,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3252,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3340,
+"sink": "aria-*",
+"text": "what kind of value"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3343,
+"sink": "title=",
+"text": "required at launch"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3350,
+"sink": "button>",
+"text": "＋ ADD FILL-IN"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3374,
+"sink": "aria-*",
+"text": "read tool"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3374,
+"sink": "placeholder=",
+"text": "READ tool, e.g. search_messages"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3376,
+"sink": "placeholder=",
+"text": "the read must show this text"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3386,
+"sink": "placeholder=",
+"text": "workspace path, e.g. out/{client}-invoice.md"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3388,
+"sink": "placeholder=",
+"text": "must contain this text"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3390,
+"sink": "placeholder=",
+"text": "64-hex digest (or a {token})"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3429,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3430,
+"sink": "placeholder=",
+"text": "e.g. Summarize {project} progress since {since} and flag blockers."
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3435,
+"sink": "placeholder=",
+"text": "e.g.\\nPull this week\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3440,
+"sink": "label>",
+"text": "GEAR IT DRAWS ON"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3447,
+"sink": "button>",
+"text": "' + (editing ? '✓ SAVE CHANGES' : forking ? '✓ SAVE MY VERSION' : '✓ SAVE RECIPE') + '"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3649,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3696,
+"sink": "aria-*",
+"text": "Class icon"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3698,
+"sink": "aria-*",
+"text": "Or type your own icon"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3698,
+"sink": "title=",
+"text": "Or type your own"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3703,
+"sink": "placeholder=",
+"text": "Describe its job and what a good result looks like."
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3703,
+"sink": "label>",
+"text": "What should it do?"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3705,
+"sink": "placeholder=",
+"text": "Plans practical trips around your budget"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3715,
+"sink": "button>",
+"text": "' + (editing ? 'SAVE CHANGES' : 'CREATE CLASS') + '"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 1841,
+"sink": "aria-*",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2093,
+"sink": "data-tip",
+"text": "data-tip-below>"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3512,
+"sink": "button>",
+"text": "' + esc(it.label) + '"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3912,
+"sink": "button>",
+"text": "' + (busy === 'install' ? 'INSTALANDO…' : 'QUITANDO…') + '"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3955,
+"sink": "status:",
+"text": "data-installed="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4363,
+"sink": "button>",
+"text": "' + esc(source.label || source.url) + ' · COMUNIDAD"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4381,
+"sink": "button>",
+"text": "' + esc(entry.name) + (entry.version ? ' · v' + esc(entry.version) : '') + '"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4507,
+"sink": "innerHTML",
+"text": "+ esc(skill.name || candidate.name) +"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4520,
+"sink": "aria-*",
+"text": "></textarea><button class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4520,
+"sink": "placeholder=",
+"text": "></textarea><button class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4798,
+"sink": "aria-*",
+"text": "><button type="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7541,
+"sink": "label>",
+"text": "' + f.label + note + '"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7816,
+"sink": "placeholder=",
+"text": "auto-steer-set"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7820,
+"sink": "placeholder=",
+"text": "auto-avoid-add"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7930,
+"sink": "title=",
+"text": "display:none"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7946,
+"sink": "title=",
+"text": "display:none"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8013,
+"sink": "aria-*",
+"text": "set-lighting-label"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8070,
+"sink": "aria-*",
+"text": "data-glass="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8073,
+"sink": "aria-*",
+"text": "set-static-help"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8756,
+"sink": "title=",
+"text": "+ (r.startedAt ? new Date(r.startedAt).toLocaleTimeString() :"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9480,
+"sink": "textContent",
+"text": "+ snap.error + (snap.loaded ?"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9850,
+"sink": "innerHTML",
+"text": "<header class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10745,
+"sink": "aria-*",
+"text": "+ brief.progress.done +"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10777,
+"sink": "aria-*",
+"text": "+ esc(frame.corner) + esc(frame.run.repeat(2)) +"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11150,
+"sink": "placeholder=",
+"text": "></label><label>Valor objetivo<input class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11231,
+"sink": "aria-*",
+"text": "><button class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11483,
+"sink": "aria-*",
+"text": "q-mission-copy"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11507,
+"sink": "aria-*",
+"text": "q-tab-available"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11511,
+"sink": "aria-*",
+"text": "q-tab-goals"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11513,
+"sink": "aria-*",
+"text": "q-tab-progress"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11515,
+"sink": "aria-*",
+"text": "q-tab-completed"
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 31,
+"sink": "textContent",
+"text": "Your answer is full. Edit it before adding another starting point."
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 43,
+"sink": "placeholder=",
+"text": "Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line."
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 79,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 84,
+"sink": "textContent",
+"text": "Answer sent"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 33,
+"sink": "aria-*",
+"text": "Reasoning effort — how hard this model thinks"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 33,
+"sink": "title=",
+"text": "Reasoning effort — how hard this model thinks"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 56,
+"sink": "innerHTML",
+"text": ">effort: auto</option>"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 129,
+"sink": "textContent",
+"text": "🔑 add a provider key"
+},
+{
+"file": "frontend/app/updates.js",
+"line": 554,
+"sink": "button>",
+"text": "WAIT FOR AGENTS"
+},
+{
+"file": "frontend/app/updates.js",
+"line": 558,
+"sink": "button>",
+"text": "INSTALL UPDATE"
+},
+{
+"file": "frontend/app/crtlab.js",
+"line": 312,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "frontend/app/crtlab.js",
+"line": 316,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "frontend/app/intake.js",
+"line": 37,
+"sink": "status:",
+"text": "getting to know you…"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 325,
+"sink": "innerHTML",
+"text": ">Everything your crew made, filed by project — open one for the ask, the answer and every file.</p>"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 325,
+"sink": "title=",
+"text": "Previews open safely inside StarNet in a browser; desktop OPEN uses your file app."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 327,
+"sink": "aria-*",
+"text": "search title, agent, project"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 327,
+"sink": "placeholder=",
+"text": "search title, agent, project"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 327,
+"sink": "data-tip",
+"text": "Takes these cards out of the library (not TO REVIEW&rsquo;s rating list) — the files stay on disk, and UNDO brings them back."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 327,
+"sink": "button>",
+"text": "CLEAR ALL"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 331,
+"sink": "data-tip",
+"text": "Previews first: removes only the records of failed and discarded runs — files are not deleted, and UNDO brings them back"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 331,
+"sink": "button>",
+"text": "DELETE FAILED &amp; DISCARDED RECORDS"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 341,
+"sink": "button>",
+"text": "SHOW ALL WORK"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 409,
+"sink": "button>",
+"text": "OPEN IN WORKFLOWS"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 409,
+"sink": "button>",
+"text": "↗ OPEN THE FULL CONVERSATION"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 410,
+"sink": "button>",
+"text": "KEEP IT"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 414,
+"sink": "data-tip",
+"text": "Takes it out of this library. The files stay on disk."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 414,
+"sink": "button>",
+"text": "✓ DONE · CLEAR"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 453,
+"sink": "status:",
+"text": "+ summary.pending +"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 453,
+"sink": "button>",
+"text": "' + summary.pending + ' need' + (summary.pending === 1 ? 's' : '') + ' a decision"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 606,
+"sink": "status:",
+"text": "+ encodeURIComponent(status.value) +"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 782,
+"sink": "innerHTML",
+"text": "discarded/failed lifecycle record(s) will be removed."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 782,
+"sink": "button>",
+"text": "REMOVE EXACTLY THESE ' + p.targets.length + ' RECORDS"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 499,
+"sink": "placeholder=",
+"text": "Give this agent a direction…"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 687,
+"sink": "title=",
+"text": "Click to open activity · drag to move"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 815,
+"sink": "title=",
+"text": "Shrink the HUD to the agent cam"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 818,
+"sink": "title=",
+"text": "Back to the full station"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 105,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 449,
+"sink": "placeholder=",
+"text": "Message the group · @ picks one agent"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 550,
+"sink": "append(str)",
+"text": "GROUP CHAT ·"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 1130,
+"sink": "aria-*",
+"text": ") : null; if (sel && sel.scrollIntoView) sel.scrollIntoView({ block:"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 1289,
+"sink": "textContent",
+"text": "; status = (add ?"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 1325,
+"sink": "append(str)",
+"text": "Your whole crew is already in this chat. Recruit more under CREW."
+},
+{
+"file": "frontend/app/project-home.js",
+"line": 20,
+"sink": "innerHTML",
+"text": "><button class="
+},
+{
+"file": "frontend/app/project-home.js",
+"line": 20,
+"sink": "button>",
+"text": "‹ Back to chat"
+},
+{
+"file": "frontend/app/project-home.js",
+"line": 131,
+"sink": "placeholder=",
+"text": "Give this agent a direction…"
+},
+{
+"file": "frontend/app/project-home.js",
+"line": 153,
+"sink": "textContent",
+"text": "Crew preferences saved."
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 69,
+"sink": "title=",
+"text": "This phone asks before every step that needs an OK, even for agents on full access"
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 118,
+"sink": "aria-*",
+"text": "Pairing code for your phone"
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 123,
+"sink": "button>",
+"text": "COPY LINK"
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 135,
+"sink": "textContent",
+"text": "Works once, for the next"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 173,
+"sink": "textContent",
+"text": "Resetting the station browser…"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 178,
+"sink": "textContent",
+"text": "The browser was not reset:"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 190,
+"sink": "innerHTML",
+"text": "s saved keys and tokens in the system keychain, and this window\\"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 200,
+"sink": "placeholder=",
+"text": "type ERASE to confirm"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 214,
+"sink": "textContent",
+"text": "Stopping StarNet and erasing… keep this window open."
+},
+{
+"file": "frontend/app/keycta.js",
+"line": 202,
+"sink": "button>",
+"text": "⚙ ADD IN SETTINGS"
+},
+{
+"file": "frontend/app/keycta.js",
+"line": 204,
+"sink": "button>",
+"text": "◇ SET UP OLLAMA (FREE · LOCAL)"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 266,
+"sink": "innerHTML",
+"text": "><input class="
+},
+{
+"file": "frontend/app/apps.js",
+"line": 266,
+"sink": "aria-*",
+"text": "Describe a change to this app"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 266,
+"sink": "placeholder=",
+"text": "Describe a change — how it looks, what it shows, how it works"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 268,
+"sink": "aria-*",
+"text": "apps-btn app-arm"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 268,
+"sink": "button>",
+"text": "AUTO-UPDATE"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 268,
+"sink": "button>",
+"text": "▶ TURN SCHEDULING ON"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 272,
+"sink": "aria-*",
+"text": "apps-btn apps-chip"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 273,
+"sink": "label>",
+"text": "Each update should…"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 274,
+"sink": "aria-*",
+"text": "What each update should do"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 274,
+"sink": "placeholder=",
+"text": "e.g. refresh what it shows · add today\\"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 321,
+"sink": "textContent",
+"text": "Each update is a crew run on your model."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 326,
+"sink": "textContent",
+"text": "Say what each update should do."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 372,
+"sink": "innerHTML",
+"text": ">Could not load your apps — the station did not answer. <button class="
+},
+{
+"file": "frontend/app/apps.js",
+"line": 411,
+"sink": "aria-*",
+"text": "New app"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 415,
+"sink": "label>",
+"text": "What should it do?"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 416,
+"sink": "aria-*",
+"text": "In your own words: what it shows or does, how it should look, and whether it updates by itself."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 416,
+"sink": "placeholder=",
+"text": "In your own words: what it shows or does, how it should look, and whether it updates by itself."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 419,
+"sink": "button>",
+"text": "+ BUILD IT"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 432,
+"sink": "textContent",
+"text": "Give it a name."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 433,
+"sink": "textContent",
+"text": "Say what it should do."
+},
+{
+"file": "frontend/app/skin-study-preview.js",
+"line": 17,
+"sink": "textContent",
+"text": "Review all props"
+},
+{
+"file": "frontend/app/warroom.js",
+"line": 76,
+"sink": "textContent",
+"text": "fill the frame with the station"
+},
+{
+"file": "frontend/app/warroom.js",
+"line": 76,
+"sink": "title=",
+"text": "fill the frame with the station"
+},
+{
+"file": "frontend/app/warroom.js",
+"line": 111,
+"sink": "title=",
+"text": "idle camera: auto-follows the crew after 2 min hands-off — grab the camera (drag/zoom) to take it back"
+},
+{
+"file": "frontend/app/delegated.js",
+"line": 254,
+"sink": "data-tip",
+"text": "+ (stopping.has(st.worker.id) ?"
+},
+{
+"file": "frontend/app/delegated.js",
+"line": 254,
+"sink": "button>",
+"text": "' + (stopping.has(st.worker.id) ? 'Stopping…' : 'Stop') + '"
+},
+{
+"file": "frontend/app/delegated.js",
+"line": 255,
+"sink": "button>",
+"text": "' + (shown ? 'Hide work' : 'See work') + '"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1049,
+"sink": "textContent",
+"text": "▸ FIRST STEPS"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1056,
+"sink": "textContent",
+"text": "reopen any time — § FIELD MANUAL in the ▣ SYSTEM dock"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1087,
+"sink": "textContent",
+"text": "✓ FIRST STEPS COMPLETE"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1149,
+"sink": "button>",
+"text": "BACK TO CONNECTION GUIDE"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1175,
+"sink": "aria-*",
+"text": "The work cycle"
+},
+{
+"file": "frontend/app/glass-comms.js",
+"line": 31,
+"sink": "title=",
+"text": "Add agents to this chat"
+},
+{
+"file": "frontend/app/kepler-showcase.js",
+"line": 23,
+"sink": "innerHTML",
+"text": "></select><div></div><output style="
+},
+{
+"file": "frontend/app/kepler-showcase.js",
+"line": 23,
+"sink": "aria-*",
+"text": "display:block;white-space:pre-wrap"
+},
+{
+"file": "frontend/app/prop-room-review.js",
+"line": 41,
+"sink": "textContent",
+"text": "Saved station"
+},
+{
+"file": "frontend/app/app.js",
+"line": 40,
+"sink": "textContent",
+"text": "status-connecting"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2186,
+"sink": "placeholder=",
+"text": "loading models…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 4425,
+"sink": "aria-*",
+"text": ") + group.name) +"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5080,
+"sink": "aria-*",
+"text": "+ U.esc(row.name +"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 866,
+"sink": "aria-*",
+"text": "Copy code block"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 866,
+"sink": "data-tip",
+"text": "copy code"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 1079,
+"sink": "aria-*",
+"text": "Report table"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 1709,
+"sink": "title=",
+"text": "click to enlarge"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2210,
+"sink": "textContent",
+"text": "data-tip"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2622,
+"sink": "textContent",
+"text": "Send or clear your current draft before choosing a session."
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2958,
+"sink": "textContent",
+"text": "↻ Continuing toward your session goal"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 3553,
+"sink": "textContent",
+"text": "copy path"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 3554,
+"sink": "title=",
+"text": "copy the full saved path"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 3725,
+"sink": "textContent",
+"text": "✉ sent to"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4158,
+"sink": "textContent",
+"text": "▸ Show the whole question"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4193,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4261,
+"sink": "textContent",
+"text": "use your judgment"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4271,
+"sink": "textContent",
+"text": "Use your judgment for the rest ("
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4272,
+"sink": "title=",
+"text": "decide this and the remaining"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5034,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5038,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5041,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5068,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5095,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5133,
+"sink": "textContent",
+"text": "◈ finished while you were away:"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5183,
+"sink": "textContent",
+"text": "◈ INBOX — prove the line: send one small, real job through it, end to end."
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5197,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5203,
+"sink": "textContent",
+"text": "▶ TURN SCHEDULING ON"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5205,
+"sink": "textContent",
+"text": "… turning on"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5211,
+"sink": "textContent",
+"text": "▶ TURN SCHEDULING ON"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5225,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5230,
+"sink": "textContent",
+"text": "⌛ the job is riding the line…"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5263,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5365,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5411,
+"sink": "textContent",
+"text": "⚠ captures your mouse/keyboard when opened (pointer lock) — press Esc to release it"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5416,
+"sink": "textContent",
+"text": "⚠ may ask to use your camera, microphone, or screen when opened"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5420,
+"sink": "textContent",
+"text": "▶ Open it — try it in a tab"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5540,
+"sink": "textContent",
+"text": "view source"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5541,
+"sink": "title=",
+"text": "show this file’s contents inline"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5566,
+"sink": "textContent",
+"text": "implement → applies this patch to a NEW branch in"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5570,
+"sink": "textContent",
+"text": "⚠ this patch can’t be auto-applied ("
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5583,
+"sink": "textContent",
+"text": "implement → saves the files to"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5623,
+"sink": "textContent",
+"text": "copy path"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5625,
+"sink": "textContent",
+"text": "copy path"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5631,
+"sink": "textContent",
+"text": "📂 open folder"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5632,
+"sink": "textContent",
+"text": "could not open"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5641,
+"sink": "title=",
+"text": "UNDO KEEP — removes the copied files from"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5645,
+"sink": "textContent",
+"text": "undo — remove these files?"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5655,
+"sink": "textContent",
+"text": "Could not undo this keep: the station kept the files."
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5769,
+"sink": "title=",
+"text": "delete these files and never rebuild or re-propose this idea"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5776,
+"sink": "textContent",
+"text": "Could not discard this:"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6044,
+"sink": "title=",
+"text": "forget this — undo the save"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6266,
+"sink": "placeholder=",
+"text": "correct anything — it folds straight into the run"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6287,
+"sink": "title=",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6291,
+"sink": "placeholder=",
+"text": "run already finished — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6302,
+"sink": "placeholder=",
+"text": "could not reach the run — say it in chat"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6314,
+"sink": "textContent",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6319,
+"sink": "title=",
+"text": "show the full read"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6377,
+"sink": "textContent",
+"text": "◈ briefing updated — every agent on this station now knows your"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 7130,
+"sink": "textContent",
+"text": "✦ one curious thing — i still don’t know your"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 9288,
+"sink": "textContent",
+"text": "⧉ copy diagnostics for a bug report"
+},
+{
+"file": "frontend/app/workview.js",
+"line": 18,
+"sink": "status:",
+"text": "Not started"
+},
+{
+"file": "frontend/app/workview.js",
+"line": 23,
+"sink": "status:",
+"text": "Run stopped or failed — review the conversation"
+},
+{
+"file": "frontend/app/workview.js",
+"line": 27,
+"sink": "status:",
+"text": "Marked shipped by you"
+},
+{
+"file": "frontend/app/workview.js",
+"line": 29,
+"sink": "status:",
+"text": "Run completed — review result"
+},
+{
+"file": "frontend/app/workview.js",
+"line": 31,
+"sink": "status:",
+"text": "Run outcome is unconfirmed"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 41,
+"sink": "textContent",
+"text": "First words"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 142,
+"sink": "aria-*",
+"text": "End live voice"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 142,
+"sink": "title=",
+"text": "End live voice"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 158,
+"sink": "aria-*",
+"text": "Pause before sending your turn"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 167,
+"sink": "title=",
+"text": "First words: detected speech to transcript. Send: last voiced frame to submission. Speech start: latest spoken chunk queued to actual playback."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 325,
+"sink": "textContent",
+"text": "LOCAL SPEECH · ${route}"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 395,
+"sink": "textContent",
+"text": "ASR ${String(data.asr).toUpperCase()} · VOICE ${String(data.tts).toUpperCase()}${progress}"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 410,
+"sink": "textContent",
+"text": "LOCAL MODELS: SIDECAR OFFLINE"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1290,
+"sink": "textContent",
+"text": "LOCAL MODELS: NOT INSTALLED"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1305,
+"sink": "textContent",
+"text": "Opening the microphone…"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1330,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1568,
+"sink": "textContent",
+"text": "Opening the microphone…"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1658,
+"sink": "textContent",
+"text": "Speak naturally — interrupt any time."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1759,
+"sink": "textContent",
+"text": "ASR ${engineLabel} · VOICE EDGE"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1765,
+"sink": "textContent",
+"text": "ASR ${engineLabel} · VOICE ${row.label} (EDGE)"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1767,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "frontend/app/schedpicker.js",
+"line": 94,
+"sink": "aria-*",
+"text": "how often it runs"
+},
+{
+"file": "frontend/app/schedpicker.js",
+"line": 100,
+"sink": "aria-*",
+"text": "day of the month"
+},
+{
+"file": "frontend/app/widgets.js",
+"line": 394,
+"sink": "textContent",
+"text": "; val.style.display ="
+},
+{
+"file": "frontend/app/widgets.js",
+"line": 737,
+"sink": "innerHTML",
+"text": "<header class="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 141,
+"sink": "innerHTML",
+"text": "><header class="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 332,
+"sink": "innerHTML",
+"text": "stages</b>, but its LINE BUDGET allows <b>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 334,
+"sink": "data-tip",
+"text": "sets this INBOX’s LINE BUDGET › max stages after the first to"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 415,
+"sink": "innerHTML",
+"text": "></span><button type="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 415,
+"sink": "aria-*",
+"text": "Close workflow panel"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 419,
+"sink": "button>",
+"text": "▶ SEND A JOB"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 421,
+"sink": "aria-*",
+"text": "This line today"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 442,
+"sink": "textContent",
+"text": "CONNECT IT TO A LINE"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 459,
+"sink": "textContent",
+"text": "This BAY isn’t on any line, so it only works when you message its agent directly. MAKE IT A LINE gives it a line of its own; JOIN A LINE belts it onto a line already on the floor."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 510,
+"sink": "aria-*",
+"text": "Add a step here"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 510,
+"sink": "data-tip",
+"text": "Add a step here"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 512,
+"sink": "aria-*",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 572,
+"sink": "aria-*",
+"text": "Add to the line"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 703,
+"sink": "aria-*",
+"text": "data-rest="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 723,
+"sink": "data-tip",
+"text": "arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 746,
+"sink": "button>",
+"text": "' + (s && W.isLive(s) ? '▶ TEST · ' + s.state.toUpperCase() : '▶ TEST') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 773,
+"sink": "innerHTML",
+"text": ">Select a part of the line.</p>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 884,
+"sink": "aria-*",
+"text": "Step name"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 884,
+"sink": "placeholder=",
+"text": "Name this step"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 887,
+"sink": "aria-*",
+"text": "This step’s role"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 969,
+"sink": "aria-*",
+"text": "Test input"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 971,
+"sink": "aria-*",
+"text": "Test input"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 971,
+"sink": "placeholder=",
+"text": "or type a test job here"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 973,
+"sink": "button>",
+"text": "◂ Go to ' + esc(dockLabel(f, nb.prev[0])) + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 983,
+"sink": "button>",
+"text": "Next: set up ' + esc(dockLabel(f, nextPid).split(' · ')[0]) + ' ▸"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 988,
+"sink": "button>",
+"text": "▶ ' + (t ? 'TEST IT AGAIN' : 'TEST THIS STEP') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1057,
+"sink": "textContent",
+"text": "… turning on"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1094,
+"sink": "aria-*",
+"text": "The job to send down this line"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1094,
+"sink": "placeholder=",
+"text": "What should the line work on? e.g. Find this week’s most useful research on sleep and memory."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1100,
+"sink": "aria-*",
+"text": ">⊕ ADD A SCHEDULE</button><button type="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1100,
+"sink": "button>",
+"text": "⊕ ADD A SCHEDULE"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1103,
+"sink": "button>",
+"text": "▶ TURN SCHEDULING ON"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1105,
+"sink": "label>",
+"text": "What task should start each run?"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1107,
+"sink": "placeholder=",
+"text": "e.g. Find this week’s AI news and summarize the three biggest stories."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1109,
+"sink": "placeholder=",
+"text": "schedule — every 30m · 0 9 * * * · in 2h"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1121,
+"sink": "button>",
+"text": "▸ SAVE SCHEDULE"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1123,
+"sink": "button>",
+"text": "CONNECT A CHANNEL ▸"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1193,
+"sink": "aria-*",
+"text": "Trusted project"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1286,
+"sink": "button>",
+"text": "COPY KEY"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1286,
+"sink": "button>",
+"text": "I SAVED IT"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1289,
+"sink": "button>",
+"text": "' + (t.enabled ? 'PAUSE' : 'RESUME') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1291,
+"sink": "button>",
+"text": "NEW KEY"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1301,
+"sink": "label>",
+"text": "Folder to watch (full path)"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1302,
+"sink": "placeholder=",
+"text": "e.g. C:\\\\Users\\\\you\\\\Drops\\\\invoices"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1305,
+"sink": "label>",
+"text": "What should the line do with ' + (kind === 'folder' ? 'each file' : 'each call') + '? (optional)"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1311,
+"sink": "button>",
+"text": "' + (editing ? '▸ SAVE CHANGES' : kind === 'folder' ? '▸ WATCH THIS FOLDER' : '▸ CREATE WEBHOOK') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1420,
+"sink": "innerHTML",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1440,
+"sink": "textContent",
+"text": "Run by ·"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1551,
+"sink": "textContent",
+"text": "⚠ with DONE on"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1653,
+"sink": "innerHTML",
+"text": ">OUTBOX</span>Collect the finished work</h3>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1656,
+"sink": "button>",
+"text": "MAKE IT A SEND TO"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1658,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1660,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1710,
+"sink": "innerHTML",
+"text": "The job is split into parts"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1711,
+"sink": "aria-*",
+"text": "What this splitter does with each job"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1716,
+"sink": "aria-*",
+"text": "Why a choice is not available yet"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1756,
+"sink": "innerHTML",
+"text": ">FILTER</span>Send each type of task its own way</h3>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1774,
+"sink": "textContent",
+"text": "✕ not saved —"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1933,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1933,
+"sink": "button>",
+"text": "' + (mine.stopping ? 'STOPPING…' : '■ STOP') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2001,
+"sink": "button>",
+"text": "OPEN ITS JOB"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2012,
+"sink": "data-tip",
+"text": "Opens DELIVERABLES at TO REVIEW, where finished work waits for your rating."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2012,
+"sink": "button>",
+"text": "waiting in DELIVERABLES › TO REVIEW"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2026,
+"sink": "data-tip",
+"text": ">★ KEEP THIS STYLE</button>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2026,
+"sink": "button>",
+"text": "★ KEEP THIS STYLE"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2042,
+"sink": "aria-*",
+"text": "What is wrong with the result"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2043,
+"sink": "button>",
+"text": "' + (asking ? 'THINKING…' : 'SUGGEST CHANGES') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2047,
+"sink": "button>",
+"text": "↻ SEND IT AGAIN"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2062,
+"sink": "button>",
+"text": "✓ USE THIS"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2189,
+"sink": "aria-*",
+"text": "Test job"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2189,
+"sink": "placeholder=",
+"text": "What should the line work on?"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2197,
+"sink": "aria-*",
+"text": "When to pause"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2197,
+"sink": "button>",
+"text": "PAUSE AT EVERY HANDOFF"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2197,
+"sink": "button>",
+"text": "RUN TO THE END"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2198,
+"sink": "button>",
+"text": "▶ START STEP-THROUGH"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2206,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2206,
+"sink": "button>",
+"text": "' + (mine.stopping ? 'STOPPING…' : '■ STOP') + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2212,
+"sink": "aria-*",
+"text": "How to test"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2225,
+"sink": "aria-*",
+"text": "Run log"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2298,
+"sink": "button>",
+"text": "↺ RE-RUN FROM ' + esc(nameOf(h.agentId)) + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2315,
+"sink": "button>",
+"text": "' + (edited ? (toOut ? '▶ FINISH WITH MY EDIT' : '▶ CONTINUE WITH MY EDIT') : (toOut ? '▶ FINISH TEST' : '▶ CONTINUE')) + '"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2316,
+"sink": "button>",
+"text": "↻ RE-RUN STEP"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2316,
+"sink": "button>",
+"text": "▶▶ RUN TO END"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2319,
+"sink": "button>",
+"text": "↻ SAVE BRIEF &amp; RE-RUN ' + esc(nameOf(h.agentId)) + '"
+},
+{
+"file": "frontend/app/diagnostics.js",
+"line": 315,
+"sink": "textContent",
+"text": "could not read diagnostics — is the app still running?"
+},
+{
+"file": "frontend/app/diagnostics.js",
+"line": 341,
+"sink": "textContent",
+"text": "select all"
+},
+{
+"file": "frontend/app/build.js",
+"line": 431,
+"sink": "title=",
+"text": "zoom out (or scroll the wheel)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 433,
+"sink": "title=",
+"text": "zoom in (or scroll the wheel)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 439,
+"sink": "title=",
+"text": "frame the station"
+},
+{
+"file": "frontend/app/build.js",
+"line": 441,
+"sink": "title=",
+"text": "how to build"
+},
+{
+"file": "frontend/app/build.js",
+"line": 442,
+"sink": "title=",
+"text": "finish + save (or press Esc twice)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 776,
+"sink": "alt=",
+"text": "Preview sketch of"
+},
+{
+"file": "frontend/app/build.js",
+"line": 780,
+"sink": "button>",
+"text": "MAKE IT \\u00b7 ~$0.35"
+},
+{
+"file": "frontend/app/build.js",
+"line": 933,
+"sink": "innerHTML",
+"text": "><b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\\u2019s style.</small></div>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 935,
+"sink": "aria-*",
+"text": "Object to make"
+},
+{
+"file": "frontend/app/build.js",
+"line": 941,
+"sink": "button>",
+"text": "\\u21bb MAKE SIDE VIEW"
+},
+{
+"file": "frontend/app/build.js",
+"line": 980,
+"sink": "placeholder=",
+"text": "props · name, category or ability"
+},
+{
+"file": "frontend/app/build.js",
+"line": 998,
+"sink": "title=",
+"text": "clear search"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1043,
+"sink": "textContent",
+"text": "← ALL ABILITIES"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1058,
+"sink": "textContent",
+"text": "CLEAR SEARCH"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1095,
+"sink": "innerHTML",
+"text": "><label>TOOL ACCESS FOR <select class="
+},
+{
+"file": "frontend/app/build.js",
+"line": 1095,
+"sink": "label>",
+"text": "TOOL ACCESS FOR"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1277,
+"sink": "innerHTML",
+"text": "+ KEYS.map(([k, v]) =>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1315,
+"sink": "textContent",
+"text": "A type is just the deck it starts with — SURFACE (3) re-lays any room later."
+},
+{
+"file": "frontend/app/build.js",
+"line": 1557,
+"sink": "textContent",
+"text": "＋ BUILD YOUR OWN LINE"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1964,
+"sink": "textContent",
+"text": "OTHER DESIGNS ·"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2147,
+"sink": "innerHTML",
+"text": ">SET UP BEFORE YOU PLACE</div>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2531,
+"sink": "textContent",
+"text": "＋ MAKE ROOM FOR IT"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2902,
+"sink": "innerHTML",
+"text": ">BUILD MODE / STATION PRESETS</span><h2>A place for your work</h2></div><button class="
+},
+{
+"file": "frontend/app/build.js",
+"line": 2902,
+"sink": "button>",
+"text": "BACK TO BUILD"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2905,
+"sink": "aria-*",
+"text": "shared builds"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2905,
+"sink": "button>",
+"text": "EXPORT THIS STATION"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2905,
+"sink": "button>",
+"text": "IMPORT A BUILD…"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2905,
+"sink": "button>",
+"text": "SHARE TO COMMUNITY"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2908,
+"sink": "button>",
+"text": "RESTORE PREVIOUS"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2942,
+"sink": "innerHTML",
+"text": "+ esc(item.name) +"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2942,
+"sink": "aria-*",
+"text": "station-build-check"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2981,
+"sink": "textContent",
+"text": "CONFIRM — USE"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3001,
+"sink": "textContent",
+"text": "Could not restore the previous layout:"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3055,
+"sink": "alt=",
+"text": "The picture that goes with this map"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3057,
+"sink": "placeholder=",
+"text": "your name or handle"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3058,
+"sink": "label>",
+"text": "ONE LINE ABOUT IT"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3062,
+"sink": "button>",
+"text": "SEND FOR REVIEW"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3069,
+"sink": "textContent",
+"text": "Nothing was shared."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3072,
+"sink": "textContent",
+"text": "Give the map a name."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3073,
+"sink": "textContent",
+"text": "Add the name you want credited in the gallery."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3074,
+"sink": "textContent",
+"text": "Turn on the CC BY 4.0 agreement to share it: it is how others may build your station."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3075,
+"sink": "textContent",
+"text": "for review…"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3083,
+"sink": "innerHTML",
+"text": ">A person looks at it next. Once it is approved it appears in the community gallery with your name on it. Your Maps tab on account.starnetos.com shows where it stands.</span>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3089,
+"sink": "textContent",
+"text": "SEND FOR REVIEW"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3102,
+"sink": "textContent",
+"text": "This station is not linked to a StarNet account yet. Link it first: STORE › LINK STATION (a free account works), then open SHARE TO COMMUNITY again."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3114,
+"sink": "textContent",
+"text": "Reading the community gallery…"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3155,
+"sink": "textContent",
+"text": "This station could not be exported."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3166,
+"sink": "textContent",
+"text": "That file is too large to be a station build."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3168,
+"sink": "textContent",
+"text": "That file could not be read."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3200,
+"sink": "innerHTML",
+"text": "><header class="
+},
+{
+"file": "frontend/app/build.js",
+"line": 3221,
+"sink": "innerHTML",
+"text": "How the line runs"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3221,
+"sink": "aria-*",
+"text": "How the line runs"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3223,
+"sink": "aria-*",
+"text": "><option value="
+},
+{
+"file": "frontend/app/build.js",
+"line": 3226,
+"sink": "button>",
+"text": "GIVE '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' EVERY STEP"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3229,
+"sink": "button>",
+"text": "'+(pending?'JOB IN PROGRESS…':sr?.view?.ok?'↻ SEND IT AGAIN':'▶ SEND A REAL JOB')+'"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3235,
+"sink": "button>",
+"text": "'+(software ? 'OPEN THE INBOX: FOLDER + START' : 'OPEN THE INBOX: HOW IT STARTS')+'"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3324,
+"sink": "button>",
+"text": "START BUILDING"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3825,
+"sink": "aria-*",
+"text": "Close setup"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4024,
+"sink": "aria-*",
+"text": "+ esc(exits.find(x => x.dir === d)?.label || d +"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4097,
+"sink": "innerHTML",
+"text": ">sidecar offline — start it to bind a connector.</div>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4139,
+"sink": "innerHTML",
+"text": ">sidecar offline — start it to bind a plugin.</div>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4653,
+"sink": "title=",
+"text": "dismiss — you know the gear"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4723,
+"sink": "title=",
+"text": "dismiss for this line"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4725,
+"sink": "button>",
+"text": "EDIT STEPS & RESULT"
+},
+{
+"file": "frontend/app/build.js",
+"line": 5629,
+"sink": "innerHTML",
+"text": "drag it to move"
+},
+{
+"file": "frontend/app/build.js",
+"line": 5629,
+"sink": "aria-*",
+"text": "drag it to move"
+},
+{
+"file": "frontend/app/build.js",
+"line": 5658,
+"sink": "innerHTML",
+"text": "<label>X <input aria-label="
+},
+{
+"file": "frontend/app/build.js",
+"line": 5658,
+"sink": "aria-*",
+"text": "></label><label>Y <input aria-label="
+},
+{
+"file": "frontend/app/build.js",
+"line": 6355,
+"sink": "aria-*",
+"text": "Room name"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6355,
+"sink": "placeholder=",
+"text": "name this room"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6357,
+"sink": "aria-*",
+"text": "Let go of the room · Esc"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6357,
+"sink": "data-tip",
+"text": "Let go of the room · Esc"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6388,
+"sink": "innerHTML",
+"text": "it gives"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6389,
+"sink": "button>",
+"text": "KEEP IT"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6427,
+"sink": "aria-*",
+"text": "Let go of all of them · Esc"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6427,
+"sink": "data-tip",
+"text": "Let go of all of them · Esc"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6977,
+"sink": "innerHTML",
+"text": "><b>PICK WHAT GOES HERE</b><small>"
+},
+{
+"file": "frontend/app/voice.js",
+"line": 1966,
+"sink": "title=",
+"text": "tap to resume hands-free voice mode"
+},
+{
+"file": "frontend/app/world.js",
+"line": 2210,
+"sink": "textContent",
+"text": "FIRST CONTACT"
+},
+{
+"file": "frontend/app/world.js",
+"line": 8059,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "frontend/app/briefing.js",
+"line": 22,
+"sink": "title=",
+"text": "While you were away"
+},
+{
+"file": "frontend/app/worldlab.js",
+"line": 14,
+"sink": "textContent",
+"text": "CAPTURE LIVE STATE"
+},
+{
+"file": "frontend/app/worldlab.js",
+"line": 24,
+"sink": "textContent",
+"text": "Capture records the current frame, station, crew and real event history."
+},
+{
+"file": "frontend/app/userprops.js",
+"line": 207,
+"sink": "status:",
+"text": "The station lost track of this job. If it finished, it is in MADE BY YOU; check your credit history for its charge."
+},
+{
+"file": "frontend/app/modeldock.js",
+"line": 771,
+"sink": "title=",
+"text": "your StarNet balance is"
+},
+{
+"file": "frontend/app/needsyou.js",
+"line": 525,
+"sink": "status:",
+"text": "the station could not be reached"
+},
+{
+"file": "frontend/app/projection-audit-panel.js",
+"line": 10,
+"sink": "textContent",
+"text": ";button.style.cssText="
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 128,
+"sink": "button>",
+"text": "TAKE THE WHEEL"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 129,
+"sink": "button>",
+"text": "HAND BACK"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 130,
+"sink": "button>",
+"text": "CAN\\'T DO IT"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 135,
+"sink": "aria-*",
+"text": "hidden><img class="
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 135,
+"sink": "alt=",
+"text": "Live view of the agent\\"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 238,
+"sink": "textContent",
+"text": "Take the wheel to drive its browser yourself. It is frozen until you hand it back, and it never sees what you type. It never solves a human check on its own."
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 255,
+"sink": "innerHTML",
+"text": ">SAVED SIGN-INS</h4>"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 260,
+"sink": "button>",
+"text": "FORGET ALL SIGN-INS"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 122,
+"sink": "button>",
+"text": "' + icon('back') + '"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 126,
+"sink": "aria-*",
+"text": "Type an address or search"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 126,
+"sink": "placeholder=",
+"text": "Type an address or search"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 129,
+"sink": "button>",
+"text": "SHOW WINDOW"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 133,
+"sink": "title=",
+"text": "Agent-made page"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 134,
+"sink": "aria-*",
+"text": "Live browser picture"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 307,
+"sink": "innerHTML",
+"text": "<p>That page isn\\"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 314,
+"sink": "innerHTML",
+"text": "<p>The station isn\\"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 359,
+"sink": "innerHTML",
+"text": "needs you in the browser.</p>"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 361,
+"sink": "button>",
+"text": "STEP IN"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 373,
+"sink": "innerHTML",
+"text": "s own browser closed.</p><p class="
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 669,
+"sink": "title=",
+"text": ">CHROME WINDOW</button>"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 669,
+"sink": "button>",
+"text": "CHROME WINDOW"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 670,
+"sink": "title=",
+"text": ">BUILT-IN</button>"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 670,
+"sink": "button>",
+"text": "BUILT-IN"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 689,
+"sink": "textContent",
+"text": "Could not read the browser setting from the station."
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 696,
+"sink": "textContent",
+"text": "Could not save:"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 697,
+"sink": "textContent",
+"text": "Could not save: the station did not answer."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 9,
+"sink": "textContent",
+"text": "Full catalog with projection corrections. Fixed 2× world scale; the crate and crew show physical size."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 14,
+"sink": "textContent",
+"text": "Showing newly rebuilt props. Each is followed by the approved desk, crate, and agent at the same scale."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 20,
+"sink": "textContent",
+"text": "+c.p.label).toLowerCase().includes(search.value.toLowerCase()));c.article.hidden=!c.visible;if(c.visible)n++;}document.querySelector("
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 62,
+"sink": "textContent",
+"text": "Artwork could not load:"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 536,
+"sink": "button>",
+"text": "▶ SEND A JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 537,
+"sink": "button>",
+"text": "FINISH SETUP"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 561,
+"sink": "data-tip",
+"text": "+ esc(goal.quote) +"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 562,
+"sink": "aria-*",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 571,
+"sink": "placeholder=",
+"text": "e.g. a weekly digest of AI news for my newsletter"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 577,
+"sink": "button>",
+"text": "More ready-made workflows are in the Build Library ›"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 598,
+"sink": "button>",
+"text": "GIVE ' + esc(String(a.name || a.id).toUpperCase()) + ' EVERY STEP"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 599,
+"sink": "button>",
+"text": "OPEN BUILD MODE"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 608,
+"sink": "data-tip",
+"text": "INBOX: you send jobs in here."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 611,
+"sink": "aria-*",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 615,
+"sink": "data-tip",
+"text": "OUTBOX: the finished result lands here."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 624,
+"sink": "button>",
+"text": "⊕ GIVE ' + esc(NAME(s.agentId)) + ' A DESK"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 634,
+"sink": "button>",
+"text": "⊕ GIVE ' + esc(NAME(s.agentId)) + ' A DESK"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 636,
+"sink": "button>",
+"text": "FIX IT IN THE EDITOR"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 638,
+"sink": "button>",
+"text": "GIVE ' + esc(String(a.name || a.id).toUpperCase()) + ' EVERY STEP"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 660,
+"sink": "aria-*",
+"text": "The job for this workflow"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 661,
+"sink": "button>",
+"text": "▶ SEND A JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 703,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: change these starts, or add a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 704,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 704,
+"sink": "button>",
+"text": "⊕ MAKE IT AUTOMATIC"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 713,
+"sink": "button>",
+"text": "' + (mine && S.out.stopping ? 'STOPPING…' : '■ STOP') + '"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 721,
+"sink": "button>",
+"text": "OPEN ITS JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 767,
+"sink": "button>",
+"text": "OPEN ITS JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 770,
+"sink": "button>",
+"text": "OPEN ITS JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 789,
+"sink": "aria-*",
+"text": "+ !!(S.fix && S.fix.jobId === job.id && S.fix.open) +"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 790,
+"sink": "data-tip",
+"text": "The last step stops copying this result’s format, length and tone, and the crew forgets its style."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 790,
+"sink": "button>",
+"text": "★ STYLE KEPT · PUT IT BACK"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 791,
+"sink": "data-tip",
+"text": "The step that wrote this result will match its format, length and tone every time, and the whole crew matches its style in similar work."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 791,
+"sink": "button>",
+"text": "★ KEEP THIS STYLE"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 793,
+"sink": "button>",
+"text": "↻ SEND IT AGAIN"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 794,
+"sink": "button>",
+"text": "+ NEW JOB"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 821,
+"sink": "button>",
+"text": "' + (asking ? 'THINKING…' : 'SUGGEST CHANGES') + '"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 831,
+"sink": "button>",
+"text": "PUT IT BACK"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 831,
+"sink": "button>",
+"text": "✓ USE THIS"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 833,
+"sink": "button>",
+"text": "↻ SEND IT AGAIN"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 850,
+"sink": "data-tip",
+"text": "The full editor: the line on the floor, each step’s instructions, what starts it automatically, its budget."
+},
+{
+"file": "frontend/app/windows/loops.js",
+"line": 483,
+"sink": "aria-*",
+"text": "data-tip="
+},
+{
+"file": "frontend/app/windows/loops.js",
+"line": 588,
+"sink": "innerHTML",
+"text": "<label class="
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 147,
+"sink": "placeholder=",
+"text": "arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 264,
+"sink": "placeholder=",
+"text": "p. ej. node scripts/run-summary.js"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 267,
+"sink": "placeholder=",
+"text": "p. ej. Run summary"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 943,
+"sink": "textContent",
+"text": "+ ADD & CONNECT"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1062,
+"sink": "innerHTML",
+"text": ">Your saved connections have not been erased."
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1098,
+"sink": "innerHTML",
+"text": ">Could not read connections. Retry when the station is available.</div>"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1171,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || j.error ||"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1244,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1272,
+"sink": "title=",
+"text": "opens a secure browser sign-in (OAuth)"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1293,
+"sink": "title=",
+"text": "first-party server, run by the vendor"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1294,
+"sink": "title=",
+"text": "community-run server"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1298,
+"sink": "button>",
+"text": "NEW APP PASSWORD"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1307,
+"sink": "title=",
+"text": "not directly wired yet — see the note"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1318,
+"sink": "aria-*",
+"text": "Google app password"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1318,
+"sink": "placeholder=",
+"text": "16-letter app password"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1354,
+"sink": "data-tip",
+"text": ">IMAP · SMTP · app password</div>"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1356,
+"sink": "button>",
+"text": "SET UP TOKEN"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1425,
+"sink": "textContent",
+"text": "is not in the catalog"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1427,
+"sink": "innerHTML",
+"text": ">sidecar offline — start it to browse the catalog.</div>"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1503,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1562,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1572,
+"sink": "textContent",
+"text": "✕ couldn’t open the sign-in page for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1605,
+"sink": "button>",
+"text": "COPY CODE"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1667,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1828,
+"sink": "aria-*",
+"text": "Allow unattended use of"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1958,
+"sink": "textContent",
+"text": "✕ couldn’t open the Spotify sign-in page"
+},
+{
+"file": "frontend/app/windows/automation.js",
+"line": 54,
+"sink": "innerHTML",
+"text": "><label for="
+},
+{
+"file": "frontend/app/windows/messaging.js",
+"line": 100,
+"sink": "label>",
+"text": "APP-LEVEL TOKEN"
+},
+{
+"file": "frontend/app/windows/routines.js",
+"line": 111,
+"sink": "aria-*",
+"text": "Advanced schedule options"
+},
+{
+"file": "frontend/app/windows/routines.js",
+"line": 180,
+"sink": "innerHTML",
+"text": ">✕</button></div><div class="
+},
+{
+"file": "frontend/app/windows/routines.js",
+"line": 889,
+"sink": "innerHTML",
+"text": "+ r.job.name +"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 19,
+"sink": "innerHTML",
+"text": "> <output>19 px</output></label><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 19,
+"sink": "aria-*",
+"text": "> <output>19 px</output></label><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 20,
+"sink": "textContent",
+"text": "Normal station movement · visual review"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 26,
+"sink": "innerHTML",
+"text": ">Art mannequins beside live station furniture</div><button class="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 26,
+"sink": "button>",
+"text": "Close look"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 43,
+"sink": "textContent",
+"text": "Live agent skin"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 47,
+"sink": "textContent",
+"text": "Could not load the selected skins."
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 74,
+"sink": "innerHTML",
+"text": "<summary>Talking pose close-up</summary><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 86,
+"sink": "textContent",
+"text": "Station did not finish loading."
+},
+{
+"file": "frontend/agent-demo/review-world.js",
+"line": 1458,
+"sink": "textContent",
+"text": "FIRST CONTACT"
+},
+{
+"file": "frontend/agent-demo/review-world.js",
+"line": 6847,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "frontend/agent-demo/proportion-review.js",
+"line": 56,
+"sink": "textContent",
+"text": "Could not load comparison:"
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 5,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 6,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 7,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 8,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 9,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 10,
+"sink": "alt=",
+"text": "STONE texture"
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 11,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 12,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 13,
+"sink": "alt=",
+"text": "></div><h3>REPEATING AT 96 PX</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 14,
+"sink": "alt=",
+"text": "SLATE COURSES · STUDY texture"
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 7,
+"sink": "alt=",
+"text": "></a><small>REPEAT AT STATION SCALE</small><div class="
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 8,
+"sink": "alt=",
+"text": "></a><small>REPEAT AT STATION SCALE</small><div class="
+},
+{
+"file": "frontend/assets/industrial/space-preview.html",
+"line": 9,
+"sink": "alt=",
+"text": "Pressure Panels texture"
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 1,
+"sink": "alt=",
+"text": "></div><h3>Repeating at 96px</h3><div class="
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 2,
+"sink": "alt=",
+"text": "Titanium Ribs shell texture"
+},
+{
+"file": "frontend/assets/industrial/shell-variants/preview.html",
+"line": 3,
+"sink": "alt=",
+"text": "></div><h3>Repeating at 96px</h3><div class="
+},
+{
+"file": "frontend/dev/session-indicators.html",
+"line": 22,
+"sink": "aria-*",
+"text": "Sample session states"
+},
+{
+"file": "frontend/dev/authored-furniture-review.html",
+"line": 1,
+"sink": "aria-*",
+"text": "Both authored heavy bags at station scale"
+},
+{
+"file": "frontend/dev/comms-layout-review.html",
+"line": 7,
+"sink": "aria-*",
+"text": "Preview window size"
+},
+{
+"file": "frontend/dev/comms-layout-review.html",
+"line": 9,
+"sink": "title=",
+"text": "Live StarNet layout preview"
+},
+{
+"file": "frontend/dev/authored-service-fixture.html",
+"line": 9,
+"sink": "button>",
+"text": "Reduced motion: on"
+},
+{
+"file": "frontend/dev/authored-mount-checks.js",
+"line": 33,
+"sink": "textContent",
+"text": "${checked} mounted source placements rendered across ${cases.length} view/mirror cases. Mode: ${authored?"
+},
+{
+"file": "frontend/dev/authored-content-fixture.html",
+"line": 11,
+"sink": "button>",
+"text": "Reduced motion: on"
+},
+{
+"file": "website/docs/help.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/help.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/help.html",
+"line": 143,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/troubleshooting.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/troubleshooting.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/troubleshooting.html",
+"line": 195,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 10,
+"sink": "title=",
+"text": "Install &amp; first task"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 142,
+"sink": "aria-*",
+"text": "More in Start here"
+},
+{
+"file": "website/docs/shortcuts.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/shortcuts.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/shortcuts.html",
+"line": 161,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/migrating.html",
+"line": 10,
+"sink": "title=",
+"text": "From OpenClaw or Hermes"
+},
+{
+"file": "website/docs/migrating.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/migrating.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/migrating.html",
+"line": 124,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/providers.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/providers.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/providers.html",
+"line": 139,
+"sink": "aria-*",
+"text": "More in Start here"
+},
+{
+"file": "website/docs/skills.html",
+"line": 10,
+"sink": "title=",
+"text": "Skills &amp; routines reference"
+},
+{
+"file": "website/docs/skills.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/skills.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/skills.html",
+"line": 126,
+"sink": "aria-*",
+"text": "More in Repeat &amp; automate"
+},
+{
+"file": "website/docs/glossary.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/glossary.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/glossary.html",
+"line": 178,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/connect-a-platform.html",
+"line": 10,
+"sink": "title=",
+"text": "Connect a service"
+},
+{
+"file": "website/docs/connect-a-platform.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/connect-a-platform.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/connect-a-platform.html",
+"line": 222,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/connectors.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/connectors.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/connectors.html",
+"line": 161,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/index.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/index.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/index.html",
+"line": 94,
+"sink": "aria-*",
+"text": "first-task"
+},
+{
+"file": "website/docs/index.html",
+"line": 108,
+"sink": "aria-*",
+"text": "guides/first-line.html"
+},
+{
+"file": "website/docs/index.html",
+"line": 110,
+"sink": "aria-*",
+"text": "connect-a-platform.html"
+},
+{
+"file": "website/docs/docs.js",
+"line": 33,
+"sink": "textContent",
+"text": "Link to"
+},
+{
+"file": "website/docs/docs.js",
+"line": 37,
+"sink": "innerHTML",
+"text": ">On this page</div><ol>"
+},
+{
+"file": "website/docs/station.html",
+"line": 10,
+"sink": "title=",
+"text": "Station &amp; capabilities"
+},
+{
+"file": "website/docs/station.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/station.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/station.html",
+"line": 117,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/autonomy.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/autonomy.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/autonomy.html",
+"line": 120,
+"sink": "aria-*",
+"text": "More in Repeat &amp; automate"
+},
+{
+"file": "website/docs/agents.html",
+"line": 35,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/agents.html",
+"line": 35,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/agents.html",
+"line": 152,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A job enters at the INBOX, reaches a FILTER, and is sent east to the engineer if it is code, or south to the generalist for everything else"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 110,
+"sink": "aria-*",
+"text": "An INBOX, a FILTER tile, and two BAYs placed with gaps for belts"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 111,
+"sink": "aria-*",
+"text": "The belt runs from the INBOX through the FILTER tile and on to BAY A"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 112,
+"sink": "aria-*",
+"text": "A second belt leaves the FILTER tile south and turns east into BAY B"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 113,
+"sink": "aria-*",
+"text": "The FILTER card with CODE, RESEARCH and EVERYTHING ELSE each pointed at a lane, saved as you choose"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 12,
+"sink": "title=",
+"text": "Set up your crew"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 93,
+"sink": "alt=",
+"text": "CONSOLE prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 94,
+"sink": "alt=",
+"text": "INTEL CAB prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 95,
+"sink": "alt=",
+"text": "DISH prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 96,
+"sink": "alt=",
+"text": "CORE prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 97,
+"sink": "alt=",
+"text": "WORKBENCH prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 98,
+"sink": "alt=",
+"text": "STUDIO prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 112,
+"sink": "alt=",
+"text": "CONSOLE, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 113,
+"sink": "alt=",
+"text": "INTEL CAB, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 114,
+"sink": "alt=",
+"text": "DISH, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 115,
+"sink": "alt=",
+"text": "CORE, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 116,
+"sink": "alt=",
+"text": "WORKBENCH, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 117,
+"sink": "alt=",
+"text": "STUDIO, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 125,
+"sink": "aria-*",
+"text": "A filtered line branching to two bays"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 126,
+"sink": "aria-*",
+"text": "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat."
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 128,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 92,
+"sink": "aria-*",
+"text": "One job enters, a SPLITTER sends a copy to each of two analysts, a JOINER waits for both results and sends one merged crate to the OUTBOX"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 102,
+"sink": "aria-*",
+"text": "/><circle class="
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 103,
+"sink": "aria-*",
+"text": "A splitter set to COPY TO EACH: its lanes meet at a joiner, every lane gets the same job and the joiner merges the results"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 112,
+"sink": "aria-*",
+"text": "A splitter set to COPY TO EACH: its lanes meet at a joiner, every lane gets the same job and the joiner merges the results"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 113,
+"sink": "aria-*",
+"text": "/><circle class="
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 114,
+"sink": "aria-*",
+"text": "One job enters, a SPLITTER sends a copy to each of two analysts, a JOINER waits for both results and sends one merged crate to the OUTBOX"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 115,
+"sink": "aria-*",
+"text": "The JOINER card: a timeout of 10 minutes for a late branch"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 12,
+"sink": "title=",
+"text": "Build your first workflow"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 99,
+"sink": "aria-*",
+"text": "Build step 1"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 100,
+"sink": "aria-*",
+"text": "Build step 2"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 101,
+"sink": "aria-*",
+"text": "Build step 3"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 102,
+"sink": "aria-*",
+"text": "Build step 4"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 103,
+"sink": "aria-*",
+"text": "Build step 5"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 108,
+"sink": "aria-*",
+"text": "/><circle class="
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 109,
+"sink": "aria-*",
+"text": "INBOX to bay A to bay B: a hand-off chain"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 110,
+"sink": "aria-*",
+"text": "A filter branching one lane into two bays, each bay shipping to its own out tray"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 111,
+"sink": "aria-*",
+"text": "A splitter dealing jobs across three bays in turn; a merger sends every result to one out tray"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 116,
+"sink": "aria-*",
+"text": "A filtered line branching to two bays"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 117,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A quest path of five milestones with two done and one current, a RATE THE WORK card with NAILED IT and MISSED, and an XP bar"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 126,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/night-shift.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/night-shift.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/night-shift.html",
+"line": 92,
+"sink": "aria-*",
+"text": "The autonomy dial with ON ITS OWN set to SMALL JOBS, REACH to LOCAL ONLY and PACE to STANDARD 3, above a night timeline where three beats fired and five were skipped"
+},
+{
+"file": "website/docs/guides/night-shift.html",
+"line": 131,
+"sink": "aria-*",
+"text": "More in Repeat &amp; automate"
+},
+{
+"file": "website/docs/guides/index.html",
+"line": 12,
+"sink": "title=",
+"text": "Step-by-step guides"
+},
+{
+"file": "website/docs/guides/index.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/index.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/index.html",
+"line": 91,
+"sink": "aria-*",
+"text": "first-line.html"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat."
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 115,
+"sink": "aria-*",
+"text": "An agent desk with a PC and shared gear"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 116,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 118,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A work line: a job enters at the INBOX, rides the belt through two agent BAYs where each does their part, and the finished work leaves through the OUTBOX."
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 119,
+"sink": "aria-*",
+"text": ">THE FRONT DOOR</div><div class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 120,
+"sink": "aria-*",
+"text": "/><circle class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 121,
+"sink": "aria-*",
+"text": ">THE OUT TRAY</div><div class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 122,
+"sink": "aria-*",
+"text": ">FILTER &middot; SPLITTER &middot; JOINER &middot; LOOP</div><div class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 127,
+"sink": "aria-*",
+"text": "Build step 1"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 128,
+"sink": "aria-*",
+"text": "Build step 2"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 129,
+"sink": "aria-*",
+"text": "Build step 3"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 130,
+"sink": "aria-*",
+"text": "Build step 4"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 131,
+"sink": "aria-*",
+"text": "Build step 5"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 138,
+"sink": "aria-*",
+"text": "A belt run that is energized"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 139,
+"sink": "aria-*",
+"text": "A belt run that is cold"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 145,
+"sink": "aria-*",
+"text": "INBOX to bay A to bay B: a hand-off chain"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 146,
+"sink": "aria-*",
+"text": "/></g></g><circle class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 147,
+"sink": "aria-*",
+"text": "/></g></g><circle class="
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 148,
+"sink": "aria-*",
+"text": "A loop gate with a done lane onward to the outbox and a back lane returning to an earlier bay"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 184,
+"sink": "aria-*",
+"text": "first-line.html"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 12,
+"sink": "title=",
+"text": "Create repeatable work"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 37,
+"sink": "aria-*",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 37,
+"sink": "placeholder=",
+"text": "search-key"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A routine clock drops a job into the INBOX every weekday at 7:00; it rides a belt to a researcher bay which runs a recipe, and the brief lands in the OUTBOX"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 106,
+"sink": "aria-*",
+"text": "A routine clock drops a job into the INBOX every weekday at 7:00; it rides a belt to a researcher bay which runs a recipe, and the brief lands in the OUTBOX"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 107,
+"sink": "aria-*",
+"text": "A schedule picker showing NEXT RUN tomorrow 7:00"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 108,
+"sink": "aria-*",
+"text": "Two states: SCHEDULING IS OFF and TURN SCHEDULING ON"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 124,
+"sink": "aria-*",
+"text": "More in Repeat &amp; automate"
 }
 ]
