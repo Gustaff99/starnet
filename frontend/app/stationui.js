@@ -10102,9 +10102,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     banner.style.cssText = 'position:fixed;top:8px;left:10%;right:10%;z-index:100000;padding:16px;background:#281e12;color:#fff;border:2px solid #e8b35c';
     const label = document.createElement('p');
     label.textContent = 'El guardado de una ventana conservado en la estación (' + when + ') contiene trabajo de ' + n + (n === 1 ? ' sesión' : ' sesiones') + ' que esta estación no tiene. Restaurarlo lo trae a la estación; nada se elimina de la estación, y el archivo de la estación se copia a un lado antes.';
-    const restore = document.createElement('button'); restore.className = 'bb'; restore.textContent = 'Restore ' + n + (n === 1 ? ' session' : ' sessions');
+    const restore = document.createElement('button'); restore.className = 'bb'; restore.textContent = 'Restaurar ' + n + (n === 1 ? ' sesión' : ' sesiones');
     restore.onclick = async () => { restore.disabled = true; try { await CloudSave.restoreConflict(offer.file); } catch (e) { label.textContent = e.message; restore.disabled = false; } };
-    const later = document.createElement('button'); later.className = 'bb'; later.textContent = 'Not now'; later.onclick = () => { dismissPreserved(offer); banner.remove(); };
+    const later = document.createElement('button'); later.className = 'bb'; later.textContent = 'Ahora no'; later.onclick = () => { dismissPreserved(offer); banner.remove(); };
     banner.append(label, restore, later); document.body.append(banner);
   }
   function refreshSaveDurability(d) {
@@ -10132,14 +10132,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // station refuses to restore, so no Restore key is offered (review 10-23 #5)
       const erased = !reset && h.conflict.predatesReset === true;
       d.title = reset
-        ? 'This computer’s station was reset (erased, or set aside for a fresh start) after the station in this window was founded, so it was not restored. This window’s copy was kept separately on the station. Download a copy or open the fresh station.'
+        ? 'La estación de este equipo se restableció (se borró o se apartó para un comienzo nuevo) después de que se creara la estación de esta ventana, así que no se restauró. La copia de esta ventana se guardó aparte en la estación. Descarga una copia o abre la estación nueva.'
         : erased
-        ? 'This window holds a station from before this computer’s station was reset, so its changes were not saved into the current station. This window’s copy was kept separately on the station. Download a copy or reload the current station.'
+        ? 'Esta ventana mantiene una estación de antes de que la estación de este equipo se restableciera, así que sus cambios no se guardaron en la estación actual. La copia de esta ventana se guardó aparte en la estación. Descarga una copia o recarga la estación actual.'
         : reseeded
-        ? 'The station file on this computer was missing, and another window’s copy of this station was saved back to it first. This window’s copy was kept separately on the station. Download a copy or reload the current station.'
+        ? 'El archivo de la estación en este equipo no existía, y la copia de esta estación de otra ventana se guardó en él primero. La copia de esta ventana se guardó aparte en la estación. Descarga una copia o recarga la estación actual.'
         : ownSeed
-        ? 'The station file on this computer was missing, and this window’s copy was saved back to it, but this window never heard back that it was. This window’s later changes were kept separately on the station. Download a copy or reload the current station.'
-        : 'Another window saved newer station changes. Your work from this window was preserved separately on the station. Download a copy or reload the current station.';
+        ? 'El archivo de la estación en este equipo no existía y la copia de esta ventana se guardó en él, pero esta ventana nunca supo que se hizo. Los cambios posteriores de esta ventana se guardaron aparte en la estación. Descarga una copia o recarga la estación actual.'
+        : 'Otra ventana guardó cambios más nuevos de la estación. Tu trabajo de esta ventana se conservó aparte en la estación. Descarga una copia o recarga la estación actual.';
       if (!document.getElementById('save-conflict-notice')) {
         const banner = document.createElement('div'); banner.id = 'save-conflict-notice'; banner.setAttribute('role', 'alert');
         banner.style.cssText = 'position:fixed;top:8px;left:10%;right:10%;z-index:100000;padding:16px;background:#281e12;color:#fff;border:2px solid #e8b35c';

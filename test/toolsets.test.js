@@ -101,7 +101,7 @@ function stationWith(types) {
   A.ok(/setupSpotify\(body\)/.test(station), 'Spotify wiring preserved');
   A.ok(/id="sp-connect"/.test(station) && /id="sp-status"/.test(station) && /id="sp-disconnect"/.test(station), 'Spotify ids preserved');
   A.ok(/Harness\.api\.post\('\/api\/spotify\/disconnect'\)[\s\S]{0,500}!out\.ok/.test(station), 'Spotify disconnect UI requires a confirmed 2xx response');
-  A.ok(/Spotify was NOT disconnected/.test(station), 'Spotify disconnect UI names a refused change honestly');
+  A.ok(/Spotify NO se desconectó/.test(station), 'Spotify disconnect UI names a refused change honestly');
   A.ok(/handleSpotifyDisconnect[\s\S]{0,500}spotifyJson\(res, 500, \{ ok: false/.test(idx), 'Spotify disconnect route fails when durable clear fails');
   // HTTP and isolated stdio are both real routes; stdio stays bound to a named Safe Cell agent.
   A.ok(/id="mc-transport"/.test(station) && /id="mc-url"/.test(station) && /id="mc-timeout"/.test(station), 'MCP HTTP form ids preserved');

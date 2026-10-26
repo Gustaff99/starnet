@@ -165,7 +165,7 @@ const touch = (root, name, sec) => fs.utimesSync(path.join(root, name), sec, sec
       fs.rmSync(path.join(root, 'agent.save-offer-settled.json'), { force: true });   // forget the launches above
       host = sidecar(root, { Date: steppingDate(40) });
       const banner = await stationUi(page(host, new Map()), {}).offer();
-      A.ok(banner && /1 session/.test(banner.children[0].textContent), 'r4: the boot offer appears on the first boot (' + (banner && banner.children[0].textContent) + ')');
+      A.ok(banner && /1 sesión/.test(banner.children[0].textContent), 'r4: the boot offer appears on the first boot (' + (banner && banner.children[0].textContent) + ')');
     }
 
     // ================= r5. the settled memo is durable across app launches =================
@@ -257,14 +257,14 @@ const touch = (root, name, sec) => fs.utimesSync(path.join(root, name), sec, sec
       touch(root, older.recovery, t - 600); touch(root, newer.recovery, t - 300);
       const uiStore = {};
       const boot1 = await stationUi(page(host, new Map()), uiStore).offer();
-      A.ok(boot1 && /2 sessions/.test(boot1.children[0].textContent), 'r6: boot 1 offers the newer copy');
-      boot1.children.find(n => n.textContent === 'Not now').onclick();
+      A.ok(boot1 && /2 sesiones/.test(boot1.children[0].textContent), 'r6: boot 1 offers the newer copy');
+      boot1.children.find(n => n.textContent === 'Ahora no').onclick();
       A.eq(await stationUi(page(host, new Map()), uiStore).offer(), null, 'r6: after Not now, the next boot offers nothing: not the older copy holding the same declined session (proofB)');
       const newest = host.saveStore.save('agent', stationDoc({ _saveRevision: 0, updatedAt: 1700, _saveClient: 'window-later',
         workstreams: [{ id: 'general', title: null, history: [turn('user', 'hi')] }, { id: 'lost-z', title: 'Z', history: [turn('user', 'z')] }] }), { compareRevision: true });
       touch(root, newest.recovery, t);
       const boot3 = await stationUi(page(host, new Map()), uiStore).offer();
-      A.ok(boot3 && /1 session/.test(boot3.children[0].textContent), 'r6: a copy saved after the dismissal is offered');
+      A.ok(boot3 && /1 sesión/.test(boot3.children[0].textContent), 'r6: a copy saved after the dismissal is offered');
     }
 
     // ================= r7. a re-seed overtaken by another window's save: "another window saved" =================
@@ -282,7 +282,7 @@ const touch = (root, name, sec) => fs.utimesSync(path.join(root, name), sec, sec
       A.eq(await pa.flush({ force: true }), false, 'r7: window A\'s next save is refused');
       A.ok(!pa.health().conflict.ownSeed, 'r7: not as its own seed: another window\'s save is the station\'s newest');
       const light = stationUi(pa).light();
-      A.ok(/another window saved newer/i.test(light.title) && !/restart/i.test(light.title), 'r7: the banner says another window saved, and no restart (' + light.title + ')');
+      A.ok(/Otra ventana guardó cambios más nuevos/i.test(light.title) && !/reinici/i.test(light.title), 'r7: the banner says another window saved, and no restart (' + light.title + ')');
     }
 
     // the review's cleared-then-continued case (proofD) needs a SECOND clear to push the first out of the one-slot checkpoint.

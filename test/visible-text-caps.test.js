@@ -77,7 +77,7 @@ A.eq(addTa.maxLength, MAX, 'the add editor caps input at Dossier.TEXT_CHARS — 
 A.ok(addCount && addCount.classList.contains('cd-brief-meter'), 'the add editor shows a count in the briefing meter’s own face');
 A.ok(addCount.parentElement && addCount.parentElement.classList.contains('cd-acts'), 'the count sits in the Save / Cancel row');
 A.eq(addCount.textContent, '0 / 280 chars', 'an empty add editor reads 0 / 280 chars');
-A.ok(/up to 280 characters/.test(addCount.title), 'the count’s tip names the per-detail cap');
+A.ok(/un detalle admite hasta 280 caracteres/.test(addCount.title), 'the count’s tip names the per-detail cap');
 type(addTa, 'Always ship with tests.');
 A.eq(addCount.textContent, '23 / 280 chars', 'the count follows typing');
 A.ok(!addCount.classList.contains('warn'), 'no warning under the cap');

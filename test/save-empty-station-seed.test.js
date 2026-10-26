@@ -131,7 +131,7 @@ const browserCopy = (over) => Object.assign({
       const light = saveLight(p).render();
       A.eq(light.banner, null, '1: no conflict banner');
       A.ok(!/another window/i.test(light.title), '1: the save light never blames another window (' + light.title + ')');
-      const told = light.notices.filter(n => /station file/i.test(String(n[0])) && /missing/i.test(String(n[0])) && /this window/i.test(String(n[0])));
+      const told = light.notices.filter(n => /archivo de la estación/i.test(String(n[0])) && /no existía/i.test(String(n[0])) && /esta ventana/i.test(String(n[0])));
       A.eq(told.length, 1, '1: one notice says the station file was missing and this window\'s copy was saved back (' + JSON.stringify(light.notices) + ')');
 
       const next = structuredClone(cached); next.updatedAt = 9100; next._saveDirty = true;
@@ -164,7 +164,7 @@ const browserCopy = (over) => Object.assign({
       A.ok(fs.readFileSync(path.join(root, 'agent.save.json')).equals(before), '2: the station file is byte-for-byte unchanged');
       A.eq(conflictFiles(root).length, 1, '2: the refused copy is kept as a conflict snapshot');
       const light = saveLight(p).render();
-      A.ok(light.cls === 'degraded' && /another window/i.test(light.title), '2: a real newer save keeps the another-window banner (' + light.title + ')');
+      A.ok(light.cls === 'degraded' && /Otra ventana/i.test(light.title), '2: a real newer save keeps the another-window banner (' + light.title + ')');
       A.eq(light.notices.length, 0, '2: and no re-seed notice');
     }
 
@@ -217,10 +217,10 @@ const browserCopy = (over) => Object.assign({
       A.eq(host.saveStore.load('agent'), undefined, '4: the station file stays empty');
       A.eq(conflictFiles(root).length, 1, '4: this window\'s copy is still kept aside, never lost');
       const light = saveLight(p).render();
-      A.ok(light.cls === 'degraded' && !/another window/i.test(light.title) && /reset/i.test(light.title) && /not restored/i.test(light.title),
+      A.ok(light.cls === 'degraded' && !/otra ventana/i.test(light.title) && /se restableció/i.test(light.title) && /no se restauró/i.test(light.title),
         '4: the save light says the station was reset and the copy was not restored, never another window (' + light.title + ')');
-      A.ok(light.banner && !/another window/i.test(light.banner[0]) && /reset \(erased/.test(light.banner[0]), '4: so does the banner (' + JSON.stringify(light.banner) + ')');
-      A.ok(light.banner && light.banner.some(t => /fresh station/i.test(t)), '4: its reload button names the fresh station it leads to');
+      A.ok(light.banner && !/otra ventana/i.test(light.banner[0]) && /se restableció \(se borró/.test(light.banner[0]), '4: so does the banner (' + JSON.stringify(light.banner) + ')');
+      A.ok(light.banner && light.banner.some(t => /estación nueva/i.test(t)), '4: its reload button names the fresh station it leads to');
       A.eq(light.notices.length, 0, '4: and no re-seed notice');
 
       // a station founded AFTER the erase (its own station file lost later) still re-seeds
@@ -309,10 +309,10 @@ const browserCopy = (over) => Object.assign({
       A.eq((restarted.saveStore.load('agent') || {}).workstreams[0].history.slice(-1)[0].content, 'window A after B', '6: and the station file still holds window A\'s latest work');
       // window B's save light and banner
       const lightB = saveLight(b).render();
-      A.ok(lightB.cls === 'degraded' && !/newer/i.test(lightB.title) && /missing/i.test(lightB.title) && /another window/i.test(lightB.title) && /saved back to it first/i.test(lightB.title),
+      A.ok(lightB.cls === 'degraded' && !/newer/i.test(lightB.title) && /no existía/i.test(lightB.title) && /otra ventana/i.test(lightB.title) && /se guardó en él primero/i.test(lightB.title),
         '6: window B is told the station file was missing and another window\'s copy was saved back first, never that it is newer (' + lightB.title + ')');
-      A.ok(lightB.banner && !/newer/i.test(lightB.banner[0]) && lightB.banner.some(t => /reload current station/i.test(t)), '6: so does its banner (' + JSON.stringify(lightB.banner) + ')');
-      A.ok(lightB.banner.some(t => /restore this window/i.test(t)), '6: and it offers to bring this window\'s sessions into the station (' + JSON.stringify(lightB.banner) + ')');
+      A.ok(lightB.banner && !/newer/i.test(lightB.banner[0]) && lightB.banner.some(t => /Recargar la estación actual/i.test(t)), '6: so does its banner (' + JSON.stringify(lightB.banner) + ')');
+      A.ok(lightB.banner.some(t => /Restaurar las sesiones de esta ventana/i.test(t)), '6: and it offers to bring this window\'s sessions into the station (' + JSON.stringify(lightB.banner) + ')');
       // a conflict from INSIDE the re-seeded line is still the ordinary another-window conflict
       const rd = restarted.saveStore.save('agent', browserCopy({ _saveRevision: seededAt + 1, updatedAt: 9950, _saveClient: 'window-d' }), { compareRevision: true });
       A.ok(rd.ok === false && rd.conflict === true && !rd.reseeded && !rd.reset, '6: a copy from inside the re-seeded line conflicts as an ordinary newer save (' + JSON.stringify(rd) + ')');

@@ -86,7 +86,7 @@ const tick = () => new Promise(r => setImmediate(r));
   const ri = routines.indexOf("if (act === 'run')");
   const run = routines.slice(ri, ri + 3000);
   A.ok(run.indexOf('W.syncPlan()') >= 0 && run.indexOf('W.syncPlan()') < run.indexOf("post('/api/cron/run'"), 'ROUTINES RUN NOW awaits World.syncPlan before /api/cron/run');
-  A.ok(/… posting line/.test(run) && /… running/.test(run), 'RUN NOW reads "posting line" then "running"');
+  A.ok(/… publicando línea/.test(run) && /… ejecutando/.test(run), 'RUN NOW reads "posting line" then "running"');
   A.ok(/Build\.nagLabel/.test(run) && /nagLabel: code => VAL_LABEL\[code\]/.test(build), 'RUN NOW refuses with the floor\'s nag copy via Build.nagLabel');
   A.report('refit-run-gate');
 })();

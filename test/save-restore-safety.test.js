@@ -247,8 +247,8 @@ function stationUi(cloudSave, uiStore) {
       const uiStore = {};
       const view = stationUi(cs, uiStore);
       const banner = await view.offer();
-      A.ok(banner && /1 session/.test(banner.children[0].textContent), '3a: the boot offer shows the preserved session');
-      const notNow = banner.children.find(n => n.textContent === 'Not now');
+      A.ok(banner && /1 sesión/.test(banner.children[0].textContent), '3a: the boot offer shows the preserved session');
+      const notNow = banner.children.find(n => n.textContent === 'Ahora no');
       notNow.onclick();
       A.eq(view.nodes.has('save-preserved-notice'), false, '3a: Not now closes it');
       A.ok(uiStore.preservedDismissedAt >= Math.floor(fs.statSync(path.join(root, pre.recovery)).mtimeMs), '3a: and remembers that copy\'s time (' + uiStore.preservedDismissedAt + ')');
@@ -261,7 +261,7 @@ function stationUi(cloudSave, uiStore) {
       fs.utimesSync(path.join(root, pre.recovery), when, when);
       const third = stationUi(page(host, new Map()), uiStore);
       const back = await third.offer();
-      A.ok(back && /2 sessions/.test(back.children[0].textContent), '3a: a copy written again after the dismissal is offered again');
+      A.ok(back && /2 sesiones/.test(back.children[0].textContent), '3a: a copy written again after the dismissal is offered again');
     }
 
     // ================= 3c. a deleted session (sidecar ledger) is never counted or restored =================
@@ -356,7 +356,7 @@ function stationUi(cloudSave, uiStore) {
       C.push(Object.assign({}, stale, { _saveRevision: 1 }));
       host.saveStore.save('agent', Object.assign({}, host.saveStore.load('agent'), { updatedAt: Date.now() + 1 }), { compareRevision: true });   // another window moves the station on
       A.eq(await C.flush({ force: true }), false, '5: window C is refused as a conflict');
-      A.ok(stationUi(C).light().banner.some(t => /restore this window/i.test(t)), '5: its banner offers Restore');
+      A.ok(stationUi(C).light().banner.some(t => /Restaurar las sesiones de esta ventana/i.test(t)), '5: its banner offers Restore');
     }
     {
       // erased work: a fresh station from after the reset, and a stale tab of the station from before it
@@ -370,8 +370,8 @@ function stationUi(cloudSave, uiStore) {
       const c = S.health().conflict;
       A.ok(c && c.conflict === true && !c.reset && c.predatesReset === true, '5: and told its copy is erased work (' + JSON.stringify(c) + ')');
       const light = stationUi(S).light();
-      A.ok(light.banner && !light.banner.some(t => /restore this window/i.test(t)), '5: its banner never shows a Restore key the station would refuse (' + JSON.stringify(light.banner) + ')');
-      A.ok(/before this computer.s station was reset/i.test(light.title) && !/another window/i.test(light.title), '5: and says why (' + light.title + ')');
+      A.ok(light.banner && !light.banner.some(t => /Restaurar las sesiones de esta ventana/i.test(t)), '5: its banner never shows a Restore key the station would refuse (' + JSON.stringify(light.banner) + ')');
+      A.ok(/antes de que la estación de este equipo se restableciera/i.test(light.title) && !/otra ventana/i.test(light.title), '5: and says why (' + light.title + ')');
       const refused = await host.restore(c.recovery);
       A.ok(refused.ok === false && refused.predatesReset === true, '5: the station refuses that restore');
       A.eq((await host.conflicts()).conflicts.map(x => x.restorable), [0], '5: and never offers it at boot');
@@ -397,7 +397,7 @@ function stationUi(cloudSave, uiStore) {
       pa.push(stationDoc({ updatedAt: 9300 }));
       A.eq(await pa.flush({ force: true }), false, '6: window A (page) is refused');
       const light = stationUi(pa).light();
-      A.ok(/this window.s copy was saved back/i.test(light.title) && !/another window/i.test(light.title), '6: its banner says its own copy was saved back, never another window (' + light.title + ')');
+      A.ok(/la copia de esta ventana se guardó en él/i.test(light.title) && !/otra ventana/i.test(light.title), '6: its banner says its own copy was saved back, never another window (' + light.title + ')');
     }
 
     // ================= 7. restore backups keep the newest three =================

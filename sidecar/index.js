@@ -22269,7 +22269,7 @@ async function runOnceCore(o) {
           String(execution.taintedBy()).slice(0, 120) + '). No image was made. Do NOT retry it; finish without the picture.';
       }
       return 'this routine is not allowed to make images unattended, so no image was made. Do NOT retry it. End your reply with one short clause ' +
-        'telling the Commander they can allow it with ▣ ALLOW IMAGES on this routine in AUTOMATE › SCHEDULES.';
+        'telling the Commander they can allow it with ▣ PERMITIR IMÁGENES on this routine in AUTOMATIZAR › HORARIOS.';
     },
     surface: surface, prompt: prompt
   });

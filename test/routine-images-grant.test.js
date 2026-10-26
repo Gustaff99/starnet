@@ -110,7 +110,7 @@ const imageCall = { name: 'image_generate', args: { prompt: 'a sunrise over the 
   // the refusal only speaks for a routine's OWN run, and names the switch that exists
   A.ok(/studioRefusal: \(\) => \{\s*if \(askedBy\.getStore\(\) \|\| !\(trigger === 'schedule' && String\(o\.cronJobId \|\| ''\)\)\) return null;/.test(src),
     'the images refusal hint is for a routine\'s own run only (a worker, hop, trigger or chat keeps the plain refusal)');
-  A.ok(/▣ ALLOW IMAGES on this routine in AUTOMATIZAR › HORARIOS/.test(src), 'the refusal names the real row key and where it lives');
+  A.ok(/▣ PERMITIR IMÁGENES on this routine in AUTOMATIZAR › HORARIOS/.test(src), 'the refusal names the real row key and where it lives');
   A.ok(/switched off for the rest of THIS run because it read content from outside StarNet/.test(src), 'a granted run lifted by taint is told why, not sent to grant what it has');
 
   // taint: an image is not itself an outward action, so taint.js keeps the TOOL; the GRANT is what taint lifts
@@ -142,11 +142,11 @@ const imageCall = { name: 'image_generate', args: { prompt: 'a sunrise over the 
 {
   const panel = read('frontend/app/windows/routines.js');
   A.ok(/id="rt-img"/.test(panel), 'the create form carries the images tick');
-  A.ok(/Let this routine make <b>images<\/b>/.test(panel), 'in plain language');
-  A.ok(/can cost money and counts toward your spend caps/.test(panel), 'and it says the spend is real and capped');
+  A.ok(/Permitir que esta rutina genere <b>imágenes<\/b>/.test(panel), 'in plain language');
+  A.ok(/puede costar dinero y cuenta para tus límites de gasto/.test(panel), 'and it says the spend is real and capped');
   A.ok(/if \(\(body\.querySelector\('#rt-img'\) \|\| \{\}\)\.checked\) grants\.push\('studio'\);/.test(panel), 'a ticked box sends studio');
   A.ok(/\['#rt-term', '#rt-conn', '#rt-img'\]\.forEach/.test(panel), 'the images tick is never sticky across creates');
-  A.ok(/grantBadge\(grantsOf\.indexOf\('studio'\) >= 0, '▣ images'/.test(panel), 'a routine that may make images is badged on its row');
+  A.ok(/grantBadge\(grantsOf\.indexOf\('studio'\) >= 0, '▣ imágenes'/.test(panel), 'a routine that may make images is badged on its row');
   A.ok(/const canAllowImages = grantsOf\.indexOf\('studio'\) < 0 && !j\.noAgent;/.test(panel), 'ALLOW IMAGES shows only on a model routine that lacks it');
   A.ok(/data-act="allow-images"/.test(panel), 'the row key exists');
   const h = panel.slice(panel.indexOf("if (act === 'allow-images') {"), panel.indexOf("if (act === 'toggle') {"));
