@@ -1,51 +1,50 @@
-# MIS-17 — recuperación con fases acotadas
+# CHECKPOINT — MIS-23: Traducción completa de la interfaz visible de starnet-es
 
-## Objetivo y alcance
-Evaluar la viabilidad del fork de androoAGI/starnet en español y terminar la traducción de UI local solicitada, conservando términos técnicos necesarios. No reinstalar/arrancar StarNet ni publicar sin autorización adicional. Paperclip es la fuente de verdad para las fases.
+## Objetivo
+Traducir al español toda la interfaz visible de starnet-es (frontend + espejo website + contratos de test), conservando identificadores, protocolos, APIs y anglicismos técnicamente necesarios.
 
-## Estado actual (MIS-22 · 3/3 completado, 2026-10-26)
-- **Lote fase 3 (6 archivos)**: test/consent-visibility (`'awaiting your approval…'`, alineado a channels.js), test/ask-cards-readable (`'Aprobar una vez'`/`'Deny'` según group-chat.js: 3 aserciones + 3 finds), test/help-copy-matches-screen (`tasks: 'TAREAS'` según stationui.js), frontend/app/glossary.js + website/app/app/glossary.js (capability → `CONNECT › HABILIDADES`), website/docs/connect-a-platform.html (3 rutas → HABILIDADES).
-- **Tests (bounded-ui-tests.py): 10/10 PASS.** Lote 1 core (voice-live-ui, workflows-window, autonomy-ui, line-sendto, needs-you) 5/5 en re-ejecución real; lote 2 contrato (outbox-window, ask-cards-readable, session-indicators, consent-visibility, help-copy-matches-screen) 5/5. Evidencia: `VALIDACION-ES.json` (sha256 de test + sourceSha256) + logs en `validation-logs/`. `node --check` OK en los 61 js modificados.
-- **Hallazgos ocultos del lote fase 3**: ask-cards tenía 2 fallos en cascada (find `'Approve once'` en 3 lugares + etiqueta esperada); el patrón «corregir el 1.º fallo revela el 2.º» se repitió (como en 2/3 con voice-live-ui). Sin tocar canales ni endpoints: solo aserciones + 3 fuentes de copy de usuario (glossary×2, guía HTML).
-- **Entrega**: `ENTREGA-ES.md` (alcance, criterios, pruebas con exitcode, commits, límites conocidos). Commits de esta fase: 63 M + `scripts/translate-core-es.py` + `.gitignore` (`.pi/`) y `ENTREGA-ES.md`+`CHECKPOINT.md`.
+## Criterios de misión
+1. Inventario de pantallas y texto pendiente ANTES de cambios de código. ✅
+2. Subtareas Paperclip acotadas con criterios de aceptación, una activa a la vez. ✅ (9 creadas)
+3. Todos los menús, botones, estados, diálogos, errores, ayuda y accesibilidad traducidos.
+4. Identificadores/protocolos/APIs/anglicismos técnicos conservados.
+5. Sin reducción de alcance; sin cambiar tests para aceptar inglés pendiente.
+6. Exclusiones documentadas con justificación.
+7. Tests relevantes en verde.
+8. Revisión visual de pantallas en ejecución (o bloqueador declarado).
+9. Trabajo local, sin publicar ni reinstalar servicios.
 
-## Estado anterior (MIS-21 · 2/3 completado, 2026-10-26)
-- **Lote A (commit d9a7b244, 7 archivos)**: outbox.js `ABRIR EN WORKFLOWS`→`ABRIR EN FLUJOS`; workflows.js `FOR YOUR GOAL`→`PARA TU OBJETIVO` (+data-tip), `COMMON WORKFLOWS`→`FLUJOS COMUNES`, nota de trabajos vacíos y nota de envío→español; `lang="es"` en frontend/index.html y website/index.html; espejo website/app/app/ sincronizado (diff -q limpio); test/workflows-window.test.js alineado (7 aserciones).
-- **Lote B (commit 16a7b0a7, 4 archivos)**: test/line-sendto.test.js (`SENT ON TO`→`ENVIADO A`, `FROM`→`DE`, `NOT SENT ON TO`→`NO ENVIADO A`); test/needs-you.test.js (aria `Needs you`→`Necesita de ti`); test/autonomy-ui.test.js (`SMALL JOBS`→`TAREAS PEQUEÑAS`); test/voice-live-ui.test.js (aria→`Iniciar voz local manos libres` + 1 fallo oculto: status de canal, ver hallazgo).
-- **Tests (bounded-ui-tests.py, 5/5 PASS)**: voice-live-ui, workflows-window (128+ok), autonomy-ui, line-sendto, needs-you. Evidencia: `VALIDACION-ES.json` (5×exitCode 0, sha256 de test y fuente) + logs en `validation-logs/`. `node --check` OK en los 4 js modificados; espejos website en sync.
-- **Hallazgo (10.º fallo, oculto por el 1.º)**: `test/voice-live-ui.test.js:389` esperaba `'esperando tu aprobación…'` pero `frontend/app/channels.js` emite `'awaiting your approval…'`. El contrato está DIVIDIDO en la suite: 4 tests asercionan la forma EN (background-asks-ui, channels, comms-header-no-run-state, ask-cards-readable) y 3 la ES (voice-live-ui, consent-visibility, session-indicators). Decisión: alinear voice-live-ui a la fuente de verdad (EN) sin tocar channels.js; la traducción completa de estados de canal (rail, COMMS, tooltips) es decisión de fase 3/3, no de este lote. Sin regresión: barrido final de todas las cadenas tocadas sobre test/ completo sin colisiones (los hits restantes son build.js/worldmodel.js/workflowpanel.js o mocks).
+## Estado (2026-10-26)
+- **Inventario COMPLETADO** (commit 85ffe2ce): escáner v4 + barrido manual de estados con elipsis.
+  - **2316 cadenas candidatas en 112 archivos canónicos** (950 únicas). Datos: `.pi/inventory/en-strings3.json` + `INVENTARIO-ES.md`.
+  - P1 frontend/app: 1736 · P2 frontend html/demos: 288 · P3 website/docs: 145 · P3 website otros: 13.
+  - Top: stationui.js 526, app.js 240, workflowpanel.js 168, build.js 154, agent-station-demo.html 148, marketplace.js 130, chat.js 120, windows/workflows.js 72, windows/connectors.js 52, apps.js 40.
+  - **Estados de canal (channels.js)** confirmados: 'online' | 'connecting…' | 'thinking…' | 'working…' | 'awaiting your approval…' (L49-152) + estados de voz/trabajo/conector en inglés repartidos por el app (ver INVENTARIO-ES.md §maquinarias).
+  - Limitación del escáner: fragmentos de innerHTML y clases CSS pueden dar falsos positivos; cada línea se verifica al traducir.
+- **9 subtareas creadas** (hijas de MIS-23, proyecto 9739d80c-c9eb-4e0e-856b-bb2c6c038f6a):
+  1. a8c23b12 MIS-23-1 estados de canal + rail + COMMS + 7 tests
+  2. 772a614b MIS-23-2 stationui.js región 1 (agentes/skills)
+  3. fe3223e0 MIS-23-3 stationui.js región 2 (settings/modelos/claves/voz/autonomía)
+  4. 41ece128 MIS-23-4 app.js (sign-in/catálogo/COMMS/recuperación)
+  5. 669bc888 MIS-23-5 chat.js + voice.js + voice-live.js
+  6. abfb7fea MIS-23-6 build.js + workflowpanel.js + windows/
+  7. 7ac1e310 MIS-23-7 marketplace/apps/outputbrowser/deliverables + resto
+  8. 3e859024 MIS-23-8 demos + páginas de revisión + website/docs
+  9. 56b4b9c8 MIS-23-9 suite global + verificación visual + ENTREGA final
+- Rama: es/interfaz-espanol. Commits de MIS-23: 85ffe2ce (inventario).
 
-## Estado anterior (MIS-20 · 1/3 completado, 2026-10-26)
-- **Veredicto: VIABLE** con alcance acotado → informe en `VIABILIDAD-ES.md`.
-- Checkout: rama `es/interfaz-espanol`, 66 archivos modificados (+1024/−1024, intercambio 1:1 de cadenas).
-- Revisión de tests (evidencia en `TRIAGE-ES.json`, logs en /tmp/triage-es/):
-  - `timeout 20 node test/voice-live-ui.test.js` → exit 1, 1 fallo (aria-label voz: UI es, test en).
-  - `timeout 20 node test/workflows-window.test.js` → exit 1, 128 ok, 5 fallos (test espera FLUJOS/ENTREGABLES/BUCLES; fuente aún parcial en).
-  - `timeout 20 node test/autonomy-ui.test.js` → exit 1, 22 ok, 1 fallo (UI "TAREAS PEQUEÑAS" vs test "SMALL JOBS").
-  - `timeout 20 node test/line-sendto.test.js` → exit 1, 100 ok, 2 fallos (DE/ENVIADO A vs FROM/SENT ON TO).
-  - `timeout 20 node test/needs-you.test.js` → exit 1, 77 ok, 1 fallo (aria-label "Necesita de ti" vs "Needs you").
-  - **Total: 9/9 fallos de texto, 0 regresiones funcionales en el lote; 329 aserciones ok.**
-- Revisión Codex (2/2 consumidas, clon codex-mis-17 solo lectura): ambas `continue`; timeouts 1800s no son defecto; arquitectura frontend vanilla JS + sidecar + Tauri; licencia MIT código / marca reservada.
+## Decisiones
+- El escáner exige 2+ palabras inglesas fuertes o palabra única curada, sin acento español ni palabras funcionales ES; estados con elipsis se capturan con barrido complementario.
+- website/app/* se trata como espejo: se traduce la fuente frontend y se sincroniza (diff -q).
+- Prioridad: P1 app/ → P2 demos → P3 docs; estados de canal primero (gap conocido de MIS-22, contrato de tests dividido).
 
-## Punto de recuperación
-/home/gus/paperclip-migration/mis17-recovery/working-files-before.tar.gz y changes-before.patch conservan el estado anterior. No borrar ni aplicar encima sin comparar Git.
-
-## Plan
-1. ✅ Viabilidad y triage de máximo5 tests (MIS-20). No se editaron traducciones.
-2. ✅ Correcciones por lotes de máximo8 archivos (MIS-21), tests específicos con timeout20s: Lote A (7) + Lote B (4), 5/5 tests en verde.
-3. Validación y entrega local con commits y límites conocidos (MIS-22).
-
-## Lotes de fase 2 (ejecutados, máx. 8 archivos/lote)
-- **Lote A (7, d9a7b244)**: frontend/app/windows/outbox.js, frontend/app/windows/workflows.js, frontend/index.html (lang="es"), website/app/app/windows/outbox.js, website/app/app/windows/workflows.js, website/index.html, test/workflows-window.test.js.
-- **Lote B (4, 16a7b0a7)**: test/line-sendto.test.js, test/needs-you.test.js, test/autonomy-ui.test.js, test/voice-live-ui.test.js. (stationui.js no necesitó cambio: ya estaba en español.)
-- Criterio cumplido: 5 tests en verde solo con cadenas/aserciones; sin tocar endpoints, estados de job, IDs de ventanas/docks, clases CSS contractuales ni palabras de voz sin mover su aserción.
-
-## Criterios
-No alterar identificadores/protocolos/prompts internos para traducir UI. No ocultar regresiones cambiando aserciones. No afirmar suite completa si solo se ejecutó una selección. Cerrar cada fase con informe y evidencia; si queda trabajo, persistir y programar continuación real.
+## Pruebas
+- node --check OK en los js existentes (sin cambios de código todavía, solo inventario).
+- bounded-ui-tests.py 10/10 verde desde MIS-22 (línea base).
 
 ## Siguiente acción
-MIS-22 completada (3/3) → misión terminada localmente. Pendientes para misiones futuras (límites conocidos, no regresiones):
-1. Traducción completa de estados de canal (channels.js, rail, COMMS, tooltips) + los 4 tests que asercionan la forma EN.
-2. Suite global (fuera de alcance de esta misión).
-3. Publicación/PR del fork con autorización explícita del usuario.
-Sin monitor: la tarea terminó con done; no queda trabajo útil programable en esta rama.
+Ejecutar MIS-23-1 (a8c23b12): traducir los 5 estados de canal en channels.js + su render en rail/COMMS/tooltips y alinear los 7 tests divididos a la forma ES. Lote máx. 8 archivos.
+
+## Pendiente
+- MIS-23-1..9 en orden (una activa a la vez).
+- Verificación visual: requiere app en ejecución (Tauri + sidecar); evaluar headless en MIS-23-9.
