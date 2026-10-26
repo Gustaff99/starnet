@@ -1,40 +1,39 @@
-# CHECKPOINT — MIS-23-5: chat.js / voice.js / voice-live.js (in_progress)
+# CHECKPOINT — MIS-23-5: chat.js / voice.js / voice-live.js (done)
 
-## Estado (corte de tramo 2026-10-26, 2º corte)
-- MIS-23-5 activa (ID 669bc888-9d1f-4f8f-8abb-07fde780b90f), rama es/interfaz-espanol
-- FUENTE: 92 reglas aplicadas vía .pi/translate/mis23-5e.py (chat.js 86, voice.js 1, voice-live.js 5). node --check OK en los 3 canónicos.
-- ESPEJO: website/app/app/ re-sincronizado (cp + node --check OK en los 3).
-- TESTS: 8 archivos actualizados (browser-chip-wait, comms-render-seams, comms-presence, notifications-useful, delegated-approve-reach, ask-cards-readable, thread-ux-regressions, dialogue-offer-yields).
-- Resultado bounded-ui-tests lote 1:
-  - PASS: browser-chip-wait, notifications-useful
-  - FAIL: voice-live-ui (1 assert), comms-render-seams (4 asserts), comms-presence (1 assert)
-  - Pendientes de ejecutar: delegated-approve-reach, ask-cards-readable, thread-ux-regressions, dialogue-offer-yields (lote 2 no corrió)
+## Estado (cierre 2026-10-26)
+- MIS-23-5 COMPLETA (ID 669bc888-9d1f-4f8f-8abb-07fde780b90f), rama es/interfaz-espanol
+- Commits: e8a7137a (92 reglas) → c208fadf (cierre: card labels, wait lines, voice route, consent card + 10 tests)
 
-## Correcciones exactas pendientes (5, strings verificados)
-1. frontend/app/chat.js L6744: `allowCustom: true, customLabel: 'edit the milestones', customPlaceholder: 'your milestones, separated by ; …'` → `allowCustom: true, customLabel: 'editar los hitos', customPlaceholder: 'tus hitos, separados por ; …'` (el script 5e la dejó fuera)
-2. frontend/app/chat.js L3816: `if (wall - honest > 1500) bits.push(fmtMs(wall - honest) + ' waiting on you');` → `+ ' esperándote');`
-3. test/comms-render-seams.test.js L83: REVERTIR mi cambio: `/s\.held \? ' · aún no se ejecuta' : ''/` → de vuelta a `/s\.held \? ' · not run yet' : ''/` (el "phone" es relay/app/app.js = FUERA de alcance MIS-23-5)
-4. test/comms-render-seams.test.js L135: `['▸', 'denied']` → `['▸', 'denegada']`; L136: `'↳ fs_write · 54ms · denied','↳ fs_read · 3ms · failed'` → `'↳ fs_write · 54ms · denegada','↳ fs_read · 3ms · fallida'`
-5. test/voice-live-ui.test.js L108: `/could not confirm this browser/.test(bare.tokenWithheld)` → `/no pudo confirmar que este navegador/.test(bare.tokenWithheld)`
+## Criterios — todos cumplidos
+- [x] Scanner: 6 candidatos en canónicos (<40), todos falsos positivos documentados:
+      chat.js L2212 'data-tip' (nombre de atributo), L4263 'use your judgment' (contrato con host; botón visible 'Usa tu criterio'),
+      L5097/5265 '▸ abrir TO REVIEW' (nombre de terminal), voice-live.js L396/1766 'ASR/VOZ' (acrónimos técnicos)
+- [x] 13 suites en verde sobre el código actual (--final): browser-chip-wait, notifications-useful, voice-live-ui,
+      comms-render-seams, comms-presence, comms-wait-line, voice-chat-route, stop-reason,
+      task-postconditions-ui, delegated-approve-reach, ask-cards-readable, thread-ux-regressions, dialogue-offer-yields
+- [x] Espejo website/app/app/ idéntico (diff -q en los 3)
+- [x] node --check OK en los 6 archivos (3 fuente + 3 espejo)
+- [x] Barrido manual final: sin cadenas EN visibles nuevas
 
-## Siguiente acción (próximo tramo, en orden)
-1. Aplicar las 5 correcciones (script Python tipo mis23-5e, strings exactos arriba)
-2. node --check chat.js + cp espejo + node --check espejo
-3. `bounded-ui-tests.py test/voice-live-ui.test.js test/comms-render-seams.test.js test/comms-presence.test.js --retry-reason 'correcciones 5e-f aplicadas'`
-4. `bounded-ui-tests.py test/delegated-approve-reach.test.js test/ask-cards-readable.test.js test/thread-ux-regressions.test.js test/dialogue-offer-yields.test.js`
-5. Barrido manual final (grep cadenas EN visibles en los 3 canónicos)
-6. Commit acotado (frontend/app/{chat,voice,voice-live}.js, website/app/app/{...}, 9 test files)
-7. Comentario Paperclip + done si todo verde
+## Decisiones clave (cierre)
+- Etapas de voz approvalCommand (voice-live.js): 'Aprobada una vez.' / 'Permiso permanente.' / 'Denegada.' /
+  'No pude enviar esa respuesta…' / 'Esa aprobación ya no está esperando.' — tests thread-ux-regressions y delegated-approve-reach
+  actualizados a esas cadenas exactas (fixture sin Chat.consentPhrase → about='.').
+- clarifyRow (chat.js): 'NOVA pregunta', 'Por qué NOVA pregunta', 'Enviando tu respuesta…' — ask-cards-readable actualizado.
+- waitNoteText (chat.js): reintento/retroceso/esperando/conectando + WAIT_REASONS_ES (sobrecarga, error del servidor, tiempo agotado).
+- Voice route (chat.js + sidecar/voice-chat-route.js): VOICE_ROUTE_REASONS en ES en ambos lados; test/voice-chat-route.test.js verde.
+- retireConsentCard: '■ la ejecución terminó antes de la respuesta — nada se aprobó', '■ ya no espera tu respuesta'.
+- Etiquetas de resultado: ■ EJECUCIÓN COMPLETA / DETENIDA / FALLIDA / RECORTADA / VERIFICACIÓN REQUERIDA / DETENIDA POR TI (ESC).
+- phone (relay/app/app.js) sigue en EN: fuera de alcance de MIS-23-5 (comms-render-seams lo verifica).
+- .pi/inventory/en-strings3.json restaurado a inventario completo (1314 entradas) con el escáner correcto
+  (python3 .pi/inventory/scan-en3.py frontend website/app — sin args da 0, bug de invocación documentado).
 
-## Criterios MIS-23-5
-- [x] Scanner: <40 candidatos → 6 (falsos positivos documentados)
-- [ ] voice-live-ui + tests afectados en verde (4 de 7 suites verdes; 3 con fallos identificados)
-- [x] Espejo sincronizado (pendiente re-sync si la corrección 1 toca chat.js)
-- [x] node --check en los 6 archivos
-- [ ] Barrido manual final
+## Próximos pasos (misión MIS-23)
+- MIS-23-6: build/workflow/windows (frontend/app/windows/*)
+- MIS-23-7: resto de frontend/app (briefing, userprops, modeldock, needsyou, projection-audit-panel, …)
+- MIS-23-8: demos/docs
+- MIS-23-9: suite global + verificación visual
 
-## Notas
-- relay/app/app.js (phone) queda en EN para su propia subtarea; el test comms-render-seams lo verifica y debe seguir esperando 'not run yet' ahí.
-- group-chat.js fuera de alcance (subtarea aparte).
-- Los parsers de aprobación aceptan EN+ES; las cadenas habladas están en ES.
-- Scripts: .pi/translate/mis23-5e.py (92 reglas), .pi/inventory/scan-en3.py + en-strings3.json
+## Notas de scripts
+- .pi/translate/mis23-5e.py (92 reglas), .pi/translate/mis23-5g.py (46 reglas cierre) — ambos commitados
+- .pi/inventory/scan-en3.py + en-strings3.json (inventario)
