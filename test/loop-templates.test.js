@@ -35,11 +35,11 @@ const T = require('../frontend/app/loop-templates.js');
       A.eq(t.exitOn, 'check-green', t.id + ': hard rigor MUST mean a machine-checked exit condition');
       A.ok(!!t.check, t.id + ': hard rigor MUST carry a check command template');
       A.ok(t.needsProject, t.id + ': a check needs somewhere to run');
-      A.ok(/exit code/.test(T.rigorNote(t)), t.id + ': and says the ending is a real result');
+      A.ok(/código de salida/.test(T.rigorNote(t)), t.id + ': and says the ending is a real result');
     } else {
       A.ok(!t.check, t.id + ': a soft template must not imply it runs a check');
       A.ok(/DIGEST:/.test(t.objective), t.id + ': soft rigor REQUIRES the digest rule — it is the only convergence it has');
-      A.ok(/convention, not a proof/.test(T.rigorNote(t)), t.id + ': and says so plainly rather than implying equal rigor');
+      A.ok(/convención, no una prueba/.test(T.rigorNote(t)), t.id + ': and says so plainly rather than implying equal rigor');
     }
   }
   const notes = T.list().map(t => T.rigorNote(t));
@@ -140,9 +140,9 @@ const T = require('../frontend/app/loop-templates.js');
    same row may show the loading state while /api/loops/detect is genuinely in flight. */
 {
   const ui = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/loops.js'), 'utf8');
-  A.ok(/id="lp-checkrow" class="lp-checkline dim">choose a project to detect its check command/.test(ui),
+  A.ok(/id="lp-checkrow" class="lp-checkline dim">elige un proyecto para detectar su comando de chequeo/.test(ui),
     'a blank New Loop form starts with an honest idle instruction, not an indefinite loading claim');
-  A.ok(/if \(!val && checkEl && rowEl\) \{[\s\S]{0,220}checkEl\.value = ''[\s\S]{0,220}choose a project to detect its check command[\s\S]{0,120}\} else if \(checkEl && rowEl\) \{[\s\S]{0,160}reading the project/.test(ui),
+  A.ok(/if \(!val && checkEl && rowEl\) \{[\s\S]{0,220}checkEl\.value = ''[\s\S]{0,220}elige un proyecto para detectar su comando de chequeo[\s\S]{0,120}\} else if \(checkEl && rowEl\) \{[\s\S]{0,160}leyendo el proyecto/.test(ui),
     'clearing the project path resets the check row; loading appears only in the non-empty-path branch');
 }
 

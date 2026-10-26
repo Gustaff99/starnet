@@ -42,7 +42,7 @@
 
     const secActive =
       '<div id="lp-gate" class="set-about"></div>' +
-      '<div id="lp-list" class="mc-list"><span class="loading pulse">loading…</span></div>';
+      '<div id="lp-list" class="mc-list"><span class="loading pulse">cargando…</span></div>';
     /* THE STEPPED CREATE FLOW. The old pane put eight controls on screen at once, with the scariest field
        (the check command) as a bare textbox and no way to know if any of it was right. Now: one decision at a
        time, revealed as the previous one is answered, ending in a plain-English confirmation that says what
@@ -50,16 +50,16 @@
        have nothing to show until they do (this is a sandbox product; nothing is locked). */
     const secStart =
       '<div class="lp-wiz">' +
-        '<div class="lp-step-h">Choose a kind of loop</div>' +
+        '<div class="lp-step-h">Elige un tipo de loop</div>' +
         '<div id="lp-shapes" class="lp-shapes"></div>' +
         '<div id="lp-s2" class="lp-stage" hidden>' +
-          '<div class="lp-step-h">Your goal</div>' +
+          '<div class="lp-step-h">Tu objetivo</div>' +
           '<div id="lp-form" class="mc-form"></div>' +
         '</div>' +
         '<div id="lp-s3" class="lp-stage" hidden>' +
-          '<div class="lp-step-h">Review and start</div>' +
+          '<div class="lp-step-h">Revisa y arranca</div>' +
           '<div id="lp-ready" class="lp-ready"></div>' +
-          '<button class="bb sm lp-go" id="lp-create">✦ START THIS LOOP</button>' +
+          '<button class="bb sm lp-go" id="lp-create">✦ ARRANCAR ESTE LOOP</button>' +
         '</div>' +
       '</div>' +
       '<div id="lp-msg" class="msg"></div>';
@@ -68,8 +68,8 @@
     // with the routines lane. wire() runs after mountConsole has appended every pane to `body`, so all
     // the querySelector wiring below resolves exactly as it always did.
     const sections = [
-      { id: 'loops', label: 'ACTIVE LOOPS', glyph: '∞', desc: 'Work that repeats toward a goal. Check its progress, review each result, or pause it here.', build: frag(secActive) },
-      { id: 'loops-start', label: 'START A LOOP', glyph: '✦', desc: 'Choose a kind of loop and your goal, then review its stopping condition and daily budget.', build: frag(secStart) }
+      { id: 'loops', label: 'LOOPS ACTIVOS', glyph: '∞', desc: 'Trabajo que se repite hacia un objetivo. Revisa su progreso, examina cada resultado o páusalo aquí.', build: frag(secActive) },
+      { id: 'loops-start', label: 'ARRANCAR UN LOOP', glyph: '✦', desc: 'Elige un tipo de loop y tu objetivo, luego revisa su condición de parada y presupuesto diario.', build: frag(secStart) }
     ];
     function wire() {
     const listEl = body.querySelector('#lp-list'), gateEl = body.querySelector('#lp-gate');
@@ -97,22 +97,22 @@
 
     // the honest one-line answer to "why isn't it doing anything?" — always from the server's binding.
     function bindingLine(l) {
-      if (l.state === 'running') return '<span style="color:var(--gold)">● working</span>';
+      if (l.state === 'running') return '<span style="color:var(--gold)">● trabajando</span>';
       const b = l.binding, d = l.bindingDetail || l.stopReason || '';
-      if (!b) return '<span style="color:var(--gold)">● ready</span>';
+      if (!b) return '<span style="color:var(--gold)">● listo</span>';
       const map = {
-        'queue-full': ['◆', 'waiting on your review'],
-        'done': ['✓', 'objective met'],
-        'dormant': ['◌', 'nothing left to do'],
-        'paused': ['⏸', 'paused'],
-        'stopped': ['■', 'stopped'],
-        'budget': ['$', 'daily budget spent'],
-        'halted': ['✕', 'E-STOP engaged'],
-        'precheck': ['!', 'not ready'],
-        'concurrency': ['…', 'agent busy'],
-        'in-flight': ['●', 'working'],
-        'max-iterations': ['#', 'iteration limit reached'],
-        'disabled': ['○', 'disabled']
+        'queue-full': ['◆', 'esperando tu revisión'],
+        'done': ['✓', 'objetivo cumplido'],
+        'dormant': ['◌', 'nada más que hacer'],
+        'paused': ['⏸', 'pausado'],
+        'stopped': ['■', 'detenido'],
+        'budget': ['$', 'presupuesto diario agotado'],
+        'halted': ['✕', 'PARADA DE EMERGENCIA activa'],
+        'precheck': ['!', 'no listo'],
+        'concurrency': ['…', 'agente ocupado'],
+        'in-flight': ['●', 'trabajando'],
+        'max-iterations': ['#', 'límite de iteraciones alcanzado'],
+        'disabled': ['○', 'desactivado']
       };
       const m = map[b] || ['○', b];
       const bad = (b === 'halted' || b === 'precheck');
@@ -129,12 +129,12 @@
       const c = l.lastCheck;
       if (!c) return '';
       if (c.tampered) {
-        return '<div class="mc-detail" style="color:var(--bad)">⚠ this pass changed the check itself (' +
-          esc((c.tamperedPaths || []).slice(0, 3).join(', ')) + ') — a pass here proves nothing until you look</div>';
+        return '<div class="mc-detail" style="color:var(--bad)">⚠ este paso modificó el propio chequeo (' +
+          esc((c.tamperedPaths || []).slice(0, 3).join(', ')) + ') — un paso en verde aquí no prueba nada hasta que lo mires</div>';
       }
-      if (!c.passed) return '<div class="mc-detail" style="color:var(--bad)">✕ check failed — ' + esc(c.summary || '') + '</div>';
-      if (!c.trusted) return '<div class="mc-detail">✓ check passed <span class="dim">— but unverifiable: ' + esc(c.note || '') + '</span></div>';
-      return '<div class="mc-detail"><span class="pos">✓ check passed</span> <span class="dim">' + esc(c.summary || '') + '</span></div>';
+      if (!c.passed) return '<div class="mc-detail" style="color:var(--bad)">✕ chequeo falló — ' + esc(c.summary || '') + '</div>';
+      if (!c.trusted) return '<div class="mc-detail">✓ chequeo superado <span class="dim">— pero no verificable: ' + esc(c.note || '') + '</span></div>';
+      return '<div class="mc-detail"><span class="pos">✓ chequeo superado</span> <span class="dim">' + esc(c.summary || '') + '</span></div>';
     }
 
     /* diffHTML — colourise a unified diff. Every line is escaped FIRST and only then wrapped in a span, so
@@ -154,9 +154,9 @@
        stacked queue means rejecting #3 also discards #4 and #5 (they were built on top of it). */
     function pendingCard(l, p, idx, pending) {
       const stacked = pending.length - 1 - idx;   // un-approved candidates ABOVE this one
-      const rejectLabel = stacked > 0 ? '✕ REJECT (+' + stacked + ' built on it)' : '✕ REJECT';
+      const rejectLabel = stacked > 0 ? '✕ RECHAZAR (+' + stacked + ' construido encima)' : '✕ RECHAZAR';
       return '<div class="lp-pend" data-n="' + p.n + '">' +
-        '<div class="lp-pend-h"><b>#' + p.n + ' ' + esc(p.title || 'untitled') + '</b>' +
+        '<div class="lp-pend-h"><b>#' + p.n + ' ' + esc(p.title || 'sin título') + '</b>' +
           (p.usd ? ' <span class="dim">$' + esc(String(p.usd.toFixed ? p.usd.toFixed(3) : p.usd)) + '</span>' : '') +
           ' <span class="dim">' + esc(fmtRel(p.endedAt)) + '</span></div>' +
         (p.summary ? '<div class="lp-pend-b">' + esc(String(p.summary).slice(0, 400)) + '</div>' : '') +
@@ -179,18 +179,18 @@
           : '') +
         '<div class="mc-acts">' +
           // FIFO: a pass built on an unreviewed older one is kept only after that one is (the station refuses otherwise)
-          (idx > 0 ? '<button class="bb xs" disabled title="review #' + pending[0].n + ' first — this pass was built on top of it">✓ APPROVE</button>'
-            : '<button class="bb xs" data-vact="approve" data-n="' + p.n + '">✓ APPROVE</button>') +
+          (idx > 0 ? '<button class="bb xs" disabled title="revisa #' + pending[0].n + ' primero — este paso se construyó encima de él">✓ APROBAR</button>'
+            : '<button class="bb xs" data-vact="approve" data-n="' + p.n + '">✓ APROBAR</button>') +
           '<button class="bb xs danger" data-vact="reject" data-n="' + p.n + '" data-stacked="' + stacked + '">' + rejectLabel + '</button>' +
         '</div>' +
         /* THE REJECTION REASON, inline. This was a window.prompt() — a native modal, wrong for the station's
            vocabulary and unreliable in the Tauri webview — holding the single most valuable input in the whole
            subsystem: the reason rides into the NEXT pass's prompt and is what stops the loop repeating itself. */
         '<div class="lp-why" hidden>' +
-          '<textarea class="key-input lp-why-in" rows="2" placeholder="why? the loop is told this, so it does not repeat the mistake" style="resize:vertical"></textarea>' +
+          '<textarea class="key-input lp-why-in" rows="2" placeholder="¿por qué? el loop lo sabe y no repite el error" style="resize:vertical"></textarea>' +
           '<div class="mc-acts">' +
-            '<button class="bb xs danger" data-vact="reject-confirm" data-n="' + p.n + '">✕ CONFIRM REJECT</button>' +
-            '<button class="bb xs" data-vact="reject-cancel">CANCEL</button>' +
+            '<button class="bb xs danger" data-vact="reject-confirm" data-n="' + p.n + '">✕ CONFIRMAR RECHAZO</button>' +
+            '<button class="bb xs" data-vact="reject-cancel">CANCELAR</button>' +
             '<span class="dim lp-why-cost"></span>' +
           '</div>' +
         '</div></div>';
@@ -207,7 +207,7 @@
       if (!text) return '';
       const where = l.workdir ? String(l.workdir).split(/[\\/]/).filter(Boolean).pop() : '';
       return '<div class="lp-ask">' + esc(text.slice(0, 160)) + (text.length > 160 ? '…' : '') +
-        (where ? ' <span class="dim">in ' + esc(where) + '</span>' : '') + '</div>';
+        (where ? ' <span class="dim">en ' + esc(where) + '</span>' : '') + '</div>';
     }
 
     /* historyFold — what this loop has actually DONE. Approving a candidate used to make it vanish: the row
@@ -224,13 +224,13 @@
       };
       const rowOf = (r) => {
         const m = r.verdict ? (mark[r.verdict] || ['·', 'var(--ph-dim)']) : null;
-        const what = r.outcome === 'noop' ? 'found nothing'
-          : r.outcome === 'red' ? 'check failed'
-          : r.outcome === 'failed' ? ('failed — ' + String(r.error || '').slice(0, 60))
-          : r.outcome === 'cancelled' ? 'stopped'
+        const what = r.outcome === 'noop' ? 'no encontró nada'
+          : r.outcome === 'red' ? 'chequeo falló'
+          : r.outcome === 'failed' ? ('falló — ' + String(r.error || '').slice(0, 60))
+          : r.outcome === 'cancelled' ? 'detenido'
           // a candidate the stall breaker marked: it claimed work the ledger cannot see. Said plainly, from the record.
-          : r.stall ? ((r.title || 'untitled') + ' — changed nothing')
-          : (r.title || 'untitled');
+          : r.stall ? ((r.title || 'sin título') + ' — no cambió nada')
+          : (r.title || 'sin título');
         return '<div class="lp-hist-r">' +
           '<span class="lp-hist-n">#' + r.n + '</span>' +
           (m ? '<span class="lp-hist-v" style="color:' + m[1] + '">' + m[0] + '</span>' : '<span class="lp-hist-v dim">·</span>') +
@@ -240,7 +240,7 @@
           (r.verdictNote && r.verdict === 'rejected'
             ? '<div class="lp-hist-why">“' + esc(String(r.verdictNote).slice(0, 180)) + '”</div>' : '');
       };
-      return '<details class="lp-hist"><summary>' + past.length + ' earlier pass' + (past.length === 1 ? '' : 'es') +
+      return '<details class="lp-hist"><summary>' + past.length + ' paso' + (past.length === 1 ? '' : 's') + ' anterior' + (past.length === 1 ? '' : 'es') +
         '</summary>' + past.slice().reverse().map(rowOf).join('') + '</details>';
     }
 
@@ -248,31 +248,31 @@
       const t = T() && T().get((l.meta && l.meta.templateId) || '');
       // a loop created from a shape defaults its NAME to that shape's name, so printing both reads
       // "Research Loop ◈ Research Loop". Show the shape only when it adds something.
-      const shapeName = !t ? 'custom' : (t.name === (l.name || '') ? t.emoji : (t.emoji + ' ' + t.name));
+      const shapeName = !t ? 'personalizado' : (t.name === (l.name || '') ? t.emoji : (t.emoji + ' ' + t.name));
       const pending = l.pending || [];
       // spend against its cap — a number with no ceiling beside it tells the Commander nothing about risk.
       const bg = l.budget || {};
       const spent = bg.spentTodayUsd
-        ? ' · $' + bg.spentTodayUsd.toFixed(2) + (bg.perDayUsd ? ' of $' + Number(bg.perDayUsd).toFixed(2) : '') + ' today'
-        : (bg.perDayUsd ? ' · $' + Number(bg.perDayUsd).toFixed(2) + '/day cap' : '');
+        ? ' · $' + bg.spentTodayUsd.toFixed(2) + (bg.perDayUsd ? ' de $' + Number(bg.perDayUsd).toFixed(2) : '') + ' hoy'
+        : (bg.perDayUsd ? ' · $' + Number(bg.perDayUsd).toFixed(2) + '/día (tope)' : '');
       return '<div class="mc-row" data-id="' + esc(l.id) + '">' +
-        '<div class="mc-top"><b>' + esc(l.name || '(unnamed)') + '</b> <span class="dim">' + esc(shapeName) + '</span> ' + bindingLine(l) + '</div>' +
+        '<div class="mc-top"><b>' + esc(l.name || '(sin nombre)') + '</b> <span class="dim">' + esc(shapeName) + '</span> ' + bindingLine(l) + '</div>' +
         /* WHAT YOU ASKED FOR. A loop can sit for days; nobody remembers the exact wording, and a panel that
            shows a loop's state without its purpose makes you open the record to find out what it is doing. */
         askLine(l) +
         stepper(l) +
-        '<div class="mc-url dim">pass ' + (l.iterationCount || 0) +
+        '<div class="mc-url dim">paso ' + (l.iterationCount || 0) +
           (l.maxIterations ? '/' + l.maxIterations : '') +
-          ' · ' + (l.approvedCount || 0) + ' approved · ' + (l.rejectedCount || 0) + ' rejected' + esc(spent) + '</div>' +
+          ' · ' + (l.approvedCount || 0) + ' aprobados · ' + (l.rejectedCount || 0) + ' rechazados' + esc(spent) + '</div>' +
         checkLine(l) +
         historyFold(l) +
         (l.lastError ? '<div class="mc-detail" style="color:var(--bad)">' + esc(l.lastError) + '</div>' : '') +
         (pending.length ? '<div class="lp-pends">' + pending.map((p, i) => pendingCard(l, p, i, pending)).join('') + '</div>' : '') +
         '<div class="mc-acts">' +
           (l.state === 'paused' || l.state === 'dormant' || l.state === 'done'
-            ? '<button class="bb xs" data-act="resume">▶ RESUME</button>'
-            : '<button class="bb xs" data-act="pause">⏸ PAUSE</button>') +
-          '<button class="bb xs danger" data-act="remove">✕ DELETE</button>' +
+            ? '<button class="bb xs" data-act="resume">▶ REANUDAR</button>'
+            : '<button class="bb xs" data-act="pause">⏸ PAUSAR</button>') +
+          '<button class="bb xs danger" data-act="remove">✕ ELIMINAR</button>' +
         '</div></div>';
     }
 
@@ -296,23 +296,23 @@
         // station must say so loudly, with the one-click lift, rather than showing loops that will never advance.
         if (j && j.halted) {
           gateEl.innerHTML = '<div class="brief-block" style="border-left-color:var(--bad);margin-bottom:8px">' +
-            '<div class="brief-k" style="color:var(--bad)">✕ LOOPS ARE STOPPED (E-STOP)</div>' +
-            '<div class="brief-v">Your loops are saved but <b>will not run</b> — an emergency stop is engaged and it survives a restart.' +
-            '<div style="margin-top:8px"><button class="bb xs" id="lp-unhalt">▶ RESUME LOOPS</button></div></div></div>';
+            '<div class="brief-k" style="color:var(--bad)">✕ LOS LOOPS ESTÁN DETENIDOS (PARADA DE EMERGENCIA)</div>' +
+            '<div class="brief-v">Tus loops están guardados pero <b>no se ejecutarán</b> — hay una parada de emergencia activa y sobrevive a un reinicio.' +
+            '<div style="margin-top:8px"><button class="bb xs" id="lp-unhalt">▶ REANUDAR LOOPS</button></div></div></div>';
           const ub = gateEl.querySelector('#lp-unhalt');
           if (ub) ub.addEventListener('click', async () => {
             ub.disabled = true; sfx('click');
             // The E-STOP lift is a SAFETY claim: a refused request left the durable halt engaged while the station
             // said "loops resumed". Only a 2xx proves the stand-down was lifted (refresh() re-reads it either way).
-            try { const r = await post('/api/loops/control', { action: 'unhalt' }); notify(r.ok ? 'loops resumed' : 'could NOT resume — the emergency stop is still engaged', r.ok ? 'good' : 'warn'); }
-            catch (_) { notify('could not reach the station — loops are still stopped', 'warn'); }
+            try { const r = await post('/api/loops/control', { action: 'unhalt' }); notify(r.ok ? 'loops reanudados' : 'NO se pudieron reanudar — la parada de emergencia sigue activa', r.ok ? 'good' : 'warn'); }
+            catch (_) { notify('no se pudo alcanzar la estación — los loops siguen detenidos', 'warn'); }
             refresh();
           });
         } else if (loops.length) {
           gateEl.innerHTML = j.armed
-            ? '<span style="color:var(--gold)">● loops running</span> <span class="dim">— they advance when you rule on their work' +
-              (j.inFlight ? ', ' + j.inFlight + ' working now' : '') + '.</span>'
-            : '<span class="dim">○ nothing to advance right now — every loop is waiting, paused or finished.</span>';
+            ? '<span style="color:var(--gold)">● loops en marcha</span> <span class="dim">— avanzan cuando fallas sobre su trabajo' +
+              (j.inFlight ? ', ' + j.inFlight + ' trabajando ahora' : '') + '.</span>'
+            : '<span class="dim">○ nada que avanzar ahora — todos los loops esperan, están pausados o terminaron.</span>';
         } else gateEl.innerHTML = '';
 
         if (loops.length) {
@@ -336,7 +336,7 @@
                 const why = previous.querySelector('.lp-why');
                 if (why) {
                   const stacked = Number(card.querySelector('button[data-vact="reject"]').dataset.stacked) || 0;
-                  why.querySelector('.lp-why-cost').textContent = stacked > 0 ? 'also discards ' + stacked + ' built on top of this' : '';
+                  why.querySelector('.lp-why-cost').textContent = stacked > 0 ? 'también descarta ' + stacked + ' construido encima de este' : '';
                   card.querySelector('.lp-why').replaceWith(why);
                 }
               }
@@ -354,8 +354,8 @@
         }
         else {
           listEl.innerHTML = '<div class="empty-state"><span class="es-glyph">∞</span>' +
-            '<b>NO LOOPS YET</b><span>A loop keeps working at one objective and stops for your verdict. Choose a kind of loop to define its goal and stopping condition.</span>' +
-            '<button class="es-cta" id="lp-empty-cta" type="button">✦ START A LOOP</button></div>';
+            '<b>SIN LOOPS AÚN</b><span>Un loop sigue trabajando en un objetivo y se detiene para tu veredicto. Elige un tipo de loop para definir su objetivo y condición de parada.</span>' +
+            '<button class="es-cta" id="lp-empty-cta" type="button">✦ ARRANCAR UN LOOP</button></div>';
           const cta = listEl.querySelector('#lp-empty-cta');
           if (cta) cta.addEventListener('click', () => {
             sfx('click');
@@ -365,7 +365,7 @@
         }
       } catch (_) {
         if (generation !== refreshGeneration || !body.isConnected) return;
-        gateEl.textContent = 'Could not refresh loops — displayed state may be out of date. Retrying…';
+        gateEl.textContent = 'No se pudieron refrescar los loops — el estado mostrado puede estar desactualizado. Reintentando…';
       } finally {
         refreshing = false;
         if (refreshAgain && body.isConnected) { refreshAgain = false; refresh(); }
@@ -390,7 +390,7 @@
           const why = card.querySelector('.lp-why');
           why.hidden = false;
           why.querySelector('.lp-why-cost').textContent = stacked > 0
-            ? 'also discards ' + stacked + ' built on top of this' : '';
+            ? 'también descarta ' + stacked + ' construido encima de este' : '';
           why.querySelector('.lp-why-in').focus();
           sfx('bad');
           return;
@@ -408,7 +408,7 @@
         try {
           const response = await post('/api/loops/verdict', { id, n, verdict, note });
           const r = await response.json();
-          if (!response.ok || !r || !r.ok) { notify((r && r.error) || 'could not record this review', 'warn'); sfx('bad'); }
+          if (!response.ok || !r || !r.ok) { notify((r && r.error) || 'no se pudo registrar esta revisión', 'warn'); sfx('bad'); }
           else {
             const cas = (r && r.cascaded && r.cascaded.length) || 0;
             /* SAY WHAT HAPPENED TO THE CODE, not just to the row. A rejection now really reverts the
@@ -417,14 +417,14 @@
                on disk is the app claiming a tree state that does not exist. */
             const undone = (r && r.undone && r.undone.length) || 0;
             notify(verdict === 'approved'
-              ? 'approved #' + n + ' — kept' + (r && r.branch ? ' on ' + r.branch : '') + ', the loop continues'
-              : 'rejected #' + n + (cas ? ' (+' + cas + ' discarded)' : '')
-                + (undone ? ' — ' + undone + ' commit' + (undone === 1 ? '' : 's') + ' reverted' : '')
-                + ' — the loop will try again',
+              ? 'aprobado #' + n + ' — conservado' + (r && r.branch ? ' en ' + r.branch : '') + ', el loop continúa'
+              : 'rechazado #' + n + (cas ? ' (+' + cas + ' descartados)' : '')
+                + (undone ? ' — ' + undone + ' commit' + (undone === 1 ? '' : 's') + ' revertido' + (undone === 1 ? '' : 's') : '')
+                + ' — el loop lo intentará de nuevo',
               verdict === 'approved' ? 'good' : 'warn');
             if (r && r.undoNote) notify(r.undoNote, 'warn');
           }
-        } catch (_) { notify('could not reach the station', 'warn'); sfx('bad'); }
+        } catch (_) { notify('no se pudo alcanzar la estación', 'warn'); sfx('bad'); }
         finally {
           pendingVerdicts.delete(verdictKey); ++refreshGeneration;
           listEl.querySelectorAll('.mc-row').forEach(el => {
@@ -439,12 +439,12 @@
       const btn = ev.target.closest('button[data-act]'); if (!btn) return;
       const act = btn.dataset.act;
       if (act === 'remove') {
-        if (!btn.dataset.armed) { btn.dataset.armed = '1'; btn.textContent = '✕ CONFIRM'; sfx('bad'); setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = '✕ DELETE'; } }, 5000); return; }
+        if (!btn.dataset.armed) { btn.dataset.armed = '1'; btn.textContent = '✕ CONFIRMAR'; sfx('bad'); setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = '✕ ELIMINAR'; } }, 5000); return; }
         // ⛔ FETCH RESOLVES ON 4xx/5xx — `await post(...)` only rejects on a network failure, so this toast used to
         // announce a delete the sidecar refused, with the still-present row re-drawn underneath it by refresh().
         sfx('bad');
-        try { const r = await post('/api/loops/remove', { id }); notify(r.ok ? 'loop deleted' : 'could not delete this loop', r.ok ? 'good' : 'warn'); }
-        catch (_) { notify('could not reach the station — the loop was not deleted', 'warn'); }
+        try { const r = await post('/api/loops/remove', { id }); notify(r.ok ? 'loop eliminado' : 'no se pudo eliminar este loop', r.ok ? 'good' : 'warn'); }
+        catch (_) { notify('no se pudo alcanzar la estación — el loop no fue eliminado', 'warn'); }
         refresh(); return;
       }
       if (act === 'pause' || act === 'resume') {
@@ -459,12 +459,12 @@
             (async () => {
               const response = await post('/api/loops/control', { id, action: act }, controller.signal);
               const result = await response.json();
-              if (!response.ok || !result || !result.ok) throw new Error((result && result.error) || 'Could not ' + act + ' this loop');
+              if (!response.ok || !result || !result.ok) throw new Error((result && result.error) || 'No se pudo ' + (act === 'pause' ? 'pausar' : 'reanudar') + ' este loop');
             })(),
-            new Promise((_, reject) => { deadline = setTimeout(() => { reject(new Error('No acknowledgement received. Refresh the loop state before retrying.')); controller.abort(); }, 15000); })
+            new Promise((_, reject) => { deadline = setTimeout(() => { reject(new Error('Sin reconocimiento recibido. Refresca el estado del loop antes de reintentar.')); controller.abort(); }, 15000); })
           ]);
-          notify(act === 'pause' ? 'loop paused' : 'loop resumed', 'good');
-        } catch (error) { notify(error.message || 'could not reach the station', 'warn'); sfx('bad'); }
+          notify(act === 'pause' ? 'loop pausado' : 'loop reanudado', 'good');
+        } catch (error) { notify(error.message || 'no se pudo alcanzar la estación', 'warn'); sfx('bad'); }
         finally {
           clearTimeout(deadline); ++refreshGeneration;
           pendingControls.delete(id);
@@ -477,7 +477,7 @@
     // ---------- START A LOOP: pick a shape, fill two blanks ----------
     // ---------- STEP 1: pick a shape ----------
     function shapeCards() {
-      const tpl = T(); if (!tpl) { shapesEl.innerHTML = '<div class="mc-detail">loop shapes unavailable</div>'; return; }
+      const tpl = T(); if (!tpl) { shapesEl.innerHTML = '<div class="mc-detail">formas de loop no disponibles</div>'; return; }
       shapesEl.innerHTML = tpl.list().map(t =>
         // (org D10 polish) a picker tile is glyph + name + one short stat: what the loop does is its tip, never a sentence under the name
         '<button type="button" class="lp-shape' + (t.id === pickedId ? ' on' : '') + '" aria-pressed="' + (t.id === pickedId) + '" data-tpl="' + esc(t.id) + '" data-tip="' + esc(t.tagline) + '" aria-description="' + esc(t.tagline) + '">' +
@@ -485,7 +485,7 @@
           '<span class="lp-shape-n">' + esc(t.name) + '</span>' +
           // rigor is on the CARD, not buried — it is the difference between a proof and a convention.
           '<span class="lp-shape-r ' + (t.rigor === 'hard' ? 'hard' : 'soft') + '">' +
-            (t.rigor === 'hard' ? '✓ ends on a real check' : '~ ends on its own report') + '</span>' +
+            (t.rigor === 'hard' ? '✓ termina con un chequeo real' : '~ termina con su propio informe') + '</span>' +
         '</button>').join('');
       shapesEl.querySelectorAll('.lp-shape').forEach(b => b.addEventListener('click', () => {
         pickedId = b.dataset.tpl; sfx('click'); shapeCards(); renderForm();
@@ -497,7 +497,7 @@
     // be scaffolding the form did not need.
     function fieldRow(pm) {
       return '<label class="mc-lbl">' + esc(pm.label) +
-        (pm.required ? ' <span style="color:var(--bad)">*</span>' : ' <span class="dim">(optional)</span>') +
+        (pm.required ? ' <span style="color:var(--bad)">*</span>' : ' <span class="dim">(opcional)</span>') +
         '<textarea class="key-input lp-p" data-key="' + esc(pm.key) + '" rows="2" placeholder="' + esc(pm.placeholder || '') + '" style="resize:vertical"></textarea>' +
         '</label>';
     }
@@ -508,9 +508,9 @@
       body.querySelector('#lp-s2').hidden = false;
 
       const projectRow = t.needsProject
-        ? '<label class="mc-lbl">Which project? <span style="color:var(--bad)">*</span>' +
-          '<div class="lp-dir"><input id="lp-dir" class="key-input" placeholder="the folder this loop works in" value="' + esc(pickedDir) + '" autocomplete="off">' +
-          '<button class="bb xs" id="lp-pick" type="button">📁 PICK</button></div></label>'
+        ? '<label class="mc-lbl">¿Qué proyecto? <span style="color:var(--bad)">*</span>' +
+          '<div class="lp-dir"><input id="lp-dir" class="key-input" placeholder="la carpeta donde trabaja este loop" value="' + esc(pickedDir) + '" autocomplete="off">' +
+          '<button class="bb xs" id="lp-pick" type="button">📁 ELEGIR</button></div></label>'
         : '';
       /* THE CHECK COMMAND IS NO LONGER A QUESTION when we can answer it ourselves. Typing a shell command is
          the most technical thing this form ever asked for, and /api/loops/detect already reads the project's
@@ -518,7 +518,7 @@
          cannot have a machine-checked ending without one. The command stays visible either way: it is run at
          your project root and you are entitled to see exactly what that is. */
       const checkRow = t.check
-        ? '<div id="lp-checkrow" class="lp-checkline dim">choose a project to detect its check command</div>' +
+        ? '<div id="lp-checkrow" class="lp-checkline dim">elige un proyecto para detectar su comando de chequeo</div>' +
           '<input id="lp-check" class="lp-p" data-key="check" type="hidden">'
         : '';
 
@@ -527,18 +527,18 @@
         t.params.filter(pm => pm.key !== 'check').map(fieldRow).join('') +
         checkRow +
         // WHO RUNS IT is a real choice, not an advanced setting — it belongs in the open.
-        '<div class="mc-lbl"><span>Which agent runs it</span>'+
-          '<div class="lp-agent-pick" role="group" aria-label="Loop agent">' +
+        '<div class="mc-lbl"><span>¿Qué agente lo ejecuta</span>'+
+          '<div class="lp-agent-pick" role="group" aria-label="Agente del loop">' +
             roster.map(a => '<button type="button" class="rt-agent-btn' + (a.id === loopAgentId ? ' active' : '') + '" aria-pressed="' + (a.id === loopAgentId) + '" data-agent="' + esc(a.id) + '" style="--rt-agent-color:' + esc(a.color || 'var(--ph)') + '">' +
               '<span class="rt-agent-dot"></span><span class="rt-agent-name">' + esc(a.name || a.id) + '</span></button>').join('') +
           '</div></div>' +
-        '<details class="lp-adv"><summary>Daily budget &amp; full instructions</summary>' +
-        '<div class="lp-cycle"><span class="dim">each pass:</span> ' +
+        '<details class="lp-adv"><summary>Presupuesto diario &amp; instrucciones completas</summary>' +
+        '<div class="lp-cycle"><span class="dim">cada paso:</span> ' +
           t.shape.map(s => '<span class="lp-step-i">' + esc(s) + '</span>').join('<span class="lp-step-sep">›</span>') + '</div>' +
         '<div class="mc-detail ' + (t.rigor === 'hard' ? '' : 'dim') + '" style="margin-bottom:8px">' + esc(tpl.rigorNote(t)) + '</div>' +
-          '<label class="mc-lbl">Stop for the day after <span class="dim">(0 = no limit)</span>' +
+          '<label class="mc-lbl">Para el día tras <span class="dim">(0 = sin límite)</span>' +
             '<div class="lp-dir"><span class="dim">$</span><input id="lp-cap" class="key-input" type="number" min="0" step="0.5" value="' + esc(String(dailyCap)) + '"></div></label>' +
-          '<details class="lp-preview"><summary>Preview the full instructions</summary><pre id="lp-prev"></pre></details>' +
+          '<details class="lp-preview"><summary>Vista previa de las instrucciones completas</summary><pre id="lp-prev"></pre></details>' +
         '</details>';
       formEl.querySelectorAll('.rt-agent-btn').forEach(b => b.addEventListener('click', () => {
         loopAgentId = b.dataset.agent || 'agent'; sfx('click');
@@ -561,17 +561,17 @@
           if (!val && checkEl && rowEl) {
             checkEl.value = '';
             rowEl.className = 'lp-checkline dim';
-            rowEl.textContent = 'choose a project to detect its check command';
+            rowEl.textContent = 'elige un proyecto para detectar su comando de chequeo';
           } else if (checkEl && rowEl) {
-            rowEl.className = 'lp-checkline dim'; rowEl.textContent = 'reading the project…';
+            rowEl.className = 'lp-checkline dim'; rowEl.textContent = 'leyendo el proyecto…';
             try {
               const r = await (await post('/api/loops/detect', { path: val })).json();
               if (r && r.ok && r.cmd) {
                 checkEl.value = r.cmd;
                 rowEl.className = 'lp-checkline';
-                rowEl.innerHTML = 'After each pass the station will run <code>' + esc(r.cmd) + '</code> ' +
+                rowEl.innerHTML = 'Después de cada paso la estación ejecutará <code>' + esc(r.cmd) + '</code> ' +
                   '<span class="dim">— ' + esc(r.why) + '.</span> ' +
-                  '<button type="button" class="lp-link" id="lp-checkedit">change</button>';
+                  '<button type="button" class="lp-link" id="lp-checkedit">cambiar</button>';
                 const ed = rowEl.querySelector('#lp-checkedit');
                 if (ed) ed.addEventListener('click', () => { sfx('click'); askForCheck(r.cmd); });
               } else {
@@ -585,9 +585,9 @@
         function askForCheck(current, why) {
           const rowEl = formEl.querySelector('#lp-checkrow'); if (!rowEl) return;
           rowEl.className = 'lp-checkline';
-          rowEl.innerHTML = '<label class="mc-lbl">What command checks this project? <span style="color:var(--bad)">*</span>' +
+          rowEl.innerHTML = '<label class="mc-lbl">¿Qué comando chequea este proyecto? <span style="color:var(--bad)">*</span>' +
             '<input id="lp-checktext" class="key-input" placeholder="npm test" value="' + esc(current || '') + '" autocomplete="off">' +
-            '<span class="dim">' + esc(why || 'the station runs it after each pass to know when the loop is done') + '</span></label>';
+            '<span class="dim">' + esc(why || 'la estación lo ejecuta después de cada paso para saber cuándo termina el loop') + '</span></label>';
           const inp = rowEl.querySelector('#lp-checktext');
           inp.addEventListener('input', () => { checkEl.value = inp.value; gate(); });
           inp.focus();
@@ -600,7 +600,7 @@
           try {
             const r = await (await post('/api/folderpick', {})).json();
             if (r && r.path) { pickedDir = r.path; dirEl.value = r.path; dirEl.dispatchEvent(new Event('change')); }
-          } catch (_) { notify('could not open the folder picker — type the path instead', 'warn'); }
+          } catch (_) { notify('no se pudo abrir el selector de carpeta — escribe la ruta en su lugar', 'warn'); }
         });
       }
 
@@ -650,10 +650,10 @@
         sfx('bad');
         const el = formEl.querySelector('.lp-p[data-key="' + missing[0] + '"]');
         if (el) { el.classList.add('mkt-bad'); el.focus(); }
-        msgEl.innerHTML = '<span style="color:var(--bad)">fill in: ' + esc(missing.join(', ')) + '</span>';
+        msgEl.innerHTML = '<span style="color:var(--bad)">rellena: ' + esc(missing.join(', ')) + '</span>';
         return;
       }
-      if (t.needsProject && !extra.workdir) { sfx('bad'); msgEl.innerHTML = '<span style="color:var(--bad)">this shape needs a project folder</span>'; return; }
+      if (t.needsProject && !extra.workdir) { sfx('bad'); msgEl.innerHTML = '<span style="color:var(--bad)">esta forma necesita una carpeta de proyecto</span>'; return; }
       pickedDir = extra.workdir; dailyCap = extra.perDayUsd;
 
       /* IN-FLIGHT GUARD: START awaits bless -> testcheck -> POST /api/loops (~1s). Unguarded, a double-
@@ -664,12 +664,12 @@
       if (startBtn) startBtn.disabled = true;
       const releaseStart = () => { if (startBtn) startBtn.disabled = false; };
 
-      msgEl.textContent = 'starting…';
+      msgEl.textContent = 'arrancando…';
       if (extra.workdir) {
         try {
           const b = await (await post('/api/projects/bless', { path: extra.workdir, surface: 'interactive' })).json();
-          if (!b || !b.ok) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((b && b.reason) || 'that folder could not be approved') + '</span>'; sfx('bad'); releaseStart(); return; }
-        } catch (_) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ could not reach the station</span>'; sfx('bad'); releaseStart(); return; }
+          if (!b || !b.ok) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((b && b.reason) || 'esa carpeta no se pudo aprobar') + '</span>'; sfx('bad'); releaseStart(); return; }
+        } catch (_) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ no se pudo alcanzar la estación</span>'; sfx('bad'); releaseStart(); return; }
       }
 
       /* THE CHECK PRE-FLIGHT, now automatic. It used to be a TEST button, which asked the user to know to
@@ -685,13 +685,13 @@
         try {
           const r = await (await post('/api/loops/testcheck', { path: extra.workdir, cmd: cmdNow })).json();
           const warn = (r && r.alreadyGreen)
-            ? 'that check ALREADY passes — this loop would finish immediately with nothing to do'
-            : (r && r.couldNotRun) ? 'that command could not run — ' + String(r.summary || '').slice(0, 90)
+            ? 'ese chequeo YA pasa — este loop terminaría de inmediato sin nada que hacer'
+            : (r && r.couldNotRun) ? 'ese comando no pudo ejecutarse — ' + String(r.summary || '').slice(0, 90)
             : (r && r.error) ? r.error : null;
           if (warn) {
             preflightOk = true;   // armed: the next click goes ahead regardless
             msgEl.innerHTML = '<span style="color:var(--gold)">⚠ ' + esc(warn) + '</span>' +
-              '<span class="dim"> — fix it above, or press START again to go ahead anyway.</span>';
+              '<span class="dim"> — arréglalo arriba, o pulsa ARRANCAR otra vez para continuar de todos modos.</span>';
             sfx('bad');
             releaseStart();
             return;
@@ -704,14 +704,14 @@
         const r = await (await post('/api/loops', spec)).json();
         if (r && r.error) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc(r.error) + '</span>'; sfx('bad'); releaseStart(); return; }
         msgEl.textContent = '';
-        notify('loop started — it runs until ' + (t.rigor === 'hard' ? 'your check passes' : 'it stops finding things'), 'good');
+        notify('loop arrancado — se ejecuta hasta que ' + (t.rigor === 'hard' ? 'tu chequeo pase' : 'deje de encontrar cosas'), 'good');
         sfx('click');
         formEl.querySelectorAll('.lp-p').forEach(el => { el.value = ''; });
         body.querySelector('#lp-s3').hidden = true;
         consoleSection['automation'] = 'loops';
         const tab = body.querySelector('#con-tab-automation-loops'); if (tab) tab.click();
         refresh();
-      } catch (e) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((e && e.message) || 'could not reach the station') + '</span>'; sfx('bad'); }
+      } catch (e) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((e && e.message) || 'no se pudo alcanzar la estación') + '</span>'; sfx('bad'); }
       releaseStart();
     }
     body.querySelector('#lp-create').addEventListener('click', createLoop);
@@ -760,7 +760,7 @@
     if (!n) { if (dot) dot.remove(); return; }
     if (!dot) { dot = document.createElement('span'); dot.className = 'lp-badge'; btn.appendChild(dot); }
     dot.textContent = String(n);
-    dot.title = n + ' loop result' + (n === 1 ? '' : 's') + ' waiting on you';
+    dot.title = n + ' resultado' + (n === 1 ? '' : 's') + ' de loop esperándote';
   }
 
   let reviewWaiting = [];
@@ -809,8 +809,8 @@
     if (fresh.length && typeof StationUI !== 'undefined' && StationUI.h && StationUI.h.notify) {
       const f = fresh[0];
       StationUI.h.notify(fresh.length === 1
-        ? '∞ ' + (f.l.name || 'a loop') + ' has work for you — #' + f.p.n + ' ' + (f.p.title || '')
-        : '∞ ' + fresh.length + ' loop results are waiting on your review', 'good', undefined, { kind: 'needs', key: 'loops-review', go: { term: 'loops' } });
+        ? '∞ ' + (f.l.name || 'un loop') + ' tiene trabajo para ti — #' + f.p.n + ' ' + (f.p.title || '')
+        : '∞ ' + fresh.length + ' resultados de loops esperan tu revisión', 'good', undefined, { kind: 'needs', key: 'loops-review', go: { term: 'loops' } });
     }
   }
   // first sweep after boot settles, then a slow heartbeat — this is a notifier, not a live view.

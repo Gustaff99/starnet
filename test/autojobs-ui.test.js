@@ -39,7 +39,7 @@ A.ok(/j\s*&&\s*j\.halted\s*\?\s*'stopped \(E-STOP\)'/.test(chatSrc),
    WHOLE line when the record carries runsLine, and must show the line's recorded spend (lastUsd). */
 A.ok((src.match(/j\.skills\.length/g) || []).length === 1 && /Array\.isArray\(j\.skills\) \? j\.skills\.length/.test(src), 'routine row only reads j.skills.length behind the Array.isArray guard');
 A.ok(/Array\.isArray\(j\.skills\)/.test(src), 'routine row guards the skills array');
-A.ok(/runs the <b>/.test(src) && /j\.runsLine !== true\) return 'runs as '/.test(src), "a runsLine routine says it runs the line; others keep 'runs as'");
+A.ok(/ejecuta la línea <b>/.test(src) && /j\.runsLine !== true\) return 'ejecuta como '/.test(src), "a runsLine routine says it runs the line; others keep 'runs as'");
 A.ok(/Build\.lineOfAgentInfo/.test(src), 'the line name/dock count come from the compiled plan (Build.lineOfAgentInfo), never guessed');
 A.ok(/Number\(j\.lastUsd\)/.test(src) && /mc-spend/.test(src), 'the row shows the recorded spend (lastUsd)');
 
@@ -62,42 +62,42 @@ A.ok(/maxPendingDeliveries: cronStore.MAX_PENDING_DELIVERIES/.test(idx), 'GET /a
   const past = new Date(Date.now() - 3600000).toISOString();
   const collapsed = ctx.deliveryLine({ enabled: true, state: 'scheduled',
     finalization: { runId: 'r100', state: 'pending', superseded: 99, nextAttemptAt: past } });
-  A.ok(/1 result awaiting delivery/.test(collapsed), 'one collapsed receipt reads as one result awaiting delivery');
-  A.ok(/new runs deferred until the destination recovers/.test(collapsed), 'a receipt standing for 100 undelivered results says new runs are deferred (the driver defers on undeliveredCount)');
+  A.ok(/1 resultado en espera de entrega/.test(collapsed), 'one collapsed receipt reads as one result awaiting delivery');
+  A.ok(/nuevas ejecuciones diferidas hasta que el destino se recupere/.test(collapsed), 'a receipt standing for 100 undelivered results says new runs are deferred (the driver defers on undeliveredCount)');
   const few = ctx.deliveryLine({ enabled: true, state: 'scheduled',
     finalization: { runId: 'r3', state: 'pending', superseded: 2, nextAttemptAt: past } });
-  A.ok(!/deferred/.test(few) && /next retry 09:00/.test(few), 'below the ceiling: a retry time, no deferral claim');
+  A.ok(!/diferidas/.test(few) && /próximo reintento 09:00/.test(few), 'below the ceiling: a retry time, no deferral claim');
   const held = ctx.deliveryLine({ enabled: false, state: 'paused',
     finalization: { runId: 'p1', state: 'pending', superseded: 120, nextAttemptAt: past } });
-  A.ok(/held until the routine is resumed/.test(held), 'a paused routine says its result is held until it is resumed');
-  A.ok(!/next retry/.test(held) && !/deferred/.test(held), 'a paused routine promises no retry and no deferred runs');
+  A.ok(/retenido hasta que la rutina se reanude/.test(held), 'a paused routine says its result is held until it is resumed');
+  A.ok(!/reintento/.test(held) && !/diferidas/.test(held), 'a paused routine promises no retry and no deferred runs');
   const autoPaused = ctx.deliveryLine({ enabled: false, state: 'error', disabledReason: 'consecutive-failures',
     finalization: { runId: 'e1', state: 'pending', nextAttemptAt: past } });
-  A.ok(/next retry 09:00/.test(autoPaused) && !/held/.test(autoPaused), 'an auto-paused routine still delivers its notice (not held): its retry is shown');
+  A.ok(/próximo reintento 09:00/.test(autoPaused) && !/retenido/.test(autoPaused), 'an auto-paused routine still delivers its notice (not held): its retry is shown');
 }
 
 /* ---------- org P16 (2026-10-14): one arm rule, a true status line, one switch name, RUN BY ---------- */
 {
   // the create-state line tells the truth for each of the four states (never "will not run until you enable" while saving arms)
-  A.ok(src.includes("'Scheduling is off. Saving turns it on for the whole station, so every saved schedule runs at its time.'"), 'a never-set switch: the line says scheduling is off and saving turns it on — the INBOX form\'s own words');
-  A.ok(src.includes('id="rt-add">▸ SAVE SCHEDULE<'), 'the SCHEDULES save key wears the INBOX key\'s ▸');
-  A.ok(src.includes("(j && j.armSet) ? 'Scheduling is off — you turned it off. Saving keeps it off"), 'an explicit OFF: saving keeps it off (armSet from GET /api/cron)');
-  A.ok(!src.includes('it will not run automatically until you enable scheduling'), 'the old line that contradicted arm-on-save is gone');
+  A.ok(src.includes("'La programación está apagada. Guardar la activa para toda la estación, así que cada programa guardado se ejecuta a su hora.'"), 'a never-set switch: the line says scheduling is off and saving turns it on — the INBOX form\'s own words');
+  A.ok(src.includes('id="rt-add">▸ GUARDAR PROGRAMA<'), 'the SCHEDULES save key wears the INBOX key\'s ▸');
+  A.ok(src.includes("(j && j.armSet) ? 'La programación está apagada — la apagaste. Guardar la mantiene apagada"), 'an explicit OFF: saving keeps it off (armSet from GET /api/cron)');
+  A.ok(!src.includes('no se ejecutará automáticamente hasta que actives la programación'), 'the old line that contradicted arm-on-save is gone');
   // (org wire AUTO-P16-2) the lines send the Commander to a page that exists, by its key: AUTOMATE calls the routines page 'Scheduled jobs'
   const autoSrc = fs.readFileSync(path.join(__dirname, '../frontend/app/windows/automation.js'), 'utf8');
   const jobsPage = (autoSrc.match(/const labels = \{ routines: '([^']+)'/) || [])[1];
-  A.eq(jobsPage, 'Scheduled jobs', 'fixture: AUTOMATE labels the routines page Scheduled jobs');
+  A.eq(jobsPage, 'Trabajos programados', 'fixture: AUTOMATE labels the routines page Scheduled jobs');
   A.ok(!/Active Routines/.test(src), 'no line sends the Commander to an "Active Routines" no page is called');
-  A.ok(src.includes('Saving keeps it stopped: it runs only after you press ▶ TURN SCHEDULING ON in ' + jobsPage + '.') && src.includes('Saving keeps it off: press ▶ TURN SCHEDULING ON in ' + jobsPage + ' when'), 'the E-STOP and OFF lines name the key and the page it is on');
-  A.ok(src.includes('nothing fires until you press ▶ TURN SCHEDULING ON in AUTOMATE › SCHEDULES › ' + jobsPage + "'") && !/until you resume it in AUTOMATE/.test(src), 'the E-STOP save toast names the key, never a RESUME there is none of');
-  // one switch name: ▶ TURN SCHEDULING ON / ⏸ TURN SCHEDULING OFF
+  A.ok(src.includes('Guardar la mantiene detenida: solo se ejecuta tras pulsar ▶ ACTIVAR PROGRAMACIÓN en ' + jobsPage + '.') && src.includes('Guardar la mantiene apagada: pulsa ▶ ACTIVAR PROGRAMACIÓN en ' + jobsPage + ' cuando'), 'the E-STOP and OFF lines name the key and the page it is on');
+  A.ok(src.includes('nada se disparará hasta que pulses ▶ ACTIVAR PROGRAMACIÓN en AUTOMATE › SCHEDULES › ' + jobsPage + "'") && !/hasta que la reanudes en AUTOMATE/.test(src), 'the E-STOP save toast names the key, never a RESUME there is none of');
+  // one switch name: ▶ ACTIVAR PROGRAMACIÓN / ⏸ APAGAR PROGRAMACIÓN
   A.ok(!/ENABLE SCHEDULING<|RESUME SCHEDULING<|DISABLE SCHEDULING</.test(src), 'no ENABLE / RESUME / DISABLE SCHEDULING keys remain');
-  A.eq((src.match(/>▶ TURN SCHEDULING ON</g) || []).length >= 3, true, 'E-STOP, OFF and the save note all offer ▶ TURN SCHEDULING ON');
-  A.ok(src.includes('>⏸ TURN SCHEDULING OFF</button>'), 'the armed state offers ⏸ TURN SCHEDULING OFF');
+  A.eq((src.match(/>▶ ACTIVAR PROGRAMACIÓN</g) || []).length >= 3, true, 'E-STOP, OFF and the save note all offer ▶ TURN SCHEDULING ON');
+  A.ok(src.includes('>⏸ APAGAR PROGRAMACIÓN</button>'), 'the armed state offers ⏸ TURN SCHEDULING OFF');
   // the save says what it did: armedNow → "scheduling is now on"; offByChoice → the switch, never a silent override
-  A.ok(src.includes("msgEl.textContent = '✓ saved · scheduling is now on'") && src.includes('r.scheduler.offByChoice') && src.includes('id="rt-msg-arm"'), 'the save confirm follows the server verdict');
+  A.ok(src.includes("msgEl.textContent = '✓ guardado · la programación está ahora activada'") && src.includes('r.scheduler.offByChoice') && src.includes('id="rt-msg-arm"'), 'the save confirm follows the server verdict');
   // RUN BY: agents, then workflows; a workflow posts its first step's agent + BAY + runsLine:true
-  A.ok(src.includes("'<label class=\"sn-menu-field\">Run by<select id=\"rt-agent-select\"") && /optgroup label="AGENTS"[\s\S]*optgroup label="WORKFLOWS"/.test(src), 'RUN BY lists agents, then workflows');
+  A.ok(src.includes("'<label class=\"sn-menu-field\">Ejecutado por<select id=\"rt-agent-select\"") && /optgroup label="AGENTES"[\s\S]*optgroup label="WORKFLOWS"/.test(src), 'RUN BY lists agents, then workflows');
   A.ok(src.includes("dockId: line ? line.dockId : undefined, runsLine: line ? true : undefined,"), 'a workflow choice posts dockId + runsLine:true (the line-schedule path)');
   /* (org wire AUTO-P16-3) a draft opened into the form never inherits a WORKFLOW picked earlier: the REAL applyDraftAgent over a fake form */
   {

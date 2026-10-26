@@ -14,7 +14,7 @@
   function lineOfEnd(e) {
     let st = null; try { st = (typeof App !== 'undefined' && App.station) ? App.station() : null; } catch (_) { st = null; }
     const w = e && e.line != null && st && typeof st.lineName === 'function' ? st.lineName(e.line) : null;
-    return w || Pipeline.lineWord(e && e.name, 'ANOTHER LINE');
+    return w || Pipeline.lineWord(e && e.name, 'otra línea');
   }
 
   /* ============== OUTBOX — the finished-work window (accordion redesign, 2026-07-16 round 4) ==============
@@ -62,7 +62,7 @@
   function answerCut(out, text) {
     if (String(text).length <= ANSWER_MAX) return;
     const n = document.createElement('div'); n.className = 'ob-cut';
-    n.textContent = '… output truncated — ↗ OPEN SESSION opens the conversation.';
+    n.textContent = '… salida truncada — ↗ ABRIR SESIÓN abre la conversación.';
     out.appendChild(n);
   }
   function plain(s) {
@@ -77,22 +77,22 @@
     // every row is (org live walk 10-14: the note, MARK ALL's tip and its toast all claimed library filing for 3 of 4 rows).
     /* ONE CLEAN HEADING (org pass 10-14, P12 polish): '▾ TO REVIEW 3' on one line, like every other section heading — the count
        is its own number, not buried mid-sentence — and what the list holds is a dim note UNDER it, never a hanging paragraph */
-    const reviewNote = 'Away runs and workflow jobs waiting for your rating. Files they made are in the library below; each one keeps its session (↗ OPEN SESSION). Chats are rated in COMMS.';
-    // the count sits after ALL, idle and armed alike ('✓ MARK ALL 3 REVIEWED' → 'MARK ALL 3 REVIEWED — SURE?'), the way the
+    const reviewNote = 'Ejecuciones ausentes y trabajos de workflow esperando tu calificación. Los archivos que hicieron están en la biblioteca de abajo; cada una conserva su sesión (↗ ABRIR SESIÓN). Los chats se califican en COMMS.';
+    // the count sits after ALL, idle and armed alike ('✓ MARCAR TODAS 3 REVISADAS' → 'MARCAR TODAS 3 REVISADAS — ¿SEGURO?'), the way the
     // toolbar's CLEAR ALL 3 carries its own (P12 polish 2)
-    const markLabel = n => '✓ MARK ALL ' + n + ' REVIEWED';
+    const markLabel = n => '✓ MARCAR TODAS ' + n + ' REVISADAS';
     const RS = (typeof ReturnStore !== 'undefined') ? ReturnStore : null;
     const rows = (RS && RS.pendingRows) ? RS.pendingRows() : [];
     for (const el of mounted) if (el !== body && !el.isConnected) mounted.delete(el);   // a replaced copy never outlives its window
     mounted.add(body);
     body.hidden = !rows.length;
     body.innerHTML =
-      '<h4 class="ms-h dlv-review-h"><button type="button" class="dlv-review-tog" aria-expanded="true"><span class="ob-caret-all" aria-hidden="true">▾</span> <span class="dlv-review-lbl">TO REVIEW</span> <span class="dlv-review-n">' + rows.length + '</span></button>' +
-        '<button type="button" class="bb sm ob-clearall" data-tip="Takes every run off this list without a rating. Nothing is deleted: files stay in your library, each run in its session.">' + markLabel(rows.length) + '</button></h4>' +
+      '<h4 class="ms-h dlv-review-h"><button type="button" class="dlv-review-tog" aria-expanded="true"><span class="ob-caret-all" aria-hidden="true">▾</span> <span class="dlv-review-lbl">POR REVISAR</span> <span class="dlv-review-n">' + rows.length + '</span></button>' +
+        '<button type="button" class="bb sm ob-clearall" data-tip="Quita cada ejecución de esta lista sin calificarla. Nada se borra: los archivos quedan en tu biblioteca, cada ejecución en su sesión.">' + markLabel(rows.length) + '</button></h4>' +
       '<p class="dim dlv-review-note">' + reviewNote + '</p>' +
       '<div id="ob-list" class="ob-list"></div>' +
       '<button type="button" class="bb sm ob-showall" hidden></button>' +
-      '<div class="row ob-doors" style="margin-top:10px;gap:8px"><button class="bb sm" id="ob-logbook">AGENT RECORD · run history</button></div>';
+      '<div class="row ob-doors" style="margin-top:10px;gap:8px"><button class="bb sm" id="ob-logbook">REGISTRO DE AGENTES · historial de ejecuciones</button></div>';
     const list = body.querySelector('#ob-list');
     const lb = body.querySelector('#ob-logbook');
     if (lb) lb.addEventListener('click', () => H.navigateWork('deliverables', 'logbook'));
@@ -116,7 +116,7 @@
       const live = Array.from(list.children);
       live.forEach((r, i) => { r.hidden = !showAll && i >= FEW; });
       more.hidden = !sectionOpen || live.length <= FEW;
-      more.textContent = showAll ? 'SHOW FEWER ▴' : 'SHOW ALL ' + live.length + ' ▾';
+      more.textContent = showAll ? 'MOSTRAR MENOS ▴' : 'MOSTRAR TODAS ' + live.length + ' ▾';
       // the counts follow the live list as crates are collected one by one
       const n = tog.querySelector('.dlv-review-n'); if (n) n.textContent = String(live.length);
       if (clearAll.dataset.armed !== '1') clearAll.textContent = markLabel(live.length);
@@ -129,7 +129,7 @@
       notify('Marked ' + ids.length + ' reviewed. Nothing was deleted.', '');
       renderEmpty();
     };
-    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(clearAll, { armedLabel: 'MARK ALL REVIEWED — SURE?', onArm: b => { b.textContent = 'MARK ALL ' + list.children.length + ' REVIEWED — SURE?'; }, onDisarm: paintFold, onConfirm: clearEvery });
+    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(clearAll, { armedLabel: 'MARCAR TODAS REVISADAS — ¿SEGURO?', onArm: b => { b.textContent = 'MARCAR TODAS ' + list.children.length + ' REVISADAS — ¿SEGURO?'; }, onDisarm: paintFold, onConfirm: clearEvery });
     else clearAll.addEventListener('click', clearEvery);
     // agent id → display name via the live roster (raw ids read as debug output)
     const agentName = id => { const a = (Array.isArray(H.present) ? H.present.find(x => x && x.id === id) : null); return (a && a.name) || id || 'agent'; };
@@ -182,7 +182,7 @@
       // title: routine name wins (it's the human name of the job); else the run title until the
       // transcript's real ask replaces it (stored run titles can be prompt+reply mush).
       const lineTitle = /^PIPELINE HANDOFF — /.test(String(rw.title || ''));   // a work line's later stage (its stored title is the machine prompt)
-      const provisionalTitle = rw.routine ? ('“' + rw.routine + '”') : lineTitle ? 'work line result' : firstLine(rw.title || 'an unnamed run', 64);
+      const provisionalTitle = rw.routine ? ('“' + rw.routine + '”') : lineTitle ? 'resultado de línea de trabajo' : firstLine(rw.title || 'una ejecución sin nombre', 64);
       const jobStream = /^(sample|handoff)-/.test(String(rw.streamId || ''));   // a WORKFLOWS job's run (its record holds where it came from / went)
       row.innerHTML =
         '<div class="ob-head" role="button" tabindex="0" aria-expanded="false">' +
@@ -196,11 +196,11 @@
         '<div class="ob-body" hidden>' +
           // a WORKFLOWS job (2026-09-30) opens its own record there: the result, what each step did, NEEDS CHANGES, send it again
           // (…and a job one line SENT ON to another — SEND TO, 2026-10-10 — is a WORKFLOWS job of its own line: handoff-<id>)
-          '<div class="ob-primary">' + (jobStream ? '<button type="button" class="consent-btn ob-wf">OPEN IN WORKFLOWS</button>' : '') + '<button type="button" class="consent-btn ob-open">↗ OPEN SESSION</button>' +
-            '<button type="button" class="consent-btn ob-fork">⊕ NEW SESSION</button></div>' +
+          '<div class="ob-primary">' + (jobStream ? '<button type="button" class="consent-btn ob-wf">ABRIR EN WORKFLOWS</button>' : '') + '<button type="button" class="consent-btn ob-open">↗ ABRIR SESIÓN</button>' +
+            '<button type="button" class="consent-btn ob-fork">⊕ NUEVA SESIÓN</button></div>' +
           '<div class="ob-sec ob-prov" hidden></div>' +
-          '<details class="ob-request"><summary class="ob-sec">WHAT YOU ASKED FOR</summary><div class="ob-ask"><span class="loading">loading…</span></div></details>' +
-          '<div class="ob-sec">WHAT CAME BACK</div><div class="ob-out"><span class="loading">loading…</span></div>' +
+          '<details class="ob-request"><summary class="ob-sec">LO QUE PEDISTE</summary><div class="ob-ask"><span class="loading">cargando…</span></div></details>' +
+          '<div class="ob-sec">LO QUE VOLVIÓ</div><div class="ob-out"><span class="loading">cargando…</span></div>' +
           '<div class="ob-files"></div>' +
           '<div class="ob-acts"><span class="ob-rate"></span></div>' +
           '<div class="deliverable-preview" data-preview aria-live="polite"></div>' +
@@ -237,11 +237,11 @@
         const lastReply = (hand && Pipeline.stripVerdictLine) ? Pipeline.stripVerdictLine(rawReply) : rawReply;
         if (!rw.routine && users.length) row.querySelector('.ob-title b').textContent = firstLine(hand ? hand.original : users[0].content, 64);
         desc.textContent = lastReply ? firstLine(plain(lastReply), 150)
-          : (turns === null ? 'couldn’t read the result — is the station running?'
-            : (turns && turns.length ? 'the run finished with nothing to report.' : 'no transcript recorded for this run. Open the session for older work without run attribution.'));
+          : (turns === null ? 'no se pudo leer el resultado — ¿la estación está encendida?'
+            : (turns && turns.length ? 'la ejecución terminó sin nada que reportar.' : 'no hay transcripción registrada para esta ejecución. Abre la sesión para trabajo antiguo sin atribución de ejecución.'));
         // the line a handed-on job came FROM — said in the floor's words once the job's record is read (below); the frame's own
         // name only when there is no record (an unnamed line's frame carries none: it read 'another line' beside FROM LINE N)
-        let fromWord = hand && hand.sent ? Pipeline.lineWord(hand.sent.fromName, 'another line') : '';
+        let fromWord = hand && hand.sent ? Pipeline.lineWord(hand.sent.fromName, 'otra línea') : '';
         // where this job came from / went on to (SEND TO) — the job's own record says, never a guess from the text
         if (jobStream) {
           try {
@@ -249,21 +249,21 @@
             const sj = lj && Array.isArray(lj.jobs) ? lj.jobs[0] : null, word = e => lineOfEnd(e);
             if (sj && sj.from && hand && hand.sent) fromWord = word(sj.from);
             // (a REFUSED hand-off is NOT SENT ON, with why — never "sent on" for work the station did not send, 10-11)
-            const bits = sj ? [sj.from ? 'FROM ' + word(sj.from) : '', sj.sentTo ? (sj.sentTo.refused ? 'NOT SENT ON TO ' + word(sj.sentTo) + ' — ' + sj.sentTo.refused : 'SENT ON TO ' + word(sj.sentTo)) : ''].filter(Boolean) : [];
+            const bits = sj ? [sj.from ? 'DE ' + word(sj.from) : '', sj.sentTo ? (sj.sentTo.refused ? 'NO ENVIADO A ' + word(sj.sentTo) + ' — ' + sj.sentTo.refused : 'ENVIADO A ' + word(sj.sentTo)) : ''].filter(Boolean) : [];
             const pv = row.querySelector('.ob-prov');
             if (pv && bits.length) { pv.textContent = bits.join(' · '); pv.hidden = false; }
           } catch (_) { /* the provenance line is extra: the result itself is already on screen */ }
         }
-        const askFull = hand && hand.sent ? String(hand.original) + '\n\n— handed on from ' + fromWord + ': this reply is this line’s work on what that line delivered.'
-          : hand ? String(hand.original) + '\n\n— the result of a work line: this reply is from step ' + hand.stage + ', after ' + String(agentName(hand.from)).toUpperCase() + '.'
+        const askFull = hand && hand.sent ? String(hand.original) + '\n\n— heredado de ' + fromWord + ': esta respuesta es el trabajo de esta línea sobre lo que esa línea entregó.'
+          : hand ? String(hand.original) + '\n\n— el resultado de una línea de trabajo: esta respuesta es del paso ' + hand.stage + ', después de ' + String(agentName(hand.from)).toUpperCase() + '.'
           : users.length ? String(users[0].content) : '';
         ask.textContent = askFull ? (askFull.length > 1500 ? askFull.slice(0, 1500) + ' …' : askFull) : (rw.title || '—');
         if (lastReply) {
           const rec = await runRec;
           answerInto(out, lastReply.slice(0, ANSWER_MAX), runFileRefs(rw.agentId, rec && rec.projectRoot));
           answerCut(out, lastReply);
-        } else out.textContent = turns === null ? '⚠ couldn’t load the output — the run’s transcript wasn’t reachable.'
-          : 'this run recorded no readable output.';
+        } else out.textContent = turns === null ? '⚠ no se pudo cargar la salida — la transcripción de la ejecución no era alcanzable.'
+          : 'esta ejecución no registró salida legible.';
         // FILES — the library's rows for this run, in the library's own markup (dlv-files), sized off
         // disk by the backend. Only rendered when the index proves the run produced something; a plain
         // conversation gets no section (an every-row "no files" line would be noise, not honesty).
@@ -273,9 +273,9 @@
             const idx = dlvRows.push(d) - 1;
             row.dataset.i = String(idx);   // the join handleOpenClick reads: this row → its library files
             row.querySelector('.ob-files').innerHTML =
-              '<div class="ob-sec">FILES</div><ul class="dlv-files">' + d.files.map((f, fi) => f.openUrl
-                ? '<li><a class="bb sm' + (d.main && f.path === d.main ? ' dlv-hero' : '') + '" data-file="' + fi + '" href="' + esc(DLV.fileHref(f)) + '" target="_blank" rel="noopener">OPEN</a><span class="dlv-fname">' + esc(f.path) + '</span><span class="dlv-fsize">' + esc(DLV.fmtSize(f.bytes)) + '</span>' + (d.main && f.path === d.main ? '<span class="dlv-fmain">the main one</span>' : '') + '</li>'
-                : '<li><span class="dlv-fname off">' + esc(f.path) + '</span><span class="dlv-fsize">no longer available</span></li>').join('') + '</ul>';
+              '<div class="ob-sec">ARCHIVOS</div><ul class="dlv-files">' + d.files.map((f, fi) => f.openUrl
+                ? '<li><a class="bb sm' + (d.main && f.path === d.main ? ' dlv-hero' : '') + '" data-file="' + fi + '" href="' + esc(DLV.fileHref(f)) + '" target="_blank" rel="noopener">ABRIR</a><span class="dlv-fname">' + esc(f.path) + '</span><span class="dlv-fsize">' + esc(DLV.fmtSize(f.bytes)) + '</span>' + (d.main && f.path === d.main ? '<span class="dlv-fmain">el principal</span>' : '') + '</li>'
+                : '<li><span class="dlv-fname off">' + esc(f.path) + '</span><span class="dlv-fsize">ya no disponible</span></li>').join('') + '</ul>';
           }
         } catch (_) {}
         loaded = turns !== null;
@@ -299,7 +299,7 @@
         const b = ev.currentTarget; b.disabled = true;
         const ok = (RS && RS.openWork) ? await RS.openWork(rw) : false;
         b.disabled = false;
-        if (!ok) notify('transcript unreachable for that run', 'warn');
+        if (!ok) notify('transcripción inalcanzable para esa ejecución', 'warn');
         else H.workConversation('deliverables');
       });
       // OPEN IN WORKFLOWS — a job sent down a work line opens the WORKFLOWS window on its own record (GET /api/line-jobs?stream=)
@@ -309,18 +309,18 @@
         wfb.disabled = true;
         const ok = (typeof WorkflowsWindow !== 'undefined' && WorkflowsWindow.openByStream) ? await WorkflowsWindow.openByStream(rw.streamId, 'deliverables') : false;
         wfb.disabled = false;
-        if (!ok) notify('this job’s workflow record is not on the station any more — ↗ OPEN SESSION still reads it', 'warn');
+        if (!ok) notify('el registro de workflow de este trabajo ya no está en la estación — ↗ ABRIR SESIÓN sigue leyéndolo', 'warn');
       });
       // ⊕ NEW SESSION — dedicate a fresh chat (same agent) to expanding on this work; the composer
       // is prefilled naming the task so the follow-up ask writes itself. No fabricated turns.
       row.querySelector('.ob-fork').addEventListener('click', ev => {
         ev.stopPropagation();
         const w = WS(); if (!w) return;
-        const title = (row.querySelector('.ob-title b').textContent || 'finished run').replace(/^[“”"]+|[“”"]+$/g, '');
-        const ws = w.create(('follow-up: ' + title).slice(0, 80), { activate: false, agentId: rw.agentId });
+        const title = (row.querySelector('.ob-title b').textContent || 'ejecución terminada').replace(/^[“”"]+|[“”"]+$/g, '');
+        const ws = w.create(('seguimiento: ' + title).slice(0, 80), { activate: false, agentId: rw.agentId });
         persistWS();
         if (typeof App !== 'undefined' && App.openWorkstream) App.openWorkstream(ws.id);
-        if (typeof Chat !== 'undefined' && Chat.prefill) Chat.prefill('About the finished “' + title + '” run — ');
+        if (typeof Chat !== 'undefined' && Chat.prefill) Chat.prefill('Sobre la ejecución terminada “' + title + '” — ');
         H.workConversation('deliverables');
         sfx('click');
       });
@@ -329,7 +329,7 @@
         ? Chat.awayRate(rateHost, rw, () => { if (RS && RS.resolve) RS.resolve(rw.runId, 'outbox'); collected(row); })
         : false;
       if (!mounted) {   // already judged this session — offer the plain collect so the crate never wedges
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'consent-btn'; b.textContent = '✓ mark reviewed';
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'consent-btn'; b.textContent = '✓ marcar revisada';
         b.addEventListener('click', ev => { ev.stopPropagation(); if (RS && RS.resolve) RS.resolve(rw.runId, 'outbox'); collected(row); });
         rateHost.appendChild(b);
       }

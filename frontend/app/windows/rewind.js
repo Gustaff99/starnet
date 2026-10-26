@@ -18,32 +18,32 @@
     const agentId = a.id || 'agent';
     const nm = a.name || agentId;   // display NAME, never the raw id
     const secRestore =
-      '<p class="set-about">A snapshot of the exact workspace or authorized project <b>' + esc(nm) + '</b> is changing is auto-saved <b>before every command it runs</b> ' +
-      '(and before file edits when checkpoints are on). Restoring rolls that named root back and removes anything ' +
-      'created since. <span class="dim">Use it to undo a bad change.</span></p>' +
-      // 9px of top margin: the paragraph above ends on a dim trailing clause and the button sat hard against it,
-      // which read as the two being one wrapped line rather than prose followed by a control.
-      '<div class="mc-acts" style="margin:9px 0 8px"><button class="bb xs" id="rw-refresh" title="re-read this agent\'s restore points">↻ REFRESH</button></div>' +
+      '<p class="set-about">Una instantánea del espacio de trabajo exacto o del proyecto autorizado que <b>' + esc(nm) + '</b> está modificando se guarda automáticamente <b>antes de cada comando que ejecuta</b> ' +
+      '(y antes de editar archivos cuando los checkpoints están activados). Restaurar devuelve esa raíz nombrada a su estado anterior y elimina todo ' +
+      'lo creado desde entonces. <span class="dim">Úsalo para deshacer un cambio malo.</span></p>' +
+      // 9px de margen superior: el párrafo anterior termina en una cláusula atenuada y el botón estaba pegado a ella,
+      // lo que se leía como una sola línea envuelta en vez de prosa seguida de un control.
+      '<div class="mc-acts" style="margin:9px 0 8px"><button class="bb xs" id="rw-refresh" title="volver a leer los puntos de restauración de este agente">↻ ACTUALIZAR</button></div>' +
       '<div id="rw-list" class="mc-list"><span class="loading pulse">loading…</span></div>' +
       '<div id="rw-msg" class="msg"></div>';
     const sections = [
-      { id: 'restore', label: 'RESTORE', glyph: '↶', desc: 'Workspace restore points for ' + nm + ' — roll back to before a bad change.',
+      { id: 'restore', label: 'RESTAURAR', glyph: '↶', desc: 'Puntos de restauración del espacio de trabajo de ' + nm + ' — vuelve a antes de un cambio malo.',
         build: (el => { el.innerHTML = secRestore; }) }
     ];
     function wire() {
     const listEl = body.querySelector('#rw-list'), msgEl = body.querySelector('#rw-msg');
     function row(s) {
       const when = s.ts ? esc(fmtRel(new Date(s.ts).toISOString())) : '';
-      const target = s.workTree ? String(s.workTree) : (nm + '\'s agent workspace');
-      const targetKind = s.workTree ? 'PROJECT ROOT' : 'AGENT WORKSPACE';
+      const target = s.workTree ? String(s.workTree) : ("espacio de trabajo del agente " + nm);
+      const targetKind = s.workTree ? 'RAÍZ DEL PROYECTO' : 'ESPACIO DEL AGENTE';
       const available = s.restoreAvailable !== false;
       return '<div class="mc-row" data-id="' + esc(s.id) + '" data-when="' + when + '" data-root="' + esc(target) + '">' +
         '<div class="mc-top"><b>' + esc(s.label || 'snapshot') + '</b> <span class="dim">' + when + '</span></div>' +
         '<div class="mc-url"><b>' + targetKind + '</b> · ' + esc(target) + '</div>' +
-        '<div class="mc-url dim">' + esc(String(s.id).slice(0, 12)) + ' · turn ' + (s.turn || 0) + (s.files ? (' · ' + s.files + ' file' + (s.files === 1 ? '' : 's')) : '') + '</div>' +
+        '<div class="mc-url dim">' + esc(String(s.id).slice(0, 12)) + ' · turno ' + (s.turn || 0) + (s.files ? (' · ' + s.files + ' archivo' + (s.files === 1 ? '' : 's')) : '') + '</div>' +
         '<div class="mc-acts">' + (available
-          ? '<button class="bb xs danger" data-act="restore">↶ RESTORE</button>'
-          : '<span class="dim">PROJECT ACCESS REVOKED · REAUTHORIZE THIS ROOT TO RESTORE</span>') + '</div>' +
+          ? '<button class="bb xs danger" data-act="restore">↶ RESTAURAR</button>'
+          : '<span class="dim">ACCESO AL PROYECTO REVOCADO · REAUTORIZA ESTA RAÍZ PARA RESTAURAR</span>') + '</div>' +
         '</div>';
     }
     // TRUTHFUL NET STATE: the paragraph above promises a point before every command, but a snapshot is fail-open —
@@ -54,7 +54,7 @@
     const rel = at => esc(fmtRel(new Date(at).toISOString()));
     // the same root label a row prints: AGENT WORKSPACE · <name>'s agent workspace, or PROJECT ROOT · <path>
     const rootLabel = r => (r && r.kind === 'project' && r.workTree)
-      ? '<b>PROJECT ROOT</b> · ' + esc(String(r.workTree)) : '<b>AGENT WORKSPACE</b> · ' + esc(nm + '\'s agent workspace');
+      ? '<b>RAÍZ DEL PROYECTO</b> · ' + esc(String(r.workTree)) : '<b>ESPACIO DEL AGENTE</b> · ' + esc("espacio de trabajo del agente " + nm);
     // a row belongs to a root by scopeId ('' = the agent workspace); a never-authorized project root has no rows
     const ownsRow = (r, s) => (r && r.kind === 'project') ? !!r.scopeId && String(s.scopeId || '') === String(r.scopeId) : !s.scopeId;
     function healthNote(h, snaps) {
@@ -62,7 +62,7 @@
       // fmtRel reads 'now' / '5m ago': keep each time in parentheses so every value reads as a sentence
       const failureOf = r => {
         const f = r.lastFailure || {};
-        return ' (' + (f.at ? rel(f.at) : 'recently') + '): ' + esc(String(f.reason || 'the restore point could not be saved').replace(/[.\s]+$/, ''));
+        return ' (' + (f.at ? rel(f.at) : 'recientemente') + '): ' + esc(String(f.reason || 'el punto de restauración no se pudo guardar').replace(/[.\s]+$/, ''));
       };
       if (h.ok === false) {
         const roots = (Array.isArray(h.roots) ? h.roots : []).filter(r => r && r.ok === false && r.lastFailure);
@@ -73,15 +73,15 @@
         const lines = roots.map(r => {
           const newest = (snaps || []).find(s => ownsRow(r, s));   // snaps are newest first
           const tail = newest
-            ? 'Nothing done in this root since its newest restore point' + (newest.ts ? ' (' + rel(newest.ts) + ')' : '') +
-              ' has a point of its own, and a restore here may be refused until one saves, because the current state is saved first.'
-            : 'It has no restore point yet, so nothing done there can be rolled back until one saves.';
-          return '<div data-kind="' + (r.kind === 'project' ? 'project' : 'workspace') + '">' + rootLabel(r) + ' · last attempt' + failureOf(r) + '. ' + tail + '</div>';
+            ? 'Nada hecho en esta raíz desde su punto de restauración más reciente' + (newest.ts ? ' (' + rel(newest.ts) + ')' : '') +
+              ' tiene un punto propio, y una restauración aquí puede ser rechazada hasta que uno se guarde, porque el estado actual se guarda primero.'
+            : 'Aún no tiene punto de restauración, así que nada hecho ahí puede revertirse hasta que uno se guarde.';
+          return '<div data-kind="' + (r.kind === 'project' ? 'project' : 'workspace') + '">' + rootLabel(r) + ' · último intento' + failureOf(r) + '. ' + tail + '</div>';
         });
-        return '<div class="mc-detail" id="rw-health" data-state="failing">RESTORE POINTS ARE NOT SAVING' + lines.join('') + '</div>';
+        return '<div class="mc-detail" id="rw-health" data-state="failing">LOS PUNTOS DE RESTAURACIÓN NO SE ESTÁN GUARDANDO' + lines.join('') + '</div>';
       }
-      return '<div class="mc-url dim" id="rw-health" data-state="missed">A restore point could not be saved for ' + rootLabel(h.lastFailure) + failureOf(h) +
-        '. The change made right after it has no restore point of its own.</div>';
+      return '<div class="mc-url dim" id="rw-health" data-state="missed">No se pudo guardar un punto de restauración para ' + rootLabel(h.lastFailure) + failureOf(h) +
+        '. El cambio hecho justo después no tiene punto de restauración propio.</div>';
     }
     async function refresh() {
       try {
@@ -90,36 +90,36 @@
         // honest empty-state: file-edit snapshots are opt-in (SKYNET_CHECKPOINTS); shell commands ALWAYS snapshot.
         // Tell the user what actually triggers a restore point under their current config, not an aspirational promise.
         const empty = (j && j.enabled)
-          ? 'NO RESTORE POINTS YET.<br><span>They appear once this agent runs a command or edits a file at a WORKBENCH.</span>'
-          : 'NO RESTORE POINTS YET.<br><span>They appear once this agent runs a <b>shell command</b>. File-edit snapshots aren\'t enabled on this station.</span>';
+          ? 'AÚN NO HAY PUNTOS DE RESTAURACIÓN.<br><span>Aparecen cuando este agente ejecuta un comando o edita un archivo en un WORKBENCH.</span>'
+          : 'AÚN NO HAY PUNTOS DE RESTAURACIÓN.<br><span>Aparecen cuando este agente ejecuta un <b>comando de shell</b>. Las instantáneas de edición de archivos no están activadas en esta estación.</span>';
         listEl.innerHTML = healthNote(j && j.health, snaps) +(snaps.length ? snaps.map(row).join('') : '<div class="fb-empty">' + empty + '</div>');
-      } catch (_) { listEl.innerHTML = '<div class="mc-detail">sidecar offline — start it to manage restore points.</div>'; }
+      } catch (_) { listEl.innerHTML = '<div class="mc-detail">sidecar sin conexión — arráncalo para gestionar puntos de restauración.</div>'; }
     }
     let armTimer = 0;
     listEl.addEventListener('click', async ev => {
       const btn = ev.target.closest('button[data-act="restore"]'); if (!btn) return;
       const rowEl = ev.target.closest('.mc-row'); const id = rowEl && rowEl.dataset.id; if (!id) return;
       if (!btn.dataset.armed) {
-        // arm + STATE THE STAKES: name what a restore removes (everything created since this point's time).
-        btn.dataset.armed = '1'; btn.textContent = '↶ CONFIRM'; sfx('bad');
-        const when = rowEl.dataset.when || 'this point';
-        const root = rowEl.dataset.root || (nm + '\'s agent workspace');
-        msgEl.className = 'msg'; msgEl.innerHTML = '<span class="dim">rolls back <b>' + esc(root) + '</b> and removes anything created there since <b>' + esc(when) + '</b> — CONFIRM to continue</span>';
+        // arma + DICE LAS APUESTAS: nombra lo que una restauración elimina (todo lo creado desde la hora de este punto).
+        btn.dataset.armed = '1'; btn.textContent = '↶ CONFIRMAR'; sfx('bad');
+        const when = rowEl.dataset.when || 'este punto';
+        const root = rowEl.dataset.root || ("espacio de trabajo del agente " + nm);
+        msgEl.className = 'msg'; msgEl.innerHTML = '<span class="dim">devuelve <b>' + esc(root) + '</b> y elimina todo lo creado ahí desde <b>' + esc(when) + '</b> — CONFIRMAR para continuar</span>';
         clearTimeout(armTimer);
-        armTimer = setTimeout(() => { if (btn.isConnected && btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = '↶ RESTORE'; msgEl.innerHTML = ''; } }, 5000);
+        armTimer = setTimeout(() => { if (btn.isConnected && btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = '↶ RESTAURAR'; msgEl.innerHTML = ''; } }, 5000);
         return;
       }
       clearTimeout(armTimer); delete btn.dataset.armed;
-      sfx('bad'); btn.disabled = true; msgEl.className = 'msg'; msgEl.textContent = 'restoring…';
+      sfx('bad'); btn.disabled = true; msgEl.className = 'msg'; msgEl.textContent = 'restaurando…';
       try {
         const r = (await Harness.api.post('/api/checkpoint/restore', { agentId: agentId, snapshotId: id })).j;
-        if (r && r.ok) { notify('restored ' + (rowEl.dataset.root || nm + '\'s workspace') + ' to an earlier point', 'warn'); msgEl.className = 'msg ok'; msgEl.textContent = '✓ restored.'; }
-        else { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((r && r.error) || 'restore failed') + '</span>'; sfx('bad'); }
-      } catch (e) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((e && e.message) || 'restore failed') + '</span>'; sfx('bad'); }
+        if (r && r.ok) { notify('restaurado ' + (rowEl.dataset.root || "espacio de " + nm) + ' a un punto anterior', 'warn'); msgEl.className = 'msg ok'; msgEl.textContent = '✓ restaurado.'; }
+        else { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((r && r.error) || 'la restauración falló') + '</span>'; sfx('bad'); }
+      } catch (e) { msgEl.innerHTML = '<span style="color:var(--bad)">✕ ' + esc((e && e.message) || 'la restauración falló') + '</span>'; sfx('bad'); }
       btn.disabled = false; refresh();
     });
     const refreshBtn = body.querySelector('#rw-refresh');
-    if (refreshBtn) refreshBtn.addEventListener('click', () => { sfx('click'); listEl.innerHTML = '<span class="loading pulse">loading…</span>'; refresh(); });
+    if (refreshBtn) refreshBtn.addEventListener('click', () => { sfx('click'); listEl.innerHTML = '<span class="loading pulse">cargando…</span>'; refresh(); });
     refresh();
     }
 

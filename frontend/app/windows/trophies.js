@@ -27,8 +27,8 @@
       ? Trophies.build({ quests, stateOf, tools })
       : { trophies: [], tools: [], earned: 0, empty: true };
 
-    const KIND = { milestone: 'MILESTONE', 'station-gap': 'CAPABILITY', station: 'STATION', dossier: 'DOSSIER', idea: 'WORK' };
-    const fmtDate = at => { if (at == null) return 'date unknown'; try { return new Date(at).toLocaleDateString(); } catch (_) { return 'date unknown'; } };
+    const KIND = { milestone: 'HITO', 'station-gap': 'CAPACIDAD', station: 'ESTACIÓN', dossier: 'DOSSIER', idea: 'TRABAJO' };
+    const fmtDate = at => { if (at == null) return 'fecha desconocida'; try { return new Date(at).toLocaleDateString(); } catch (_) { return 'fecha desconocida'; } };
     const troRow = t =>
       '<div class="gx-tro on">'
       + '<div class="tro-hd"><span class="gl">&#9733;</span><span class="nm">' + esc(t.title) + '</span>'
@@ -39,25 +39,25 @@
     const toolRow = tl =>
       '<div class="gx-tro on">'
       + '<div class="tro-hd"><span class="gl">&#9670;</span><span class="nm">' + esc(tl.name) + '</span>'
-      + '<span class="gx-tag">' + tl.runs + '&times; LIFETIME</span></div>'
-      + '<div class="sub">the seed you saved &middot; ' + tl.sevenDay + '&times; in the last 7 days</div></div>';
+      + '<span class="gx-tag">' + tl.runs + '&times; TOTAL</span></div>'
+      + '<div class="sub">la semilla que guardaste &middot; ' + tl.sevenDay + '&times; en los últimos 7 días</div></div>';
 
     const trophiesHtml = surf.trophies.length
       ? '<div class="gx-tros">' + surf.trophies.map(troRow).join('') + '</div>'
-      : '<div class="gx-tros"><p class="dim" style="font-style:italic;">the case stands empty &mdash; dust on the glass. ship real work and your first milestone lands here.</p></div>';
+      : '<div class="gx-tros"><p class="dim" style="font-style:italic;">el vitrín está vacío &mdash; polvo sobre el cristal. entrega trabajo real y tu primer hito aterrizará aquí.</p></div>';
 
     const toolsHtml = surf.tools.length
-      ? '<div class="gx-sec" style="margin-top:14px;"><span class="gx-title">LIVING TOOLS</span> <span class="gx-tag">' + surf.tools.length + '</span></div>'
+      ? '<div class="gx-sec" style="margin-top:14px;"><span class="gx-title">HERRAMIENTAS VIVAS</span> <span class="gx-tag">' + surf.tools.length + '</span></div>'
         + '<div class="gx-tros">' + surf.tools.map(toolRow).join('') + '</div>'
       : '';
 
     body.innerHTML = '<div class="gx">'
-      + '<div class="dim" style="margin:2px 0 10px;">the station&rsquo;s real achievements, made permanent. every milestone here is a completion that genuinely happened &mdash; never points, never invented. no dates are guessed.</div>'
-      + '<div class="gx-sec"><span class="gx-title">MILESTONES</span> <span class="gx-tag">' + surf.earned + ' EARNED</span></div>'
+      + '<div class="dim" style="margin:2px 0 10px;">los logros reales de la estación, hechos permanentes. cada hito aquí es una culminación que de verdad ocurrió &mdash; nunca puntos, nunca inventados. ninguna fecha se supone.</div>'
+      + '<div class="gx-sec"><span class="gx-title">HITOS</span> <span class="gx-tag">' + surf.earned + ' CONSEGUIDOS</span></div>'
       + trophiesHtml
       + toolsHtml
       + '</div>';
   }
 
-  StationUI.registerWindow('trophies', 'TROPHY CASE', buildTrophies, {});   // G3b: the TROPHY CASE prop opens this station-wide surface. PANEL shell — see the two-sizes note in style.css
+  StationUI.registerWindow('trophies', 'VITRINA DE TROFEOS', buildTrophies, {});   // G3b: the TROPHY CASE prop opens this station-wide surface. PANEL shell — see the two-sizes note in style.css
 })();

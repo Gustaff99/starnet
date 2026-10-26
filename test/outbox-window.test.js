@@ -64,8 +64,8 @@ A.ok(/users\[0\]\.content, 64/.test(buildFn), "a non-routine title comes from th
 /* ---- expanded breakdown: ONE GRAMMAR with the DELIVERABLES drawer (2026-08-13) ----
    The drawer speaks the library's exact language — what you asked for, what came back, the files —
    so OUTBOX reads as the "awaiting your verdict" door into the same system, not a second one. */
-A.ok(/ob-sec">WHAT YOU ASKED FOR</.test(buildFn), 'expanded body shows WHAT YOU ASKED FOR (the library grammar, not THE ASK)');
-A.ok(/ob-sec">WHAT CAME BACK</.test(buildFn), 'expanded body shows WHAT CAME BACK (the library grammar, not WHAT THE AGENT DID)');
+A.ok(/ob-sec">LO QUE PEDISTE</.test(buildFn), 'expanded body shows WHAT YOU ASKED FOR (the library grammar, not THE ASK)');
+A.ok(/ob-sec">LO QUE VOLVIÓ</.test(buildFn), 'expanded body shows WHAT CAME BACK (the library grammar, not WHAT THE AGENT DID)');
 /* ---- FILES: the library's own index and seams, never a second bookkeeping ---- */
 A.ok(/api\/deliverables/.test(buildFn), 'files come from ONE fetch of the library index (/api/deliverables), folded by runId');
 A.ok(/class="dlv-files"/.test(buildFn), 'files render with the library’s own markup (dlv-files — the two drawers share one look)');
@@ -90,17 +90,17 @@ doorClicks['#ob-logbook']();
 A.eq(navCalls, [['deliverables', 'logbook']],
   'the run-history door returns to DELIVERABLES (where TO REVIEW lives), never a dead OUTBOX window');
 A.ok(!('#ob-library' in doorClicks), 'no DELIVERABLES door duplicating the MY WORK tab');
-A.ok(/class="consent-btn ob-open">↗ OPEN/.test(buildFn), 'action: ↗ OPEN (test it in the session)');
-A.ok(/class="consent-btn ob-fork">⊕ NEW SESSION/.test(buildFn), 'action: ⊕ NEW SESSION (expand on this)');
+A.ok(/class="consent-btn ob-open">↗ ABRIR SESIÓN/.test(buildFn), 'action: ↗ OPEN (test it in the session)');
+A.ok(/class="consent-btn ob-fork">⊕ NUEVA SESIÓN/.test(buildFn), 'action: ⊕ NEW SESSION (expand on this)');
 A.ok(/closeOthers\(/.test(buildFn), 'accordion: opening a row closes the others');
 A.ok(/RS\.openWork\s*\?\s*await RS\.openWork\(rw\)/.test(buildFn) || /await RS\.openWork\(rw\)/.test(buildFn), '↗ OPEN rides ReturnStore.openWork (the one transcript-session join)');
-A.ok(/w\.create\(\('follow-up: [\s\S]{0,120}agentId:\s*rw\.agentId/.test(buildFn), '⊕ NEW SESSION binds the follow-up chat to the RUN’s agent');
+A.ok(/w\.create\(\('seguimiento: [\s\S]{0,120}agentId:\s*rw\.agentId/.test(buildFn), '⊕ NEW SESSION binds the follow-up chat to the RUN’s agent');
 A.ok(/App\.openWorkstream\(ws\.id\)/.test(buildFn), '⊕ NEW SESSION opens the fresh session');
 A.ok(/Chat\.prefill\(/.test(buildFn), '⊕ NEW SESSION prefills the composer naming the task (no fabricated turns)');
-A.ok(/✓ mark reviewed/.test(buildFn), 'an already-judged run still offers a plain mark-reviewed (a crate can never wedge)');
+A.ok(/✓ marcar revisada/.test(buildFn), 'an already-judged run still offers a plain mark-reviewed (a crate can never wedge)');
 // honest failure copy — a missing/unreachable transcript never renders as a silent blank
-A.ok(/no transcript recorded for this run/.test(buildFn), 'a run with no transcript says so honestly');
-A.ok(/wasn’t reachable|couldn’t read the result/.test(buildFn), 'a FAILED transcript fetch is distinguished from an empty one');
+A.ok(/no hay transcripción registrada para esta ejecución/.test(buildFn), 'a run with no transcript says so honestly');
+A.ok(/no era alcanzable|no se pudo leer el resultado/.test(buildFn), 'a FAILED transcript fetch is distinguished from an empty one');
 
 /* ---- rating: the label names the RUN's agent, and awayRate guards double-judging ---- */
 A.ok(/App\.agentName\(agentId \|\| 'agent'\)/.test(chat), "workRateControl labels the verdict with the RUN's agent (App.agentName(agentId)), never whoever the active chat is bound to");
@@ -186,7 +186,7 @@ A.eq(R.hydrate(JSON.parse(JSON.stringify(s))).pending[0].streamId, 'cron-r1', 's
   A.eq(ctx.word({ line: lineA, jobId: 'j', name: '' }), 'LINE ' + st.lineLetter(firstA), 'an unnamed sending line reads by its first INBOX\'s letter (the floor plate\'s word), never ANOTHER LINE');
   A.eq(ctx.word({ line: keyOf(ib), jobId: 'j', name: '' }), 'LINE EDITING', 'a named line with no recorded name reads by its INBOX label');
   A.eq(ctx.word({ line: lineA, jobId: 'j', name: 'Research' }), 'LINE ' + st.lineLetter(firstA), 'the floor\'s current name wins over a name the record kept (a renamed line reads as its plate does)');
-  A.eq(ctx.word({ line: 'p-gone', jobId: 'j', name: '' }), 'ANOTHER LINE', 'a line no longer on the floor is ANOTHER LINE');
+  A.eq(ctx.word({ line: 'p-gone', jobId: 'j', name: '' }), 'otra línea', 'a line no longer on the floor is ANOTHER LINE');
   A.eq(ctx.word({ line: 'p-gone', jobId: 'j', name: 'Research' }), 'LINE RESEARCH', '…unless its record kept a name');
   // the review's probe: two INBOXes, the one that is NOT the first is named — the floor says LINE RESEARCH, so must TO REVIEW
   A.ok(i2 && P.lineComponents(st.projectGeometry()).find(c => c.key === lineA).intakes.length === 2, 'fixture: line A has two INBOXes');
@@ -198,7 +198,7 @@ A.eq(R.hydrate(JSON.parse(JSON.stringify(s))).pending[0].streamId, 'cron-r1', 's
   A.ok(!/lineComponents|projectGeometry/.test(station.slice(at, end)), 'the helper compiles nothing per mention (the floor already holds its lines)');
   // the ASK block's "handed on from …" is built AFTER the job record is read, from the record's FROM end
   const rr = station.slice(station.indexOf('let fromWord = hand && hand.sent'), station.indexOf('ask.textContent = askFull'));
-  A.ok(/if \(sj && sj\.from && hand && hand\.sent\) fromWord = word\(sj\.from\);/.test(rr) && /'\\n\\n— handed on from ' \+ fromWord \+ ':/.test(rr),
+  A.ok(/if \(sj && sj\.from && hand && hand\.sent\) fromWord = word\(sj\.from\);/.test(rr) && /'\\n\\n— heredado de ' \+ fromWord \+ ':/.test(rr),
     'the ASK block names the sending line from the job record (the frame\'s own empty name only when there is no record)');
   A.ok(!/handed on from ' \+ Pipeline\.lineWord\(hand\.sent\.fromName/.test(station), '…never straight from the frame\'s name');
   // the hand-off crate riding into the receiving INBOX is titled by the floor's word too (world.js intakeMessage)
