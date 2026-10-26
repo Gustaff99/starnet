@@ -19,8 +19,8 @@ const envOf = (over, dmOver) => ({ envelope: Object.assign({ sourceNumber: '+155
     const disconnect = (idx.split('async function handleGenericChannelDisconnect')[1] || '').split('/* ----------------------- Codex')[0];
     A.ok(/id\s*===\s*'signal'[\s\S]*delete\s+next\.endpoint[\s\S]*delete\s+next\.account/.test(disconnect), 'Signal purge removes its endpoint and account configuration');
     A.ok(/removedConfiguration/.test(disconnect), 'Signal removal response reports a separately proven configuration-removal bit');
-    A.ok(/REMOVE CONFIGURATION/.test(ui), 'Signal card names its destructive action REMOVE CONFIGURATION');
-    A.ok(/configuration removed/.test(ui), 'Signal success copy names configuration removal, never token deletion');
+    A.ok(/QUITAR CONFIGURACIÓN/.test(ui), 'Signal card names its destructive action REMOVE CONFIGURATION');
+    A.ok(/configuración eliminada/.test(ui), 'Signal success copy names configuration removal, never token deletion');
     A.ok(!/c\.id\s*===\s*'signal'[\s\S]{0,400}stored token was purged/.test(ui), 'Signal-specific action never claims a token was purged');
   }
 

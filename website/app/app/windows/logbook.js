@@ -14,7 +14,7 @@
      Two read-only surfaces the audit found were written-but-never-read: RUNS folds the append-only run-history
      logbook (GET /api/runs — every finished run's outcome/reason), and SLAG renders World.slagLog() — the
      unproductive-run post-mortems (cause + fix) that used to live only as a fading toast. (WIRING_AUDIT P7.) */
-  const LB_REASON = { done: '✓ done', max_iters: '⟳ looped out', budget: 'over budget', cancelled: '⏹ cancelled', error: '✕ error', refusal: '⊘ refused' };
+  const LB_REASON = { done: '✓ hecho', max_iters: '⟳ agotó bucles', budget: 'presupuesto agotado', cancelled: '⏹ cancelado', error: '✕ error', refusal: '⊘ rechazado' };
   function logbookLane(body) {
     const a = H.present[H.sel] || {};   // live core state via the h getters
     const agentId = a.id || 'agent';
@@ -23,16 +23,16 @@
     // vocabulary the SKILL LIBRARY uses. Each block keeps its OWN host (#lb-list / #lb-slag /
     // #lb-insights) so a mid-fetch agent switch can't write into a sibling's list.
     const secLogbook =
-      '<div class="sec"><span class="sec-l">RUNS</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-      '<p class="sk-note">Real work by <b>' + esc(nm) + '</b>, newest first — runs that used tools, produced files, were delegated by another agent, or failed. Chat-only replies are folded at the bottom.</p>' +
-      '<div id="lb-list" class="mc-list"><span class="loading pulse">loading…</span></div>' +
-      '<div class="sec"><span class="sec-l">RUN ISSUES</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-      '<p class="sk-note">Review why a run ended without a result and what to try next.</p>' +
-      '<div id="lb-slag" class="mc-list"><span class="loading pulse">loading…</span></div>' +
+      '<div class="sec"><span class="sec-l">EJECUCIONES</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<p class="sk-note">Trabajo real de <b>' + esc(nm) + '</b>, lo más reciente primero — ejecuciones que usaron herramientas, produjeron archivos, fueron delegadas por otro agente, o fallaron. Las respuestas solo de chat se plegan abajo.</p>' +
+      '<div id="lb-list" class="mc-list"><span class="loading pulse">cargando…</span></div>' +
+      '<div class="sec"><span class="sec-l">PROBLEMAS DE EJECUCIÓN</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      '<p class="sk-note">Revisa por qué una ejecución terminó sin resultado y qué probar a continuación.</p>' +
+      '<div id="lb-slag" class="mc-list"><span class="loading pulse">cargando…</span></div>' +
       '<div class="sec"><span class="sec-l">INSIGHTS</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-      '<div id="lb-insights" class="mc-list"><span class="loading pulse">loading…</span></div>';
+      '<div id="lb-insights" class="mc-list"><span class="loading pulse">cargando…</span></div>';
     const sections = [
-      { id: 'logbook', label: 'LOGBOOK', glyph: '▦', desc: 'Run history for ' + nm + ' — real work, dead-run post-mortems, and outcome insights.',
+      { id: 'logbook', label: 'BITÁCORA', glyph: '▦', desc: 'Historial de ejecuciones de ' + nm + ' — trabajo real, post-mortems de ejecuciones fallidas, e insights de resultados.',
         build: (el => { el.innerHTML = secLogbook; }) }
     ];
     function wire() {
@@ -41,41 +41,41 @@
       const when = r.ts ? esc(fmtRel(new Date(r.ts).toISOString())) : '';
       const rl = LB_REASON[r.reason] || esc(r.reason || 'done');
       const title = r.title ? esc(r.title) : esc(String(r.runId || 'run').slice(0, 12));
-      const model = esc(r.model || '(unknown)');
+      const model = esc(r.model || '(desconocido)');
       // H3.2: a run with a streamId can OPEN its transcript inline (the join the audit found was missing).
       const sid = r.streamId ? esc(String(r.streamId)) : '';
       const cls = sid ? 'mc-row lb-run-open' : 'mc-row';
       const attr = sid ? ' data-stream="' + sid + '"' : '';
       // explicit ▸ toggle button for the transcript (keyboard-reachable), plus the whole row stays clickable —
       // but the row handler ignores clicks made while selecting text (so you can copy a title without collapsing).
-      const txBtn = sid ? ' <button type="button" class="lb-tx-btn" aria-expanded="false" title="show / hide this run\'s transcript">▸ transcript</button>' : '';
-      // a delegated run names its lead and runId, so it can be matched to the runId the lead's team.dispatch reported.
-      const delegated = r.delegatedBy ? ' · ↳ delegated by ' + esc(r.delegatedBy) + ' · run ' + esc(String(r.runId || '').slice(0, 8)) : '';
+      const txBtn = sid ? ' <button type="button" class="lb-tx-btn" aria-expanded="false" title="mostrar / ocultar la transcripción de esta ejecución">▸ transcripción</button>' : '';
+      // una ejecución delegada nombra a su líder y runId, para poder emparejarla con el runId que el team.dispatch del líder reportó.
+      const delegated = r.delegatedBy ? ' · ↳ delegado por ' + esc(r.delegatedBy) + ' · ejecución ' + esc(String(r.runId || '').slice(0, 8)) : '';
       return '<div class="' + cls + '"' + attr + '><div class="mc-top"><b>' + title + '</b> <span class="dim">' + when + '</span>' + txBtn + '</div>' +
-        '<div class="mc-url dim">' + rl + ' · ' + model + ' · ' + (r.turns || 0) + ' turn' + (r.turns === 1 ? '' : 's') + delegated + '</div>' +
+        '<div class="mc-url dim">' + rl + ' · ' + model + ' · ' + (r.turns || 0) + ' turno' + (r.turns === 1 ? '' : 's') + delegated + '</div>' +
         (sid ? '<div class="lb-tx" hidden></div>' : '') + '</div>';
     }
     function insightsHtml(j) {
       j = j || {};
-      if (!j.totalRuns) return '<div class="fb-empty">NO DATA YET.<br><span>Insights appear once this agent finishes some runs.</span></div>';
-      const ov = '<div class="mc-row"><div class="mc-top"><b>' + j.totalRuns + ' run' + (j.totalRuns === 1 ? '' : 's') + '</b></div>' +
-        '<div class="mc-url dim">' + (j.successPct == null ? '—' : j.successPct + '% success') + '</div></div>';
+      if (!j.totalRuns) return '<div class="fb-empty">AÚN NO HAY DATOS.<br><span>Los insights aparecen cuando este agente termina algunas ejecuciones.</span></div>';
+      const ov = '<div class="mc-row"><div class="mc-top"><b>' + j.totalRuns + ' ejecución' + (j.totalRuns === 1 ? '' : 'es') + '</b></div>' +
+        '<div class="mc-url dim">' + (j.successPct == null ? '—' : j.successPct + '% de éxito') + '</div></div>';
       const models = (j.byModel || []).slice(0, 8).map(m =>
-        '<div class="mc-row"><div class="mc-top"><b>' + esc(m.model) + '</b> <span class="dim">' + m.runs + ' run' + (m.runs === 1 ? '' : 's') + '</span></div></div>').join('');
+        '<div class="mc-row"><div class="mc-top"><b>' + esc(m.model) + '</b> <span class="dim">' + m.runs + ' ejecución' + (m.runs === 1 ? '' : 'es') + '</span></div></div>').join('');
       // pretty-label the outcome enum with the same map RUNS uses (LB_REASON) instead of leaking raw keys.
       const reasons = Object.keys(j.byReason || {}).map(k => (LB_REASON[k] || esc(k)) + ' ' + j.byReason[k]).join(' · ');
-      return ov + '<div class="mc-detail" style="margin:6px 0 2px;opacity:.7">BY MODEL</div>' + (models || '<div class="mc-detail dim">—</div>') +
-        '<div class="mc-detail" style="margin:6px 0 2px;opacity:.7">OUTCOMES</div><div class="mc-detail dim">' + (reasons || '—') + '</div>';
+      return ov + '<div class="mc-detail" style="margin:6px 0 2px;opacity:.7">POR MODELO</div>' + (models || '<div class="mc-detail dim">—</div>') +
+        '<div class="mc-detail" style="margin:6px 0 2px;opacity:.7">RESULTADOS</div><div class="mc-detail dim">' + (reasons || '—') + '</div>';
     }
     function noSpendText(s) {
       return String(s || '')
-        .replace(/\bspend\b/ig, 'run resources')
-        .replace(/\bdollars?\b/ig, 'limits')
-        .replace(/billed at full price every turn/ig, 'processed cold every turn')
-        .replace(/~10× cheaper input/ig, 'more efficient input');
+        .replace(/\bspend\b/ig, 'recursos de la ejecución')
+        .replace(/\bdollars?\b/ig, 'límites')
+        .replace(/billed at full price every turn/ig, 'procesado en frío cada turno')
+        .replace(/~10× cheaper input/ig, 'entrada más eficiente');
     }
     function slagRow(d) {
-      return '<div class="mc-row"><div class="mc-top"><b style="color:var(--bad)">⚠ ' + esc(noSpendText(d.title || 'unproductive run')) + '</b></div>' +
+      return '<div class="mc-row"><div class="mc-top"><b style="color:var(--bad)">⚠ ' + esc(noSpendText(d.title || 'ejecución improductiva')) + '</b></div>' +
         '<div class="mc-url dim">' + esc(noSpendText(d.cause || '')) + '</div>' +
         (d.fix ? '<div class="mc-detail">→ ' + esc(noSpendText(d.fix)) + '</div>' : '') + '</div>';
     }
@@ -97,15 +97,15 @@
         const isChat = r => r.reason === 'done' && !r.delegatedBy && !(r.toolsOk > 0) && !(r.artifacts && r.artifacts.length);
         const work = runs.filter(r => !isChat(r));
         const chatter = runs.filter(isChat);
-        const foldLabel = open => (open ? '▾ ' : '▸ ') + chatter.length + ' CHAT-ONLY ' + (chatter.length === 1 ? 'REPLY' : 'REPLIES') + ' — no tools, no files';
+        const foldLabel = open => (open ? '▾ ' : '▸ ') + chatter.length + ' SOLO CHAT ' + (chatter.length === 1 ? 'RESPUESTA' : 'RESPUESTAS') + ' — sin herramientas, sin archivos';
         h.innerHTML = runs.length
           ? (work.length ? work.map(runRow).join('')
-              : '<div class="fb-empty">NO TASK RUNS YET.<br><span>Runs that use tools, write files, or fail land here.</span></div>')
+              : '<div class="fb-empty">AÚN NO HAY EJECUCIONES DE TAREA.<br><span>Las ejecuciones que usan herramientas, escriben archivos o fallan aparecen aquí.</span></div>')
             + (chatter.length
               ? '<button type="button" class="bb sm" id="lb-chat-fold" aria-expanded="false" style="margin-top:8px">' + foldLabel(false) + '</button>'
                 + '<div id="lb-chat-rows" hidden>' + chatter.map(runRow).join('') + '</div>'
               : '')
-          : '<div class="fb-empty">NO RUNS YET.<br><span>Finished runs appear here once this agent does real work.</span></div>';
+          : '<div class="fb-empty">AÚN NO HAY EJECUCIONES.<br><span>Las ejecuciones terminadas aparecen aquí cuando este agente hace trabajo real.</span></div>';
         const fold = h.querySelector('#lb-chat-fold');
         if (fold) fold.addEventListener('click', () => {
           const rowsEl = h.querySelector('#lb-chat-rows'); if (!rowsEl) return;
@@ -117,16 +117,16 @@
         const toggleTx = async (row) => {
           const tx = row.querySelector('.lb-tx'); if (!tx) return;
           const btn = row.querySelector('.lb-tx-btn');
-          if (!tx.hidden) { tx.hidden = true; row.classList.remove('tx-open'); if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.textContent = '▸ transcript'; } return; }
-          tx.hidden = false; row.classList.add('tx-open'); if (btn) { btn.setAttribute('aria-expanded', 'true'); btn.textContent = '▾ transcript'; }
+          if (!tx.hidden) { tx.hidden = true; row.classList.remove('tx-open'); if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.textContent = '▸ transcripción'; } return; }
+          tx.hidden = false; row.classList.add('tx-open'); if (btn) { btn.setAttribute('aria-expanded', 'true'); btn.textContent = '▾ transcripción'; }
           if (tx.dataset.loaded) return;
-          tx.innerHTML = '<div class="mc-detail"><span class="loading">loading transcript…</span></div>';
+          tx.innerHTML = '<div class="mc-detail"><span class="loading">cargando transcripción…</span></div>';
           try {
             const t = await Harness.api.get('/api/transcript?stream=' + encodeURIComponent(row.dataset.stream) + '&agent=' + encodeURIComponent(agentId) + '&limit=50');
             const turns = (t && t.turns) || [];
-            tx.innerHTML = turns.length ? turns.map(m => '<div class="mc-detail"><b>' + esc(m.role) + ':</b> ' + esc(String(m.content || '').slice(0, 400)) + '</div>').join('') : '<div class="mc-detail">no transcript recorded for this workstream.</div>';
+            tx.innerHTML = turns.length ? turns.map(m => '<div class="mc-detail"><b>' + esc(m.role) + ':</b> ' + esc(String(m.content || '').slice(0, 400)) + '</div>').join('') : '<div class="mc-detail">no se registró transcripción para este workstream.</div>';
             tx.dataset.loaded = '1';
-          } catch (_) { tx.innerHTML = '<div class="mc-detail">could not load transcript.</div>'; }
+          } catch (_) { tx.innerHTML = '<div class="mc-detail">no se pudo cargar la transcripción.</div>'; }
         };
         h.querySelectorAll('.lb-run-open').forEach(row => {
           row.addEventListener('click', ev => {
@@ -139,14 +139,14 @@
           const btn = row.querySelector('.lb-tx-btn');
           if (btn) btn.addEventListener('click', ev => { ev.stopPropagation(); toggleTx(row); });
         });
-      } catch (_) { const h = body.querySelector('#lb-list'); if (h) h.innerHTML = '<div class="mc-detail">sidecar offline — start it to see run history.</div>'; }
+      } catch (_) { const h = body.querySelector('#lb-list'); if (h) h.innerHTML = '<div class="mc-detail">sidecar sin conexión — arráncalo para ver el historial de ejecuciones.</div>'; }
     }
     // SLAG: the unproductive-run post-mortems (World.slagLog), synchronous — no fetch, just the live ring.
     function loadSlag() {
       const host = body.querySelector('#lb-slag'); if (!host) return;
       let slag = [];
       try { if (typeof World !== 'undefined' && World.slagLog) slag = World.slagLog().slice().reverse(); } catch (_) {}
-      host.innerHTML = slag.length ? slag.map(slagRow).join('') : '<div class="fb-empty">NO RUN ISSUES RECORDED.<br><span>A post-mortem appears here when a run ends without producing a result.</span></div>';
+      host.innerHTML = slag.length ? slag.map(slagRow).join('') : '<div class="fb-empty">NO HAY PROBLEMAS DE EJECUCIÓN REGISTRADOS.<br><span>Un post-mortem aparece aquí cuando una ejecución termina sin producir un resultado.</span></div>';
     }
     // INSIGHTS: aggregate outcomes folded from the run history (GET /api/insights). H3.3.
     async function loadInsights() {
@@ -154,7 +154,7 @@
       try {
         const j = await Harness.api.get('/api/insights?agent=' + encodeURIComponent(agentId));
         const h = body.querySelector('#lb-insights'); if (h) h.innerHTML = insightsHtml(j);
-      } catch (_) { const h = body.querySelector('#lb-insights'); if (h) h.innerHTML = '<div class="mc-detail">sidecar offline — start it to see insights.</div>'; }
+      } catch (_) { const h = body.querySelector('#lb-insights'); if (h) h.innerHTML = '<div class="mc-detail">sidecar sin conexión — arráncalo para ver los insights.</div>'; }
     }
     // all three hosts exist up-front in the one section, so load each once — no tab gating.
     loadRuns(); loadSlag(); loadInsights();

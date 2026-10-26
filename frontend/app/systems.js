@@ -27,22 +27,22 @@ const Systems = (() => {
      jobs = finished jobs after which it comes online on its own; how = the one short line QUESTS shows while it
      is offline; tip = what it is (the hover tip, never a sentence under a tile). */
   const LIST = [
-    { id: 'agents', label: 'AGENTS', group: 'crew', sel: '.bb[data-term="agents"]', terms: ['agents', 'logbook', 'rewind'], start: true, tip: 'Each crew member’s dossier — config, memory, record' },
-    { id: 'recruit', label: 'RECRUIT', group: 'crew', sel: '#bb-recruit', words: ['RECRUIT', 'RECRUITMENT BAY'], start: true, tip: 'Pick a class, or re-spec your agent' },
-    { id: 'commander', label: 'YOU', group: 'crew', sel: '.bb[data-term="commander"]', terms: ['commander'], start: true, tip: 'What the station has learned about you' },
-    { id: 'stepin', label: 'STEP-IN', group: 'crew', sel: '.bb[data-term="stepin"]', terms: ['stepin'], words: ['STEP-IN'], how: 'when an agent needs you to take its browser', tip: 'Take an agent’s browser when it needs you to sign in' },
-    // ONE MENU (2026-10-01): MY WORK / AUTOMATE / CONNECT are each one dock button over several windows (stationui
-    // FAMILIES) — every member window's key is listed in terms, so opening any of them by any door counts.
-    { id: 'mywork', label: 'MY WORK', group: 'work', sel: '#bb-mywork', terms: ['tasks', 'work', 'deliverables', 'outbox'], start: true, tip: 'Tasks, finished work, work to rate, and ready-made jobs' },
-    { id: 'automate', label: 'AUTOMATE', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATE', 'AUTOMATION', 'WORKFLOWS', 'WORKFLOW', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'when you ask for something on a schedule', tip: 'Workflows, schedules, goal loops and away work' },
-    { id: 'quests', label: 'QUESTS', group: 'work', sel: '.bb[data-term="quests"]', terms: ['quests'], start: true, tip: 'Small steps toward your goals, and your progress' },
-    { id: 'refit', label: 'BUILD MODE', group: 'build', sel: '#bb-build', start: true, tip: 'Rooms, gear and workflow lines' },
-    { id: 'connect', label: 'CONNECT', group: 'build', sel: '#bb-connect', terms: ['connectors', 'skills', 'messaging'], words: ['ABILITIES', 'CHANNELS'], start: true, tip: 'Services your agents use, and where you message them' },
-    { id: 'newapp', label: 'NEW APP', group: 'build', sel: '#bb-newapp-build', start: true, tip: 'Describe anything and your crew builds it in its own window' },
-    { id: 'manual', label: 'FIELD MANUAL', group: 'system', sel: '.bb[data-term="manual"]', terms: ['manual'], start: true, tip: 'First mission, controls and the station handbook' },
-    { id: 'settings', label: 'SETTINGS', group: 'system', sel: '.bb[data-term="settings"]', terms: ['settings'], start: true, tip: 'Models, keys, permissions, spending & more' },
-    { id: 'updates', label: 'UPDATES', group: 'system', sel: '.bb[data-term="updates"]', terms: ['updates'], start: true, tip: 'Version and release notes' },
-    { id: 'notifs', label: 'NOTIFICATIONS', group: 'system', sel: '.bb[data-term="notifs"]', terms: ['notifs'], start: true, tip: 'Alerts and unread events' }
+    { id: 'agents', label: 'AGENTES', group: 'crew', sel: '.bb[data-term="agents"]', terms: ['agents', 'logbook', 'rewind'], start: true, tip: 'el expediente de cada miembro: config, memoria, registro' },
+    { id: 'recruit', label: 'RECLUTAR', group: 'crew', sel: '#bb-recruit', words: ['RECRUIT', 'RECRUITMENT BAY'], start: true, tip: 'elige una clase o reconfigura a tu agente' },
+    { id: 'commander', label: 'TÚ', group: 'crew', sel: '.bb[data-term="commander"]', terms: ['commander'], start: true, tip: 'lo que la estación ha aprendido sobre ti' },
+    { id: 'stepin', label: 'STEP-IN', group: 'crew', sel: '.bb[data-term="stepin"]', terms: ['stepin'], words: ['STEP-IN'], how: 'cuando un agente necesita que tomes su navegador', tip: 'toma el navegador de un agente cuando necesite que inicies sesión — y tus sesiones guardadas' },
+    // ONE MENU (2026-10-01): MI TRABAJO / AUTOMATIZAR / CONECTAR son cada uno un botón del dock sobre varias ventanas
+    // (FAMILIES de stationui) — el key de cada ventana miembro está en terms, así que abrirla por cualquier puerta cuenta.
+    { id: 'mywork', label: 'MI TRABAJO', group: 'work', sel: '#bb-mywork', terms: ['tasks', 'work', 'deliverables', 'outbox'], start: true, tip: 'tareas, trabajo terminado y trabajos listos' },
+    { id: 'automate', label: 'AUTOMATIZAR', group: 'work', sel: '#bb-automate', terms: ['workflows', 'automation', 'routines', 'loops'], words: ['AUTOMATE', 'AUTOMATION', 'WORKFLOWS', 'WORKFLOW', 'ROUTINE', 'ROUTINES', 'CONVEYOR'], jobs: 3, crew: 2, how: 'cuando pides algo con horario', tip: 'flujos de trabajo, horarios, bucles y trabajo remoto' },
+    { id: 'quests', label: 'MISIONES', group: 'work', sel: '.bb[data-term="quests"]', terms: ['quests'], start: true, tip: 'pequeños pasos hacia tus metas y progreso registrado' },
+    { id: 'refit', label: 'MODO CONSTRUCCIÓN', group: 'build', sel: '#bb-build', start: true, tip: 'salas, pasillos, equipo y líneas de trabajo' },
+    { id: 'connect', label: 'CONECTAR', group: 'build', sel: '#bb-connect', terms: ['connectors', 'skills', 'messaging'], words: ['ABILITIES', 'CHANNELS'], start: true, tip: 'servicios que usan tus agentes y dónde les escribes' },
+    { id: 'newapp', label: 'NUEVA APP', group: 'build', sel: '#bb-newapp-build', start: true, tip: 'describe cualquier cosa — un panel, un registro, una herramienta, un juego — y tu tripulación la construye en su propia ventana' },
+    { id: 'manual', label: 'MANUAL DE CAMPO', group: 'system', sel: '.bb[data-term="manual"]', terms: ['manual'], start: true, tip: 'primera misión, controles y manual de la estación' },
+    { id: 'settings', label: 'AJUSTES', group: 'system', sel: '.bb[data-term="settings"]', terms: ['settings'], start: true, tip: 'modelos, claves, permisos, gastos y más' },
+    { id: 'updates', label: 'ACTUALIZACIONES', group: 'system', sel: '.bb[data-term="updates"]', terms: ['updates'], start: true, tip: 'versión y notas de la versión' },
+    { id: 'notifs', label: 'NOTIFICACIONES', group: 'system', sel: '.bb[data-term="notifs"]', terms: ['notifs'], start: true, tip: 'alertas y eventos sin leer' }
   ];
   const BY_ID = new Map(LIST.map(s => [s.id, s]));
   const BY_TERM = new Map();

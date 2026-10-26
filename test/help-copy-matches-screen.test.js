@@ -139,20 +139,20 @@ for (const o of [undefined, { cancelSource: 'estop_by_run' }]) {
   const rd = f => fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
   const sys = rd('frontend/app/systems.js'), idx = rd('frontend/index.html'), con = rd('frontend/app/windows/connectors.js');
   const ui = rd('frontend/app/stationui.js'), places = rd('frontend/app/places.js');
-  A.ok(/tip: 'Models, keys, permissions, spending & more'/.test(sys), 'SETTINGS dock tip names what Settings holds, and says there is more');
-  A.ok(/<small>models, keys, permissions, spending &amp; more<\/small>/.test(idx), 'the SETTINGS dock subtitle says the same line, on one line like its neighbours');
+  A.ok(/tip: 'modelos, claves, permisos, gastos y más'/.test(sys), 'SETTINGS dock tip names what Settings holds, and says there is more');
+  A.ok(/<small>modelos, claves, permisos, gastos y más<\/small>/.test(idx), 'the SETTINGS dock subtitle says the same line, on one line like its neighbours');
   A.ok(!/Keys, models, voice, data|keys, models, voice, data/.test(sys + idx), 'the old "keys, models, voice, data" line is gone');
   A.ok(!/in <b>MCP CONNECTORS<\/b>|in <b>KEYS<\/b>|in TOOLSETS:|'CATALOG' : 'MCP CONNECTORS'/.test(con), 'ABILITIES copy names no retired tab (MCP CONNECTORS, KEYS, TOOLSETS)');
-  A.ok(/in <b>CONNECTED SERVICES<\/b>, or paste a custom platform key in <b>SAVED API CONNECTIONS<\/b>/.test(con), 'the catalog footer names CONNECTED SERVICES and SAVED API CONNECTIONS');
-  A.ok(/\{ id: 'keys', label: 'SAVED API CONNECTIONS'/.test(con) && /\{ id: 'mcp', label: 'CONNECTED SERVICES'/.test(con) && /\{ id: 'toolsets', label: 'BUILT-IN ABILITIES'/.test(con), 'the names it uses are the real tab labels');
+  A.ok(/en <b>SERVICIOS CONECTADOS<\/b>, o pega una clave de plataforma personalizada en <b>CONEXIONES API GUARDADAS<\/b>/.test(con), 'the catalog footer names SERVICIOS CONECTADOS and CONEXIONES API GUARDADAS');
+  A.ok(/\{ id: 'keys', label: 'CONEXIONES API GUARDADAS'/.test(con) && /\{ id: 'mcp', label: 'SERVICIOS CONECTADOS'/.test(con) && /\{ id: 'toolsets', label: 'HABILIDADES INTEGRADAS'/.test(con), 'the names it uses are the real tab labels');
   // (live walk 10-14) the service-key door lands ON SAVED API CONNECTIONS — the place its sentence names — and the sign-in
   // services are named at CATALOG, the neighbouring tab of that same window
-  A.ok(/A key for any other service goes in CONNECT › ABILITIES › SAVED API CONNECTIONS; Gmail, Notion and other sign-in services connect from CATALOG beside it\.<\/p>' \+\s*'<div class="mc-acts"><button type="button" class="bb sm" data-act="to-service-keys">▸ SAVED API CONNECTIONS<\/button><\/div>/.test(ui), 'API KEYS: one full-strength glass key to SAVED API CONNECTIONS, outside the dimmed prose; Gmail/Notion named at CATALOG');
+  A.ok(/Una clave para cualquier otro servicio va en CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS; Gmail, Notion y otros servicios de inicio de sesión se conectan desde CATÁLOGO, al lado\.<\/p>' \+\s*'<div class="mc-acts"><button type="button" class="bb sm" data-act="to-service-keys">▸ CONEXIONES API GUARDADAS<\/button><\/div>/.test(ui), 'API KEYS: one full-strength glass key to CONEXIONES API GUARDADAS, outside the dimmed prose; Gmail/Notion named at CATÁLOGO');
   A.ok(!/data-act="to-service-catalog"|↗ CATALOG<\/button>/.test(ui), 'the old door to CATALOG (which the sentence never named as the key place) is gone');
   A.ok(!/Keys for Gmail, Notion and other services live in CONNECT › ABILITIES › SAVED API CONNECTIONS/.test(ui), 'never the old wrong claim: SAVED API CONNECTIONS cannot connect Gmail or Notion');
   A.ok(/toServiceKeys\.addEventListener\('click', \(\) => \{ sfx\('click'\); openTerm\('connectors', 'keys'\); \}\)/.test(ui), 'the key opens the connectors SAVED API CONNECTIONS section');
-  A.ok(/P\('api-connections', 'CONNECT › ABILITIES › SAVED API CONNECTIONS', [^\n]*\{ term: 'connectors', section: 'keys' \}\)/.test(places), 'which is the places.js api-connections target');
-  A.ok(/P\('find-a-service', [^\n]*\{ term: 'connectors', section: 'catalog' \}\)/.test(places) && /\{ id: 'catalog', label: 'CATALOG'/.test(con), 'CATALOG, named for the sign-in services, is a real tab of that window');
+  A.ok(/P\('api-connections', 'CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS', [^\n]*\{ term: 'connectors', section: 'keys' \}\)/.test(places), 'which is the places.js api-connections target');
+  A.ok(/P\('find-a-service', [^\n]*\{ term: 'connectors', section: 'catalog' \}\)/.test(places) && /\{ id: 'catalog', label: 'CATÁLOGO'/.test(con), 'CATÁLOGO, named for the sign-in services, is a real tab of that window');
   // (live walk 10-14) the STORE under the key keeps the section's spacing, never flush against the key
   const setCss = rd('frontend/css/settings.css');
   A.ok(/\.settings-console \.mc-acts \+ #credits-store:not\(:empty\) \{ margin-top: 18px; \}/.test(setCss) && /'<div id="credits-store"><\/div>';/.test(ui), 'the STORE sits 18px below the API KEYS key row');

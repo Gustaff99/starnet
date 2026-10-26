@@ -23,7 +23,7 @@ const ui = fs.readFileSync(path.join(root, REL), 'utf8');
 // ---- A. the card renders the guide already open ----
 A.ok(/<details class="ch-setup" open data-autofold="1">/.test(ui),
   'the SETUP GUIDE <details> is rendered open, with the one-shot autofold flag');
-A.ok(/<summary>SETUP GUIDE<\/summary>/.test(ui), 'the guide still carries its SETUP GUIDE summary');
+A.ok(/<summary>GUÍA DE SETUP<\/summary>/.test(ui), 'the guide still carries its SETUP GUIDE summary');
 
 // ---- B. while untouched, it tracks `configured` in BOTH directions, never `conn` ----
 A.ok(/dataset\.autofold === '1'\) guide\.open = !configured/.test(ui),

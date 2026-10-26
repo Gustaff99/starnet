@@ -1820,7 +1820,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     wireCrewLive();   // ensure the per-agent run-state listener is live
     const ul = $('#crew'); if (!ul) return;
     if (!present.length) {
-      ul.innerHTML = '<li class="crew-empty"><div class="empty-state">' + NO_AGENTS_MARK + '<b>NO AGENTS ON STATION</b><span>RECRUIT one from the CREW dock.</span></div></li>';
+      ul.innerHTML = '<li class="crew-empty"><div class="empty-state">' + NO_AGENTS_MARK + '<b>NO HAY AGENTES EN LA ESTACIÓN</b><span>Recluta uno desde el dock CREW.</span></div></li>';
       $('#crew-sum').innerHTML = '';
       return;
     }
@@ -3458,7 +3458,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       // org P10: the empty dossier carries the RECRUIT door itself (the same App.openSummonBay the CREW dock's RECRUIT opens)
       const canRecruit = typeof App !== 'undefined' && !!App.openSummonBay;
       body.innerHTML = '<div class="empty-state" style="margin:32px auto;">' + NO_AGENTS_MARK +
-        '<b>NO AGENTS ON STATION</b><span>RECRUIT one from the CREW dock.</span>' +
+        '<b>NO HAY AGENTES EN LA ESTACIÓN</b><span>Recluta uno desde el dock CREW.</span>' +
         (canRecruit ? '<button type="button" class="bb sm" data-act="empty-recruit" style="margin-top:14px;">▸ OPEN RECRUIT</button>' : '') + '</div>';
       const recruitKey = body.querySelector('[data-act="empty-recruit"]');
       if (recruitKey) recruitKey.addEventListener('click', () => { sfx('click'); try { App.openSummonBay(); } catch (e) { console.warn('[dossier] recruit door failed:', (e && e.message) || e); } });
@@ -11069,12 +11069,12 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       + (staged ? '<div class="arc-bar q-bar"><div class="q-bar-fill" style="width:' + pct + '%"></div></div>' : '')
       + '<div class="q-star-map q-sys-map">' + s.list.map(x =>
         '<button type="button" class="q-star q-sys' + (x.online ? ' q-star-reached' : ' q-sys-off') + (x.fresh ? ' q-sys-fresh' : '') + '" data-sys="' + esc(x.id) + '" data-tip="'
-        + esc(x.tip + (x.online ? '' : ' — it already works; open it now and it joins your dock')) + '">'
+        + esc(x.tip + (x.online ? '' : ' — ya funciona; ábrelo ahora y se une a tu dock')) + '">'
         + '<span class="q-star-glyph" aria-hidden="true">' + glyphOf(x.id) + '</span><span>' + esc(x.label) + '</span><small>'
-        + (x.online ? (x.fresh ? 'NEW · ' : '') + esc(x.group.toUpperCase()) + ' DOCK' : esc(x.how || 'not in your dock yet')) + '</small></button>').join('')
+        + (x.online ? (x.fresh ? 'NUEVO · ' : '') + esc(x.group.toUpperCase()) + ' DOCK' : esc(x.how || 'aún no está en tu dock')) + '</small></button>').join('')
       + '</div>'
-      + (staged ? '<p class="sub dim">Your dock grows as you use the station. Every system already works: open any of them here.</p>'
-        + '<div class="q-journey-actions"><button type="button" class="bb sm q-sys-all">SHOW EVERYTHING</button></div>' : '')
+      + (staged ? '<p class="sub dim">Tu dock crece a medida que usas la estación. Cada sistema ya funciona: abre cualquiera de ellos aquí.</p>'
+        + '<div class="q-journey-actions"><button type="button" class="bb sm q-sys-all">MOSTRAR TODO</button></div>' : '')
       + '</div>';
   }
   function wireSystems(root) {

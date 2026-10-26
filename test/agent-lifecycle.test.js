@@ -57,11 +57,11 @@ const { makeAgentLifecycle } = require('../sidecar/agent-lifecycle.js');
     'precise checkpoint hook honors the selected backend capability instead of snapshotting an unrelated local tree');
 
   const rewind = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'windows', 'rewind.js'), 'utf8');
-  A.ok(/s\.workTree[\s\S]{0,260}PROJECT ROOT/.test(rewind),
+  A.ok(/s\.workTree[\s\S]{0,260}RAÍZ DEL PROYECTO/.test(rewind),
     'restore UI identifies external project-root snapshots explicitly');
-  A.ok(/data-root=/.test(rewind) && /rolls back <b>' \+ esc\(root\)/.test(rewind),
+  A.ok(/data-root=/.test(rewind) && /devuelve <b>' \+ esc\(root\)/.test(rewind),
     'restore confirmation names the exact root whose files will change');
-  A.ok(/restoreAvailable/.test(rewind) && /PROJECT ACCESS REVOKED/.test(rewind),
+  A.ok(/restoreAvailable/.test(rewind) && /ACCESO AL PROYECTO REVOCADO/.test(rewind),
     'restore UI blocks a project restore whose path grant is no longer active');
 
   // Browser deletion is server-first: lifecycle refusal and transport failures preserve every local surface.

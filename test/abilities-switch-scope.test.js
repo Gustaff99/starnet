@@ -15,11 +15,11 @@ const CONN = read('frontend/app/windows/connectors.js');
 const SC = read('sidecar/index.js');
 
 // the copy beside the switches
-A.ok(CONN.includes('<label class="mc-hint" for="ts-agent">Show abilities of</label>'), 'the picker caption says it SHOWS an agent’s abilities');
+A.ok(CONN.includes('<label class="mc-hint" for="ts-agent">Mostrar habilidades de</label>'), 'the picker caption says it SHOWS an agent’s abilities');
 A.ok(!CONN.includes('>Abilities of</label>'), 'the old caption that read as ownership is gone');
 const legend = (CONN.match(/<p class="ability-legend">([^<]+)<\/p>/) || [])[1] || '';
-A.ok(/Each switch below applies to every agent\.$/.test(legend), 'the legend directly above the rows says each switch applies to every agent');
-A.ok(/^AVAILABLE means this agent has the capability/.test(legend), 'and still explains AVAILABLE for the agent shown');
+A.ok(/Cada interruptor de abajo se aplica a todos los agentes\.$/.test(legend), 'the legend directly above the rows says each switch applies to every agent');
+A.ok(/^DISPONIBLE significa que este agente tiene la capacidad/.test(legend), 'and still explains DISPONIBLE for the agent shown');
 
 // the truth behind the copy: the picker feeds only the read; the switch carries no agent
 A.ok(/Harness\.api\.get\('\/api\/toolsets\?agent=' \+ encodeURIComponent\(tsAgentEl\.value\)/.test(CONN), 'the picker selects whose availability GET /api/toolsets reads');

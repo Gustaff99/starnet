@@ -16,7 +16,7 @@ const SUI = read('frontend/app/stationui.js');
 
 /* ---------- P23: say where each instruction applies ---------- */
 A.ok(/desc: n => 'What ' \+ n \+ ' is for\. It rides only ' \+ n \+ '’s prompt[^']*' \+ n \+ ' does\. In a workflow, a step’s DOES adds to it for that step only\.'/.test(SUI), 'P23: PURPOSE names the one agent it shapes and that a DOES adds to it for its step (D14: one plain sentence each, no ·)');
-A.ok(/desc: n => 'House rules only ' \+ n \+ ' follows: tone, format, the do-nots\. Rules for every agent live in YOU › PREFERENCES\.'/.test(SUI), 'P23: the house-rules card says only this agent follows it and where every-agent rules live');
+A.ok(/desc: n => 'Reglas de la casa que solo ' \+ n \+ ' sigue: tono, formato, lo que no se debe hacer\. Las reglas para todos los agentes viven en TÚ › PREFERENCES\.'/.test(SUI), 'P23: the house-rules card says only this agent follows it and where every-agent rules live');
 A.ok(SUI.includes("typeof f.desc === 'function' ? f.desc(esc((a && a.name) || 'this agent'))"), 'P23: fileCard renders the reach with the agent name escaped');
 A.ok(SUI.includes('your standing orders (every agent follows these)'), 'P23: YOU › PREFERENCES says every agent follows the standing orders');
 A.ok(read('frontend/app/app.js').includes('DossierStore.composeBlock()') && read('sidecar/index.js').includes('withDossier(CRON_PERSONA'), 'P23: the "every agent" claim stays true — the dossier rides every browser prompt and cron runs');
@@ -48,8 +48,8 @@ A.ok(/'Reusable procedures ' \+ n \+ ' created or learned\./.test(SUI) && SUI.in
 A.ok(/const shownId = skillsAgentId\(\);\n\s+if \(\(p\.agentId \|\| 'agent'\) !== shownId\) return;/.test(SUI), 'P21: the live skills refresh follows the agent the lane shows (one-shot pick behaviour in test/abilities.skills-lane.test.js)');
 A.ok(SUI.includes("return (AP && AP.approval === 'ask') ? AP.label : 'custom'; };") && SUI.includes("authority.unrestricted ? 'FULL POWER' : askingPosture()") && SUI.includes("'FULL POWER — on for every agent by ' + overrideBy") && SUI.includes('data-tip-below>'), 'P21: the ACCESS summary speaks the posture words, gated on the live authority');
 A.ok(CONN.includes('id="ts-agent" class="ab-agent-pick"') && /select\.ab-agent-pick \{[^}]*appearance: none/.test(read('frontend/css/interface.css')), 'P21: the ABILITIES agent pickers are glass fields with a drawn chevron, not key-input/OS paint');
-A.ok(/each switch turns a built-in ability on or off for every agent; CHECK WITH ME and LET IT WORK obey the switches, FULL POWER overrides them/i.test(CONN), 'P21: BUILT-IN ABILITIES says its switches are for every agent, in ONE ACCESS words');
-A.ok(CONN.includes("data-tip=\"Turns ' + esc(t.label) + ' on or off for every agent\"") && CONN.includes("notify((tsLabels[id] || id) + (enabled ? ' on' : ' off') + ' for every agent'"),'P21: the switch tip and toast name the ability and say every agent');
+A.ok(/cada interruptor activa o desactiva una habilidad integrada para todos los agentes; COMPROBAR CONMIGO y DEJARLO TRABAJAR obedecen los interruptores, PODER TOTAL los anula/i.test(CONN), 'P21: HABILIDADES INTEGRADAS says its switches are for every agent, in ONE ACCESS words');
+A.ok(CONN.includes("data-tip=\"Activa o desactiva ' + esc(t.label) + ' para todos los agentes\"") && CONN.includes("notify((tsLabels[id] || id) + (enabled ? ' activado' : ' desactivado') + ' para todos los agentes'"),'P21: the switch tip and toast name the ability and say every agent');
 A.ok(/toolsetDisabled/.test(read('sidecar/index.js')), 'P21: "for every agent" stays true — the toggle writes the station-wide toolsetDisabled map');
 
 /* ---------- P22: RECRUIT speaks one language ---------- */
@@ -92,7 +92,7 @@ A.ok(/model:\s*\(pin && pin\.model\)\s*\|\|\s*agent\.model/.test(read('frontend/
 A.ok(!/AS A SPECIALTY|SAVE SPECIALTY|EDIT SPECIALTY|none of your specialists|as a specialty above|before summoning|its own <span data-hint="workstream">chat thread/.test(MKT) &&
   MKT.includes('＋ SAVE THIS AGENT AS A CLASS') && MKT.includes("'none of your classes match your search — '") && MKT.includes('before recruiting') &&
   MKT.includes('its own <span data-hint="workstream">session</span>'), 'P22 fix: the hints, save key, name helper and CTA sub-line speak RECRUIT / CLASS / session too');
-A.ok(read('frontend/index.html').includes('<b>RECRUIT</b><small>pick a class, or re-spec your agent</small>') && /Recruitment Bay and RECRUIT one/.test(MAN), 'P22: the dock subtitle and the manual say RECRUIT');
+A.ok(read('frontend/index.html').includes('<b>RECLUTAR</b><small>elige una clase o reconfigura a tu agente</small>') && /Recruitment Bay and RECRUIT one/.test(MAN), 'P22: the dock subtitle and the manual say RECRUIT');
 
 /* ---------- P26: name the open session in the COMMS title (behaviour, run in a vm against the shipped functions) ---------- */
 const CHAT = read('frontend/app/chat.js');
@@ -162,9 +162,9 @@ const APPCSS = read('frontend/css/app.css');
 A.ok(/#chat-panel h3 #comms-title \{ flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; \}/.test(APPCSS) && /#chat-panel h3 \.h3-right \{[^}]*flex: 0 0 auto;/.test(APPCSS),
   'P26: the title clamps to one line and a fault in #chat-status keeps its width first');
 const HTML = read('frontend/index.html');
-A.ok(!/class="comms-agent-wrap" title=/.test(HTML) && /class="comms-agent-wrap" data-tip-below data-tip="[^"]*opens its latest session/.test(HTML), 'P26: the ON THE LINE tip is a data-tip, never a native title');
+A.ok(!/class="comms-agent-wrap" title=/.test(HTML) && /class="comms-agent-wrap" data-tip-below data-tip="[^"]*abre su última sesión/.test(HTML), 'P26: the ON THE LINE tip is a data-tip, never a native title');
 // P26 fix (review): selectAgent never rebinds General (cur.id !== Workstreams.generalId()) — the tip must not promise it does
-A.ok(/class="comms-agent-wrap" data-tip-below data-tip="[^"]*an empty session, not General, takes that agent\."/.test(HTML) &&
+A.ok(/class="comms-agent-wrap" data-tip-below data-tip="[^"]*una sesión vacía, no General, toma a ese agente\."/.test(HTML) &&
   /if \(cur && cur\.id !== Workstreams\.generalId\(\) && !isGroupWs\(cur\)/.test(read('frontend/app/app.js')),
   'P26 fix: the tip says General keeps its agent, matching selectAgent');
 

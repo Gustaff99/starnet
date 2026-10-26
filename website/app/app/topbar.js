@@ -31,7 +31,7 @@ const Topbar = (() => {
         return;
       }
       const stale = JourneyStore.state && JourneyStore.state().stale;
-      if (label) label.textContent = 'Lv ' + g.level + (stale ? ' · saved' : '');
+      if (label) label.textContent = 'Nv ' + g.level + (stale ? ' · guardado' : '');
       if (lastCommanderLevel != null && g.level > lastCommanderLevel) {
         const chip = document.getElementById('tb-station');
         if (chip) { chip.classList.remove('lvup'); void chip.offsetWidth; chip.classList.add('lvup'); }
@@ -44,7 +44,7 @@ const Topbar = (() => {
         fill.style.width = pct + '%';
         const xp = $('#tb-station .tb-xp');
         // the station tooltip card, not the OS bubble (org pass 10-14, P28)
-        if (xp && xp.setAttribute) xp.setAttribute('data-tip', 'COMMANDER Lv ' + g.level + ' — ' + g.points + ' achievement points; ' + g.pointsToNextLevel + ' to the next level');
+        if (xp && xp.setAttribute) xp.setAttribute('data-tip', 'COMANDANTE Nv ' + g.level + ' — ' + g.points + ' puntos de logro; ' + g.pointsToNextLevel + ' para el siguiente nivel');
       }
     } catch (_) { /* honest no-op: leave the sliver where it is */ }
   }
@@ -72,8 +72,8 @@ const Topbar = (() => {
      port, same per-launch token), so there is no reload. A browser has nothing to restart: the tip names the step. */
   const DOWN_ESCALATE_MS = 15000, PROBE_EVERY_MS = 10000;
   let downSince = 0, lastProbeAt = 0, probing = false, engine = null, restarting = false, recoverable = false;
-  const DOWN_TIP = 'lost the connection to StarNet’s background service — live numbers pause until it’s back (is the app still running?)';
-  const BROWSER_STEP = ' — if you launched with `npm start`, check that terminal; otherwise open the desktop app';
+  const DOWN_TIP = 'se perdió la conexión con el servicio en segundo plano de StarNet — las cifras en vivo se pausan hasta que vuelva (¿sigue la app en marcha?)';
+  const BROWSER_STEP = ' — si la lanzaste con `npm start`, revisa esa terminal; en otro caso abre la app de escritorio';
   function canRestart() { try { return typeof Harness !== 'undefined' && !!Harness.canRestartEngine && Harness.canRestartEngine(); } catch (_) { return false; } }
   function probeEngine() {
     if (probing || typeof Harness === 'undefined' || !Harness.engineState) return;
@@ -83,9 +83,9 @@ const Topbar = (() => {
   }
   function downTip(desktop) {
     if (!engine) return DOWN_TIP;
-    if (engine.state === 'ok') return 'lost the live link to StarNet’s background service — the service itself is answering, so this window is reconnecting on its own';
-    const what = engine.reason || (engine.state === 'silent' ? 'StarNet’s background service isn’t answering (it may be stuck)' : 'StarNet’s background service isn’t running');
-    return what + (desktop ? ' — click to restart the station service' : BROWSER_STEP);
+    if (engine.state === 'ok') return 'se perdió el enlace en vivo con el servicio en segundo plano de StarNet — el servicio sí responde, así que esta ventana se reconecta sola';
+    const what = engine.reason || (engine.state === 'silent' ? 'el servicio en segundo plano de StarNet no responde (puede estar atascado)' : 'el servicio en segundo plano de StarNet no está en marcha');
+    return what + (desktop ? ' — clic para reiniciar el servicio de la estación' : BROWSER_STEP);
   }
   function connectionBox(el) { return (el && el.closest && el.closest('.tb-connection')) || el; }
   function setRecoverable(el, on) {
@@ -94,7 +94,7 @@ const Topbar = (() => {
     const box = connectionBox(el);
     if (!box) return;
     box.classList.toggle('recoverable', on);
-    if (on) { box.setAttribute('role', 'button'); box.tabIndex = 0; box.setAttribute('aria-label', 'LINK DOWN — restart the station service'); }
+    if (on) { box.setAttribute('role', 'button'); box.tabIndex = 0; box.setAttribute('aria-label', 'ENLACE CAÍDO — reinicia el servicio de la estación'); }
     else { box.removeAttribute('role'); box.removeAttribute('tabindex'); box.removeAttribute('aria-label'); }
   }
   function notifyUser(text, cls) { try { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(text, cls); } catch (_) {} }
@@ -102,17 +102,17 @@ const Topbar = (() => {
     const ls = linkNow();
     if (!recoverable || restarting || !ls || !ls.down || typeof Harness === 'undefined' || !Harness.restartEngine) return;
     restarting = true;
-    notifyUser('restarting the station service…', 'warn');
+    notifyUser('reiniciando el servicio de la estación…', 'warn');
     let ok = false;
     try { ok = await Harness.restartEngine(); } catch (_) { ok = false; }
-    if (!ok) notifyUser('the station service could not be restarted — quit StarNet fully (tray → Quit) and open it again. Your save is untouched.', 'warn');
+    if (!ok) notifyUser('no se pudo reiniciar el servicio de la estación — cierra StarNet por completo (bandeja → Salir) y ábrelo de nuevo. Tu guardado está intacto.', 'warn');
     else {
       // A respawn that comes straight back degraded (a workspace owned by another process, a crash at boot) is not
       // healed: say what the service now says instead of claiming success.
       let after = null;
       try { after = await Harness.engineState(); } catch (_) { after = null; }
-      if (after && after.state === 'degraded' && after.reason) notifyUser('restarted, but the station service still reports: ' + after.reason, 'warn');
-      else notifyUser('station service restarted — reconnecting…', 'good');
+      if (after && after.state === 'degraded' && after.reason) notifyUser('reiniciado, pero el servicio de la estación sigue reportando: ' + after.reason, 'warn');
+      else notifyUser('servicio de la estación reiniciado — reconectando…', 'good');
     }
     // give the bridge a full escalation window to reconnect before the door is offered again
     downSince = Date.now(); engine = null; lastProbeAt = 0; restarting = false;
@@ -129,9 +129,9 @@ const Topbar = (() => {
     if (!ls || !ls.bridged || ls.paused) {
       el.classList.remove('down');
       el.classList.add('standby');
-      el.childNodes[0].nodeValue = 'STANDBY ';
+      el.childNodes[0].nodeValue = 'EN ESPERA ';
       bars.textContent = SIG_STANDBY;   // dim even bars — NOT full signal
-      el.title = ls && ls.paused ? 'connection to the background service is paused (disconnected)' : 'connection to StarNet’s background service — standby (not connected yet)';
+      el.title = ls && ls.paused ? 'la conexión con el servicio en segundo plano está en pausa (desconectado)' : 'conexión con el servicio en segundo plano de StarNet — en espera (aún no conectado)';
       return;
     }
     if (ls.down) {
@@ -144,13 +144,13 @@ const Topbar = (() => {
       if (held && !restarting && now - lastProbeAt >= PROBE_EVERY_MS) probeEngine();
       const door = held && canRestart() && !!engine && engine.state !== 'ok';
       setRecoverable(el, door || restarting);
-      el.childNodes[0].nodeValue = restarting ? 'RESTARTING… ' : door ? 'LINK DOWN · RESTART ' : 'LINK DOWN ';
+      el.childNodes[0].nodeValue = restarting ? 'REINICIANDO… ' : door ? 'ENLACE CAÍDO · REINICIAR ' : 'ENLACE CAÍDO ';
       el.title = held ? downTip(canRestart()) : DOWN_TIP;
     } else {
       el.classList.remove('down', 'standby');
-      el.childNodes[0].nodeValue = 'UPLINK ';
+      el.childNodes[0].nodeValue = 'ENLACE ';
       bars.textContent = SIG_UP;
-      el.title = 'connected to StarNet’s background service — everything on screen is live';
+      el.title = 'conectado al servicio en segundo plano de StarNet — todo en pantalla está en vivo';
     }
   }
 

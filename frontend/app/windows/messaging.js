@@ -22,82 +22,82 @@
     // load-bearing (the wire source-guard pins e.g. id="sl-bot-token" type="password") — never reorder those.
     const CHANNEL_CATALOG = [
       { id: 'telegram', title: 'TELEGRAM', pre: 'tg', accent: '#37aee2',
-        tagline: 'DM your agent from Telegram.',
+        tagline: 'Envía mensajes directos a tu agente desde Telegram.',
         verb: 'polling',
         steps: [
-          '<b>Create your bot in Telegram.</b><br>Search for <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a>, open the chat, and send <code>/newbot</code>. Follow its replies to choose a name and an available username ending in <code>bot</code>.',
-          '<b>Connect it to StarNet.</b><br>BotFather sends you a bot token (a long code). Copy it into <b>Bot token</b> below, then click <b>CONNECT</b>.',
-          '<b>Pair and start chatting.</b><br>StarNet shows a <code>/pair</code> message with a code. Copy the whole message and send it to <b>your new bot</b> in Telegram. Once pairing is confirmed, you can chat with your agent.'
+          '<b>Crea tu bot en Telegram.</b><br>Busca <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a>, abre el chat y envía <code>/newbot</code>. Sigue sus respuestas para elegir un nombre y un usuario disponible que termine en <code>bot</code>.',
+          '<b>Cónectalo a StarNet.</b><br>BotFather te envía un token de bot (un código largo). Cópialo en <b>Bot token</b> abajo y pulsa <b>CONECTAR</b>.',
+          '<b>Vínculate y empieza a chatear.</b><br>StarNet muestra un mensaje <code>/pair</code> con un código. Copia el mensaje entero y envíalo a <b>tu nuevo bot</b> en Telegram. Cuando la vinculación se confirma, puedes chatear con tu agente.'
         ],
-        note: 'Your token is saved on this machine and never displayed.',
-        fieldsHtml: '<label class="ch-lbl" for="tg-token">BOT TOKEN <span class="dim">— from @BotFather</span></label>' +
+        note: 'Tu token se guarda en esta máquina y nunca se muestra.',
+        fieldsHtml: '<label class="ch-lbl" for="tg-token">BOT TOKEN <span class="dim">— de @BotFather</span></label>' +
           '<input id="tg-token" type="password" class="key-input" placeholder="123456789:ABCdef..." autocomplete="off" spellcheck="false">',
         read: (b) => ({ token: (b.querySelector('#tg-token').value || '').trim() }),
         clear: (b) => { b.querySelector('#tg-token').value = ''; },
-        emptyMsg: 'paste your @BotFather token first',
-        okMsg: '✓ connected — Telegram is accepting owner DMs',
+        emptyMsg: 'pega primero tu token de @BotFather',
+        okMsg: '✓ conectado — Telegram acepta mensajes del propietario',
         // multi-bot: each additional bot is a SEPARATE Telegram contact hard-bound to one agent. The list paints
         // exclusively from the status payload's bots[] (truthful per-instance transport state); the add flow is
         // token + agent — the sidecar validates the token with getMe before anything persists.
         extraHtml:
           '<div class="ch-bots" id="tg-owner">' +
-            '<div class="ch-bots-head">Pair your Telegram account <span class="dim" id="tg-owner-state">not paired</span></div>' +
-            '<p class="ch-note">Pairing tells your bot which Telegram account is yours. Send the /pair message to your new bot, not to BotFather. The pairing code expires after 10 minutes.</p>' +
-            '<div class="set-save"><button class="bb xs" id="tg-owner-pair">PAIR OWNER</button> <button class="bb xs danger" id="tg-owner-revoke" style="display:none">REVOKE OWNER</button></div>' +
+            '<div class="ch-bots-head">Vincula tu cuenta de Telegram <span class="dim" id="tg-owner-state">sin vincular</span></div>' +
+            '<p class="ch-note">La vinculación le dice a tu bot qué cuenta de Telegram es la tuya. Envía el mensaje /pair a tu nuevo bot, no a BotFather. El código de vinculación caduca en 10 minutos.</p>' +
+            '<div class="set-save"><button class="bb xs" id="tg-owner-pair">VINCULAR PROPIETARIO</button> <button class="bb xs danger" id="tg-owner-revoke" style="display:none">REVOCAR PROPIETARIO</button></div>' +
           '</div>' +
           '<div class="ch-bots" id="tg-bots">' +
-            '<div class="ch-bots-head">Agent bots <span class="dim">A separate Telegram contact per agent</span></div>' +
+            '<div class="ch-bots-head">Bots por agente <span class="dim">Un contacto de Telegram por agente</span></div>' +
             '<div id="tg-bots-list"></div>' +
-            '<details class="ch-setup" id="tg-bot-addbox"><summary>ADD A BOT</summary>' +
+            '<details class="ch-setup" id="tg-bot-addbox"><summary>AÑADIR BOT</summary>' +
               '<ol class="ch-steps">' +
-                '<li><b>Create another bot.</b><br>In Telegram, message <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a> with <code>/newbot</code>. Choose a name and an available username ending in <code>bot</code>, then copy the token it sends back.</li>' +
-                '<li><b>Choose its agent.</b><br>Paste the token below, choose which agent should reply, and click <b>ADD AGENT BOT</b>.</li>' +
-                '<li><b>Pair and chat.</b><br>Send the full <code>/pair</code> message StarNet shows you to that new bot in Telegram. Once pairing is confirmed, message it whenever you want to talk to that agent.</li>' +
+                '<li><b>Crea otro bot.</b><br>En Telegram, envíale a <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather</a> <code>/newbot</code>. Elige un nombre y un usuario disponible que termine en <code>bot</code>, y copia el token que devuelve.</li>' +
+                '<li><b>Elige su agente.</b><br>Pega el token abajo, elige qué agente debe responder y pulsa <b>AÑADIR BOT DE AGENTE</b>.</li>' +
+                '<li><b>Vínculate y chatea.</b><br>Envía el mensaje completo <code>/pair</code> que StarNet te muestra a ese nuevo bot en Telegram. Cuando la vinculación se confirma, envíale mensajes cuando quieras hablar con ese agente.</li>' +
               '</ol>' +
-              '<label class="ch-lbl" for="tg-bot-token">BOT TOKEN <span class="dim">— from @BotFather</span></label>' +
+              '<label class="ch-lbl" for="tg-bot-token">BOT TOKEN <span class="dim">— de @BotFather</span></label>' +
               '<input id="tg-bot-token" type="password" class="key-input" placeholder="123456789:ABCdef..." autocomplete="off" spellcheck="false">' +
-              '<label class="ch-lbl" for="tg-bot-agent">Agent that replies</label>' +
+              '<label class="ch-lbl" for="tg-bot-agent">Agente que responde</label>' +
               '<select id="tg-bot-agent" class="key-input"></select>' +
-              '<div class="set-save"><button class="bb sm" id="tg-bot-add">+ ADD AGENT BOT</button></div>' +
+              '<div class="set-save"><button class="bb sm" id="tg-bot-add">+ AÑADIR BOT DE AGENTE</button></div>' +
               '<div id="tg-bots-msg" class="msg"></div>' +
             '</details>' +
           '</div>' },
 
       { id: 'discord', title: 'DISCORD', pre: 'dc', accent: '#7c83f5',
         // HONESTY: server/channel messages need a chat allowlist no production path supplies yet — DMs only today.
-        tagline: 'DM your Discord bot to talk to your agent. Server channels are not supported yet.',
+        tagline: 'Envía mensajes directos a tu bot de Discord para hablar con tu agente. Los canales de servidor aún no están soportados.',
         verb: 'receiving',
         steps: [
-          'Open the <b>Discord Developer Portal</b> → <b>New Application</b> → <b>Bot</b> → <b>Reset Token</b> → copy the token.',
-          'Invite the bot to a server you are in (OAuth2 → URL Generator → tick <code>bot</code> → open the link). Discord only lets you DM a bot you share a server with. No intents need turning on.',
-          'Paste the token below and connect.',
-          '<b>Pair your account.</b> Open a <b>direct message</b> with the bot (click it in the server member list → Message) and send the <code>pair</code> message StarNet shows, exactly as shown. Messages in server channels are ignored. Until you pair, the bot refuses every message.'
+          'Abre el <b>Discord Developer Portal</b> → <b>New Application</b> → <b>Bot</b> → <b>Reset Token</b> → copia el token.',
+          'Invita al bot a un servidor en el que estés (OAuth2 → URL Generator → marca <code>bot</code> → abre el enlace). Discord solo deja enviar MD a un bot con el que compartas servidor. No hay que activar intents.',
+          'Pega el token abajo y conecta.',
+          '<b>Vincula tu cuenta.</b> Abre un <b>mensaje directo</b> con el bot (púlsalo en la lista de miembros del servidor → Mensaje) y envía el mensaje <code>pair</code> que muestra StarNet, exactamente como aparece. Los mensajes en canales de servidor se ignoran. Hasta que te vincules, el bot rechaza todos los mensajes.'
         ],
-        note: 'Your token is saved on this machine and never displayed.',
-        fieldsHtml: '<label class="ch-lbl" for="dc-token">BOT TOKEN <span class="dim">— from the Discord Developer Portal</span></label>' +
+        note: 'Tu token se guarda en esta máquina y nunca se muestra.',
+        fieldsHtml: '<label class="ch-lbl" for="dc-token">BOT TOKEN <span class="dim">— del Discord Developer Portal</span></label>' +
           '<input id="dc-token" type="password" class="key-input" placeholder="MTE...Bot token" autocomplete="off" spellcheck="false">',
         read: (b) => ({ token: (b.querySelector('#dc-token').value || '').trim() }),
         clear: (b) => { b.querySelector('#dc-token').value = ''; },
-        emptyMsg: 'paste your Discord bot token first',
-        okMsg: '✓ connected — DM your bot on Discord',
-        errHint: ' — check the bot token' },
+        emptyMsg: 'pega primero el token de tu bot de Discord',
+        okMsg: '✓ conectado — envía MD a tu bot en Discord',
+        errHint: ' — revisa el token del bot' },
 
       { id: 'slack', title: 'SLACK', pre: 'sl', accent: '#b98ec8',
         // HONESTY: channel messages need a chat allowlist no production path supplies yet — DMs only today.
         // audit finding 5: Slack appears in BOTH panels — say which direction THIS one is.
-        tagline: 'DM your Slack app to talk to your agent. Channel conversations are not supported yet. To let your agent use Slack as a tool, open ABILITIES.',
+        tagline: 'Envía mensajes directos a tu app de Slack para hablar con tu agente. Las conversaciones en canales aún no están soportadas. Para que tu agente use Slack como tool, abre ABILITIES.'
         verb: 'receiving',
         steps: [
-          'Open <b>api.slack.com/apps</b> → <b>Create New App</b> → From scratch.',
-          'Enable <b>Socket Mode</b> (Settings → Socket Mode) and create an <b>app-level token</b> with <code>connections:write</code> (starts <code>xapp-</code>).',
-          'Under <b>OAuth &amp; Permissions</b> add bot scopes <code>chat:write</code>, <code>im:history</code>, <code>channels:history</code> → <b>Install to Workspace</b> → copy the <b>bot token</b> (starts <code>xoxb-</code>).',
-          'Under <b>Event Subscriptions</b> subscribe the bot to <code>message.im</code>.',
-          '<b>Pair your account.</b> StarNet shows a <code>pair</code> message with a one-time code. Send it to the bot from YOUR account, without a slash (Slack reserves <code>/</code>). Until you do, the bot refuses every message.'
+          'Abre <b>api.slack.com/apps</b> → <b>Create New App</b> → From scratch.',
+          'Activa <b>Socket Mode</b> (Settings → Socket Mode) y crea un <b>app-level token</b> con <code>connections:write</code> (empieza por <code>xapp-</code>).',
+          'En <b>OAuth &amp; Permissions</b> añade los bot scopes <code>chat:write</code>, <code>im:history</code>, <code>channels:history</code> → <b>Install to Workspace</b> → copia el <b>bot token</b> (empieza por <code>xoxb-</code>).',
+          'En <b>Event Subscriptions</b> suscribe al bot a <code>message.im</code>.',
+          '<b>Vincula tu cuenta.</b> StarNet muestra un mensaje <code>pair</code> con un código de un solo uso. Envíaselo al bot desde TU cuenta, sin barra (Slack reserva <code>/</code>). Hasta que lo hagas, el bot rechaza todos los mensajes.'
         ],
-        note: 'Both tokens are saved on this machine and never displayed.',
-        fieldsHtml: '<label class="ch-lbl" for="sl-bot-token">BOT TOKEN <span class="dim">— xoxb-…, from OAuth &amp; Permissions</span></label>' +
+        note: 'Ambos tokens se guardan en esta máquina y nunca se muestran.',
+        fieldsHtml: '<label class="ch-lbl" for="sl-bot-token">BOT TOKEN <span class="dim">— xoxb-…, de OAuth &amp; Permissions</span></label>' +
           '<input id="sl-bot-token" type="password" class="key-input" placeholder="xoxb-..." autocomplete="off" spellcheck="false">' +
-          '<label class="ch-lbl" for="sl-app-token">APP-LEVEL TOKEN <span class="dim">— xapp-…, from Socket Mode</span></label>' +
+          '<label class="ch-lbl" for="sl-app-token">APP-LEVEL TOKEN <span class="dim">— xapp-…, de Socket Mode</span></label>' +
           '<input id="sl-app-token" type="password" class="key-input" placeholder="xapp-..." autocomplete="off" spellcheck="false">',
         read: (b) => {
           const bot = (b.querySelector('#sl-bot-token').value || '').trim();
@@ -105,43 +105,43 @@
           return { token: (bot && app) ? (bot + ' ' + app) : (bot || app) };   // combined secret; sidecar splits by prefix
         },
         clear: (b) => { b.querySelector('#sl-bot-token').value = ''; b.querySelector('#sl-app-token').value = ''; },
-        emptyMsg: 'paste BOTH Slack tokens first (xoxb-… and xapp-…)',
-        okMsg: '✓ connected — DM your Slack app' },
+        emptyMsg: 'pega AMBOS tokens de Slack primero (xoxb-… y xapp-…)',
+        okMsg: '✓ conectado — envía MD a tu app de Slack' },
 
       { id: 'matrix', title: 'MATRIX', pre: 'mx', accent: '#5bd18d',
-        tagline: 'Reach your agent from any Matrix client (Element, …) on any homeserver.',
+        tagline: 'Alcanza a tu agente desde cualquier cliente de Matrix (Element, …) en cualquier homeserver.',
         verb: 'syncing',
         steps: [
-          'Create a Matrix account for the agent (e.g. on <b>matrix.org</b> or your homeserver).',
-          'Get an <b>access token</b> for that account (Element: Settings → Help &amp; About → Advanced → Access Token).',
-          'Enter the homeserver URL + token below and connect, then invite the agent\'s account to a room from YOUR account and accept the invite once from any client.',
-          '<b>Pair your account.</b> StarNet shows a <code>pair</code> message with a one-time code. Send it in that room from YOUR account, exactly as shown. Until you do, the bot refuses every message.'
+          'Crea una cuenta de Matrix para el agente (p. ej. en <b>matrix.org</b> o tu homeserver).',
+          'Consigue un <b>access token</b> para esa cuenta (Element: Settings → Help &amp; About → Advanced → Access Token).',
+          'Introduce la URL del homeserver + el token abajo y conecta, luego invita a la cuenta del agente a una sala desde TU cuenta y acepta la invitación una vez desde cualquier cliente.',
+          '<b>Vincula tu cuenta.</b> StarNet muestra un mensaje <code>pair</code> con un código de un solo uso. Envíalo en esa sala desde TU cuenta, exactamente como aparece. Hasta que lo hagas, el bot rechaza todos los mensajes.'
         ],
-        note: 'Owner-locked: only the account that sends the one-time pair code can reach the agent — anyone else in a room is ignored.',
-        fieldsHtml: '<label class="ch-lbl" for="mx-endpoint">HOMESERVER URL <span class="dim">— e.g. https://matrix.org</span></label>' +
+        note: 'Bloqueado al propietario: solo la cuenta que envía el código de vinculación puede alcanzar al agente — cualquier otro en la sala se ignora.',
+        fieldsHtml: '<label class="ch-lbl" for="mx-endpoint">HOMESERVER URL <span class="dim">— p. ej. https://matrix.org</span></label>' +
           '<input id="mx-endpoint" type="text" class="key-input" placeholder="https://matrix.org" autocomplete="off" spellcheck="false">' +
-          '<label class="ch-lbl" for="mx-token">ACCESS TOKEN <span class="dim">— for the agent\'s Matrix account</span></label>' +
+          '<label class="ch-lbl" for="mx-token">ACCESS TOKEN <span class="dim">— de la cuenta Matrix del agente</span></label>' +
           '<input id="mx-token" type="password" class="key-input" placeholder="syt_..." autocomplete="off" spellcheck="false">',
         read: (b) => ({ token: (b.querySelector('#mx-token').value || '').trim(), endpoint: (b.querySelector('#mx-endpoint').value || '').trim() }),
         clear: (b) => { b.querySelector('#mx-token').value = ''; },
         prefill: (b, st) => { const e = b.querySelector('#mx-endpoint'); if (e && !e.value && st && st.endpoint) e.value = st.endpoint; },
         urlField: 'mx-endpoint', urlScheme: 'https',
-        emptyMsg: 'enter the homeserver URL and paste an access token first',
-        okMsg: '✓ connected — message the agent\'s Matrix account' },
+        emptyMsg: 'introduce primero la URL del homeserver y pega un access token',
+        okMsg: '✓ conectado — envía mensajes a la cuenta Matrix del agente' },
 
       { id: 'signal', title: 'SIGNAL', pre: 'sg', accent: '#6aa0ff', advanced: true,
-        tagline: 'Message your agent on Signal through a self-hosted signal-cli bridge.',
+        tagline: 'Envía mensajes a tu agente en Signal a través de un puente signal-cli autoalojado.',
         verb: 'receiving',
         steps: [
           'Start the bridge with Docker: <code>docker run -d --name signal-api -p 127.0.0.1:8080:8080 -v signal-api:/home/.local/share/signal-cli -e MODE=native bbernhard/signal-cli-rest-api</code>. Keep <code>MODE=native</code> (or <code>normal</code>); <code>json-rpc</code> mode cannot be polled.',
           'Link it to your own Signal: open <code>http://127.0.0.1:8080/v1/qrcodelink?device_name=starnet</code> and scan it from Signal → Settings → Linked devices. No second number needed. (A spare number registered on the bridge works too.)',
           'Enter the bridge URL and that number below, then connect.',
-          '<b>Pair your account.</b> StarNet shows a <code>pair</code> message with a one-time code. Linked to your own number: send it in <b>Note to Self</b>, and keep chatting there. Spare number: message that number from your Signal. Until you pair, the bot refuses every message.'
+          '<b>Vincula tu cuenta.</b> StarNet muestra un mensaje <code>pair</code> con un código de un solo uso. Enlazado a tu propio número: envíalo en <b>Note to Self</b> y sigue chateando ahí. Número de repuesto: envíale mensajes a ese número desde tu Signal. Hasta que te vincules, el bot rechaza todos los mensajes.'
         ],
-        note: 'No token needed — the bridge runs on your machine; keep it bound to localhost.',
-        fieldsHtml: '<label class="ch-lbl" for="sg-endpoint">SIGNAL-CLI REST URL <span class="dim">— e.g. http://127.0.0.1:8080</span></label>' +
+        note: 'No necesita token — el puente corre en tu máquina; déjalo enlazado a localhost.',
+        fieldsHtml: '<label class="ch-lbl" for="sg-endpoint">SIGNAL-CLI REST URL <span class="dim">— p. ej. http://127.0.0.1:8080</span></label>' +
           '<input id="sg-endpoint" type="text" class="key-input" placeholder="http://127.0.0.1:8080" autocomplete="off" spellcheck="false">' +
-          '<label class="ch-lbl" for="sg-account">SIGNAL NUMBER <span class="dim">— the number linked or registered on the bridge</span></label>' +
+          '<label class="ch-lbl" for="sg-account">NÚMERO DE SIGNAL <span class="dim">— el número enlazado o registrado en el puente</span></label>' +
           '<input id="sg-account" type="text" class="key-input" placeholder="+15551234567" autocomplete="off" spellcheck="false">',
         read: (b) => ({ endpoint: (b.querySelector('#sg-endpoint').value || '').trim(), account: (b.querySelector('#sg-account').value || '').trim() }),
         clear: () => {},
@@ -150,8 +150,8 @@
           const a = b.querySelector('#sg-account'); if (a && !a.value && st && st.account) a.value = st.account;
         },
         urlField: 'sg-endpoint', urlScheme: 'http',
-        emptyMsg: 'enter the bridge URL and your Signal number first',
-        okMsg: '✓ connected — chat in Note to Self (or message the spare number) on Signal' }
+        emptyMsg: 'introduce primero la URL del puente y tu número de Signal',
+        okMsg: '✓ conectado — chatea en Note to Self (o al número de repuesto) en Signal' }
     ];
 
     // ---- console shell (the SETTINGS layout): left platform rail, one pane per platform ----
@@ -166,65 +166,65 @@
       return mark ? '<span class="ch-logo" aria-hidden="true">' + mark + '</span>' : '';
     }
     const platformHints = {
-      telegram: 'Private messages · optional bot per agent',
-      discord: 'Private messages · requires a Discord bot',
-      slack: 'Private messages · requires a Slack app',
-      matrix: 'Room conversations · requires a bot account',
-      signal: 'Private messages · self-hosted bridge'
+      telegram: 'Mensajes privados · bot opcional por agente',
+      discord: 'Mensajes privados · requiere un bot de Discord',
+      slack: 'Mensajes privados · requiere una app de Slack',
+      matrix: 'Conversaciones en salas · requiere una cuenta de bot',
+      signal: 'Mensajes privados · puente autoalojado'
     };
     const overviewHtml =
       (typeof Tutorial !== 'undefined' && Tutorial.platformGuideHTML ? Tutorial.platformGuideHTML('messaging') : '') +
-      '<div class="ch-intro"><h3>Chat with your agents anywhere</h3>' +
-        '<p>Connect a messaging app to the same agents, memory, tools, and workspace you use here.</p></div>' +
-      '<div class="ch-sum"><div class="ch-bots-head">Choose an app <span class="dim">Setup instructions included</span></div>' +
+      '<div class="ch-intro"><h3>Chatea con tus agentes donde estés</h3>' +
+        '<p>Conecta una app de mensajería a los mismos agentes, memoria, tools y workspace que usas aquí.</p></div>' +
+      '<div class="ch-sum"><div class="ch-bots-head">Elige una app <span class="dim">Incluye instrucciones de setup</span></div>' +
         CHANNEL_CATALOG.map(c =>
           '<button type="button" class="ch-sum-row" data-ch="' + c.id + '">' +
             channelLogo(c.id) + '<span class="ch-sum-copy"><span class="ch-sum-t">' + c.title + '</span>' +
               '<span class="ch-sum-help">' + platformHints[c.id] + '</span></span>' +
-            '<span class="ch-state st-off" id="' + c.pre + '-sum">checking…</span><span class="ch-sum-arrow" aria-hidden="true">›</span>' +
+            '<span class="ch-state st-off" id="' + c.pre + '-sum">comprobando…</span><span class="ch-sum-arrow" aria-hidden="true">›</span>' +
           '</button>').join('') +
       '</div>' +
       '<div class="ch-preferences"><label class="set-row ch-optin"><span class="ch-optin-copy">' +
-        '<span class="ch-optin-t">Send completed-work updates</span>' +
-        '<span class="ch-optin-d dim">When autonomous work produces a result, notify me on every connected channel.</span></span>' +
+        '<span class="ch-optin-t">Avisos de trabajo terminado</span>' +
+        '<span class="ch-optin-d dim">Cuando el trabajo autónomo produzca un resultado, avísame en cada canal conectado.</span></span>' +
         '<input type="checkbox" id="ch-notify"></label><div id="ch-notify-msg" class="msg"></div></div>' +
-      '<p class="ch-headless"><b>Keep StarNet running.</b> You can close this window. Messages sent while the station app is fully off are not processed; you receive an "I was offline" note instead.</p>';
+      '<p class="ch-headless"><b>Mantén StarNet en marcha.</b> Puedes cerrar esta ventana. Los mensajes enviados con la app de la estación completamente apagada no se procesan; recibes una nota de "estaba offline" en su lugar.</p>';
     function cardHtml(c) {
       return '<div class="ch-card" id="ch-card-' + c.id + '" style="--accent:' + c.accent + '">' +
           '<div class="ch-head">' +
             '<div class="ch-id">' +
-              (c.advanced ? '<span class="ch-adv">SELF-HOSTED BRIDGE</span>' : '') +
+              (c.advanced ? '<span class="ch-adv">PUENTE AUTOALOJADO</span>' : '') +
               '<span class="ch-answers" id="' + c.pre + '-answers"></span>' +
             '</div>' +
-            '<span class="ch-state" id="' + c.pre + '-status">checking…</span>' +
+            '<span class="ch-state" id="' + c.pre + '-status">comprobando…</span>' +
           '</div>' +
           '<p class="set-about ch-tagline">' + c.tagline + '</p>' +
           // OPEN by default: the steps are the whole point of a card nobody has set up yet, and a folded
           // <details> hides them at exactly the moment they are needed. paintCard folds it once this
           // platform is actually configured (and never again after the Commander toggles it by hand).
-          '<details class="ch-setup" open data-autofold="1"><summary>SETUP GUIDE</summary>' +
+          '<details class="ch-setup" open data-autofold="1"><summary>GUÍA DE SETUP</summary>' +
             '<ol class="ch-steps"><li>' + c.steps.join('</li><li>') + '</li></ol>' +
             (c.note ? '<p class="ch-note">' + c.note + '</p>' : '') +
           '</details>' +
-          '<section class="ch-connection"><h3 class="ch-section-title">Connection details</h3>' + c.fieldsHtml +
+          '<section class="ch-connection"><h3 class="ch-section-title">Detalles de conexión</h3>' + c.fieldsHtml +
           '<div class="set-save">' +
-            '<button class="bb sm" id="' + c.pre + '-connect">⏼ CONNECT</button> ' +
-            '<button class="bb sm danger" id="' + c.pre + '-disconnect" style="display:none">⏏ DISCONNECT</button> ' +
-            '<button class="bb xs danger" id="' + c.pre + '-forget" style="display:none" title="' + (c.id === 'signal' ? 'removes the saved bridge URL and Signal number from this machine' : 'permanently deletes the saved token from this machine (record + OS keychain) — you’d have to set it up again') + '">' + (c.id === 'signal' ? '✕ REMOVE CONFIGURATION' : '⌫ FORGET') + '</button>' +
+            '<button class="bb sm" id="' + c.pre + '-connect">⏼ CONECTAR</button> ' +
+            '<button class="bb sm danger" id="' + c.pre + '-disconnect" style="display:none">⏏ DESCONECTAR</button> ' +
+            '<button class="bb xs danger" id="' + c.pre + '-forget" style="display:none" title="' + (c.id === 'signal' ? 'elimina la URL del puente y el número de Signal guardados en esta máquina' : 'borra para siempre el token guardado de esta máquina (registro + keychain del SO) — tendrías que configurarlo de nuevo') + '">' + (c.id === 'signal' ? '✕ QUITAR CONFIGURACIÓN' : '⌫ OLVIDAR') + '</button>' +
           '</div>' +
           '<div id="' + c.pre + '-msg" class="msg"></div>' +
           '</section>' + (c.extraHtml || '') +
           (c.id === 'telegram' ? '' :
             '<div class="ch-bots" id="' + c.pre + '-owner">' +
-              '<div class="ch-bots-head">Pair your account <span class="dim" id="' + c.pre + '-owner-state">not paired</span></div>' +
-              '<p class="ch-note">Pairing tells the bot which account is yours; every other sender is ignored. The code expires after 10 minutes.</p>' +
-              '<div class="set-save"><button class="bb xs" id="' + c.pre + '-owner-pair" style="display:none">PAIR OWNER</button></div>' +
+              '<div class="ch-bots-head">Vincula tu cuenta <span class="dim" id="' + c.pre + '-owner-state">sin vincular</span></div>' +
+              '<p class="ch-note">La vinculación le dice al bot qué cuenta es la tuya; cualquier otro emisor se ignora. El código caduca en 10 minutos.</p>' +
+              '<div class="set-save"><button class="bb xs" id="' + c.pre + '-owner-pair" style="display:none">VINCULAR PROPIETARIO</button></div>' +
             '</div>') +
         '</div>';
     }
     // Real platform marks share the station theme and stay decorative beside the text labels.
     mountConsole(body, 'messaging', [
-      { id: 'overview', label: 'OVERVIEW', build: (pane) => { pane.innerHTML = overviewHtml; } }
+      { id: 'overview', label: 'RESUMEN', build: (pane) => { pane.innerHTML = overviewHtml; } }
     ].concat(CHANNEL_CATALOG.map(c => ({
       id: c.id, label: c.title, glyph: channelLogo(c.id),
       build: (pane) => { pane.innerHTML = cardHtml(c); }
@@ -256,12 +256,12 @@
     const pairingInstruction = {};
     const savedPlaceholder = {};
     // Signal has no bot account on the recommended linked-device path: the pair message goes in Note to Self
-    const signalPair = code => 'To activate DMs, send this exact message in Note to Self (bridge linked to your number) or to the bridge\'s spare number: pair ' + code + ' (expires in 10 minutes).';
+    const signalPair = code => 'Para activar los MD, envía este mensaje exacto en Note to Self (puente enlazado a tu número) o al número de repuesto del puente: pair ' + code + ' (caduca en 10 minutos).';
     function pairInstruction(c, code) {
       if (c.id === 'signal') return signalPair(code);
       return c.id === 'telegram'
-        ? 'Telegram poller starting. To activate DMs, send this exact message to your bot: /pair ' + code + ' (expires in 10 minutes).'
-        : 'To activate DMs, send this exact message to your ' + c.title + ' bot from your own account: pair ' + code + ' (expires in 10 minutes).';
+        ? 'Arrancando el sondeo de Telegram. Para activar los MD, envía este mensaje exacto a tu bot: /pair ' + code + ' (caduca en 10 minutos).'
+        : 'Para activar los MD, envía este mensaje exacto a tu bot de ' + c.title + ' desde tu propia cuenta: pair ' + code + ' (caduca en 10 minutos).';
     }
 
     // status-line colour by state as a CLASS (never inline el.style.color — truthful-telemetry palette lives in css).
@@ -281,7 +281,7 @@
     function noAnswerText(e, fallback) {
       const raw = String((e && e.message) || '');
       if (!raw) return fallback;
-      if (/failed to fetch|networkerror|load failed/i.test(raw)) return 'StarNet did not answer this request (the connection dropped) — try again; if it keeps happening, restart StarNet';
+      if (/failed to fetch|networkerror|load failed/i.test(raw)) return 'StarNet no respondió a esta petición (la conexión se cayó) — reintenta; si sigue pasando, reinicia StarNet';
       return raw;
     }
 
@@ -298,17 +298,17 @@
         row.dataset.bot = String(bItem.botId || '');
         const name = document.createElement('span');
         name.className = 'tg-bot-name';
-        name.textContent = (bItem.username ? '@' + bItem.username : 'bot ' + bItem.botId) + ' → ' + (bItem.agentName || bItem.agentId || '?');
+        name.textContent = (bItem.username ? '@' + bItem.username : 'bot ' + bItem.botId) + ' → ' + (bItem.agentName || bItem.agentId || '?'); // nombre del bot → agente
         const state = document.createElement('span');
         const inFlight = !bItem.connected && (bItem.state === 'connecting' || bItem.state === 'reconnecting');
         const deliveryDown = !!(bItem.delivery && bItem.delivery.state === 'down');
         const runBlocked = bItem.runReady === false;
         state.className = 'ch-state ' + ((deliveryDown || runBlocked) ? 'st-err' : pairingBlocked ? 'st-wait' : stateClass(bItem.connected, inFlight, bItem.state, bItem.configured));
-        state.textContent = runBlocked ? ('✕ replies blocked · ' + (bItem.runDetail || 'agent model unavailable')) : deliveryDown ? '✕ replies blocked · polling' : pairingBlocked ? '◐ polling · pair owner' : acceptingDms ? '● connected' : inFlight ? '◐ connecting…'
-          : bItem.state === 'error' ? ('✕ ' + (bItem.detail || 'error')) : (bItem.enabled === false ? '○ off' : '○ offline');
-        if (bItem.ownerLocked) state.title = 'owner-locked';
-        if (runBlocked) state.title = 'Telegram transport may be polling, but this agent cannot run: ' + (bItem.runDetail || 'provider/model unavailable');
-        if (bItem.delivery && bItem.delivery.state === 'down') state.title = 'outbound delivery degraded' + (bItem.delivery.detail ? ': ' + bItem.delivery.detail : '');
+        state.textContent = runBlocked ? ('✕ respuestas bloqueadas · ' + (bItem.runDetail || 'modelo del agente no disponible')) : deliveryDown ? '✕ respuestas bloqueadas · sondeo' : pairingBlocked ? '◐ sondeo · vincular propietario' : acceptingDms ? '● conectado' : inFlight ? '◐ conectando…'
+          : bItem.state === 'error' ? ('✕ ' + (bItem.detail || 'error')) : (bItem.enabled === false ? '○ apagado' : '○ offline');
+        if (bItem.ownerLocked) state.title = 'bloqueado al propietario';
+        if (runBlocked) state.title = 'El transporte de Telegram puede estar sondeando, pero este agente no puede ejecutarse: ' + (bItem.runDetail || 'proveedor/modelo no disponible');
+        if (bItem.delivery && bItem.delivery.state === 'down') state.title = 'envío saliente degradado' + (bItem.delivery.detail ? ': ' + bItem.delivery.detail : '');
         if (bItem.warning) state.textContent += ' ⚠ ' + bItem.warning;
         row.appendChild(name); row.appendChild(state);
         const btn = (label, act, danger) => {
@@ -316,11 +316,11 @@
           b.className = 'bb xs' + (danger ? ' danger' : ''); b.textContent = label; b.dataset.act = act; b.dataset.bot = String(bItem.botId || '');
           row.appendChild(b); return b;
         };
-        if (!bItem.ownerLocked) btn('PAIR', 'pair', false).title = 'issue a local owner pairing code for this bot';
-        else btn('UNPAIR', 'revokeOwner', true).title = 'revoke this bot owner locally';
-        if (!bItem.connected && bItem.configured) btn('⏵', 'resume', false).title = 'reconnect this bot';
-        if (bItem.connected || bItem.enabled !== false) btn('⏏', 'off', false).title = 'disconnect (token kept)';
-        btn('⌫', 'forget', true).title = 'forget this bot — removes its saved token';
+        if (!bItem.ownerLocked) btn('VINCULAR', 'pair', false).title = 'emite un código de vinculación local para este bot';
+        else btn('REVOCAR', 'revokeOwner', true).title = 'revoca localmente el propietario de este bot';
+        if (!bItem.connected && bItem.configured) btn('⏵', 'resume', false).title = 'reconecta este bot';
+        if (bItem.connected || bItem.enabled !== false) btn('⏏', 'off', false).title = 'desconectar (el token se guarda)';
+        btn('⌫', 'forget', true).title = 'olvida este bot — elimina su token guardado';
         list.appendChild(row);
       }
       const wrap = body.querySelector('#tg-bots');
@@ -339,12 +339,12 @@
       const pairingBlocked = conn && !(st && st.acceptingDms === true);
       configuredById[c.id] = configured;
       el.className = 'ch-state ' + (pairingBlocked ? 'st-wait' : stateClass(conn, inFlight, state, configured));
-      el.textContent = pairingBlocked ? (c.id === 'telegram' ? '◐ POLLING — DMs BLOCKED: PAIR OWNER' : '◐ ' + c.verb.toUpperCase() + ' — DMs BLOCKED: PAIR OWNER')
-        : conn ? ('● CONNECTED — ' + c.verb + (state && state !== 'up' ? ' (' + state + ')' : ''))
-        : inFlight ? ('◐ ' + (state === 'reconnecting' ? 'reconnecting' : 'connecting') + '…' + (st.detail ? ' — ' + st.detail : ''))
+      el.textContent = pairingBlocked ? (c.id === 'telegram' ? '◐ SONDEANDO — MD BLOQUEADOS: VINCULAR PROPIETARIO' : '◐ ' + c.verb.toUpperCase() + ' — MD BLOQUEADOS: VINCULAR PROPIETARIO')
+        : conn ? ('● CONECTADO — ' + c.verb + (state && state !== 'up' ? ' (' + state + ')' : ''))
+        : inFlight ? ('◐ ' + (state === 'reconnecting' ? 'reconectando' : 'conectando') + '…' + (st.detail ? ' — ' + st.detail : ''))
         : state === 'error' ? ('✕ error' + (st.detail ? ' — ' + st.detail : '') + (c.errHint || ''))
-        : configured ? ('○ saved but offline — RESUME to reconnect' + (st.detail ? ' — ' + st.detail : ''))
-        : '○ not connected';
+        : configured ? ('○ guardado pero offline — RETOMAR para reconectar' + (st.detail ? ' — ' + st.detail : ''))
+        : '○ no conectado';
       // a standing backend warning (e.g. the owner binding failed to persist) rides EVERY state — real risk
       // the Commander must see, straight from channelStatusPayload (self-heals server-side once the disk agrees).
       if (st && st.warning) el.textContent += ' ⚠ ' + st.warning;
@@ -354,8 +354,8 @@
       const sum = body.querySelector('#' + c.pre + '-sum');
       if (sum) {
         sum.className = 'ch-state ' + (pairingBlocked ? 'st-wait' : stateClass(conn, inFlight, state, configured));
-        sum.textContent = pairingBlocked ? '◐ ' + c.verb + ' — pair owner' : conn ? '● connected' : inFlight ? '◐ connecting…'
-          : state === 'error' ? '✕ error' : configured ? '○ saved — offline' : '○ not connected';
+        sum.textContent = pairingBlocked ? '◐ ' + c.verb + ' — vincular propietario' : conn ? '● conectado' : inFlight ? '◐ conectando…'
+          : state === 'error' ? '✕ error' : configured ? '○ guardado — offline' : '○ no conectado';
       }
       // SETUP GUIDE auto-fold — keyed off `configured` (a real saved config), never off `conn`: a platform
       // that is saved-but-offline is set up, while a cold card still needs its steps in front of the user.
@@ -378,9 +378,9 @@
       if (ans) {
         const nm = (st && st.agentName || '').trim();
         const bits = [];
-        if ((conn || configured) && nm) bits.push((pairingBlocked ? 'WILL ANSWER AS: ' : 'ANSWERS AS: ') + nm);
-        if (st && st.ownerLocked) bits.push('owner-locked ✓');
-        if (c.id === 'telegram' && st && st.delivery && st.delivery.state === 'down') bits.push('OUTBOUND DEGRADED: ' + (st.delivery.detail || 'send failed'));
+        if ((conn || configured) && nm) bits.push((pairingBlocked ? 'RESPONDERÁ COMO: ' : 'RESPONDE COMO: ') + nm);
+        if (st && st.ownerLocked) bits.push('bloqueado al propietario ✓');
+        if (c.id === 'telegram' && st && st.delivery && st.delivery.state === 'down') bits.push('SALIDA DEGRADADA: ' + (st.delivery.detail || 'fallo de envío'));
         ans.textContent = bits.join('  ·  ');
         ans.style.display = bits.length ? '' : 'none';
       }
@@ -392,15 +392,15 @@
       const fBtn = body.querySelector('#' + c.pre + '-forget');
       if (cBtn) {
         cBtn.disabled = inFlight;
-        cBtn.textContent = inFlight ? '◐ CONNECTING…' : (configured && !conn ? '⏵ RESUME' : '⏼ CONNECT');
+        cBtn.textContent = inFlight ? '◐ CONECTANDO…' : (configured && !conn ? '⏵ RETOMAR' : '⏼ CONECTAR');
       }
-      if (dBtn) { dBtn.style.display = (conn || configured) ? '' : 'none'; if (!(conn || configured)) disarm(c.pre + '-disconnect', dBtn, '⏏ DISCONNECT'); }
-      if (fBtn) { fBtn.style.display = configured ? '' : 'none'; if (!configured) disarm(c.pre + '-forget', fBtn, c.id === 'signal' ? '✕ REMOVE CONFIGURATION' : '⌫ FORGET'); }
+      if (dBtn) { dBtn.style.display = (conn || configured) ? '' : 'none'; if (!(conn || configured)) disarm(c.pre + '-disconnect', dBtn, '⏏ DESCONECTAR'); }
+      if (fBtn) { fBtn.style.display = configured ? '' : 'none'; if (!configured) disarm(c.pre + '-forget', fBtn, c.id === 'signal' ? '✕ QUITAR CONFIGURACIÓN' : '⌫ OLVIDAR'); }
 
       // saved-but-offline: swap the password placeholder to a non-echoing hint (never render the secret).
       body.querySelectorAll('#ch-card-' + c.id + ' input[type=password]').forEach(inp => {
         if (savedPlaceholder[inp.id] == null) savedPlaceholder[inp.id] = inp.getAttribute('placeholder') || '';
-        inp.placeholder = (configured && !inp.value) ? '•••• saved — paste to replace' : savedPlaceholder[inp.id];
+        inp.placeholder = (configured && !inp.value) ? '•••• guardado — pega para reemplazar' : savedPlaceholder[inp.id];
       });
 
       if (c.id === 'telegram') {
@@ -410,17 +410,17 @@
         const revokeBtn = body.querySelector('#tg-owner-revoke');
         const ownerLocked = !!(st && st.ownerLocked);
         const pairingActive = !!(st && st.ownerPairingActive);
-        if (ownerState) ownerState.textContent = ownerLocked ? 'owner paired'
-          : pairingActive ? 'pairing code active - awaiting /pair' : 'not paired';
+        if (ownerState) ownerState.textContent = ownerLocked ? 'propietario vinculado'
+          : pairingActive ? 'código de vinculación activo — esperando /pair' : 'sin vincular';
         if (pairBtn) { pairBtn.style.display = configured && !ownerLocked ? '' : 'none'; pairBtn.disabled = !configured; }
-        if (revokeBtn) { revokeBtn.style.display = ownerLocked ? '' : 'none'; if (!ownerLocked) disarm('tg-owner-revoke', revokeBtn, 'REVOKE OWNER'); }
+        if (revokeBtn) { revokeBtn.style.display = ownerLocked ? '' : 'none'; if (!ownerLocked) disarm('tg-owner-revoke', revokeBtn, 'REVOCAR PROPIETARIO'); }
         const msgEl = body.querySelector('#tg-msg');
         if (ownerLocked && pairingInstruction.telegram) {
           delete pairingInstruction.telegram;
-          setMsg(msgEl, '✓ owner paired — Telegram is connected and accepting DMs', 'ok');
+          setMsg(msgEl, '✓ propietario vinculado — Telegram está conectado y acepta MD', 'ok');
         } else if (!ownerLocked && !pairingActive && pairingInstruction.telegram) {
           delete pairingInstruction.telegram;
-          setMsg(msgEl, 'pairing code expired — click PAIR OWNER for a fresh one', 'info');
+          setMsg(msgEl, 'código de vinculación caducado — pulsa VINCULAR PROPIETARIO para uno nuevo', 'info');
         }
       }
 
@@ -429,11 +429,11 @@
         const pairBtn = body.querySelector('#' + c.pre + '-owner-pair');
         const ownerLocked = !!(st && st.ownerLocked);
         const pairingActive = !!(st && st.ownerPairingActive);
-        if (ownerState) ownerState.textContent = ownerLocked ? 'owner paired' : pairingActive ? 'pairing code active - awaiting pair message' : 'not paired';
+        if (ownerState) ownerState.textContent = ownerLocked ? 'propietario vinculado' : pairingActive ? 'código de vinculación activo — esperando el mensaje pair' : 'sin vincular';
         if (pairBtn) { pairBtn.style.display = configured && !ownerLocked ? '' : 'none'; pairBtn.disabled = !configured; }
         const oMsg = body.querySelector('#' + c.pre + '-msg');
-        if (ownerLocked && pairingInstruction[c.id]) { delete pairingInstruction[c.id]; setMsg(oMsg, '✓ owner paired — ' + c.title + ' is connected and accepting DMs', 'ok'); }
-        else if (!ownerLocked && !pairingActive && pairingInstruction[c.id]) { delete pairingInstruction[c.id]; setMsg(oMsg, 'pairing code expired — click PAIR OWNER for a fresh one', 'info'); }
+        if (ownerLocked && pairingInstruction[c.id]) { delete pairingInstruction[c.id]; setMsg(oMsg, '✓ propietario vinculado — ' + c.title + ' está conectado y acepta MD', 'ok'); }
+        else if (!ownerLocked && !pairingActive && pairingInstruction[c.id]) { delete pairingInstruction[c.id]; setMsg(oMsg, 'código de vinculación caducado — pulsa VINCULAR PROPIETARIO para uno nuevo', 'info'); }
       }
 
       // finalize a pending connect's MESSAGE from the proven status (not the optimistic POST body).
@@ -441,13 +441,13 @@
         const msgEl = body.querySelector('#' + c.pre + '-msg');
         if (conn) {
           if (!(st && st.acceptingDms === true)) {
-            setMsg(msgEl, pairingInstruction[c.id] || (c.id === 'telegram' ? 'Telegram is polling, but DMs stay blocked until you click PAIR OWNER and send the /pair command.' : c.title + ' is connected, but DMs stay blocked until you click PAIR OWNER and send the pair message.'), 'info');
+            setMsg(msgEl, pairingInstruction[c.id] || (c.id === 'telegram' ? 'Telegram está sondeando, pero los MD siguen bloqueados hasta que pulses VINCULAR PROPIETARIO y envíes el comando /pair.' : c.title + ' está conectado, pero los MD siguen bloqueados hasta que pulses VINCULAR PROPIETARIO y envíes el mensaje pair.'), 'info');
           } else setMsg(msgEl, c.okMsg, 'ok');
           delete pendingConnect[c.id];
           // first-steps: only ticked on the PROVEN round-trip (this branch), never on the optimistic POST.
           try { if (typeof Tutorial !== 'undefined' && Tutorial.tickBrief) Tutorial.tickBrief('channel'); } catch (_) {}
         }
-        else if (state === 'error') { setMsg(msgEl, '✕ ' + ((st && st.detail) || 'connection failed') + (c.errHint || ''), ''); delete pendingConnect[c.id]; }
+        else if (state === 'error') { setMsg(msgEl, '✕ ' + ((st && st.detail) || 'falló la conexión') + (c.errHint || ''), ''); delete pendingConnect[c.id]; }
         // else still 'connecting' — leave the neutral connecting… line until the transport proves one way or the other.
       }
     }
@@ -471,7 +471,7 @@
         const nb = body.querySelector('#ch-notify'); if (nb) nb.checked = notifyOn;
         // notify is on but nothing is connected → it can never fire; say so honestly (don't imply pings will arrive).
         const nMsg = body.querySelector('#ch-notify-msg');
-        if (notifyOn && !anyConnected) { setMsg(nMsg, 'no channel connected yet — connect one below so these pings have somewhere to go', 'info'); zeroChannelHintShown = true; }
+        if (notifyOn && !anyConnected) { setMsg(nMsg, 'aún no hay ningún canal conectado — conecta uno abajo para que estos avisos tengan dónde ir', 'info'); zeroChannelHintShown = true; }
         else if (zeroChannelHintShown) { setMsg(nMsg, '', 'info'); zeroChannelHintShown = false; }
       } catch (_) {
         for (const c of CHANNEL_CATALOG) {
@@ -480,7 +480,7 @@
           const dot = body.querySelector('#' + c.pre + '-dot');
           if (dot) dot.className = 'ch-rail-dot st-off';
           const sum = body.querySelector('#' + c.pre + '-sum');
-          if (sum) { sum.className = 'ch-state st-off'; sum.textContent = '○ sidecar offline'; }
+          if (sum) { sum.className = 'ch-state st-off'; sum.textContent = '○ sidecar offline'; } // sidecar: anglicismo
           configuredById[c.id] = false;
         }
       }
@@ -525,7 +525,7 @@
           const inp = body.querySelector('#' + c.urlField);
           if (inp && inp.value.trim()) {
             const norm = normalizeUrl(inp.value, c.urlScheme);
-            if (!norm) { sfx('bad'); setMsg(msgEl, '✕ that doesn\'t look like a URL — e.g. ' + inp.getAttribute('placeholder'), ''); return; }
+            if (!norm) { sfx('bad'); setMsg(msgEl, '✕ no parece una URL — p. ej. ' + inp.getAttribute('placeholder'), ''); return; }
             inp.value = norm;
           }
         }
@@ -541,16 +541,16 @@
         const hasStoredKey = !!(typeof Harness !== 'undefined' && Harness.configured && Harness.configured(provider));
         const model = (typeof Harness !== 'undefined' && Harness.getModel()) || '';
         if (!model || (!usingCodex && !key && !hasStoredKey)) {
-          sfx('bad'); setMsg(msgEl, '✕ connect your agent\'s provider + model in SETTINGS first', '');
+          sfx('bad'); setMsg(msgEl, '✕ configura primero el proveedor + modelo de tu agente en AJUSTES', '');
           // deep-link door: land Settings on PROVIDERS so a beginner can fix it in one hop (pattern: openTerm section).
-          const link = document.createElement('button'); link.className = 'ch-door'; link.textContent = 'open SETTINGS → AI & MODELS';
+          const link = document.createElement('button'); link.className = 'ch-door'; link.textContent = 'abrir AJUSTES → IA Y MODELOS';
           link.addEventListener('click', () => { try { openTerm('settings', 'providers'); } catch (_) {} });
           msgEl.appendChild(document.createTextNode(' ')); msgEl.appendChild(link);
           return;
         }
         const ident = agentIdentity();
         pendingConnect[c.id] = true;
-        setMsg(msgEl, 'connecting… — watch the status above for the verified result', 'info');
+        setMsg(msgEl, 'conectando… — observa el estado de arriba para el resultado verificado', 'info');
         try {
           // Desktop: park the secret in the OS keychain (via Tauri), then connect WITHOUT sending it over HTTP —
           // the sidecar reads it from the keychain-injected runtime layer. Browser: storeChannelToken is a no-op
@@ -575,12 +575,12 @@
               pairingInstruction[c.id] = pairInstruction(c, j.pairingCode);
               setMsg(msgEl, pairingInstruction[c.id], 'info');
             } else if (j.pairingRequired) {
-              setMsg(msgEl, c.title + ' is starting, but DMs are blocked: ' + (j.pairingError || 'click PAIR OWNER to issue a pairing command.'), 'info');
-            } else if (localFallback) setMsg(msgEl, 'connecting… (token saved locally, not the OS keychain)', 'info');
+              setMsg(msgEl, c.title + ' está arrancando, pero los MD están bloqueados: ' + (j.pairingError || 'pulsa VINCULAR PROPIETARIO para emitir un comando de vinculación.'), 'info');
+            } else if (localFallback) setMsg(msgEl, 'conectando… (token guardado localmente, no en el keychain del SO)', 'info');
             sfx('click');
             try { c.clear(body); } catch (_) {}
           }
-        } catch (e) { delete pendingConnect[c.id]; setMsg(msgEl, '✕ ' + noAnswerText(e, 'failed to reach the sidecar'), ''); sfx('bad'); }
+        } catch (e) { delete pendingConnect[c.id]; setMsg(msgEl, '✕ ' + noAnswerText(e, 'no se pudo llegar al sidecar'), ''); sfx('bad'); }
         refreshAll();
       });
       // DISCONNECT — armed (2s) so a stray click can't drop a live channel; never fires on a never-connected card
@@ -589,13 +589,13 @@
       const dBtn = body.querySelector('#' + c.pre + '-disconnect');
       dBtn.addEventListener('click', () => {
         if (!(configuredById[c.id])) { return; }   // nothing to disconnect — no lie, no request
-        armed(c.pre + '-disconnect', dBtn, '⏏ DISCONNECT', '⏏ CONFIRM DISCONNECT', async () => {
+        armed(c.pre + '-disconnect', dBtn, '⏏ DESCONECTAR', '⏏ CONFIRMAR DESCONECTAR', async () => {
           try {
             const r = await Harness.api.post('/api/channels/' + c.id + '/disconnect', {});
             const j = r.j;
-            if (!r.ok || !j || j.connected !== false || j.persisted !== true) throw new Error((j && j.error) || 'disconnect was not durably confirmed — refresh and retry');
-            setMsg(msgEl, 'disconnected — token kept; RESUME to reconnect', 'info'); sfx('click');
-          } catch (e) { setMsg(msgEl, '✕ ' + noAnswerText(e, 'could not confirm disconnect'), ''); }
+            if (!r.ok || !j || j.connected !== false || j.persisted !== true) throw new Error((j && j.error) || 'la desconexión no quedó confirmada — actualiza y reintenta');
+            setMsg(msgEl, 'desconectado — token guardado; RETOMAR para reconectar', 'info'); sfx('click');
+          } catch (e) { setMsg(msgEl, '✕ ' + noAnswerText(e, 'no se pudo confirmar la desconexión'), ''); }
           refreshAll();
         });
       });
@@ -605,8 +605,8 @@
       const fBtn = body.querySelector('#' + c.pre + '-forget');
       fBtn.addEventListener('click', () => {
         if (!(configuredById[c.id])) { return; }
-        const removeLabel = c.id === 'signal' ? '✕ REMOVE CONFIGURATION' : '⌫ FORGET';
-        const confirmRemoveLabel = c.id === 'signal' ? '✕ CONFIRM REMOVE' : '⌫ CONFIRM FORGET';
+        const removeLabel = c.id === 'signal' ? '✕ QUITAR CONFIGURACIÓN' : '⌫ OLVIDAR';
+        const confirmRemoveLabel = c.id === 'signal' ? '✕ CONFIRMAR QUITAR' : '⌫ CONFIRMAR OLVIDAR';
         armed(c.pre + '-forget', fBtn, removeLabel, confirmRemoveLabel, async () => {
           try {
             // Signal has no token. Its destructive action removes the actual durable configuration — endpoint,
@@ -615,12 +615,12 @@
               const r = await Harness.api.post('/api/channels/signal/disconnect', { purge: true });
               const j = r.j || {};
               if (j.removedConfiguration) {
-                setMsg(msgEl, 'configuration removed — Signal is no longer configured on this machine', 'info');
+                setMsg(msgEl, 'configuración eliminada — Signal ya no está configurado en esta máquina', 'info');
                 const endpoint = body.querySelector('#sg-endpoint'); if (endpoint) endpoint.value = '';
                 const account = body.querySelector('#sg-account'); if (account) account.value = '';
                 sfx('click');
               } else if (!r.ok || j.error) { setMsg(msgEl, '✕ ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); }
-              else { setMsg(msgEl, '⚠ removal incomplete — could not prove the Signal configuration left disk; try again', ''); sfx('bad'); }
+              else { setMsg(msgEl, '⚠ eliminación incompleta — no se pudo demostrar que la configuración de Signal salió del disco; reintenta', ''); sfx('bad'); }
               refreshAll();
               return;
             }
@@ -635,15 +635,15 @@
             const j = r.j || {};
             // truthful telemetry: "purged" is a DESTRUCTION claim — assert it only from the backend's
             // read-back-proven bit (j.purged) plus the keychain result, never from the click itself.
-            if (j.purged && kcCleared) { setMsg(msgEl, 'forgotten — the stored token was purged', 'info'); sfx('click'); try { c.clear(body); } catch (_) {} }
+            if (j.purged && kcCleared) { setMsg(msgEl, 'olvidado — el token guardado fue purgado', 'info'); sfx('click'); try { c.clear(body); } catch (_) {} }
             else if (!r.ok || j.error) { setMsg(msgEl, '✕ ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); }
             else {
               const where = [];
-              if (!j.purged) where.push('the saved record');
-              if (!kcCleared) where.push('the OS keychain');
-              setMsg(msgEl, '⚠ forget incomplete — could not prove the token left ' + where.join(' or ') + '; try again', ''); sfx('bad');
+              if (!j.purged) where.push('el registro guardado');
+              if (!kcCleared) where.push('el keychain del SO');
+              setMsg(msgEl, '⚠ olvido incompleto — no se pudo demostrar que el token salió de ' + where.join(' o ') + '; reintenta', ''); sfx('bad');
             }
-          } catch (_) { setMsg(msgEl, '✕ could not reach the sidecar', ''); }
+          } catch (_) { setMsg(msgEl, '✕ no se pudo llegar al sidecar', ''); }
           refreshAll();
         });
       });
@@ -663,11 +663,11 @@
         try {
           const r = await Harness.api.post('/api/channels/' + c.id + '/owner/pair', {});
           const j = r.j || {};
-          if (!r.ok || j.error || !j.code) { setMsg(msgEl, 'could not issue a pairing code: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); return; }
-          pairingInstruction[c.id] = c.id === 'signal' ? signalPair(j.code) : 'DM your ' + c.title + ' bot from your own account: pair ' + j.code + ' (code expires in 10 minutes).';
+          if (!r.ok || j.error || !j.code) { setMsg(msgEl, 'no se pudo emitir un código de vinculación: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); return; }
+          pairingInstruction[c.id] = c.id === 'signal' ? signalPair(j.code) : 'Envía MD a tu bot de ' + c.title + ' desde tu propia cuenta: pair ' + j.code + ' (el código caduca en 10 minutos).';
           setMsg(msgEl, pairingInstruction[c.id], 'info');
           sfx('click'); refreshAll();
-        } catch (_) { setMsg(msgEl, 'could not reach the sidecar', ''); sfx('bad'); }
+        } catch (_) { setMsg(msgEl, 'no se pudo llegar al sidecar', ''); sfx('bad'); }
       });
     }
 
@@ -681,19 +681,19 @@
         try {
           const r = await Harness.api.post('/api/channels/telegram/owner/pair', {});
           const j = r.j || {};
-          if (!r.ok || j.error || !j.code) { setMsg(msgEl, 'could not issue a pairing code: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); return; }
-          pairingInstruction.telegram = 'In Telegram, DM this bot: /pair ' + j.code + ' (code expires in 10 minutes).';
+          if (!r.ok || j.error || !j.code) { setMsg(msgEl, 'no se pudo emitir un código de vinculación: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); return; }
+          pairingInstruction.telegram = 'En Telegram, envía MD a este bot: /pair ' + j.code + ' (el código caduca en 10 minutos).';
           setMsg(msgEl, pairingInstruction.telegram, 'info');
           sfx('click'); refreshAll();
-        } catch (_) { setMsg(msgEl, 'could not reach the sidecar', ''); sfx('bad'); }
+        } catch (_) { setMsg(msgEl, 'no se pudo llegar al sidecar', ''); sfx('bad'); }
       });
-      revokeBtn.addEventListener('click', () => armed('tg-owner-revoke', revokeBtn, 'REVOKE OWNER', 'CONFIRM REVOKE', async () => {
+      revokeBtn.addEventListener('click', () => armed('tg-owner-revoke', revokeBtn, 'REVOCAR PROPIETARIO', 'CONFIRMAR REVOCAR', async () => {
         try {
           const r = await Harness.api.post('/api/channels/telegram/owner/revoke', {});
           const j = r.j || {};
-          if (!r.ok || j.error) { setMsg(msgEl, 'could not revoke owner: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); }
-          else { setMsg(msgEl, 'owner revoked locally - issue a new pairing code before Telegram can run the agent again', 'info'); sfx('click'); }
-        } catch (_) { setMsg(msgEl, 'could not reach the sidecar', ''); sfx('bad'); }
+          if (!r.ok || j.error) { setMsg(msgEl, 'no se pudo revocar el propietario: ' + (j.error || ('HTTP ' + r.status)), ''); sfx('bad'); }
+          else { setMsg(msgEl, 'propietario revocado localmente — emite un nuevo código de vinculación antes de que Telegram pueda ejecutar al agente de nuevo', 'info'); sfx('click'); }
+        } catch (_) { setMsg(msgEl, 'no se pudo llegar al sidecar', ''); sfx('bad'); }
         refreshAll();
       }));
     })();
@@ -721,8 +721,8 @@
         const tokInp = body.querySelector('#tg-bot-token');
         const token = (tokInp.value || '').trim();
         const agentId = sel.value;
-        if (!token) { sfx('bad'); setMsg(msgEl, 'paste a @BotFather token for the new bot first', ''); return; }
-        if (!agentId) { sfx('bad'); setMsg(msgEl, 'pick which agent this bot should be', ''); return; }
+        if (!token) { sfx('bad'); setMsg(msgEl, 'pega primero un token de @BotFather para el nuevo bot', ''); return; }
+        if (!agentId) { sfx('bad'); setMsg(msgEl, 'elige qué agente debe ser este bot', ''); return; }
         const ag = (H.present || []).find(a => a && a.id === agentId) || null;
         // An agent bot runs as the SELECTED roster agent, not whichever agent/provider is currently focused in
         // COMMS. Keep provider+model+credential together here; the backend independently resolves the same roster
@@ -735,8 +735,8 @@
         const hasStoredKey = !!(typeof Harness !== 'undefined' && Harness.configured && Harness.configured(provider));
         const model = (ag && ag.model) || '';
         const reasoningEffort = (ag && ag.reasoningEffort) || ((typeof Harness !== 'undefined' && Harness.getReasoningEffort) ? Harness.getReasoningEffort(provider) : 'medium');
-        if (!model || (!usingOAuth && !key && !hasStoredKey)) { sfx('bad'); setMsg(msgEl, '✕ connect this agent\'s provider + model in SETTINGS first', ''); return; }
-        setMsg(msgEl, 'checking Telegram and proving this agent\'s model sign-in…', 'info');
+        if (!model || (!usingOAuth && !key && !hasStoredKey)) { sfx('bad'); setMsg(msgEl, '✕ configura primero el proveedor + modelo de este agente en AJUSTES', ''); return; }
+        setMsg(msgEl, 'comprobando Telegram y verificando la entrada de modelo de este agente…', 'info');
         try {
           const r = await Harness.api.post('/api/channels/telegram/bots/connect', {
             token, agentId, key, model, provider, baseUrl, reasoningEffort,
@@ -755,14 +755,14 @@
             // Surface that command NOW, in the same response that proved the token, instead of telling the user
             // to wait for a green row that cannot become green before pairing.
             if (j.pairingCode) {
-              setMsg(msgEl, '✓ @' + (j.username || 'bot') + (j.rebound ? ' re-bound' : ' added') + ' — ' + (j.providerVerified ? 'agent model verified; ' : '') + 'finish setup now: DM that bot /pair ' + j.pairingCode + ' (expires in 10 minutes).' + (localFallback ? ' Token saved locally, not the OS keychain.' : ''), 'info');
+              setMsg(msgEl, '✓ @' + (j.username || 'bot') + (j.rebound ? ' reenlazado' : ' añadido') + ' — ' + (j.providerVerified ? 'modelo del agente verificado; ' : '') + 'termina el setup ahora: envía MD a ese bot /pair ' + j.pairingCode + ' (caduca en 10 minutos).' + (localFallback ? ' Token guardado localmente, no en el keychain del SO.' : ''), 'info');
             } else if (j.pairingRequired) {
-              setMsg(msgEl, '◐ @' + (j.username || 'bot') + ' is polling, but DMs are blocked: ' + (j.pairingError || 'click its PAIR button to issue the owner command.') + (localFallback ? ' Token saved locally, not the OS keychain.' : ''), 'info');
+              setMsg(msgEl, '◐ @' + (j.username || 'bot') + ' está sondeando, pero los MD están bloqueados: ' + (j.pairingError || 'pulsa su botón VINCULAR para emitir el comando de propietario.') + (localFallback ? ' Token guardado localmente, no en el keychain del SO.' : ''), 'info');
             } else {
-              setMsg(msgEl, '✓ @' + (j.username || 'bot') + (j.rebound ? ' re-bound' : ' added') + ' — connecting as the paired owner' + (localFallback ? ' (token saved locally, not the OS keychain)' : ''), 'ok');
+              setMsg(msgEl, '✓ @' + (j.username || 'bot') + (j.rebound ? ' reenlazado' : ' añadido') + ' — conectando como propietario vinculado' + (localFallback ? ' (token guardado localmente, no en el keychain del SO)' : ''), 'ok');
             }
           }
-        } catch (e) { sfx('bad'); setMsg(msgEl, '✕ ' + noAnswerText(e, 'failed to reach the sidecar'), ''); }
+        } catch (e) { sfx('bad'); setMsg(msgEl, '✕ ' + noAnswerText(e, 'no se pudo llegar al sidecar'), ''); }
         refreshAll();
       });
       // row actions by delegation (rows re-render on every status paint)
@@ -775,7 +775,7 @@
           try { const r = await Harness.api.post(path, payload || {}); const j = r.j || {};
             if (!r.ok || j.error) { sfx('bad'); setMsg(msgEl, '✕ ' + (j.error || ('HTTP ' + r.status)), ''); }
             else { sfx('click'); if (okText) setMsg(msgEl, okText, 'info'); } }
-          catch (_) { sfx('bad'); setMsg(msgEl, '✕ could not reach the sidecar', ''); }
+          catch (_) { sfx('bad'); setMsg(msgEl, '✕ no se pudo llegar al sidecar', ''); }
           refreshAll();
         };
         if (act === 'resume') doPost('/api/channels/telegram/bots/' + botId + '/connect', {}, null);
@@ -783,15 +783,15 @@
           try {
             const r = await Harness.api.post('/api/channels/telegram/bots/' + botId + '/owner/pair', {});
             const j = r.j || {};
-            if (!r.ok || j.error || !j.code) { sfx('bad'); setMsg(msgEl, 'could not issue pairing code: ' + (j.error || ('HTTP ' + r.status)), ''); }
-            else { sfx('click'); setMsg(msgEl, 'DM that bot: /pair ' + j.code + ' (expires in 10 minutes).', 'info'); }
-          } catch (_) { sfx('bad'); setMsg(msgEl, 'could not reach the sidecar', ''); }
+            if (!r.ok || j.error || !j.code) { sfx('bad'); setMsg(msgEl, 'no se pudo emitir el código de vinculación: ' + (j.error || ('HTTP ' + r.status)), ''); }
+            else { sfx('click'); setMsg(msgEl, 'Envía MD a ese bot: /pair ' + j.code + ' (caduca en 10 minutos).', 'info'); }
+          } catch (_) { sfx('bad'); setMsg(msgEl, 'no se pudo llegar al sidecar', ''); }
           refreshAll();
         })();
-        else if (act === 'revokeOwner') armed('tg-bot-owner-' + botId, b, 'UNPAIR', 'CONFIRM UNPAIR', () =>
-          doPost('/api/channels/telegram/bots/' + botId + '/owner/revoke', {}, 'bot owner revoked locally'));
-        else if (act === 'off') doPost('/api/channels/telegram/bots/' + botId + '/disconnect', {}, 'bot disconnected — token kept; ⏵ to reconnect');
-        else if (act === 'forget') armed('tg-bot-forget-' + botId, b, '⌫', '⌫ SURE?', async () => {
+        else if (act === 'revokeOwner') armed('tg-bot-owner-' + botId, b, 'REVOCAR', 'CONFIRMAR REVOCAR', () =>
+          doPost('/api/channels/telegram/bots/' + botId + '/owner/revoke', {}, 'propietario del bot revocado localmente'));
+        else if (act === 'off') doPost('/api/channels/telegram/bots/' + botId + '/disconnect', {}, 'bot desconectado — token guardado; ⏵ para reconectar');
+        else if (act === 'forget') armed('tg-bot-forget-' + botId, b, '⌫', '⌫ ¿SEGURO?', async () => {
           try {
             const r = await Harness.api.post('/api/channels/telegram/bots/' + botId + '/disconnect', { purge: true });
             const j = r.j || {};
@@ -801,10 +801,10 @@
               if (Harness.storeChannelToken && Harness.isDesktop && Harness.isDesktop()) {
                 kcCleared = await Harness.storeChannelToken('telegram:' + botId, '');
               }
-              if (kcCleared) { sfx('click'); setMsg(msgEl, 'bot forgotten — its stored token was purged', 'info'); }
-              else { sfx('bad'); setMsg(msgEl, '⚠ bot record removed, but the OS keychain token could not be deleted; try FORGET again after re-adding it', ''); }
+              if (kcCleared) { sfx('click'); setMsg(msgEl, 'bot olvidado — su token guardado fue purgado', 'info'); }
+              else { sfx('bad'); setMsg(msgEl, '⚠ registro del bot eliminado, pero el token del keychain del SO no se pudo borrar; reintenta OLVIDAR después de reañadirlo', ''); }
             }
-          } catch (_) { sfx('bad'); setMsg(msgEl, '✕ could not reach the sidecar', ''); }
+          } catch (_) { sfx('bad'); setMsg(msgEl, '✕ no se pudo llegar al sidecar', ''); }
           refreshAll();
         });
       });
@@ -818,7 +818,7 @@
         const r = await Harness.api.post('/api/channels/notify', { on: notifyBox.checked });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         sfx('click'); refreshAll();   // refresh so the zero-channel hint appears/clears from PROVEN status
-      } catch (_) { notifyBox.checked = !notifyBox.checked; setMsg(notifyMsg, '✕ couldn\'t save that — the sidecar didn\'t answer', ''); }
+      } catch (_) { notifyBox.checked = !notifyBox.checked; setMsg(notifyMsg, '✕ no se pudo guardar — el sidecar no respondió', ''); }
     });
 
     refreshAll();
@@ -842,5 +842,5 @@
     if (buildMessaging._poll) { clearInterval(buildMessaging._poll); buildMessaging._poll = null; }
   }
 
-  StationUI.registerWindow('messaging', 'CHANNELS', buildMessaging, { console: true, className: 'channels-console', onClose: closed });   // console mode = the wide SETTINGS-style two-pane window; the className scopes the no-glyph rail; dock label = window title (it's Telegram/external channels, not COMMS)
+  StationUI.registerWindow('messaging', 'CANALES', buildMessaging, { console: true, className: 'channels-console', onClose: closed });   // console mode = the wide SETTINGS-style two-pane window; the className scopes the no-glyph rail; dock label = window title (it's Telegram/external channels, not COMMS)
 })();

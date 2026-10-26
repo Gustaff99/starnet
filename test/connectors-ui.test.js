@@ -118,7 +118,7 @@ function fakeStack(tools) {
 
   // ---------- 2. SOURCE GUARD: the frontend panel ----------
   const station = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'windows', 'connectors.js'), 'utf8');   // CONNECTORS window extracted from stationui.js (BUILDERS split)
-  A.ok(/cached:\s*\['var\(--gold\)', '◐ idle · starts on use'\]/.test(station),
+  A.ok(/cached:\s*\['var\(--gold\)', '◐ en espera · se inicia al usarlo'\]/.test(station),
     'cached stdio schemas render as idle/starts-on-use, never falsely connected or disabled');
   const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'css', 'app.css'), 'utf8');
   const idx = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'index.html'), 'utf8');
@@ -184,7 +184,7 @@ function fakeStack(tools) {
   A.ok(/ccSignIn\(id, msgEl, label \|\| id\)/.test(station), 'saving a custom OAuth connector immediately starts browser sign-in');
   A.ok(/c\.state === 'error' && \(!c\.oauth \|\| c\.oauthAuthorized\)/.test(station),
     'the expected unsigned 401 cannot end polling before OAuth callback, but a post-grant error remains visible');
-  A.ok(/OAuth authorized/.test(station) && /OAuth sign-in needed/.test(station),
+  A.ok(/OAuth autorizado/.test(station) && /necesita inicio de sesión OAuth/.test(station),
     'OAuth rows never mislabel a token-provider function as a saved grant');
   A.ok(/parseKV/.test(station), 'key:value parser for headers/env present');
 
@@ -196,7 +196,7 @@ function fakeStack(tools) {
 
   // ---------- 3. CONNECTOR CATALOG tab (one-click browse-and-add) ----------
   // the tab exists and is fed by the catalog route
-  A.ok(/id:\s*'catalog'/.test(station) && /label:\s*'CATALOG'/.test(station), 'CATALOG tab registered on the connectors console');
+  A.ok(/id:\s*'catalog'/.test(station) && /label:\s*'CATÁLOGO'/.test(station), 'CATALOG tab registered on the connectors console');
   A.ok(/id="cc-list"/.test(station), 'catalog list container present');
   A.ok(/\/api\/connectors\/catalog/.test(station), 'catalog pane fetches GET /api/connectors/catalog');
   A.ok(/function ccCard/.test(station) && /function ccGroupHTML/.test(station), 'catalog card + category-group renderers present');
@@ -206,7 +206,7 @@ function fakeStack(tools) {
   A.ok(/data-cc-act="signin"/.test(station) && /function ccSignIn/.test(station), 'oauth connectors get a live SIGN IN button + handler');
   A.ok(/action = e\.url/.test(station), 'an oauth entry with no endpoint is NOT shown as sign-in-able (no dead button — truthful telemetry)');
   A.ok(!/data-cc-act="oclient"|data-cc-oclientid|data-cc-oclientsecret/.test(station), 'customers never see Google developer credential fields');
-  A.ok(/signInAvailable/.test(station) && /GOOGLE SIGN-IN UNAVAILABLE/.test(station), 'unconfigured builds show a truthful operator-owned availability state');
+  A.ok(/signInAvailable/.test(station) && /INICIO DE SESIÓN DE GOOGLE NO DISPONIBLE/.test(station), 'unconfigured builds show a truthful operator-owned availability state');
   A.ok(!/\/api\/connectors\/oauth\/client/.test(station), 'customer UI never saves an OAuth application registration');
   // url-less oauth entries with an aggregator route get a LIVE "VIA <name>" jump, never a mute disabled button
   A.ok(/data-cc-act="via"/.test(station) && /data-via=/.test(station), 'url-less oauth entries with `via` get a live VIA jump button');
@@ -242,9 +242,9 @@ function fakeStack(tools) {
   });
   const savedCard = renderCatalog({ id: 'fixture', name: 'Fixture', installed: true, blurb: 'test' }, 0);
   A.ok(savedCard.includes('data-cc-act="manage"') && !savedCard.includes('disabled'), 'saved service has an actionable management button');
-  A.ok(savedCard.includes('Setup saved.') && !savedCard.includes('✓ connected'), 'saved configuration does not assert live connectivity');
+  A.ok(savedCard.includes('Configuración guardada.') && !savedCard.includes('✓ conectado'), 'saved configuration does not assert live connectivity');
   const newCard = renderCatalog({ id: 'fixture', name: 'Fixture', installed: false, blurb: 'test' }, 0);
-  A.ok(newCard.includes('data-cc-act="add"') && !newCard.includes('MANAGE SERVICE'), 'new service still offers its actual setup action');
+  A.ok(newCard.includes('data-cc-act="add"') && !newCard.includes('GESTIONAR SERVICIO'), 'new service still offers its actual setup action');
   const popularGroups = vm.runInNewContext('(' + A.fnBody(station, 'function ccPopularGroups(') + ')');
   const inputGroups = [{ category: 'Productivity', connectors: [
     { id: 'gmail', url: 'google', releaseDeferred: true },
@@ -258,10 +258,10 @@ function fakeStack(tools) {
   A.eq(inputGroups[0].connectors.length, 4, 'popular grouping preserves source groups');
   A.eq(popularGroups([{ category: 'Other', connectors: [{ id: 'custom' }] }])[0].category, 'Other', 'no empty popular heading');
   const keyCard = renderCatalog({ id: 'key', name: 'Key service', authType: 'apikey', homepage: 'https://example.com', blurb: 'test' });
-  A.ok(keyCard.includes('SET UP API KEY') && keyCard.includes('Paste it below, then choose CONNECT'), 'key setup states the next action before submission');
+  A.ok(keyCard.includes('CONFIGURAR CLAVE API') && keyCard.includes('Pégalo abajo y elige CONECTAR.'), 'key setup states the next action before submission');
   const viaCard = renderCatalog({ id: 'supliful', name: 'Supliful', platformApi: true, apiVia: 'Shopify Admin API', authType: 'apikey', blurb: 'test' });
-  A.ok(viaCard.includes('via Shopify Admin API') && !viaCard.includes('✓ official API'), 'a platform with no API of its own never claims a first-party API');
-  A.ok(renderCatalog({ id: 'printify', name: 'Printify', platformApi: true, authType: 'apikey', blurb: 'test' }).includes('✓ official API'), 'first-party platform APIs keep their badge');
+  A.ok(viaCard.includes('via Shopify Admin API') && !viaCard.includes('✓ API oficial'), 'a platform with no API of its own never claims a first-party API');
+  A.ok(renderCatalog({ id: 'printify', name: 'Printify', platformApi: true, authType: 'apikey', blurb: 'test' }).includes('✓ API oficial'), 'first-party platform APIs keep their badge');
   A.ok(/state === 'up'/.test(station), 'the connect result badge reflects the real manager state, not an assumption');
   // on-theme styling for the new cards
   A.ok(/\.cc-card/.test(css) && /\.cc-grid/.test(css) && /\.cc-chip/.test(css), 'catalog card styles present');
@@ -288,7 +288,7 @@ function fakeStack(tools) {
     'console search owns a polite status surface for zero results');
   A.ok(/setSearchContext\(matches\[0\] \|\| activeId\)/.test(stationCore),
     'zero-hit search retains the real selected section instead of clearing the tablist selection');
-  A.ok(/searchLabel:\s*'Search abilities'/.test(station) && /searchEmptyText:\s*'No abilities match/.test(station),
+  A.ok(/searchLabel:\s*'Buscar habilidades'/.test(station) && /searchEmptyText:\s*'Ninguna habilidad coincide/.test(station),
     'ABILITIES names its global search accurately and explains a zero-hit result');
   A.ok(/data-cc-filter="all" aria-pressed="true"/.test(station) &&
     /setAttribute\('aria-pressed', active \? 'true' : 'false'\)/.test(station),
@@ -300,7 +300,7 @@ function fakeStack(tools) {
   A.ok(/\.con-search-empty\s*\{/.test(css), 'zero-result search feedback has station-native styling');
   A.ok(/\(c\.hasToken \|\| c\.hasHeaders\) && !c\.oauth/.test(station),
     'KEYS recognizes catalog connectors authenticated through a protected custom header');
-  A.ok(/c\.hasHeaders && !c\.hasToken \? 'header saved' : 'token saved'/.test(station),
+  A.ok(/c\.hasHeaders && !c\.hasToken \? 'cabecera guardada' : 'token guardado'/.test(station),
     'KEYS labels custom-header credentials truthfully instead of calling every credential a token');
   A.ok(/k\.unattendedSupported !== false/.test(station) && /k\.enabled && unattendedSupported \? '' : ' disabled'/.test(station),
     'KEYS disables the unattended control for watched-only integrations');
@@ -312,7 +312,7 @@ function fakeStack(tools) {
     'platform catalog cards route to the existing KEYS setup form instead of calling the MCP installer');
   A.ok(/catalogId:\s*'platform:' \+ p\.id/.test(station) && /const cardId = e\.catalogId \|\| e\.id/.test(station),
     'platform cards are identity-namespaced so GitHub/Notion/Stripe cannot collide with same-id MCP cards');
-  A.ok(!/id="ky-catalog"/.test(station) && /CONNECTED API KEYS/.test(station),
+  A.ok(!/id="ky-catalog"/.test(station) && /CLAVES API CONECTADAS/.test(station),
     'KEYS shows connected credentials and no longer hides the curated platform catalog inside its add form');
   const routeSource = /const ROUTES = (\[[\s\S]*?\n\s*\]);/.exec(station);
   const routes = routeSource ? vm.runInNewContext(routeSource[1]) : [];
@@ -321,16 +321,16 @@ function fakeStack(tools) {
     'the ABILITIES front door routes POD discovery through CATALOG before the KEYS setup path');
   A.eq(routes.filter(r => r.to === 'catalog').length, 1,
     'service and platform discovery share one catalog route');
-  A.ok(/to: 'catalog', title: 'Connect a service you use'/.test(station) && /entry\.platformApi \? 'keys' : 'mcp'/.test(station),
+  A.ok(/to: 'catalog', title: 'Conecta un servicio que usas'/.test(station) && /entry\.platformApi \? 'keys' : 'mcp'/.test(station),
     'one service front door preserves the correct platform-key and connector management paths');
 
   const availabilitySource = A.fnBody(station, 'function tsAvailability(');
   const availability = vm.runInNewContext('(' + availabilitySource + ')');
-  A.eq(availability({available:true, enabled:false, switchEffective:false}), 'AVAILABLE', 'Full Access overrides a saved disabled switch');
-  A.eq(availability({available:true, enabled:true, placed:false, profileGranted:true, switchEffective:true}), 'AVAILABLE', 'execution profile grants do not require a prop');
-  A.eq(availability({available:false, enabled:false, placed:false, switchEffective:true}), 'DISABLED', 'effective disabled switch takes priority over missing equipment');
-  A.eq(availability({available:false, enabled:true, placed:false, profileGranted:false, switchEffective:true}), 'NEEDS PROP', 'ASK mode without any grant identifies missing equipment');
-  A.eq(availability({available:false, enabled:true, placed:true, switchEffective:false}), 'UNAVAILABLE', 'missing host grant never implies availability');
+  A.eq(availability({available:true, enabled:false, switchEffective:false}), 'DISPONIBLE', 'Full Access overrides a saved disabled switch');
+  A.eq(availability({available:true, enabled:true, placed:false, profileGranted:true, switchEffective:true}), 'DISPONIBLE', 'execution profile grants do not require a prop');
+  A.eq(availability({available:false, enabled:false, placed:false, switchEffective:true}), 'DESACTIVADO', 'effective disabled switch takes priority over missing equipment');
+  A.eq(availability({available:false, enabled:true, placed:false, profileGranted:false, switchEffective:true}), 'NECESITA PROP', 'ASK mode without any grant identifies missing equipment');
+  A.eq(availability({available:false, enabled:true, placed:true, switchEffective:false}), 'NO DISPONIBLE', 'missing host grant never implies availability');
 
   // Production row rendering: the glance must preserve status and recovery actions while technical
   // detail stays available behind one disclosure. Escaping still applies inside the folded content.
@@ -340,18 +340,18 @@ function fakeStack(tools) {
   });
   const deferredRow = renderService({id:'google-sheets',label:'Google Sheets',releaseDeferred:true,credentialSaved:true,oauth:true,url:'https://example.test',detail:'Shared release explanation'},0);
   const glance = deferredRow.replace(/<details[\s\S]*?<\/details>/g, '');
-  A.ok(glance.includes('Google Sheets') && glance.includes('deferred') && glance.includes('Saved connection retained.'), 'deferred glance preserves service, availability and retained setup');
-  A.ok(!glance.includes('https://') && !glance.includes('Account identity') && !glance.includes('Shared release explanation'), 'technical caveats and repeated release prose do not compete in the glance');
+  A.ok(glance.includes('Google Sheets') && glance.includes('diferido') && glance.includes('Conexión guardada retenida.'), 'deferred glance preserves service, availability and retained setup');
+  A.ok(!glance.includes('https://') && !glance.includes('Identidad de cuenta') && !glance.includes('Shared release explanation'), 'technical caveats and repeated release prose do not compete in the glance');
   A.ok(/<details class="mc-inspect">/.test(deferredRow) && !/<details[^>]*\bopen\b/.test(deferredRow), 'connection details start folded');
   A.ok(!/data-act="(?:reload|edit|resign)"/.test(deferredRow) && /data-act="remove"/.test(deferredRow), 'deferred service keeps removal without offering unavailable connection actions');
   const rejectedRow = renderService({id:'expired',oauth:true,oauthAuthorized:true,authRequired:true,enabled:true,state:'error',url:'https://example.test',detail:'Rejected <grant>'},0);
-  A.ok(rejectedRow.includes('Sign in below') && rejectedRow.includes('data-act="resign"'), 'rejected OAuth grant has a visible recovery instruction and sign-in action');
-  A.ok(rejectedRow.includes('Error &amp; connection details') && rejectedRow.includes('Rejected &lt;grant>'), 'complete error stays inspectable and escaped');
+  A.ok(rejectedRow.includes('Inicia sesión abajo') && rejectedRow.includes('data-act="resign"'), 'rejected OAuth grant has a visible recovery instruction and sign-in action');
+  A.ok(rejectedRow.includes('Error y detalles de conexión') && rejectedRow.includes('Rejected &lt;grant>'), 'complete error stays inspectable and escaped');
   A.ok(!rejectedRow.includes('· OAuth authorized'), 'stored rejected OAuth grant does not claim authorization');
   // A saved-token row whose catalog entry now signs in (Intercom 2026-10-07) gets the SAME sign-in engine and says the
   // token survives until approval — EDIT → OAUTH, the only other route, drops the token before the browser opens.
   const switchRow = renderService({id:'intercom',label:'Intercom',catalogSignIn:true,enabled:true,state:'up',hasToken:true,url:'https://mcp.intercom.com/mcp',toolCount:15},0);
-  A.ok(switchRow.includes('data-act="resign"') && switchRow.includes('⏼ SIGN IN') && switchRow.includes('only after you approve'),
+  A.ok(switchRow.includes('data-act="resign"') && switchRow.includes('⏼ INICIAR SESIÓN') && switchRow.includes('solo después de que apruebes'),
     'a saved-token row on a now-OAuth catalog service offers a sign-in that keeps the token until approval');
   A.ok(!renderService({id:'docs',enabled:true,state:'up',hasToken:true,url:'https://example.test'},0).includes('data-act="resign"'), 'an ordinary token row offers no sign-in');
   for (const src of [station, webStation]) {
@@ -359,7 +359,7 @@ function fakeStack(tools) {
       'the sign-in poll counts only an OAuth row as signed in (a saved-token row is already up before consent)');
   }
   const toolsRow = renderService({id:'docs',state:'up',enabled:true,tools:['read_docs','search_docs'],toolCount:2,url:'https://example.test'},0);
-  A.ok(toolsRow.includes('2 tools') && /<details[\s\S]*read_docs[\s\S]*search_docs[\s\S]*<\/details>/.test(toolsRow), 'tools remain fully inspectable without an always-expanded tool wall');
+  A.ok(toolsRow.includes('2 herramientas') && /<details[\s\S]*read_docs[\s\S]*search_docs[\s\S]*<\/details>/.test(toolsRow), 'tools remain fully inspectable without an always-expanded tool wall');
   A.ok(/\.mc-row\s*\{[^}]*flex-direction:\s*column/.test(css), 'shared record cards stack instead of inheriting the legacy horizontal header');
   A.report('connectors-ui');
 })().catch(e => { console.log('FAIL: threw ' + (e && e.stack || e)); process.exit(1); });

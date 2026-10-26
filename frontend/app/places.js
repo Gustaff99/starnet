@@ -40,9 +40,9 @@
     // ---- BUILD / CONNECT ----
     P('build-mode', 'BUILD MODE', 'the full-screen station builder: rooms, decks, props (a prop in an agent\'s room grants a power)', { fn: 'build' }),
     P('abilities', 'CONNECT › ABILITIES', 'the one place platforms get connected, and everything agents can do', { term: 'connectors' }),
-    P('find-a-service', 'CONNECT › ABILITIES › CATALOG', 'one-click connectors to vetted services, searchable by name', { term: 'connectors', section: 'catalog' }),
+    P('find-a-service', 'CONECTAR › HABILIDADES › CATÁLOGO', 'conectores de un clic para servicios verificados, buscables por nombre', { term: 'connectors', section: 'catalog' }),
     P('connected-services', 'CONNECT › ABILITIES › CONNECTED SERVICES', 'connected MCP services: status, reconnect, attach one by URL', { term: 'connectors', section: 'mcp' }),
-    P('api-connections', 'CONNECT › ABILITIES › SAVED API CONNECTIONS', 'API keys for any platform, listed or not (the universal fallback)', { term: 'connectors', section: 'keys' }),
+    P('api-connections', 'CONECTAR › HABILIDADES › CONEXIONES API GUARDADAS', 'claves API para cualquier plataforma, listada o no (la alternativa universal)', { term: 'connectors', section: 'keys' }),
     P('built-in-abilities', 'CONNECT › ABILITIES › BUILT-IN ABILITIES', 'each built-in ability and its kill-switch', { term: 'connectors', section: 'toolsets' }),
     P('computer-control', 'CONNECT › ABILITIES › COMPUTER CONTROL', 'how agents drive native desktop apps', { term: 'connectors', section: 'computer' }),
     P('skill-market', 'CONNECT › ABILITIES › SKILL MARKET', 'StarNet Originals and community skills to install', { term: 'connectors', section: 'market' }),

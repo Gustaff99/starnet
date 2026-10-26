@@ -52,18 +52,18 @@
   const CATALOG = [
     {
       id: 'build-test-verify',
-      name: 'Build · Test · Verify',
+      name: 'Construir · Probar · Verificar',
       emoji: '⊹',
-      tagline: 'Work until the project\'s own check passes',
-      blurb: 'Each pass makes a change, then the station runs YOUR check command and reads the real exit code. ' +
-        'A red check is fed straight back into the next pass with its output. The loop ends when the check ' +
-        'genuinely passes — and it can prove the tests were not edited to get there.',
-      shape: ['MAKE A CHANGE', 'RUN YOUR CHECK', 'GREEN → REVIEW'],
+      tagline: 'Trabaja hasta que el propio chequeo del proyecto pase',
+      blurb: 'Cada pasada hace un cambio y luego la estación ejecuta TU comando de chequeo y lee el código de ' +
+        'salida real. Un chequeo rojo se alimenta directamente en la siguiente pasada con su salida. El loop ' +
+        'termina cuando el chequeo pasa de verdad — y puede probar que los tests no se editaron para llegar ahí.',
+      shape: ['HACER UN CAMBIO', 'EJECUTAR TU CHEQUEO', 'VERDE → REVISAR'],
       rigor: 'hard',
       needsProject: true,
       params: [
-        { key: 'goal', label: 'What should it get working?', placeholder: 'make the failing auth tests pass without changing the API', required: true },
-        { key: 'check', label: 'The command you run to check it', placeholder: 'npm test', required: true, default: 'npm test' }
+        { key: 'goal', label: '¿Qué debe lograr?', placeholder: 'hacer que los tests de auth fallidos pasen sin cambiar la API', required: true },
+        { key: 'check', label: 'El comando que ejecutas para verificarlo', placeholder: 'npm test', required: true, default: 'npm test' }
       ],
       objective:
         'Work in this project until its check passes.\n\nGOAL: {goal}\n\n' +
@@ -79,17 +79,17 @@
     },
     {
       id: 'sweep-and-fix',
-      name: 'Sweep & Fix',
+      name: 'Barrer y Corregir',
       emoji: '⌗',
-      tagline: 'Hunt one class of problem until there are none left',
-      blurb: 'Each pass finds ONE instance, fixes it, and reports. Small, reviewable changes rather than a ' +
-        'giant sweep you cannot read. Ends when three passes in a row come back empty.',
-      shape: ['FIND ONE', 'FIX IT', 'REPORT'],
+      tagline: 'Caza una clase de problema hasta que no quede ninguno',
+      blurb: 'Cada pasada encuentra UNA instancia, la corrige y reporta. Cambios pequeños y revisables, no una ' +
+        'barrida gigante que no puedes leer. Termina cuando tres pasadas seguidas vuelven vacías.',
+      shape: ['ENCONTRAR UNA', 'CORRIGIRLA', 'REPORTAR'],
       rigor: 'soft',
       needsProject: true,
       params: [
-        { key: 'hunting', label: 'What is it hunting?', placeholder: 'unhandled promise rejections', required: true },
-        { key: 'where', label: 'Where should it look?', placeholder: 'the src/ folder', required: false, default: 'the whole project' }
+        { key: 'hunting', label: '¿Qué está cazando?', placeholder: 'rechazos de promesas sin manejar', required: true },
+        { key: 'where', label: '¿Dónde debe buscar?', placeholder: 'la carpeta src/', required: false, default: 'the whole project' }
       ],
       objective:
         'Sweep this project for one specific class of problem and fix them one at a time.\n\n' +
@@ -105,17 +105,17 @@
     },
     {
       id: 'research',
-      name: 'Research Loop',
+      name: 'Loop de Investigación',
       emoji: '◈',
-      tagline: 'Dig into a question until it stops yielding',
-      blurb: 'Each pass gathers new material on one question, skipping everything already covered, and writes ' +
-        'up what is genuinely new. Ends when three passes in a row turn up nothing new.',
-      shape: ['GATHER', 'GO DEEPER', 'WRITE IT UP'],
+      tagline: 'Profundiza en una pregunta hasta que deje de dar frutos',
+      blurb: 'Cada pasada reúne material nuevo sobre una pregunta, saltando todo lo ya cubierto, y redacta lo ' +
+        'que es genuinamente nuevo. Termina cuando tres pasadas seguidas no encuentran nada nuevo.',
+      shape: ['REUNIR', 'PROFUNDIZAR', 'REDACTAR'],
       rigor: 'soft',
       needsProject: false,
       params: [
-        { key: 'question', label: 'What are you trying to find out?', placeholder: 'how are competitors pricing AI agent products?', required: true },
-        { key: 'angle', label: 'Anything to focus on or avoid?', placeholder: 'focus on self-serve pricing; skip enterprise', required: false, default: 'no particular constraint' }
+        { key: 'question', label: '¿Qué intentas descubrir?', placeholder: '¿cómo fijan precios los competidores en productos de agentes IA?', required: true },
+        { key: 'angle', label: '¿Algo en que enfocarse o evitar?', placeholder: 'enfócate en precios self-serve; salta enterprise', required: false, default: 'no particular constraint' }
       ],
       objective:
         'Research one question, going deeper each pass.\n\nQUESTION: {question}\nFOCUS: {angle}\n\n' +
@@ -168,8 +168,8 @@
     t = typeof t === 'string' ? get(t) : t;
     if (!t) return '';
     return t.rigor === 'hard'
-      ? 'Ends on a real result: the station runs your check and reads its exit code. It will not call itself finished on a check it cannot verify.'
-      : 'Ends on the agent\'s own report: three passes in a row finding nothing new. That is a convention, not a proof — read what it produced before trusting it.';
+      ? 'Termina con un resultado real: la estación ejecuta tu chequeo y lee su código de salida. No se declarará terminada con un chequeo que no puede verificar.'
+      : 'Termina con el propio reporte del agente: tres pasadas seguidas sin encontrar nada nuevo. Es una convención, no una prueba — lee lo que produjo antes de fiarte.';
   }
 
   /* buildSpec — the POST /api/loops body for this template + the Commander's answers. Everything the loop
@@ -211,22 +211,22 @@
     const spec = buildSpec(t, values, extra);
     if (!spec) return [];
     const lines = [];
-    const where = extra.workdir ? ('in ' + String(extra.workdir).split(/[\/]/).pop()) : 'for you';
+    const where = extra.workdir ? ('en ' + String(extra.workdir).split(/[\/]/).pop()) : 'para ti';
     if (t.id === 'build-test-verify') {
-      lines.push({ k: 'What it does', v: 'Works ' + where + ', one change at a time, and after every pass the station runs ' + (spec.checkCmd || 'your check') + ' itself.' });
-      lines.push({ k: 'When it stops', v: 'When that check genuinely passes — and it will not accept a pass that was reached by editing the tests.' });
+      lines.push({ k: 'Qué hace', v: 'Trabaja ' + where + ', un cambio a la vez, y después de cada pasada la estación ejecuta ' + (spec.checkCmd || 'tu chequeo') + ' ella misma.' });
+      lines.push({ k: 'Cuándo se detiene', v: 'Cuando ese chequeo pasa de verdad — y no aceptará un paso logrado editando los tests.' });
     } else if (t.id === 'sweep-and-fix') {
-      lines.push({ k: 'What it does', v: 'Hunts ' + where + ' for one thing at a time, fixes it, and reports what it found.' });
-      lines.push({ k: 'When it stops', v: 'After ' + (spec.dryStopAfter || 3) + ' passes in a row that turn up nothing new. That is its own report, not a proof — read what it produced.' });
+      lines.push({ k: 'Qué hace', v: 'Caza ' + where + ' una cosa a la vez, la corrige y reporta lo que encontró.' });
+      lines.push({ k: 'Cuándo se detiene', v: 'Después de ' + (spec.dryStopAfter || 3) + ' pasadas seguidas sin encontrar nada nuevo. Es su propio reporte, no una prueba — lee lo que produjo.' });
     } else {
-      lines.push({ k: 'What it does', v: 'Digs into your question a bit further each pass, skipping anything it already covered.' });
-      lines.push({ k: 'When it stops', v: 'After ' + (spec.dryStopAfter || 3) + ' passes that turn up nothing new. That is its own report, not a proof.' });
+      lines.push({ k: 'Qué hace', v: 'Profundiza un poco más en tu pregunta en cada pasada, saltando lo que ya cubrió.' });
+      lines.push({ k: 'Cuándo se detiene', v: 'Después de ' + (spec.dryStopAfter || 3) + ' pasadas sin encontrar nada nuevo. Es su propio reporte, no una prueba.' });
     }
-    lines.push({ k: 'Your part', v: spec.gate === 'auto'
-      ? 'Nothing — you gave this loop full access, so it applies its own work. It still stops if it catches itself changing the check.'
-      : 'It stops after each pass and waits for you to approve or reject. Your verdict is what starts the next one, and it spends nothing while it waits.' });
-    lines.push({ k: 'What it costs', v: (extra.perDayUsd ? ('At most $' + Number(extra.perDayUsd).toFixed(2) + ' a day. ') : 'No daily limit set. ') +
-      'You can stop it at any time.' });
+    lines.push({ k: 'Tu parte', v: spec.gate === 'auto'
+      ? 'Nada — le diste acceso total a este loop, así que aplica su propio trabajo. Sigue deteniéndose si se atrapa cambiando el chequeo.'
+      : 'Se detiene después de cada pasada y espera que apruebes o rechaces. Tu veredicto es lo que inicia la siguiente, y no gasta nada mientras espera.' });
+    lines.push({ k: 'Qué cuesta', v: (extra.perDayUsd ? ('Como máximo $' + Number(extra.perDayUsd).toFixed(2) + ' al día. ') : 'Sin límite diario. ') +
+      'Puedes detenerlo en cualquier momento.' });
     return lines;
   }
 

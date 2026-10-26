@@ -89,17 +89,17 @@ function fakeFetch() { return async () => ({ ok: true, status: 200, async json()
   // beginner help: a one-line pointer to where the bot token comes from
   A.ok(/Developer Portal/.test(station), 'inline help points at the Discord Developer Portal for the bot token');
   A.ok(!/MESSAGE CONTENT INTENT/.test(station), 'inline help no longer sends users to a privileged intent the DM-only bot does not need');
-  A.ok(/direct message<\/b> with the bot/.test(station), 'inline help says to pair in a DM (server channels are ignored)');
+  A.ok(/mensaje directo<\/b> con el bot/.test(station), 'inline help says to pair in a DM (server channels are ignored)');
 
   // P2-E: the "send-only" disclosure is GONE — Discord is now full-duplex, and the card must claim two-way honestly.
   A.ok(!/Send-only for now/.test(station), 'the "Send-only for now" disclaimer was removed (Discord now receives)');
   A.ok(!/don\\?'t reach the agent yet/.test(station), 'the "replies don\'t reach the agent yet" line was removed');
-  A.ok(/DM your Discord bot to talk to your agent/.test(station), 'the Discord card now advertises two-way chat (truthful full-duplex)');
+  A.ok(/Envía mensajes directos a tu bot de Discord para hablar con tu agente/.test(station), 'the Discord card now advertises two-way chat (truthful full-duplex)');
   // the status line reflects that receive works when connected (generic '● CONNECTED — <verb>' + discord's verb).
-  A.ok(/CONNECTED — ' \+ c\.verb/.test(station) && /verb: 'receiving'/.test(station), 'the connected status says it is receiving (not just sending)');
+  A.ok(/CONECTADO — ' \+ c\.verb/.test(station) && /verb: 'receiving'/.test(station), 'the connected status says it is receiving (not just sending)');
 
   // keep-saved-when-blank contract (reconnect without re-pasting), same as Telegram
-  A.ok(/paste your Discord bot token first/.test(station), 'first-time setup requires a token; a saved token allows blank reconnect');
+  A.ok(/pega primero el token de tu bot de Discord/.test(station), 'first-time setup requires a token; a saved token allows blank reconnect');
 
   // ---------- 3. BEHAVIOUR: the real registry's discord descriptor is startable + clean without a gateway ----------
   {
