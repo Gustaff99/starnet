@@ -558,11 +558,11 @@ const WorkflowsWindow = (() => {
       const shape = bp.props.some(p => p.t === 'loop') ? ' · reviewed' : bp.props.some(p => p.t === 'splitter') ? ' · side by side' : '';
       // (org g7 D2, final round) the shelf claims a goal only by NAMING it: the Commander's own words (their dossier goal) ride the
       // heading, so FOR YOUR GOAL never reads as a match for the still-empty 'What should it make?' box above it
-      return (isGoal ? '<div class="wfw-tgroup wfw-goalhd" data-tip="Your own words: the goal you told the station. This ready-made workflow has its shape.">FOR YOUR GOAL <span class="wfw-goalq">“' + esc(goal.quote) + '”</span></div>' : '')
+      return (isGoal ? '<div class="wfw-tgroup wfw-goalhd" data-tip="Tus propias palabras: el objetivo que le dijiste a la estación. Este flujo ya tiene su forma.">PARA TU OBJETIVO <span class="wfw-goalq">“' + esc(goal.quote) + '”</span></div>' : '')
         + '<button type="button" class="wfw-tile' + (on ? ' on' : '') + (isGoal ? ' wfw-goal' : '') + '" data-starter="' + esc(id) + '" aria-pressed="' + !!on + '" data-tip="' + esc(tip) + '">'
         + '<span class="wfw-tart">' + (art ? '<img alt="" src="' + art + '">' : '') + '</span><b>' + esc(plainName(id)) + '</b><span class="wfw-tstat">' + roles.length + ' step' + (roles.length === 1 ? '' : 's') + shape + '</span></button>'
         // the four starters under the goal tile get the shelf's second heading, so FOR YOUR GOAL heads only its own tile
-        + (isGoal ? '<div class="wfw-tgroup">COMMON WORKFLOWS</div>' : '');
+        + (isGoal ? '<div class="wfw-tgroup">FLUJOS COMUNES</div>' : '');
     }).join('');
     let h = '<header class="wfw-head">' + (first ? '' : '<button type="button" class="bb sm" data-act="back">‹ ALL WORKFLOWS</button>')
       + '<h2 class="wfw-title">' + (first ? 'Make your first workflow' : 'New workflow') + '</h2></header>'
@@ -643,7 +643,7 @@ const WorkflowsWindow = (() => {
     if (S.jobsErr && !rows.length) return '<p class="wfw-note">The job history could not be read — is the station running?</p>';
     /* (org P15) a scheduled, channel, folder or webhook run is not a job record yet (only a job you send and a SEND TO hand-off write one:
        the sample route and the handoff runner — trigger-runner.js never does): say where it is filed, never an empty "nothing ran" (org wire AUTO-P15-3) */
-    if (!rows.length) return '<p class="wfw-note">No jobs yet. Jobs you send show here; scheduled, channel, folder and webhook runs are filed in DELIVERABLES.</p>';
+    if (!rows.length) return '<p class="wfw-note">Aún no hay trabajos. Los trabajos que envíes aparecerán aquí; las ejecuciones programadas, por canal, por carpeta y por webhook se archivan en ENTREGABLES.</p>';
     const mark = s => ({ delivered: '<span class="wfw-st ok">✓ DELIVERED</span>', running: '<span class="wfw-st run">RUNNING</span>', stopped: '<span class="wfw-st">STOPPED</span>',
       problem: '<span class="wfw-st warn">⚠ PROBLEM</span>', failed: '<span class="wfw-st warn">DIDN’T RUN</span>', interrupted: '<span class="wfw-st warn">INTERRUPTED</span>' })[s] || '';
     // a handed-on job reads as FROM LINE A · the job (its text is the job as it first arrived); a standing refusal says ×N
@@ -659,7 +659,7 @@ const WorkflowsWindow = (() => {
     return '<section class="wfw-sec wfw-send"><h3>Send a job</h3>'
       + '<textarea id="wfw-job" class="wfw-field" rows="3" maxlength="2000" aria-label="The job for this workflow" placeholder="' + esc(exampleJob(l)) + '">' + esc(S.draft['job:' + l.key] || '') + '</textarea>'
       + '<div class="wf-row"><button type="button" class="bb refit-primary" data-act="send"' + (busy ? ' disabled' : '') + '>▶ SEND A JOB</button>'
-      + '<span class="wfw-note">' + (other ? 'Another workflow (' + esc(busy.name || 'a line') + ') is working on a job — one job runs at a time.' : 'Real agents do the work, at real cost. The result comes back here, lands in this line’s OUTBOX and is also filed in DELIVERABLES.' + ((l.sendNames || []).length ? ' Then it ' + (l.sendsAll ? 'rides on' : 'can ride on') + ' to ' + esc(l.sendNames.join(' / ')) + ' — its crew, at its cost.' : '')) + '</span></div>'
+      + '<span class="wfw-note">' + (other ? 'Otro flujo (' + esc(busy.name || 'una línea') + ') está trabajando en un trabajo — a la vez corre uno.' : 'Agentes reales hacen el trabajo, a coste real. El resultado vuelve aquí, aterriza en el OUTBOX de esta línea y también se archiva en ENTREGABLES.' + ((l.sendNames || []).length ? ' Luego ' + (l.sendsAll ? 'sigue' : 'puede seguir') + ' a ' + esc(l.sendNames.join(' / ')) + ' — con su equipo, a su coste.' : '')) + '</span></div>'
       + (S.msg ? '<p class="' + (S.msg.bad ? 'wfw-bad' : 'wfw-okline') + '">' + (S.msg.bad ? '✕ ' : '') + esc(S.msg.text) + '</p>' : '')
       + '</section>' + startsHTML(l) + '<section class="wfw-sec"><h3>Last jobs</h3>' + jobRows(l) + '</section>';
   }
@@ -976,7 +976,7 @@ const WorkflowsWindow = (() => {
      (and through every module closure that shares this scope, the bus handlers below included) until the next open. Closing drops
      the body and the floor subscription; every reader already treats a null body as closed (alive()). */
   function closed() { body = null; stopTimers(); }
-  if (UI() && UI().registerWindow) UI().registerWindow('workflows', 'WORKFLOWS', build, { className: 'wfw-win', onClose: closed });
+  if (UI() && UI().registerWindow) UI().registerWindow('workflows', 'FLUJOS', build, { className: 'wfw-win', onClose: closed });
   /* SEND TO (2026-10-10): a job another line handed on runs in the background — no window posted it, so nothing folded its
      delivered run into DELIVERABLES › TO REVIEW, and the receiving line's result never reached the Commander's review pile. The
      floor's own events say when one lands in its OUTBOX (workitem.placed kind:'handoff', then workitem.delivered to 'outbox' for

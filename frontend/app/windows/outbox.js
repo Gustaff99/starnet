@@ -196,7 +196,7 @@
         '<div class="ob-body" hidden>' +
           // a WORKFLOWS job (2026-09-30) opens its own record there: the result, what each step did, NEEDS CHANGES, send it again
           // (…and a job one line SENT ON to another — SEND TO, 2026-10-10 — is a WORKFLOWS job of its own line: handoff-<id>)
-          '<div class="ob-primary">' + (jobStream ? '<button type="button" class="consent-btn ob-wf">ABRIR EN WORKFLOWS</button>' : '') + '<button type="button" class="consent-btn ob-open">↗ ABRIR SESIÓN</button>' +
+          '<div class="ob-primary">' + (jobStream ? '<button type="button" class="consent-btn ob-wf">ABRIR EN FLUJOS</button>' : '') + '<button type="button" class="consent-btn ob-open">↗ ABRIR SESIÓN</button>' +
             '<button type="button" class="consent-btn ob-fork">⊕ NUEVA SESIÓN</button></div>' +
           '<div class="ob-sec ob-prov" hidden></div>' +
           '<details class="ob-request"><summary class="ob-sec">LO QUE PEDISTE</summary><div class="ob-ask"><span class="loading">cargando…</span></div></details>' +

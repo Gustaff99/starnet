@@ -1,4 +1,4 @@
-/* test/workflows-window.test.js — WORK › WORKFLOWS, its own docked window (frontend/app/windows/workflows.js, 2026-09-30 — Andrew: "the
+/* test/workflows-window.test.js — WORK › FLUJOS, its own docked window (frontend/app/windows/workflows.js, 2026-09-30 — Andrew: "the
    easiest conveyor system we can possibly put together. It should be clear as day to the user how to use it").
 
    Run for real against a REAL station model (worldmodel + the layout engine + the routing compiler), the window's own code in a vm:
@@ -43,7 +43,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   });
   vm.runInContext(src, ctx, { filename: 'workflows.js' });
   const WW = ctx.module.exports, S = WW._state;
-  A.ok(registered.workflows && registered.workflows.t === 'WORKFLOWS' && registered.workflows.o.className === 'wfw-win', 'it is a station window: StationUI.registerWindow(\'workflows\', \'WORKFLOWS\', …) — the dock raises it from the bottom like every other');
+  A.ok(registered.workflows && registered.workflows.t === 'FLUJOS' && registered.workflows.o.className === 'wfw-win', 'it is a station window: StationUI.registerWindow(\'workflows\', \'FLUJOS\', …) — the dock raises it from the bottom like every other');
 
   /* ---------- 1. a fresh one-agent station: a workflow in three clicks, no Build Mode ---------- */
   A.ok(WW._floor().lines.length === 0, 'a fresh station has no workflows (the window opens on "Make your first workflow")');
@@ -251,10 +251,10 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   /* ---------- source locks ---------- */
   const html = rd('frontend/index.html'), app = rd('frontend/app/app.js'), build = rd('frontend/app/build.js'), outbox = rd('frontend/app/windows/outbox.js');
   const css = rd('frontend/css/workflows-window.css'), glass = rd('frontend/app/glass-demo.js'), sc = rd('frontend/app/stationcommands.js');
-  A.ok(/<button class="bb" id="bb-automate" data-family="automate"/.test(html) && /\{ id: 'workflows', k: 'workflows', label: 'WORKFLOWS'/.test(fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'stationui.js'), 'utf8')) && !/bbWorkflows\.onclick/.test(app), 'WORK › AUTOMATE › WORKFLOWS opens this window through the dock (never Build Mode)');
+  A.ok(/<button class="bb" id="bb-automate" data-family="automate"/.test(html) && /\{ id: 'workflows', k: 'workflows', label: 'FLUJOS'/.test(fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'stationui.js'), 'utf8')) && !/bbWorkflows\.onclick/.test(app), 'WORK › AUTOMATIZAR › FLUJOS opens this window through the dock (never Build Mode)');
   A.ok(html.indexOf('app/windows/workflows.js') > html.indexOf('app/stationui.js') && /css\/workflows-window\.css/.test(html), 'it loads after the window manager, with its stylesheet');
   A.ok(/function editLine\(propId\) \{[\s\S]{0,400}openFlowCard\(propId\)/.test(build) && /lineWords: \(\) => \(\{ plain: LINE_PLAIN, purpose: LINE_PURPOSE \}\)/.test(build), 'EDIT WORKFLOW opens the full editor on this line; the window speaks the shelf\'s own words');
-  A.ok(/class="consent-btn ob-wf">OPEN IN WORKFLOWS<\/button>/.test(outbox) && /WorkflowsWindow\.openByStream\(rw\.streamId, 'deliverables'\)/.test(outbox), 'DELIVERABLES › TO REVIEW opens a workflow job\'s own record here');
+  A.ok(/class="consent-btn ob-wf">ABRIR EN FLUJOS<\/button>/.test(outbox) && /WorkflowsWindow\.openByStream\(rw\.streamId, 'deliverables'\)/.test(outbox), 'ENTREGABLES › TO REVIEW opens a workflow job\'s own record here');
   A.ok(/const work = w\.classList\.contains\('wfw-win'\);/.test(glass) && /work \? available \* \.8/.test(glass), 'it opens tall enough for the job and its result');
   // the window's status reads the panel's facts — the ones station.layout gives the lead (stationcommands.js describeLayout)
   A.ok(/hasCompute = \(aid, pid\) => [^\n]*bayObjects\(aid, pid\)[^\n]*'computer'/.test(src) && /toolsAt = \(aid, pid\) => [^\n]*bayObjects\(aid, pid\)/.test(sc) && /hasCompute = \(aid, pid\) => !!aid && toolsAt\(aid, pid\)\.indexOf\('computer'\) >= 0/.test(sc),
@@ -336,7 +336,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     S.startsPolled = polledWas;
     // org P16's RUN BY reads the same entry the INBOX form's schedule fires at
     const sl = WW.startLines().find(x => x.key === l0.key);
-    A.ok(sl && sl.dockId === entry && sl.agentId === 'nova', 'startLines: the line\'s first routed step and its agent (SCHEDULES › RUN BY)');
+    A.ok(sl && sl.dockId === entry && sl.agentId === 'nova', 'startLines: the line\'s first routed step and its agent (HORARIOS › RUN BY)');
     // the page: STARTS sits between Send it a job and Last jobs; its key opens EDIT WORKFLOW at 'Or start it automatically'
     A.ok(/\+ '<\/section>' \+ startsHTML\(l\) \+ '<section class="wfw-sec"><h3>Last jobs<\/h3>'/.test(src), 'STARTS: sits between the job box and LAST JOBS');
     A.ok(/data-act="automatic" data-tip="[^"]+">⊕ MAKE IT AUTOMATIC<\/button>/.test(src) && /data-act="automatic" data-tip="[^"]+">⊕ CHANGE STARTS<\/button>/.test(src)
@@ -351,42 +351,42 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     A.ok(/const pinned = !!\(map && typeof getComputedStyle === 'function' && getComputedStyle\(map\)\.position === 'sticky'\);/.test(panelSrc)
       && /sc\.scrollTop \+= startsScrollBy\(sec\.getBoundingClientRect\(\)\.top, sc\.getBoundingClientRect\(\)\.top, pinned \? map\.getBoundingClientRect\(\)\.height : 0, z\);/.test(panelSrc),
       'scrollToStarts subtracts the map\'s height only while the map is actually sticky');
-    A.ok(src.includes('scheduled, channel, folder and webhook runs are filed in DELIVERABLES'), 'an empty LAST JOBS says where scheduled, channel, folder and webhook runs are filed');
+    A.ok(src.includes('las ejecuciones programadas, por canal, por carpeta y por webhook se archivan en ENTREGABLES'), 'an empty LAST JOBS says where scheduled, channel, folder and webhook runs are filed');
     // (org wire AUTO-P15-3) every start that writes no job record is named there: a folder or webhook trigger never records a line job
     const trSrc = rd('sidecar/routing/trigger-runner.js');
     A.ok(!/jobs\.start\(|LineJobs/.test(trSrc), 'fixture: trigger-runner records no line job (if it ever does, its runs show in LAST JOBS and this note changes)');
   }
 
   /* ---------- org P14 (2026-10-14; final round): a delivered job waiting for its rating is rated right here, and the view a floor OUTBOX
-     click opens never links on to DELIVERABLES (Andrew 10-03: "the outbox … should never link back to deliverables") ---------- */
+     click opens never links on to ENTREGABLES (Andrew 10-03: "the outbox … should never link back to deliverables") ---------- */
   {
     const dj = { id: 'job-0123456789dd', line: line.key, name: line.name, text: 'three facts about the moon', status: 'delivered', runs: [{ runId: 'rp14', agentId: 'nova', reason: 'done', usd: 0.001 }], output: 'The moon…', usd: 0.001, notes: [], startedAt: 1, endedAt: 2 };
     const was = ctx.ReturnStore.pendingRows;
     ctx.ReturnStore.pendingRows = () => [{ runId: 'rp14', agentId: 'nova', title: 'three facts about the moon' }];
     const waiting = WW._resultHTML(line, dj), plain = waiting.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-    A.ok(!/data-act="toreview"/.test(waiting) && !/DELIVERABLES/.test(plain) && !/in the OUTBOX/.test(plain), 'a job still in TO REVIEW carries no door on to DELIVERABLES (the OUTBOX\'s own page) and never says "in the OUTBOX": ' + plain.slice(0, 160));
+    A.ok(!/data-act="toreview"/.test(waiting) && !/ENTREGABLES/.test(plain) && !/in the OUTBOX/.test(plain), 'a job still in TO REVIEW carries no door on to ENTREGABLES (the OUTBOX\'s own page) and never says "in the OUTBOX": ' + plain.slice(0, 160));
     A.ok(/<div class="wfw-rate" data-rate-for="rp14"><\/div>/.test(waiting), '…and carries the rate host TO REVIEW mounts (Chat.awayRate) for its run');
     ctx.ReturnStore.pendingRows = () => [];
     const rated = WW._resultHTML(line, dj);
     A.ok(!/TO REVIEW/.test(rated) && !/wfw-rate/.test(rated), 'a job already rated (no pending row) says nothing about TO REVIEW and offers no rating');
     ctx.ReturnStore.pendingRows = was;
     A.ok(/Chat\.awayRate\(host, rw, clear\)/.test(src) && /ReturnStore\.resolve\(rw\.runId, 'workflows'\)/.test(src), 'rating here resolves the same crate TO REVIEW holds (the windows/outbox.js path), naming itself so ReturnStore repaints TO REVIEW');
-    A.ok(/\brefresh\b/.test(src.slice(src.lastIndexOf('return {'))) && /const refresh = runIds => \{\s*if \(!alive\(\)\) return;/.test(src), 'WORKFLOWS exports refresh (ReturnStore\'s nudge when its run is rated in TO REVIEW or COMMS), a no-op while closed (returnstore-rate-sync runs it: only the shown run\'s rating repaints)');
-    A.ok(!/toreview/.test(src) && !/waiting in DELIVERABLES/.test(src), 'no TO REVIEW door and no handler for one anywhere in WORKFLOWS');
-    A.ok(src.includes('The result comes back here, lands in this line’s OUTBOX and is also filed in DELIVERABLES.'), 'the send helper says the result lands in this line\'s OUTBOX and is also filed in DELIVERABLES (one wording with the panel, g7 D7)');
+    A.ok(/\brefresh\b/.test(src.slice(src.lastIndexOf('return {'))) && /const refresh = runIds => \{\s*if \(!alive\(\)\) return;/.test(src), 'FLUJOS exports refresh (ReturnStore\'s nudge when its run is rated in TO REVIEW or COMMS), a no-op while closed (returnstore-rate-sync runs it: only the shown run\'s rating repaints)');
+    A.ok(!/toreview/.test(src) && !/waiting in ENTREGABLES/.test(src), 'no TO REVIEW door and no handler for one anywhere in FLUJOS');
+    A.ok(src.includes('El resultado vuelve aquí, aterriza en el OUTBOX de esta línea y también se archiva en ENTREGABLES.'), 'the send helper says the result lands in this line\'s OUTBOX and is also filed in ENTREGABLES (one wording with the panel, g7 D7)');
   }
 
-  /* ---------- org P17 (2026-10-14): WORKFLOWS and the Workflow panel use ONE word set for the same line ---------- */
+  /* ---------- org P17 (2026-10-14): FLUJOS and the Workflow panel use ONE word set for the same line ---------- */
   {
     const panelSrc = rd('frontend/app/workflowpanel.js'), buildSrc = rd('frontend/app/build.js');
     A.ok(src.includes('<span class="wfw-st ok">✓ DELIVERED</span>') && src.includes('<b class="ok">✓ DELIVERED</b>') && !src.includes('✓ DONE'), 'a finished job reads ✓ DELIVERED in LAST JOBS and on its result (the panel\'s ✓ DONE is its close key)');
     A.ok(src.includes('>▶ SEND A JOB</button>') && panelSrc.includes("'▶ SEND A JOB')") && panelSrc.includes('id="wf-sendnow" hidden>▶ SEND A JOB</button>'), '▶ SEND A JOB in both editors');
     A.ok(panelSrc.includes(": '▶ SEND A REAL JOB') + '</button>'") && panelSrc.includes("['real', 'SEND A REAL JOB',") && panelSrc.includes('real agents, real cost, and the result lands') && !/costs a run'/.test(panelSrc + buildSrc), 'TEST\'s key reads ▶ SEND A REAL JOB like the FINISH and COMMS cards; its cost is the help sentence above it (org D4 polish)');
     A.ok(src.includes('>↻ SEND IT AGAIN</button>') && panelSrc.includes('id="wf-nr-again">↻ SEND IT AGAIN</button>') && !/RUN THE SAME JOB AGAIN</.test(src + panelSrc), '↻ SEND IT AGAIN after a fix, in both');
-    A.ok(panelSrc.includes('<span>✎ NEEDS CHANGES</span>') && panelSrc.includes("'SUGGEST CHANGES'") && panelSrc.includes('★ KEEP THIS STYLE</button>'), 'the panel says ✎ NEEDS CHANGES · SUGGEST CHANGES · ★ KEEP THIS STYLE, as WORKFLOWS does');
-    A.ok(src.includes("'\">GIVE ' + esc(String(a.name || a.id).toUpperCase()) + ' EVERY STEP</button>'") && buildSrc.includes("'>GIVE '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' EVERY STEP</button>'") && !src.includes('DOES EVERY STEP') && !buildSrc.includes('DOES EVERY STEP') && src.includes(' A DESK</button>') && buildSrc.includes(">⊕ GIVE '+esc(") && panelSrc.includes('id="wf-pc">⊕ GIVE \' + esc(') && src.includes('">⊕ GIVE \' + esc(NAME('), 'GIVE <NAME> EVERY STEP (an action, never a status beside a picker that names someone else) and GIVE <NAME> A DESK in WORKFLOWS, BUILD and the panel');
+    A.ok(panelSrc.includes('<span>✎ NEEDS CHANGES</span>') && panelSrc.includes("'SUGGEST CHANGES'") && panelSrc.includes('★ KEEP THIS STYLE</button>'), 'the panel says ✎ NEEDS CHANGES · SUGGEST CHANGES · ★ KEEP THIS STYLE, as FLUJOS does');
+    A.ok(src.includes("'\">GIVE ' + esc(String(a.name || a.id).toUpperCase()) + ' EVERY STEP</button>'") && buildSrc.includes("'>GIVE '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' EVERY STEP</button>'") && !src.includes('DOES EVERY STEP') && !buildSrc.includes('DOES EVERY STEP') && src.includes(' A DESK</button>') && buildSrc.includes(">⊕ GIVE '+esc(") && panelSrc.includes('id="wf-pc">⊕ GIVE \' + esc(') && src.includes('">⊕ GIVE \' + esc(NAME('), 'GIVE <NAME> EVERY STEP (an action, never a status beside a picker that names someone else) and GIVE <NAME> A DESK in FLUJOS, BUILD and the panel');
     A.ok(buildSrc.includes("▸ FINISH ${lname ? esc(lname.toUpperCase()) : 'SETUP'}") && !buildSrc.includes("'FINISH THE LINE'"), 'the FINISH card reads FINISH <LINE NAME>, or FINISH SETUP unnamed (org D4/D5: never FINISH SETUP · NAME, which wrapped)');
-    A.ok(!/Choose a workflow/.test(rd('frontend/app/windows/loops.js')) && /Choose a kind of loop/.test(rd('frontend/app/windows/loops.js')), 'GOAL LOOPS asks for a kind of loop, never "a workflow"');
+    A.ok(!/Elige un workflow/.test(rd('frontend/app/windows/loops.js')) && /Elige un tipo de loop/.test(rd('frontend/app/windows/loops.js')), 'BUCLES DE OBJETIVO asks for a kind of loop, never "a workflow"');
   }
 
   /* ---------- org P18 (2026-10-14): NEW WORKFLOW leads with the Commander's FOR YOUR GOAL line when it is not one of the four ---------- */
@@ -402,11 +402,11 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const goalTile = (/<button type="button" class="wfw-tile wfw-goal"[^>]*>[\s\S]*?<\/button>/.exec(led) || [''])[0];
     A.ok(/data-tip="“ship my app every week” — a crew plans it and checks it/.test(goalTile) && /<span class="wfw-tstat">\d+ steps?( · reviewed| · side by side)?<\/span>/.test(goalTile), '…its tip quotes their words, its one small line is the step count like every tile and CONVEYORS › LINES (no sentence under the tile): ' + goalTile.slice(0, 200));
     A.ok(!/<span class="wfw-tstat">[^<]{40,}/.test(led), 'every tile keeps one short stat line');
-    A.ok(/<div class="wfw-tgroup wfw-goalhd"[^>]*>FOR YOUR GOAL <span class="wfw-goalq">“ship my app every week”<\/span><\/div><button type="button" class="wfw-tile wfw-goal"/.test(led) && /wfw-goal"[\s\S]*?<\/button><div class="wfw-tgroup">COMMON WORKFLOWS<\/div>/.test(led), 'the goal tile sits under the shelf\'s gold FOR YOUR GOAL heading, the four under COMMON WORKFLOWS (org D2 polish)');
+    A.ok(/<div class="wfw-tgroup wfw-goalhd"[^>]*>PARA TU OBJETIVO <span class="wfw-goalq">“ship my app every week”<\/span><\/div><button type="button" class="wfw-tile wfw-goal"/.test(led) && /wfw-goal"[\s\S]*?<\/button><div class="wfw-tgroup">FLUJOS COMUNES<\/div>/.test(led), 'the goal tile sits under the shelf\'s gold FOR YOUR GOAL heading, the four under COMMON FLUJOS (org D2 polish)');
     // (org g7 D2, final round) the shelf claims a goal only by NAMING it — never a match for the empty 'What should it make?' box
-    A.ok(/FOR YOUR GOAL <span class="wfw-goalq">“ship my app every week”<\/span>/.test(led) && /<textarea id="wfw-describe"[^>]*><\/textarea>/.test(led), 'with the box still empty, the heading names the goal it matched: the Commander\'s own words');
+    A.ok(/PARA TU OBJETIVO <span class="wfw-goalq">“ship my app every week”<\/span>/.test(led) && /<textarea id="wfw-describe"[^>]*><\/textarea>/.test(led), 'with the box still empty, the heading names the goal it matched: the Commander\'s own words');
     ctx.Build.goalLine = () => ({ id: 'mission_control', why: 'w', quote: '  ' });
-    A.ok(!/FOR YOUR GOAL/.test(WW._newHTML(WW._floor())) && tilesOf(WW._newHTML(WW._floor())).length === 4, 'a goal with no words to name shows no goal shelf at all');
+    A.ok(!/PARA TU OBJETIVO/.test(WW._newHTML(WW._floor())) && tilesOf(WW._newHTML(WW._floor())).length === 4, 'a goal with no words to name shows no goal shelf at all');
     A.ok(/' · side by side'/.test(src), 'a SPLITTER line says its steps work side by side');
     A.ok(/\.wfw-tile\.wfw-goal \{ grid-column: 1 \/ -1; \}/.test(rd('frontend/css/workflows-window.css')), 'the goal tile takes a row of its own, so the four starters under it stay a whole grid');
     ctx.Build.goalLine = () => ({ id: 'research_line', why: 'w', quote: 'q' });
@@ -421,7 +421,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     A.ok(/goalLine: \(\) => \{ const g = goalLine\(\); return g \? \{ id: g\.bp\.id, why: g\.why, quote: g\.quote \} : null; \},/.test(buildSrc), 'Build exposes the shelf\'s own FOR YOUR GOAL pick');
   }
 
-  /* ---------- night-leak 10-15: a closed window lets go of its body (module state held the last closed WORKFLOWS window) ---------- */
+  /* ---------- night-leak 10-15: a closed window lets go of its body (module state held the last closed FLUJOS window) ---------- */
   {
     const o = registered.workflows.o;
     A.ok(typeof o.onClose === 'function', 'the window registers a close teardown');
