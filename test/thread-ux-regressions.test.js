@@ -368,8 +368,8 @@ test('answering one of two asks moves the bell to the other QUIETLY (no second t
 
 test('a delegated worker\'s question toasts in the WORKER\'s name, like its card', () => {
   const body = part(chat, '  function clarifyRow(', '  // p = a consent payload');
-  assert.ok(/const asker = \(p && p\.workerAgentId\) \? askerName\(p, ws\) : name;[^\n]*\n\s*if \(ws && !announcedPrompt\(p\.promptId, ws\)[^\n]*StationUI\.notify\(asker \+ ' has a quick question for you'/.test(body));
-  assert.ok(!/StationUI\.notify\(name \+ ' has a quick question/.test(body), 'never the lead\'s name');
+  assert.ok(/const asker = \(p && p\.workerAgentId\) \? askerName\(p, ws\) : name;[^\n]*\n\s*if \(ws && !announcedPrompt\(p\.promptId, ws\)[^\n]*StationUI\.notify\(asker \+ ' tiene una pregunta rápida para ti'/.test(body));
+  assert.ok(!/StationUI\.notify\(name \+ ' tiene una pregunta rápida/.test(body), 'never the lead\'s name');
 });
 
 test('a worker question is ONE hop away: revealAsk lands on its question card, redrawing it from the open ask when it is not in the transcript', () => {

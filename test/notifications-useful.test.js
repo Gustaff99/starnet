@@ -79,7 +79,7 @@ A.ok(/function badges\(\)[\s\S]{0,200}isWaiting\(x\) \|\| !x\.read/.test(win), '
 /* ---- the call sites that matter carry a kind and a door ---- */
 A.ok(/ quiere ' \+ actionPhrase\(p\)[^\n]*kind: 'needs', go: \{ ws: ws\.id \}, key: 'needs:' \+ ws\.id/.test(chat), 'an approval (open session) is a NEEDS YOU door to its session');
 A.ok(/function backgroundPermissionNotify[\s\S]{0,900}kind: 'needs', go: \{ ws: ws\.id \}, key: 'needs:' \+ ws\.id/.test(chat), 'an approval (background session) is a NEEDS YOU door');
-A.ok(/' finished'\) \+ sessionNote\(ws\)/.test(chat) && /kind: 'result', go: \{ ws: ws\.id \}/.test(chat), 'a background session that finished says so and opens it');
+A.ok(/' terminó'\) \+ sessionNote\(ws\)/.test(chat) && /kind: 'result', go: \{ ws: ws\.id \}/.test(chat), 'a background session that finished says so and opens it');
 // (2026-10-14) through settleRunNeeds: the run's own waits end with it; a background worker's ask filed on the same
 // conversation keeps the entry (test/background-asks-ui.test.js executes it)
 A.ok(/settleRunNeeds\(ws\.id\);   \/\/ the run is over/.test(chat) && /function settleRunNeeds\(wsId\)[\s\S]{0,400}keepNeeds\(wsId,/.test(chat), 'a run that ends clears what it was waiting on');
@@ -103,7 +103,7 @@ A.ok(!/hudNote\('◈ recalled[^\n]*kind:/.test(world) && !/hudNote\('✎ memory 
     let reply = { ok: false, error: 'offline' }, calls = 0;
     const buttons = [{ disabled: false }], events = [], tags = [];
     const c = vm.createContext({ p, ws, decided: false, submitting: false, received: null, applyElsewhere: null,
-      btns: { querySelectorAll: () => buttons, remove: () => tags.push('removed') }, hint: { remove() {} }, howTo: 'Tap an answer.', why: null, releaseCard() {}, keepFocus() {},
+      btns: { querySelectorAll: () => buttons, remove: () => tags.push('removed') }, hint: { remove() {} }, howTo: 'Toca una respuesta.', why: null, releaseCard() {}, keepFocus() {},
       r: { body: { appendChild: tag => tags.push(tag) } }, document: { createElement: () => ({}) },
       Harness: { consent: async () => { calls++; return reply; }, consentAnswer: async () => { calls++; return reply; } },
       Channels, StationUI: N, askerName: row => row.workerAgentId || 'lead', actionPhrase: () => 'write a file',

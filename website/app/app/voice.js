@@ -1919,9 +1919,9 @@ const Voice = (() => {
     wakeFloor();
     if (!micBtn) return;
     micBtn.classList.toggle('rec', on);
-    micBtn.title = on ? 'recording — click again to finish and send' : 'click to talk';
+    micBtn.title = on ? 'grabando — clic de nuevo para terminar y enviar' : 'clic para hablar';
     micBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    micBtn.setAttribute('aria-label', on ? 'Recording, click again to finish and send' : 'Click to talk');
+    micBtn.setAttribute('aria-label', on ? 'Grabando, clic de nuevo para terminar y enviar' : 'Clic para hablar');
   }
   function setSpeaking(on) {
     wakeFloor();
@@ -1944,7 +1944,7 @@ const Voice = (() => {
     toggleBtn.title = (interruptionMessage ? interruptionMessage + ' ' : '') + ((speakReplies && fbMsg) ? fbMsg
       : (speakReplies ? 'agent voice: ON — click to mute' : 'agent voice: OFF — click to unmute'));
     toggleBtn.setAttribute('aria-pressed', speakReplies ? 'true' : 'false');
-    toggleBtn.setAttribute('aria-label', speakReplies ? 'Agent voice: on, click to mute' : 'Agent voice: off, click to unmute');
+    toggleBtn.setAttribute('aria-label', speakReplies ? 'Voz del agente: activada, clic para silenciar' : 'Voz del agente: desactivada, clic para activar');
   }
   function reflectMode() {
     if (!modeBtn) return;
@@ -1954,7 +1954,7 @@ const Voice = (() => {
       ? 'voice mode: ON (hands-free) — click for push-to-talk'
       : 'voice mode: OFF (push-to-talk) — click for hands-free conversation';
     modeBtn.setAttribute('aria-pressed', convoMode ? 'true' : 'false');
-    modeBtn.setAttribute('aria-label', convoMode ? 'Voice mode: on (hands-free), click for push-to-talk' : 'Voice mode: off (push-to-talk), click for hands-free');
+    modeBtn.setAttribute('aria-label', convoMode ? 'Modo de voz: activado (manos libres), clic para pulsar-para-hablar' : 'Modo de voz: desactivado (pulsar-para-hablar), clic para manos libres');
   }
   // a refresh always drops hands-free to push-to-talk (the first listen needs a fresh click for mic
   // permission — we can't auto-open it). Instead of going silently quiet, pulse the mode button and hint so
@@ -1963,8 +1963,8 @@ const Voice = (() => {
     if (!modeBtn || !canListen()) return;
     resumePending = true;
     modeBtn.classList.add('resume');
-    modeBtn.title = 'tap to resume hands-free voice mode';
-    modeBtn.setAttribute('aria-label', 'Resume hands-free voice mode');
+    modeBtn.title = 'toca para reanudar el modo de voz manos libres';
+    modeBtn.setAttribute('aria-label', 'Reanudar modo de voz manos libres');
     setStatus('pulsa 🎙️ para reanudar el modo de voz');
   }
   function clearResumeCue() {

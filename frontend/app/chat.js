@@ -266,7 +266,7 @@ const Chat = (() => {
     }
     if (hasNew) pill.classList.add('hasnew');
     const isNew = pill.classList.contains('hasnew');
-    pill.textContent = isNew ? 'new messages' : 'latest';   // the ▾ chevron is drawn by CSS (::after), not a font glyph
+    pill.textContent = isNew ? 'nuevos mensajes' : 'último';   // the ▾ chevron is drawn by CSS (::after), not a font glyph
     pill.setAttribute('aria-label', isNew ? 'Ir a los mensajes nuevos' : 'Bajar a los últimos');
     positionNewPill(pill);
     pill.classList.add('show');
@@ -863,7 +863,7 @@ const Chat = (() => {
   }
   function renderFence(lines) {
     return '<span class="md-pre-wrap">' +
-      '<button class="md-copy" type="button" data-copy-label="Copy code block" data-tip="copy code" aria-label="Copy code block">⧉</button>' +
+      '<button class="md-copy" type="button" data-copy-label="Copiar bloque de código" data-tip="copiar código" aria-label="Copiar bloque de código">⧉</button>' +
       '<span class="md-pre">' + escapeHtml(lines.join('\n')) + '</span>' +
       '</span>';
   }
@@ -970,7 +970,7 @@ const Chat = (() => {
     all('.md-img:not([data-ready])').forEach(box => {
       const path = box.getAttribute('data-md-path'), alt = box.getAttribute('data-md-alt') || path, refs = refsOf(box);
       box.setAttribute('data-ready', 'loading');   // carry pending and failed slots across streaming re-renders too
-      const link = document.createElement('a'); link.className = 'thumb md-thumb'; link.href = '#'; link.setAttribute('aria-label', 'Enlarge ' + alt);
+      const link = document.createElement('a'); link.className = 'thumb md-thumb'; link.href = '#'; link.setAttribute('aria-label', 'Ampliar ' + alt);
       const img = document.createElement('img'); img.alt = alt; img.decoding = 'async';
       link.appendChild(img);
       link.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openLightbox(() => refs.image(path), alt, { revoke: false }); });
@@ -991,7 +991,7 @@ const Chat = (() => {
       }, () => {
         box.setAttribute('data-ready', 'missing');
         box.classList.add('md-img-missing');   // not on disk (or not shared): say so instead of a broken frame
-        box.querySelector('.md-img-alt').textContent = alt + ' — image not found';
+        box.querySelector('.md-img-alt').textContent = alt + ' — imagen no encontrada';
       });
     });
   }
@@ -1076,7 +1076,7 @@ const Chat = (() => {
         if(has(i+1,to) && ln.includes('|') && cells(at(i+1)).length>1 && cells(at(i+1)).every(c=>/^:?-{3,}:?$/.test(c))) {
           flushParagraph();
           const headers=cells(ln);i+=2;
-          let table='<div class="md-table-scroll" tabindex="0" role="region" aria-label="Report table"><table class="md-table"><thead><tr>'+headers.map(c=>'<th scope="col">'+reportInline(c)+'</th>').join('')+'</tr></thead><tbody>';
+          let table='<div class="md-table-scroll" tabindex="0" role="region" aria-label="Tabla de informe"><table class="md-table"><thead><tr>'+headers.map(c=>'<th scope="col">'+reportInline(c)+'</th>').join('')+'</tr></thead><tbody>';
           while(has(i,to) && at(i).includes('|') && at(i).trim())table+='<tr>'+cells(at(i++)).map(c=>'<td>'+reportInline(c)+'</td>').join('')+'</tr>';
           parts.push(table+'</tbody></table></div>');continue;
         }
@@ -1197,8 +1197,8 @@ const Chat = (() => {
     btn.classList.toggle('copied', !!ok);
     btn.classList.toggle('copy-failed', !ok);
     btn.textContent = ok ? '✓' : '!';
-    btn.setAttribute('aria-label', ok ? 'Copied' : 'No se pudo copiar');
-    btn.setAttribute('data-tip', ok ? 'copied' : 'copy failed — select manually');
+    btn.setAttribute('aria-label', ok ? 'Copiado' : 'No se pudo copiar');
+    btn.setAttribute('data-tip', ok ? 'copiado' : 'fallo al copiar — selecciónalo a mano');
     btn.__copyResultTimer = setTimeout(() => {
       btn.classList.remove('copied', 'copy-failed'); btn.textContent = '⧉';
       btn.setAttribute('aria-label', idleLabel);
@@ -1283,7 +1283,7 @@ const Chat = (() => {
         const invoke = (window.__TAURI__ && window.__TAURI__.core) ? window.__TAURI__.core.invoke : null;
         if (!invoke) return;   // a plain browser: target=_blank works as is
         e.preventDefault();
-        invoke('open_external_url', { url: link.href }).catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not open your browser for that link', 'warn'); });
+        invoke('open_external_url', { url: link.href }).catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo abrir tu navegador para ese enlace', 'warn'); });
       });
     }
     // CODE BLOCKS OUTSIDE COMMS (walk 10-14): the WORKFLOWS results, the Workflow panel and DELIVERABLES draw replies through this
@@ -1314,7 +1314,7 @@ const Chat = (() => {
           const invoke = (typeof window !== 'undefined' && window.__TAURI__ && window.__TAURI__.core) ? window.__TAURI__.core.invoke : null;
           if (invoke) {
             e.preventDefault();
-            invoke('open_external_url', { url: link.href }).catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not open your browser for that link', 'warn'); });
+            invoke('open_external_url', { url: link.href }).catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo abrir tu navegador para ese enlace', 'warn'); });
           }
           return;
         }
@@ -1453,7 +1453,7 @@ const Chat = (() => {
       const limit = (typeof U !== 'undefined' && U.tokens) ? U.tokens(contextIssue.limit) : contextIssue.limit;
       const note = 'Paste kept — it may exceed ' + model + '\'s ' + limit + '-token context once StarNet\'s working context is included. Choose a larger-context model or split the text; nothing was sent.';
       localLine(note);
-      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('paste kept — selected model context is too small', 'warn');
+      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('pegado conservado — el contexto del modelo elegido es demasiado pequeño', 'warn');
       return;
     }
     if (t) recordSent(t);
@@ -1574,7 +1574,7 @@ const Chat = (() => {
         const file = item.getAsFile(); return file ? [file] : [];
       }) : Array.from(e.dataTransfer.files || []);
       if (directories && typeof StationUI !== 'undefined' && StationUI.notify) {
-        StationUI.notify('Drop individual files; folders cannot be attached.', 'warn');
+        StationUI.notify('Suelta archivos individuales; las carpetas no se pueden adjuntar.', 'warn');
       }
       if (files.length) { handleFiles(files); input.focus({ preventScroll: true }); }
     });
@@ -1644,13 +1644,13 @@ const Chat = (() => {
     for (const f of files) {
       if (!f) continue;
       const oversized = f.size > ATTACH_MAX_FILE_BYTES;
-      if (oversized && !isVideoFile(f)) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('“' + f.name + '” is too large to attach (max 8MB)', 'warn'); continue; }
+      if (oversized && !isVideoFile(f)) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('“' + f.name + '” es demasiado grande para adjuntar (máx. 8MB)', 'warn'); continue; }
       if (!oversized) stageFile(f);
       if (isVideoFile(f)) {
         // even an over-limit video still contributes SIGHT: its frames are small JPEGs and attach fine
-        if (oversized && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('“' + f.name + '” is over 8MB — attaching still frames only', 'warn');
+        if (oversized && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('“' + f.name + '” supera 8MB — al adjuntar solo se capturan fotogramas', 'warn');
         extractVideoFrames(f, 3).then(frames => {
-          if (!frames.length && oversized && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not decode “' + f.name + '” for frames', 'warn');
+          if (!frames.length && oversized && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo decodificar “' + f.name + '” para fotogramas', 'warn');
           for (const fr of frames) stageFile(fr);
           if (frames.length) renderAttachStrip();
         });
@@ -1668,7 +1668,7 @@ const Chat = (() => {
       entry.status = 'ready'; entry.ref = ref;
     }).catch(() => {
       entry.status = 'error';
-      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not attach “' + entry.name + '”', 'warn');
+      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo adjuntar “' + entry.name + '”', 'warn');
     }).then(() => renderAttachStrip());
   }
   // wait for every still-uploading staged file to settle (resolve or fail) so a send never silently drops one
@@ -1706,7 +1706,7 @@ const Chat = (() => {
       chip.className = 'chat-attach-chip' + (entry.status === 'uploading' ? ' uploading' : '') + (entry.status === 'error' ? ' err' : '');
       if (entry.kind === 'image' && entry.localUrl) {
         const img = document.createElement('img'); img.className = 'thumb'; img.src = entry.localUrl; img.alt = entry.name;
-        img.title = 'click to enlarge';
+        img.title = 'haz clic para ampliar';
         // enlarge the STAGED image before sending it — the strip still owns entry.localUrl, so no revoke here
         img.addEventListener('click', () => openLightbox(() => entry.localUrl, entry.name, { revoke: false }));
         chip.appendChild(img);
@@ -1718,7 +1718,7 @@ const Chat = (() => {
       const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = entry.name; nm.title = entry.name;
       chip.appendChild(nm);
       const rm = document.createElement('button'); rm.className = 'rm'; rm.type = 'button'; rm.textContent = '×';
-      rm.title = 'remove'; rm.setAttribute('aria-label', 'Remove ' + entry.name);
+      rm.title = 'quitar'; rm.setAttribute('aria-label', 'Quitar ' + entry.name);
       rm.onclick = () => removePending(i);
       chip.appendChild(rm);
       attachStrip.appendChild(chip);
@@ -2243,7 +2243,7 @@ const Chat = (() => {
     if (activeWs && !taskQuestionLive() && typeof Workstreams !== 'undefined' && Workstreams.connectorHandoff(activeWs.id)) {
       const h = Workstreams.connectorHandoff(activeWs.id);
       const door = Friendly.connectorDoor(h);
-      if (door) choices([{ label: '⇄ CONNECT / CONTINUE TASK', value: 'connect' }], () => door.run());
+      if (door) choices([{ label: '⇄ CONECTAR / CONTINUAR TAREA', value: 'connect' }], () => door.run());
     }
     replayChannel();   // re-render an in-flight stream we left running: tool lines / partial reply / pending approval
     syncStatus();      // also paints the Stop control + this stream's queued pills (updateControls)
@@ -2619,7 +2619,7 @@ const Chat = (() => {
     clearEmptyState(); maybeEmptyState();
   }
   function openStarter(st, hint) {
-    if (input.value.trim()) { hint.textContent = 'Send or clear your current draft before choosing a session.'; input.focus(); return; }
+    if (input.value.trim()) { hint.textContent = 'Envía o borra el borrador actual antes de elegir una sesión.'; input.focus(); return; }
     const ctx = starterContext();
     // Revalidate both evidence and destination at click time: work can finish in another session.
     const sameEvidence = st.evidence.every(s => ctx.sources.some(current => current.id === s.id && current.text === s.text));
@@ -2656,11 +2656,11 @@ const Chat = (() => {
     const personalized = result.ideas || [], ideas = personalized.length ? personalized : Starters.defaults();
     const messages = {
       cold: 'Tres formas de poner a ' + name + ' a trabajar. Las sugerencias se harán concretas a medida que trabajemos juntos.',
-      paused: 'Personalization is paused. These starting points are available to everyone.',
-      loading: 'Finding ideas from your work. These starting points are available meanwhile.',
-      cooldown: 'Updating ideas from your latest context. Or start with one of these.',
-      error: 'Personalized ideas are unavailable right now. Try one of these starting points.',
-      ready: personalized.length ? 'Based on your work and goals. Choose a session to review its brief.' : 'Three substantial starting points. Your own requests will shape future suggestions.'
+      paused: 'La personalización está en pausa. Estos puntos de partida están disponibles para todos.',
+      loading: 'Buscando ideas a partir de tu trabajo. Estos puntos de partida están disponibles mientras tanto.',
+      cooldown: 'Actualizando ideas a partir de tu contexto más reciente. O empieza con una de estas.',
+      error: 'Las ideas personalizadas no están disponibles ahora mismo. Prueba uno de estos puntos de partida.',
+      ready: personalized.length ? 'Basadas en tu trabajo y tus objetivos. Elige una sesión para revisar su resumen.' : 'Tres puntos de partida sólidos. Tus propias peticiones darán forma a las sugerencias futuras.'
     };
     hint.textContent = messages[result.status] || messages.ready;
     d.keptOwner = (result.status === 'ready' && personalized.length && ctx) ? starterOwner(ctx) : '';   // the refresh tick keeps these through drift
@@ -2674,10 +2674,10 @@ const Chat = (() => {
       const output = document.createElement('span'); output.className = 'cmsg-starter-output'; output.textContent = 'Result: ' + st.deliverable;
       const arrow = document.createElement('span'); arrow.className = 'cmsg-starter-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
       b.append(title, detail); if (!st.general) b.appendChild(output); b.appendChild(arrow);
-      b.title = st.description + (st.general ? '' : ' Result: ' + st.deliverable);   // cabinet-clean.css shows the title only; the detail is the tip
+      b.title = st.description + (st.general ? '' : ' Resultado: ' + st.deliverable);   // cabinet-clean.css shows the title only; the detail is the tip
       b.addEventListener('click', () => openStarter(st, hint));
       const dismiss = document.createElement('button'); dismiss.type = 'button'; dismiss.className = 'choice cmsg-starter-dismiss';
-      dismiss.textContent = 'No es relevante'; dismiss.setAttribute('aria-label', 'Not relevant: ' + st.label);
+      dismiss.textContent = 'No es relevante'; dismiss.setAttribute('aria-label', 'No es relevante: ' + st.label);
       dismiss.addEventListener('click', () => { StarterStore.dismiss(st); row.remove(); if (!chips.querySelector('.cmsg-starter-row')) renderStarterIdeas(d, hint, { status: 'ready', ideas: [] }); });
       row.appendChild(b); if (!st.general) row.appendChild(dismiss); chips.appendChild(row);
     }
@@ -2754,12 +2754,12 @@ const Chat = (() => {
     if (typeof App === 'undefined' || !App.needsWorkstation || !App.needsWorkstation(id)) return;
     const who = (App.agentName && App.agentName(id)) || name;
     const prompt = row('system'); prompt.d.classList.add('comms-desk-prompt');
-    prompt.body.textContent = who + ' has nowhere to sit yet — it needs a desk of its own before it can take floor work. want to place one?';
+    prompt.body.textContent = who + ' aún no tiene dónde sentarse — necesita su propio escritorio antes de poder tomar trabajo de sala. ¿Quieres colocar uno?';
     autoscroll();
     // the chip is the whole point: it opens BUILD MODE already armed on the WORKSTATIONS palette, so the next floor
     // click drops the desk. 'later' just dismisses this view of it — the step is still owed, so the next open
     // of this session says so again (it stops for good the moment the desk exists).
-    const chips = choices([{ label: '▤ PLACE ITS DESK', value: 'desk' }, { label: 'later', value: 'later', skip: true }], item => {
+    const chips = choices([{ label: '▤ COLOCAR SU ESCRITORIO', value: 'desk' }, { label: 'después', value: 'later', skip: true }], item => {
       if (item && item.value === 'desk' && App.openDeskPlacement) App.openDeskPlacement(id);
     });
     if (chips) chips.classList.add('comms-desk-prompt');
@@ -2955,7 +2955,7 @@ const Chat = (() => {
     if (!log) return null;
     const g = String(goal || '').replace(/\s+/g, ' ').trim();
     const r = row('system'); r.d.classList.add('goal-step');
-    r.body.textContent = '↻ Continuing toward your session goal' + (g ? ' — ' + (g.length > 160 ? g.slice(0, 159) + '…' : g) : '');
+    r.body.textContent = '↻ Siguiendo hacia el objetivo de tu sesión' + (g ? ' — ' + (g.length > 160 ? g.slice(0, 159) + '…' : g) : '');
     autoscroll();
     return r.d;
   }
@@ -3173,7 +3173,7 @@ const Chat = (() => {
     const nmTail = nm ? (': ' + brief(nm)) : '';
     if (kind === 'view' || kind === 'write' && !nm) return { label: 'consulting skill' + nmTail, glyph: '▤' };
     if (kind === 'list') return { label: 'scanning skill index', glyph: '▤' };
-    if (kind === 'write') return { label: 'wrote skill' + (nm ? ' ' + brief(nm) : '') + ' → SKILLS menu', glyph: '✎' };
+    if (kind === 'write') return { label: 'escribió habilidad' + (nm ? ' ' + brief(nm) : '') + ' → menú HABILIDADES', glyph: '✎' };
     if (kind === 'manage') {
       const action = String(args.action || '').toLowerCase();
       const WRITE = { create: 1, edit: 1, patch: 1, archive: 1, restore: 1, pin: 1, unpin: 1, write_file: 1, remove_file: 1 };
@@ -3181,7 +3181,7 @@ const Chat = (() => {
         const verb = action === 'create' || action === 'edit' || action === 'patch' ? 'wrote skill' : action.replace(/_/g, ' ') + ' skill';
         return { label: verb + (nm ? ' ' + brief(nm) : '') + ' → SKILLS menu', glyph: '✎' };
       }
-      return { label: 'tending the skillbase' + nmTail, glyph: '▤' };   // delete has no returned name; still legible
+      return { label: 'cuidando la base de habilidades' + nmTail, glyph: '▤' };   // delete has no returned name; still legible
     }
     return null;
   }
@@ -3304,7 +3304,7 @@ const Chat = (() => {
         try {
           const j = await Harness.api.get('/api/connectors');
           if (!chip.isConnected || !chip.classList.contains('pending')) return;
-          stat.textContent = (j.browserSession?.waitingRunIds || []).includes(ev.runId) ? 'Waiting for browser session…' : '';
+          stat.textContent = (j.browserSession?.waitingRunIds || []).includes(ev.runId) ? 'Esperando sesión de navegador…' : '';
         } catch (_) { if (chip.classList.contains('pending')) stat.textContent = ''; }
         if (chip.isConnected && chip.classList.contains('pending')) setTimeout(checkWait, 1000);
       };
@@ -3330,11 +3330,11 @@ const Chat = (() => {
     chip.classList.add(heldCall ? 'held' : deniedCall ? 'denied' : ev.isError ? 'err' : 'ok');
     const glyph = chip.querySelector('.tc-glyph'); if (glyph) glyph.textContent = (heldCall || deniedCall) ? '▸' : ev.isError ? '✗' : '✓';
     const stat = chip.querySelector('.tc-stat');
-    if (stat) stat.textContent = heldCall ? 'not run yet' : deniedCall ? 'denied' : ev.ms ? fmtMs(ev.ms) : (ev.isError ? 'failed' : '');
+    if (stat) stat.textContent = heldCall ? 'aún no se ejecuta' : deniedCall ? 'denegada' : ev.ms ? fmtMs(ev.ms) : (ev.isError ? 'fallida' : '');
     const detail = chip.querySelector('.tc-detail');
     if (detail) {
       const dRes = document.createElement('div'); dRes.className = 'tc-d-res' + (heldCall ? ' held' : deniedCall ? ' denied' : ev.isError ? ' err' : '');
-      dRes.textContent = heldCall ? cap(ev.summary) : deniedCall ? 'denied · not run' : (ev.isError ? '✗ ' : '✓ ') + cap(ev.summary || (ev.isError ? 'error' : 'ok'));
+      dRes.textContent = heldCall ? cap(ev.summary) : deniedCall ? 'denegada · sin ejecutar' : (ev.isError ? '✗ ' : '✓ ') + cap(ev.summary || (ev.isError ? 'error' : 'ok'));
       detail.appendChild(dRes);
     }
     return chip;
@@ -3428,7 +3428,7 @@ const Chat = (() => {
             // gestures). Cancel there is an ANSWER, not a failure — never fall back around it.
             if (/declined at the host/i.test(String(err || ''))) return;
             return Promise.resolve(core.invoke('open_external_url', { url: readableUrl(fileUrl(title, agentId), title) }))
-              .catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not open that file — use folder or copy path to find it on disk', 'warn'); });
+              .catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo abrir ese archivo — usa la carpeta o copia la ruta para encontrarlo en disco', 'warn'); });
           });
       });
     }
@@ -3455,13 +3455,13 @@ const Chat = (() => {
     closeLightbox();
     const root = document.createElement('div'); root.className = 'comms-lightbox';
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-label', 'Enlarged image: ' + name);
+    root.setAttribute('aria-label', 'Imagen ampliada: ' + name);
     const fig = document.createElement('figure'); fig.className = 'lb-frame loading';
     const img = document.createElement('img'); img.alt = name; img.decoding = 'async';
     const cap = document.createElement('figcaption'); cap.className = 'lb-name'; cap.textContent = name; cap.title = name;
     fig.appendChild(img); fig.appendChild(cap);
     const x = document.createElement('button'); x.type = 'button'; x.className = 'lb-close';
-    x.textContent = '×'; x.title = 'close'; x.setAttribute('aria-label', 'Cerrar imagen ampliada');
+    x.textContent = '×'; x.title = 'cerrar'; x.setAttribute('aria-label', 'Cerrar imagen ampliada');
     root.appendChild(fig); root.appendChild(x);
     // click-OUT closes; clicks on the image/caption/frame do not (so a viewer can't lose it by mis-clicking)
     root.addEventListener('click', ev => { if (ev.target === root) closeLightbox(); });
@@ -3484,7 +3484,7 @@ const Chat = (() => {
       img.src = u;
     }).catch(() => {
       if (lightbox === mine) closeLightbox();
-      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not load that image — the sidecar may be unreachable', 'warn');
+      if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo cargar esa imagen — el sidecar puede estar inalcanzable', 'warn');
     });
   }
   // wire an image thumb in the transcript: click enlarges via the jailed /api/file route (fresh blob each
@@ -3539,7 +3539,7 @@ const Chat = (() => {
         return false;
       }
       return copyText(abs).then(ok => {
-        if (lbl) lbl.textContent = ok ? 'path copied' : abs;
+        if (lbl) lbl.textContent = ok ? 'ruta copiada' : abs;
         setTimeout(() => resetFeedbackLabel(btn), 1600);
         return ok;
       });
@@ -3548,10 +3548,10 @@ const Chat = (() => {
   function copyPathButton(agentId, artifactPath) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'deliverable-folder deliverable-copy-path';
-    b.setAttribute('data-default-label', 'copy path');
+    b.setAttribute('data-default-label', 'copiar ruta');
     b.appendChild(document.createTextNode('⧉'));
-    const lbl = document.createElement('span'); lbl.className = 'fb-label'; lbl.textContent = 'copy path'; b.appendChild(lbl);
-    b.title = 'copy the full saved path';
+    const lbl = document.createElement('span'); lbl.className = 'fb-label'; lbl.textContent = 'copiar ruta'; b.appendChild(lbl);
+    b.title = 'copiar la ruta completa guardada';
     b.addEventListener('click', () => copyArtifactPath(b, agentId, artifactPath));
     return b;
   }
@@ -3562,10 +3562,10 @@ const Chat = (() => {
     const desktop = !!tauriCore();
     // the folder glyph only where the key really opens a folder: a browser's key copies the path, so it wears copy path's ⧉
     b.appendChild(desktop ? glyphSpan(SVG_FOLDER) : document.createTextNode('⧉'));
-    const defaultLabel = desktop ? 'folder' : 'copy path';
+    const defaultLabel = desktop ? 'carpeta' : 'copiar ruta';
     b.setAttribute('data-default-label', defaultLabel);
     const lbl = document.createElement('span'); lbl.className = 'fb-label'; lbl.textContent = defaultLabel; b.appendChild(lbl);
-    b.title = desktop ? 'reveal this saved file in its folder' : 'copy the full saved path';
+    b.title = desktop ? 'mostrar este archivo guardado en su carpeta' : 'copiar la ruta guardada completa';
     b.addEventListener('click', () => {
       const core = tauriCore();
       if (core && core.invoke) {
@@ -3656,11 +3656,11 @@ const Chat = (() => {
         .catch(err => {
           if (/declined at the host/i.test(String(err || ''))) return;   // the host's own confirm said no: an answer, not a failure
           return Promise.resolve(core.invoke('open_external_url', { url }))
-            .catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not open that file — use folder or copy path to find it on disk', 'warn'); });
+            .catch(() => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo abrir ese archivo — usa la carpeta o copia la ruta para encontrarlo en disco', 'warn'); });
         });
       return;
     }
-    try { window.open(url, '_blank', 'noopener'); } catch (e) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('could not open that file: ' + ((e && e.message) || e), 'warn'); }
+    try { window.open(url, '_blank', 'noopener'); } catch (e) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no se pudo abrir ese archivo: ' + ((e && e.message) || e), 'warn'); }
   }
   function fileUrl(title, agentId, projectRoot) {
     const project = projectRoot && !/^([A-Za-z]:[\\/]|[\\/])/.test(String(title)) ? '&project=' + encodeURIComponent(String(projectRoot).replace(/[\\/]+$/, '')) : '';
@@ -3722,7 +3722,7 @@ const Chat = (() => {
   function fmtBytes(n) { return n < 1024 ? n + ' B' : (n / 1024).toFixed(1) + ' KB'; }
   function recapArtifactLine(a, agentId, runId) {
     const d = document.createElement('div'); d.className = 'recap-line';
-    if (a.kind === 'message') { d.textContent = '✉ sent to ' + (a.target || 'a channel'); return d; }
+    if (a.kind === 'message') { d.textContent = '✉ enviado a ' + (a.target || 'un canal'); return d; }
     const path = String(a.path || '');
     // already announced inline a few lines up → this is the LEDGER entry, not a second action row.
     const echo = deliverableAlreadyShown(runId, path);
@@ -3752,7 +3752,7 @@ const Chat = (() => {
     for (const a of arts.slice(0, RECAP_MAX_ROWS)) r.body.appendChild(recapArtifactLine(a, agentId, runId));
     if (arts.length > RECAP_MAX_ROWS) {
       const more = document.createElement('div'); more.className = 'recap-line';
-      more.textContent = '… +' + (arts.length - RECAP_MAX_ROWS) + ' more';
+      more.textContent = '… +' + (arts.length - RECAP_MAX_ROWS) + ' más';
       r.body.appendChild(more);
     }
     const foot = document.createElement('div'); foot.className = 'recap-line recap-foot';
@@ -3784,14 +3784,14 @@ const Chat = (() => {
     const wrap = document.createElement('div'); wrap.className = 'rt-run';
     const calls = runCallCount(entry);
     const head = document.createElement('div'); head.className = 'rt-run-head';
-    head.textContent = [role, runWho(entry.agentId), entry.model && entry.model !== '(unknown)' ? entry.model : '', (entry.reasoningEffort && entry.reasoningEffort !== 'none') ? entry.reasoningEffort : '', Number(entry.durationMs) > 0 ? fmtMs(Number(entry.durationMs)) : '', Number(entry.waitedMs) > 0 ? fmtMs(Number(entry.waitedMs)) + ' waiting on you' : '', calls + (calls === 1 ? ' call' : ' calls')].filter(Boolean).join(' · ');
+    head.textContent = [role, runWho(entry.agentId), entry.model && entry.model !== '(unknown)' ? entry.model : '', (entry.reasoningEffort && entry.reasoningEffort !== 'none') ? entry.reasoningEffort : '', Number(entry.durationMs) > 0 ? fmtMs(Number(entry.durationMs)) : '', Number(entry.waitedMs) > 0 ? fmtMs(Number(entry.waitedMs)) + ' esperándote' : '', calls + (calls === 1 ? ' llamada' : ' llamadas')].filter(Boolean).join(' · ');
     wrap.appendChild(head);
     for (const t of (skipTools ? [] : (Array.isArray(entry.toolTrace) ? entry.toolTrace : []))) {
       // a call the Task Brief held did not run: "not run yet", never "failed" (TaskIntent.GATE_HELD on its record)
       const held = typeof TaskIntent !== 'undefined' && TaskIntent.isGateHeld && TaskIntent.isGateHeld(t);
       const denied = !held && deniedResult(t);   // an approval not given: "denied", never "failed" (deniedResult above)
       const line = document.createElement('div'); line.className = 'rt-tool' + (held ? ' held' : denied ? ' denied' : t.isError ? ' err' : '');
-      line.textContent = '↳ ' + String(t.name || 'unknown') + ' · ' + fmtMs(Math.max(0, Number(t.ms) || 0)) + ' · ' + (held ? 'not run yet' : denied ? 'denied' : t.isError ? 'failed' : 'ok');
+      line.textContent = '↳ ' + String(t.name || 'unknown') + ' · ' + fmtMs(Math.max(0, Number(t.ms) || 0)) + ' · ' + (held ? 'aún no se ejecuta' : denied ? 'denegada' : t.isError ? 'fallida' : 'ok');
       if (t.summary) line.title = String(t.summary);
       wrap.appendChild(line);
     }
@@ -3915,7 +3915,7 @@ const Chat = (() => {
       const idle = inspect.copyLabel || 'COPY';
       const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'consent-btn quiet consent-copy'; copy.textContent = idle;
       copy.onclick = () => copyText(inspect.copy || inspect.text).then(ok => {
-        copy.textContent = ok ? '✓ COPIED' : 'COPY FAILED: select the text above';
+        copy.textContent = ok ? '✓ COPIADO' : 'FALLO AL COPIAR: selecciona el texto de arriba';
         clearTimeout(copy.__t); copy.__t = setTimeout(() => { copy.textContent = idle; }, 1400);
       });
       detail.appendChild(label); detail.appendChild(payload); detail.appendChild(copy); host.appendChild(detail);
@@ -4146,17 +4146,17 @@ const Chat = (() => {
     }
     // A batched ask shows its place ("asks (2 of 3)") so the Commander knows one more tap ends it —
     // three unannounced sequential cards would read as an interrogation with no visible bottom.
-    const seq = (Number(q.total) > 1 && Number(q.ordinal) > 0) ? ' (' + q.ordinal + ' of ' + q.total + ')' : '';
+    const seq = (Number(q.total) > 1 && Number(q.ordinal) > 0) ? ' (' + q.ordinal + ' de ' + q.total + ')' : '';
     // WHO asks on its own line, the question at reading size (Andrew 2026-10-13: "▣ NOVA asks: …" ran the asker into a
     // long question, and the reason sat open under it as a wall of text)
     /* READING ORDER (Andrew 2026-10-13: "tiny … unorganized and long"): who asks · the question, three lines at most (the
        whole of it one tap away) · the answers as keys · one plain line on how to answer · the reason, folded. */
     const askedBy = askerName(p, ws);
-    const who = document.createElement('div'); who.className = 'cq-who'; who.textContent = askedBy + ' asks' + seq;
-    const qText = document.createElement('p'); qText.className = 'cq-text'; qText.textContent = q.question || 'Which way should this go?';
+    const who = document.createElement('div'); who.className = 'cq-who'; who.textContent = askedBy + ' pregunta' + seq;
+    const qText = document.createElement('p'); qText.className = 'cq-text'; qText.textContent = q.question || '¿Hacia dónde va esto?';
     r.body.appendChild(who); r.body.appendChild(qText);
-    const whole = document.createElement('button'); whole.type = 'button'; whole.className = 'cq-whole'; whole.textContent = '▸ Show the whole question';
-    whole.onclick = () => { const open = !r.d.classList.contains('cq-open'); r.d.classList.toggle('cq-open', open); whole.textContent = open ? '▾ Show less' : '▸ Show the whole question'; };
+    const whole = document.createElement('button'); whole.type = 'button'; whole.className = 'cq-whole'; whole.textContent = '▸ Mostrar la pregunta completa';
+    whole.onclick = () => { const open = !r.d.classList.contains('cq-open'); r.d.classList.toggle('cq-open', open); whole.textContent = open ? '▾ Mostrar menos' : '▸ Mostrar la pregunta completa'; };
     r.body.appendChild(whole);
     // measured after layout and again whenever COMMS changes size: the key shows exactly while the question is clamped
     fitWhole(qText, whole, () => r.d.classList.contains('cq-open'));
@@ -4170,15 +4170,15 @@ const Chat = (() => {
     const isStar = (opt) => starred.indexOf(opt) >= 0;
     // one plain line on how to answer, and what the ★ is (a grounded ★ states its real count); it goes once answered
     const hint = document.createElement('div'); hint.className = 'cq-hint';
-    const howTo = ((q.multiSelect === true && (q.options || []).length > 1) ? 'Pick all that apply, then confirm.' : 'Tap an answer.')
-      + (useGrounded ? (gOpts.length > 1 ? ' ★ are your usual picks (chosen ' + gCount + '+ times before).' : ' ★ is your usual pick (chosen ' + gCount + ' times before).')
-        : starred.length ? ' ★ is ' + askedBy + '\'s suggestion.' : '');
+    const howTo = ((q.multiSelect === true && (q.options || []).length > 1) ? 'Elige todas las que apliquen y confirma.' : 'Toca una respuesta.')
+      + (useGrounded ? (gOpts.length > 1 ? ' ★ son tus elecciones habituales (elegidas ' + gCount + '+ veces antes).' : ' ★ es tu elección habitual (elegida ' + gCount + ' veces antes).')
+        : starred.length ? ' ★ es la sugerencia de ' + askedBy + '.' : '');
     hint.textContent = howTo;
     // the model's reason is kept, one tap away — never a paragraph between the question and its answers
     let why = null;
     if (q.reason) {
       why = document.createElement('details'); why.className = 'cq-why';
-      const sum = document.createElement('summary'); sum.textContent = 'Why ' + askedBy + ' is asking';
+      const sum = document.createElement('summary'); sum.textContent = 'Por qué ' + askedBy + ' pregunta';
       const body = document.createElement('p'); body.textContent = q.reason;
       why.appendChild(sum); why.appendChild(body);
     }
@@ -4190,17 +4190,17 @@ const Chat = (() => {
       const buttons = Array.from(btns.querySelectorAll('button')), disabled = buttons.map(b => b.disabled);
       buttons.forEach(b => { b.disabled = true; });
       // the pressed key stays lit and the hint says it is on its way (one answer; a refusal frees the keys again)
-      if (key) key.classList.add('sel'); hint.textContent = 'Sending your answer…';
+      if (key) key.classList.add('sel'); hint.textContent = 'Enviando tu respuesta…';
       const rid = p.runId || ((ws && typeof Channels !== 'undefined') ? Channels.runIdOf(ws.id) : null);
       try {
         const result = await Harness.consentAnswer(rid, p.promptId, text, true);
-        if (!(result && result.ok)) throw new Error('The station did not confirm your answer. Please try again.');
+        if (!(result && result.ok)) throw new Error('La estación no confirmó tu respuesta. Inténtalo de nuevo.');
       } catch (e) {
         submitting = false;
         if (received && applyElsewhere) { applyElsewhere(received); return; }
         if (key) key.classList.remove('sel'); hint.textContent = howTo;
         buttons.forEach((b, i) => { b.disabled = disabled[i]; });
-        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Could not answer: ' + ((e && e.message) || e), 'warn');
+        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('No se pudo responder: ' + ((e && e.message) || e), 'warn');
         return false;
       }
       submitting = false; decided = true;
@@ -4226,7 +4226,7 @@ const Chat = (() => {
       // model see exactly what free text would have said.
       const picked = new Set();
       const done = document.createElement('button');
-      const syncDone = () => { done.textContent = picked.size ? ('✔ confirm ' + picked.size + ' pick' + (picked.size > 1 ? 's' : '')) : '✔ confirm'; done.disabled = !picked.size; };
+      const syncDone = () => { done.textContent = picked.size ? ('✔ confirmar ' + picked.size + (picked.size > 1 ? ' elecciones' : ' elección')) : '✔ confirmar'; done.disabled = !picked.size; };
       for (const opt of opts) {
         const b = document.createElement('button');
         b.className = 'consent-btn';
@@ -4259,7 +4259,7 @@ const Chat = (() => {
     const skip = document.createElement('button');
     skip.className = 'consent-btn quiet';
     skip.textContent = 'Usa tu criterio';   // the answer it sends stays 'use your judgment' (the host matches it)
-    skip.onclick = () => answer('use your judgment', '✓ your call');
+    skip.onclick = () => answer('use your judgment', '✓ a tu criterio');
     btns.appendChild(skip);
     // BATCH-WIDE ESCAPE: opting out of a 3-question batch cost 3 taps, which is the wrong ratio for the
     // person the batch exists to spare. One tap hands back every remaining decision. Only offered while
@@ -4268,9 +4268,9 @@ const Chat = (() => {
       const rest = document.createElement('button');
       rest.className = 'consent-btn quiet';
       const left = Number(q.total) - Number(q.ordinal) + 1;
-      rest.textContent = 'Use your judgment for the rest (' + left + ')';
-      rest.title = 'decide this and the remaining ' + (left - 1) + ' yourself — the run keeps going';
-      rest.onclick = () => answer('use your judgment for the rest', '✓ your call on all ' + left);
+      rest.textContent = 'Usa tu criterio para el resto (' + left + ')';
+      rest.title = 'decide este y los restantes ' + (left - 1) + ' tú — la ejecución sigue';
+      rest.onclick = () => answer('use your judgment for the rest', '✓ a tu criterio en las ' + left + ' restantes');
       btns.appendChild(rest);
     }
     r.body.appendChild(btns); r.body.appendChild(hint); if (why) r.body.appendChild(why);
@@ -4298,11 +4298,11 @@ const Chat = (() => {
     // Esc = "use your judgment": the reflexive dismiss defers the decision rather than silently denying a
     // question (a deny makes no sense here), matching the end-run card's skip chip semantics.
     r.d.tabIndex = -1;
-    r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); answer('use your judgment', '✓ your call'); } });
+    r.d.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); answer('use your judgment', '✓ a tu criterio'); } });
     status('esperando tu respuesta…');
     const asker = (p && p.workerAgentId) ? askerName(p, ws) : name;   // a delegated worker's question names the worker, like its card
-    if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(asker + ' has a quick question for you' + sessionNote(ws), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId });
-    else if (!ws && typeof StationUI !== 'undefined') StationUI.notify(asker + ' has a quick question for you' + sessionNote(ws), 'warn', 'needsApproval');
+    if (ws && !announcedPrompt(p.promptId, ws) && typeof StationUI !== 'undefined') StationUI.notify(asker + ' tiene una pregunta rápida para ti' + sessionNote(ws), 'warn', 'needsApproval', { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id, prompt: p.promptId });
+    else if (!ws && typeof StationUI !== 'undefined') StationUI.notify(asker + ' tiene una pregunta rápida para ti' + sessionNote(ws), 'warn', 'needsApproval');
     const waitsItsTurn = revealCard(r.d) === 'queued';   // a card behind a held one takes focus only when its turn comes
     const composerBusy = !!(input && (document.activeElement === input || (input.value && input.value.trim())));
     if (!composerBusy && !waitsItsTurn) { try { r.d.focus({ preventScroll: true }); } catch (_) { try { r.d.focus(); } catch (_) {} } }
@@ -4479,12 +4479,12 @@ const Chat = (() => {
         submitting = false;
         // the station no longer holds this ask: answerConsent retired this card in neutral words (or this card does it here)
         if (e && e.gone) {
-          if (!decided) { decided = true; btns.remove(); releaseCard(r.d); const tag = document.createElement('span'); tag.className = 'consent-result err'; tag.textContent = '■ no longer waiting on you'; r.body.appendChild(tag); syncStatus(); }
+          if (!decided) { decided = true; btns.remove(); releaseCard(r.d); const tag = document.createElement('span'); tag.className = 'consent-result err'; tag.textContent = '■ ya no espera tu respuesta'; r.body.appendChild(tag); syncStatus(); }
           return;
         }
         if (received && applyElsewhere) { applyElsewhere(received); return; }
         for (const b of btns.querySelectorAll('button')) b.disabled = false;
-        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Could not answer: ' + ((e && e.message) || e), 'warn');
+        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('No se pudo responder: ' + ((e && e.message) || e), 'warn');
         return;
       }
       submitting = false; decided = true;
@@ -4557,7 +4557,7 @@ const Chat = (() => {
         // plugin.submit, the login window) grants this one call whatever grade another surface sent. An answer given
         // on this page (voice, a worker's row, NEEDS YOU) names its own surface, not the phone
         // stopped: a background worker stopped while its ask waited (the station says so) — it was never left unanswered
-        tag.textContent = resp.stopped ? '■ ' + askerName(p, ws) + ' stopped before an answer — nothing was approved' : resp.expired ? '✕ no answer in time — denied' : settledLabel(resp, labels);
+        tag.textContent = resp.stopped ? '■ ' + askerName(p, ws) + ' se detuvo antes de la respuesta — nada se aprobó' : resp.expired ? '✕ sin respuesta a tiempo — denegada' : settledLabel(resp, labels);
         r.body.appendChild(tag);
         syncStatus();
       };
@@ -4858,11 +4858,11 @@ const Chat = (() => {
       if (!accepted || !accepted.ok) {
         done = false;
         buttons.forEach(b => { b.disabled = false; });
-        try { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify((accepted && accepted.error) || 'Rating was not saved — try again.', 'bad'); } catch (_) {}
+        try { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify((accepted && accepted.error) || 'La calificación no se guardó — inténtalo de nuevo.', 'bad'); } catch (_) {}
         return;
       }
       btns.remove();
-      const tag = document.createElement('span'); tag.className = 'consent-result' + (isDeny ? ' err' : ''); tag.textContent = accepted.duplicate ? 'already rated' : flash;
+      const tag = document.createElement('span'); tag.className = 'consent-result' + (isDeny ? ' err' : ''); tag.textContent = accepted.duplicate ? 'ya calificado' : flash;
       host.appendChild(tag);
       // flash the verdict, let the caller fade the beat, THEN (momentum loop) give a short-of-the-mark verdict its
       // consequence: the follow-up beat asks what missed and writes the answer into the dossier. Rides every
@@ -5021,7 +5021,7 @@ const Chat = (() => {
     const usd = (+rw.usd > 0) ? (' · ' + U.usd(+rw.usd)) : '';
     // G3a seed callout: an unattended run that reuses a Commander-saved seed credits it inline (rw.seed is
     // annotated by ReturnStore via SeedCredit — provenance-matched, never guessed). A credit line, not a beat.
-    const seed = rw.seed ? (' · from the seed you saved — “' + rw.seed + '”') : '';
+    const seed = rw.seed ? (' · de la semilla que guardaste — “' + rw.seed + '”') : '';
     return '◷ ' + name + who + usd + seed;
   }
   // the "↗ read the work" affordance (2026-07-16 UX fix): every review surface must let the Commander SEE
@@ -5031,14 +5031,14 @@ const Chat = (() => {
   // honestly in place — never a dead click.
   function openWorkBtn(host, rw, openWork) {
     if (!openWork) return;
-    const b = document.createElement('button'); b.className = 'consent-btn primary'; b.textContent = '↗ read the work';
+    const b = document.createElement('button'); b.className = 'consent-btn primary'; b.textContent = '↗ leer el trabajo';
     b.onclick = () => {
       b.disabled = true; b.textContent = 'opening…';
       Promise.resolve().then(() => openWork(rw)).then(ok => {
-        if (ok) { b.disabled = false; b.textContent = '↗ read the work'; return; }   // reusable — the beat stays for rating
-        const note = document.createElement('span'); note.className = 'consent-result err'; note.textContent = 'transcript unreachable';
+        if (ok) { b.disabled = false; b.textContent = '↗ leer el trabajo'; return; }   // reusable — the beat stays for rating
+        const note = document.createElement('span'); note.className = 'consent-result err'; note.textContent = 'transcripción inalcanzable';
         b.replaceWith(note);
-      }).catch(() => { b.disabled = false; b.textContent = '↗ read the work'; });
+      }).catch(() => { b.disabled = false; b.textContent = '↗ leer el trabajo'; });
     };
     host.appendChild(b);
   }
@@ -5065,7 +5065,7 @@ const Chat = (() => {
     }
     const r = row('agent'); r.d.classList.add('tool'); r.d.classList.add('turnin'); r.d.classList.add('away-digest');
     const title = document.createElement('span'); title.className = 'turnin-title';
-    title.textContent = '◈ while you were away — ' + rows.length + (rows.length > 1 ? ' runs' : ' run') + ' finished. read each one, then rate it:';
+    title.textContent = '◈ mientras estabas fuera — se terminaron ' + rows.length + (rows.length > 1 ? ' ejecuciones' : ' ejecución') + '. Lee cada una y califícala:';
     r.body.appendChild(title);
     let open = rows.length;
     const settleRow = (item) => { vanish(item); if (--open <= 0) vanish(r.d); };
@@ -5092,7 +5092,7 @@ const Chat = (() => {
     // the ONE door that always works, prop or no prop on the floor: open the OUTBOX window — every listed
     // run readable + rateable in one place (2026-07-16; a floor with no OUTBOX placed had no other path).
     if (typeof StationUI !== 'undefined' && StationUI.openTerm) {
-      const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ open TO REVIEW';
+      const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir TO REVIEW';
       ob.onclick = () => StationUI.openTerm('outbox');
       foot.appendChild(ob);
     }
@@ -5130,7 +5130,7 @@ const Chat = (() => {
     if (workRatedRuns.has(rw.runId)) { try { onRated(rw.runId); } catch (_) {} return; }   // already judged — just clear the crate
     const r = row('agent'); r.d.classList.add('tool'); r.d.classList.add('turnin'); r.d.classList.add('work-rate');
     const title = document.createElement('span'); title.className = 'turnin-title';
-    title.textContent = '◈ finished while you were away:';
+    title.textContent = '◈ terminado mientras estabas fuera:';
     r.body.appendChild(title);
     const item = document.createElement('div'); item.className = 'turnin-item';
     const text = document.createElement('span'); text.className = 'turnin-text'; text.textContent = awayRowLabel(rw);
@@ -5175,40 +5175,40 @@ const Chat = (() => {
        the learning loop records). The card still posts below it, so SAY where it went: a silent click read as a dead INBOX
        (2026-09-28 retest, the goal-path question covering COMMS). */
     const covered = () => { try { return typeof Dialogue !== 'undefined' && Dialogue.isOpen && Dialogue.isOpen(); } catch (_) { return false; } };
-    const sayCovered = () => { if (covered() && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('The INBOX card is in COMMS, under the question your agent is asking. Answer it, and the card is right there.', 'info', undefined, { transient: true }); };
+    const sayCovered = () => { if (covered() && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('La tarjeta INBOX está en COMMS, bajo la pregunta que tu agente está haciendo. Responde, y la tarjeta está ahí mismo.', 'info', undefined, { transient: true }); };
     if (sampleCardEl && sampleCardEl.isConnected) { autoscroll(); sayCovered(); return; }   // one live card at a time
     const r = row('agent'); r.d.classList.add('tool'); r.d.classList.add('turnin'); r.d.classList.add('sample-card');
     sampleCardEl = r.d;
     const title = document.createElement('span'); title.className = 'turnin-title';
-    title.textContent = '◈ INBOX — prove the line: send one small, real job through it, end to end.';   // (org D6) 'send', like its ▸ SEND A REAL JOB key
+    title.textContent = '◈ INBOX — demuestra la línea: envía un trabajo pequeño y real a través de ella, de punta a punta.';   // (org D6) 'send', like its ▸ SEND A REAL JOB key
     r.body.appendChild(title);
     const item = document.createElement('div'); item.className = 'turnin-item';
     const text = document.createElement('span'); text.className = 'turnin-text';
     const job = (typeof Build !== 'undefined' && Build.testJobForProp) ? Build.testJobForProp(opts.propId) : null;
     text.textContent = (job && job.text
-      ? 'your test job (“' + (job.text.length > 70 ? job.text.slice(0, 70) + '…' : job.text) + '”) rides the real belts'
-      : 'a labeled test crate (“SAMPLE JOB…”) rides the real belts — write your own test job in the INBOX’s Workflow panel —')
-      + ' — the router picks the dock, the run spends real budget, and the reply lands in this line’s OUTBOX and is also filed in DELIVERABLES.';
+      ? 'tu trabajo de prueba (“' + (job.text.length > 70 ? job.text.slice(0, 70) + '…' : job.text) + '”) viaja por las cintas reales'
+      : 'una caja de prueba con etiqueta (“SAMPLE JOB…”) viaja por las cintas reales — escribe tu propio trabajo de prueba en el panel Workflow de INBOX —')
+      + ' — el router elige el muelle, la ejecución gasta presupuesto real y la respuesta llega al OUTBOX de esta línea y también se archiva en DELIVERABLES.';
     const btns = document.createElement('span'); btns.className = 'consent-btns';
     item.appendChild(text); item.appendChild(btns);
     r.body.appendChild(item);
     const note = document.createElement('div');   // refusal / result area (below the action row)
     r.body.appendChild(note);
-    const run = document.createElement('button'); run.className = 'consent-btn primary'; run.textContent = '▸ SEND A REAL JOB';
-    const later = document.createElement('button'); later.className = 'consent-btn deny'; later.textContent = 'not now';
+    const run = document.createElement('button'); run.className = 'consent-btn primary'; run.textContent = '▸ ENVIAR UN TRABAJO REAL';
+    const later = document.createElement('button'); later.className = 'consent-btn deny'; later.textContent = 'ahora no';
     later.onclick = () => vanish(r.d);
     btns.appendChild(run); btns.appendChild(later);
     if (opts.schedOff) {
       // a schedule IS saved; the station's scheduling is off — the fix is one click, right here (R3)
-      const arm = document.createElement('button'); arm.className = 'consent-btn'; arm.textContent = '▶ TURN SCHEDULING ON';
+      const arm = document.createElement('button'); arm.className = 'consent-btn'; arm.textContent = '▶ ACTIVAR AGENDADO';
       arm.onclick = () => {
-        arm.disabled = true; arm.textContent = '… turning on';
+        arm.disabled = true; arm.textContent = '… activando';
         Harness.api.post('/api/cron/arm', { enabled: true }).then(res => {
           const ok = !!(res && res.ok && res.j && res.j.ok);
-          arm.textContent = ok ? '✓ scheduling is on' : 'could not turn scheduling on';
+          arm.textContent = ok ? '✓ programación activada' : 'no se pudo activar la programación';
           if (!ok) arm.disabled = false;
           if (ok && typeof World !== 'undefined' && World.pollFeed) { try { World.pollFeed(); } catch (_) {} }
-        }).catch(() => { arm.disabled = false; arm.textContent = '▶ TURN SCHEDULING ON'; });
+        }).catch(() => { arm.disabled = false; arm.textContent = '▶ ACTIVAR AGENDADO'; });
       };
       btns.appendChild(arm);
     }
@@ -5222,12 +5222,12 @@ const Chat = (() => {
       const err = document.createElement('span'); err.className = 'consent-result err';
       err.textContent = msg;
       note.textContent = ''; note.appendChild(err);
-      run.disabled = false; later.disabled = false; run.textContent = '▸ SEND A REAL JOB';
+      run.disabled = false; later.disabled = false; run.textContent = '▸ ENVIAR UN TRABAJO REAL';
       autoscroll();
     };
     run.onclick = () => {
       run.disabled = true; later.disabled = true;
-      run.textContent = '⌛ the job is riding the line…';   // honest: the POST is genuinely open until the line delivers
+      run.textContent = '⌛ el trabajo viaja por la línea…';   // honest: the POST is genuinely open until the line delivers
       note.textContent = '';
       Harness.api.post('/api/routing/sample', job ? Object.assign({}, job.text ? { text: job.text } : {}, job.line ? { line: job.line } : {}) : {}).then(res => {
         if (!res.ok) return fail(String((res.j && res.j.error) || ('the station refused (http ' + res.status + ')')));   // the server's reason, VERBATIM
@@ -5246,8 +5246,8 @@ const Chat = (() => {
         const who = String((whoRec && whoRec.name) || whoId).toUpperCase();
         const cost = (+j.totalUsd > 0 && typeof U !== 'undefined' && U.usd) ? (' · ' + U.usd(+j.totalUsd)) : '';
         text.textContent = clean
-          ? ('✔ job delivered — ' + who + ' finished the last step' + cost + '.' + (folded ? ' the result waits in TO REVIEW.' : ''))
-          : ('⚠ the job rode the line, but the run did not finish clean — the reply below says why.');
+          ? ('✔ trabajo entregado — ' + who + ' terminó el último paso' + cost + '.' + (folded ? ' el resultado espera en TO REVIEW.' : ''))
+          : ('⚠ el trabajo recorrió la línea, pero la ejecución no terminó limpia — la respuesta de abajo dice por qué.');
         // a long answer reaches the line's channel in chunks: a clean job is quoted from its OPENING words (where TO REVIEW's glance
         // starts), never whichever chunk came last ('“All done.”' for a 5k answer, review 10-14); a job that did not finish clean
         // is quoted by its last word — the reason the text above promises
@@ -5260,11 +5260,11 @@ const Chat = (() => {
         }
         const acts = document.createElement('div'); acts.className = 'turnin-rate';
         if (folded && typeof StationUI !== 'undefined' && StationUI.openTerm) {
-          const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ open TO REVIEW';
+          const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir TO REVIEW';
           ob.onclick = () => StationUI.openTerm('outbox');
           acts.appendChild(ob);
         }
-        const done = document.createElement('button'); done.className = 'consent-btn quiet'; done.textContent = 'done';
+        const done = document.createElement('button'); done.className = 'consent-btn quiet'; done.textContent = 'Listo';
         done.onclick = () => vanish(r.d);
         acts.appendChild(done);
         note.appendChild(acts);
@@ -5355,14 +5355,14 @@ const Chat = (() => {
        DECLARED manifest fields (planOnly, kind), never from a guess about the content. */
     // ONE past-tense word, reused by the headline AND the verification line below — they sat next to each other
     // saying "wrote:" and "built —" about the same deliverable.
-    const didWord = (m.planOnly === true) ? 'drafted' : (m.kind === 'doc') ? 'written' : (m.kind === 'draft') ? 'drafted' : 'built';
-    const didVerb = (m.planOnly === true) ? 'drafted a plan:'
-      : (m.kind === 'doc') ? 'wrote:'
-      : (m.kind === 'draft') ? 'drafted:'
-      : (m.kind === 'patch') ? 'prepared a patch:'
-      : 'built:';
+    const didWord = (m.planOnly === true) ? 'esbozado' : (m.kind === 'doc') ? 'escrito' : (m.kind === 'draft') ? 'esbozado' : 'construido';
+    const didVerb = (m.planOnly === true) ? 'esbozó un plan:'
+      : (m.kind === 'doc') ? 'escribió:'
+      : (m.kind === 'draft') ? 'esbozó:'
+      : (m.kind === 'patch') ? 'preparó un parche:'
+      : 'construyó:';
     const title = document.createElement('span'); title.className = 'turnin-title';
-    title.textContent = '◈ while you were away — ' + who + ' ' + didVerb + ' ' + String(m.title || 'a deliverable');
+    title.textContent = '◈ mientras no estabas — ' + who + ' ' + didVerb + ' ' + String(m.title || 'un entregable');
     // a declared plan is labelled 'plan' — more use than its raw kind ('doc'), which says nothing about the
     // decision in front of the Commander.
     const chipText = (m.planOnly === true) ? 'plan' : ((m.kind && m.kind !== 'other') ? String(m.kind) : '');
@@ -5390,11 +5390,11 @@ const Chat = (() => {
       // same verb as the headline, and no "couldn't test here" on a deliverable with nothing to run — that
       // sentence exists to excuse an untested TOOL, and reads as a failure report on a document.
       const runnable = !(m.planOnly === true || m.kind === 'doc' || m.kind === 'draft');
-      ver.textContent = didWord + ' — ' + (runnable ? 'the agent couldn’t test here; ' : '')
+      ver.textContent = didWord + ' — ' + (runnable ? 'el agente no pudo probarlo aquí; ' : '')
         + notVer.length + ' thing' + (notVer.length > 1 ? 's' : '') + ' for you to check';
       ver.classList.add('dim');
     } else {
-      ver.textContent = (m.planOnly === true) ? 'drafted — nothing has been built from this yet'
+      ver.textContent = (m.planOnly === true) ? 'borrador — aún no se ha construido nada de esto'
         : (didWord + ' — no test commands were defined');
       ver.classList.add('dim');
     }
@@ -5408,16 +5408,16 @@ const Chat = (() => {
       // lock / fullscreen, i.e. opening it will capture the Commander's REAL mouse. Say so BEFORE the click.
       if (m.capturesInput) {
         const warn = document.createElement('div'); warn.className = 'ws-line ws-capture-warn';
-        warn.textContent = '⚠ captures your mouse/keyboard when opened (pointer lock) — press Esc to release it';
+        warn.textContent = '⚠ captura el ratón/teclado al abrirse (bloqueo de puntero) — pulsa Esc para liberarlo';
         r.body.appendChild(warn);
       }
       if (m.usesMedia) {
         const warn = document.createElement('div'); warn.className = 'ws-line ws-capture-warn';
-        warn.textContent = '⚠ may ask to use your camera, microphone, or screen when opened';
+        warn.textContent = '⚠ puede pedir usar la cámara, el micrófono o la pantalla al abrirse';
         r.body.appendChild(warn);
       }
       const tryRow = document.createElement('div'); tryRow.className = 'turnin-rate ws-try';
-      const openItBtn = document.createElement('button'); openItBtn.className = 'consent-btn ws-openit'; openItBtn.textContent = '▶ Open it — try it in a tab';
+      const openItBtn = document.createElement('button'); openItBtn.className = 'consent-btn ws-openit'; openItBtn.textContent = '▶ Ábrelo — pruébalo en una pestaña';
       openItBtn.title = m.capturesInput
         ? 'run this tool in a new browser tab — it will capture your mouse; Esc releases it'
         : 'run this tool in a new browser tab';
@@ -5440,14 +5440,14 @@ const Chat = (() => {
     // hidden for good — expand shows the agent's full paragraph verbatim.
     if (m.summary) {
       const full = String(m.summary).replace(/\s+/g, ' ').trim();
-      if (full && full.length <= 360) mkSection('what it did', full, 'ws-what');
+      if (full && full.length <= 360) mkSection('qué hizo', full, 'ws-what');
       else if (full) {
         const win = full.slice(0, 340);
         const sentEnd = Math.max(win.lastIndexOf('. '), win.lastIndexOf('! '), win.lastIndexOf('? '));
         // prefer a sentence boundary; a boundary-free run-on breaks at a WORD boundary with an honest ellipsis
         const short = sentEnd > 120 ? full.slice(0, sentEnd + 1) : full.slice(0, win.lastIndexOf(' ') > 120 ? win.lastIndexOf(' ') : 300).trim() + '…';
         const d = document.createElement('div'); d.className = 'ws-line ws-what';
-        const kk = document.createElement('span'); kk.className = 'ws-k'; kk.textContent = 'what it did';
+        const kk = document.createElement('span'); kk.className = 'ws-k'; kk.textContent = 'qué hizo';
         const vv = document.createElement('span'); vv.className = 'ws-v'; vv.textContent = short + ' ';
         const more = document.createElement('button'); more.type = 'button'; more.className = 'ws-more'; more.textContent = '+ more';
         more.onclick = () => { vv.textContent = full; autoscroll(); };   // one-way expand; replacing textContent drops the button
@@ -5467,7 +5467,7 @@ const Chat = (() => {
     // manifest is clamped rather than dumped as a wall of instructions (the old confusing card).
     if (m.howToUse && !htmlEntry) {
       const one = String(m.howToUse).replace(/\s+/g, ' ').trim();
-      if (one) mkSection('how to use', one.length > 200 ? one.slice(0, 200) + '…' : one, 'ws-how');
+      if (one) mkSection('cómo usarlo', one.length > 200 ? one.slice(0, 200) + '…' : one, 'ws-how');
     }
     // what a human still needs to check — honest, compact (never implied failure, never hidden). One short
     // row per item (the old semicolon join painted a wall); past the fourth, items fold behind "+N more".
@@ -5475,16 +5475,16 @@ const Chat = (() => {
       const items = m.notVerified.filter(Boolean)
         .map(s => { const t = String(s).replace(/\s+/g, ' ').trim(); return t.length > 200 ? t.slice(0, 200) + '…' : t; })
         .filter(Boolean);
-      if (items.length === 1) mkSection('check yourself', items[0], 'ws-notver');
+      if (items.length === 1) mkSection('compruébalo tú', items[0], 'ws-notver');
       else if (items.length) {
         const d = document.createElement('div'); d.className = 'ws-line ws-notver';
-        const kk = document.createElement('span'); kk.className = 'ws-k'; kk.textContent = 'check yourself';
+        const kk = document.createElement('span'); kk.className = 'ws-k'; kk.textContent = 'compruébalo tú';
         const vv = document.createElement('span'); vv.className = 'ws-v';
         const addItem = (t) => { const li = document.createElement('div'); li.className = 'ws-nvitem'; li.textContent = t; vv.appendChild(li); };
         items.slice(0, 4).forEach(addItem);
         if (items.length > 4) {
           const more = document.createElement('button'); more.type = 'button'; more.className = 'ws-more';
-          more.textContent = '+ ' + (items.length - 4) + ' more';
+          more.textContent = '+ ' + (items.length - 4) + ' más';
           more.onclick = () => { more.remove(); items.slice(4).forEach(addItem); autoscroll(); };
           vv.appendChild(more);
         }
@@ -5524,7 +5524,7 @@ const Chat = (() => {
       view.hidden = false; view.textContent = 'loading…';
       let content = '';
       try { content = opts.readFile ? await opts.readFile(agentId, m.runId, relPath) : ''; } catch (_) { content = ''; }
-      view.textContent = content || '(no preview available)';
+      view.textContent = content || '(sin vista previa disponible)';
       autoscroll();
     };
     files.forEach(f => {
@@ -5533,12 +5533,12 @@ const Chat = (() => {
       const rowEl = document.createElement('div'); rowEl.className = 'ws-filerow';
       const b = document.createElement('button'); b.className = 'ws-file'; b.type = 'button';
       b.textContent = f.path + (f.bytes != null ? '  ·  ' + f.bytes + 'B' : '');
-      b.title = inTab ? 'open this file in a new tab' : 'read this file here';
+      b.title = inTab ? 'abrir este archivo en una pestaña nueva' : 'leer este archivo aquí';
       b.onclick = () => { if (inTab) openRunTab(f.path); else viewInline(b, f.path); };
       rowEl.appendChild(b);
       if (inTab) {   // a tab-openable file keeps the inline reader as the opt-in secondary (read the code without leaving)
-        const src = document.createElement('button'); src.className = 'ws-viewsrc'; src.type = 'button'; src.textContent = 'view source';
-        src.title = 'show this file’s contents inline';
+        const src = document.createElement('button'); src.className = 'ws-viewsrc'; src.type = 'button'; src.textContent = 'ver código fuente';
+        src.title = 'mostrar el contenido de este archivo aquí';
         src.onclick = () => viewInline(b, f.path);
         rowEl.appendChild(src);
       }
@@ -5563,24 +5563,24 @@ const Chat = (() => {
         || (m.planOnly === undefined && (m.kind === 'doc' || m.kind === 'other') && !htmlEntry));
     if (plan && plan.action === 'apply') {
       const pl = document.createElement('div'); pl.className = 'ws-line ws-plan';
-      pl.textContent = 'implement → applies this patch to a NEW branch in ' + plan.root + ' (your current branch is untouched)';
+      pl.textContent = 'implementar → aplica este parche a una RAMA NUEVA en ' + plan.root + ' (tu rama actual no se toca)';
       r.body.appendChild(pl);
     } else if (plan && m.kind === 'patch') {
       const pl = document.createElement('div'); pl.className = 'ws-line ws-capture-warn';
-      pl.textContent = '⚠ this patch can’t be auto-applied (' + (plan.patchRefused || 'no valid target') + '). '
-        + 'The button below only SAVES the .patch file — bless the target project in PROJECTS to enable auto-apply.';
+      pl.textContent = '⚠ este parche no se puede aplicar automáticamente (' + (plan.patchRefused || 'sin destino válido') + '). '
+        + 'El botón de abajo solo GUARDA el archivo .patch — bendice el proyecto destino en PROJECTS para activar la aplicación automática.';
       r.body.appendChild(pl);
     } else if (buildable) {
       // A PLAN is not the deliverable — copying its .md into a folder is the "regular save button" outcome this
       // action exists to replace, and the file is already archived AND readable from the list above. So say what
       // actually happens: a build runs. Nothing is copied. ("this plan" only when the shift DECLARED it one.)
       const pl = document.createElement('div'); pl.className = 'ws-line ws-plan';
-      pl.textContent = '→ ' + who + ' builds ' + (m.planOnly === true ? 'this plan' : 'what this describes')
-        + '. Nothing is copied to a folder — the result arrives as its own card.';
+      pl.textContent = '→ ' + who + ' construye ' + (m.planOnly === true ? 'este plan' : 'lo que esto describe')
+        + '. Nada se copia a una carpeta — el resultado llega como su propia tarjeta.';
       r.body.appendChild(pl);
     } else if (plan && plan.dest) {
       const pl = document.createElement('div'); pl.className = 'ws-line ws-plan';
-      pl.textContent = 'implement → saves the files to ' + plan.dest;
+      pl.textContent = 'implementar → guarda los archivos en ' + plan.dest;
       r.body.appendChild(pl);
     }
 
@@ -5596,10 +5596,10 @@ const Chat = (() => {
     const msgInput = document.createElement('input'); msgInput.className = 'turnin-edit ws-msg'; msgInput.type = 'text';
     // the placeholder must FIT: at the card's own type scale the long form clipped mid-word in a
     // COMMS column, which reads as a broken field rather than an optional one.
-    msgInput.placeholder = buildable ? ('what should ' + who + ' build first? (optional)') : ('message ' + who + ' (optional)');
+    msgInput.placeholder = buildable ? ('¿qué debe construir primero ' + who + '? (opcional)') : ('mensaje a ' + who + ' (opcional)');
     msgInput.setAttribute('aria-label', buildable
-      ? 'Optional instruction telling the agent which part of this plan to build'
-      : 'Optional message to the agent, sent with your decision');
+      ? 'Instrucción opcional que le dice al agente qué parte de este plan construir'
+      : 'Mensaje opcional al agente, enviado con tu decisión');
     acts.appendChild(msgInput);
 
     let settled = false;
@@ -5620,16 +5620,16 @@ const Chat = (() => {
         const lr = row('system'); lr.body.textContent = label;
         if (destPath) {
           const chips = document.createElement('span'); chips.className = 'consent-btns ws-destchips';
-          const cp = document.createElement('button'); cp.className = 'consent-btn'; cp.textContent = 'copy path';
+          const cp = document.createElement('button'); cp.className = 'consent-btn'; cp.textContent = 'copiar ruta';
           cp.onclick = () => {
-            const done = () => { cp.textContent = 'copied ✓'; setTimeout(() => { cp.textContent = 'copy path'; }, 1400); };
+            const done = () => { cp.textContent = 'copiado ✓'; setTimeout(() => { cp.textContent = 'copiar ruta'; }, 1400); };
             try { navigator.clipboard.writeText(destPath).then(done, done); } catch (_) { done(); }
           };
           chips.appendChild(cp);
           const core = tauriCore();   // desktop shell only — a real Explorer/Finder reveal exists there
           if (core && core.invoke) {
-            const rv = document.createElement('button'); rv.className = 'consent-btn'; rv.textContent = '📂 open folder';
-            rv.onclick = () => { Promise.resolve(core.invoke('starnet_reveal_path', { path: destPath })).catch(err => { if (/declined at the host/i.test(String(err || ''))) return; rv.textContent = 'could not open'; setTimeout(() => { rv.textContent = '📂 open folder'; }, 1600); }); };
+            const rv = document.createElement('button'); rv.className = 'consent-btn'; rv.textContent = '📂 abrir carpeta';
+            rv.onclick = () => { Promise.resolve(core.invoke('starnet_reveal_path', { path: destPath })).catch(err => { if (/declined at the host/i.test(String(err || ''))) return; rv.textContent = 'no se pudo abrir'; setTimeout(() => { rv.textContent = '📂 abrir carpeta'; }, 1600); }); };
             chips.appendChild(rv);
           }
           // UNDO KEEP (EL-11 #8) — reverse the copy-out: delete exactly the files Implement wrote to destPath and
@@ -5637,13 +5637,13 @@ const Chat = (() => {
           // and single-arms (click to arm, click again to confirm) so it's never a one-tap accident. The resulting
           // line is driven by the SERVER's honest {removed, missing} — a file the user already moved reads as such,
           // never as a phantom removal.
-          const un = document.createElement('button'); un.className = 'consent-btn deny'; un.textContent = 'undo keep';
-          un.title = 'UNDO KEEP — removes the copied files from ' + destPath + ' and returns this build to pending';
+          const un = document.createElement('button'); un.className = 'consent-btn deny'; un.textContent = 'deshacer «mantener»';
+          un.title = 'DESHACER «MANTENER» — elimina los archivos copiados de ' + destPath + ' y devuelve esta construcción a pendiente';
           let unArmed = false;
           un.onclick = async () => {
             if (un.disabled) return;
-            if (!unArmed) { unArmed = true; un.textContent = 'undo — remove these files?'; setTimeout(() => { if (!un.disabled) { unArmed = false; un.textContent = 'undo keep'; } }, 4000); return; }
-            un.disabled = true; un.textContent = 'undoing…';
+            if (!unArmed) { unArmed = true; un.textContent = 'deshacer — ¿eliminar estos archivos?'; setTimeout(() => { if (!un.disabled) { unArmed = false; un.textContent = 'deshacer «mantener»'; } }, 4000); return; }
+            un.disabled = true; un.textContent = 'deshaciendo…';
             let j = null;
             try {
               const tok = (typeof Harness !== 'undefined' && Harness.apiToken) ? String(Harness.apiToken() || '') : '';
@@ -5652,13 +5652,13 @@ const Chat = (() => {
               j = await rr.json().catch(() => null);
               if (!rr.ok || !j || j.ok === false) j = null;
             } catch (_) { j = null; }
-            if (!j) { un.disabled = false; unArmed = false; un.textContent = 'undo keep'; localLine('Could not undo this keep: the station kept the files.'); return; }
+            if (!j) { un.disabled = false; unArmed = false; un.textContent = 'deshacer «mantener»'; localLine('No se pudo deshacer este «mantener»: la estación conservó los archivos.'); return; }
             // honest resulting state, straight from server truth.
             const nRemoved = (j.removed || []).length, nMissing = (j.missing || []).length;
             let done;
-            if (nRemoved && !nMissing) done = '↩ keep undone — removed ' + nRemoved + ' file' + (nRemoved === 1 ? '' : 's') + ' from ' + (j.destPath || destPath) + '. This build is pending again.';
-            else if (nRemoved && nMissing) done = '↩ keep undone — removed ' + nRemoved + ', but ' + nMissing + ' file' + (nMissing === 1 ? ' was' : 's were') + ' already moved or gone. This build is pending again.';
-            else done = '↩ nothing to remove — those files were already moved or deleted' + (j.restored ? '. This build is pending again.' : '.');
+            if (nRemoved && !nMissing) done = '↩ «mantener» deshecho — se eliminaron ' + nRemoved + ' archivo' + (nRemoved === 1 ? '' : 's') + ' de ' + (j.destPath || destPath) + '. Esta construcción vuelve a estar pendiente.';
+            else if (nRemoved && nMissing) done = '↩ «mantener» deshecho — se eliminaron ' + nRemoved + ', pero ' + nMissing + ' archivo' + (nMissing === 1 ? ' había sido movido o eliminado ya' : 's habían sido movidos o eliminados ya') + '. Esta construcción vuelve a estar pendiente.';
+            else done = '↩ nada que eliminar — esos archivos ya se habían movido o eliminado' + (j.restored ? '. Esta construcción vuelve a estar pendiente.' : '.');
             lr.body.textContent = done;   // replaces the label + chips (the destPath is gone, so its chips are moot)
             try { decideNote(done); } catch (_) {}
             autoscroll();
@@ -5676,7 +5676,7 @@ const Chat = (() => {
       if (buildable) return;
       const msg = String(msgInput.value || '').trim();
       if (!msg || !inOwnSession()) return;
-      send('About the “' + String(m.title || 'away build') + '” build you delivered: ' + msg);
+      send('Sobre la construcción “' + String(m.title || 'construcción mientras no estabas') + '” que entregaste: ' + msg);
     };
     const decideNote = (label) => { try { if (opts.noteDecision) opts.noteDecision(label); } catch (_) {} };
 
@@ -5691,28 +5691,28 @@ const Chat = (() => {
     // carry all of it. On a plan the action IS a build — say so.
     const implLabel = buildable ? 'Constrúyelo' : patchSaveOnly ? 'Guardar archivo de parche' : 'Implementar';
     implBtn.textContent = implLabel;
-    implBtn.title = (plan && plan.action === 'apply') ? ('applies this patch to a new branch in ' + plan.root)
-      : patchSaveOnly ? 'saves the .patch file only — it will NOT be applied to your project'
-      : buildable ? ('has ' + who + ' BUILD what this describes — nothing is copied to a folder')
-      : ('saves the files to ' + ((plan && plan.dest) || 'your StarNet deliverables folder'));
+    implBtn.title = (plan && plan.action === 'apply') ? ('aplica este parche a una rama nueva en ' + plan.root)
+      : patchSaveOnly ? 'solo guarda el archivo .patch — NO se aplicará a tu proyecto'
+      : buildable ? ('hace que ' + who + ' CONSTRUYA lo que esto describe — nada se copia a una carpeta')
+      : ('guarda los archivos en ' + ((plan && plan.dest) || 'tu carpeta de entregables de StarNet'));
     // why a build can be refused, in the Commander's words — never a raw reason code.
     const implFailCopy = (reason) => {
       const r = String(reason || '');
-      if (r === 'no-capability') return 'no model or key is available for unattended runs — set one in KEYS, then press ' + implLabel + ' again';
-      if (r === 'source-gone') return 'this deliverable’s files are no longer on disk';
-      if (r === 'queue-refused') return 'this work was discarded before, so the station won’t rebuild it';
-      if (r === 'already-implemented') return 'this plan has already been built — its build is in your rail';
-      if (r === 'already-an-implementation') return 'this build IS an implementation already — there is nothing further to build from it';
-      if (r === 'no-manifest' || r === 'run-failed') return 'the build ran but produced nothing reviewable';
-      if (r === 'manifest-stamp-failed') return 'the files landed, but the station could not durably prove their link to this plan';
-      if (r === 'registration-failed') return 'the files landed, but the station could not durably register a reviewable build';
-      if (r === 'built-source-retire-failed') return 'the build landed, but the station could not durably retire this source plan';
-      if (r === 'unreachable' || r.indexOf('http') === 0) return 'the station couldn’t be reached';
-      return r || 'the station refused';
+      if (r === 'no-capability') return 'no hay modelo ni clave disponible para ejecuciones sin supervisión — configura uno en KEYS y vuelve a pulsar ' + implLabel;
+      if (r === 'source-gone') return 'los archivos de este entregable ya no están en disco';
+      if (r === 'queue-refused') return 'este trabajo se descartó antes, así que la estación no lo reconstruirá';
+      if (r === 'already-implemented') return 'este plan ya se ha construido — su construcción está en tu riel';
+      if (r === 'already-an-implementation') return 'esta construcción YA es una implementación — no hay nada más que construir a partir de ella';
+      if (r === 'no-manifest' || r === 'run-failed') return 'la construcción se ejecutó pero no produjo nada que revisar';
+      if (r === 'manifest-stamp-failed') return 'los archivos llegaron, pero la estación no pudo demostrar de forma duradera su vínculo con este plan';
+      if (r === 'registration-failed') return 'los archivos llegaron, pero la estación no pudo registrar de forma duradera una construcción que revisar';
+      if (r === 'built-source-retire-failed') return 'la construcción llegó, pero la estación no pudo retirar de forma duradera este plan de origen';
+      if (r === 'unreachable' || r.indexOf('http') === 0) return 'no se pudo alcanzar la estación';
+      return r || 'la estación se negó';
     };
     implBtn.onclick = async () => {
       if (implBtn.disabled) return;
-      implBtn.disabled = true; implBtn.textContent = buildable ? 'building…' : patchSaveOnly ? 'saving…' : 'implementing…';
+      implBtn.disabled = true; implBtn.textContent = buildable ? 'construyendo…' : patchSaveOnly ? 'guardando…' : 'implementando…';
 
       /* IMPLEMENT-AS-BUILD — a plan is NOT the deliverable, so this path never keeps: no file copy, and NO
          DECISION IS RECORDED YET. That second part is the important one. Keeping first retired the backlog item
@@ -5723,7 +5723,7 @@ const Chat = (() => {
       if (buildable) {
         // the typed text is this build's INSTRUCTION, not a chat message — it rides into the prompt (see msgInput).
         const steer = String(msgInput.value || '').trim();
-        const starting = '▶ ' + who + ' is building ' + (steer ? '“' + steer + '”' : 'this') + ' now. The finished build arrives as its own card.';
+        const starting = '▶ ' + who + ' está construyendo ' + (steer ? '“' + steer + '”' : 'esto') + ' ahora. La construcción terminada llega como su propia tarjeta.';
         decideNote(starting);
         // start the build IMMEDIATELY, but only report its outcome after the card has settled into its feed line —
         // otherwise an instant refusal (no key, discarded) prints its "didn't finish" line ABOVE the line it answers.
@@ -5731,11 +5731,11 @@ const Chat = (() => {
         await settle(starting, false, '');
         const br = await buildP;
         if (br && br.reason === 'built') {
-          const okLine = '✓ built — “' + String((br.manifest && br.manifest.title) || 'the build') + '” is waiting in your rail.';
+          const okLine = '✓ construido — “' + String((br.manifest && br.manifest.title) || 'la construcción') + '” está esperando en tu riel.';
           decideNote(okLine); localLine(okLine);
         } else {
-          const bad = 'The build didn’t finish: ' + implFailCopy(br && br.reason)
-            + '. This plan is still waiting — reopen this session to try again.';
+          const bad = 'La construcción no terminó: ' + implFailCopy(br && br.reason)
+            + '. Este plan sigue esperando — reabre esta sesión para intentarlo de nuevo.';
           decideNote(bad); localLine(bad);
         }
         return;
@@ -5745,35 +5745,35 @@ const Chat = (() => {
       let res = null; try { res = await onDecide('keep'); } catch (_) { res = { ok: false }; }
       if (!(res && res.ok)) {
         implBtn.disabled = false; implBtn.textContent = implLabel;
-        localLine('Could not implement this: ' + ((res && res.error) || 'the station refused') + '.');
+        localLine('No se pudo implementar esto: ' + ((res && res.error) || 'la estación se negó') + '.');
         return;
       }
       const saved = res.applied
-        ? ('✓ implemented — applied to branch ' + (res.branch || '?') + (res.root ? (' in ' + res.root) : ''))
+        ? ('✓ implementado — aplicado a la rama ' + (res.branch || '?') + (res.root ? (' en ' + res.root) : ''))
         : res.savedOnly
-          ? ('⚠ patch file saved to ' + (res.destPath || 'your StarNet deliverables folder') + ' — NOT applied to your project')
-          : ('✓ implemented — files saved to ' + (res.destPath || 'your StarNet deliverables folder'));
+          ? ('⚠ archivo de parche guardado en ' + (res.destPath || 'tu carpeta de entregables de StarNet') + ' — NO aplicado a tu proyecto')
+          : ('✓ implementado — archivos guardados en ' + (res.destPath || 'tu carpeta de entregables de StarNet'));
       decideNote(saved); sendNote(); settle(saved, false, res.applied ? '' : (res.destPath || ''));
     };
     acts.appendChild(implBtn);
 
     // LATER — dismiss; the session stays in the rail and the card returns next time this session opens.
-    const laterBtn = document.createElement('button'); laterBtn.className = 'consent-btn'; laterBtn.textContent = 'Later';
-    laterBtn.onclick = async () => { try { await onDecide('later'); } catch (_) {} sendNote(); settle('↩ left in the workshop — reopen this session any time to decide', false); };
+    const laterBtn = document.createElement('button'); laterBtn.className = 'consent-btn'; laterBtn.textContent = 'Después';
+    laterBtn.onclick = async () => { try { await onDecide('later'); } catch (_) {} sendNote(); settle('↩ dejado en el taller — reabre esta sesión cuando quieras para decidir', false); };
     acts.appendChild(laterBtn);
 
     // DISCARD — the ONE confirm (single click to arm, second to confirm). Honest about its weight: discard
     // wipes the files AND denylists the idea so it is never rebuilt or re-proposed (UX audit: the old confirm
     // undersold a permanent decision).
     const discardBtn = document.createElement('button'); discardBtn.className = 'consent-btn deny'; discardBtn.textContent = 'Descartar';
-    discardBtn.title = 'delete these files and never rebuild or re-propose this idea';
+    discardBtn.title = 'elimina estos archivos y nunca reconstruya ni vuelva a proponer esta idea';
     let armed = false;
     discardBtn.onclick = async () => {
-      if (!armed) { armed = true; discardBtn.textContent = 'Discard forever?'; setTimeout(() => { if (!settled) { armed = false; discardBtn.textContent = 'Descartar'; } }, 4000); return; }
+      if (!armed) { armed = true; discardBtn.textContent = '¿Descartar para siempre?'; setTimeout(() => { if (!settled) { armed = false; discardBtn.textContent = 'Descartar'; } }, 4000); return; }
       discardBtn.disabled = true;
       let res = null; try { res = await onDecide('discard'); } catch (_) { res = { ok: false }; }
-      if (res && res.ok) { const done = '✕ discarded — this idea won’t be rebuilt or re-proposed'; decideNote(done); sendNote(); settle(done, true); }
-      else { discardBtn.disabled = false; armed = false; discardBtn.textContent = 'Descartar'; localLine('Could not discard this: ' + ((res && res.error) || 'the station kept it') + '.'); }
+      if (res && res.ok) { const done = '✕ descartado — esta idea no se reconstruirá ni se volverá a proponer'; decideNote(done); sendNote(); settle(done, true); }
+      else { discardBtn.disabled = false; armed = false; discardBtn.textContent = 'Descartar'; localLine('No se pudo descartar esto: ' + ((res && res.error) || 'la estación lo conservó') + '.'); }
     };
     acts.appendChild(discardBtn);
 
@@ -5889,7 +5889,7 @@ const Chat = (() => {
       const item = document.createElement('div'); item.className = 'turnin-item';
       const kind = document.createElement('span'); kind.className = 'turnin-kind'; kind.textContent = KIND_TAG[prop.kind] || 'NOTE';
       const text = document.createElement('span'); text.className = 'turnin-text';
-      text.textContent = prop.replaceId ? 'Update remembered preference: “' + prop.previousBody + '” → “' + prop.content + '”' : prop.content;
+      text.textContent = prop.replaceId ? 'Actualizar preferencia recordada: “' + prop.previousBody + '” → “' + prop.content + '”' : prop.content;
       const btns = document.createElement('span'); btns.className = 'consent-btns';
       item.appendChild(kind); item.appendChild(text); item.appendChild(btns);
       slot.appendChild(item);
@@ -5909,7 +5909,7 @@ const Chat = (() => {
         if (decided) return; decided = true;
         const r = await Harness.memoryTurnin({ agentId: batch.agentId, runId: batch.runId, id: prop.id, verdict, content });
         if (r && r.ok) settle(label, isDeny);
-        else { decided = false; if (typeof StationUI !== 'undefined') StationUI.notify('could not save that ' + (prop.kind === 'skill' ? 'skill' : 'memory') + ' - try again', 'warn'); }
+        else { decided = false; if (typeof StationUI !== 'undefined') StationUI.notify('no se pudo guardar esa ' + (prop.kind === 'skill' ? 'habilidad' : 'memoria') + ' — inténtalo de nuevo', 'warn'); }
       }
       function mkBtn(label, cls, onClick) {
         const b = document.createElement('button'); b.className = 'consent-btn' + (cls ? ' ' + cls : ''); b.textContent = label; b.onclick = onClick; btns.appendChild(b); return b;
@@ -5925,7 +5925,7 @@ const Chat = (() => {
         if (decided) return;
         const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'turnin-edit'; inp.value = prop.content;
         item.replaceChild(inp, text); inp.focus(); try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (_) {}
-        const commit = () => { const v = inp.value.trim(); if (!v) { inp.focus(); return; } text.textContent = v; item.replaceChild(text, inp); submit('edit', v, prop.kind === 'skill' ? 'saved skill (edited)' : 'saved (edited)', false); };
+        const commit = () => { const v = inp.value.trim(); if (!v) { inp.focus(); return; } text.textContent = v; item.replaceChild(text, inp); submit('edit', v, prop.kind === 'skill' ? 'habilidad guardada (editada)' : 'guardado (editado)', false); };
         const cancel = () => { item.replaceChild(text, inp); renderChoices(); };
         btns.innerHTML = '';
         mkBtn('Save', '', commit);
@@ -6041,8 +6041,8 @@ const Chat = (() => {
       // would delete the whole memory, not undo the update (Memory Core edits it)
       if (prop.revised) { text.textContent = 'updated: ' + prop.content; item.appendChild(kind); item.appendChild(text); list.appendChild(item); continue; }
       const veto = document.createElement('button'); veto.className = 'receipt-veto'; veto.type = 'button';
-      veto.textContent = '✕'; veto.title = 'forget this — undo the save';
-      veto.setAttribute('aria-label', 'forget this memory');
+      veto.textContent = '✕'; veto.title = 'olvidar esto — deshacer el guardado';
+      veto.setAttribute('aria-label', 'olvidar este recuerdo');
       let busy = false;
       veto.onclick = async () => {
         if (busy) return; busy = true; veto.disabled = true;
@@ -6054,7 +6054,7 @@ const Chat = (() => {
           forgotten += 1; capText();
         } else {
           busy = false; veto.disabled = false;
-          if (typeof StationUI !== 'undefined') StationUI.notify('could not forget that ' + (prop.kind === 'skill' ? 'skill' : 'memory') + ' - try again', 'warn');
+          if (typeof StationUI !== 'undefined') StationUI.notify('no se pudo olvidar esa ' + (prop.kind === 'skill' ? 'habilidad' : 'memoria') + ' — inténtalo de nuevo', 'warn');
         }
       };
       item.appendChild(kind); item.appendChild(text); item.appendChild(veto);
@@ -6071,7 +6071,7 @@ const Chat = (() => {
   function offerFork(fk, runId) {
     clearNudge();   // same law as offerTaskQuestion: the fork claims the moment; a live nudge leaves WITH its chips
     const items = fk.options.map(o => ({ label: o, value: o }));
-    items.push({ label: 'you decide', value: '', skip: true });
+    items.push({ label: 'tú decides', value: '', skip: true });
     const q = row('agent'); q.d.classList.add('nudge');
     q.body.textContent = '⌖ ' + fk.question;
     taskQuestionDoor(q.body, runId);   // the fork's chips replace this run's connect chip in the one slot — the card carries the door
@@ -6144,7 +6144,7 @@ const Chat = (() => {
       return { label: suggested ? '★ ' + o : o, value: o, suggested };
     });
     const isMulti = tq.multiSelect === true;
-    if (isMulti) items.push({ label: '✔ confirm picks', value: '', confirm: true });
+    if (isMulti) items.push({ label: '✔ confirmar elecciones', value: '', confirm: true });
     items.push({ label: 'use your judgment', value: '', skip: true });
     const q = row('agent'); q.d.classList.add('nudge');
     q.body.textContent = '⌖ ' + tq.question;
@@ -6167,8 +6167,8 @@ const Chat = (() => {
     // this body), so "below" would have pointed at the composer past the very options it is an alternative to.
     const hint = document.createElement('div'); hint.className = 'tq-hint';
     hint.textContent = isMulti
-      ? 'these aren\'t exclusive — tap all that apply, then confirm; or type your own answer'
-      : 'or ignore these and type your own answer — more than one is fine';
+      ? 'estas no son exclusivas — toca todas las que apliquen y confirma; o escribe tu propia respuesta'
+      : 'o ignora estas y escribe tu propia respuesta — más de una está bien';
     q.body.appendChild(hint);
     taskQuestionDoor(q.body, tq.runId);
     autoscroll();
@@ -6237,7 +6237,7 @@ const Chat = (() => {
     // the one line that matters, so the objective started mid-sentence at caption size. Caption above, objective
     // as the card's headline.
     const cap = document.createElement('div'); cap.className = 'tb-read-cap';
-    cap.textContent = 'my read';
+    cap.textContent = 'mi lectura';
     // the fold handle — inert (and invisible) until the run ends and closeCard() arms it
     const chev = document.createElement('span'); chev.className = 'tb-read-chev'; chev.setAttribute('aria-hidden', 'true'); chev.textContent = '▸';
     cap.appendChild(chev);
@@ -6248,9 +6248,9 @@ const Chat = (() => {
     // Key/value ROWS, not a ' · '-joined run-on: these three answer different questions (what comes out / who it's
     // for / when it's done) and each value is a full clause, so a single wrapped line made them unscannable.
     const meta = [];
-    if (p.deliverable) meta.push(['deliverable', p.deliverable]);
-    if (p.audience) meta.push(['for', p.audience]);
-    if (p.success) meta.push(['done when', p.success]);
+    if (p.deliverable) meta.push(['entregable', p.deliverable]);
+    if (p.audience) meta.push(['para', p.audience]);
+    if (p.success) meta.push(['listo cuando', p.success]);
     if (meta.length) {
       const m = document.createElement('div'); m.className = 'tb-read-meta';
       for (const [k, v] of meta) {
@@ -6263,13 +6263,13 @@ const Chat = (() => {
     }
     const line = document.createElement('div'); line.className = 'tb-read-fix';
     const input = document.createElement('input'); input.className = 'tb-read-in';
-    input.placeholder = 'correct anything — it folds straight into the run';
+    input.placeholder = 'corrige lo que sea — se integra directamente en la ejecución';
     const chips = [];
     const asum = (Array.isArray(p.assumptions) ? p.assumptions : []).filter(Boolean);
     if (asum.length) {
       // The chips carried no affordance copy — a dim '~ …' row reads as decoration, not as "tap this to argue".
       const acap = document.createElement('div'); acap.className = 'tb-read-cap tb-read-cap2';
-      acap.textContent = 'assuming — tap to correct';
+      acap.textContent = 'asumiendo — toca para corregir';
       r.body.appendChild(acap);
       const wrap = document.createElement('div'); wrap.className = 'tb-read-assumps';
       for (const a of asum) {
@@ -6284,22 +6284,22 @@ const Chat = (() => {
     // the input lives on `line`, so replacing the line's contents used to detach the input and leave every chip
     // still lit — tapping one then wrote into a detached node and focused nothing, a promise the copy made
     // ("tap to correct") and the card silently broke.
-    const retire = () => { for (const c of chips) { c.disabled = true; c.title = 'this read is closed — say it in chat instead'; } };
+    const retire = () => { for (const c of chips) { c.disabled = true; c.title = 'esta lectura está cerrada — dilo en el chat'; } };
     const send = () => {
       const text = input.value.trim(); if (!text) return;
       const rid = (typeof Channels !== 'undefined' && Channels.runIdOf) ? Channels.runIdOf(ws.id) : null;
-      if (!rid) { input.value = ''; input.placeholder = 'run already finished — say it in chat instead'; retire(); return; }
+      if (!rid) { input.value = ''; input.placeholder = 'la ejecución ya terminó — dilo en el chat'; retire(); return; }
       fetch('/api/run/steer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ runId: rid, text: text }) })
         .then(res => res.ok ? res.json() : null)
         .then(d => {
           const ok = d && d.ok === true;
           line.innerHTML = '';
           const tag = document.createElement('span'); tag.className = 'tb-read-ack' + (ok ? '' : ' err');
-          tag.textContent = ok ? '✔ folded into the run — ' + text : '✕ the run already ended — say it in chat instead';
+          tag.textContent = ok ? '✔ plegado a la ejecución — ' + text : '✕ la ejecución ya terminó — dilo en el chat';
           line.appendChild(tag);
           retire();
         })
-        .catch(() => { input.placeholder = 'could not reach the run — say it in chat'; });
+        .catch(() => { input.placeholder = 'no se pudo alcanzar la ejecución — dilo en el chat'; });
     };
     input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
     line.appendChild(input);
@@ -6311,16 +6311,16 @@ const Chat = (() => {
       if (input.isConnected) {
         line.textContent = '';
         const t = document.createElement('span'); t.className = 'tb-read-ack closed';
-        t.textContent = 'this read is closed — say it in chat instead';
+        t.textContent = 'esta lectura está cerrada — dilo en el chat en su lugar';
         line.appendChild(t);
       }
       r.d.classList.add('tb-read-spent', 'folded');
       cap.setAttribute('role', 'button'); cap.tabIndex = 0; cap.setAttribute('aria-expanded', 'false');
-      cap.title = 'show the full read';
+      cap.title = 'mostrar la lectura completa';
       const toggle = () => {
         const open = !r.d.classList.toggle('folded');
         cap.setAttribute('aria-expanded', open ? 'true' : 'false');
-        cap.title = open ? 'fold this read away' : 'show the full read';
+        cap.title = open ? 'ocultar esta lectura' : 'mostrar la lectura completa';
       };
       cap.addEventListener('click', toggle);
       cap.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
@@ -6374,7 +6374,7 @@ const Chat = (() => {
       const item = document.createElement('div'); item.className = 'receipt-item';
       const kind = document.createElement('span'); kind.className = 'turnin-kind'; kind.textContent = 'BRIEFING';
       const text = document.createElement('span'); text.className = 'receipt-text';
-      text.textContent = '◈ briefing updated — every agent on this station now knows your ' + label + '.';
+      text.textContent = '◈ briefing actualizado — cada agente de esta estación ya conoce tu ' + label + '.';
       item.appendChild(kind); item.appendChild(text);
       head.body.appendChild(item);
       autoscroll();
@@ -6740,11 +6740,11 @@ const Chat = (() => {
         // user-typed (never model markup); Dialogue renders it via textContent only.
         let choice = heard === NOT_NOW ? NOT_NOW : await unlessLeft(Dialogue.node({
           lines: linesOf(path),
-          options: [ { label: 'confirm the path', value: 'confirm' }, { label: 'not now', value: 'other', skip: true } ],
+          options: [ { label: 'confirmar la ruta', value: 'confirm' }, { label: 'ahora no', value: 'other', skip: true } ],
           allowCustom: true, customLabel: 'edit the milestones', customPlaceholder: 'your milestones, separated by ; …'   // Dialogue draws the ✎ itself (it read "✎✎")
         }));
         if (choice === STEPPED_ASIDE) return opened;   // unanswered: no confirm, no decline, no learning signal
-        if (choice === NOT_NOW) choice = { value: 'other', label: 'not now', skip: true };   // Esc = the panel's own NOT NOW key
+        if (choice === NOT_NOW) choice = { value: 'other', label: 'ahora no', skip: true };   // Esc = the panel's own NOT NOW key
         if (Dialogue.isOpen && Dialogue.isOpen()) Dialogue.close();
         // route the choice through the PURE resolver (Goals.resolveConfirmChoice, behaviorally tested): an explicit
         // Confirm or a VALID edit (≥3 steps) persists; a too-short edit is a REJECTION of the model tree and
@@ -6877,7 +6877,7 @@ const Chat = (() => {
           settle(offer.kind === 'grant' ? '✓ granted' : '✓ raised to ' + rung.toLowerCase(), false);
           recAccept('trust', '', false);   // recorded only on the VERIFIED apply — never on an attempt
           if (typeof SFX !== 'undefined' && SFX.level) { try { SFX.level(); } catch (_) {} }
-          if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(offer.kind === 'grant' ? '◈ earned — it may write files on its own now (revoke any time in Settings)' : '◈ ON ITS OWN raised to ' + rung + ' (adjust any time in SETTINGS › AUTONOMY)', 'gold');
+          if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(offer.kind === 'grant' ? '◈ ganado — ahora puede escribir archivos por su cuenta (revócalo cuando quieras en Ajustes)' : '◈ POR SU CUENTA elevado a ' + rung + ' (ajústalo cuando quieras en AJUSTES › AUTONOMÍA)', 'gold');
           // if the Settings AUTONOMY panel is open, repaint its EARNED badge live (fail-open no-op otherwise).
           if (typeof StationUI !== 'undefined' && StationUI.repaintAutonomy) { try { StationUI.repaintAutonomy(); } catch (_) {} }
         }).catch(() => { if (card.isCurrent()) settle('✕ couldn’t apply', true); });
@@ -7101,7 +7101,7 @@ const Chat = (() => {
       followedUp.add(runId);
       clearNudge();
       const r = row('agent'); r.d.classList.add('nudge');
-      r.body.textContent = (verdict === 'miss' ? '▼ what missed?' : '◆ what would have made it a hit?') + ' — feedback for run ' + runId + '. One tap updates the briefing for future runs.';
+      r.body.textContent = (verdict === 'miss' ? '▼ ¿qué falló?' : '◆ ¿qué lo habría hecho un acierto?') + ' — retroalimentación de la ejecución ' + runId + '. Un toque actualiza el brief para futuras ejecuciones.';
       autoscroll();
       const meta = runMeta(runId);
       const choiceRow = choices(VerdictFollowup.chips(verdict), item => {
@@ -7127,9 +7127,9 @@ const Chat = (() => {
     if (taskQuestionLive()) return;   // an unanswered task question owns the moment — never steal its answer chips
     clearNudge();   // one gentle beat at a time: retire any prior unanswered nudge before this one (no cross-run stacking)
     const r = row('agent'); r.d.classList.add('nudge');   // a quiet aside, NOT the lit headline (.reply) — it was reading as a 2nd reply
-    r.body.textContent = '✦ one curious thing — i still don’t know your ' + dimLabel(dim).toLowerCase() + '. want to tell me? it sharpens how every agent here works for you.';
+    r.body.textContent = '✦ una cosa curiosa — sigo sin saber tu ' + dimLabel(dim).toLowerCase() + '. ¿Quieres contármelo? Afilan cómo trabaja cada agente de aquí para ti.';
     autoscroll();
-    const choiceRow = choices([{ label: 'sure — ask me', value: 'yes' }, { label: 'not now', value: 'no', skip: true }], item => {
+    const choiceRow = choices([{ label: 'seguro — pregúntame', value: 'yes' }, { label: 'ahora no', value: 'no', skip: true }], item => {
       const a = activeNudge; activeNudge = null;   // answered → release the post-run beat slot (the choice row removes itself)
       if (a && a.beat && a.beat.isCurrent()) { a.beat.decide(); a.beat.finish(); }
       else if (a) vanish(a.row);   // decided beats LEAVE: the prompt goes with its chips, never lingers over what follows
@@ -7245,7 +7245,7 @@ const Chat = (() => {
     const line = '✦ your crew could use a ' + name + ' — ' + String(pick.why || '').replace(/^./, c => c.toLowerCase());
     recruitShown = true;                                                   // spend the session's single recruit offer (even on dismiss — never re-ask this session)
     if (typeof SFX !== 'undefined' && SFX.idea) { try { SFX.idea(); } catch (_) {} }   // same soft chime as the idea beat
-    nudge(line, [{ label: 'meet them', value: 'go' }, { label: 'not now', value: 'no', skip: true }], choice => {
+    nudge(line, [{ label: 'conócelos', value: 'go' }, { label: 'ahora no', value: 'no', skip: true }], choice => {
       // THE OUTCOME LOOP: recruitment had a real accept path and recorded nothing, so it drifted down against
       // every channel that does record. Opening the bay spawns no run — the accept IS the outcome; "not now" is
       // a timing signal, the mildest negative the loop keeps.
@@ -7330,7 +7330,7 @@ const Chat = (() => {
       ? '✦ there is a class built for this — ' + m.name + ', ' + String(m.label || '').replace(/^./, c => c.toLowerCase()) + '. want to look?'
       : '❒ there is a ready-made job for this — ' + m.name + '. want it loaded?';
     if (typeof SFX !== 'undefined' && SFX.idea) { try { SFX.idea(); } catch (_) {} }
-    const shown = nudge(line, [{ label: isClass ? 'show me' : 'load it', value: 'go' }, { label: 'not now', value: 'no', skip: true }], choice => {
+    const shown = nudge(line, [{ label: isClass ? 'muéstrame' : 'cargarlo', value: 'go' }, { label: 'ahora no', value: 'no', skip: true }], choice => {
       if (!choice || choice.value !== 'go') return;
       try { if (isClass) App.openClassDossier(m.id); else App.openRecipeLaunch(m.id, 'run'); } catch (_) {}
     });
@@ -7385,9 +7385,9 @@ const Chat = (() => {
         if (!pending) { setTimeout(fade, 9000); return; }
         r.body.textContent = '◈ ' + who + ' wants to change how this class of task is done — skill “' + brief(String(sk.name || skillName)) + '”. It stays out of every briefing until you decide.';
         const choiceRow = choices([
-          { label: '✔ use it', value: 'allow' },
+          { label: '✔ usarla', value: 'allow' },
           { label: '✖ discard', value: 'discard', skip: true },
-          { label: 'read it first', value: 'read', quiet: true }
+          { label: 'leerla primero', value: 'read', quiet: true }
         ], async item => {
           if (item.value === 'read') { try { if (typeof StationUI !== 'undefined' && StationUI.openTerm) StationUI.openTerm('skills'); } catch (_) {} return; }   // 'skills' aliases into ABILITIES ▸ SKILL LIBRARY, where the body + approve controls live
           decided = true;
@@ -7732,7 +7732,7 @@ const Chat = (() => {
     const card0 = recCard({
       kind: 'arc', evidence: recWhy(recCite(text, beliefCiteKind(belief))),
       // the sibling labels (RETIRE · GRANT · AUTONOMY · THREAD) carry no punctuation; neither does this one.
-      label: 'STILL TRUE',
+      label: 'SIGUE SIENDO CIERTO',
       proposal: 'is that still where you’re heading?',
       /* the CONSEQUENCE line: a real measured age (never a vague "a while back") and the ACTUAL cost of "no".
          Deny does not merely stop the station treating it as a goal — DossierStore.forget denylists the text so
@@ -8700,7 +8700,7 @@ const Chat = (() => {
       x.setAttribute('aria-label', 'Cancelar mensaje en cola');
       x.onclick = () => { const a = queued.get(activeWs.id) || []; a.splice(i, 1); a.length ? queued.set(activeWs.id, a) : queued.delete(activeWs.id); renderQueued(); };
       const now = document.createElement('button'); now.className = 'queued-now'; now.type = 'button'; now.textContent = 'send now';
-      now.setAttribute('data-tip', 'Hand this to the run that is working now: the agent reads it before its next step, instead of after the run finishes');
+      now.setAttribute('data-tip', 'Pásalo a la ejecución que está trabajando ahora: el agente lo lee antes de su siguiente paso, no después de que termine');
       now.onclick = () => sendQueuedNow(activeWs.id, i, t);
       pill.appendChild(document.createTextNode('⤷ ')); pill.appendChild(label); pill.appendChild(now); pill.appendChild(x);
       strip.appendChild(pill);
@@ -9137,7 +9137,7 @@ const Chat = (() => {
     // as its answer. Take the Commander back to the question instead; answering it continues with the connection.
     if (h.awaitingAnswer) {
       App.openWorkstream(streamId);
-      if (typeof StationUI !== 'undefined') StationUI.notify('Answer the open question in this task to continue with ' + h.connectorId + '.', 'info');
+      if (typeof StationUI !== 'undefined') StationUI.notify('Responde la pregunta abierta de esta tarea para continuar con ' + h.connectorId + '.', 'info');
       return false;
     }
     const continuationFocusVersion = focusVersion;
@@ -9156,7 +9156,7 @@ const Chat = (() => {
       // Checking/refreshing a connection yields to the Commander. A later response must not
       // override new navigation, typing, or an attachment; leave the handoff available to retry.
       if (focusVersion !== continuationFocusVersion || isComposerEngaged() || Workstreams.get(streamId) !== ws) {
-        if (typeof StationUI !== 'undefined') StationUI.notify('Connection checked. Continue the task when you are ready.', 'info');
+        if (typeof StationUI !== 'undefined') StationUI.notify('Conexión verificada. Continúa la tarea cuando estés listo.', 'info');
         return false;
       }
       App.openWorkstream(streamId);
@@ -9172,7 +9172,7 @@ const Chat = (() => {
       if (ws.runIds[ws.runIds.length - 1] === h.runId && !Channels.isBusy(streamId) && !Workstreams.connectorHandoff(streamId)) {
         Workstreams.setConnectorHandoff(streamId, h); App.persist();
       }
-      if (typeof StationUI !== 'undefined') StationUI.notify(e.message || 'Could not verify the connection. Try again.', 'warn');
+      if (typeof StationUI !== 'undefined') StationUI.notify(e.message || 'No se pudo verificar la conexión. Inténtalo de nuevo.', 'warn');
       return false;
     } finally { connectorContinuing.delete(streamId); }
   }
@@ -9233,7 +9233,7 @@ const Chat = (() => {
   function offerBudgetDoor(atBalance) {
     const topUp = (atBalance === true && typeof Friendly !== 'undefined' && Friendly.actionButton) ? Friendly.actionButton({ action: 'store' }) : null;
     choices([
-      topUp ? { label: topUp.label, value: 'store' } : { label: '$ OPEN SPENDING LIMITS', value: 'budget' },
+      topUp ? { label: topUp.label, value: 'store' } : { label: '$ ABRIR LÍMITES DE GASTO', value: 'budget' },
       { label: '↻ Try again', value: 'retry', quiet: true }
     ], it => {
       if (it && it.value === 'retry') { retryLast(); return; }
@@ -9285,14 +9285,14 @@ const Chat = (() => {
     const context = verdict ? { error: verdict.raw, kind: verdict.kind, engineAlive: verdict.engineAlive } : null;
     const rowEl = document.createElement('div'); rowEl.className = 'choice-row';
     const b = document.createElement('button'); b.className = 'choice quiet'; b.type = 'button';
-    b.textContent = '⧉ copy diagnostics for a bug report';   // ⧉ = the house copy glyph (not the 📋 emoji)
+    b.textContent = '⧉ copiar diagnósticos para un informe de fallo';   // ⧉ = the house copy glyph (not the 📋 emoji)
     b.addEventListener('click', () => {
       b.disabled = true;
       // onDone carries the report text: when the clipboard refuses (WebKit after the fetch), the report renders
       // in this row as selectable text with its own in-gesture "copy again" — a retry of this button would only
       // repeat the refusal, so it stays disabled and says where the report went.
       Diag.copy({ notify: false, context: context, onDone: (ok, text) => {
-        b.textContent = ok ? '✓ diagnostics copied — paste into your report' : (text ? 'copy blocked — report shown below' : 'could not read diagnostics');
+        b.textContent = ok ? '✓ diagnósticos copiados — pégalos en tu informe' : (text ? 'copia bloqueada — informe abajo' : 'no se pudieron leer los diagnósticos');
         if (!ok && !text) { b.disabled = false; return; }   // nothing was read — a later retry can still succeed
         if (!ok) { if (Diag.showBlock) { Diag.showBlock(rowEl, { text: text }); autoscroll(); } return; }
         if (typeof SFX !== 'undefined' && SFX.press) SFX.press();
@@ -9401,11 +9401,11 @@ const Chat = (() => {
     const h = activeWs.history;
     for (let i = h.length - 1; i >= 0; i--) {
       if (h[i].role === 'assistant' && !h[i].error && (h[i].content || '').trim()) {
-        copyText(h[i].content).then(ok => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(ok ? 'copied the last reply' : 'copy failed', ok ? 'good' : 'warn', undefined, { transient: true }); });
+        copyText(h[i].content).then(ok => { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(ok ? 'copiaste la última respuesta' : 'fallo al copiar', ok ? 'good' : 'warn', undefined, { transient: true }); });
         return;
       }
     }
-    if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('no reply to copy yet', '', undefined, { transient: true });
+    if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('aún no hay respuesta que copiar', '', undefined, { transient: true });
   }
   function refreshWorkflowViews() {
     try { if (typeof App !== 'undefined' && App.refreshUsage) App.refreshUsage(); } catch (_) {}
@@ -11317,7 +11317,7 @@ const Chat = (() => {
           // balance), not a doomed retry (the same cap fires again immediately); every other stop keeps the plain retry chip.
           // The UNPRICED-model token ceiling is not a $ cap at all: its door is a different model (raising $ does nothing).
           if (isActiveWs(ws) && !(endReason === 'cancelled' && runPressedEstop)) { if (endReason === 'budget' && unpriced) offerUnpricedDoor(); else if (endReason === 'budget' && !subscription) offerBudgetDoor(budgetCapIsBalance); else offerTryAgain(); }
-          if (typeof StationUI !== 'undefined') StationUI.notify(isActiveWs(ws) ? (stoppedBy ? 'stopped by you' : 'run stopped: ' + brief(stopLine || endReason))
+          if (typeof StationUI !== 'undefined') StationUI.notify(isActiveWs(ws) ? (stoppedBy ? 'detenida por ti' : 'ejecución detenida: ' + brief(stopLine || endReason))
             : whoOf(ws) + ' stopped' + sessionNote(ws) + ' — ' + (endReason === 'budget' ? (unpriced ? 'hit the token ceiling for a model with no price' : subscription ? 'used its per-run Claude subscription ceiling; say "continue" to keep going' : budgetProjected === true ? (budgetCapIsBalance === true ? 'stopped before it would spend the rest of your StarNet balance' : 'stopped before it would pass a spending limit') : budgetCapIsBalance === true ? 'used the rest of your StarNet balance' : 'hit a spending limit') : endReason === 'max_iters' ? 'reached the step limit; say "continue" to keep going' : brief(stopLine || endReason)),
             'warn', undefined, isActiveWs(ws) || endReason === 'cancelled' ? undefined : { kind: 'alert', go: { ws: ws.id } });
         } else if (cutShort) {
@@ -11326,16 +11326,16 @@ const Chat = (() => {
           if (isActiveWs(ws)) breakLive(), toolLine('⏹ ' + (finishReason === 'content_filter'
             ? 'reply cut short — the model\'s output was filtered'
             : 'reply cut short — hit the response length limit; say "continue" for the rest'));
-          if (typeof StationUI !== 'undefined') StationUI.notify('reply cut short: ' + finishReason, 'warn');
+          if (typeof StationUI !== 'undefined') StationUI.notify('respuesta truncada: ' + finishReason, 'warn');
         } else if (postconditionUnmet) {
           goalStall = 'completion was not proven';
           if (isActiveWs(ws)) breakLive(), toolLine('⚠ completion was not proven — typed postconditions returned ' + (completionVerdict || 'not_assessed') + ' (' + (effectVerdict || 'no effect evidence') + ')');
-          if (typeof StationUI !== 'undefined') StationUI.notify(isActiveWs(ws) ? 'completion needs verification' : whoOf(ws) + ' finished but couldn’t prove it worked' + sessionNote(ws) + ' — check it', 'warn', undefined, isActiveWs(ws) ? undefined : { kind: 'alert', go: { ws: ws.id } });
+          if (typeof StationUI !== 'undefined') StationUI.notify(isActiveWs(ws) ? 'la finalización necesita verificación' : whoOf(ws) + ' terminó pero no pudo demostrar que funcionó' + sessionNote(ws) + ' — compruébalo', 'warn', undefined, isActiveWs(ws) ? undefined : { kind: 'alert', go: { ws: ws.id } });
         // (a run that already announced a file still says it has a QUESTION: "made X" alone never told you it waits on you)
         } else if (!isActiveWs(ws) && (!endReason || endReason === 'done' || endReason === 'clarifying') && replyText.trim() && !(thisRunId && notedRuns.has(thisRunId) && !taskQuestion && endReason !== 'clarifying') && typeof StationUI !== 'undefined') {
           const asks = !!taskQuestion || endReason === 'clarifying';
           // a BACKGROUND session finished (you were elsewhere) — the one beat you'd otherwise miss; the entry opens it
-          StationUI.notify(whoOf(ws) + (asks ? ' has a question for you' : ' finished') + sessionNote(ws), asks ? 'warn' : 'good', asks ? 'needsApproval' : 'runComplete',
+          StationUI.notify(whoOf(ws) + (asks ? ' tiene una pregunta para ti' : ' terminó') + sessionNote(ws), asks ? 'warn' : 'good', asks ? 'needsApproval' : 'runComplete',
             asks ? { kind: 'needs', go: { ws: ws.id }, key: 'needs:' + ws.id } : { kind: 'result', go: { ws: ws.id } });
         }
         // a CLEAN end that hit an unwired connector mid-run: the reply already says "not connected" — the chip is
@@ -11361,7 +11361,7 @@ const Chat = (() => {
                 seen.push(drift.latestRunId); try { localStorage.setItem('starnet.recipeDrift.notified', JSON.stringify(seen.slice(-50))); } catch (_) {}
                 const name = (typeof Recipes !== 'undefined' && Recipes.get && Recipes.get(rid)) ? Recipes.get(rid).name : rid;
                 const first = drift.signals[0];
-                StationUI.notify('⚠ recipe drift: ' + name + ' — ' + (first ? first.detail : 'this run differs from its last ' + drift.baselineRuns), 'bad', undefined, { kind: 'alert', go: { ws: ws.id } });
+                StationUI.notify('⚠ deriva de receta: ' + name + ' — ' + (first ? first.detail : 'esta ejecución difiere de su última ' + drift.baselineRuns), 'bad', undefined, { kind: 'alert', go: { ws: ws.id } });
               })
               .catch(() => {});
           }, 1500);
@@ -11715,7 +11715,7 @@ const Chat = (() => {
     const syncConfirm = () => {
       if (!confirmBtn) return;
       confirmBtn.disabled = !picked.size;
-      confirmBtn.textContent = picked.size ? ('✔ confirm ' + picked.size + ' pick' + (picked.size > 1 ? 's' : '')) : '✔ confirm picks';
+      confirmBtn.textContent = picked.size ? ('✔ confirmar ' + picked.size + (picked.size > 1 ? ' elecciones' : ' elección')) : '✔ confirmar elecciones';
     };
     (items || []).forEach(it => {
       const b = document.createElement('button'); b.className = 'choice' + (it.quiet ? ' quiet' : '') + (it.suggested ? ' suggested' : ''); b.textContent = it.label;   // .quiet = subdued secondary chip; .suggested = the task brief's host-validated recommended default (gold)

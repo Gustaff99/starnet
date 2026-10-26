@@ -38,7 +38,7 @@ const VoiceLive = (() => {
     if (key && measured[key] == null) measured[key] = performance.now();
     if (measured !== timing) return;
     const delta = (a, b) => timing[a] != null && timing[b] != null ? Math.max(0, Math.round(timing[b] - timing[a])) + ' ms' : '—';
-    if ($('lv-timing')) $('lv-timing').textContent = 'First words ' + delta('speech', 'words') + ' · Send ' + delta('lastVoice', 'send') + ' · Speech start ' + (lastAudioStartMs == null ? '—' : lastAudioStartMs + ' ms');
+    if ($('lv-timing')) $('lv-timing').textContent = 'Primeras palabras ' + delta('speech', 'words') + ' · Envío ' + delta('lastVoice', 'send') + ' · Inicio de habla ' + (lastAudioStartMs == null ? '—' : lastAudioStartMs + ' ms');
   }
   const PRE_ROLL_MS = 900;
   const MAX_UTTERANCE_MS = 60000;
@@ -133,42 +133,42 @@ const VoiceLive = (() => {
     panel.hidden = true;
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'false');
-    panel.setAttribute('aria-label', 'Starnet local live voice');
+    panel.setAttribute('aria-label', 'Voz en vivo local de Starnet');
     panel.innerHTML = [
       '<header class="lv-head">',
-        '<span class="lv-brand">LOCAL LIVE</span>',
+        '<span class="lv-brand">EN VIVO LOCAL</span>',
         '<span class="lv-pip" aria-hidden="true"></span>',
-        '<span id="lv-state" class="lv-state" aria-live="polite">CONNECTING</span>',
-        '<button id="lv-close" class="x-btn lv-x" type="button" aria-label="End live voice" title="End live voice">✕</button>',
+        '<span id="lv-state" class="lv-state" aria-live="polite">CONECTANDO</span>',
+        '<button id="lv-close" class="x-btn lv-x" type="button" aria-label="Terminar voz en vivo" title="Terminar voz en vivo">✕</button>',
       '</header>',
       // The LEVEL IS THE CONTROL. There is no icon: an orb, a mic glyph, a lamp — anything sitting
       // beside the meter was a second thing to look at, and the meter already says everything this
       // module knows. So the button IS the meter: press anywhere on your own voice to cut in.
       '<div class="lv-stage">',
-        '<button id="lv-barge" class="lv-meter" type="button" aria-label="Interrupt and speak" title="Interrupt — speak now">',
+        '<button id="lv-barge" class="lv-meter" type="button" aria-label="Interrumpir y hablar" title="Interrumpir — habla ahora">',
           '<div id="lv-wave" class="lv-wave" aria-hidden="true"></div>',
         '</button>',
       '</div>',
       '<div class="lv-controls">',
-        '<button id="lv-pause" class="bb" type="button" aria-pressed="false">PAUSE MIC</button>',
-        '<button id="lv-send" class="bb" type="button" disabled>SEND NOW</button>',
+        '<button id="lv-pause" class="bb" type="button" aria-pressed="false">PAUSAR MIC</button>',
+        '<button id="lv-send" class="bb" type="button" disabled>ENVIAR AHORA</button>',
       '</div>',
       '<p id="lv-heard" class="lv-heard" aria-live="polite">Speak naturally — the transcript lands in COMMS.</p>',
       '<p id="lv-agent" class="lv-say"></p>',
-      '<label class="lv-end-control"><span>TURN END</span><select id="lv-endpoint" class="lv-endpoint" aria-label="Pause before sending your turn">',
+      '<label class="lv-end-control"><span>FIN DE TURNO</span><select id="lv-endpoint" class="lv-endpoint" aria-label="Pausa antes de enviar tu turno">',
         '<option value="0">AUTO · ADAPTIVE</option>',
         '<option value="1200">QUICK · 1.2S</option>',
         '<option value="1800">NORMAL · 1.8S</option>',
         '<option value="2600">PATIENT · 2.6S</option>',
       '</select></label>',
       '<details class="lv-details"><summary>VOICE DETAILS</summary><dl class="lv-rail">',
-        '<div class="lv-row"><dt>ROUTE</dt><dd id="lv-route">LOCAL SPEECH · ACTIVE STARNET AGENT</dd></div>',
-        '<div class="lv-row lv-row-dl"><dt>SPEECH</dt><dd id="lv-model">LOCAL MODELS: CHECKING</dd></div>',
-        '<div class="lv-row"><dt>LATENCY</dt><dd id="lv-timing" title="First words: detected speech to transcript. Send: last voiced frame to submission. Speech start: latest spoken chunk queued to actual playback.">Speak to measure this turn.</dd></div>',
-        '<div class="lv-row"><dt>TASK</dt><dd id="lv-task" class="lv-task">No active task detected.</dd></div>',
+        '<div class="lv-row"><dt>RUTA</dt><dd id="lv-route">HABLA LOCAL · AGENTE STARNET ACTIVO</dd></div>',
+        '<div class="lv-row lv-row-dl"><dt>HABLA</dt><dd id="lv-model">MODELOS LOCALES: COMPROBANDO</dd></div>',
+        '<div class="lv-row"><dt>LATENCIA</dt><dd id="lv-timing" title="Primeras palabras: del habla detectada a la transcripción. Envío: del último marco hablado al envío. Inicio de habla: del último trozo hablado en cola a la reproducción real.">Habla para medir este turno.</dd></div>',
+        '<div class="lv-row"><dt>TAREA</dt><dd id="lv-task" class="lv-task">No se detecta tarea activa.</dd></div>',
       '</dl></details>',
       '<div id="lv-error" class="lv-error" hidden></div>',
-      '<button id="lv-retry" class="lv-retry" type="button" hidden>TRY AGAIN</button>'
+      '<button id="lv-retry" class="lv-retry" type="button" hidden>REINTENTAR</button>'
     ].join('');
     const wave = panel.querySelector('#lv-wave');
     for (let i = 0; i < WAVE_BARS; i++) {
@@ -230,7 +230,8 @@ const VoiceLive = (() => {
 
   function setState(value) {
     const normalized = paused ? 'paused' : recording ? 'hearing' : String(value || 'ready').toLowerCase();
-    if ($('lv-state')) $('lv-state').textContent = normalized.toUpperCase();
+    const STATE_ES = { paused: 'EN PAUSA', hearing: 'ESCUCHANDO', listening: 'ESCUCHANDO', ready: 'LISTO', connecting: 'CONECTANDO', warming: 'CALENTANDO', thinking: 'PENSANDO', transcribing: 'TRANSCRIBIENDO', reconnecting: 'RECONNECTANDO', speaking: 'HABLANDO', offline: 'SIN CONEXIÓN', unavailable: 'NO DISPONIBLE' };
+    if ($('lv-state')) $('lv-state').textContent = STATE_ES[normalized] || normalized.toUpperCase();
     const panel = $('live-voice-panel');
     const meter = $('lv-barge');
     const working = /^(?:connecting|warming|thinking|transcribing|reconnecting)$/.test(normalized);
@@ -238,7 +239,7 @@ const VoiceLive = (() => {
     if ($('lv-send')) $('lv-send').hidden = dictation || realtime;
     if ($('lv-endpoint')) $('lv-endpoint').disabled = dictation || realtime;
     if ($('lv-pause')) {
-      $('lv-pause').textContent = paused ? 'RESUME MIC' : 'PAUSE MIC';
+      $('lv-pause').textContent = paused ? 'REANUDAR MIC' : 'PAUSAR MIC';
       $('lv-pause').setAttribute('aria-pressed', String(paused));
     }
     if (panel) {
@@ -246,14 +247,14 @@ const VoiceLive = (() => {
       panel.setAttribute('aria-busy', working ? 'true' : 'false');
     }
     if (meter) {
-      const label = normalized === 'paused' ? 'Microphone paused — press to resume'
+      const label = normalized === 'paused' ? 'Micrófono en pausa — pulsa para reanudar'
         : normalized === 'speaking'
-        ? 'Agent speaking — press to interrupt and speak'
+        ? 'El agente está hablando — pulsa para interrumpir y hablar'
         : normalized === 'hearing'
-          ? 'Listening to you — press to interrupt'
+          ? 'Escuchándote — pulsa para interrumpir'
           : working
-            ? `${normalized} — press to interrupt and speak`
-            : 'Voice is listening — press to interrupt and speak';
+            ? `${STATE_ES[normalized] || normalized.toUpperCase()} — pulsa para interrumpir y hablar`
+            : 'La voz está escuchando — pulsa para interrumpir y hablar';
       meter.setAttribute('aria-label', label);
       meter.title = label;
     }
@@ -322,7 +323,7 @@ const VoiceLive = (() => {
         ? select.options[select.selectedIndex].textContent : select.value;
     } catch (_) {}
     const route = [providerName(provider), String(agent || '').trim().toUpperCase()].filter(Boolean).join(' · ');
-    el.textContent = `LOCAL SPEECH · ${route}`;
+    el.textContent = `HABLA LOCAL · ${route}`;
     el.title = model ? `${providerName(provider)} · ${model}` : providerName(provider);
   }
 
@@ -333,10 +334,10 @@ const VoiceLive = (() => {
     // the panel reports the session the CALL is bound to — not whatever the Commander is browsing, which
     // would misreport whose work the strip is showing the moment they click around mid-call.
     const ws = boundSession() || Workstreams.active();
-    if (!ws) { el.textContent = 'No active workstream.'; return; }
+    if (!ws) { el.textContent = 'No hay flujo de trabajo activo.'; return; }
     const busy = Channels.isBusy(ws.id), pending = Channels.pendingOf(ws.id);
-    el.textContent = (pending ? 'APPROVAL NEEDED · ' : busy ? 'WORKING · ' : 'READY · ') + (ws.title || 'GENERAL');
-    el.title = pending ? `${pending.tool || 'Action'} needs approval${pending.argsSummary ? `: ${String(pending.argsSummary).replace(/\s+/g, ' ').trim().slice(0, 120)}` : ''}` : (Channels.statusOf(ws.id) || ws.title || 'Ready');
+    el.textContent = (pending ? 'APROBACIÓN PENDIENTE · ' : busy ? 'TRABAJANDO · ' : 'LISTO · ') + (ws.title || 'GENERAL');
+    el.title = pending ? `${pending.tool || 'Acción'} necesita aprobación${pending.argsSummary ? `: ${String(pending.argsSummary).replace(/\s+/g, ' ').trim().slice(0, 120)}` : ''}` : (Channels.statusOf(ws.id) || ws.title || 'Listo');
     el.classList.toggle('busy', busy);
     el.classList.toggle('pending', !!pending);
     // hands-free: anything now WAITING on a click gets said aloud, once (see announceWaits)
@@ -350,7 +351,7 @@ const VoiceLive = (() => {
     const withheld = response.status === 403 && typeof Harness !== 'undefined' && Harness
       && typeof Harness.tokenWithheld === 'function' && Harness.tokenWithheld()
       ? ((typeof Harness.tokenWithheldNotice === 'function' && Harness.tokenWithheldNotice())
-        || 'StarNet could not confirm this browser is yours — see the station notice.')
+        || 'StarNet no pudo confirmar que este navegador es tuyo — mira el aviso de la estación.')
       : '';
     return {
       probeFailed: true,
@@ -392,7 +393,7 @@ const VoiceLive = (() => {
       const data = await response.json();
       const percent = data.progress && data.progress.percent != null ? data.progress.percent : null;
       const progress = percent != null ? ` ${percent}%` : '';
-      if ($('lv-model')) $('lv-model').textContent = `ASR ${String(data.asr).toUpperCase()} · VOICE ${String(data.tts).toUpperCase()}${progress}`;
+      if ($('lv-model')) $('lv-model').textContent = `ASR ${String(data.asr).toUpperCase()} · VOZ ${String(data.tts).toUpperCase()}${progress}`;
       // A download that reports a percent gets a real fill behind the row; no percent, no fill.
       const shell = $('live-voice-panel');
       if (shell) shell.style.setProperty('--lv-dl', percent != null ? `${percent}%` : '0%');
@@ -407,7 +408,7 @@ const VoiceLive = (() => {
       if (data.error && (data.asr === 'error' || data.tts === 'error')) setError(`Local speech model failed: ${data.error}`);
       return data;
     } catch (_) {
-      if ($('lv-model')) $('lv-model').textContent = 'LOCAL MODELS: SIDECAR OFFLINE';
+      if ($('lv-model')) $('lv-model').textContent = 'MODELOS LOCALES: SIDECAR SIN CONEXIÓN';
       return null;
     }
   }
@@ -422,14 +423,14 @@ const VoiceLive = (() => {
     const current = snap.workstreams.find(item => item.id === snap.active);
     const busy = snap.workstreams.filter(item => item.busy);
     const approvals = snap.workstreams.filter(item => item.approvalRequired);
-    let lead = !current ? 'There is no active task.'
-      : current.approvalRequired ? `${current.title} is waiting for your approval.`
-      : current.busy ? `${current.title} is still working. ${current.status || ''}`.trim()
-      : `${current.title} is ready.`;
+    let lead = !current ? 'No hay tarea activa.'
+      : current.approvalRequired ? `${current.title} está esperando tu aprobación.`
+      : current.busy ? `${current.title} sigue trabajando. ${current.status || ''}`.trim()
+      : `${current.title} está lista.`;
     const otherBusy = busy.filter(item => !current || item.id !== current.id).length;
     const otherApprovals = approvals.filter(item => !current || item.id !== current.id).length;
-    if (otherBusy) lead += ` ${otherBusy} other ${otherBusy === 1 ? 'task is' : 'tasks are'} running.`;
-    if (otherApprovals) lead += ` ${otherApprovals} other ${otherApprovals === 1 ? 'task needs' : 'tasks need'} approval.`;
+    if (otherBusy) lead += ` Hay ${otherBusy} tarea${otherBusy === 1 ? '' : 's'} más en marcha.`;
+    if (otherApprovals) lead += ` Hay ${otherApprovals} tarea${otherApprovals === 1 ? '' : 's'} más que necesita${otherApprovals === 1 ? '' : 'n'} aprobación.`;
     return lead;
   }
 
@@ -438,7 +439,7 @@ const VoiceLive = (() => {
     if (!select) return false;
     if (/^(?:list|who are) (?:my )?agents$/.test(lower)) {
       const names = Array.from(select.options || []).map(option => String(option.textContent || option.value).trim()).filter(Boolean);
-      speakLocal(names.length ? `Your agents are ${names.join(', ')}.` : 'There are no agents available.');
+      speakLocal(names.length ? `Tus agentes son ${names.join(', ')}.` : 'No hay agentes disponibles.');
       return true;
     }
     const match = /^(?:switch|talk|speak) to (?:agent )?(.+)$/i.exec(value);
@@ -454,7 +455,7 @@ const VoiceLive = (() => {
     select.value = option.value;
     select.dispatchEvent(new Event('change', { bubbles: true }));
     refreshRoute();
-    speakLocal(`Now talking to ${String(option.textContent || option.value).trim()}.`);
+    speakLocal(`Ahora hablo con ${String(option.textContent || option.value).trim()}.`);
     return true;
   }
 
@@ -508,9 +509,9 @@ const VoiceLive = (() => {
   function spokenAsk(p, ws) {
     if (p.tool === 'brief.ask') return questionLine(p, ws);
     const ask = askParts(p, ws);
-    return (ask.what ? (ask.who ? ask.who + ' needs approval to ' : 'Approval needed to ') + ask.what
-      : 'Approval needed: ' + (p.tool || 'an action') + (p.argsSummary ? ' — ' + String(p.argsSummary).slice(0, 120) : '')) +
-      (ONCE_ONLY.has(p.tool) || p.workerAgentId ? '. Say approve or deny.' : '. Say approve, always allow, or deny.');
+    return (ask.what ? (ask.who ? ask.who + ' necesita aprobación para ' : 'Aprobación necesaria para ') + ask.what
+      : 'Aprobación necesaria: ' + (p.tool || 'una acción') + (p.argsSummary ? ' — ' + String(p.argsSummary).slice(0, 120) : '')) +
+      (ONCE_ONLY.has(p.tool) || p.workerAgentId ? '. Di aprobar o denegar.' : '. Di aprobar, permitir siempre o denegar.');
   }
   // a brief.ask is a question, not a grade: say the question and only the answers voice can give — the card's one-tap
   // options, which chipCommand presses — never approve/always/deny (approvalCommand leaves brief.ask alone)
@@ -519,14 +520,14 @@ const VoiceLive = (() => {
     try { q = JSON.parse(pending.argsSummary || '{}'); } catch (e) { q = null; }   // unreadable: the plain line below
     q = q && typeof q === 'object' ? q : {};
     const id = pending.workerAgentId || pending.agentId || (ws && ws.agentId) || '';
-    const who = (id && typeof App !== 'undefined' && App.agentName && App.agentName(id)) || 'The agent';
+    const who = (id && typeof App !== 'undefined' && App.agentName && App.agentName(id)) || 'El agente';
     let question = String(q.question || '').replace(/\s+/g, ' ').trim().slice(0, 200);
-    if (!question) return who + ' has a quick question for you. Answer on the card.';
+    if (!question) return who + ' tiene una pregunta rápida para ti. Responde en la tarjeta.';
     if (!/[.?!]$/.test(question)) question += '.';
     // the same keys chat.js clarifyRow draws: up to six single-pick options plus "use your judgment"
     const opts = (Array.isArray(q.options) ? q.options.slice(0, 6) : []).map(o => String(o).trim()).filter(Boolean);
-    if (q.mode === 'conversation' || (q.multiSelect === true && opts.length > 1)) return who + ' asks: ' + question + ' Answer on the card.';
-    return who + ' asks: ' + question + (opts.length ? ' Say ' + opts.join(', ') + ', or use your judgment.' : ' Say use your judgment, or answer on the card.');
+    if (q.mode === 'conversation' || (q.multiSelect === true && opts.length > 1)) return who + ' pregunta: ' + question + ' Responde en la tarjeta.';
+    return who + ' pregunta: ' + question + (opts.length ? ' Di ' + opts.join(', ') + ', o usa tu criterio.' : ' Di usa tu criterio, o responde en la tarjeta.');
   }
   /* Answer visible chips by voice. Clicks the REAL button (chat.js binds the pick to it), so this is the
      mouse path with a different finger. Matching is deliberately conservative — exact, then prefix/containment
@@ -546,10 +547,10 @@ const VoiceLive = (() => {
     if (idx < 0 && want.length >= 3) idx = ls.findIndex(l => l.length >= 3 && l.indexOf(want) === 0);   // spoken prefix of a label
     if (idx < 0) idx = ls.findIndex(l => l.length >= 4 && want.indexOf(l) >= 0);                        // label inside the sentence
     if (idx < 0) {
-      const bare = want.replace(/\b(the|one|option|pick|choose|take)\b/g, ' ').replace(/\s+/g, ' ').trim();
-      const ord = ['first', 'second', 'third', 'fourth'].indexOf(bare);
+      const bare = want.replace(/\b(the|one|option|pick|choose|take|el|la|uno|una|opcion|elige|toma)\b/g, ' ').replace(/\s+/g, ' ').trim();
+      const ord = ['first', 'second', 'third', 'fourth', 'primero', 'primera', 'segundo', 'segunda', 'tercero', 'tercera', 'cuarto', 'cuarta'].indexOf(bare);
       if (ord >= 0 && ord < ls.length) idx = ord;
-      else if (bare === 'last' && ls.length) idx = ls.length - 1;
+      else if ((bare === 'last' || bare === 'ultimo' || bare === 'ultima') && ls.length) idx = ls.length - 1;
     }
     return idx;
   }
@@ -583,18 +584,18 @@ const VoiceLive = (() => {
     const pending = ws && Channels.pendingOf(ws.id);
     if (!pending || pending.tool === 'brief.ask') return false;
     let decision = '';
-    if (/^(?:approve|approve once|yes[, ]+approve|allow it|go ahead)$/.test(lower)) decision = 'once';
-    else if (/^(?:always allow|approve always|always approve)$/.test(lower)) decision = 'always';
-    else if (/^(?:deny|deny it|do not allow|don't allow|reject)$/.test(lower)) decision = 'deny';
+    if (/^(?:approve|approve once|yes[, ]+approve|allow it|go ahead|aprobar|aprobar una vez|adelante|dale)$/.test(lower)) decision = 'once';
+    else if (/^(?:always allow|approve always|always approve|permitir siempre|aprobacion siempre|siempre permitir)$/.test(lower)) decision = 'always';
+    else if (/^(?:deny|deny it|do not allow|don't allow|reject|denegar|denegalo|rechazar)$/.test(lower)) decision = 'deny';
     if (!decision) return false;
     const onceOnly = decision === 'always' && ONCE_ONLY.has(pending.tool);
     if (onceOnly) decision = 'once';
     if (decision === 'always' && pending.workerAgentId) {   // the worker's row grants this request only — so does voice
-      speakLocal('A delegated worker\'s request can only be approved once or denied. Say approve, or deny.');
+      speakLocal('La solicitud de un agente delegado solo se puede aprobar una vez o denegar. Di aprobar o denegar.');
       return true;
     }
     if (typeof Chat === 'undefined' || !Chat.answerConsent) {
-      speakLocal('I could not submit that answer. Please use the approval card.');
+      speakLocal('No pude enviar esa respuesta. Usa la tarjeta de aprobación.');
       return true;
     }
     const id = String(pending.promptId || '');
@@ -603,20 +604,20 @@ const VoiceLive = (() => {
     const seq = sessionSeq;
     const ownsFeedback = () => active && sessionSeq === seq && boundWsId === ws.id;
     // with several asks open, the outcome names the one it answered (review app-shell-ui-08)
-    const ask = askParts(pending, ws), about = ask.what ? ': ' + (ask.who ? ask.who + ' to ' : '') + ask.what + '.' : '.';
+    const ask = askParts(pending, ws), about = ask.what ? ': ' + (ask.who ? ask.who + ' para ' : '') + ask.what + '.' : '.';
     // Every surface uses the same confirmed, exact-prompt path. A delegated ask may have no ordinary card.
     Promise.resolve().then(() => Chat.answerConsent(pending, ws, decision, 'voice')).then(result => {
       if (!ownsFeedback()) return;
       const applied = result && result.appliedDecision;
-      if (applied === 'deny') speakLocal('Denied' + about);
-      else if (applied === 'always') speakLocal('Always allowed' + about);
-      else if (applied === 'once') speakLocal((onceOnly ? 'This one can only be approved once. ' : '') + 'Approved once' + about);
-      else speakLocal('The station did not confirm your answer. Please try again.');
+      if (applied === 'deny') speakLocal('Denegada' + about);
+      else if (applied === 'always') speakLocal('Permiso permanente' + about);
+      else if (applied === 'once') speakLocal((onceOnly ? 'Esta solo se puede aprobar una vez. ' : '') + 'Aprobada una vez' + about);
+      else speakLocal('La estación no confirmó tu respuesta. Inténtalo de nuevo.');
     }).catch(() => {
       if (!ownsFeedback()) return;
       // settled elsewhere meanwhile (timed out, answered on the card or the phone): say so, never leave the call silent
       const stillPending = Channels.pendingAllOf(ws.id).some(p => String(p.promptId || '') === id);
-      speakLocal(stillPending ? 'I could not submit that answer. The approval is still waiting; please try again.' : 'That approval is no longer waiting.');
+      speakLocal(stillPending ? 'No pude enviar esa respuesta. La aprobación sigue esperando; inténtalo de nuevo.' : 'Esa aprobación ya no está esperando.');
     }).finally(() => {
       approvalSubmissions.delete(id);
       if (ownsFeedback()) refreshTask();
@@ -658,7 +659,7 @@ const VoiceLive = (() => {
     const bound = boundSession();
     if (!bound || bound.archived) {
       // the bound session was deleted/archived mid-call — rebind to the live one and SAY so, never guess on
-      if (boundWsId) caption('agent', '— that session is gone; the call now follows the open one —');
+      if (boundWsId) caption('agent', '— esa sesión se fue; la llamada ahora sigue a la abierta —');
       boundWsId = Workstreams.activeId ? Workstreams.activeId() : null;
       return;
     }
@@ -701,23 +702,23 @@ const VoiceLive = (() => {
     if (stopOnly) {
       const wasBusy = !!(typeof Chat !== 'undefined' && Chat.isBusy && Chat.isBusy());
       if (wasBusy && Chat.stopActive) Chat.stopActive();
-      speakLocal(wasBusy ? 'Stopped.' : 'Nothing is running.');
+      speakLocal(wasBusy ? 'Detenido.' : 'No hay nada en marcha.');
       return true;
     }
     if (redirect && typeof Chat !== 'undefined') {
       if (Chat.isBusy && Chat.isBusy() && Chat.stopActive) Chat.stopActive();
       const next = redirect[1].trim();
       if (Chat.sendOrQueue) Chat.sendOrQueue(next);
-      caption('agent', 'Changing direction.');
+      caption('agent', 'Cambiando de dirección.');
       refreshTask();
       return true;
     }
     if (typeof Chat === 'undefined' || !Chat.sendOrQueue) {
-      setError('The signed-in Starnet agent is not ready yet.');
+      setError('El agente de Starnet conectado aún no está listo.');
       return true;
     }
     const result = Chat.sendOrQueue(value);
-    caption('agent', result && result.state === 'queued' ? 'Queued behind the current task.' : 'Working on it.');
+    caption('agent', result && result.state === 'queued' ? 'En cola detrás de la tarea actual.' : 'Trabajando en ello.');
     refreshTask();
     return true;
   }
@@ -851,7 +852,7 @@ const VoiceLive = (() => {
     if (transcriptionPending) {
       if (queuedAudio.length >= 4) {
         if (recognizer) recognizer.cancel();
-        setTransientError('Speech is arriving faster than it can be transcribed. Please repeat the last turn after the pending turns finish.');
+        setTransientError('El habla llega más rápido de lo que se puede transcribir. Repite el último turno cuando terminen los pendientes.');
         return;
       }
       queuedAudio.push({ frames, seq, allowContinue, recognizer, measured });
@@ -865,7 +866,7 @@ const VoiceLive = (() => {
     finalAbort = ac;
     finalTurn = { frames, seq, allowContinue, recognizer, measured };
     setState('transcribing');
-    if (!recording && $('lv-heard')) $('lv-heard').textContent = partialText || 'Finalizing your turn…';
+    if (!recording && $('lv-heard')) $('lv-heard').textContent = partialText || 'Finalizando tu turno…';
     try {
       let text;
       if (recognizer && !recognizer.failed) {
@@ -877,7 +878,7 @@ const VoiceLive = (() => {
         }
       } else { if (recognizer) recognizer.cancel(); text = await postPcm(pcm, ac.signal); }
       if (!active || seq !== sessionSeq || finalAbort !== ac) return;
-      if (!text && !recording && $('lv-heard')) $('lv-heard').textContent = 'No speech detected — still listening.';
+      if (!text && !recording && $('lv-heard')) $('lv-heard').textContent = 'No se detecta habla — sigo escuchando.';
       const liveCaption = recording && $('lv-heard') ? $('lv-heard').textContent : null;
       handleTranscript(text, measured);
       if (liveCaption !== null && $('lv-heard')) $('lv-heard').textContent = liveCaption;
@@ -1008,7 +1009,7 @@ const VoiceLive = (() => {
           rms, threshold, noiseFloor, agentTalking, replyPending: !!replyPending, outputRms: agentLevel, onsetMs: speechOnsetMs, sampleRate: context.sampleRate
         });
         setState('hearing');
-        if ($('lv-heard')) $('lv-heard').textContent = resumedText || 'Listening…';
+        if ($('lv-heard')) $('lv-heard').textContent = resumedText || 'Escuchando…';
       }
       return;
     }
@@ -1026,7 +1027,7 @@ const VoiceLive = (() => {
   }
 
   async function openMicrophone(seq) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('This browser cannot open a microphone.');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('Este navegador no puede abrir un micrófono.');
     const acquired = await navigator.mediaDevices.getUserMedia({
       audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
     });
@@ -1186,7 +1187,7 @@ const VoiceLive = (() => {
         reconnectAttempt = 0;
         setError('');
         setState('listening');
-        if ($('lv-heard')) $('lv-heard').textContent = 'Microphone reconnected — listening.';
+        if ($('lv-heard')) $('lv-heard').textContent = 'Micrófono reconectado — escuchando.';
       } catch (error) {
         scheduleReconnect(`Could not reopen the microphone: ${error && error.message || error}.`);
       }
@@ -1199,7 +1200,7 @@ const VoiceLive = (() => {
     if (typeof Voice !== 'undefined' && Voice.stopSpeaking) Voice.stopSpeaking('microphone_button');
     if (dictation && Voice.resumeCoordinator) Voice.resumeCoordinator();
     setState('listening');
-    caption('user', 'Listening…');
+    caption('user', 'Escuchando…');
   }
 
   function togglePause() {
@@ -1225,17 +1226,17 @@ const VoiceLive = (() => {
     if (tapStream) tapStream.getAudioTracks().forEach(track => { track.enabled = !paused; });
     resetLevel();
     setState(paused ? 'paused' : 'listening');
-    caption('user', paused ? 'Microphone paused. Unsent speech discarded.' : 'Listening…');
+    caption('user', paused ? 'Micrófono en pausa. Habla no enviada descartada.' : 'Escuchando…');
   }
 
   function reflectButton(on) {
     const button = $('voice-live');
     if (!button) return;
     button.setAttribute('aria-pressed', on ? 'true' : 'false');
-    button.setAttribute('aria-label', on ? 'Stop Local Live hands-free voice' : 'Start Local Live hands-free voice');
+    button.setAttribute('aria-label', on ? 'Detener voz local manos libres' : 'Iniciar voz local manos libres');
     button.title = on
-      ? 'Stop Local Live hands-free voice'
-      : 'Local Live hands-free voice — local speech with your active Starnet agent';
+      ? 'Detener voz local manos libres'
+      : 'Voz local manos libres — habla local con tu agente Starnet activo';
   }
 
   async function start(retry) {
@@ -1264,17 +1265,17 @@ const VoiceLive = (() => {
       $('live-voice-panel').hidden = false;
       setState('offline');
       const withheld = readiness.tokenWithheld;   // not a restart: a reload only re-runs the same check
-      caption('user', withheld ? 'StarNet could not confirm this browser is yours.'
-        : readiness.staleSession ? 'This page lost its connection when the station restarted.'
-        : 'Local Live could not reach the station.');
-      caption('agent', withheld ? 'Voice cannot start on this page.'
-        : readiness.staleSession ? 'Reload this page to reconnect, then start Local Live again.'
-        : 'Confirm the station is running, then try again.');
+      caption('user', withheld ? 'StarNet no pudo confirmar que este navegador es tuyo.'
+        : readiness.staleSession ? 'Esta página perdió su conexión cuando la estación se reinició.'
+        : 'En Vivo Local no pudo alcanzar la estación.');
+      caption('agent', withheld ? 'La voz no puede arrancar en esta página.'
+        : readiness.staleSession ? 'Recarga esta página para reconectar y vuelve a iniciar En Vivo Local.'
+        : 'Confirma que la estación está en marcha e inténtalo de nuevo.');
       if (withheld) setUnrecoverableError(withheld);
       else if (readiness.staleSession) {
-        setUnrecoverableError('The station restarted — reload this page to reconnect voice.');
+        setUnrecoverableError('La estación se reinició — recarga esta página para reconectar la voz.');
       } else {
-        setError('Local voice could not reach the station.');
+        setError('La voz local no pudo alcanzar la estación.');
       }
       reflectButton(false);
       return;
@@ -1287,12 +1288,12 @@ const VoiceLive = (() => {
       if (native && native.available) return startDictation();
       $('live-voice-panel').hidden = false;
       setState('unavailable');
-      if ($('lv-model')) $('lv-model').textContent = 'LOCAL MODELS: NOT INSTALLED';
-      caption('user', 'Local Live is unavailable in this build.');
-      caption('agent', 'The offline speech engine is unavailable in this build, and this platform has no keyless dictation engine, so hands-free listening cannot start. The standard voice controls are unaffected.');
+      if ($('lv-model')) $('lv-model').textContent = 'MODELOS LOCALES: NO INSTALADOS';
+      caption('user', 'En Vivo Local no está disponible en esta versión.');
+      caption('agent', 'El motor de habla sin conexión no está disponible en esta versión y esta plataforma no tiene un motor de dictado sin clave, así que el escucha manos libres no puede arrancar. Los controles de voz estándar no se ven afectados.');
       // The sidecar's `reason` carries a source-checkout hint ("run npm install") that is noise to a user
       // of the installer — it stays in the API and the log, not in the panel's error row.
-      setUnrecoverableError('Offline speech models are not installed in this build.');
+      setUnrecoverableError('Los modelos de habla sin conexión no están instalados en esta versión.');
       reflectButton(false);
       return;
     }
@@ -1302,7 +1303,7 @@ const VoiceLive = (() => {
     resetLevel();
     warmupNotice = false;
     caption('agent', '');
-    if ($('lv-heard')) $('lv-heard').textContent = 'Opening the microphone…';
+    if ($('lv-heard')) $('lv-heard').textContent = 'Abriendo el micrófono…';
     $('live-voice-panel').hidden = false;
     active = true;
     ending = false;
@@ -1327,9 +1328,9 @@ const VoiceLive = (() => {
       setState('warming');
       // The hero line is "what you said" — once the mic is genuinely open it goes back to the
       // invitation instead of stalling on the opening message the whole warm-up.
-      if ($('lv-heard')) $('lv-heard').textContent = 'Speak naturally — the transcript lands in COMMS.';
+      if ($('lv-heard')) $('lv-heard').textContent = 'Habla con naturalidad — la transcripción llega a COMMS.';
       warmupNotice = true;
-      caption('agent', 'Microphone is live. Downloading or loading local speech models; this first start can take a few minutes.');
+      caption('agent', 'El micrófono está en vivo. Descargando o cargando los modelos de habla locales; este primer arranque puede tardar unos minutos.');
       await pollModels();
       if (!active || seq !== sessionSeq) return;
       clearInterval(modelTimer);
@@ -1565,7 +1566,7 @@ const VoiceLive = (() => {
     resetLevel();
     warmupNotice = false;
     caption('agent', '');
-    if ($('lv-heard')) $('lv-heard').textContent = 'Opening the microphone…';
+    if ($('lv-heard')) $('lv-heard').textContent = 'Abriendo el micrófono…';
     $('live-voice-panel').hidden = false;
     active = true;
     realtime = true;
@@ -1655,7 +1656,7 @@ const VoiceLive = (() => {
       setState('listening');
       if ($('lv-model')) $('lv-model').textContent =
         ('LIVE · ' + (capability && capability.model ? capability.model : 'provider voice')).toUpperCase();
-      if ($('lv-heard')) $('lv-heard').textContent = 'Speak naturally — interrupt any time.';
+      if ($('lv-heard')) $('lv-heard').textContent = 'Habla con naturalidad — interrumpe cuando quieras.';
       refreshTask();
       clearInterval(taskTimer);
       taskTimer = setInterval(refreshTask, 500);
@@ -1735,7 +1736,7 @@ const VoiceLive = (() => {
           if (!active) return;
           if (!paused) togglePause();
           setError(value && value.message || 'Voice input paused.');
-          caption('user', 'Microphone paused — the speech engine kept failing.');
+          caption('user', 'Micrófono en pausa — el motor de habla seguía fallando.');
         } });
     }
     if (!active || seq !== sessionSeq) return;
@@ -1756,15 +1757,15 @@ const VoiceLive = (() => {
       : engine === 'web-speech' ? 'BROWSER SPEECH'
       : engine === 'recorder' ? 'SERVER WHISPER'
       : 'UNKNOWN';
-    if ($('lv-model')) $('lv-model').textContent = `ASR ${engineLabel} · VOICE EDGE`;
+    if ($('lv-model')) $('lv-model').textContent = `ASR ${engineLabel} · VOZ EDGE`;
     // …then name the PICKED voice once the catalogue answers, so the label shows the choice is live on this
     // build too (the sidecar maps it onto the nearest Edge neural when the offline engine is absent).
     voices().then(v => {
       if (!active || seq !== sessionSeq || !$('lv-model')) return;
       const row = (v.available || []).find(x => x && x.id === v.current);
-      if (row && row.label) $('lv-model').textContent = `ASR ${engineLabel} · VOICE ${row.label} (EDGE)`;
+      if (row && row.label) $('lv-model').textContent = `ASR ${engineLabel} · VOZ ${row.label} (EDGE)`;
     }).catch(() => {});
-    if ($('lv-heard')) $('lv-heard').textContent = 'Speak naturally — the transcript lands in COMMS.';
+    if ($('lv-heard')) $('lv-heard').textContent = 'Habla con naturalidad — la transcripción llega a COMMS.';
     caption('agent', engine === 'web-speech'
       ? 'Listening with browser speech recognition. Your words appear as they are recognized.'
       : 'Listening with Windows dictation. This fallback returns words after each utterance; live previews require the local speech models.');

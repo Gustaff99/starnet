@@ -42,7 +42,7 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
   A.ok(rc && /TaskIntent\.isGateHeld\(ev\)/.test(rc[0]), 'the chip result fold (live rail and group rail) reads the held stamp');
   A.ok(/function resolveChip\(ev, fallbackName\) \{[\s\S]{0,500}foldChipResult\(chip, ev\);/.test(chat), 'the live rail folds results through it');
   A.ok(rc && /classList\.add\(heldCall \? 'held' : deniedCall \? 'denied' : ev\.isError \? 'err' : 'ok'\)/.test(rc[0]), 'a held call draws the neutral .held chip, never .err');
-  A.ok(rc && /heldCall \? 'not run yet'/.test(rc[0]) && !/heldCall \? '✗'/.test(rc[0]), 'its stat reads "not run yet", never ✗ failed');
+  A.ok(rc && /heldCall \? 'aún no se ejecuta'/.test(rc[0]) && !/heldCall \? '✗'/.test(rc[0]), 'its stat reads "not run yet", never ✗ failed');
   A.ok(/U\.bus\.emit\('agent\.tool_result', \{[^\n]*held: !!\(typeof TaskIntent !== 'undefined' && TaskIntent\.isGateHeld && TaskIntent\.isGateHeld\(ev\)\)/.test(chat), 'the bus copy carries held for the world');
   A.ok(/if \(tgt && !p\.held\) PropSprites\.pulseProp/.test(read('frontend/app/world.js')), 'the world never pulses a prop red for a call that did not run');
   A.ok(/s\.ok = \(typeof TaskIntent !== 'undefined' && TaskIntent\.isGateHeld && TaskIntent\.isGateHeld\(p\)\) \? null/.test(read('frontend/app/deskscreen.js')), 'the desk screen records no outcome (not a failed step)');
@@ -75,12 +75,12 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
   // the run's telemetry lines under a resolved presence card read "not run yet" for it, never "failed" in red
   {
     const tr = /function telemetryRun\(entry, role, skipTools\) \{[\s\S]*?\n  \}/.exec(chat);
-    A.ok(tr && /const held = typeof TaskIntent !== 'undefined' && TaskIntent\.isGateHeld && TaskIntent\.isGateHeld\(t\);/.test(tr[0]) && /\(held \? ' held' : denied \? ' denied' : t\.isError \? ' err' : ''\)/.test(tr[0]) && /held \? 'not run yet' : denied \? 'denied' : t\.isError \? 'failed' : 'ok'/.test(tr[0]), 'a held call\'s telemetry line reads "not run yet", never "failed"');
+    A.ok(tr && /const held = typeof TaskIntent !== 'undefined' && TaskIntent\.isGateHeld && TaskIntent\.isGateHeld\(t\);/.test(tr[0]) && /\(held \? ' held' : denied \? ' denied' : t\.isError \? ' err' : ''\)/.test(tr[0]) && /held \? 'aún no se ejecuta' : denied \? 'denegada' : t\.isError \? 'fallida' : 'ok'/.test(tr[0]), 'a held call\'s telemetry line reads "not run yet", never "failed"');
   }
   // the PHONE live view (rc review 2026-10-14: it drew ✕ for a held call): the station sends held, and the phone app draws it
   const host = read('sidecar/remote/host.js'), phone = read('relay/app/app.js');
   A.ok(/const held = TaskIntent\.isGateHeld\(p\);[\s\S]{0,200}ok: held \? null : \(!!p\.ok && !p\.isError\)[\s\S]{0,80}held \? \{ held: true \} : \{\}/.test(host), 'the phone step for a held call carries held and no outcome (an older phone shows it pending, never ✕)');
-  A.ok(/if \(s\) \{ s\.ok = e\.held \? null : e\.ok; if \(e\.held\) s\.held = true; \}/.test(phone) && /if \(s\.held\) d\.appendChild\(el\('b', 'h', '▸'\)\);/.test(phone) && /s\.held \? ' · not run yet' : ''/.test(phone), 'the phone draws a held step as a dim ▸ "not run yet"');
+  A.ok(/if \(s\) \{ s\.ok = e\.held \? null : e\.ok; if \(e\.held\) s\.held = true; \}/.test(phone) && /if \(s\.held\) d\.appendChild\(el\('b', 'h', '▸'\)\);/.test(phone) && /s\.held \? ' · aún no se ejecuta' : ''/.test(phone), 'the phone draws a held step as a dim ▸ "not run yet"');
   A.ok(/\.step b\.h \{ color: var\(--ph-dim\); \}/.test(read('relay/app/app.css')), 'in dim phosphor, not red');
   const css = read('frontend/css/comms.css');
   A.ok(/\.tool-chip\.held \.tc-glyph,\s*\n\.tool-chip\.held \.tc-stat\s*\{ color: var\(--ph-dim\); \}/.test(css), 'the held chip is plain dim phosphor (no red)');
@@ -133,13 +133,13 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
   const denied = fold({ isError: true, summary: 'denied', ms: 54 });
   A.eq(denied.cls.join(','), 'denied', 'a denied call draws the neutral .denied chip, never .err');
   A.eq([denied.glyph, denied.stat], ['▸', 'denied'], 'its glyph is the not-run ▸ and its stat says "denied" (no red ✗, no duration of a failure)');
-  A.eq([denied.res.className, denied.res.textContent], ['tc-d-res denied', 'denied · not run'], 'its detail says it did not run, without the ✗');
+  A.eq([denied.res.className, denied.res.textContent], ['tc-d-res denied', 'denegada · sin ejecutar'], 'its detail says it did not run, without the ✗');
   const failed = fold({ isError: true, summary: 'error', ms: 54 });
   A.eq([failed.cls.join(','), failed.glyph, failed.stat, failed.res.className], ['err', '✗', '54ms', 'tc-d-res err'], 'a real failure still draws the red ✗');
   const ok = fold({ isError: false, summary: 'wrote 1 file', ms: 9 });
   A.eq([ok.cls.join(','), ok.glyph], ['ok', '✓'], 'a success is unchanged');
   const held = fold({ isError: true, summary: TaskIntent.GATE_HELD });
-  A.eq([held.cls.join(','), held.stat], ['held', 'not run yet'], 'a held call is unchanged');
+  A.eq([held.cls.join(','), held.stat], ['held', 'aún no se ejecuta'], 'a held call is unchanged');
   A.eq(fold({ isError: false, summary: 'denied' }).cls.join(','), 'ok', 'only an errored result can read as denied');
 
   const wrap = ctx.tele({ agentId: 'agent', toolTrace: [
@@ -217,7 +217,7 @@ const { makeStationControlTools } = require('../sidecar/tools/builtin/station-co
   A.ok(ac && /if \(deliveryLanding\(runId\)\) return null;\s*\n[\s\S]*return \{ kind: 'arc', dim: 'goals', why:/.test(ac[0]), 'the arc Dialogue stands down on a delivery landing');
   A.ok(ac && ac[0].indexOf('deliveryLanding') > ac[0].indexOf('if (arcSeen(runId)) return null;'), 'standing down never spends the run\'s arc token (it is offered again at the next run end)');
   A.ok(/if \(!ev\.isError && \/\^\(\?:team\[\._\]dispatch\|group\[\._\]handoff\)\$\/\.test\(nm\)\) \{ const rm = runMeta\(thisRunId\); if \(rm\) rm\.delegated = true; \}/.test(src), 'a run that handed work to crew is marked delegated');
-  A.ok(/customLabel: 'edit the milestones'/.test(src) && !/customLabel: '✎/.test(src), 'the arc edit key carries no ✎ of its own (Dialogue draws one: it read "✎✎")');
+  A.ok(/customLabel: 'editar los hitos'/.test(src) && !/customLabel: '✎/.test(src), 'the arc edit key carries no ✎ of its own (Dialogue draws one: it read "✎✎")');
   A.ok(/num\.textContent = '✎';/.test(read('frontend/app/dialogue.js')), 'Dialogue draws the ✎ for every custom key');
   // …so NO caller may bring its own: the first-command plan in onboarding read "✎✎ edit the steps" too (rc review 2026-10-14)
   for (const f of fs.readdirSync(path.join(__dirname, '..', 'frontend', 'app')).filter(n => /\.js$/.test(n))) {

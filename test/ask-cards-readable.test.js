@@ -159,7 +159,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   const why = kids.find(k => k._cls.has('cq-why'));
   A.ok(why && why.tagName === 'details' && why.children[0].textContent === 'Why NOVA is asking' && why.children[1].textContent === 'It decides the layout.', 'the reason is folded under a labelled line, kept whole');
   const hint = kids.find(k => k._cls.has('cq-hint'));
-  A.eq(hint && hint.textContent, 'Tap an answer. ★ is NOVA\'s suggestion.', 'the hint says what ★ means');
+  A.eq(hint && hint.textContent, 'Toca una respuesta. ★ es la sugerencia de NOVA.', 'the hint says what ★ means');
   const btns = kids.find(k => k._cls.has('consent-btns'));
   A.eq(btns.children.map(b => b.textContent + (b._cls.has('primary') ? '[lit]' : '') + (b._cls.has('quiet') ? '[quiet]' : '')).join('|'), 'Starter|★ Pro[lit]|Usa tu criterio[quiet]', 'the suggested answer is the lit key; "Usa tu criterio" is quiet');
   let confirm; clarifyReply = new Promise(r => { confirm = r; });
@@ -169,7 +169,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   A.ok(!r1.body.children.includes(hint) && !r1.body.children.includes(btns) && /✓ Pro/.test(r1.body.textContent), 'answered: the keys and the hint go, the answer stays');
   A.eq(r1.body.children.map(k => k.className.split(' ')[0]).join(' '), 'cq-who cq-text cq-whole consent-result cq-why', 'the answer sits right under the question, the reason still folded under it');
   const r2 = clarify({ question: 'Which?', options: ['A', 'B'], reason: 'x', grounded: { options: ['B'], count: 3 } });
-  A.eq(r2.body.children.find(k => k._cls.has('cq-hint')).textContent, 'Tap an answer. ★ is your usual pick (chosen 3 times before).', 'a grounded ★ states its real count in the one hint line, in the same sentence shape as the group card');
+  A.eq(r2.body.children.find(k => k._cls.has('cq-hint')).textContent, 'Toca una respuesta. ★ es tu elección habitual (elegida 3 veces antes).', 'a grounded ★ states its real count in the one hint line, in the same sentence shape as the group card');
   A.ok(r2.body.children.some(k => k._cls.has('cq-why')), 'the reason stays one tap away when the ★ is grounded too');
   A.ok(!r2.body.children.some(k => k._cls.has('tq-reason')), 'no second suggestion line');
   // a card follows the bottom unless that cuts its top off; then it shows from its top until it is answered

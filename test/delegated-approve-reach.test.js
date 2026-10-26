@@ -164,7 +164,7 @@ const flush = () => new Promise(r => setTimeout(r, 0));
 {
   const ch = rd('frontend/app/chat.js');
   // the COMMS card itself: a gone answer has already retired it in neutral words, so its keys are not handed back
-  A.ok(/catch \(e\) \{\s*submitting = false;[\s\S]{0,200}if \(e && e\.gone\) \{\s*if \(!decided\) \{ decided = true; btns\.remove\(\);[\s\S]{0,260}'■ no longer waiting on you'[\s\S]{0,80}\}\s*return;\s*\}\s*if \(received && applyElsewhere\)/.test(ch),
+  A.ok(/catch \(e\) \{\s*submitting = false;[\s\S]{0,200}if \(e && e\.gone\) \{\s*if \(!decided\) \{ decided = true; btns\.remove\(\);[\s\S]{0,260}'■ ya no espera tu respuesta'[\s\S]{0,80}\}\s*return;\s*\}\s*if \(received && applyElsewhere\)/.test(ch),
     'the approval card never re-arms its keys for an ask the station no longer holds (it retires in neutral words)');
 }
 

@@ -320,7 +320,7 @@ const settle = async () => { for (let n = 0; n < 40; n++) await new Promise(r =>
     t.s.key(' ');   // the read gate: the Commander reads on
     await settle();
     const opts = all(t.s.host).filter(e => e._cls.has('fnv-opt')).map(e => e.textContent);
-    A.ok(opts.some(x => /confirm the path/.test(x)) && opts.some(x => /not now/.test(x)), 'the milestones show their confirm / not now keys: ' + opts.join(' | '));
+    A.ok(opts.some(x => /confirmar la ruta/.test(x)) && opts.some(x => /ahora no/.test(x)), 'the milestones show their confirm / not now keys: ' + opts.join(' | '));
     A.eq(opts.length, 3, 'and no new key was added (confirm · not now · edit the milestones)');
     t.s.key('Escape');
     await Promise.race([p, settle()]);

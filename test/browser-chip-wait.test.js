@@ -44,7 +44,7 @@ function fakeChip() {
   A.eq(timers.length, 1, 'a browser.* chip schedules its first check');
   for (let i = 0; i < 3; i++) await step();
   A.eq(apiCalls, 3, 'while its run is live the chip checks every beat');
-  A.eq(chip.stat.textContent, 'Waiting for browser session…', 'and says the run is waiting on the browser session');
+  A.eq(chip.stat.textContent, 'Esperando sesión de navegador…', 'and says the run is waiting on the browser session');
   A.ok(timers.length === 1 && timers[0].ms === 1000, 'the next check is one second out');
 
   // the run ends (stopped) without this call's result: the chip is still pending and still connected
@@ -71,7 +71,7 @@ function fakeChip() {
   A.eq(timers.length, 1, '…but keeps its beat');
   away = false; await step();
   A.eq(apiCalls, 1, 'back on screen the next beat reads again');
-  A.eq(awayChip.stat.textContent, 'Waiting for browser session…', '…and says what the run is waiting on');
+  A.eq(awayChip.stat.textContent, 'Esperando sesión de navegador…', '…and says what the run is waiting on');
   delete ctx.PollGate;
 
   // a non-browser chip never polls

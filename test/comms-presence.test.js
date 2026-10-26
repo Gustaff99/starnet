@@ -105,7 +105,7 @@ A.ok(/hydrateRunTelemetry\(ws,\s*entry,\s*runId\)[\s\S]{0,300}if\s*\(!arts\.leng
 {
   const hyd = src.slice(src.indexOf('  function hydrateRunTelemetry('), src.indexOf('  function hydrateRunTelemetry(') + 2500);
   A.ok(/if \(started\) card\.dataset\.ms = String\(Math\.max\(0, Math\.round\(Channels\.elapsedOf\(ws\.id, Date\.now\(\)\)/.test(src), 'the resolved card carries the honest (pause-excluded) run time');
-  A.ok(hyd.indexOf('const honest = Number(card.dataset.ms) || 0') >= 0 && hyd.indexOf("bits.push(fmtMs(wall - honest) + ' waiting on you')") >= 0,
+  A.ok(hyd.indexOf('const honest = Number(card.dataset.ms) || 0') >= 0 && hyd.indexOf("bits.push(fmtMs(wall - honest) + ' esperándote')") >= 0,
     'hydration shows that honest time and names the approval wait apart — never the wall time as the run time');
 }
 
@@ -115,7 +115,7 @@ A.ok(/hydrateRunTelemetry\(ws,\s*entry,\s*runId\)[\s\S]{0,300}if\s*\(!arts\.leng
   A.ok(/const leadRow = honest > 0 \? Object\.assign\(\{\}, entry, \{ durationMs: honest, waitedMs: wall - honest > 1500 \? wall - honest : 0 \}\) : entry;\s*detail\.appendChild\(telemetryRun\(leadRow, 'lead', hasChips\)\);/.test(src),
     'the fold\'s lead line tells the footer\'s machine time and names the wait on you apart');
   A.ok(/const runWho = id => \(id && typeof App !== 'undefined' && App\.agentName && App\.agentName\(id\)\) \|\| id \|\| '';/.test(src) && /head\.textContent = \[role, runWho\(entry\.agentId\),/.test(src)
-    && /Number\(entry\.waitedMs\) > 0 \? fmtMs\(Number\(entry\.waitedMs\)\) \+ ' waiting on you' : ''/.test(src), 'and says who ran it by name, never the raw id');
+    && /Number\(entry\.waitedMs\) > 0 \? fmtMs\(Number\(entry\.waitedMs\)\) \+ ' esperándote' : ''/.test(src), 'and says who ran it by name, never the raw id');
   // the glass layer's register for the steps and the footer (pipglass.css)
   const pip = fs.readFileSync(path.join(__dirname, '../frontend/css/pipglass.css'), 'utf8');
   const steps = pip.slice(pip.indexOf('PIP-BOY COMMS STEPS'));
