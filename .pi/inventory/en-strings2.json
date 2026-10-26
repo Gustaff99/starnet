@@ -1,0 +1,5990 @@
+[
+{
+"file": "frontend/prop-catalog-review.html",
+"line": 20,
+"sink": "aria-*",
+"text": "Six catalog views in a furnished station room"
+},
+{
+"file": "frontend/agent-proportion-review.html",
+"line": 8,
+"sink": "aria-*",
+"text": "Four equal-height Secret Agent sprites in furnished StarNet comparison bays"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 518,
+"sink": "title=",
+"text": "Your Commander level grows through recorded progress toward your life goals. Open the quest log to see the achievements behind it."
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 541,
+"sink": "aria-*",
+"text": "Find an agent by name"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 550,
+"sink": "title=",
+"text": "drag to resize CREW vs SESSIONS (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 568,
+"sink": "aria-*",
+"text": "Live view of your agent station"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 586,
+"sink": "title=",
+"text": "drag to resize the CREW rail (double-click to reset)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 600,
+"sink": "aria-*",
+"text": "Select agent on the line"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 602,
+"sink": "title=",
+"text": "the model this agent runs on"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 605,
+"sink": "aria-*",
+"text": "Return to work"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 625,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "aria-*",
+"text": "Stop the running turn"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 636,
+"sink": "title=",
+"text": "Stop the running turn (Esc)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "aria-*",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 638,
+"sink": "title=",
+"text": "Attach a photo or file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 657,
+"sink": "aria-*",
+"text": "StarNet subscription (opens in your browser)"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "aria-*",
+"text": "Start Local Live hands-free voice"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 661,
+"sink": "title=",
+"text": "Local Live hands-free voice — local speech with your active Starnet agent"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 681,
+"sink": "title=",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "frontend/agent-station-demo.html",
+"line": 703,
+"sink": "title=",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "frontend/authored-machine-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": "Fabricator, pneumatic tube, and packing robot at station scale"
+},
+{
+"file": "frontend/agent-motion-review.html",
+"line": 6,
+"sink": "aria-*",
+"text": "Five animated crew members on an industrial station deck"
+},
+{
+"file": "frontend/prop-scale-review.html",
+"line": 10,
+"sink": "alt=",
+"text": "Supplied station art reference"
+},
+{
+"file": "frontend/prop-room-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": "Catalog props in a station room"
+},
+{
+"file": "frontend/app/workhub.js",
+"line": 20,
+"sink": "innerHTML",
+"text": "<summary>Sources StarNet can study for useful work</summary><div class="
+},
+{
+"file": "frontend/app/bootguard.js",
+"line": 295,
+"sink": "textContent",
+"text": "⧉ COPY FAILED — SELECT THE TEXT ABOVE"
+},
+{
+"file": "frontend/app/remaster-runtime-audit.js",
+"line": 31,
+"sink": "innerHTML",
+"text": "<b>LOCAL RUNTIME AUDIT · disposable station</b><nav></nav><output id="
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 82,
+"sink": "aria-*",
+"text": "Choose the first useful result"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 84,
+"sink": "placeholder=",
+"text": "For example: a short Friday update for the client, with next steps"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 86,
+"sink": "placeholder=",
+"text": "Paste the real material to work from. Nothing is sent until you click Create draft."
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 87,
+"sink": "aria-*",
+"text": "Approved source folder"
+},
+{
+"file": "frontend/app/firstvalue.js",
+"line": 142,
+"sink": "textContent",
+"text": "Choose a task and provide the source you want to use."
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 466,
+"sink": "title=",
+"text": "import a recipe from a JSON file"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 484,
+"sink": "title=",
+"text": "bring an agent over from OpenClaw or Hermes"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 944,
+"sink": "title=",
+"text": "the latest run differs from its good history"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 990,
+"sink": "aria-*",
+"text": "back to the library"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1239,
+"sink": "title=",
+"text": "download this recipe as a portable JSON file"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1245,
+"sink": "title=",
+"text": "change this recipe in place"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1486,
+"sink": "aria-*",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1486,
+"sink": "title=",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 1585,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2014,
+"sink": "title=",
+"text": "dismiss forever — this exact finding won’t come back"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 2029,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3008,
+"sink": "title=",
+"text": "puts this recipe on a schedule — it becomes a ROUTINE you can manage in AUTOMATE › SCHEDULES"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3237,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3241,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3242,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3252,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3340,
+"sink": "aria-*",
+"text": "what kind of value"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3343,
+"sink": "title=",
+"text": "required at launch"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3376,
+"sink": "placeholder=",
+"text": "the read must show this text"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3386,
+"sink": "placeholder=",
+"text": "workspace path, e.g. out/{client}-invoice.md"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3388,
+"sink": "placeholder=",
+"text": "must contain this text"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3390,
+"sink": "placeholder=",
+"text": "64-hex digest (or a {token})"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3429,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3430,
+"sink": "placeholder=",
+"text": "e.g. Summarize {project} progress since {since} and flag blockers."
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3435,
+"sink": "placeholder=",
+"text": "e.g.\\nPull this week\\"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3649,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3698,
+"sink": "aria-*",
+"text": "Or type your own icon"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3698,
+"sink": "title=",
+"text": "Or type your own"
+},
+{
+"file": "frontend/app/marketplace.js",
+"line": 3703,
+"sink": "placeholder=",
+"text": "Describe its job and what a good result looks like."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2038,
+"sink": "title=",
+"text": "change this agent’s model"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2130,
+"sink": "title=",
+"text": "archive this agent and remove it from the station"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2396,
+"sink": "textContent",
+"text": "Effective access could not be checked. Reopen this panel after reconnecting."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2462,
+"sink": "textContent",
+"text": "Memory Core unavailable — start the sidecar to read it."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2467,
+"sink": "textContent",
+"text": "Could not read the Memory Core."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2589,
+"sink": "title=",
+"text": "allow this belief to be proposed again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 2966,
+"sink": "title=",
+"text": "run this agent on the station default model again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3127,
+"sink": "textContent",
+"text": "SURE? IT COULD READ ANY FILE HERE"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3267,
+"sink": "title=",
+"text": "take this off the list (it can be queued again later)"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3822,
+"sink": "placeholder=",
+"text": "search or browse all"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 3948,
+"sink": "title=",
+"text": "Open BUILD MODE to place"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4220,
+"sink": "title=",
+"text": "Open BUILD MODE to place"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4556,
+"sink": "textContent",
+"text": "Running the checks with and without the proposal…"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4633,
+"sink": "title=",
+"text": "Give this skill to the agent — the approval covers this exact content"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4635,
+"sink": "title=",
+"text": "Withhold this skill from the agent again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4658,
+"sink": "title=",
+"text": "Read the skill"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4759,
+"sink": "placeholder=",
+"text": "Project folder (full path)"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4767,
+"sink": "textContent",
+"text": "Enter the project folder, then click This project again."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4799,
+"sink": "placeholder=",
+"text": "your name or handle"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4823,
+"sink": "textContent",
+"text": "Give it a name on the market."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4824,
+"sink": "textContent",
+"text": "Pick the shelf it belongs on."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4825,
+"sink": "textContent",
+"text": "Add the name you want credited on the market."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4826,
+"sink": "textContent",
+"text": "Turn on the agreement to share it: it is the license others use it under."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4833,
+"sink": "textContent",
+"text": "Sent for review as"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4838,
+"sink": "textContent",
+"text": "The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 4840,
+"sink": "textContent",
+"text": "Link this station to your StarNet account first (STORE › LINK STATION). A free account works. Nothing was shared."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5042,
+"sink": "title=",
+"text": "Review a schedule; nothing runs until you save and enable it"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5043,
+"sink": "title=",
+"text": "Recover from the COMMS rail’s Archived view"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5048,
+"sink": "title=",
+"text": "Mark this task complete; this does not publish or send anything"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5531,
+"sink": "placeholder=",
+"text": "page showed a code? paste it here"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5551,
+"sink": "title=",
+"text": "sign in with a"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5635,
+"sink": "title=",
+"text": "sign in another Claude account — Claude Code keeps each sign-in, StarNet never sees them"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5853,
+"sink": "aria-*",
+"text": "Sign in with Claude"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5853,
+"sink": "title=",
+"text": "opens Claude in your browser — Claude Code keeps the sign-in, StarNet never sees it"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5854,
+"sink": "title=",
+"text": "Claude Code needs a Pro, Max, Team or Enterprise plan"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5855,
+"sink": "aria-*",
+"text": "Sign in to"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5923,
+"sink": "title=",
+"text": "the sidecar recorded a dead refresh token — a re-sign-in is the only cure"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 5979,
+"sink": "title=",
+"text": "signed in through Claude Code, which keeps the sign-in; StarNet never holds it"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 6003,
+"sink": "title=",
+"text": "the sidecar recorded a dead refresh token — a re-sign-in is the only cure"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 6044,
+"sink": "title=",
+"text": "shown masked when a key exists — the full key is never displayed"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 6231,
+"sink": "textContent",
+"text": "click again to confirm removal"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 6799,
+"sink": "title=",
+"text": "change or cancel your plan in the browser"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 6807,
+"sink": "title=",
+"text": "forget this station’s link"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7187,
+"sink": "title=",
+"text": "grant one more base-cap of"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7287,
+"sink": "title=",
+"text": "try this model earlier"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7288,
+"sink": "title=",
+"text": "try this model later"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7289,
+"sink": "title=",
+"text": "remove from the chain"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7453,
+"sink": "textContent",
+"text": "reading the voice chat model…"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7455,
+"sink": "textContent",
+"text": "voice chat model unavailable — sidecar unreachable"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7546,
+"sink": "title=",
+"text": "clear every saved override so these follow the environment / built-in defaults again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7631,
+"sink": "textContent",
+"text": "check the live-probe consent first"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7643,
+"sink": "textContent",
+"text": "live doctor finished — receipt is ready"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7797,
+"sink": "data-tip",
+"text": "build &amp; write locally — nothing leaves the machine"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7798,
+"sink": "data-tip",
+"text": "the highest rung: unattended actions may leave the machine — send, publish, or contact external services"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7802,
+"sink": "title=",
+"text": "one small job a day"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7803,
+"sink": "title=",
+"text": "a few small jobs a day — the default"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7804,
+"sink": "title=",
+"text": "a busier station — up to 6 jobs a day"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7805,
+"sink": "title=",
+"text": "as much as it&#39;s allowed — up to 12 jobs a day"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7820,
+"sink": "placeholder=",
+"text": "a project folder, thread:&lt;id&gt;, or goal to rule out"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7930,
+"sink": "title=",
+"text": "clear the saved value so this cap follows the environment default again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 7946,
+"sink": "title=",
+"text": "clear the saved chain so it follows the environment default again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8219,
+"sink": "textContent",
+"text": "Voice could not be saved. Please try again."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8262,
+"sink": "textContent",
+"text": "Effect saved. Applies to the next spoken reply."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8264,
+"sink": "textContent",
+"text": "Effect could not be saved. Please try again."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8293,
+"sink": "textContent",
+"text": "Remote is not available in this build."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8507,
+"sink": "textContent",
+"text": "Closing the window keeps the station running only when armed work needs it — otherwise it fully quits."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8511,
+"sink": "textContent",
+"text": "Closing the window hides StarNet in the tray and keeps the station running. Use Quit StarNet in the tray menu to stop it."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8514,
+"sink": "textContent",
+"text": "Right now, closing the window KEEPS the station running in the background ("
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8518,
+"sink": "textContent",
+"text": "Closing the window keeps the station running only when armed work needs it — otherwise it fully quits."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8645,
+"sink": "title=",
+"text": "remove this boundary — the station may pick it unattended again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8668,
+"sink": "textContent",
+"text": "none declared — it improvises from evidence"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8760,
+"sink": "title=",
+"text": "interrupt this background helper (its work so far is kept; it can be resumed)"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8778,
+"sink": "title=",
+"text": "send this running helper a mid-flight instruction (it keeps working; your note is read before its next model turn)"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 8786,
+"sink": "placeholder=",
+"text": "new instruction for this helper…"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9365,
+"sink": "textContent",
+"text": "SURE? IT COULD READ ANY FILE HERE"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9480,
+"sink": "textContent",
+"text": "+ snap.error + (snap.loaded ?"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9592,
+"sink": "toast()",
+"text": "that session was deleted"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 9846,
+"sink": "data-tip",
+"text": "Dismiss: it leaves NEEDS YOU here and on the rail"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10104,
+"sink": "textContent",
+"text": "A window’s save preserved on the station ("
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10147,
+"sink": "textContent",
+"text": "Download this window’s save"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10154,
+"sink": "textContent",
+"text": "Restore this window’s sessions"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10164,
+"sink": "title=",
+"text": "this station’s data was written by a newer StarNet — update the app. Until then, changes are NOT being backed up."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10188,
+"sink": "title=",
+"text": "world is saved locally; the durable backup copy hasn’t synced since"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10193,
+"sink": "title=",
+"text": "saves are failing — check disk space / folder permissions ("
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10287,
+"sink": "title=",
+"text": "Based on the source and recency of saved details, not just the number of topics filled in."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10324,
+"sink": "textContent",
+"text": "Nothing saved yet. Add a detail or choose a starting point."
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10387,
+"sink": "title=",
+"text": "the briefing composes from your beliefs below, capped at"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10403,
+"sink": "title=",
+"text": "composeSystemPrompt folds this block into the system prompt of every agent on the station — including a freshly-summoned one"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10404,
+"sink": "title=",
+"text": "mirrored to the sidecar so autonomous scheduled runs (routines, autonomy) that compose their own persona still know who they serve"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10405,
+"sink": "title=",
+"text": "the pitch engine and recruitment matcher read your goals, pain points and ambitions to propose work and crew"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10406,
+"sink": "title=",
+"text": "the quest board turns still-blank dimensions into get-to-know-you quests"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10436,
+"sink": "textContent",
+"text": "ask me about this"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10437,
+"sink": "title=",
+"text": "turn this question back on — the station may ask about your"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10450,
+"sink": "title=",
+"text": "the station proposed this from your work; you kept it"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10456,
+"sink": "title=",
+"text": "the briefing hit its character cap, so this belief was shortened or dropped from what agents are told — pin or shorten what matters most"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10485,
+"sink": "title=",
+"text": "a detail holds up to"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10536,
+"sink": "textContent",
+"text": "+ Add detail"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10542,
+"sink": "placeholder=",
+"text": "What should your agents know?"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10727,
+"sink": "aria-*",
+"text": "Your next move"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10745,
+"sink": "aria-*",
+"text": "Your next move"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10869,
+"sink": "title=",
+"text": "Open where you do this next"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10916,
+"sink": "<button>",
+"text": "consent-btn q-step-report"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10965,
+"sink": "<button>",
+"text": "consent-btn q-success-save"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10968,
+"sink": "<button>",
+"text": "consent-btn q-goal-confirm"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10969,
+"sink": "placeholder=",
+"text": "A concrete action that helps this goal"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10970,
+"sink": "<button>",
+"text": "consent-btn q-step-add"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 10989,
+"sink": "title=",
+"text": "the station inferred this — confirm or correct it"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11139,
+"sink": "aria-*",
+"text": "Current value for"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11150,
+"sink": "placeholder=",
+"text": "></label><label>Target value<input class="
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11205,
+"sink": "<button>",
+"text": "consent-btn q-idea-save"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11214,
+"sink": "<button>",
+"text": "consent-btn q-idea-save"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11223,
+"sink": "<button>",
+"text": "consent-btn q-goal-review"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11225,
+"sink": "<button>",
+"text": "consent-btn deny q-goal-disposition"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11265,
+"sink": "<button>",
+"text": "consent-btn q-goal-open-plan"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11267,
+"sink": "<button>",
+"text": "consent-btn q-goal-review"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11386,
+"sink": "title=",
+"text": "Build this while I’m away — queue it for the sandbox"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11391,
+"sink": "title=",
+"text": "Open where you do this next"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11423,
+"sink": "placeholder=",
+"text": "For example: waiting for a reply, or only 15 minutes available"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11425,
+"sink": "placeholder=",
+"text": "Describe your action and its result"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11429,
+"sink": "title=",
+"text": "Dismiss — the station will never raise this again"
+},
+{
+"file": "frontend/app/stationui.js",
+"line": 11652,
+"sink": "<button>",
+"text": "consent-btn q-plan-use"
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 31,
+"sink": "textContent",
+"text": "Your answer is full. Edit it before adding another starting point."
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 43,
+"sink": "placeholder=",
+"text": "Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line."
+},
+{
+"file": "frontend/app/taskconversation.js",
+"line": 79,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 33,
+"sink": "title=",
+"text": "Reasoning effort — how hard this model thinks"
+},
+{
+"file": "frontend/app/modelpicker.js",
+"line": 129,
+"sink": "textContent",
+"text": "🔑 add a provider key"
+},
+{
+"file": "frontend/app/crtlab.js",
+"line": 312,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "frontend/app/crtlab.js",
+"line": 316,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 325,
+"sink": "title=",
+"text": "Previews open safely inside StarNet in a browser; desktop OPEN uses your file app."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 327,
+"sink": "data-tip",
+"text": "Takes these cards out of the library (not TO REVIEW&rsquo;s rating list) — the files stay on disk, and UNDO brings them back."
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 331,
+"sink": "data-tip",
+"text": "Previews first: removes only the records of failed and discarded runs — files are not deleted, and UNDO brings them back"
+},
+{
+"file": "frontend/app/deliverables.js",
+"line": 414,
+"sink": "data-tip",
+"text": "Takes it out of this library. The files stay on disk."
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 687,
+"sink": "title=",
+"text": "Click to open activity · drag to move"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 815,
+"sink": "title=",
+"text": "Shrink the HUD to the agent cam"
+},
+{
+"file": "frontend/app/hudmode.js",
+"line": 818,
+"sink": "title=",
+"text": "Back to the full station"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 105,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 449,
+"sink": "placeholder=",
+"text": "Message the group · @ picks one agent"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 1289,
+"sink": "textContent",
+"text": "; status = (add ?"
+},
+{
+"file": "frontend/app/group-chat.js",
+"line": 1325,
+"sink": "append(str)",
+"text": "Your whole crew is already in this chat. Recruit more under CREW."
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 69,
+"sink": "title=",
+"text": "This phone asks before every step that needs an OK, even for agents on full access"
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 118,
+"sink": "aria-*",
+"text": "Pairing code for your phone"
+},
+{
+"file": "frontend/app/remote-devices.js",
+"line": 135,
+"sink": "textContent",
+"text": "Works once, for the next"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 173,
+"sink": "textContent",
+"text": "Resetting the station browser…"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 178,
+"sink": "textContent",
+"text": "The browser was not reset:"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 190,
+"sink": "innerHTML",
+"text": "s saved keys and tokens in the system keychain, and this window\\"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 200,
+"sink": "placeholder=",
+"text": "type ERASE to confirm"
+},
+{
+"file": "frontend/app/datareset.js",
+"line": 214,
+"sink": "textContent",
+"text": "Stopping StarNet and erasing… keep this window open."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 266,
+"sink": "aria-*",
+"text": "Describe a change to this app"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 266,
+"sink": "placeholder=",
+"text": "Describe a change — how it looks, what it shows, how it works"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 267,
+"sink": "<button>",
+"text": "apps-btn primary app-change-go"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 268,
+"sink": "<button>",
+"text": "apps-btn app-auto-toggle"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 274,
+"sink": "aria-*",
+"text": "What each update should do"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 274,
+"sink": "placeholder=",
+"text": "e.g. refresh what it shows · add today\\"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 275,
+"sink": "<button>",
+"text": "apps-btn primary app-auto-save"
+},
+{
+"file": "frontend/app/apps.js",
+"line": 321,
+"sink": "textContent",
+"text": "Each update is a crew run on your model."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 326,
+"sink": "textContent",
+"text": "Say what each update should do."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 416,
+"sink": "placeholder=",
+"text": "In your own words: what it shows or does, how it should look, and whether it updates by itself."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 432,
+"sink": "textContent",
+"text": "Give it a name."
+},
+{
+"file": "frontend/app/apps.js",
+"line": 433,
+"sink": "textContent",
+"text": "Say what it should do."
+},
+{
+"file": "frontend/app/warroom.js",
+"line": 76,
+"sink": "title=",
+"text": "fill the frame with the station"
+},
+{
+"file": "frontend/app/warroom.js",
+"line": 111,
+"sink": "title=",
+"text": "idle camera: auto-follows the crew after 2 min hands-off — grab the camera (drag/zoom) to take it back"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1056,
+"sink": "textContent",
+"text": "reopen any time — § FIELD MANUAL in the ▣ SYSTEM dock"
+},
+{
+"file": "frontend/app/tutorial.js",
+"line": 1087,
+"sink": "textContent",
+"text": "✓ FIRST STEPS COMPLETE"
+},
+{
+"file": "frontend/app/glass-comms.js",
+"line": 31,
+"sink": "title=",
+"text": "Add agents to this chat"
+},
+{
+"file": "frontend/app/kepler-showcase.js",
+"line": 6,
+"sink": "innerHTML",
+"text": "<strong>KEPLER RELAY</strong><p>A three-room station study · new station graphics</p><nav aria-label="
+},
+{
+"file": "frontend/app/kepler-showcase.js",
+"line": 23,
+"sink": "innerHTML",
+"text": "<b>LOCAL DEPTH REVIEW</b><br><select aria-label="
+},
+{
+"file": "frontend/app/app.js",
+"line": 57,
+"sink": "textContent",
+"text": "COMMS unavailable — reconnecting to the station."
+},
+{
+"file": "frontend/app/app.js",
+"line": 80,
+"sink": "textContent",
+"text": "What would you like to work on?"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2040,
+"sink": "textContent",
+"text": "included in your"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2041,
+"sink": "textContent",
+"text": "pick or type a model slug"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2063,
+"sink": "textContent",
+"text": "price and memory size unknown for this model — it will still run"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2064,
+"sink": "textContent",
+"text": "custom model — not priced in the catalog"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2065,
+"sink": "textContent",
+"text": "not in the catalog — double-check the slug, or it runs as a custom model"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2212,
+"sink": "textContent",
+"text": "↻ RE-SIGN IN"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2217,
+"sink": "textContent",
+"text": "⚠ your ChatGPT sign-in expired —"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2219,
+"sink": "textContent",
+"text": "⏼ RE-SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2222,
+"sink": "textContent",
+"text": "not connected — sign in to use your ChatGPT subscription"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2224,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2249,
+"sink": "textContent",
+"text": "requesting a sign-in code…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2256,
+"sink": "innerHTML",
+"text": "enter this code at <b>"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2259,
+"sink": "textContent",
+"text": "sign-in timed out — start again"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2288,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2340,
+"sink": "textContent",
+"text": "↻ RE-SIGN IN"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2345,
+"sink": "textContent",
+"text": "⏼ RE-SIGN IN WITH"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2348,
+"sink": "textContent",
+"text": "not connected — sign in to use your"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2350,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2387,
+"sink": "textContent",
+"text": "requesting a sign-in code…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2394,
+"sink": "innerHTML",
+"text": "enter this code at <b>"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2397,
+"sink": "textContent",
+"text": "sign-in timed out — start again"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2536,
+"sink": "textContent",
+"text": "◐ checking the code with Claude…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2542,
+"sink": "textContent",
+"text": "⧉ COPY INSTALL COMMAND"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2635,
+"sink": "textContent",
+"text": "link saved on this station, but StarNet could not verify it right now — check your connection and try again."
+},
+{
+"file": "frontend/app/app.js",
+"line": 2678,
+"sink": "textContent",
+"text": "disconnecting this account so you can link the one with your credits…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2689,
+"sink": "textContent",
+"text": "could not disconnect this account safely — try again."
+},
+{
+"file": "frontend/app/app.js",
+"line": 2704,
+"sink": "textContent",
+"text": "Opening your StarNet account…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2706,
+"sink": "textContent",
+"text": "requesting a link code…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2717,
+"sink": "textContent",
+"text": "Confirm the code in your browser to connect."
+},
+{
+"file": "frontend/app/app.js",
+"line": 2720,
+"sink": "textContent",
+"text": "confirm this code in your browser (opening the link page now)…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2840,
+"sink": "textContent",
+"text": "Uses profanity. Select Unhinged again to confirm."
+},
+{
+"file": "frontend/app/app.js",
+"line": 2841,
+"sink": "textContent",
+"text": "UNHINGED — SURE? it swears, for real"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2898,
+"sink": "placeholder=",
+"text": "•••••••• stored in keychain — leave blank to keep"
+},
+{
+"file": "frontend/app/app.js",
+"line": 2973,
+"sink": "textContent",
+"text": "▸ where does my key go?"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3020,
+"sink": "innerHTML",
+"text": "your station is intact — this only re-connects the <b>brain</b>. Identity stays as you left it."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3022,
+"sink": "textContent",
+"text": "⏼ RESUME STATION ▸"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3025,
+"sink": "textContent",
+"text": "↻ RETRY AUTO-RESUME"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3031,
+"sink": "textContent",
+"text": "One mind to run your station. Build your crew from here."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3115,
+"sink": "textContent",
+"text": "could not start —"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3156,
+"sink": "textContent",
+"text": "enter your Custom /v1 base URL."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3168,
+"sink": "textContent",
+"text": "choose or type a model slug."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3185,
+"sink": "textContent",
+"text": "StarNet couldn’t confirm your credit balance right now. Your credits are safe — try WAKE again in a moment."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3188,
+"sink": "textContent",
+"text": "link your StarNet account first — press CONNECT STARNET ACCOUNT above."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3200,
+"sink": "textContent",
+"text": "sign in with"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3236,
+"sink": "textContent",
+"text": "this replaces the key already stored on this station. press WAKE again to confirm — or restore the old key to keep it."
+},
+{
+"file": "frontend/app/app.js",
+"line": 3252,
+"sink": "textContent",
+"text": "testing the wire — one real call to"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3271,
+"sink": "textContent",
+"text": "your StarNet balance is held by runs still working on this station — each refunds what it doesn’t spend. Wait for them to finish, then WAKE again"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3282,
+"sink": "textContent",
+"text": "your model didn’t answer"
+},
+{
+"file": "frontend/app/app.js",
+"line": 3311,
+"sink": "textContent",
+"text": "the prior Commander journey could not be cleared safely. retry WAKE before commissioning this agent."
+},
+{
+"file": "frontend/app/app.js",
+"line": 4924,
+"sink": "title=",
+"text": "bless a folder as a trusted project"
+},
+{
+"file": "frontend/app/app.js",
+"line": 4986,
+"sink": "textContent",
+"text": "Could not refresh projects — showing the last confirmed list. Reload to reconnect."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5036,
+"sink": "title=",
+"text": "open this session"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5040,
+"sink": "title=",
+"text": "open this project"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5079,
+"sink": "title=",
+"text": "back to all projects"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5080,
+"sink": "aria-*",
+"text": "+ U.esc(row.name +"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5262,
+"sink": "aria-*",
+"text": "project folder path"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5264,
+"sink": "title=",
+"text": "browse for a folder with the system dialog"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5453,
+"sink": "textContent",
+"text": "the update could not install"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5456,
+"sink": "textContent",
+"text": "installing the update — StarNet restarts on its own when it is done."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5457,
+"sink": "textContent",
+"text": "the update did not start — try again in a moment."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5463,
+"sink": "textContent",
+"text": "checking for an update…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5475,
+"sink": "textContent",
+"text": "the update check failed"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5476,
+"sink": "textContent",
+"text": "an update check is already running — one moment…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5477,
+"sink": "textContent",
+"text": "this build cannot check for updates — download the latest StarNet from starnetos.com, then reopen."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5478,
+"sink": "textContent",
+"text": "update check failed — try again in a moment."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5480,
+"sink": "textContent",
+"text": "Update StarNet to the latest version (in the desktop app: Update Center), then reopen."
+},
+{
+"file": "frontend/app/app.js",
+"line": 5526,
+"sink": "textContent",
+"text": "saved station could not be restored into this window — retry without resetting"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5536,
+"sink": "innerHTML",
+"text": "<b>RECOVERY CODE:"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5542,
+"sink": "textContent",
+"text": "＋ recovery details unavailable — send a screenshot of"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5569,
+"sink": "innerHTML",
+"text": "<b>RECOVERY CODE:"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5644,
+"sink": "textContent",
+"text": "✦ CONFIRM — START COMPLETELY FRESH"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5707,
+"sink": "textContent",
+"text": "✦ CONFIRM — CLEAR BROWSER STATE"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5794,
+"sink": "textContent",
+"text": "＋ staging verified recovery; the prior source will be preserved"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5822,
+"sink": "textContent",
+"text": "＋ preparing redacted recovery report…"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5832,
+"sink": "textContent",
+"text": "＋ report export failed —"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5853,
+"sink": "textContent",
+"text": "＋ could not check again — the station service did not answer"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5874,
+"sink": "textContent",
+"text": "✦ CONFIRM — START A NEW STATION"
+},
+{
+"file": "frontend/app/app.js",
+"line": 5906,
+"sink": "textContent",
+"text": "＋ could not start fresh —"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 866,
+"sink": "aria-*",
+"text": "Copy code block"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2622,
+"sink": "textContent",
+"text": "Send or clear your current draft before choosing a session."
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2718,
+"sink": "textContent",
+"text": "What would you like to work on?"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 2958,
+"sink": "textContent",
+"text": "↻ Continuing toward your session goal"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 3554,
+"sink": "title=",
+"text": "copy the full saved path"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 3725,
+"sink": "textContent",
+"text": "✉ sent to"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4158,
+"sink": "textContent",
+"text": "▸ Show the whole question"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4193,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4271,
+"sink": "textContent",
+"text": "Use your judgment for the rest ("
+},
+{
+"file": "frontend/app/chat.js",
+"line": 4272,
+"sink": "title=",
+"text": "decide this and the remaining"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5034,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5038,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5041,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5068,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5095,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5133,
+"sink": "textContent",
+"text": "◈ finished while you were away:"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5183,
+"sink": "textContent",
+"text": "◈ INBOX — prove the line: send one small, real job through it, end to end."
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5197,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5225,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5230,
+"sink": "textContent",
+"text": "⌛ the job is riding the line…"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5263,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5365,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5411,
+"sink": "textContent",
+"text": "⚠ captures your mouse/keyboard when opened (pointer lock) — press Esc to release it"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5416,
+"sink": "textContent",
+"text": "⚠ may ask to use your camera, microphone, or screen when opened"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5420,
+"sink": "textContent",
+"text": "▶ Open it — try it in a tab"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5541,
+"sink": "title=",
+"text": "show this file’s contents inline"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5566,
+"sink": "textContent",
+"text": "implement → applies this patch to a NEW branch in"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5570,
+"sink": "textContent",
+"text": "⚠ this patch can’t be auto-applied ("
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5583,
+"sink": "textContent",
+"text": "implement → saves the files to"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5631,
+"sink": "textContent",
+"text": "📂 open folder"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5632,
+"sink": "textContent",
+"text": "could not open"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5641,
+"sink": "title=",
+"text": "UNDO KEEP — removes the copied files from"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5645,
+"sink": "textContent",
+"text": "undo — remove these files?"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 5769,
+"sink": "title=",
+"text": "delete these files and never rebuild or re-propose this idea"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6044,
+"sink": "title=",
+"text": "forget this — undo the save"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6266,
+"sink": "placeholder=",
+"text": "correct anything — it folds straight into the run"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6287,
+"sink": "title=",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6291,
+"sink": "placeholder=",
+"text": "run already finished — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6302,
+"sink": "placeholder=",
+"text": "could not reach the run — say it in chat"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6314,
+"sink": "textContent",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 6377,
+"sink": "textContent",
+"text": "◈ briefing updated — every agent on this station now knows your"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 7130,
+"sink": "textContent",
+"text": "✦ one curious thing — i still don’t know your"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 9288,
+"sink": "textContent",
+"text": "⧉ copy diagnostics for a bug report"
+},
+{
+"file": "frontend/app/chat.js",
+"line": 11670,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 167,
+"sink": "title=",
+"text": "First words: detected speech to transcript. Send: last voiced frame to submission. Speech start: latest spoken chunk queued to actual playback."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1330,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1658,
+"sink": "textContent",
+"text": "Speak naturally — interrupt any time."
+},
+{
+"file": "frontend/app/voice-live.js",
+"line": 1767,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "frontend/app/schedpicker.js",
+"line": 100,
+"sink": "aria-*",
+"text": "day of the month"
+},
+{
+"file": "frontend/app/widgets.js",
+"line": 394,
+"sink": "textContent",
+"text": "; val.style.display ="
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 332,
+"sink": "innerHTML",
+"text": "<b>TOO LONG</b> — the longest way through this line runs <b>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 334,
+"sink": "data-tip",
+"text": "sets this INBOX’s LINE BUDGET › max stages after the first to"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 442,
+"sink": "textContent",
+"text": "CONNECT IT TO A LINE"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 459,
+"sink": "textContent",
+"text": "This BAY isn’t on any line, so it only works when you message its agent directly. MAKE IT A LINE gives it a line of its own; JOIN A LINE belts it onto a line already on the floor."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 572,
+"sink": "aria-*",
+"text": "Add to the line"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 723,
+"sink": "data-tip",
+"text": "arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 884,
+"sink": "placeholder=",
+"text": "Name this step"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 971,
+"sink": "placeholder=",
+"text": "or type a test job here"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1094,
+"sink": "aria-*",
+"text": "The job to send down this line"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1094,
+"sink": "placeholder=",
+"text": "What should the line work on? e.g. Find this week’s most useful research on sleep and memory."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1107,
+"sink": "placeholder=",
+"text": "e.g. Find this week’s AI news and summarize the three biggest stories."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1551,
+"sink": "textContent",
+"text": "⚠ with DONE on"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1658,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1660,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1711,
+"sink": "aria-*",
+"text": "What this splitter does with each job"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1716,
+"sink": "aria-*",
+"text": "Why a choice is not available yet"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 1933,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2012,
+"sink": "data-tip",
+"text": "Opens DELIVERABLES at TO REVIEW, where finished work waits for your rating."
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2026,
+"sink": "data-tip",
+"text": ">★ KEEP THIS STYLE</button>"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2042,
+"sink": "aria-*",
+"text": "What is wrong with the result"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2189,
+"sink": "placeholder=",
+"text": "What should the line work on?"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2197,
+"sink": "aria-*",
+"text": "When to pause"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2206,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "frontend/app/workflowpanel.js",
+"line": 2212,
+"sink": "aria-*",
+"text": "How to test"
+},
+{
+"file": "frontend/app/diagnostics.js",
+"line": 315,
+"sink": "textContent",
+"text": "could not read diagnostics — is the app still running?"
+},
+{
+"file": "frontend/app/build.js",
+"line": 431,
+"sink": "title=",
+"text": "zoom out (or scroll the wheel)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 433,
+"sink": "title=",
+"text": "zoom in (or scroll the wheel)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 439,
+"sink": "title=",
+"text": "frame the station"
+},
+{
+"file": "frontend/app/build.js",
+"line": 442,
+"sink": "title=",
+"text": "finish + save (or press Esc twice)"
+},
+{
+"file": "frontend/app/build.js",
+"line": 776,
+"sink": "alt=",
+"text": "Preview sketch of"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1073,
+"sink": "innerHTML",
+"text": "<b>CONNECTED SERVICES</b><span>Optional equipment for connected accounts and tools.</span>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1277,
+"sink": "innerHTML",
+"text": "<b>Click anything to edit</b><div class="
+},
+{
+"file": "frontend/app/build.js",
+"line": 1315,
+"sink": "textContent",
+"text": "A type is just the deck it starts with — SURFACE (3) re-lays any room later."
+},
+{
+"file": "frontend/app/build.js",
+"line": 1352,
+"sink": "innerHTML",
+"text": "<b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\\u2019s style.</small>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1520,
+"sink": "innerHTML",
+"text": "<b>Connect machines</b><span>Click where work starts, then where it goes next.</span>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 1557,
+"sink": "textContent",
+"text": "＋ BUILD YOUR OWN LINE"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2531,
+"sink": "textContent",
+"text": "＋ MAKE ROOM FOR IT"
+},
+{
+"file": "frontend/app/build.js",
+"line": 2908,
+"sink": "<button>",
+"text": "data-restore-build>RESTORE PREVIOUS</button><button class="
+},
+{
+"file": "frontend/app/build.js",
+"line": 3001,
+"sink": "textContent",
+"text": "Could not restore the previous layout:"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3055,
+"sink": "alt=",
+"text": "The picture that goes with this map"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3057,
+"sink": "placeholder=",
+"text": "your name or handle"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3069,
+"sink": "textContent",
+"text": "Nothing was shared."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3072,
+"sink": "textContent",
+"text": "Give the map a name."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3073,
+"sink": "textContent",
+"text": "Add the name you want credited in the gallery."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3074,
+"sink": "textContent",
+"text": "Turn on the CC BY 4.0 agreement to share it: it is how others may build your station."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3083,
+"sink": "innerHTML",
+"text": "<span>Sent for review: <b>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3089,
+"sink": "textContent",
+"text": "SEND FOR REVIEW"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3102,
+"sink": "textContent",
+"text": "This station is not linked to a StarNet account yet. Link it first: STORE › LINK STATION (a free account works), then open SHARE TO COMMUNITY again."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3155,
+"sink": "textContent",
+"text": "This station could not be exported."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3166,
+"sink": "textContent",
+"text": "That file is too large to be a station build."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3168,
+"sink": "textContent",
+"text": "That file could not be read."
+},
+{
+"file": "frontend/app/build.js",
+"line": 3200,
+"sink": "<button>",
+"text": "data-workflow-close>CLOSE</button></header><div data-example-body></div></div>"
+},
+{
+"file": "frontend/app/build.js",
+"line": 3221,
+"sink": "aria-*",
+"text": "How the line runs"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4653,
+"sink": "title=",
+"text": "dismiss — you know the gear"
+},
+{
+"file": "frontend/app/build.js",
+"line": 4723,
+"sink": "title=",
+"text": "dismiss for this line"
+},
+{
+"file": "frontend/app/build.js",
+"line": 5658,
+"sink": "innerHTML",
+"text": "<label>X <input aria-label="
+},
+{
+"file": "frontend/app/build.js",
+"line": 6355,
+"sink": "placeholder=",
+"text": "name this room"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6357,
+"sink": "data-tip",
+"text": "Let go of the room · Esc"
+},
+{
+"file": "frontend/app/build.js",
+"line": 6427,
+"sink": "data-tip",
+"text": "Let go of all of them · Esc"
+},
+{
+"file": "frontend/app/voice.js",
+"line": 1966,
+"sink": "title=",
+"text": "tap to resume hands-free voice mode"
+},
+{
+"file": "frontend/app/world.js",
+"line": 8059,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "frontend/app/briefing.js",
+"line": 22,
+"sink": "title=",
+"text": "While you were away"
+},
+{
+"file": "frontend/app/worldlab.js",
+"line": 24,
+"sink": "textContent",
+"text": "Capture records the current frame, station, crew and real event history."
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 135,
+"sink": "alt=",
+"text": "Live view of the agent\\"
+},
+{
+"file": "frontend/app/stepin.js",
+"line": 238,
+"sink": "textContent",
+"text": "Take the wheel to drive its browser yourself. It is frozen until you hand it back, and it never sees what you type. It never solves a human check on its own."
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 126,
+"sink": "placeholder=",
+"text": "Type an address or search"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 134,
+"sink": "aria-*",
+"text": "Live browser picture"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 307,
+"sink": "innerHTML",
+"text": "<p>That page isn\\"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 314,
+"sink": "innerHTML",
+"text": "<p>The station isn\\"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 689,
+"sink": "textContent",
+"text": "Could not read the browser setting from the station."
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 696,
+"sink": "textContent",
+"text": "Could not save:"
+},
+{
+"file": "frontend/app/outputbrowser.js",
+"line": 697,
+"sink": "textContent",
+"text": "Could not save: the station did not answer."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 9,
+"sink": "textContent",
+"text": "Full catalog with projection corrections. Fixed 2× world scale; the crate and crew show physical size."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 14,
+"sink": "textContent",
+"text": "Showing newly rebuilt props. Each is followed by the approved desk, crate, and agent at the same scale."
+},
+{
+"file": "frontend/app/prop-atlas.js",
+"line": 62,
+"sink": "textContent",
+"text": "Artwork could not load:"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 571,
+"sink": "placeholder=",
+"text": "e.g. a weekly digest of AI news for my newsletter"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 608,
+"sink": "data-tip",
+"text": "INBOX: you send jobs in here."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 615,
+"sink": "data-tip",
+"text": "OUTBOX: the finished result lands here."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 660,
+"sink": "aria-*",
+"text": "The job for this workflow"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 703,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: change these starts, or add a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 704,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 789,
+"sink": "aria-*",
+"text": "+ !!(S.fix && S.fix.jobId === job.id && S.fix.open) +"
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 790,
+"sink": "data-tip",
+"text": "The last step stops copying this result’s format, length and tone, and the crew forgets its style."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 791,
+"sink": "data-tip",
+"text": "The step that wrote this result will match its format, length and tone every time, and the whole crew matches its style in similar work."
+},
+{
+"file": "frontend/app/windows/workflows.js",
+"line": 850,
+"sink": "data-tip",
+"text": "The full editor: the line on the floor, each step’s instructions, what starts it automatically, its budget."
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 147,
+"sink": "placeholder=",
+"text": "arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 943,
+"sink": "textContent",
+"text": "+ ADD & CONNECT"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1244,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1272,
+"sink": "title=",
+"text": "opens a secure browser sign-in (OAuth)"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1293,
+"sink": "title=",
+"text": "first-party server, run by the vendor"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1307,
+"sink": "title=",
+"text": "not directly wired yet — see the note"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1318,
+"sink": "aria-*",
+"text": "Google app password"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1318,
+"sink": "placeholder=",
+"text": "16-letter app password"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1503,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1562,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1572,
+"sink": "textContent",
+"text": "✕ couldn’t open the sign-in page for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1605,
+"sink": "innerHTML",
+"text": "<strong>CONNECT GITHUB</strong><p>1. Copy this code: <code style="
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1667,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1828,
+"sink": "aria-*",
+"text": "Allow unattended use of"
+},
+{
+"file": "frontend/app/windows/connectors.js",
+"line": 1958,
+"sink": "textContent",
+"text": "✕ couldn’t open the Spotify sign-in page"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 19,
+"sink": "innerHTML",
+"text": "<strong>INDUSTRIAL CREW · LIVE STATION DEMO</strong><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 20,
+"sink": "textContent",
+"text": "Normal station movement · visual review"
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 47,
+"sink": "textContent",
+"text": "Could not load the selected skins."
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 74,
+"sink": "innerHTML",
+"text": "<summary>Talking pose close-up</summary><div style="
+},
+{
+"file": "frontend/agent-demo/demo.js",
+"line": 86,
+"sink": "textContent",
+"text": "Station did not finish loading."
+},
+{
+"file": "frontend/agent-demo/review-world.js",
+"line": 6847,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "frontend/assets/industrial/shell-clean-preview.html",
+"line": 14,
+"sink": "alt=",
+"text": "SLATE COURSES · STUDY texture"
+},
+{
+"file": "frontend/dev/authored-furniture-review.html",
+"line": 1,
+"sink": "aria-*",
+"text": "Both authored heavy bags at station scale"
+},
+{
+"file": "website/market.js",
+"line": 51,
+"sink": "textNode",
+"text": "· shared by a StarNet user"
+},
+{
+"file": "website/market.js",
+"line": 93,
+"sink": "textContent",
+"text": "Could not load this skill right now."
+},
+{
+"file": "website/market.js",
+"line": 166,
+"sink": "textContent",
+"text": "Could not load the skill catalog right now. Refresh to try again, or browse it in the app under ABILITIES › DISCOVER › SKILL MARKET."
+},
+{
+"file": "website/index.html",
+"line": 73,
+"sink": "aria-*",
+"text": "Scroll to the station"
+},
+{
+"file": "website/index.html",
+"line": 97,
+"sink": "aria-*",
+"text": "StarNet station recorded from the real renderer, playing a scripted replay of harness events"
+},
+{
+"file": "website/index.html",
+"line": 225,
+"sink": "aria-*",
+"text": "Back to top"
+},
+{
+"file": "website/maps.js",
+"line": 85,
+"sink": "textContent",
+"text": "The gallery could not be loaded. Try again in a moment."
+},
+{
+"file": "website/app/prop-catalog-review.html",
+"line": 20,
+"sink": "aria-*",
+"text": "Six catalog views in a furnished station room"
+},
+{
+"file": "website/app/agent-proportion-review.html",
+"line": 8,
+"sink": "aria-*",
+"text": "Four equal-height Secret Agent sprites in furnished StarNet comparison bays"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 518,
+"sink": "title=",
+"text": "Your Commander level grows through recorded progress toward your life goals. Open the quest log to see the achievements behind it."
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 541,
+"sink": "aria-*",
+"text": "Find an agent by name"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 550,
+"sink": "title=",
+"text": "drag to resize CREW vs SESSIONS (double-click to reset)"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 568,
+"sink": "aria-*",
+"text": "Live view of your agent station"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 586,
+"sink": "title=",
+"text": "drag to resize the CREW rail (double-click to reset)"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 600,
+"sink": "aria-*",
+"text": "Select agent on the line"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 602,
+"sink": "title=",
+"text": "the model this agent runs on"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 605,
+"sink": "aria-*",
+"text": "Return to work"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 625,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 636,
+"sink": "aria-*",
+"text": "Stop the running turn"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 636,
+"sink": "title=",
+"text": "Stop the running turn (Esc)"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 638,
+"sink": "aria-*",
+"text": "Attach a photo or file"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 638,
+"sink": "title=",
+"text": "Attach a photo or file"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 657,
+"sink": "aria-*",
+"text": "StarNet subscription (opens in your browser)"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 661,
+"sink": "aria-*",
+"text": "Start Local Live hands-free voice"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 661,
+"sink": "title=",
+"text": "Local Live hands-free voice — local speech with your active Starnet agent"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 681,
+"sink": "title=",
+"text": "Your agents — dossiers, recruitment, and your own Commander file"
+},
+{
+"file": "website/app/agent-station-demo.html",
+"line": 703,
+"sink": "title=",
+"text": "Shape the station — refit the floor, abilities, channels"
+},
+{
+"file": "website/app/authored-machine-review.html",
+"line": 5,
+"sink": "aria-*",
+"text": "Fabricator, pneumatic tube, and packing robot at station scale"
+},
+{
+"file": "website/app/agent-motion-review.html",
+"line": 6,
+"sink": "aria-*",
+"text": "Five animated crew members on an industrial station deck"
+},
+{
+"file": "website/app/prop-scale-review.html",
+"line": 10,
+"sink": "alt=",
+"text": "Supplied station art reference"
+},
+{
+"file": "website/app/prop-room-review.html",
+"line": 3,
+"sink": "aria-*",
+"text": "Catalog props in a station room"
+},
+{
+"file": "website/app/app/workhub.js",
+"line": 20,
+"sink": "innerHTML",
+"text": "<summary>Sources StarNet can study for useful work</summary><div class="
+},
+{
+"file": "website/app/app/bootguard.js",
+"line": 295,
+"sink": "textContent",
+"text": "⧉ COPY FAILED — SELECT THE TEXT ABOVE"
+},
+{
+"file": "website/app/app/remaster-runtime-audit.js",
+"line": 31,
+"sink": "innerHTML",
+"text": "<b>LOCAL RUNTIME AUDIT · disposable station</b><nav></nav><output id="
+},
+{
+"file": "website/app/app/firstvalue.js",
+"line": 82,
+"sink": "aria-*",
+"text": "Choose the first useful result"
+},
+{
+"file": "website/app/app/firstvalue.js",
+"line": 84,
+"sink": "placeholder=",
+"text": "For example: a short Friday update for the client, with next steps"
+},
+{
+"file": "website/app/app/firstvalue.js",
+"line": 86,
+"sink": "placeholder=",
+"text": "Paste the real material to work from. Nothing is sent until you click Create draft."
+},
+{
+"file": "website/app/app/firstvalue.js",
+"line": 87,
+"sink": "aria-*",
+"text": "Approved source folder"
+},
+{
+"file": "website/app/app/firstvalue.js",
+"line": 142,
+"sink": "textContent",
+"text": "Choose a task and provide the source you want to use."
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 466,
+"sink": "title=",
+"text": "import a recipe from a JSON file"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 484,
+"sink": "title=",
+"text": "bring an agent over from OpenClaw or Hermes"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 944,
+"sink": "title=",
+"text": "the latest run differs from its good history"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 990,
+"sink": "aria-*",
+"text": "back to the library"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 1239,
+"sink": "title=",
+"text": "download this recipe as a portable JSON file"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 1245,
+"sink": "title=",
+"text": "change this recipe in place"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 1486,
+"sink": "aria-*",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 1486,
+"sink": "title=",
+"text": "not interested — stop recommending this"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 1585,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 2014,
+"sink": "title=",
+"text": "dismiss forever — this exact finding won’t come back"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 2029,
+"sink": "title=",
+"text": "dismiss forever — the station won\\"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3008,
+"sink": "title=",
+"text": "puts this recipe on a schedule — it becomes a ROUTINE you can manage in AUTOMATE › SCHEDULES"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3237,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3241,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3242,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3252,
+"sink": "textContent",
+"text": "◷ SCHEDULE IT"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3340,
+"sink": "aria-*",
+"text": "what kind of value"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3343,
+"sink": "title=",
+"text": "required at launch"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3376,
+"sink": "placeholder=",
+"text": "the read must show this text"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3386,
+"sink": "placeholder=",
+"text": "workspace path, e.g. out/{client}-invoice.md"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3388,
+"sink": "placeholder=",
+"text": "must contain this text"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3390,
+"sink": "placeholder=",
+"text": "64-hex digest (or a {token})"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3429,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3430,
+"sink": "placeholder=",
+"text": "e.g. Summarize {project} progress since {since} and flag blockers."
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3435,
+"sink": "placeholder=",
+"text": "e.g.\\nPull this week\\"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3649,
+"sink": "placeholder=",
+"text": "one line — what it’s for"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3698,
+"sink": "aria-*",
+"text": "Or type your own icon"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3698,
+"sink": "title=",
+"text": "Or type your own"
+},
+{
+"file": "website/app/app/marketplace.js",
+"line": 3703,
+"sink": "placeholder=",
+"text": "Describe its job and what a good result looks like."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2038,
+"sink": "title=",
+"text": "change this agent’s model"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2130,
+"sink": "title=",
+"text": "archive this agent and remove it from the station"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2396,
+"sink": "textContent",
+"text": "Effective access could not be checked. Reopen this panel after reconnecting."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2462,
+"sink": "textContent",
+"text": "Memory Core unavailable — start the sidecar to read it."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2467,
+"sink": "textContent",
+"text": "Could not read the Memory Core."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2589,
+"sink": "title=",
+"text": "allow this belief to be proposed again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 2966,
+"sink": "title=",
+"text": "run this agent on the station default model again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 3127,
+"sink": "textContent",
+"text": "SURE? IT COULD READ ANY FILE HERE"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 3267,
+"sink": "title=",
+"text": "take this off the list (it can be queued again later)"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 3822,
+"sink": "placeholder=",
+"text": "search or browse all"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 3948,
+"sink": "title=",
+"text": "Open BUILD MODE to place"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4220,
+"sink": "title=",
+"text": "Open BUILD MODE to place"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4556,
+"sink": "textContent",
+"text": "Running the checks with and without the proposal…"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4633,
+"sink": "title=",
+"text": "Give this skill to the agent — the approval covers this exact content"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4635,
+"sink": "title=",
+"text": "Withhold this skill from the agent again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4658,
+"sink": "title=",
+"text": "Read the skill"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4759,
+"sink": "placeholder=",
+"text": "Project folder (full path)"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4767,
+"sink": "textContent",
+"text": "Enter the project folder, then click This project again."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4799,
+"sink": "placeholder=",
+"text": "your name or handle"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4823,
+"sink": "textContent",
+"text": "Give it a name on the market."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4824,
+"sink": "textContent",
+"text": "Pick the shelf it belongs on."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4825,
+"sink": "textContent",
+"text": "Add the name you want credited on the market."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4826,
+"sink": "textContent",
+"text": "Turn on the agreement to share it: it is the license others use it under."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4833,
+"sink": "textContent",
+"text": "Sent for review as"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4838,
+"sink": "textContent",
+"text": "The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 4840,
+"sink": "textContent",
+"text": "Link this station to your StarNet account first (STORE › LINK STATION). A free account works. Nothing was shared."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5042,
+"sink": "title=",
+"text": "Review a schedule; nothing runs until you save and enable it"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5043,
+"sink": "title=",
+"text": "Recover from the COMMS rail’s Archived view"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5048,
+"sink": "title=",
+"text": "Mark this task complete; this does not publish or send anything"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5531,
+"sink": "placeholder=",
+"text": "page showed a code? paste it here"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5551,
+"sink": "title=",
+"text": "sign in with a"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5635,
+"sink": "title=",
+"text": "sign in another Claude account — Claude Code keeps each sign-in, StarNet never sees them"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5853,
+"sink": "aria-*",
+"text": "Sign in with Claude"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5853,
+"sink": "title=",
+"text": "opens Claude in your browser — Claude Code keeps the sign-in, StarNet never sees it"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5854,
+"sink": "title=",
+"text": "Claude Code needs a Pro, Max, Team or Enterprise plan"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5855,
+"sink": "aria-*",
+"text": "Sign in to"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5923,
+"sink": "title=",
+"text": "the sidecar recorded a dead refresh token — a re-sign-in is the only cure"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 5979,
+"sink": "title=",
+"text": "signed in through Claude Code, which keeps the sign-in; StarNet never holds it"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 6003,
+"sink": "title=",
+"text": "the sidecar recorded a dead refresh token — a re-sign-in is the only cure"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 6044,
+"sink": "title=",
+"text": "shown masked when a key exists — the full key is never displayed"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 6231,
+"sink": "textContent",
+"text": "click again to confirm removal"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 6799,
+"sink": "title=",
+"text": "change or cancel your plan in the browser"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 6807,
+"sink": "title=",
+"text": "forget this station’s link"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7187,
+"sink": "title=",
+"text": "grant one more base-cap of"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7287,
+"sink": "title=",
+"text": "try this model earlier"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7288,
+"sink": "title=",
+"text": "try this model later"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7289,
+"sink": "title=",
+"text": "remove from the chain"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7453,
+"sink": "textContent",
+"text": "reading the voice chat model…"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7455,
+"sink": "textContent",
+"text": "voice chat model unavailable — sidecar unreachable"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7546,
+"sink": "title=",
+"text": "clear every saved override so these follow the environment / built-in defaults again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7631,
+"sink": "textContent",
+"text": "check the live-probe consent first"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7643,
+"sink": "textContent",
+"text": "live doctor finished — receipt is ready"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7797,
+"sink": "data-tip",
+"text": "build &amp; write locally — nothing leaves the machine"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7798,
+"sink": "data-tip",
+"text": "the highest rung: unattended actions may leave the machine — send, publish, or contact external services"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7802,
+"sink": "title=",
+"text": "one small job a day"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7803,
+"sink": "title=",
+"text": "a few small jobs a day — the default"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7804,
+"sink": "title=",
+"text": "a busier station — up to 6 jobs a day"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7805,
+"sink": "title=",
+"text": "as much as it&#39;s allowed — up to 12 jobs a day"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7820,
+"sink": "placeholder=",
+"text": "a project folder, thread:&lt;id&gt;, or goal to rule out"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7930,
+"sink": "title=",
+"text": "clear the saved value so this cap follows the environment default again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 7946,
+"sink": "title=",
+"text": "clear the saved chain so it follows the environment default again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8219,
+"sink": "textContent",
+"text": "Voice could not be saved. Please try again."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8262,
+"sink": "textContent",
+"text": "Effect saved. Applies to the next spoken reply."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8264,
+"sink": "textContent",
+"text": "Effect could not be saved. Please try again."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8293,
+"sink": "textContent",
+"text": "Remote is not available in this build."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8507,
+"sink": "textContent",
+"text": "Closing the window keeps the station running only when armed work needs it — otherwise it fully quits."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8511,
+"sink": "textContent",
+"text": "Closing the window hides StarNet in the tray and keeps the station running. Use Quit StarNet in the tray menu to stop it."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8514,
+"sink": "textContent",
+"text": "Right now, closing the window KEEPS the station running in the background ("
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8518,
+"sink": "textContent",
+"text": "Closing the window keeps the station running only when armed work needs it — otherwise it fully quits."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8645,
+"sink": "title=",
+"text": "remove this boundary — the station may pick it unattended again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8668,
+"sink": "textContent",
+"text": "none declared — it improvises from evidence"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8760,
+"sink": "title=",
+"text": "interrupt this background helper (its work so far is kept; it can be resumed)"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8778,
+"sink": "title=",
+"text": "send this running helper a mid-flight instruction (it keeps working; your note is read before its next model turn)"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 8786,
+"sink": "placeholder=",
+"text": "new instruction for this helper…"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 9365,
+"sink": "textContent",
+"text": "SURE? IT COULD READ ANY FILE HERE"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 9480,
+"sink": "textContent",
+"text": "+ snap.error + (snap.loaded ?"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 9592,
+"sink": "toast()",
+"text": "that session was deleted"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 9846,
+"sink": "data-tip",
+"text": "Dismiss: it leaves NEEDS YOU here and on the rail"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10104,
+"sink": "textContent",
+"text": "A window’s save preserved on the station ("
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10147,
+"sink": "textContent",
+"text": "Download this window’s save"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10154,
+"sink": "textContent",
+"text": "Restore this window’s sessions"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10164,
+"sink": "title=",
+"text": "this station’s data was written by a newer StarNet — update the app. Until then, changes are NOT being backed up."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10188,
+"sink": "title=",
+"text": "world is saved locally; the durable backup copy hasn’t synced since"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10193,
+"sink": "title=",
+"text": "saves are failing — check disk space / folder permissions ("
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10287,
+"sink": "title=",
+"text": "Based on the source and recency of saved details, not just the number of topics filled in."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10324,
+"sink": "textContent",
+"text": "Nothing saved yet. Add a detail or choose a starting point."
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10387,
+"sink": "title=",
+"text": "the briefing composes from your beliefs below, capped at"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10403,
+"sink": "title=",
+"text": "composeSystemPrompt folds this block into the system prompt of every agent on the station — including a freshly-summoned one"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10404,
+"sink": "title=",
+"text": "mirrored to the sidecar so autonomous scheduled runs (routines, autonomy) that compose their own persona still know who they serve"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10405,
+"sink": "title=",
+"text": "the pitch engine and recruitment matcher read your goals, pain points and ambitions to propose work and crew"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10406,
+"sink": "title=",
+"text": "the quest board turns still-blank dimensions into get-to-know-you quests"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10436,
+"sink": "textContent",
+"text": "ask me about this"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10437,
+"sink": "title=",
+"text": "turn this question back on — the station may ask about your"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10450,
+"sink": "title=",
+"text": "the station proposed this from your work; you kept it"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10456,
+"sink": "title=",
+"text": "the briefing hit its character cap, so this belief was shortened or dropped from what agents are told — pin or shorten what matters most"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10485,
+"sink": "title=",
+"text": "a detail holds up to"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10536,
+"sink": "textContent",
+"text": "+ Add detail"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10542,
+"sink": "placeholder=",
+"text": "What should your agents know?"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10727,
+"sink": "aria-*",
+"text": "Your next move"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10745,
+"sink": "aria-*",
+"text": "Your next move"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10869,
+"sink": "title=",
+"text": "Open where you do this next"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10916,
+"sink": "<button>",
+"text": "consent-btn q-step-report"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10965,
+"sink": "<button>",
+"text": "consent-btn q-success-save"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10968,
+"sink": "<button>",
+"text": "consent-btn q-goal-confirm"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10969,
+"sink": "placeholder=",
+"text": "A concrete action that helps this goal"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10970,
+"sink": "<button>",
+"text": "consent-btn q-step-add"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 10989,
+"sink": "title=",
+"text": "the station inferred this — confirm or correct it"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11139,
+"sink": "aria-*",
+"text": "Current value for"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11150,
+"sink": "placeholder=",
+"text": "></label><label>Target value<input class="
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11205,
+"sink": "<button>",
+"text": "consent-btn q-idea-save"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11214,
+"sink": "<button>",
+"text": "consent-btn q-idea-save"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11223,
+"sink": "<button>",
+"text": "consent-btn q-goal-review"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11225,
+"sink": "<button>",
+"text": "consent-btn deny q-goal-disposition"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11265,
+"sink": "<button>",
+"text": "consent-btn q-goal-open-plan"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11267,
+"sink": "<button>",
+"text": "consent-btn q-goal-review"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11386,
+"sink": "title=",
+"text": "Build this while I’m away — queue it for the sandbox"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11391,
+"sink": "title=",
+"text": "Open where you do this next"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11423,
+"sink": "placeholder=",
+"text": "For example: waiting for a reply, or only 15 minutes available"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11425,
+"sink": "placeholder=",
+"text": "Describe your action and its result"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11429,
+"sink": "title=",
+"text": "Dismiss — the station will never raise this again"
+},
+{
+"file": "website/app/app/stationui.js",
+"line": 11652,
+"sink": "<button>",
+"text": "consent-btn q-plan-use"
+},
+{
+"file": "website/app/app/taskconversation.js",
+"line": 31,
+"sink": "textContent",
+"text": "Your answer is full. Edit it before adding another starting point."
+},
+{
+"file": "website/app/app/taskconversation.js",
+"line": 43,
+"sink": "placeholder=",
+"text": "Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line."
+},
+{
+"file": "website/app/app/taskconversation.js",
+"line": 79,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "website/app/app/modelpicker.js",
+"line": 33,
+"sink": "title=",
+"text": "Reasoning effort — how hard this model thinks"
+},
+{
+"file": "website/app/app/modelpicker.js",
+"line": 129,
+"sink": "textContent",
+"text": "🔑 add a provider key"
+},
+{
+"file": "website/app/app/crtlab.js",
+"line": 312,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "website/app/app/crtlab.js",
+"line": 316,
+"sink": "textContent",
+"text": "live: scanlines/fade/glow · lighting re-bakes on release"
+},
+{
+"file": "website/app/app/deliverables.js",
+"line": 325,
+"sink": "title=",
+"text": "Previews open safely inside StarNet in a browser; desktop OPEN uses your file app."
+},
+{
+"file": "website/app/app/deliverables.js",
+"line": 327,
+"sink": "data-tip",
+"text": "Takes these cards out of the library (not TO REVIEW&rsquo;s rating list) — the files stay on disk, and UNDO brings them back."
+},
+{
+"file": "website/app/app/deliverables.js",
+"line": 331,
+"sink": "data-tip",
+"text": "Previews first: removes only the records of failed and discarded runs — files are not deleted, and UNDO brings them back"
+},
+{
+"file": "website/app/app/deliverables.js",
+"line": 414,
+"sink": "data-tip",
+"text": "Takes it out of this library. The files stay on disk."
+},
+{
+"file": "website/app/app/hudmode.js",
+"line": 687,
+"sink": "title=",
+"text": "Click to open activity · drag to move"
+},
+{
+"file": "website/app/app/hudmode.js",
+"line": 815,
+"sink": "title=",
+"text": "Shrink the HUD to the agent cam"
+},
+{
+"file": "website/app/app/hudmode.js",
+"line": 818,
+"sink": "title=",
+"text": "Back to the full station"
+},
+{
+"file": "website/app/app/group-chat.js",
+"line": 105,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "website/app/app/group-chat.js",
+"line": 449,
+"sink": "placeholder=",
+"text": "Message the group · @ picks one agent"
+},
+{
+"file": "website/app/app/group-chat.js",
+"line": 1289,
+"sink": "textContent",
+"text": "; status = (add ?"
+},
+{
+"file": "website/app/app/group-chat.js",
+"line": 1325,
+"sink": "append(str)",
+"text": "Your whole crew is already in this chat. Recruit more under CREW."
+},
+{
+"file": "website/app/app/remote-devices.js",
+"line": 69,
+"sink": "title=",
+"text": "This phone asks before every step that needs an OK, even for agents on full access"
+},
+{
+"file": "website/app/app/remote-devices.js",
+"line": 118,
+"sink": "aria-*",
+"text": "Pairing code for your phone"
+},
+{
+"file": "website/app/app/remote-devices.js",
+"line": 135,
+"sink": "textContent",
+"text": "Works once, for the next"
+},
+{
+"file": "website/app/app/datareset.js",
+"line": 173,
+"sink": "textContent",
+"text": "Resetting the station browser…"
+},
+{
+"file": "website/app/app/datareset.js",
+"line": 178,
+"sink": "textContent",
+"text": "The browser was not reset:"
+},
+{
+"file": "website/app/app/datareset.js",
+"line": 190,
+"sink": "innerHTML",
+"text": "s saved keys and tokens in the system keychain, and this window\\"
+},
+{
+"file": "website/app/app/datareset.js",
+"line": 200,
+"sink": "placeholder=",
+"text": "type ERASE to confirm"
+},
+{
+"file": "website/app/app/datareset.js",
+"line": 214,
+"sink": "textContent",
+"text": "Stopping StarNet and erasing… keep this window open."
+},
+{
+"file": "website/app/app/apps.js",
+"line": 266,
+"sink": "aria-*",
+"text": "Describe a change to this app"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 266,
+"sink": "placeholder=",
+"text": "Describe a change — how it looks, what it shows, how it works"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 267,
+"sink": "<button>",
+"text": "apps-btn primary app-change-go"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 268,
+"sink": "<button>",
+"text": "apps-btn app-auto-toggle"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 274,
+"sink": "aria-*",
+"text": "What each update should do"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 274,
+"sink": "placeholder=",
+"text": "e.g. refresh what it shows · add today\\"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 275,
+"sink": "<button>",
+"text": "apps-btn primary app-auto-save"
+},
+{
+"file": "website/app/app/apps.js",
+"line": 321,
+"sink": "textContent",
+"text": "Each update is a crew run on your model."
+},
+{
+"file": "website/app/app/apps.js",
+"line": 326,
+"sink": "textContent",
+"text": "Say what each update should do."
+},
+{
+"file": "website/app/app/apps.js",
+"line": 416,
+"sink": "placeholder=",
+"text": "In your own words: what it shows or does, how it should look, and whether it updates by itself."
+},
+{
+"file": "website/app/app/apps.js",
+"line": 432,
+"sink": "textContent",
+"text": "Give it a name."
+},
+{
+"file": "website/app/app/apps.js",
+"line": 433,
+"sink": "textContent",
+"text": "Say what it should do."
+},
+{
+"file": "website/app/app/warroom.js",
+"line": 76,
+"sink": "title=",
+"text": "fill the frame with the station"
+},
+{
+"file": "website/app/app/warroom.js",
+"line": 111,
+"sink": "title=",
+"text": "idle camera: auto-follows the crew after 2 min hands-off — grab the camera (drag/zoom) to take it back"
+},
+{
+"file": "website/app/app/tutorial.js",
+"line": 1056,
+"sink": "textContent",
+"text": "reopen any time — § FIELD MANUAL in the ▣ SYSTEM dock"
+},
+{
+"file": "website/app/app/tutorial.js",
+"line": 1087,
+"sink": "textContent",
+"text": "✓ FIRST STEPS COMPLETE"
+},
+{
+"file": "website/app/app/glass-comms.js",
+"line": 31,
+"sink": "title=",
+"text": "Add agents to this chat"
+},
+{
+"file": "website/app/app/kepler-showcase.js",
+"line": 6,
+"sink": "innerHTML",
+"text": "<strong>KEPLER RELAY</strong><p>A three-room station study · new station graphics</p><nav aria-label="
+},
+{
+"file": "website/app/app/kepler-showcase.js",
+"line": 23,
+"sink": "innerHTML",
+"text": "<b>LOCAL DEPTH REVIEW</b><br><select aria-label="
+},
+{
+"file": "website/app/app/app.js",
+"line": 57,
+"sink": "textContent",
+"text": "COMMS unavailable — reconnecting to the station."
+},
+{
+"file": "website/app/app/app.js",
+"line": 80,
+"sink": "textContent",
+"text": "What would you like to work on?"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2040,
+"sink": "textContent",
+"text": "included in your"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2041,
+"sink": "textContent",
+"text": "pick or type a model slug"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2063,
+"sink": "textContent",
+"text": "price and memory size unknown for this model — it will still run"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2064,
+"sink": "textContent",
+"text": "custom model — not priced in the catalog"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2065,
+"sink": "textContent",
+"text": "not in the catalog — double-check the slug, or it runs as a custom model"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2212,
+"sink": "textContent",
+"text": "↻ RE-SIGN IN"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2217,
+"sink": "textContent",
+"text": "⚠ your ChatGPT sign-in expired —"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2219,
+"sink": "textContent",
+"text": "⏼ RE-SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2222,
+"sink": "textContent",
+"text": "not connected — sign in to use your ChatGPT subscription"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2224,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH CHATGPT ▸"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2249,
+"sink": "textContent",
+"text": "requesting a sign-in code…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2256,
+"sink": "innerHTML",
+"text": "enter this code at <b>"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2259,
+"sink": "textContent",
+"text": "sign-in timed out — start again"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2288,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2340,
+"sink": "textContent",
+"text": "↻ RE-SIGN IN"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2345,
+"sink": "textContent",
+"text": "⏼ RE-SIGN IN WITH"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2348,
+"sink": "textContent",
+"text": "not connected — sign in to use your"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2350,
+"sink": "textContent",
+"text": "⏼ SIGN IN WITH"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2387,
+"sink": "textContent",
+"text": "requesting a sign-in code…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2394,
+"sink": "innerHTML",
+"text": "enter this code at <b>"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2397,
+"sink": "textContent",
+"text": "sign-in timed out — start again"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2536,
+"sink": "textContent",
+"text": "◐ checking the code with Claude…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2542,
+"sink": "textContent",
+"text": "⧉ COPY INSTALL COMMAND"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2635,
+"sink": "textContent",
+"text": "link saved on this station, but StarNet could not verify it right now — check your connection and try again."
+},
+{
+"file": "website/app/app/app.js",
+"line": 2678,
+"sink": "textContent",
+"text": "disconnecting this account so you can link the one with your credits…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2689,
+"sink": "textContent",
+"text": "could not disconnect this account safely — try again."
+},
+{
+"file": "website/app/app/app.js",
+"line": 2704,
+"sink": "textContent",
+"text": "Opening your StarNet account…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2706,
+"sink": "textContent",
+"text": "requesting a link code…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2717,
+"sink": "textContent",
+"text": "Confirm the code in your browser to connect."
+},
+{
+"file": "website/app/app/app.js",
+"line": 2720,
+"sink": "textContent",
+"text": "confirm this code in your browser (opening the link page now)…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2840,
+"sink": "textContent",
+"text": "Uses profanity. Select Unhinged again to confirm."
+},
+{
+"file": "website/app/app/app.js",
+"line": 2841,
+"sink": "textContent",
+"text": "UNHINGED — SURE? it swears, for real"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2898,
+"sink": "placeholder=",
+"text": "•••••••• stored in keychain — leave blank to keep"
+},
+{
+"file": "website/app/app/app.js",
+"line": 2973,
+"sink": "textContent",
+"text": "▸ where does my key go?"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3020,
+"sink": "innerHTML",
+"text": "your station is intact — this only re-connects the <b>brain</b>. Identity stays as you left it."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3022,
+"sink": "textContent",
+"text": "⏼ RESUME STATION ▸"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3025,
+"sink": "textContent",
+"text": "↻ RETRY AUTO-RESUME"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3031,
+"sink": "textContent",
+"text": "One mind to run your station. Build your crew from here."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3115,
+"sink": "textContent",
+"text": "could not start —"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3156,
+"sink": "textContent",
+"text": "enter your Custom /v1 base URL."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3168,
+"sink": "textContent",
+"text": "choose or type a model slug."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3185,
+"sink": "textContent",
+"text": "StarNet couldn’t confirm your credit balance right now. Your credits are safe — try WAKE again in a moment."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3188,
+"sink": "textContent",
+"text": "link your StarNet account first — press CONNECT STARNET ACCOUNT above."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3200,
+"sink": "textContent",
+"text": "sign in with"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3236,
+"sink": "textContent",
+"text": "this replaces the key already stored on this station. press WAKE again to confirm — or restore the old key to keep it."
+},
+{
+"file": "website/app/app/app.js",
+"line": 3252,
+"sink": "textContent",
+"text": "testing the wire — one real call to"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3271,
+"sink": "textContent",
+"text": "your StarNet balance is held by runs still working on this station — each refunds what it doesn’t spend. Wait for them to finish, then WAKE again"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3282,
+"sink": "textContent",
+"text": "your model didn’t answer"
+},
+{
+"file": "website/app/app/app.js",
+"line": 3311,
+"sink": "textContent",
+"text": "the prior Commander journey could not be cleared safely. retry WAKE before commissioning this agent."
+},
+{
+"file": "website/app/app/app.js",
+"line": 4924,
+"sink": "title=",
+"text": "bless a folder as a trusted project"
+},
+{
+"file": "website/app/app/app.js",
+"line": 4986,
+"sink": "textContent",
+"text": "Could not refresh projects — showing the last confirmed list. Reload to reconnect."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5036,
+"sink": "title=",
+"text": "open this session"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5040,
+"sink": "title=",
+"text": "open this project"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5079,
+"sink": "title=",
+"text": "back to all projects"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5080,
+"sink": "aria-*",
+"text": "+ U.esc(row.name +"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5262,
+"sink": "aria-*",
+"text": "project folder path"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5264,
+"sink": "title=",
+"text": "browse for a folder with the system dialog"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5453,
+"sink": "textContent",
+"text": "the update could not install"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5456,
+"sink": "textContent",
+"text": "installing the update — StarNet restarts on its own when it is done."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5457,
+"sink": "textContent",
+"text": "the update did not start — try again in a moment."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5463,
+"sink": "textContent",
+"text": "checking for an update…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5475,
+"sink": "textContent",
+"text": "the update check failed"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5476,
+"sink": "textContent",
+"text": "an update check is already running — one moment…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5477,
+"sink": "textContent",
+"text": "this build cannot check for updates — download the latest StarNet from starnetos.com, then reopen."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5478,
+"sink": "textContent",
+"text": "update check failed — try again in a moment."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5480,
+"sink": "textContent",
+"text": "Update StarNet to the latest version (in the desktop app: Update Center), then reopen."
+},
+{
+"file": "website/app/app/app.js",
+"line": 5526,
+"sink": "textContent",
+"text": "saved station could not be restored into this window — retry without resetting"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5536,
+"sink": "innerHTML",
+"text": "<b>RECOVERY CODE:"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5542,
+"sink": "textContent",
+"text": "＋ recovery details unavailable — send a screenshot of"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5569,
+"sink": "innerHTML",
+"text": "<b>RECOVERY CODE:"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5644,
+"sink": "textContent",
+"text": "✦ CONFIRM — START COMPLETELY FRESH"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5707,
+"sink": "textContent",
+"text": "✦ CONFIRM — CLEAR BROWSER STATE"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5794,
+"sink": "textContent",
+"text": "＋ staging verified recovery; the prior source will be preserved"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5822,
+"sink": "textContent",
+"text": "＋ preparing redacted recovery report…"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5832,
+"sink": "textContent",
+"text": "＋ report export failed —"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5853,
+"sink": "textContent",
+"text": "＋ could not check again — the station service did not answer"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5874,
+"sink": "textContent",
+"text": "✦ CONFIRM — START A NEW STATION"
+},
+{
+"file": "website/app/app/app.js",
+"line": 5906,
+"sink": "textContent",
+"text": "＋ could not start fresh —"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 866,
+"sink": "aria-*",
+"text": "Copy code block"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 2622,
+"sink": "textContent",
+"text": "Send or clear your current draft before choosing a session."
+},
+{
+"file": "website/app/app/chat.js",
+"line": 2718,
+"sink": "textContent",
+"text": "What would you like to work on?"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 2958,
+"sink": "textContent",
+"text": "↻ Continuing toward your session goal"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 3554,
+"sink": "title=",
+"text": "copy the full saved path"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 3725,
+"sink": "textContent",
+"text": "✉ sent to"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 4158,
+"sink": "textContent",
+"text": "▸ Show the whole question"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 4193,
+"sink": "textContent",
+"text": "Sending your answer…"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 4271,
+"sink": "textContent",
+"text": "Use your judgment for the rest ("
+},
+{
+"file": "website/app/app/chat.js",
+"line": 4272,
+"sink": "title=",
+"text": "decide this and the remaining"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5034,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5038,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5041,
+"sink": "textContent",
+"text": "↗ read the work"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5068,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5095,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5133,
+"sink": "textContent",
+"text": "◈ finished while you were away:"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5183,
+"sink": "textContent",
+"text": "◈ INBOX — prove the line: send one small, real job through it, end to end."
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5197,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5225,
+"sink": "textContent",
+"text": "▸ SEND A REAL JOB"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5230,
+"sink": "textContent",
+"text": "⌛ the job is riding the line…"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5263,
+"sink": "textContent",
+"text": "▸ open TO REVIEW"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5365,
+"sink": "textContent",
+"text": "◈ while you were away —"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5411,
+"sink": "textContent",
+"text": "⚠ captures your mouse/keyboard when opened (pointer lock) — press Esc to release it"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5416,
+"sink": "textContent",
+"text": "⚠ may ask to use your camera, microphone, or screen when opened"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5420,
+"sink": "textContent",
+"text": "▶ Open it — try it in a tab"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5541,
+"sink": "title=",
+"text": "show this file’s contents inline"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5566,
+"sink": "textContent",
+"text": "implement → applies this patch to a NEW branch in"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5570,
+"sink": "textContent",
+"text": "⚠ this patch can’t be auto-applied ("
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5583,
+"sink": "textContent",
+"text": "implement → saves the files to"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5631,
+"sink": "textContent",
+"text": "📂 open folder"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5632,
+"sink": "textContent",
+"text": "could not open"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5641,
+"sink": "title=",
+"text": "UNDO KEEP — removes the copied files from"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5645,
+"sink": "textContent",
+"text": "undo — remove these files?"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 5769,
+"sink": "title=",
+"text": "delete these files and never rebuild or re-propose this idea"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6044,
+"sink": "title=",
+"text": "forget this — undo the save"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6266,
+"sink": "placeholder=",
+"text": "correct anything — it folds straight into the run"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6287,
+"sink": "title=",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6291,
+"sink": "placeholder=",
+"text": "run already finished — say it in chat instead"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6302,
+"sink": "placeholder=",
+"text": "could not reach the run — say it in chat"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6314,
+"sink": "textContent",
+"text": "this read is closed — say it in chat instead"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 6377,
+"sink": "textContent",
+"text": "◈ briefing updated — every agent on this station now knows your"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 7130,
+"sink": "textContent",
+"text": "✦ one curious thing — i still don’t know your"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 9288,
+"sink": "textContent",
+"text": "⧉ copy diagnostics for a bug report"
+},
+{
+"file": "website/app/app/chat.js",
+"line": 11670,
+"sink": "placeholder=",
+"text": "speak to your agent · / commands"
+},
+{
+"file": "website/app/app/voice-live.js",
+"line": 167,
+"sink": "title=",
+"text": "First words: detected speech to transcript. Send: last voiced frame to submission. Speech start: latest spoken chunk queued to actual playback."
+},
+{
+"file": "website/app/app/voice-live.js",
+"line": 1330,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "website/app/app/voice-live.js",
+"line": 1658,
+"sink": "textContent",
+"text": "Speak naturally — interrupt any time."
+},
+{
+"file": "website/app/app/voice-live.js",
+"line": 1767,
+"sink": "textContent",
+"text": "Speak naturally — the transcript lands in COMMS."
+},
+{
+"file": "website/app/app/schedpicker.js",
+"line": 100,
+"sink": "aria-*",
+"text": "day of the month"
+},
+{
+"file": "website/app/app/widgets.js",
+"line": 394,
+"sink": "textContent",
+"text": "; val.style.display ="
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 332,
+"sink": "innerHTML",
+"text": "<b>TOO LONG</b> — the longest way through this line runs <b>"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 334,
+"sink": "data-tip",
+"text": "sets this INBOX’s LINE BUDGET › max stages after the first to"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 442,
+"sink": "textContent",
+"text": "CONNECT IT TO A LINE"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 459,
+"sink": "textContent",
+"text": "This BAY isn’t on any line, so it only works when you message its agent directly. MAKE IT A LINE gives it a line of its own; JOIN A LINE belts it onto a line already on the floor."
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 572,
+"sink": "aria-*",
+"text": "Add to the line"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 723,
+"sink": "data-tip",
+"text": "arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 884,
+"sink": "placeholder=",
+"text": "Name this step"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 971,
+"sink": "placeholder=",
+"text": "or type a test job here"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1094,
+"sink": "aria-*",
+"text": "The job to send down this line"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1094,
+"sink": "placeholder=",
+"text": "What should the line work on? e.g. Find this week’s most useful research on sleep and memory."
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1107,
+"sink": "placeholder=",
+"text": "e.g. Find this week’s AI news and summarize the three biggest stories."
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1551,
+"sink": "textContent",
+"text": "⚠ with DONE on"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1658,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1660,
+"sink": "aria-*",
+"text": "Where this line sends its finished work"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1711,
+"sink": "aria-*",
+"text": "What this splitter does with each job"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1716,
+"sink": "aria-*",
+"text": "Why a choice is not available yet"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 1933,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2012,
+"sink": "data-tip",
+"text": "Opens DELIVERABLES at TO REVIEW, where finished work waits for your rating."
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2026,
+"sink": "data-tip",
+"text": ">★ KEEP THIS STYLE</button>"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2042,
+"sink": "aria-*",
+"text": "What is wrong with the result"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2189,
+"sink": "placeholder=",
+"text": "What should the line work on?"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2197,
+"sink": "aria-*",
+"text": "When to pause"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2206,
+"sink": "data-tip",
+"text": "stop this job: the running step is cut off and nothing more runs — what already ran is counted"
+},
+{
+"file": "website/app/app/workflowpanel.js",
+"line": 2212,
+"sink": "aria-*",
+"text": "How to test"
+},
+{
+"file": "website/app/app/diagnostics.js",
+"line": 315,
+"sink": "textContent",
+"text": "could not read diagnostics — is the app still running?"
+},
+{
+"file": "website/app/app/build.js",
+"line": 431,
+"sink": "title=",
+"text": "zoom out (or scroll the wheel)"
+},
+{
+"file": "website/app/app/build.js",
+"line": 433,
+"sink": "title=",
+"text": "zoom in (or scroll the wheel)"
+},
+{
+"file": "website/app/app/build.js",
+"line": 439,
+"sink": "title=",
+"text": "frame the station"
+},
+{
+"file": "website/app/app/build.js",
+"line": 442,
+"sink": "title=",
+"text": "finish + save (or press Esc twice)"
+},
+{
+"file": "website/app/app/build.js",
+"line": 776,
+"sink": "alt=",
+"text": "Preview sketch of"
+},
+{
+"file": "website/app/app/build.js",
+"line": 1073,
+"sink": "innerHTML",
+"text": "<b>CONNECTED SERVICES</b><span>Optional equipment for connected accounts and tools.</span>"
+},
+{
+"file": "website/app/app/build.js",
+"line": 1277,
+"sink": "innerHTML",
+"text": "<b>Click anything to edit</b><div class="
+},
+{
+"file": "website/app/app/build.js",
+"line": 1315,
+"sink": "textContent",
+"text": "A type is just the deck it starts with — SURFACE (3) re-lays any room later."
+},
+{
+"file": "website/app/app/build.js",
+"line": 1352,
+"sink": "innerHTML",
+"text": "<b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\\u2019s style.</small>"
+},
+{
+"file": "website/app/app/build.js",
+"line": 1520,
+"sink": "innerHTML",
+"text": "<b>Connect machines</b><span>Click where work starts, then where it goes next.</span>"
+},
+{
+"file": "website/app/app/build.js",
+"line": 1557,
+"sink": "textContent",
+"text": "＋ BUILD YOUR OWN LINE"
+},
+{
+"file": "website/app/app/build.js",
+"line": 2531,
+"sink": "textContent",
+"text": "＋ MAKE ROOM FOR IT"
+},
+{
+"file": "website/app/app/build.js",
+"line": 2908,
+"sink": "<button>",
+"text": "data-restore-build>RESTORE PREVIOUS</button><button class="
+},
+{
+"file": "website/app/app/build.js",
+"line": 3001,
+"sink": "textContent",
+"text": "Could not restore the previous layout:"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3055,
+"sink": "alt=",
+"text": "The picture that goes with this map"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3057,
+"sink": "placeholder=",
+"text": "your name or handle"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3069,
+"sink": "textContent",
+"text": "Nothing was shared."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3072,
+"sink": "textContent",
+"text": "Give the map a name."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3073,
+"sink": "textContent",
+"text": "Add the name you want credited in the gallery."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3074,
+"sink": "textContent",
+"text": "Turn on the CC BY 4.0 agreement to share it: it is how others may build your station."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3083,
+"sink": "innerHTML",
+"text": "<span>Sent for review: <b>"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3089,
+"sink": "textContent",
+"text": "SEND FOR REVIEW"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3102,
+"sink": "textContent",
+"text": "This station is not linked to a StarNet account yet. Link it first: STORE › LINK STATION (a free account works), then open SHARE TO COMMUNITY again."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3155,
+"sink": "textContent",
+"text": "This station could not be exported."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3166,
+"sink": "textContent",
+"text": "That file is too large to be a station build."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3168,
+"sink": "textContent",
+"text": "That file could not be read."
+},
+{
+"file": "website/app/app/build.js",
+"line": 3200,
+"sink": "<button>",
+"text": "data-workflow-close>CLOSE</button></header><div data-example-body></div></div>"
+},
+{
+"file": "website/app/app/build.js",
+"line": 3221,
+"sink": "aria-*",
+"text": "How the line runs"
+},
+{
+"file": "website/app/app/build.js",
+"line": 4653,
+"sink": "title=",
+"text": "dismiss — you know the gear"
+},
+{
+"file": "website/app/app/build.js",
+"line": 4723,
+"sink": "title=",
+"text": "dismiss for this line"
+},
+{
+"file": "website/app/app/build.js",
+"line": 5658,
+"sink": "innerHTML",
+"text": "<label>X <input aria-label="
+},
+{
+"file": "website/app/app/build.js",
+"line": 6355,
+"sink": "placeholder=",
+"text": "name this room"
+},
+{
+"file": "website/app/app/build.js",
+"line": 6357,
+"sink": "data-tip",
+"text": "Let go of the room · Esc"
+},
+{
+"file": "website/app/app/build.js",
+"line": 6427,
+"sink": "data-tip",
+"text": "Let go of all of them · Esc"
+},
+{
+"file": "website/app/app/voice.js",
+"line": 1966,
+"sink": "title=",
+"text": "tap to resume hands-free voice mode"
+},
+{
+"file": "website/app/app/world.js",
+"line": 8059,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "website/app/app/briefing.js",
+"line": 22,
+"sink": "title=",
+"text": "While you were away"
+},
+{
+"file": "website/app/app/worldlab.js",
+"line": 24,
+"sink": "textContent",
+"text": "Capture records the current frame, station, crew and real event history."
+},
+{
+"file": "website/app/app/stepin.js",
+"line": 135,
+"sink": "alt=",
+"text": "Live view of the agent\\"
+},
+{
+"file": "website/app/app/stepin.js",
+"line": 238,
+"sink": "textContent",
+"text": "Take the wheel to drive its browser yourself. It is frozen until you hand it back, and it never sees what you type. It never solves a human check on its own."
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 126,
+"sink": "placeholder=",
+"text": "Type an address or search"
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 134,
+"sink": "aria-*",
+"text": "Live browser picture"
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 307,
+"sink": "innerHTML",
+"text": "<p>That page isn\\"
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 314,
+"sink": "innerHTML",
+"text": "<p>The station isn\\"
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 689,
+"sink": "textContent",
+"text": "Could not read the browser setting from the station."
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 696,
+"sink": "textContent",
+"text": "Could not save:"
+},
+{
+"file": "website/app/app/outputbrowser.js",
+"line": 697,
+"sink": "textContent",
+"text": "Could not save: the station did not answer."
+},
+{
+"file": "website/app/app/prop-atlas.js",
+"line": 9,
+"sink": "textContent",
+"text": "Full catalog with projection corrections. Fixed 2× world scale; the crate and crew show physical size."
+},
+{
+"file": "website/app/app/prop-atlas.js",
+"line": 14,
+"sink": "textContent",
+"text": "Showing newly rebuilt props. Each is followed by the approved desk, crate, and agent at the same scale."
+},
+{
+"file": "website/app/app/prop-atlas.js",
+"line": 62,
+"sink": "textContent",
+"text": "Artwork could not load:"
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 571,
+"sink": "placeholder=",
+"text": "e.g. a weekly digest of AI news for my newsletter"
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 608,
+"sink": "data-tip",
+"text": "INBOX: you send jobs in here."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 615,
+"sink": "data-tip",
+"text": "OUTBOX: the finished result lands here."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 660,
+"sink": "aria-*",
+"text": "The job for this workflow"
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 703,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: change these starts, or add a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 704,
+"sink": "data-tip",
+"text": "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: a schedule, a channel message, a folder or a webhook."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 789,
+"sink": "aria-*",
+"text": "+ !!(S.fix && S.fix.jobId === job.id && S.fix.open) +"
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 790,
+"sink": "data-tip",
+"text": "The last step stops copying this result’s format, length and tone, and the crew forgets its style."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 791,
+"sink": "data-tip",
+"text": "The step that wrote this result will match its format, length and tone every time, and the whole crew matches its style in similar work."
+},
+{
+"file": "website/app/app/windows/workflows.js",
+"line": 850,
+"sink": "data-tip",
+"text": "The full editor: the line on the floor, each step’s instructions, what starts it automatically, its budget."
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 147,
+"sink": "placeholder=",
+"text": "arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 943,
+"sink": "textContent",
+"text": "+ ADD & CONNECT"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1244,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1272,
+"sink": "title=",
+"text": "opens a secure browser sign-in (OAuth)"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1293,
+"sink": "title=",
+"text": "first-party server, run by the vendor"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1307,
+"sink": "title=",
+"text": "not directly wired yet — see the note"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1318,
+"sink": "aria-*",
+"text": "Google app password"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1318,
+"sink": "placeholder=",
+"text": "16-letter app password"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1503,
+"sink": "textContent",
+"text": "+ ((j.status && j.status.detail) || ("
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1562,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1572,
+"sink": "textContent",
+"text": "✕ couldn’t open the sign-in page for"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1605,
+"sink": "innerHTML",
+"text": "<strong>CONNECT GITHUB</strong><p>1. Copy this code: <code style="
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1667,
+"sink": "textContent",
+"text": "sign-in for"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1828,
+"sink": "aria-*",
+"text": "Allow unattended use of"
+},
+{
+"file": "website/app/app/windows/connectors.js",
+"line": 1958,
+"sink": "textContent",
+"text": "✕ couldn’t open the Spotify sign-in page"
+},
+{
+"file": "website/app/agent-demo/demo.js",
+"line": 19,
+"sink": "innerHTML",
+"text": "<strong>INDUSTRIAL CREW · LIVE STATION DEMO</strong><div style="
+},
+{
+"file": "website/app/agent-demo/demo.js",
+"line": 20,
+"sink": "textContent",
+"text": "Normal station movement · visual review"
+},
+{
+"file": "website/app/agent-demo/demo.js",
+"line": 47,
+"sink": "textContent",
+"text": "Could not load the selected skins."
+},
+{
+"file": "website/app/agent-demo/demo.js",
+"line": 74,
+"sink": "innerHTML",
+"text": "<summary>Talking pose close-up</summary><div style="
+},
+{
+"file": "website/app/agent-demo/demo.js",
+"line": 86,
+"sink": "textContent",
+"text": "Station did not finish loading."
+},
+{
+"file": "website/app/agent-demo/review-world.js",
+"line": 6847,
+"sink": "prompt/confirm",
+"text": "hold to wake it"
+},
+{
+"file": "website/app/assets/industrial/shell-clean-preview.html",
+"line": 14,
+"sink": "alt=",
+"text": "SLATE COURSES · STUDY texture"
+},
+{
+"file": "website/app/dev/authored-furniture-review.html",
+"line": 1,
+"sink": "aria-*",
+"text": "Both authored heavy bags at station scale"
+},
+{
+"file": "website/docs/help.html",
+"line": 143,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/troubleshooting.html",
+"line": 195,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 10,
+"sink": "title=",
+"text": "Install &amp; first task"
+},
+{
+"file": "website/docs/getting-started.html",
+"line": 142,
+"sink": "aria-*",
+"text": "More in Start here"
+},
+{
+"file": "website/docs/shortcuts.html",
+"line": 161,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/migrating.html",
+"line": 124,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/providers.html",
+"line": 139,
+"sink": "aria-*",
+"text": "More in Start here"
+},
+{
+"file": "website/docs/glossary.html",
+"line": 178,
+"sink": "aria-*",
+"text": "More in Troubleshooting &amp; help"
+},
+{
+"file": "website/docs/connect-a-platform.html",
+"line": 222,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/connectors.html",
+"line": 161,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/station.html",
+"line": 117,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/agents.html",
+"line": 152,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A job enters at the INBOX, reaches a FILTER, and is sent east to the engineer if it is code, or south to the generalist for everything else"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 110,
+"sink": "aria-*",
+"text": "An INBOX, a FILTER tile, and two BAYs placed with gaps for belts"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 111,
+"sink": "aria-*",
+"text": "The belt runs from the INBOX through the FILTER tile and on to BAY A"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 112,
+"sink": "aria-*",
+"text": "A second belt leaves the FILTER tile south and turns east into BAY B"
+},
+{
+"file": "website/docs/guides/filter.html",
+"line": 113,
+"sink": "aria-*",
+"text": "The FILTER card with CODE, RESEARCH and EVERYTHING ELSE each pointed at a lane, saved as you choose"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 93,
+"sink": "alt=",
+"text": "CONSOLE prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 94,
+"sink": "alt=",
+"text": "INTEL CAB prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 95,
+"sink": "alt=",
+"text": "DISH prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 96,
+"sink": "alt=",
+"text": "CORE prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 97,
+"sink": "alt=",
+"text": "WORKBENCH prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 98,
+"sink": "alt=",
+"text": "STUDIO prop, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 112,
+"sink": "alt=",
+"text": "CONSOLE, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 113,
+"sink": "alt=",
+"text": "INTEL CAB, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 114,
+"sink": "alt=",
+"text": "DISH, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 115,
+"sink": "alt=",
+"text": "CORE, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 116,
+"sink": "alt=",
+"text": "WORKBENCH, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 117,
+"sink": "alt=",
+"text": "STUDIO, actual in-game art"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 125,
+"sink": "aria-*",
+"text": "A filtered line branching to two bays"
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 126,
+"sink": "aria-*",
+"text": "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat."
+},
+{
+"file": "website/docs/guides/crew.html",
+"line": 128,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 92,
+"sink": "aria-*",
+"text": "One job enters, a SPLITTER sends a copy to each of two analysts, a JOINER waits for both results and sends one merged crate to the OUTBOX"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 103,
+"sink": "aria-*",
+"text": "A splitter set to COPY TO EACH: its lanes meet at a joiner, every lane gets the same job and the joiner merges the results"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 112,
+"sink": "aria-*",
+"text": "A splitter set to COPY TO EACH: its lanes meet at a joiner, every lane gets the same job and the joiner merges the results"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 114,
+"sink": "aria-*",
+"text": "One job enters, a SPLITTER sends a copy to each of two analysts, a JOINER waits for both results and sends one merged crate to the OUTBOX"
+},
+{
+"file": "website/docs/guides/splitter-joiner.html",
+"line": 115,
+"sink": "aria-*",
+"text": "The JOINER card: a timeout of 10 minutes for a late branch"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 12,
+"sink": "title=",
+"text": "Build your first workflow"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 109,
+"sink": "aria-*",
+"text": "INBOX to bay A to bay B: a hand-off chain"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 110,
+"sink": "aria-*",
+"text": "A filter branching one lane into two bays, each bay shipping to its own out tray"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 111,
+"sink": "aria-*",
+"text": "A splitter dealing jobs across three bays in turn; a merger sends every result to one out tray"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 116,
+"sink": "aria-*",
+"text": "A filtered line branching to two bays"
+},
+{
+"file": "website/docs/guides/first-line.html",
+"line": 117,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A quest path of five milestones with two done and one current, a RATE THE WORK card with NAILED IT and MISSED, and an XP bar"
+},
+{
+"file": "website/docs/guides/goals.html",
+"line": 126,
+"sink": "aria-*",
+"text": "More in Station &amp; agents"
+},
+{
+"file": "website/docs/guides/night-shift.html",
+"line": 92,
+"sink": "aria-*",
+"text": "The autonomy dial with ON ITS OWN set to SMALL JOBS, REACH to LOCAL ONLY and PACE to STANDARD 3, above a night timeline where three beats fired and five were skipped"
+},
+{
+"file": "website/docs/guides/index.html",
+"line": 12,
+"sink": "title=",
+"text": "Step-by-step guides"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat."
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 115,
+"sink": "aria-*",
+"text": "An agent desk with a PC and shared gear"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 116,
+"sink": "aria-*",
+"text": "A stamped starter line running"
+},
+{
+"file": "website/docs/guides/channels.html",
+"line": 118,
+"sink": "aria-*",
+"text": "More in Connect your tools"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A work line: a job enters at the INBOX, rides the belt through two agent BAYs where each does their part, and the finished work leaves through the OUTBOX."
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 138,
+"sink": "aria-*",
+"text": "A belt run that is energized"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 139,
+"sink": "aria-*",
+"text": "A belt run that is cold"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 145,
+"sink": "aria-*",
+"text": "INBOX to bay A to bay B: a hand-off chain"
+},
+{
+"file": "website/docs/guides/conveyors.html",
+"line": 148,
+"sink": "aria-*",
+"text": "A loop gate with a done lane onward to the outbox and a back lane returning to an earlier bay"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 92,
+"sink": "aria-*",
+"text": "A routine clock drops a job into the INBOX every weekday at 7:00; it rides a belt to a researcher bay which runs a recipe, and the brief lands in the OUTBOX"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 106,
+"sink": "aria-*",
+"text": "A routine clock drops a job into the INBOX every weekday at 7:00; it rides a belt to a researcher bay which runs a recipe, and the brief lands in the OUTBOX"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 107,
+"sink": "aria-*",
+"text": "A schedule picker showing NEXT RUN tomorrow 7:00"
+},
+{
+"file": "website/docs/guides/routines.html",
+"line": 108,
+"sink": "aria-*",
+"text": "Two states: SCHEDULING IS OFF and TURN SCHEDULING ON"
+}
+]

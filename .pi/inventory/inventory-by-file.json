@@ -1,0 +1,640 @@
+{
+ "frontend/prop-catalog-review.html": [
+  "Six catalog views in a furnished station room"
+ ],
+ "frontend/agent-proportion-review.html": [
+  "Four equal-height Secret Agent sprites in furnished StarNet comparison bays"
+ ],
+ "frontend/agent-station-demo.html": [
+  "Attach a photo or file",
+  "Find an agent by name",
+  "Live view of your agent station",
+  "Local Live hands-free voice — local speech with your active Starnet agent",
+  "Return to work",
+  "Select agent on the line",
+  "Shape the station — refit the floor, abilities, channels",
+  "StarNet subscription (opens in your browser)",
+  "Start Local Live hands-free voice",
+  "Stop the running turn",
+  "Stop the running turn (Esc)",
+  "Your Commander level grows through recorded progress toward your life goals. Open the quest log to see the achievements behind it.",
+  "Your agents — dossiers, recruitment, and your own Commander file",
+  "drag to resize CREW vs SESSIONS (double-click to reset)",
+  "drag to resize the CREW rail (double-click to reset)",
+  "speak to your agent · / commands",
+  "the model this agent runs on"
+ ],
+ "frontend/authored-machine-review.html": [
+  "Fabricator, pneumatic tube, and packing robot at station scale"
+ ],
+ "frontend/agent-motion-review.html": [
+  "Five animated crew members on an industrial station deck"
+ ],
+ "frontend/prop-scale-review.html": [
+  "Supplied station art reference"
+ ],
+ "frontend/prop-room-review.html": [
+  "Catalog props in a station room"
+ ],
+ "frontend/app/workhub.js": [
+  "<summary>Sources StarNet can study for useful work</summary><div class="
+ ],
+ "frontend/app/bootguard.js": [
+  "⧉ COPY FAILED — SELECT THE TEXT ABOVE"
+ ],
+ "frontend/app/remaster-runtime-audit.js": [
+  "<b>LOCAL RUNTIME AUDIT · disposable station</b><nav></nav><output id="
+ ],
+ "frontend/app/firstvalue.js": [
+  "Approved source folder",
+  "Choose a task and provide the source you want to use.",
+  "Choose the first useful result",
+  "For example: a short Friday update for the client, with next steps",
+  "Paste the real material to work from. Nothing is sent until you click Create draft."
+ ],
+ "frontend/app/marketplace.js": [
+  "64-hex digest (or a {token})",
+  "Describe its job and what a good result looks like.",
+  "Or type your own",
+  "Or type your own icon",
+  "back to the library",
+  "bring an agent over from OpenClaw or Hermes",
+  "change this recipe in place",
+  "dismiss forever — the station won\\",
+  "dismiss forever — this exact finding won’t come back",
+  "download this recipe as a portable JSON file",
+  "e.g. Summarize {project} progress since {since} and flag blockers.",
+  "e.g.\\nPull this week\\",
+  "import a recipe from a JSON file",
+  "must contain this text",
+  "not interested — stop recommending this",
+  "one line — what it’s for",
+  "puts this recipe on a schedule — it becomes a ROUTINE you can manage in AUTOMATE › SCHEDULES",
+  "required at launch",
+  "the latest run differs from its good history",
+  "the read must show this text",
+  "what kind of value",
+  "workspace path, e.g. out/{client}-invoice.md",
+  "◷ SCHEDULE IT"
+ ],
+ "frontend/app/stationui.js": [
+  "+ Add detail",
+  "+ snap.error + (snap.loaded ?",
+  "></label><label>Target value<input class=",
+  "A concrete action that helps this goal",
+  "A window’s save preserved on the station (",
+  "Add the name you want credited on the market.",
+  "Based on the source and recency of saved details, not just the number of topics filled in.",
+  "Build this while I’m away — queue it for the sandbox",
+  "Claude Code needs a Pro, Max, Team or Enterprise plan",
+  "Closing the window hides StarNet in the tray and keeps the station running. Use Quit StarNet in the tray menu to stop it.",
+  "Closing the window keeps the station running only when armed work needs it — otherwise it fully quits.",
+  "Could not read the Memory Core.",
+  "Current value for",
+  "Describe your action and its result",
+  "Dismiss — the station will never raise this again",
+  "Dismiss: it leaves NEEDS YOU here and on the rail",
+  "Download this window’s save",
+  "Effect could not be saved. Please try again.",
+  "Effect saved. Applies to the next spoken reply.",
+  "Effective access could not be checked. Reopen this panel after reconnecting.",
+  "Enter the project folder, then click This project again.",
+  "For example: waiting for a reply, or only 15 minutes available",
+  "Give it a name on the market.",
+  "Give this skill to the agent — the approval covers this exact content",
+  "Link this station to your StarNet account first (STORE › LINK STATION). A free account works. Nothing was shared.",
+  "Mark this task complete; this does not publish or send anything",
+  "Memory Core unavailable — start the sidecar to read it.",
+  "Nothing saved yet. Add a detail or choose a starting point.",
+  "Open BUILD MODE to place",
+  "Open where you do this next",
+  "Pick the shelf it belongs on.",
+  "Project folder (full path)",
+  "Read the skill",
+  "Recover from the COMMS rail’s Archived view",
+  "Remote is not available in this build.",
+  "Restore this window’s sessions",
+  "Review a schedule; nothing runs until you save and enable it",
+  "Right now, closing the window KEEPS the station running in the background (",
+  "Running the checks with and without the proposal…",
+  "SURE? IT COULD READ ANY FILE HERE",
+  "Sent for review as",
+  "Sign in to",
+  "Sign in with Claude",
+  "The station is not answering right now. This station cannot tell whether the skill arrived. Check your Skills tab on account.starnetos.com before you send it again.",
+  "Turn on the agreement to share it: it is the license others use it under.",
+  "Voice could not be saved. Please try again.",
+  "What should your agents know?",
+  "Withhold this skill from the agent again",
+  "Your next move",
+  "a busier station — up to 6 jobs a day",
+  "a detail holds up to",
+  "a few small jobs a day — the default",
+  "a project folder, thread:&lt;id&gt;, or goal to rule out",
+  "allow this belief to be proposed again",
+  "archive this agent and remove it from the station",
+  "as much as it&#39;s allowed — up to 12 jobs a day",
+  "ask me about this",
+  "build &amp; write locally — nothing leaves the machine",
+  "change or cancel your plan in the browser",
+  "change this agent’s model",
+  "check the live-probe consent first",
+  "clear every saved override so these follow the environment / built-in defaults again",
+  "clear the saved chain so it follows the environment default again",
+  "clear the saved value so this cap follows the environment default again",
+  "click again to confirm removal",
+  "composeSystemPrompt folds this block into the system prompt of every agent on the station — including a freshly-summoned one",
+  "consent-btn deny q-goal-disposition",
+  "consent-btn q-goal-confirm",
+  "consent-btn q-goal-open-plan",
+  "consent-btn q-goal-review",
+  "consent-btn q-idea-save",
+  "consent-btn q-plan-use",
+  "consent-btn q-step-add",
+  "consent-btn q-step-report",
+  "consent-btn q-success-save",
+  "forget this station’s link",
+  "grant one more base-cap of",
+  "interrupt this background helper (its work so far is kept; it can be resumed)",
+  "live doctor finished — receipt is ready",
+  "mirrored to the sidecar so autonomous scheduled runs (routines, autonomy) that compose their own persona still know who they serve",
+  "new instruction for this helper…",
+  "none declared — it improvises from evidence",
+  "one small job a day",
+  "opens Claude in your browser — Claude Code keeps the sign-in, StarNet never sees it",
+  "page showed a code? paste it here",
+  "reading the voice chat model…",
+  "remove from the chain",
+  "remove this boundary — the station may pick it unattended again",
+  "run this agent on the station default model again",
+  "saves are failing — check disk space / folder permissions (",
+  "search or browse all",
+  "send this running helper a mid-flight instruction (it keeps working; your note is read before its next model turn)",
+  "shown masked when a key exists — the full key is never displayed",
+  "sign in another Claude account — Claude Code keeps each sign-in, StarNet never sees them",
+  "sign in with a",
+  "signed in through Claude Code, which keeps the sign-in; StarNet never holds it",
+  "take this off the list (it can be queued again later)",
+  "that session was deleted",
+  "the briefing composes from your beliefs below, capped at",
+  "the briefing hit its character cap, so this belief was shortened or dropped from what agents are told — pin or shorten what matters most",
+  "the highest rung: unattended actions may leave the machine — send, publish, or contact external services",
+  "the pitch engine and recruitment matcher read your goals, pain points and ambitions to propose work and crew",
+  "the quest board turns still-blank dimensions into get-to-know-you quests",
+  "the sidecar recorded a dead refresh token — a re-sign-in is the only cure",
+  "the station inferred this — confirm or correct it",
+  "the station proposed this from your work; you kept it",
+  "this station’s data was written by a newer StarNet — update the app. Until then, changes are NOT being backed up.",
+  "try this model earlier",
+  "try this model later",
+  "turn this question back on — the station may ask about your",
+  "voice chat model unavailable — sidecar unreachable",
+  "world is saved locally; the durable backup copy hasn’t synced since",
+  "your name or handle"
+ ],
+ "frontend/app/taskconversation.js": [
+  "Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line.",
+  "Sending your answer…",
+  "Your answer is full. Edit it before adding another starting point."
+ ],
+ "frontend/app/modelpicker.js": [
+  "Reasoning effort — how hard this model thinks",
+  "🔑 add a provider key"
+ ],
+ "frontend/app/crtlab.js": [
+  "live: scanlines/fade/glow · lighting re-bakes on release"
+ ],
+ "frontend/app/deliverables.js": [
+  "Previews first: removes only the records of failed and discarded runs — files are not deleted, and UNDO brings them back",
+  "Previews open safely inside StarNet in a browser; desktop OPEN uses your file app.",
+  "Takes it out of this library. The files stay on disk.",
+  "Takes these cards out of the library (not TO REVIEW&rsquo;s rating list) — the files stay on disk, and UNDO brings them back."
+ ],
+ "frontend/app/hudmode.js": [
+  "Back to the full station",
+  "Click to open activity · drag to move",
+  "Shrink the HUD to the agent cam"
+ ],
+ "frontend/app/group-chat.js": [
+  "; status = (add ?",
+  "Message the group · @ picks one agent",
+  "Sending your answer…",
+  "Your whole crew is already in this chat. Recruit more under CREW."
+ ],
+ "frontend/app/remote-devices.js": [
+  "Pairing code for your phone",
+  "This phone asks before every step that needs an OK, even for agents on full access",
+  "Works once, for the next"
+ ],
+ "frontend/app/datareset.js": [
+  "Resetting the station browser…",
+  "Stopping StarNet and erasing… keep this window open.",
+  "The browser was not reset:",
+  "s saved keys and tokens in the system keychain, and this window\\",
+  "type ERASE to confirm"
+ ],
+ "frontend/app/apps.js": [
+  "Describe a change to this app",
+  "Describe a change — how it looks, what it shows, how it works",
+  "Each update is a crew run on your model.",
+  "Give it a name.",
+  "In your own words: what it shows or does, how it should look, and whether it updates by itself.",
+  "Say what each update should do.",
+  "Say what it should do.",
+  "What each update should do",
+  "apps-btn app-auto-toggle",
+  "apps-btn primary app-auto-save",
+  "apps-btn primary app-change-go",
+  "e.g. refresh what it shows · add today\\"
+ ],
+ "frontend/app/warroom.js": [
+  "fill the frame with the station",
+  "idle camera: auto-follows the crew after 2 min hands-off — grab the camera (drag/zoom) to take it back"
+ ],
+ "frontend/app/tutorial.js": [
+  "reopen any time — § FIELD MANUAL in the ▣ SYSTEM dock",
+  "✓ FIRST STEPS COMPLETE"
+ ],
+ "frontend/app/glass-comms.js": [
+  "Add agents to this chat"
+ ],
+ "frontend/app/kepler-showcase.js": [
+  "<b>LOCAL DEPTH REVIEW</b><br><select aria-label=",
+  "<strong>KEPLER RELAY</strong><p>A three-room station study · new station graphics</p><nav aria-label="
+ ],
+ "frontend/app/app.js": [
+  "+ U.esc(row.name +",
+  "<b>RECOVERY CODE:",
+  "COMMS unavailable — reconnecting to the station.",
+  "Confirm the code in your browser to connect.",
+  "Could not refresh projects — showing the last confirmed list. Reload to reconnect.",
+  "One mind to run your station. Build your crew from here.",
+  "Opening your StarNet account…",
+  "StarNet couldn’t confirm your credit balance right now. Your credits are safe — try WAKE again in a moment.",
+  "UNHINGED — SURE? it swears, for real",
+  "Update StarNet to the latest version (in the desktop app: Update Center), then reopen.",
+  "Uses profanity. Select Unhinged again to confirm.",
+  "What would you like to work on?",
+  "an update check is already running — one moment…",
+  "back to all projects",
+  "bless a folder as a trusted project",
+  "browse for a folder with the system dialog",
+  "checking for an update…",
+  "choose or type a model slug.",
+  "confirm this code in your browser (opening the link page now)…",
+  "could not disconnect this account safely — try again.",
+  "could not start —",
+  "custom model — not priced in the catalog",
+  "disconnecting this account so you can link the one with your credits…",
+  "enter this code at <b>",
+  "enter your Custom /v1 base URL.",
+  "included in your",
+  "installing the update — StarNet restarts on its own when it is done.",
+  "link saved on this station, but StarNet could not verify it right now — check your connection and try again.",
+  "link your StarNet account first — press CONNECT STARNET ACCOUNT above.",
+  "not connected — sign in to use your",
+  "not connected — sign in to use your ChatGPT subscription",
+  "not in the catalog — double-check the slug, or it runs as a custom model",
+  "open this project",
+  "open this session",
+  "pick or type a model slug",
+  "price and memory size unknown for this model — it will still run",
+  "project folder path",
+  "requesting a link code…",
+  "requesting a sign-in code…",
+  "saved station could not be restored into this window — retry without resetting",
+  "sign in with",
+  "sign-in timed out — start again",
+  "testing the wire — one real call to",
+  "the prior Commander journey could not be cleared safely. retry WAKE before commissioning this agent.",
+  "the update check failed",
+  "the update could not install",
+  "the update did not start — try again in a moment.",
+  "this build cannot check for updates — download the latest StarNet from starnetos.com, then reopen.",
+  "this replaces the key already stored on this station. press WAKE again to confirm — or restore the old key to keep it.",
+  "update check failed — try again in a moment.",
+  "your StarNet balance is held by runs still working on this station — each refunds what it doesn’t spend. Wait for them to finish, then WAKE again",
+  "your model didn’t answer",
+  "your station is intact — this only re-connects the <b>brain</b>. Identity stays as you left it.",
+  "•••••••• stored in keychain — leave blank to keep",
+  "↻ RE-SIGN IN",
+  "↻ RETRY AUTO-RESUME",
+  "⏼ RE-SIGN IN WITH",
+  "⏼ RE-SIGN IN WITH CHATGPT ▸",
+  "⏼ RESUME STATION ▸",
+  "⏼ SIGN IN WITH",
+  "⏼ SIGN IN WITH CHATGPT ▸",
+  "▸ where does my key go?",
+  "◐ checking the code with Claude…",
+  "⚠ your ChatGPT sign-in expired —",
+  "✦ CONFIRM — CLEAR BROWSER STATE",
+  "✦ CONFIRM — START A NEW STATION",
+  "✦ CONFIRM — START COMPLETELY FRESH",
+  "⧉ COPY INSTALL COMMAND",
+  "＋ could not check again — the station service did not answer",
+  "＋ could not start fresh —",
+  "＋ preparing redacted recovery report…",
+  "＋ recovery details unavailable — send a screenshot of",
+  "＋ report export failed —",
+  "＋ staging verified recovery; the prior source will be preserved"
+ ],
+ "frontend/app/chat.js": [
+  "Copy code block",
+  "Send or clear your current draft before choosing a session.",
+  "Sending your answer…",
+  "UNDO KEEP — removes the copied files from",
+  "Use your judgment for the rest (",
+  "What would you like to work on?",
+  "copy the full saved path",
+  "correct anything — it folds straight into the run",
+  "could not open",
+  "could not reach the run — say it in chat",
+  "decide this and the remaining",
+  "delete these files and never rebuild or re-propose this idea",
+  "forget this — undo the save",
+  "implement → applies this patch to a NEW branch in",
+  "implement → saves the files to",
+  "run already finished — say it in chat instead",
+  "show this file’s contents inline",
+  "speak to your agent · / commands",
+  "this read is closed — say it in chat instead",
+  "undo — remove these files?",
+  "↗ read the work",
+  "↻ Continuing toward your session goal",
+  "⌛ the job is riding the line…",
+  "▶ Open it — try it in a tab",
+  "▸ SEND A REAL JOB",
+  "▸ Show the whole question",
+  "▸ open TO REVIEW",
+  "◈ INBOX — prove the line: send one small, real job through it, end to end.",
+  "◈ briefing updated — every agent on this station now knows your",
+  "◈ finished while you were away:",
+  "◈ while you were away —",
+  "⚠ captures your mouse/keyboard when opened (pointer lock) — press Esc to release it",
+  "⚠ may ask to use your camera, microphone, or screen when opened",
+  "⚠ this patch can’t be auto-applied (",
+  "✉ sent to",
+  "✦ one curious thing — i still don’t know your",
+  "⧉ copy diagnostics for a bug report",
+  "📂 open folder"
+ ],
+ "frontend/app/voice-live.js": [
+  "First words: detected speech to transcript. Send: last voiced frame to submission. Speech start: latest spoken chunk queued to actual playback.",
+  "Speak naturally — interrupt any time.",
+  "Speak naturally — the transcript lands in COMMS."
+ ],
+ "frontend/app/schedpicker.js": [
+  "day of the month"
+ ],
+ "frontend/app/widgets.js": [
+  "; val.style.display ="
+ ],
+ "frontend/app/workflowpanel.js": [
+  "<b>TOO LONG</b> — the longest way through this line runs <b>",
+  ">★ KEEP THIS STYLE</button>",
+  "Add to the line",
+  "CONNECT IT TO A LINE",
+  "How to test",
+  "Name this step",
+  "Opens DELIVERABLES at TO REVIEW, where finished work waits for your rating.",
+  "The job to send down this line",
+  "This BAY isn’t on any line, so it only works when you message its agent directly. MAKE IT A LINE gives it a line of its own; JOIN A LINE belts it onto a line already on the floor.",
+  "What is wrong with the result",
+  "What should the line work on?",
+  "What should the line work on? e.g. Find this week’s most useful research on sleep and memory.",
+  "What this splitter does with each job",
+  "When to pause",
+  "Where this line sends its finished work",
+  "Why a choice is not available yet",
+  "arms BELT with this BAY as the destination — then click the machine on the floor that should hand it work",
+  "e.g. Find this week’s AI news and summarize the three biggest stories.",
+  "or type a test job here",
+  "sets this INBOX’s LINE BUDGET › max stages after the first to",
+  "stop this job: the running step is cut off and nothing more runs — what already ran is counted",
+  "⚠ with DONE on"
+ ],
+ "frontend/app/diagnostics.js": [
+  "could not read diagnostics — is the app still running?"
+ ],
+ "frontend/app/build.js": [
+  "<b>CONNECTED SERVICES</b><span>Optional equipment for connected accounts and tools.</span>",
+  "<b>Click anything to edit</b><div class=",
+  "<b>Connect machines</b><span>Click where work starts, then where it goes next.</span>",
+  "<b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\\u2019s style.</small>",
+  "<label>X <input aria-label=",
+  "<span>Sent for review: <b>",
+  "A type is just the deck it starts with — SURFACE (3) re-lays any room later.",
+  "Add the name you want credited in the gallery.",
+  "Could not restore the previous layout:",
+  "Give the map a name.",
+  "How the line runs",
+  "Let go of all of them · Esc",
+  "Let go of the room · Esc",
+  "Nothing was shared.",
+  "Preview sketch of",
+  "SEND FOR REVIEW",
+  "That file could not be read.",
+  "That file is too large to be a station build.",
+  "The picture that goes with this map",
+  "This station could not be exported.",
+  "This station is not linked to a StarNet account yet. Link it first: STORE › LINK STATION (a free account works), then open SHARE TO COMMUNITY again.",
+  "Turn on the CC BY 4.0 agreement to share it: it is how others may build your station.",
+  "data-restore-build>RESTORE PREVIOUS</button><button class=",
+  "data-workflow-close>CLOSE</button></header><div data-example-body></div></div>",
+  "dismiss for this line",
+  "dismiss — you know the gear",
+  "finish + save (or press Esc twice)",
+  "frame the station",
+  "name this room",
+  "your name or handle",
+  "zoom in (or scroll the wheel)",
+  "zoom out (or scroll the wheel)",
+  "＋ BUILD YOUR OWN LINE",
+  "＋ MAKE ROOM FOR IT"
+ ],
+ "frontend/app/voice.js": [
+  "tap to resume hands-free voice mode"
+ ],
+ "frontend/app/world.js": [
+  "hold to wake it"
+ ],
+ "frontend/app/briefing.js": [
+  "While you were away"
+ ],
+ "frontend/app/worldlab.js": [
+  "Capture records the current frame, station, crew and real event history."
+ ],
+ "frontend/app/stepin.js": [
+  "Live view of the agent\\",
+  "Take the wheel to drive its browser yourself. It is frozen until you hand it back, and it never sees what you type. It never solves a human check on its own."
+ ],
+ "frontend/app/outputbrowser.js": [
+  "<p>That page isn\\",
+  "<p>The station isn\\",
+  "Could not read the browser setting from the station.",
+  "Could not save:",
+  "Could not save: the station did not answer.",
+  "Live browser picture",
+  "Type an address or search"
+ ],
+ "frontend/app/prop-atlas.js": [
+  "Artwork could not load:",
+  "Full catalog with projection corrections. Fixed 2× world scale; the crate and crew show physical size.",
+  "Showing newly rebuilt props. Each is followed by the approved desk, crate, and agent at the same scale."
+ ],
+ "frontend/app/windows/workflows.js": [
+  "+ !!(S.fix && S.fix.jobId === job.id && S.fix.open) +",
+  "INBOX: you send jobs in here.",
+  "OUTBOX: the finished result lands here.",
+  "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: a schedule, a channel message, a folder or a webhook.",
+  "Opens EDIT WORKFLOW at its INBOX’s ‘Or start it automatically’: change these starts, or add a schedule, a channel message, a folder or a webhook.",
+  "The full editor: the line on the floor, each step’s instructions, what starts it automatically, its budget.",
+  "The job for this workflow",
+  "The last step stops copying this result’s format, length and tone, and the crew forgets its style.",
+  "The step that wrote this result will match its format, length and tone every time, and the whole crew matches its style in similar work.",
+  "e.g. a weekly digest of AI news for my newsletter"
+ ],
+ "frontend/app/windows/connectors.js": [
+  "+ ((j.status && j.status.detail) || (",
+  "+ ADD & CONNECT",
+  "16-letter app password",
+  "<strong>CONNECT GITHUB</strong><p>1. Copy this code: <code style=",
+  "Allow unattended use of",
+  "Google app password",
+  "arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace",
+  "first-party server, run by the vendor",
+  "not directly wired yet — see the note",
+  "opens a secure browser sign-in (OAuth)",
+  "sign-in for",
+  "✕ couldn’t open the Spotify sign-in page",
+  "✕ couldn’t open the sign-in page for"
+ ],
+ "frontend/agent-demo/demo.js": [
+  "<strong>INDUSTRIAL CREW · LIVE STATION DEMO</strong><div style=",
+  "<summary>Talking pose close-up</summary><div style=",
+  "Could not load the selected skins.",
+  "Normal station movement · visual review",
+  "Station did not finish loading."
+ ],
+ "frontend/agent-demo/review-world.js": [
+  "hold to wake it"
+ ],
+ "frontend/assets/industrial/shell-clean-preview.html": [
+  "SLATE COURSES · STUDY texture"
+ ],
+ "frontend/dev/authored-furniture-review.html": [
+  "Both authored heavy bags at station scale"
+ ],
+ "website/market.js": [
+  "Could not load the skill catalog right now. Refresh to try again, or browse it in the app under ABILITIES › DISCOVER › SKILL MARKET.",
+  "Could not load this skill right now.",
+  "· shared by a StarNet user"
+ ],
+ "website/index.html": [
+  "Back to top",
+  "Scroll to the station",
+  "StarNet station recorded from the real renderer, playing a scripted replay of harness events"
+ ],
+ "website/maps.js": [
+  "The gallery could not be loaded. Try again in a moment."
+ ],
+ "website/docs/help.html": [
+  "More in Troubleshooting &amp; help"
+ ],
+ "website/docs/troubleshooting.html": [
+  "More in Troubleshooting &amp; help"
+ ],
+ "website/docs/getting-started.html": [
+  "Install &amp; first task",
+  "More in Start here"
+ ],
+ "website/docs/shortcuts.html": [
+  "More in Troubleshooting &amp; help"
+ ],
+ "website/docs/migrating.html": [
+  "More in Connect your tools"
+ ],
+ "website/docs/providers.html": [
+  "More in Start here"
+ ],
+ "website/docs/glossary.html": [
+  "More in Troubleshooting &amp; help"
+ ],
+ "website/docs/connect-a-platform.html": [
+  "More in Connect your tools"
+ ],
+ "website/docs/connectors.html": [
+  "More in Connect your tools"
+ ],
+ "website/docs/station.html": [
+  "More in Station &amp; agents"
+ ],
+ "website/docs/agents.html": [
+  "More in Station &amp; agents"
+ ],
+ "website/docs/guides/filter.html": [
+  "A job enters at the INBOX, reaches a FILTER, and is sent east to the engineer if it is code, or south to the generalist for everything else",
+  "A second belt leaves the FILTER tile south and turns east into BAY B",
+  "An INBOX, a FILTER tile, and two BAYs placed with gaps for belts",
+  "The FILTER card with CODE, RESEARCH and EVERYTHING ELSE each pointed at a lane, saved as you choose",
+  "The belt runs from the INBOX through the FILTER tile and on to BAY A"
+ ],
+ "website/docs/guides/crew.html": [
+  "A filtered line branching to two bays",
+  "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat.",
+  "CONSOLE prop, actual in-game art",
+  "CONSOLE, actual in-game art",
+  "CORE prop, actual in-game art",
+  "CORE, actual in-game art",
+  "DISH prop, actual in-game art",
+  "DISH, actual in-game art",
+  "INTEL CAB prop, actual in-game art",
+  "INTEL CAB, actual in-game art",
+  "More in Station &amp; agents",
+  "STUDIO prop, actual in-game art",
+  "STUDIO, actual in-game art",
+  "WORKBENCH prop, actual in-game art",
+  "WORKBENCH, actual in-game art"
+ ],
+ "website/docs/guides/splitter-joiner.html": [
+  "A splitter set to COPY TO EACH: its lanes meet at a joiner, every lane gets the same job and the joiner merges the results",
+  "One job enters, a SPLITTER sends a copy to each of two analysts, a JOINER waits for both results and sends one merged crate to the OUTBOX",
+  "The JOINER card: a timeout of 10 minutes for a late branch"
+ ],
+ "website/docs/guides/first-line.html": [
+  "A filter branching one lane into two bays, each bay shipping to its own out tray",
+  "A filtered line branching to two bays",
+  "A splitter dealing jobs across three bays in turn; a merger sends every result to one out tray",
+  "A stamped starter line running",
+  "Build your first workflow",
+  "INBOX to bay A to bay B: a hand-off chain"
+ ],
+ "website/docs/guides/goals.html": [
+  "A quest path of five milestones with two done and one current, a RATE THE WORK card with NAILED IT and MISSED, and an XP bar",
+  "More in Station &amp; agents"
+ ],
+ "website/docs/guides/night-shift.html": [
+  "The autonomy dial with ON ITS OWN set to SMALL JOBS, REACH to LOCAL ONLY and PACE to STANDARD 3, above a night timeline where three beats fired and five were skipped"
+ ],
+ "website/docs/guides/index.html": [
+  "Step-by-step guides"
+ ],
+ "website/docs/guides/channels.html": [
+  "A phone chatting with a small robot agent: your message crosses to it, the finished work comes back to the chat.",
+  "A stamped starter line running",
+  "An agent desk with a PC and shared gear",
+  "More in Connect your tools"
+ ],
+ "website/docs/guides/conveyors.html": [
+  "A belt run that is cold",
+  "A belt run that is energized",
+  "A loop gate with a done lane onward to the outbox and a back lane returning to an earlier bay",
+  "A work line: a job enters at the INBOX, rides the belt through two agent BAYs where each does their part, and the finished work leaves through the OUTBOX.",
+  "INBOX to bay A to bay B: a hand-off chain"
+ ],
+ "website/docs/guides/routines.html": [
+  "A routine clock drops a job into the INBOX every weekday at 7:00; it rides a belt to a researcher bay which runs a recipe, and the brief lands in the OUTBOX",
+  "A schedule picker showing NEXT RUN tomorrow 7:00",
+  "Two states: SCHEDULING IS OFF and TURN SCHEDULING ON"
+ ]
+}
