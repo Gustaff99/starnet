@@ -138,10 +138,10 @@ const WHOLE = { clientHeight: 19, scrollHeight: 19, clientWidth: 150, scrollWidt
     ask({ promptId: 'p34', tool: 'fs.read', argsSummary: 'notes.md', background: true })
   ];
   const keysOfAll = asks.map(a => (k(a).match(/data-ny-act="[a-z-]+"[^>]*>[^<]+</g) || []).map(x => x.replace(/^data-ny-act="([a-z-]+)"[^>]*>([^<]+)<$/, '$1:$2')).join(' | '));
-  A.eq([...new Set(keysOfAll)], ['deny:Deny'], 'every approval — a long command, a station build, a file change, a short read, a station ask, a worker\'s ask — has Deny alone, never Approve once, Review or Answer');
+  A.eq([...new Set(keysOfAll)], ['deny:Deny'], 'every approval — a long command, a station build, a file change, a short read, a station ask, a worker\'s ask — has Deny alone, never Aprobar una vez, Review or Answer');
   A.eq(k({ key: 'attest:q1', kind: 'attest', questId: 'q1' }), '', 'a quest an agent says is done: no key (its verdict is given on the QUESTS card, which the row opens)');
-  A.ok(!/>(Approve once|Review|Answer|Confirm|Not yet)</.test(NY._internals.html(asks.map(a => Object.assign(a, { who: 'NOVA', where: 'General', what: 'use fs read: notes.md', since: NOW - 60000 })), NOW)),
-    'no row in the list carries an Approve once, Review, Answer, Confirm or Not yet key');
+  A.ok(!/>(Aprobar una vez|Review|Answer|Confirm|Not yet)</.test(NY._internals.html(asks.map(a => Object.assign(a, { who: 'NOVA', where: 'General', what: 'use fs read: notes.md', since: NOW - 60000 })), NOW)),
+    'no row in the list carries an Aprobar una vez, Review, Answer, Confirm or Not yet key');
   const glassCss = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'css', 'pipglass.css'), 'utf8');
   // the one key: a terminal key in the row's right-hand column, across its two lines, every key the column's one width
   A.ok(/\.ny-keys \{ display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin: 0; \}/.test(glassCss)
@@ -198,7 +198,7 @@ const WHOLE = { clientHeight: 19, scrollHeight: 19, clientWidth: 150, scrollWidt
   A.ok(rowsOf(hm).length === 6 && rowsOf(hm).every(m => /^<span class="ny-face" aria-hidden="true" data-ny-aid="agent"><img alt="" draggable="false" hidden><\/span>/.test(m[2])),
     'every row that names an agent leads with its portrait well (painted by AgentPortraits after the build)');
   A.ok(rowsOf(hm).every(m => /class="ny-keys"/.test(m[2]) !== /<span class="ny-go" aria-hidden="true"><\/span>/.test(m[2])), 'every row has ONE right-hand column: its key, or else the caret (never both, never neither)');
-  const station = NY._internals.html([mk('extensions', 'extension', { who: 'STATION', aid: undefined, what: 'has 2 extensions awaiting your approval', where: 'EXTENSIONS', since: 0 })], NOW);
+  const station = NY._internals.html([mk('extensions', 'extension', { who: 'STATION', aid: undefined, what: 'has 2 extensions esperando tu aprobación', where: 'EXTENSIONS', since: 0 })], NOW);
   A.ok(!/ny-face/.test(station) && /<span class="ny-grp-t">Extensions<\/span><\/div>/.test(station), 'a wait that names no agent (the STATION\'s extensions) has no empty portrait well');
   const src = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'needsyou.js'), 'utf8');
   A.ok(/host\.innerHTML = html\(list, now\);\s*\n\s*paintFaces\(host\);/.test(src) && /AgentPortraits\.paint\(face\.querySelector\('img'\), a\)/.test(src),
@@ -208,7 +208,7 @@ const WHOLE = { clientHeight: 19, scrollHeight: 19, clientWidth: 150, scrollWidt
   const app = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'app.js'), 'utf8');
   const html = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'index.html'), 'utf8');
   A.ok(!/railAttentionOnly|ws-attention/.test(app) && !/id="ws-attention"/.test(html), 'the "Waiting for you" filter is retired');
-  A.ok(/<section id="ws-needs" class="ws-needs" aria-label="Needs you" hidden><\/section>/.test(html) && html.indexOf('app/needsyou.js') > 0, 'the page has the NEEDS YOU section and loads its module');
+  A.ok(/<section id="ws-needs" class="ws-needs" aria-label="Necesita de ti" hidden><\/section>/.test(html) && html.indexOf('app/needsyou.js') > 0, 'the page has the NEEDS YOU section and loads its module');
   // app-shell-ui-04 / seams-04: bounded in every mode (glass, plain, hud) — an expanded "N more" scrolls inside its card,
   // so the lower asks' keys and "Show fewer" stay reachable, with a themed scrollbar (never a white native one)
   const glass = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'css', 'pipglass.css'), 'utf8');
@@ -258,7 +258,7 @@ function fakeRail() {
   NY.render();
   A.eq(host.writes, 1, 'the first render draws the list once (it reads no line, so nothing redraws)');
   A.ok(key('deny', 'ask:p2') && !key('once', 'ask:p2') && !host.buttons.some(x => x.dataset.nyAct === 'open' && x.dataset.nyKey === 'ask:p2' && x.className.split(' ').includes('ny-key')),
-    '…an approval drawn with Deny alone: no Approve once, no Review key');
+    '…an approval drawn with Deny alone: no Aprobar una vez, no Review key');
   doc.activeElement = key('deny', 'ask:p2');
   clock = NOW + 60000; NY.render();
   A.eq(host.writes, 1, 'a minute passing does not rebuild the list');

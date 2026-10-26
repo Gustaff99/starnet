@@ -13,7 +13,7 @@ const css = fs.readFileSync(path.join(root, 'frontend', 'css', 'app.css'), 'utf8
 
 assert.doesNotMatch(index, /id="voice-mode"/, 'legacy hands-free button is removed from COMMS');
 assert.equal((index.match(/id="voice-live"/g) || []).length, 1, 'Local Live is the one hands-free control');
-assert.match(index, /aria-label="Start Local Live hands-free voice"/, 'the canonical hands-free control has an explicit accessible name');
+assert.match(index, /aria-label="Iniciar voz local manos libres"/, 'the canonical hands-free control has an explicit accessible name');
 assert.match(source, /document\.body\.appendChild\(panel\)/, 'live controller is app-global, not mounted inside COMMS');
 assert.doesNotMatch(source, /insertBefore\(panel,\s*chatLog\)/, 'live controller must not consume transcript space');
 assert.match(source, /button\.onclick\s*=\s*\(\)\s*=>\s*active\s*\?\s*end\(\)\s*:\s*start\(false\)/, 'live button toggles the session off');
@@ -230,7 +230,7 @@ assert.match(chatSource, /function liveVoiceCall\(\)/, 'chat.js knows whether a 
 assert.match(bodyOf('refreshTask'), /announceWaits\(\)/, 'the live tick announces a newly-arrived approval');
 {
   // an arriving ask is SAID aloud with who asks, what exactly, and the exact words that answer it (2026-10-13 review: a
-  // question was read as "Approval needed: brief.ask — {json}. Say approve…", then "approve" was refused for it)
+  // question was read as "Aprobación pendiente: brief.ask — {json}. Say approve…", then "approve" was refused for it)
   const spokenSrc = /(  function spokenAsk\(p, ws\) \{[\s\S]*?\n  \})\n/.exec(source);
   assert.ok(spokenSrc, 'voice-live.js defines spokenAsk()');
   // its helpers: the question line, the card's own words (askParts) and the once-only asks
@@ -386,7 +386,7 @@ function approvalFixture(opts = {}) {
     assert.deepEqual(f.events, [['permission.response', { promptId: 'worker-second', decision, via: 'voice' }]], 'the bus names the confirmed prompt');
     assert.deepEqual(f.pending(), ['worker-first'], 'voice answer preserves the other pending prompt');
     assert.equal(f.Channels.peek(f.ws.id).pausedAt, 2000, 'the outstanding prompt keeps the original pause open');
-    assert.equal(f.Channels.statusOf(f.ws.id), 'awaiting your approval…', 'the channel still truthfully waits');
+    assert.equal(f.Channels.statusOf(f.ws.id), 'awaiting your approval…', 'the channel still truthfully waits (status string: channels.js is the source of truth; 4 tests key the English form — full ES translation of channel statuses is a later phase)');
     assert.equal(f.Channels.elapsedOf(f.ws.id, 9000), 1000, 'waiting on the sibling is not counted as run time');
     assert.equal(f.answer(speech), true); await flushApproval();
     assert.deepEqual(f.calls[1], ['lead-run', 'worker-first', decision], 'the next answer reaches the remaining prompt');
