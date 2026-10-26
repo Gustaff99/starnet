@@ -1005,7 +1005,7 @@ const WorkflowPanel = (() => {
       if (gate && gate.refuse) throw new Error(gate.refuse);
       return api('/api/routing/steptest', 'POST', { line: c.key, text, startAt: pid, single: true });
     }).then(r => {
-      if (!r.j || !r.j.ok || !r.j.session) throw new Error((r.j && r.j.error) || 'step test refused (HTTP ' + r.status + ')');
+      if (!r.j || !r.j.ok || !r.j.session) throw new Error((r.j && r.j.error) || 'test de pasos rechazado (HTTP ' + r.status + ')');
       return waitDone(r.j.session);
     }).then(sess => {
       const h = (sess.hops || []).find(x => x.dockId ? x.dockId === pid : x.agentId === agentId) || (sess.hops || [])[0];
@@ -1127,8 +1127,8 @@ const WorkflowPanel = (() => {
       + projectSectionHtml(p)
       + '<details class="wf-sec refit-workflow-advanced"><summary>Optional limits · LINE BUDGET</summary>'
       + limField('lb-hops', 'maxHops', 'max stages after the first', String(LD.maxHops), '1')
-      + limField('lb-msg', 'maxUsdPerMessage', '$ per message, whole line', LD.maxUsdPerMessage.toFixed(2), '0.05')
-      + limField('lb-day', 'maxUsdPerDay', '$ per day, this line', 'off', '0.50')
+      + limField('lb-msg', 'maxUsdPerMessage', '$ por mensaje, línea entera', LD.maxUsdPerMessage.toFixed(2), '0.05')
+      + limField('lb-day', 'maxUsdPerDay', '$ por día, esta línea', 'off', '0.50')
       + '<div class="wf-help lb-note" id="lb-note">' + esc(lbDefaultNote) + '</div></details>';
     // the job to send (it is also this line's test job)
     const job = $('#wf-send-in');
@@ -1138,7 +1138,7 @@ const WorkflowPanel = (() => {
     // LINE BUDGET: one save for the three fields; the saved (clamped) answer is re-painted INTO the fields
     const lbNums = $$('.lb-num'), lbNote = $('#lb-note');
     let lbSaved = JSON.stringify(Object.keys(lim0).length ? lim0 : null);
-    const lbName = k => k === 'maxHops' ? 'stages' : k === 'maxUsdPerMessage' ? '$ per message' : '$ per day';
+    const lbName = k => k === 'maxHops' ? 'etapas' : k === 'maxUsdPerMessage' ? '$ por mensaje' : '$ por día';
     const saveLimits = () => {
       if (!lbNums.length || typeof H.station().setPropLimits !== 'function') return;
       const raw = {};
@@ -1147,11 +1147,11 @@ const WorkflowPanel = (() => {
       if (!res || !res.ok) { H.sfx('bad'); return; }
       const next = JSON.stringify(res.limits || null);
       for (const n of lbNums) { const k = n.dataset.k, v = res.limits && res.limits[k]; n.value = (typeof v === 'number' && v > 0) ? String(v) : ''; }
-      if (lbNote) lbNote.textContent = (res.clamped && res.clamped.length) ? 'clamped to the ceiling — ' + res.clamped.map(x => lbName(x.split('>')[0])).join(', ') + ' (the numbers shown are the ones in force)' : lbDefaultNote;
+      if (lbNote) lbNote.textContent = (res.clamped && res.clamped.length) ? 'ajustado al tope — ' + res.clamped.map(x => lbName(x.split('>')[0])).join(', ') + ' (los números mostrados son los vigentes)' : lbDefaultNote;
       if (next === lbSaved) return;
       lbSaved = next; H.sfx('click');
-      if (lbNote) lbNote.textContent = (res.limits ? '✓ line budget saved · ' : '✓ cleared — station defaults · ') + lbNote.textContent;
-      H.flashTip(res.limits ? 'line budget saved' : 'line budget cleared — station defaults', true);
+      if (lbNote) lbNote.textContent = (res.limits ? '✓ presupuesto de línea guardado · ' : '✓ limpiado — valores por estación · ') + lbNote.textContent;
+      H.flashTip(res.limits ? 'presupuesto de línea guardado' : 'presupuesto de línea limpiado — valores por estación', true);
     };
     el._saveLimits = saveLimits;
     for (const n of lbNums) {
@@ -1177,28 +1177,28 @@ const WorkflowPanel = (() => {
   function projectSectionHtml(p) {
     const cur = projectOf(p), P = S.projects;
     const chip = (root, label, on, off) => '<button type="button" class="bb sm wf-proj' + (on ? ' active' : '') + '" data-root="' + esc(root) + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + esc(label) + '</button>';
-    let chips = '', note = 'All workflow stages use this folder. Add trusted folders in Projects.';
-    if (!P) chips = '<div class="wf-help dim">Loading projects…</div>';
+    let chips = '', note = 'Todas las etapas del workflow usan esta carpeta. Añade carpetas de confianza en Projects.';
+    if (!P) chips = '<div class="wf-help dim">Cargando projects…</div>';
     else if (P.err) note = P.err;
     else {
-      chips = chip('', 'Agent workspace (default)', !cur, false)
+      chips = chip('', 'Espacio de trabajo del agente (por defecto)', !cur, false)
         + P.rows.map(r => chip(r.root, r.displayPath || r.root, r.root === cur, false)).join('');
       if (cur && !P.rows.some(r => r.root === cur)) {
-        chips += chip(cur, cur + ' (unavailable)', true, true);
-        note = 'This project is no longer trusted. Restore access in Projects or choose another folder.';
+        chips += chip(cur, cur + ' (no disponible)', true, true);
+        note = 'Este project ya no es de confianza. Restaura el acceso en Projects o elige otra carpeta.';
       }
     }
     if (S.projectMsg && S.projectMsg.id === p.id) note = S.projectMsg.t;
-    return '<section class="wf-sec"><h3>Working folder</h3><div class="trg-form-k">Trusted project</div>'
-      + '<div class="wf-chips" id="wf-project" role="group" aria-label="Trusted project">' + chips + '</div>'
+    return '<section class="wf-sec"><h3>Carpeta de trabajo</h3><div class="trg-form-k">Project de confianza</div>'
+      + '<div class="wf-chips" id="wf-project" role="group" aria-label="Project de confianza">' + chips + '</div>'
       + '<p class="wf-help" id="wf-project-note">' + esc(note) + '</p></section>';
   }
   function wireProjectPick(p) {
     $$('.wf-proj').forEach(b => b.onclick = () => {
       if (b.disabled || b.getAttribute('aria-pressed') === 'true') return;
       const st = H.station();
-      const res = typeof st.setPropProject === 'function' ? st.setPropProject(p.id, b.dataset.root || '') : { ok: false, message: 'this station model cannot save a project' };
-      S.projectMsg = { id: p.id, t: res && res.ok ? 'Working folder saved for all workflow stages. Existing tool permissions still apply.' : ((res && (res.msg || res.message)) || 'Could not save the project.') };
+      const res = typeof st.setPropProject === 'function' ? st.setPropProject(p.id, b.dataset.root || '') : { ok: false, message: 'este modelo de estación no puede guardar un project' };
+      S.projectMsg = { id: p.id, t: res && res.ok ? 'Carpeta de trabajo guardada para todas las etapas del workflow. Los permisos de herramientas existentes siguen aplicando.' : ((res && (res.msg || res.message)) || 'No se pudo guardar el project.') };
       H.sfx(res && res.ok ? 'click' : 'bad');
       H.layoutChanged();
       paint();
@@ -1210,7 +1210,7 @@ const WorkflowPanel = (() => {
      lives only in S.ltReveal until the Commander dismisses it or leaves the line — it is never fetched again.
      Email is not offered: the server reports email.available:false (no mail connector exists). */
   const ago = iso => { const t = Date.parse(iso || ''); if (!isFinite(t)) return ''; const s = Math.max(0, Math.round((Date.now() - t) / 1000));
-    return s < 60 ? s + 's ago' : s < 3600 ? Math.round(s / 60) + 'm ago' : s < 172800 ? Math.round(s / 3600) + 'h ago' : Math.round(s / 86400) + 'd ago'; };
+    return s < 60 ? s + 's hace' : s < 3600 ? Math.round(s / 60) + 'm hace' : s < 172800 ? Math.round(s / 3600) + 'h hace' : Math.round(s / 86400) + 'd hace'; };
   const ltMine = () => (S.lt && Array.isArray(S.lt.triggers) ? S.lt.triggers : []).filter(t => t.lineId === S.lineKey);
   /* THE 5 s RE-READ NEVER REBUILDS THE CARD (2026-09-24). It used to call paint(), which rebuilt the whole INBOX
      card: the WHEN picker remounted (a picked schedule snapped back to daily 9:00), an ARMED DELETE / NEW KEY
@@ -1232,7 +1232,7 @@ const WorkflowPanel = (() => {
     return S.lt ? ltMine().filter(t => t.kind === kind).map(ltRowHtml).join('') : '';
   }
   // what a block's header says when its list is empty (the list itself then shows nothing)
-  const ltNote = kind => !S.lt ? 'reading…' : ltMine().some(t => t.kind === kind) ? '' : kind === 'folder' ? 'none watched' : 'none yet';
+  const ltNote = kind => !S.lt ? 'leyendo…' : ltMine().some(t => t.kind === kind) ? '' : kind === 'folder' ? 'ninguna vigilada' : 'aún ninguna';
   /* WHAT STARTS THE LINE, ONE BLOCK EACH (2026-09-30). A schedule, a channel, a watched folder, a webhook: each is a block
      whose header row carries its name, what it has ("none yet") and the key that adds one — four headings each with an
      empty-state sentence and a button under it ran this card to three screens. Rows and the add form open under the header.
@@ -1264,32 +1264,32 @@ const WorkflowPanel = (() => {
   function ltRowHtml(t) {
     const blocked = t.enabled && t.blockedBy;
     const glyph = !t.enabled ? '○' : blocked ? '◍' : '●';
-    const title = t.kind === 'folder' ? ((t.config && t.config.path) || 'a folder') : (t.name ? '“' + t.name + '”' : '(unnamed)');
+    const title = t.kind === 'folder' ? ((t.config && t.config.path) || 'una carpeta') : (t.name ? '“' + t.name + '”' : '(sin nombre)');
     const lo = t.lastOutcome;
-    const last = t.running ? '<b class="wf-okc">running now</b>'
-      : t.lastFiredAt ? 'last fired <span class="lt-ago" data-at="' + esc(t.lastFiredAt) + '">' + esc(ago(t.lastFiredAt)) + '</span>' + (lo ? (lo.ok ? ' · <b class="wf-okc">✓ reached the OUTBOX</b>' + (lo.runs ? ' (' + lo.runs + ' run' + (lo.runs === 1 ? '' : 's') + ')' : '')
+    const last = t.running ? '<b class="wf-okc">ejecutando ahora</b>'
+      : t.lastFiredAt ? 'último disparo <span class="lt-ago" data-at="' + esc(t.lastFiredAt) + '">' + esc(ago(t.lastFiredAt)) + '</span>' + (lo ? (lo.ok ? ' · <b class="wf-okc">✓ llegó al OUTBOX</b>' + (lo.runs ? ' (' + lo.runs + ' run' + (lo.runs === 1 ? '' : 's') + ')' : '')
         // (GitHub #122) reached it, but a review loop sent it on without an approval: said beside the ✓, the reason as its tip
-        + (lo.unapproved ? ' · <span class="trg-warn" data-tip="' + esc(lo.unapproved) + '">unapproved</span>' : '') : ' · <span class="trg-warn">✕ did not finish</span>') : '')
-      : 'never fired';
-    const state = !t.enabled ? 'paused' : blocked ? '<span class="trg-warn">waiting — ' + esc(t.blockedBy) + '</span>'
-      : t.kind === 'folder' ? 'watching — each new file runs the whole line' : 'listening — each call runs the whole line';
-    let html = '<div class="trg-row lt-row" data-lt="' + esc(t.id) + '" data-sig="' + esc(ltRowSig(t)) + '"><span class="trg-state' + (t.enabled && !blocked ? ' on' : '') + '">' + glyph + '</span> <b>' + (t.kind === 'folder' ? 'FOLDER ' : 'WEBHOOK ') + '</b>' + esc(title)
+        + (lo.unapproved ? ' · <span class="trg-warn" data-tip="' + esc(lo.unapproved) + '">sin aprobación</span>' : '') : ' · <span class="trg-warn">✕ no terminó</span>') : '')
+      : 'nunca disparó';
+    const state = !t.enabled ? 'pausada' : blocked ? '<span class="trg-warn">esperando — ' + esc(t.blockedBy) + '</span>'
+      : t.kind === 'folder' ? 'vigilando — cada archivo nuevo ejecuta la línea entera' : 'escuchando — cada llamada ejecuta la línea entera';
+    let html = '<div class="trg-row lt-row" data-lt="' + esc(t.id) + '" data-sig="' + esc(ltRowSig(t)) + '"><span class="trg-state' + (t.enabled && !blocked ? ' on' : '') + '">' + glyph + '</span> <b>' + (t.kind === 'folder' ? 'CARPETA ' : 'WEBHOOK ') + '</b>' + esc(title)
       + '<div class="trg-row-meta">' + state + '</div>'
-      + '<div class="trg-row-meta">fired ' + (t.fires || 0) + '× · ' + last + (t.queued ? ' · ' + t.queued + ' waiting' : '') + ' · at most ' + t.maxPerHour + '/hour</div>'
-      + (t.config && t.config.task ? '<div class="trg-row-meta">task: ' + esc(t.config.task.length > 90 ? t.config.task.slice(0, 88) + '…' : t.config.task) + '</div>' : '')
-      + (t.lastError ? '<div class="trg-row-meta"><span class="trg-warn">last error: ' + esc(t.lastError) + '</span></div>' : '');
+      + '<div class="trg-row-meta">disparos ' + (t.fires || 0) + '× · ' + last + (t.queued ? ' · ' + t.queued + ' en espera' : '') + ' · a lo sumo ' + t.maxPerHour + '/hora</div>'
+      + (t.config && t.config.task ? '<div class="trg-row-meta">tarea: ' + esc(t.config.task.length > 90 ? t.config.task.slice(0, 88) + '…' : t.config.task) + '</div>' : '')
+      + (t.lastError ? '<div class="trg-row-meta"><span class="trg-warn">último error: ' + esc(t.lastError) + '</span></div>' : '');
     if (t.kind === 'webhook') {
-      html += '<div class="trg-row-meta lt-url">POST <code class="lt-code">' + esc(t.url || '') + '</code> <button type="button" class="bb sm" data-lt-copy="' + esc(t.url || '') + '">COPY URL</button></div>';
+      html += '<div class="trg-row-meta lt-url">POST <code class="lt-code">' + esc(t.url || '') + '</code> <button type="button" class="bb sm" data-lt-copy="' + esc(t.url || '') + '">COPIAR URL</button></div>';
       const rv = S.ltReveal && S.ltReveal.id === t.id ? S.ltReveal : null;
-      if (rv) html += '<div class="lt-reveal" role="status"><div class="trg-form-k">YOUR KEY — SHOWN ONCE</div>'
+      if (rv) html += '<div class="lt-reveal" role="status"><div class="trg-form-k">TU CLAVE — SE MUESTRA UNA VEZ</div>'
         + '<code class="lt-code lt-key">' + esc(rv.secret) + '</code>'
-        + '<div class="wf-row"><button type="button" class="bb sm refit-primary" data-lt-copy="' + esc(rv.secret) + '">COPY KEY</button><button type="button" class="bb sm" id="lt-reveal-done">I SAVED IT</button></div>'
-        + '<p class="wf-help">Send it as the <b>X-StarNet-Hook-Key</b> header (or <b>Authorization: Bearer …</b>, or <b>?key=</b> on the URL). StarNet keeps only a fingerprint of it: once this box closes it cannot be shown again. Lost it? Make a new key.</p></div>';
+        + '<div class="wf-row"><button type="button" class="bb sm refit-primary" data-lt-copy="' + esc(rv.secret) + '">COPIAR CLAVE</button><button type="button" class="bb sm" id="lt-reveal-done">LA GUARDÉ</button></div>'
+        + '<p class="wf-help">Envíala como cabecera <b>X-StarNet-Hook-Key</b> (o <b>Authorization: Bearer …</b>, o <b>?key=</b> en la URL). StarNet conserva solo una huella: al cerrar esta caja no se puede mostrar de nuevo. ¿La perdiste? Crea una clave nueva.</p></div>';
     }
-    html += '<div class="wf-row lt-acts"><button type="button" class="bb sm" data-lt-act="toggle">' + (t.enabled ? 'PAUSE' : 'RESUME') + '</button>'
-      + '<button type="button" class="bb sm" data-lt-act="edit">EDIT</button>'
-      + (t.kind === 'webhook' ? '<button type="button" class="bb sm" data-lt-act="rekey">NEW KEY</button>' : '')
-      + '<button type="button" class="bb sm" data-lt-act="delete">DELETE</button></div></div>';
+    html += '<div class="wf-row lt-acts"><button type="button" class="bb sm" data-lt-act="toggle">' + (t.enabled ? 'PAUSAR' : 'REANUDAR') + '</button>'
+      + '<button type="button" class="bb sm" data-lt-act="edit">EDITAR</button>'
+      + (t.kind === 'webhook' ? '<button type="button" class="bb sm" data-lt-act="rekey">NUEVA CLAVE</button>' : '')
+      + '<button type="button" class="bb sm" data-lt-act="delete">BORRAR</button></div></div>';
     return html;
   }
   function ltFormHtml(kind) {
@@ -1298,17 +1298,17 @@ const WorkflowPanel = (() => {
     const val = (k, dflt) => esc(S.drafts['lt:' + k] != null ? S.drafts['lt:' + k] : dflt);
     return '<div class="trg-form lt-form" id="lt-form">'
       + (kind === 'folder'
-        ? '<label class="trg-form-k" for="lt-path">Folder to watch (full path)</label>'
+        ? '<label class="trg-form-k" for="lt-path">Carpeta a vigilar (ruta completa)</label>'
           + '<input id="lt-path" data-keep="lt:path" class="refit-input" type="text" maxlength="1024" spellcheck="false" placeholder="e.g. C:\\Users\\you\\Drops\\invoices" value="' + val('path', cur ? cur.config.path : '') + '" />'
-          + '<p class="wf-help dim">Files placed directly in this folder (not in its subfolders) start the line — once each, after the file finishes writing. Files already there are skipped. It must be inside your home folder or a project you added; system folders are refused.</p>'
-        : '<p class="wf-help dim">You get a web address and a secret key. Anything that POSTs to the address with the key starts the line; the request body becomes the job.</p>')
-      + '<label class="trg-form-k" for="lt-task">What should the line do with ' + (kind === 'folder' ? 'each file' : 'each call') + '? (optional)</label>'
-      + '<textarea id="lt-task" data-keep="lt:task" class="refit-input refit-brief" maxlength="2000" rows="2" placeholder="' + (kind === 'folder' ? 'e.g. Pull out the total and the due date.' : 'e.g. Summarize this order for the team.') + '">' + val('task', cur ? cur.config.task : '') + '</textarea>'
-      + '<label class="trg-form-k" for="lt-name">Name (optional)</label>'
-      + '<input id="lt-name" data-keep="lt:name" class="refit-input" type="text" maxlength="60" placeholder="' + (kind === 'folder' ? 'e.g. Invoices' : 'e.g. New orders') + '" value="' + val('name', cur ? cur.name : '') + '" />'
-      + '<label class="refit-field lb-field" for="lt-rate">at most this many runs an hour'
+          + '<p class="wf-help dim">Los archivos colocados directamente en esta carpeta (no en subcarpetas) inician la línea — uno por uno, tras terminar de escribir. Los que ya están se omiten. Debe estar dentro de tu carpeta home o de un project que añadiste; las carpetas de sistema se rechazan.</p>'
+        : '<p class="wf-help dim">Recibes una dirección web y una clave secreta. Lo que haga POST a la dirección con la clave inicia la línea; el cuerpo de la petición se convierte en el job.</p>')
+      + '<label class="trg-form-k" for="lt-task">¿Qué debe hacer la línea con ' + (kind === 'folder' ? 'cada archivo' : 'cada llamada') + '? (opcional)</label>'
+      + '<textarea id="lt-task" data-keep="lt:task" class="refit-input refit-brief" maxlength="2000" rows="2" placeholder="' + (kind === 'folder' ? 'p. ej. Extrae el total y la fecha de vencimiento.' : 'p. ej. Resume este pedido para el equipo.') + '">' + val('task', cur ? cur.config.task : '') + '</textarea>'
+      + '<label class="trg-form-k" for="lt-name">Nombre (opcional)</label>'
+      + '<input id="lt-name" data-keep="lt:name" class="refit-input" type="text" maxlength="60" placeholder="' + (kind === 'folder' ? 'p. ej. Facturas' : 'p. ej. Nuevos pedidos') + '" value="' + val('name', cur ? cur.name : '') + '" />'
+      + '<label class="refit-field lb-field" for="lt-rate">a lo sumo estas ejecuciones por hora'
       + '<input id="lt-rate" data-keep="lt:rate" class="refit-num lb-num" type="number" min="1" max="' + ceil + '" step="1" value="' + val('rate', cur ? String(cur.maxPerHour) : '20') + '" /></label>'
-      + '<div class="wf-row"><button type="button" class="bb sm refit-primary" id="lt-save">' + (editing ? '▸ SAVE CHANGES' : kind === 'folder' ? '▸ WATCH THIS FOLDER' : '▸ CREATE WEBHOOK') + '</button><button type="button" class="bb sm" id="lt-cancel">CANCEL</button></div></div>';
+      + '<div class="wf-row"><button type="button" class="bb sm refit-primary" id="lt-save">' + (editing ? '▸ GUARDAR CAMBIOS' : kind === 'folder' ? '▸ VIGILAR ESTA CARPETA' : '▸ CREAR WEBHOOK') + '</button><button type="button" class="bb sm" id="lt-cancel">CANCELAR</button></div></div>';
   }
   function ltSectionHtml() {
     const F = S.ltForm;
@@ -1316,11 +1316,11 @@ const WorkflowPanel = (() => {
     const port = (S.lt && /:(\d+)\//.exec(S.lt.hookBase || '')) ? /:(\d+)\//.exec(S.lt.hookBase)[1] : '';
     // where a webhook can be reached from is said where a webhook IS: with one on the line, or while one is being made
     const hooked = (F && F.kind === 'webhook') || ltMine().some(t => t.kind === 'webhook');
-    return startHead('A file lands in a folder', ltNote('folder'), 'fo', F && F.kind === 'folder' ? '' : '<button type="button" class="bb sm" id="lt-new-folder">⊕ WATCH A FOLDER</button>')
+    return startHead('Un archivo llega a una carpeta', ltNote('folder'), 'fo', F && F.kind === 'folder' ? '' : '<button type="button" class="bb sm" id="lt-new-folder">⊕ VIGILAR UNA CARPETA</button>')
       + '<div class="trg-list" id="lt-folders">' + rows('folder') + '</div>' + (F && F.kind === 'folder' ? ltFormHtml('folder') : '') + '</div>'
-      + startHead('A webhook is called', ltNote('webhook'), 'wh', F && F.kind === 'webhook' ? '' : '<button type="button" class="bb sm" id="lt-new-hook">⊕ ADD A WEBHOOK</button>')
+      + startHead('Se llama a un webhook', ltNote('webhook'), 'wh', F && F.kind === 'webhook' ? '' : '<button type="button" class="bb sm" id="lt-new-hook">⊕ AÑADIR UN WEBHOOK</button>')
       + '<div class="trg-list" id="lt-hooks">' + rows('webhook') + '</div>' + (F && F.kind === 'webhook' ? ltFormHtml('webhook') : '')
-      + (hooked ? '<p class="wf-help dim">A webhook address lives on this computer (127.0.0.1' + (port ? ':' + port : '') + '). Nothing outside this machine can reach it unless you set up a tunnel yourself (for example cloudflared or ngrok) pointed at that port.</p>' : '')
+      + (hooked ? '<p class="wf-help dim">La dirección del webhook vive en esta computadora (127.0.0.1' + (port ? ':' + port : '') + '). Nada fuera de esta máquina puede alcanzarla a menos que configures tú un túnel (p. ej. cloudflared o ngrok) apuntando a ese puerto.</p>' : '')
       + '</div>'
       + '<div class="wf-help trg-msg' + (S.ltMsg && S.ltMsg.bad ? ' bad' : '') + '" id="lt-msg"' + (S.ltMsg ? '' : ' hidden') + '>' + esc(S.ltMsg ? S.ltMsg.t : '') + '</div>';
   }
@@ -1336,8 +1336,8 @@ const WorkflowPanel = (() => {
     q('#lt-reveal-done').forEach(done => { done.onclick = () => { H.sfx('click'); S.ltReveal = null; paint(true); }; });
     q('[data-lt-copy]').forEach(b => b.onclick = () => {
       const v = b.dataset.ltCopy || '', rest = b.textContent;
-      const ok = () => { H.sfx('click'); b.textContent = 'COPIED'; setTimeout(() => { if (b.isConnected) b.textContent = rest; }, 1400); };
-      try { navigator.clipboard.writeText(v).then(ok, () => say('copy failed — select the text and copy it by hand', true)); } catch (e) { say('copy failed — select the text and copy it by hand', true); }
+      const ok = () => { H.sfx('click'); b.textContent = 'COPIADO'; setTimeout(() => { if (b.isConnected) b.textContent = rest; }, 1400); };
+      try { navigator.clipboard.writeText(v).then(ok, () => say('copia fallida — selecciona el texto y cópialo a mano', true)); } catch (e) { say('copia fallida — selecciona el texto y cópialo a mano', true); }
     });
     q('.lt-row').forEach(row => {
       const id = row.dataset.lt, t = ltMine().find(x => x.id === id); if (!t) return;
@@ -1693,21 +1693,21 @@ const WorkflowPanel = (() => {
       const mode = sm ? sm.mode : (cfg && cfg.fanout ? 'copy' : 'turns');
       const copies = mode !== 'turns';
       const stepOf = m => (sm ? (m === 'divide' ? sm.toDivide : m === 'copy' ? sm.toCopy : sm.toTurns) : null);
-      const LABEL = { copy: 'COPY TO EACH', divide: 'SPLIT THE JOB', turns: 'TAKE TURNS' };
+      const LABEL = { copy: 'COPIAR A CADA', divide: 'DIVIDIR EL JOB', turns: 'TOMAR TURNOS' };
       const isOff = m => m !== mode && (!stepOf(m) || !stepOf(m).ok);
       const pick = (m, sub) => {
         const on = m === mode, step = stepOf(m), off = isOff(m);
         return '<button type="button" class="wf-chip wf-modepick' + (off ? ' off' : '') + '" data-smode="' + m + '" aria-pressed="' + on + '"'
-          + (off ? ' aria-disabled="true" data-tip="' + esc((step && step.msg) || 'not available on this floor yet') + '"' : '') + '><b>' + LABEL[m] + '</b><small>' + esc(sub) + '</small></button>';
+          + (off ? ' aria-disabled="true" data-tip="' + esc((step && step.msg) || 'todavía no disponible en esta planta') + '"' : '') + '><b>' + LABEL[m] + '</b><small>' + esc(sub) + '</small></button>';
       };
-      const whyOff = ['copy', 'divide', 'turns'].filter(isOff).map(m => '<li><b>' + LABEL[m] + '</b> — ' + esc((stepOf(m) && stepOf(m).msg) || 'not available on this floor yet') + '</li>').join('');
-      const leadNote = mode !== 'divide' && sm && sm.toDivide && sm.toDivide.ok && sm.toDivide.addLead ? '<p class="wf-help dim">SPLIT THE JOB adds a PLANNER step before the splitter — it writes the job as one part per branch.</p>' : '';
+      const whyOff = ['copy', 'divide', 'turns'].filter(isOff).map(m => '<li><b>' + LABEL[m] + '</b> — ' + esc((stepOf(m) && stepOf(m).msg) || 'todavía no disponible en esta planta') + '</li>').join('');
+      const leadNote = mode !== 'divide' && sm && sm.toDivide && sm.toDivide.ok && sm.toDivide.addLead ? '<p class="wf-help dim">DIVIDIR EL JOB añade una etapa PLANNER antes del splitter — escribe el job como una parte por rama.</p>' : '';
       const MODE_TEXT = {
-        copy: 'Each job is copied to <b>every</b> branch. The JOINER after the branches waits for all of them, then sends one combined result on. Branches that are one step each work at the same time.',
-        divide: 'The step before the splitter writes the job as numbered parts, one per branch. Each branch is handed <b>only its own part</b>, they work at the same time, and the JOINER puts the parts back together. A branch that fails is named in the result; the others still finish.',
-        turns: 'Each job goes down <b>one</b> branch, and the next job takes the next branch — jobs from different chats, schedules or triggers are shared between the agents (a new message in the SAME chat still replaces the one before it). A branch with no agent yet is skipped. To share ONE job between agents, use SPLIT THE JOB.'
+        copy: 'Cada job se copia a <b>toda</b> rama. El JOINER tras las ramas espera por todas, y luego envía un resultado combinado. Las ramas de una sola etapa trabajan a la vez.',
+        divide: 'La etapa antes del splitter escribe el job como partes numeradas, una por rama. A cada rama se le entrega <b>solo su propia parte</b>, trabajan a la vez, y el JOINER vuelve a unir las partes. Una rama que falla se nombra en el resultado; las demás terminan.',
+        turns: 'Cada job baja por <b>una</b> rama, y el siguiente toma la rama siguiente — los jobs de chats, horarios o disparadores distintos se comparten entre agentes (un mensaje nuevo en el MISMO chat sustituye al anterior). Una rama sin agente todavía se salta. Para compartir UN job entre agentes, usa DIVIDIR EL JOB.'
       };
-      body.innerHTML = '<section class="wf-sec"><h3><span class="n">SPLITTER</span>' + (mode === 'divide' ? 'The job is split into parts' : copies ? 'Every branch gets a copy' : 'Branches take turns') + '</h3>'
+      body.innerHTML = '<section class="wf-sec"><h3><span class="n">SPLITTER</span>' + (mode === 'divide' ? 'El job se divide en partes' : copies ? 'Cada rama recibe una copia' : 'Branches take turns') + '</h3>'
         + '<div class="wf-modepicks wf-modepicks-3" role="group" aria-label="What this splitter does with each job">'
         + pick('copy', 'every branch works the same job; a JOINER combines the results')
         + pick('divide', 'the job is cut into parts; each branch does one; a JOINER puts them together')
@@ -1727,7 +1727,7 @@ const WorkflowPanel = (() => {
       body.querySelectorAll('[data-smode]').forEach(b => { b.onclick = () => {
         const note = $('#split-note');
         if (b.getAttribute('aria-pressed') === 'true') return;
-        if (b.classList.contains('off')) { H.sfx('bad'); if (note) note.textContent = '✕ ' + (b.getAttribute('data-tip') || 'not available on this floor yet'); return; }
+        if (b.classList.contains('off')) { H.sfx('bad'); if (note) note.textContent = '✕ ' + (b.getAttribute('data-tip') || 'todavía no disponible en esta planta'); return; }
         const r = H.setSplitMode ? H.setSplitMode(p.id, b.dataset.smode) : null;
         if (!r || !r.ok) { H.sfx('bad'); if (note) note.textContent = '✕ ' + ((r && r.msg) || 'could not switch'); return; }
         H.sfx('click'); paint(true);
@@ -1737,32 +1737,32 @@ const WorkflowPanel = (() => {
     if (p.t === 'merger') {
       body.innerHTML = '<section class="wf-sec"><h3><span class="n">MERGER</span>Several belts share one</h3>'
         + '<div class="wf-mode">' + dia + '<p>Belts that run into the merger continue as one belt. <b>Nothing waits and nothing is combined</b>: every job goes on by itself.</p></div>'
-        + '<p class="wf-help">Want the branches of ONE job combined into a single result? Use a JOINER instead.</p></section>';
+        + '<p class="wf-help">¿Quieres las ramas de UN job combinadas en un único resultado? Usa un JOINER en cambio.</p></section>';
       return;
     }
     // (the OUTBOX never reaches here: paintOutbox above is the one place its help is written)
-    const TXT = [String(p.t).toUpperCase(), 'Part of the line', 'Drag from one machine onto the next to connect them.'];
+    const TXT = [String(p.t).toUpperCase(), 'Parte de la línea', 'Arrastra de una máquina a la siguiente para conectarlas.'];
     body.innerHTML = '<section class="wf-sec workflow-no-settings"><h3><span class="n">' + esc(TXT[0]) + '</span>' + esc(TXT[1]) + '</h3><p class="wf-help">' + esc(TXT[2]) + '</p>'
-      + '<p class="wf-help dim">No extra settings needed — the belts you draw decide the paths.</p></section>';
+      + '<p class="wf-help dim">No hace falta más ajuste — las cintas que dibujes deciden los caminos.</p></section>';
   }
   function paintFilter(body, f, p) {
     const info = H.junctionInfo ? H.junctionInfo(p.id) : null, lanes = (info && info.lanes) || [];
     const cur = { routes: (p.routes && typeof p.routes === 'object') ? Object.assign({}, p.routes) : {}, def: p.def || null };
     const selOf = tag => (tag === '__def__' ? cur.def : cur.routes[tag]);
-    const ROWS = [['code', 'CODE', 'building or fixing software'], ['research', 'RESEARCH', 'finding and reading sources'], ['__def__', 'EVERYTHING ELSE', 'the fallback for any other task']];
+    const ROWS = [['code', 'CÓDIGO', 'construir o arreglar software'], ['research', 'INVESTIGACIÓN', 'encontrar y leer fuentes'], ['__def__', 'TODO LO DEMÁS', 'el respaldo para cualquier otra tarea']];
     const rows = ROWS.map(([tag, label, hint]) => '<div class="wf-route"><span class="wf-route-k">' + label + '<small>' + esc(hint) + '</small></span><span class="wf-chips">'
-      + (lanes.length ? lanes.map(l => '<button type="button" class="wf-chip" data-ftag="' + tag + '" data-fdir="' + l.dir + '" aria-pressed="' + (selOf(tag) === l.dir) + '">' + esc(laneName(f, l, false)) + '</button>').join('') : '<span class="dim">no belt out yet</span>')
+      + (lanes.length ? lanes.map(l => '<button type="button" class="wf-chip" data-ftag="' + tag + '" data-fdir="' + l.dir + '" aria-pressed="' + (selOf(tag) === l.dir) + '">' + esc(laneName(f, l, false)) + '</button>').join('') : '<span class="dim">aún no hay cinta saliente</span>')
       + '</span></div>').join('');
-    body.innerHTML = '<section class="wf-sec"><h3><span class="n">FILTER</span>Send each type of task its own way</h3>'
-      + '<div class="wf-mode">' + (H.machineDiagram ? H.machineDiagram('filter') : '') + '<p>The filter reads each task and sorts it by <b>type</b>: code, research, or everything else. Pick the belt each type takes.</p></div>'
-      + (lanes.length ? '' : '<p class="wf-warnline">Run belts OUT of the filter first (drag from the FILTER onto the next machine). Each belt out appears here.</p>')
+    body.innerHTML = '<section class="wf-sec"><h3><span class="n">FILTER</span>Envía cada tipo de tarea por su propio camino</h3>'
+      + '<div class="wf-mode">' + (H.machineDiagram ? H.machineDiagram('filter') : '') + '<p>El filtro lee cada tarea y la clasifica por <b>tipo</b>: código, investigación o todo lo demás. Elige la cinta que toma cada tipo.</p></div>'
+      + (lanes.length ? '' : '<p class="wf-warnline">Tensa cintas SALIENDO del filtro primero (arrastra del FILTER a la siguiente máquina). Cada cinta saliente aparece aquí.</p>')
       + '<div class="wf-routes">' + rows + '</div>'
-      + '<p class="wf-help" id="flt-note">' + (cur.def ? 'Saved as you choose.' : 'Choose a belt for EVERYTHING ELSE so no task is left without a way out.') + '</p>'
-      + '<p class="wf-help dim">The filter only knows these three types. A task already addressed to one agent follows that agent’s belt instead.</p></section>'
+      + '<p class="wf-help" id="flt-note">' + (cur.def ? 'Guardado a medida que eliges.' : 'Elige una cinta para TODO LO DEMÁS para que ninguna tarea quede sin salida.') + '</p>'
+      + '<p class="wf-help dim">El filtro solo conoce estos tres tipos. Una tarea ya dirigida a un agente sigue la cinta de ese agente en cambio.</p></section>'
       + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
-        + [['code', 'CODE', 'an ENGINEER'], ['research', 'RESEARCH', 'a RESEARCHER']].filter(([tag]) => canEdit('addRoute', p.id, { id: p.id, tag }).error !== 'HAS_ROUTE')
-          .map(([tag, lbl, who]) => editBtn('addRoute', p.id, { id: p.id, tag }, '+ A STEP FOR ' + lbl, who + ' takes ' + lbl + ' work, then hands on to where everything else goes')).join('')
-        + editBtn('removeSorter', p.id, { id: p.id }, '✕ REMOVE THE SORTER', 'the FILTER and the steps it sorts work to go; the line runs straight on to where everything else went')
+        + [['code', 'CÓDIGO', 'un ENGINEER'], ['research', 'INVESTIGACIÓN', 'un RESEARCHER']].filter(([tag]) => canEdit('addRoute', p.id, { id: p.id, tag }).error !== 'HAS_ROUTE')
+          .map(([tag, lbl, who]) => editBtn('addRoute', p.id, { id: p.id, tag }, '+ UNA ETAPA PARA ' + lbl, who + ' toma trabajo de ' + lbl + ', y luego pasa a donde va todo lo demás')).join('')
+        + editBtn('removeSorter', p.id, { id: p.id }, '✕ QUITAR EL ORDENADOR', 'el FILTER y las etapas a las que ordena el trabajo se van; la línea sigue directo a donde iba todo lo demás')
         + '</div><p class="wf-help dim">Saca un paso de ruta (su tarjeta: ✕ QUITAR PASO) y ese tipo va con todo lo demás. Un UNDO deshace cualquier cambio.</p></section>' : '');
     wireEdits(body);
     const note = $('#flt-note');
@@ -1771,10 +1771,10 @@ const WorkflowPanel = (() => {
       if (tag === '__def__') cur.def = cur.def === dir ? null : dir;
       else if (cur.routes[tag] === dir) delete cur.routes[tag]; else cur.routes[tag] = dir;
       const res = H.station().configureJunction(p.id, { routes: cur.routes, def: cur.def });
-      if (!res || !res.ok) { H.sfx('bad'); if (note) note.textContent = '✕ not saved — ' + ((res && (res.msg || res.error)) || 'try again'); return; }
+      if (!res || !res.ok) { H.sfx('bad'); if (note) note.textContent = '✕ no se guardó — ' + ((res && (res.msg || res.error)) || 'inténtalo de nuevo'); return; }
       H.sfx('click');
       body.querySelectorAll('[data-ftag="' + tag + '"]').forEach(x => x.setAttribute('aria-pressed', String(selOf(tag) === x.dataset.fdir)));
-      if (note) note.textContent = cur.def ? '✓ saved' : 'Saved. Now choose a belt for EVERYTHING ELSE so no task is left without a way out.';
+      if (note) note.textContent = cur.def ? '✓ guardado' : 'Guardado. Ahora elige una cinta para TODO LO DEMÁS para que ninguna tarea quede sin salida.';
     }; });
   }
 
@@ -1790,9 +1790,9 @@ const WorkflowPanel = (() => {
       api('/api/routing/steptest/' + encodeURIComponent(id)).then(r => {
         if (!el || S.pollFor !== id) return;
         if (r.j && r.j.session) { S.session = r.j.session; S.sessionErr = null; if (S.session.state === 'paused') { S.handoff = null; S.handoffFor = null; H.sfx('chime'); } }
-        else S.sessionErr = (r.j && r.j.error) || 'lost the session (HTTP ' + r.status + ')';
+        else S.sessionErr = (r.j && r.j.error) || 'sesión perdida (HTTP ' + r.status + ')';
         paint(!typing()); poll();
-      }).catch(() => { S.sessionErr = 'sidecar unreachable — the test may still be running'; paint(!typing()); S.pollTimer = setTimeout(poll, 2000); });
+      }).catch(() => { S.sessionErr = 'sidecar inalcanzable — el test puede seguir corriendo'; paint(!typing()); S.pollTimer = setTimeout(poll, 2000); });
     }, 700);
   }
   /* (sweep 2026-09-25) THE FLOOR FIRST: the sidecar resolves a paused crate's next dock (and a re-run's brief) from the
@@ -1819,8 +1819,8 @@ const WorkflowPanel = (() => {
     S.busy = true; paint(true);
     return api('/api/routing/steptest/' + encodeURIComponent(s.id) + '/' + verb, 'POST', body || {}).then(r => {
       if (r.j && r.j.session) { S.session = r.j.session; S.sessionErr = null; }
-      else S.sessionErr = (r.j && r.j.error) || verb + ' refused (HTTP ' + r.status + ')';
-    }).catch(() => { S.sessionErr = 'sidecar unreachable'; }).then(() => { S.busy = false; paint(true); poll(); });
+      else S.sessionErr = (r.j && r.j.error) || verb + ' rechazado (HTTP ' + r.status + ')';
+    }).catch(() => { S.sessionErr = 'sidecar inalcanzable'; }).then(() => { S.busy = false; paint(true); poll(); });
   }
   function startSession(text, pause) {
     const c = comp(); if (!c) return;
@@ -1844,9 +1844,9 @@ const WorkflowPanel = (() => {
      mode says what it spends and where its result goes; STEP THROUGH needs the sidecar's step-test seam, and a station
      without it says so and offers SEND A REAL JOB. The test job typed here is the INBOX's test job. */
   const TEST_MODES = [
-    ['watch', 'WATCH IT · FREE', 'a crate rides the belts; no agent runs'],
-    ['step', 'STEP THROUGH · REAL', 'pauses at every hand-off; nothing is delivered'],
-    ['real', 'SEND A REAL JOB', 'end to end; the result waits in DELIVERABLES']   // (org D10) where its ✓ DELIVERED line points
+    ['watch', 'VERLO · GRATIS', 'una caja viaja por las cintas; no corre ningún agente'],
+    ['step', 'PASO A PASO · REAL', 'se pausa en cada entrega; nada se entrega'],
+    ['real', 'ENVIAR UN JOB REAL', 'de punta a punta; el resultado espera en ENTREGABLES']   // (org D10) where its ✓ DELIVERED line points
   ];
   /* THE JOB, READ BACK (2026-09-30 — Andrew: "if the output is terrible and not consistent … how the user can properly correct
      it"): a job sent from the panel (SEND A JOB, or TEST's SEND A REAL JOB) comes back as the WHOLE result — never 80 characters
@@ -1862,7 +1862,7 @@ const WorkflowPanel = (() => {
     if (typeof Chat !== 'undefined' && Chat.renderProse) { n.classList.add('wf-md'); Chat.renderProse(n, raw); }
     else n.textContent = raw;
   }
-  const stepText = got => !got || got === 'loading' ? 'reading…' : got.err ? '⚠ ' + got.err : (got.output || 'this step replied with nothing');
+  const stepText = got => !got || got === 'loading' ? 'leyendo…' : got.err ? '⚠ ' + got.err : (got.output || 'esta etapa respondió con nada');
   function readStep(r, streamId) {
     if (!r || !r.runId || stepOut[r.runId]) return;
     stepOut[r.runId] = 'loading';
@@ -1873,10 +1873,10 @@ const WorkflowPanel = (() => {
     api('/api/transcript?stream=' + encodeURIComponent(streamId || r.streamId || '') + '&agent=' + encodeURIComponent(r.agentId || 'agent') + '&runId=' + encodeURIComponent(r.runId) + '&limit=50')
       .then(({ status, j }) => {
         const turns = status === 200 && j && Array.isArray(j.turns) ? j.turns : null;
-        if (!turns) return done({ err: 'this step’s reply could not be read' });
+        if (!turns) return done({ err: 'la respuesta de esta etapa no se pudo leer' });
         const said = turns.filter(m => m && m.role === 'assistant' && String(m.content || '').trim() && String(m.content).trim() !== '[SILENT]');
         done({ output: said.length ? String(said[said.length - 1].content) : '' });
-      }, () => done({ err: 'this step’s reply could not be read — is the station running?' }));
+      }, () => done({ err: 'la respuesta de esta etapa no se pudo leer — ¿está corriendo la estación?' }));
   }
   function readJobSteps() {
     const sr = H.sampleState ? H.sampleState() : null, c = comp();
@@ -1889,8 +1889,8 @@ const WorkflowPanel = (() => {
   function loopNotes(text) {
     const notes = [];
     const rest = String(text || '').replace(LOOP_NOTE, (m, kind, n) => {
-      notes.push(kind === 'escalated' ? 'The review loop used all ' + n + ' tries without an approval, so the work went on to the escalation step.'
-        : 'The review loop used all ' + n + ' tries without an approval, so the last version shipped as it was.');
+      notes.push(kind === 'escalated' ? 'El loop de revisión usó sus ' + n + ' intentos sin una aprobación, así que el trabajo siguió a la etapa de escalado.'
+        : 'El loop de revisión usó sus ' + n + ' intentos sin una aprobación, así que la última versión salió tal cual.');
       return '';
     });
     return { notes, rest };
