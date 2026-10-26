@@ -5,8 +5,9 @@ Traducir al español toda la interfaz visible de starnet-es (frontend + espejo w
 
 ## Reparación de disposición (2026-10-26, wake issue_disposition_repair 1/2, corrida 1f9dbef3)
 - Causa: la corrida e4d1a484 aparcó MIS-23 con resumen pero sin monitor vivo (monitor `triggered`, nextCheckAt=null) y la continuación prometida sobre MIS-23-2 no existía (executionState=null en 772a614b).
-- Hecho: sin cambios de código. Re-registradas continuaciones reales vía `continue-task.py` en MIS-23-2 (772a614b, slice 2b pendiente) y en MIS-23 (8dcc7ae8); ambas nextCheckAt≈+120 s. Acción de recuperación 6d912a42 resuelta con resoluciónNote.
-- Disposición resultante: **live/monitored** — MIS-23 in_progress con monitor real; el siguiente corte es MIS-23-2 slice 2b.
+- Hecho: sin cambios de código. Re-registradas continuaciones reales vía `continue-task.py`: MIS-23-2 (772a614b) in_progress nextCheckAt 09:52:06Z (0/100) y MIS-23 (8dcc7ae8) in_progress nextCheckAt 09:53:12Z (3/100).
+- Detalle: al probar la disposición `todo` para el padre, el movimiento a todo BORRÓ el monitor (executionPolicy.monitor=null) y la acción de recuperación 6d912a42 se **autorresolvió** en ese movimiento; se restauró `in_progress` + monitor real, que es la disposición «monitored» inequívoca del guardián.
+- Disposición resultante: **live/monitored** — MIS-23 y MIS-23-2 ambas in_progress con monitores reales; el siguiente corte es MIS-23-2 slice 2b (el disparo de la hija, 09:52:06Z, llega primero).
 
 ## Estado (2026-10-26, cierre de ejecución — MIS-23-2 slice 2a)
 
