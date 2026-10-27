@@ -97,7 +97,7 @@
         note: 'Ambos tokens se guardan en esta máquina y nunca se muestran.',
         fieldsHtml: '<label class="ch-lbl" for="sl-bot-token">BOT TOKEN <span class="dim">— xoxb-…, de OAuth &amp; Permissions</span></label>' +
           '<input id="sl-bot-token" type="password" class="key-input" placeholder="xoxb-..." autocomplete="off" spellcheck="false">' +
-          '<label class="ch-lbl" for="sl-app-token">APP-LEVEL TOKEN <span class="dim">— xapp-…, de Socket Mode</span></label>' +
+          '<label class="ch-lbl" for="sl-app-token">TOKEN DE LA APP <span class="dim">— xapp-…, de Socket Mode</span></label>' +
           '<input id="sl-app-token" type="password" class="key-input" placeholder="xapp-..." autocomplete="off" spellcheck="false">',
         read: (b) => {
           const bot = (b.querySelector('#sl-bot-token').value || '').trim();
@@ -133,9 +133,9 @@
         tagline: 'Envía mensajes a tu agente en Signal a través de un puente signal-cli autoalojado.',
         verb: 'receiving',
         steps: [
-          'Start the bridge with Docker: <code>docker run -d --name signal-api -p 127.0.0.1:8080:8080 -v signal-api:/home/.local/share/signal-cli -e MODE=native bbernhard/signal-cli-rest-api</code>. Keep <code>MODE=native</code> (or <code>normal</code>); <code>json-rpc</code> mode cannot be polled.',
-          'Link it to your own Signal: open <code>http://127.0.0.1:8080/v1/qrcodelink?device_name=starnet</code> and scan it from Signal → Settings → Linked devices. No second number needed. (A spare number registered on the bridge works too.)',
-          'Enter the bridge URL and that number below, then connect.',
+          'Arranca el puente con Docker: <code>docker run -d --name signal-api -p 127.0.0.1:8080:8080 -v signal-api:/home/.local/share/signal-cli -e MODE=native bbernhard/signal-cli-rest-api</code>. Mantén <code>MODE=native</code> (o <code>normal</code>); el modo <code>json-rpc</code> no se puede sondear.',
+          'Vínculalo con tu propio Signal: abre <code>http://127.0.0.1:8080/v1/qrcodelink?device_name=starnet</code> y escanéalo desde Signal → Ajustes → Dispositivos vinculados. No hace falta un segundo número. (También sirve un número de repuesto registrado en el puente.)',
+          'Introduce la URL del puente y ese número abajo, y conecta.',
           '<b>Vincula tu cuenta.</b> StarNet muestra un mensaje <code>pair</code> con un código de un solo uso. Enlazado a tu propio número: envíalo en <b>Note to Self</b> y sigue chateando ahí. Número de repuesto: envíale mensajes a ese número desde tu Signal. Hasta que te vincules, el bot rechaza todos los mensajes.'
         ],
         note: 'No necesita token — el puente corre en tu máquina; déjalo enlazado a localhost.',

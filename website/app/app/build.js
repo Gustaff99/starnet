@@ -106,56 +106,56 @@ const Build = (() => {
   // every label NAMES THE FIX, in words (mirrors world.js NAG_LABEL — keep the two in sync)
   const VAL_LABEL = {
     // ORPHAN_BAY names its fix (2026-10-09 P0: NOT ON THE LINE said what was wrong, never what to do)
-    ORPHAN_SOURCE: 'NOT CONNECTED — DRAG IT ONTO A BAY', ORPHAN_BAY: 'NOT ON A LINE — BELT INTO IT',
+    ORPHAN_SOURCE: 'SIN CONECTAR — ÁRRALO A UNA BAY', ORPHAN_BAY: 'SIN LÍNEA — CINTA POR DENTRO',
     // a belt that only TOUCHES the junction corner feeds nothing: the lane must run THROUGH the junction tile
     // (SHORT on the floor — the full sentence rides the hover card, VAL_WHY: the long form ran wider than a room)
-    BAY_NOT_FED: 'NOT FED — BELT INTO IT',
+    BAY_NOT_FED: 'SIN ALIMENTAR — CINTA POR DENTRO',
     // the belt into it starts inside the ring of the machine feeding it (placed a tile apart), so moving it is the fix
-    BAY_TOO_CLOSE: 'TOO CLOSE — MOVE IT 1 TILE AWAY',
-    CYCLE: 'LOOP! — BREAK THE CIRCLE', FILTER_NO_DEFAULT: 'NO DEFAULT LANE — CLICK', SPLIT_CREW: 'PLACE A DESK — TOOLS FOLLOW THE DOCK',
-    UNBOUND_BAY: 'NO AGENT — CLICK', SPLIT_ONE_LANE: 'NEEDS 2 OUT-LANES',
-    JOIN_ONE_LANE: 'NEEDS 2 IN-LANES',
+    BAY_TOO_CLOSE: 'MUY CERCA — ALEJA 1 CASILLA',
+    CYCLE: '¡BUCLE! — ROMPE EL CÍRCULO', FILTER_NO_DEFAULT: 'SIN CALLE POR DEFECTO — CLIC', SPLIT_CREW: 'COLOCA UN ESCRITORIO — LAS HERRAMIENTAS SIGUEN AL DOCK',
+    UNBOUND_BAY: 'SIN AGENTE — CLIC', SPLIT_ONE_LANE: 'NECESITA 2 CALLES DE SALIDA',
+    JOIN_ONE_LANE: 'NECESITA 2 CALLES DE ENTRADA',
     // the done lane defaults to the FIRST exit (E, S, W, N order); this only fires with no exit, or a done set to a non-exit
-    LOOP_NO_DONE: 'NO DONE LANE',
-    LOOP_NO_BACK: 'NO BACK LANE',
+    LOOP_NO_DONE: 'SIN CALLE DONE',
+    LOOP_NO_BACK: 'SIN CALLE DE VUELTA',
     // a junction touching no belt is fixed by belting into it (a junction moved onto the belt of a line is refused — it would take that
     // line: ANOTHER BELT RUNS HERE), so the nag names that gesture, never the refused move (wave 2, build-06)
-    ORPHAN_JUNCTION: 'NOT ON A BELT — BELT INTO IT',
-    BELT_BURIED: 'A PROP SITS ON THIS LINE — MOVE IT',
+    ORPHAN_JUNCTION: 'SIN CINTA — CINTA POR DENTRO',
+    BELT_BURIED: 'HAY UN PROP EN ESTA LÍNEA — MUÉVELO',
     // the docks feed each OTHER: no belt loop anywhere, but the work line would run forever, paying each lap
-    CHAIN_CYCLE: 'WORK LINE LOOPS — CUT ONE HANDOFF',
+    CHAIN_CYCLE: 'LA LÍNEA DA VUELTAS — CORTA UN TRASPASO',
     // the longest way through this line runs more stages than its stage ceiling: a job that goes that way stops part-way (2026-10-09 P0) — said on its INBOX
-    LINE_TOO_LONG: 'TOO LONG — RAISE THE LINE BUDGET',
+    LINE_TOO_LONG: 'MUY LARGA — SUBE EL PRESUPUESTO DE LÍNEA',
     // SEND TO (2026-10-10) — said on the OUTBOX whose hand-off is off; advice, never a blocker
-    SEND_TO_MISSING: 'SENDS NOWHERE — PICK A LINE', SEND_TO_SELF: 'SENDS TO ITSELF — PICK ANOTHER LINE',
-    SEND_TO_LOOP: 'SENDS IN A CIRCLE — CUT ONE SEND TO'
+    SEND_TO_MISSING: 'ENVIÁ A NINGÚN LADO — ELIGE LÍNEA', SEND_TO_SELF: 'SE ENVÍA A SÍ MISMA — ELIGE OTRA LÍNEA',
+    SEND_TO_LOOP: 'ENVÍA EN CÍRCULO — CORTA UN ENVÍO'
   };
   /* THE FULL SENTENCE for a finding whose floor label had to be cut short (2026-09-23 playtest: the NOT FED nag
      ran wider than the room). The floor keeps the short label; the machine's HOVER CARD and the Workflow panel's
      hints carry this — a glance says what is wrong, the card says exactly how to fix it. */
   const VAL_WHY = {
-    ORPHAN_BAY: 'This BAY isn’t on any line, so it only works when you message it directly. To add it to a line, drag from the machine that should hand it work onto this BAY — or pick BELT, click the machine that should hand it work, then this BAY (or click it and choose JOIN A LINE).',
-    BAY_NOT_FED: 'Not fed — no belt brings work into this BAY. Run a belt INTO it: drag from the machine before it onto this BAY (or BELT: click that machine, then this BAY). If the lane passes a junction, it must run THROUGH the junction’s tile, not past its corner.',
-    BAY_TOO_CLOSE: 'Too close — this BAY sits right beside the machine that feeds it, so the belt between them touches both at once and the job never arrives. Move one of them a tile further apart, then connect them again with BELT.',
-    ORPHAN_JUNCTION: 'This junction touches no belt, so it routes nothing. Belt into it: drag from the machine before it onto this junction (or pick BELT, click that machine, then this junction), then on to the machines after it. A junction cannot be moved onto a belt that already joins two machines — to put one ON a line, delete this one and drop a junction from the hotbar onto that belt.',
-    SPLIT_ONE_LANE: 'This SPLITTER needs two out-lanes — run belts THROUGH its tile: in on one side, out on two others.',
-    JOIN_ONE_LANE: 'This JOINER needs two in-lanes — run a second belt INTO its tile.',
-    LOOP_NO_DONE: 'This LOOP has no DONE lane — run a belt OUT of its tile onward (the first exit, in E/S/W/N order, is DONE unless you choose one).',
-    LOOP_NO_BACK: 'This LOOP has no BACK lane — run a second belt OUT of its tile back to an earlier BAY.',
-    LINE_TOO_LONG: 'Too long — the longest way through this line runs more stages than its LINE BUDGET allows, so a job that goes the longest way would stop part-way (the stages that ran are still paid for). Raise “max stages after the first” in this INBOX’s Workflow card › Optional limits · LINE BUDGET (24 at most), or shorten the line.',
-    SEND_TO_MISSING: 'This OUTBOX sends to an INBOX that is gone or starts no line yet (or the OUTBOX itself ends no line), so nothing is sent on. Click the OUTBOX and pick a line under SEND TO (or NOWHERE).',
-    SEND_TO_SELF: 'This OUTBOX sends its work back into its own line’s INBOX, so nothing is sent on. Click it and pick another line under SEND TO (or NOWHERE).',
+    ORPHAN_BAY: 'Esta BAY no está en ninguna línea, así que solo funciona cuando le envías un mensaje directamente. Para añadirla a una línea, arrastra desde la máquina que debe darle trabajo hasta esta BAY — o elige CINTA, haz clic en la máquina que debe darle trabajo y luego en esta BAY (o haz clic en ella y elige UNIRSE A UNA LÍNEA).',
+    BAY_NOT_FED: 'Sin alimentar — ninguna cinta trae trabajo a esta BAY. Pasa una cinta POR DENTRO: arrastra desde la máquina anterior hasta esta BAY (o CINTA: haz clic en esa máquina y luego en esta BAY). Si la calle pasa por una intersección, debe atravesar la casilla de la intersección, no pasar por su esquina.',
+    BAY_TOO_CLOSE: 'Muy cerca — esta BAY está justo al lado de la máquina que la alimenta, así que la cinta entre ambas las toca a la vez y el trabajo nunca llega. Aleja una de ellas una casilla más y vuelve a conectarlas con CINTA.',
+    ORPHAN_JUNCTION: 'Esta intersección no toca ninguna cinta, así que no enruta nada. Cíntala: arrastra desde la máquina anterior hasta esta intersección (o elige CINTA, haz clic en esa máquina y luego en esta intersección) y luego hacia las máquinas de después. Una intersección no se puede mover sobre una cinta que ya une dos máquinas — para poner una EN una línea, borra esta y suelta una intersección desde la hotbar sobre esa cinta.',
+    SPLIT_ONE_LANE: 'Este SPLITTER necesita dos calles de salida — pasa cintas POR SU casilla: una entrando por un lado, dos saliendo por otros.',
+    JOIN_ONE_LANE: 'Este JOINER necesita dos calles de entrada — pasa una segunda cinta POR SU casilla.',
+    LOOP_NO_DONE: 'Este LOOP no tiene calle DONE — pasa una cinta FUERA de su casilla hacia adelante (la primera salida, en orden E/S/W/N, es DONE salvo que elijas otra).',
+    LOOP_NO_BACK: 'Este LOOP no tiene calle de vuelta — pasa una segunda cinta FUERA de su casilla hacia una BAY anterior.',
+    LINE_TOO_LONG: 'Muy larga — el camino más largo de esta línea supera las etapas que permite su PRESUPUESTO DE LÍNEA, así que un trabajo que tome ese camino se detendría a medias (las etapas que corrieron siguen pagadas). Sube “etapas máximas después de la primera” en la tarjeta de Workflow de esta INBOX › Límites opcionales · PRESUPUESTO DE LÍNEA (24 como máximo), o acorta la línea.',
+    SEND_TO_MISSING: 'Esta OUTBOX envía a una INBOX que ya no existe o que aún no inicia ninguna línea (o la propia OUTBOX no termina ninguna línea), así que nada se envía. Haz clic en la OUTBOX y elige una línea en ENVIAR A (o NINGUNA).',
+    SEND_TO_SELF: 'Esta OUTBOX envía su trabajo de vuelta a la INBOX de su propia línea, así que nada se envía. Haz clic en ella y elige otra línea en ENVIAR A (o NINGUNA).',
     // (advice on the OUTBOX's card, never a floor nag — Pipeline.sendToFileAdvice says when it is true: final floor lane M19 / M29)
-    SEND_TO_PRIVATE_FILES: 'This line has no project folder, so the files its crew makes stay in each agent’s private workspace. The finished text rides on, but the next line’s crew cannot open those files. Give this line a shared project folder (on its INBOX) to hand files on.',
-    SEND_TO_LOOP: 'These lines send their work round in a circle, so every SEND TO on the circle is off — a job would never stop. Click one OUTBOX on the circle and set its SEND TO to NOWHERE or another line.'
+    SEND_TO_PRIVATE_FILES: 'Esta línea no tiene carpeta de proyecto, así que los archivos que hace su tripulación se quedan en el espacio privado de cada agente. El texto terminado viaja, pero la tripulación de la siguiente línea no puede abrir esos archivos. Dale a esta línea una carpeta de proyecto compartida (en su INBOX) para pasar archivos.',
+    SEND_TO_LOOP: 'Estas líneas envían su trabajo en círculo, así que cada ENVIAR A del círculo está apagado — un trabajo nunca se detendría. Haz clic en una OUTBOX del círculo y pon su ENVIAR A en NINGUNA u otra línea.'
   };
   const valWhy = code => VAL_WHY[code] || VAL_LABEL[code] || code;
   // a finding's full sentence for THIS machine — with its own numbers where the finding carries them (LINE_TOO_LONG)
   function findingWhy(e) {
     if (e && e.code === 'LINE_TOO_LONG' && e.stages > 0) {
       const fits = e.stages - 1 <= 24;
-      return 'Too long — the longest way through this line runs ' + e.stages + ' stages, but its LINE BUDGET allows ' + (e.maxHops + 1) + ' (the first + ' + e.maxHops + ' more), so a job that goes that way would stop at stage ' + (e.maxHops + 2) + ' (the stages that ran are still paid for). '
-        + (fits ? 'Raise “max stages after the first” to ' + (e.stages - 1) + ' in this INBOX’s Workflow card › Optional limits · LINE BUDGET, or shorten the line.' : 'No LINE BUDGET allows that many (25 stages at most): shorten the line.');
+      return 'Muy larga — el camino más largo de esta línea lleva ' + e.stages + ' etapas, pero su PRESUPUESTO DE LÍNEA permite ' + (e.maxHops + 1) + ' (la primera + ' + e.maxHops + ' más), así que un trabajo que tome ese camino se detendría en la etapa ' + (e.maxHops + 2) + ' (las etapas que corrieron siguen pagadas). '
+        + (fits ? 'Sube “etapas máximas después de la primera” a ' + (e.stages - 1) + ' en la tarjeta de Workflow de esta INBOX › Límites opcionales · PRESUPUESTO DE LÍNEA, o acorta la línea.' : 'Ningún PRESUPUESTO DE LÍNEA permite tantas (25 etapas como máximo): acorta la línea.');
     }
     return VAL_WHY[e && e.code] || null;
   }
@@ -408,7 +408,7 @@ const Build = (() => {
     // the chunks (and their dense plates) are not drawn again until the next open() takes the world's bake: free them now
     cache = null; cacheGeo = null; bakeDirty = true;
     const saved = opts.persist ? opts.persist() : false;
-    if (saved && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Station layout saved locally', 'good', undefined, { transient: true });
+    if (saved && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Diseño de la estación guardado localmente', 'good', undefined, { transient: true });
     if (opts.world && opts.world.refit) opts.world.refit();     // recenter the live world on the new build
     if (opts.world && opts.world.start) opts.world.start();     // resume the live sim with the new build
     if (opts.onClose) opts.onClose();
@@ -424,7 +424,7 @@ const Build = (() => {
     root.innerHTML = `
       <canvas class="refit-canvas"></canvas>
       <div class="refit-top">
-        <span class="refit-title">BUILD MODE</span>
+        <span class="refit-title">MODO CONSTRUCCIÓN</span>
         <span class="refit-sub" id="refit-sub"></span>
         <span class="refit-spacer"></span>
         <span class="refit-zoom" id="refit-zoom">
@@ -439,10 +439,10 @@ const Build = (() => {
         <button class="bb sm" id="refit-fit" title="encuadrar la estación">⊹ FIT</button>
         <button class="bb sm" id="refit-test" data-tip="Prueba esta línea: MÍRALA es gratis (una caja viaja por las cintas, sin agente); PASO A PASO y ENVIAR UN TRABAJO REAL la ejecutan de verdad.">${esc(PREVIEW_LABEL)}</button>
         <button class="bb sm" id="refit-help" title="cómo construir">? HELP</button>
-        <button class="bb sm refit-primary" id="refit-done" title="terminar + guardar (o pulsa Esc dos veces)">SAVE & EXIT</button>
+        <button class="bb sm refit-primary" id="refit-done" title="terminar + guardar (o pulsa Esc dos veces)">GUARDAR Y SALIR</button>
       </div>
       <div class="refit-dock" role="region" aria-label="Construction kit">
-        <div class="refit-dock-head"><span class="refit-dock-head-t">BUILD LIBRARY</span><button class="bb refit-presets-entry" id="refit-stations" type="button">▦ Presets</button><button class="bb sm" type="button" id="refit-kit-toggle" aria-expanded="true" aria-controls="refit-option-section">MINIMIZE ▴</button></div>
+        <div class="refit-dock-head"><span class="refit-dock-head-t">BIBLIOTECA DE CONSTRUCCIÓN</span><button class="bb refit-presets-entry" id="refit-stations" type="button">▦ Presets</button><button class="bb sm" type="button" id="refit-kit-toggle" aria-expanded="true" aria-controls="refit-option-section">MINIMIZE ▴</button></div>
         <nav class="refit-library-tabs" aria-label="Categorías de construcción"></nav>
         <div class="refit-dock-section refit-mode-section">
           <div id="refit-tools"></div>
@@ -452,7 +452,7 @@ const Build = (() => {
           <div class="refit-section-label" id="refit-palette-label">OPTIONS</div>
           <div class="refit-palette" id="refit-palette"></div>
         </div>
-        <div class="refit-tool-help" id="refit-tool-help"><span></span><button class="bb sm" type="button" id="refit-stop">STOP PLACING</button></div>
+        <div class="refit-tool-help" id="refit-tool-help"><span></span><button class="bb sm" type="button" id="refit-stop">DETENER COLOCACIÓN</button></div>
         <div class="refit-hint" id="refit-hint"></div>
       </div>
       <div class="refit-tip" id="refit-tip"></div>
@@ -651,13 +651,13 @@ const Build = (() => {
   let makeBusy = false;      // a paid start (preview, make, side view) is in flight: one at a time, from every door (button, Enter, kit)
   let makeDraft = '', makeFocused = false;   // what is typed survives a palette redraw (a job landing, a chip click)
   const MAKE_PRICE = 0.35;
-  const MAKE_STEP = { queued: 'Queued', waiting: 'Working', starting: 'Starting', saving: 'Saving it to the station', sizing: 'Sizing it against the catalog', drawing: 'Drawing', retrying: 'Redrawing', checking: 'Checking it matches the station' };
+  const MAKE_STEP = { queued: 'En cola', waiting: 'Trabajando', starting: 'Arrancando', saving: 'Guardando en la estación', sizing: 'Midiendo contra el catálogo', drawing: 'Dibujando', retrying: 'Redibujando', checking: 'Comprobando que coincide con la estación' };
   function makeStatusText() {
     if (makeMsg) return makeMsg;
     if (!makeJob) {
       const bal = makeCredits && makeCredits.linked ? makeCredits.balanceUsd : null;
-      if (bal != null && bal > 0 && bal < MAKE_PRICE) return { text: 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' left \u00b7 not enough to make a prop (about $0.35)', tone: 'bad', door: true };
-      return { text: (bal != null && bal > 0 ? 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' left' : 'StarNet credits') + ' \u00b7 preview first (about 5\u00a2), then make it (about $0.35; a side view about $0.30)', tone: '' };
+      if (bal != null && bal > 0 && bal < MAKE_PRICE) return { text: 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' restantes \u00b7 no alcanza para fabricar una prop (unos $0.35)', tone: 'bad', door: true };
+      return { text: (bal != null && bal > 0 ? 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' left' : 'StarNet credits') + ' \u00b7 primero un preview (unos 5\u00a2), y luego fabricarla (unos $0.35; una vista lateral unos $0.30)', tone: '' };
     }
     const j = makeJob, spent = j.costUsd > 0 ? ' \u00b7 $' + j.costUsd.toFixed(2) + ' so far' : '';
     if (j.status === 'done' && j.kind === 'side') return { text: 'Side view made \u00b7 cost $' + (Number(j.costUsd) || 0).toFixed(2) + (j.costPending ? ' (final cost settling)' : '') + ' \u00b7 press R to turn it', tone: 'ok' };
@@ -776,7 +776,7 @@ const Build = (() => {
     card.innerHTML = '<img alt="Boceto de ' + esc(p.label || makePreview.noun) + '" src="' + esc(p.sketch) + '">' +
       '<div class="refit-makeprop-previewtxt"><b>' + esc(p.label || makePreview.noun) + '</b>' +
       '<span>About ' + esc(fp[0] || '?') + '\u00d7' + esc(fp[1] || '?') + ' tiles, ' + previewMetres(p.height) + ' tall' + (p.profile ? ' \u00b7 shown side-on' : '') + (p.symmetric ? ' \u00b7 turns freely' : '') + '</span>' +
-      '<small>Quick preview. The final is drawn in full detail from this, so small details can differ. ' + (makePreview.costPending ? 'Preview cost settling (see credit history).' : 'Preview cost $' + (Number(makePreview.costUsd) || 0).toFixed(2) + '.') + '</small>' +
+      '<small>Preview rápido. El final se dibuja en todo detalle desde este, así que los detalles pequeños pueden variar. ' + (makePreview.costPending ? 'Costo del preview en curso (ver historial de créditos).' : 'Costo del preview $' + (Number(makePreview.costUsd) || 0).toFixed(2) + '.') + '</small>' +
       '<div class="refit-makeprop-previewbtns"><button type="button" class="bb sm" id="refit-makeprop-makeit">HACERLO \u00b7 ~$0.35</button><button type="button" class="bb sm" id="refit-makeprop-again">OTRO \u00b7 ~5\u00a2</button><button type="button" class="bb sm" id="refit-makeprop-drop" aria-label="Descartar el boceto">\u2715</button></div></div>';
     // the paid preview stays until MAKE IT really started (out of credit, busy, offline: it is still there to use)
     card.querySelector('#refit-makeprop-makeit').onclick = async () => { const pv = makePreview; sfx('click'); if (await startMakeProp(pv.noun, pv.id) && makePreview === pv) { makePreview = null; paintPreviewCard(); } focusMakeInput(); };
@@ -798,7 +798,7 @@ const Build = (() => {
     try {
       r = await UserProps.startPreview(noun);
       if (r && r.ok && r.job) {
-        const PSTEP = { queued: 'Queued', sizing: 'Sizing it against the catalog', sketching: 'Sketching a preview', checking: 'Checking the preview' };
+        const PSTEP = { queued: 'En cola', sizing: 'Midiendo contra el catálogo', sketching: 'Bocetando un preview', checking: 'Comprobando el preview' };
         res = await UserProps.watchPreview(r.job.id, (j) => { makeMsg = { text: (PSTEP[j.step] || 'Previewing') + '\u2026', tone: 'busy' }; paintMakeStatus(); });
       }
     } finally { makeBusy = false; }
@@ -1037,8 +1037,8 @@ const Build = (() => {
     const list = propsForGrid();
     if (!on && propSection === 'abilities') {
       const intro = document.createElement('div'); intro.className = 'refit-ability-intro';
-      intro.innerHTML = '<b>' + esc(propAbility ? abilityName(propAbility) + ' · CHOOSE A DESIGN' : 'FIVE CORE ABILITIES') + '</b><span>' +
-        esc(propAbility ? 'Same ability, different appearance. One matching prop is enough in the relevant room.' : 'Real tools. Pick one design per ability you need.') + '</span>';
+      intro.innerHTML = '<b>' + esc(propAbility ? abilityName(propAbility) + ' · CHOOSE A DESIGN' : 'CINCO HABILIDADES BASE') + '</b><span>' +
+        esc(propAbility ? 'Misma habilidad, distinta apariencia. Un prop que coincida es suficiente en la habitación correspondiente.' : 'Herramientas reales. Elige un diseño por cada habilidad que necesites.') + '</span>';
       if (propAbility) {
         const back = document.createElement('button'); back.type = 'button'; back.className = 'bb sm refit-ability-back'; back.textContent = '← TODAS LAS CAPACIDADES';
         back.onclick = () => { propAbility = ''; renderPropGrid(); }; intro.prepend(back);
@@ -1051,7 +1051,7 @@ const Build = (() => {
       note.setAttribute('role', 'status');
       note.textContent = list.length
         ? (on ? 'SEARCH · ALL CATEGORIES' : propSection === 'abilities' ? 'ABILITY EQUIPMENT' : propCat === 'all' ? SECTION_NAMES[propSection] : catLabelOf(propCat)) + ' / ' + list.length + ' ITEMS'
-        : on ? 'No props match “' + propQuery.trim() + '”. Try a name or ability, such as web, files or desk.' : 'No equipment in this category.';
+        : on ? 'No hay props que coincidan con “' + propQuery.trim() + '”. Prueba con un nombre o habilidad, como web, files o desk.' : 'No hay equipo en esta categoría.';
       if (!on && propSection === 'abilities') note.hidden = true;
       host.appendChild(note);
       if (!list.length && on) {
@@ -1090,7 +1090,7 @@ const Build = (() => {
     return { agents, id: equipmentAgentId };
   }
   function renderAbilityOverview() {
-    const wrap = document.createElement('section'); wrap.className = 'refit-ability-overview'; wrap.setAttribute('aria-label', 'Core tool access');
+    const wrap = document.createElement('section'); wrap.className = 'refit-ability-overview'; wrap.setAttribute('aria-label', 'Acceso a herramientas base');
     const { agents, id } = libraryAgent();
     wrap.innerHTML = '<div class="refit-access-head"><label>HERRAMIENTAS DE <select class="refit-input" aria-label="Inspeccionar el equipo del agente">' +
       agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === id ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') +
@@ -1121,7 +1121,7 @@ const Build = (() => {
         b.querySelector('.refit-core-status').textContent = pending ? 'CHECKING ACCESS' : a.label;
       });
       const status = root.querySelector('.refit-propinspector .equipment-status');
-      if (status) status.textContent = pending ? 'Checking current access…' : EquipmentHelp.status(facts, view);
+      if (status) status.textContent = pending ? 'Comprobando el acceso actual…' : EquipmentHelp.status(facts, view);
     };
     if (key === equipmentAccessKey) { paint(equipmentAccessView, equipmentAccessView === undefined); return; }
     equipmentAccessKey = key; equipmentAccessView = undefined;
@@ -1148,13 +1148,13 @@ const Build = (() => {
     const key = [spec.id, id, geoVer].join('|');
     if (box.dataset.infoKey !== key) {
       box.dataset.infoKey = key;
-      const purpose = facts.purpose || PALETTE_PURPOSE[spec.id] || spec.desc || (category === 'decoration' ? 'Changes the look of your station. Adds no agent tools.' : 'Equipment for arranging work in the station.');
+      const purpose = facts.purpose || PALETTE_PURPOSE[spec.id] || spec.desc || (category === 'decoration' ? 'Solo cambia el aspecto de tu estación. No añade herramientas de agente.' : 'Equipamiento para organizar el trabajo en la estación.');
       box.innerHTML = '<p class="refit-purpose">' + esc(purpose) + '</p>' +
-        (facts.cap ? '<div class="equipment-status" role="status">Checking current access…</div><div class="refit-equipment-scope">' +
-        esc('Equipment sharing: ' + facts.scope + '.') + '</div>' :
-        category === 'decoration' ? '' : '<div class="refit-equipment-scope">Organizes the station; does not add an ability.</div>') +
+        (facts.cap ? '<div class="equipment-status" role="status">Comprobando el acceso actual…</div><div class="refit-equipment-scope">' +
+        esc('Compartir equipamiento: ' + facts.scope + '.') + '</div>' :
+        category === 'decoration' ? '' : '<div class="refit-equipment-scope">Organiza la estación; no añade una habilidad.</div>') +
         '<div class="refit-equipment-detail">' + esc(facts.cap ? facts.duplicates : spec.desc || '') +
-        (facts.cap ? '<p>Without a workflow bay, an agent draws on station equipment. With a bay, it uses equipment in its desk room (or bay room if there is no desk). Each workflow agent needs its own desk.</p><p>Connected accounts and providers are configured in Abilities.</p>' : '') + '</div>';
+        (facts.cap ? '<p>Sin una BAY de workflow, un agente usa el equipamiento de la estación. Con una BAY, usa el equipamiento de su sala de escritorio (o de su sala BAY si no tiene escritorio). Cada agente de workflow necesita su propio escritorio.</p><p>Las cuentas y proveedores conectados se configuran en Habilidades.</p>' : '') + '</div>';
     }
     refreshLibraryAccess(facts, id);
   }
@@ -1183,9 +1183,9 @@ const Build = (() => {
     const propRoom = placedProp && station.roomById(station.roomAt(placedProp.x, placedProp.y));
     box.innerHTML = '<p class="refit-purpose">' + esc(facts.purpose || spec.desc || 'Station decoration.') + '</p>'
       + (facts.cap ? (agents.length > 1 ? '<label> Para <select class="refit-input" aria-label="Inspeccionar el equipamiento para el agente">' + agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === aid ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') + '</select></label>' : '')
-      + '<div class="equipment-status" role="status">Checking current access…</div>'
-      + '<div>Equipment scope: ' + esc(facts.scope) + (propRoom ? ' · This copy: ' + esc(propRoom.name || propRoom.id) : '') + '</div>'
-      + '<details' + (sharingOpen ? ' open' : '') + '><summary>Sharing, rooms & extra copies</summary><p>' + facts.count + ' matching prop' + (facts.count === 1 ? '' : 's') + '. ' + esc(facts.duplicates) + '</p>Without a workflow bay, the lead draws on equipment across the station. With a bay, an agent uses its desk room (or the bay room if it has no desk). Agents in that room share equipment; each needs its own desk. Moving or removing the last matching prop changes that room’s equipment; access settings may still supply its tools. Connect external services in Abilities.</details>' : '<div>' + esc(facts.duplicates) + '</div>');
+      + '<div class="equipment-status" role="status">Comprobando el acceso actual…</div>'
+      + '<div>Alcance del equipamiento: ' + esc(facts.scope) + (propRoom ? ' · Esta copia: ' + esc(propRoom.name || propRoom.id) : '') + '</div>'
+      + '<details' + (sharingOpen ? ' open' : '') + '><summary>Compartir, salas y copias extra</summary><p>' + facts.count + ' matching prop' + (facts.count === 1 ? '' : 's') + '. ' + esc(facts.duplicates) + '</p>Sin una BAY de workflow, el líder usa el equipamiento de toda la estación. Con una BAY, un agente usa su sala de escritorio (o su sala BAY si no tiene escritorio). Los agentes de esa sala comparten equipamiento; cada uno necesita su propio escritorio. Mover o quitar la última prop que coincide cambia el equipamiento de esa sala; los ajustes de acceso aún pueden aportar sus herramientas. Conecta servicios externos en Habilidades.</details>' : '<div>' + esc(facts.duplicates) + '</div>');
     const select = box.querySelector('select');
     if (select) select.onchange = () => renderEquipmentInfo(spec.id, placedProp);
     const status = box.querySelector('.equipment-status');
@@ -1271,12 +1271,12 @@ const Build = (() => {
       paletteLabel = 'INSPECT';
       const note = document.createElement('div');
       note.className = 'refit-selectnote refit-keycard';
-      const KEYS = [['Click', 'select it'], ['Drag a box', 'select several'], ['Double-click', 'a whole line'], ['Shift + click', 'add or drop one'], ['Drag a machine', 'onto another: belt them'], ['Drag a selected one', 'onto floor: move it'], ['Shift + drag', 'move any piece'], ['Right-click', 'remove a piece'], ['Ctrl + drag a belt', 'reshape it'], ['Q · Alt', 'pick up · every setting'],
-        ['Arrows', 'nudge · Shift: 5'], ['R · M', 'turn · flip'], ['Ctrl + D', 'duplicate'], ['Ctrl + C · X · V', 'copy · cut · paste'], ['Del', 'delete'], ['Ctrl + Z', 'undo'],
-        ['Click a room', 'move · resize · furnish']];
+      const KEYS = [['Clic', 'seleccionar'], ['Arrastrar una caja', 'seleccionar varias'], ['Doble clic', 'una línea entera'], ['Shift + clic', 'añadir o soltar una'], ['Arrastrar una máquina', 'sobre otra: conectarlas'], ['Arrastrar una seleccionada', 'al suelo: moverla'], ['Shift + arrastrar', 'mover cualquier pieza'], ['Clic derecho', 'quitar una pieza'], ['Ctrl + arrastrar una cinta', 'redibujarla'], ['Q · Alt', 'recoger · cada ajuste'],
+        ['Flechas', 'ajustar · Shift: 5'], ['R · M', 'girar · voltear'], ['Ctrl + D', 'duplicar'], ['Ctrl + C · X · V', 'copiar · cortar · pegar'], ['Del', 'eliminar'], ['Ctrl + Z', 'deshazar'],
+        ['Haz clic en una habitación', 'mover · redimensionar · amueblar']];
       note.innerHTML = '<b>Haz clic en lo que sea para editar</b><div class="refit-keyrows">' + KEYS.map(([k, v]) => '<span class="refit-keyrow"><kbd>' + esc(k) + '</kbd><span>' + esc(v) + '</span></span>').join('') + '</div>';
       pal.appendChild(note);
-      const finder=document.createElement('select');finder.setAttribute('aria-label','Find a placed object');finder.className='refit-object-finder';
+      const finder=document.createElement('select');finder.setAttribute('aria-label','Buscar un objeto colocado');finder.className='refit-object-finder';
       const refresh=()=>{finder.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Find a placed object…';finder.append(blank);
         for(const p of station.props().slice().sort((a,b)=>propLabel(a.t).localeCompare(propLabel(b.t)))){const o=document.createElement('option');o.value=p.id;o.textContent=propLabel(p.t)+' · '+p.x+', '+p.y;finder.append(o);}};
       refresh();finder.onfocus=refresh;
@@ -1378,7 +1378,7 @@ const Build = (() => {
       categoryMenu.appendChild(catRow); shelves.appendChild(categoryMenu);
       const gridHost = document.createElement('div'); gridHost.id = 'refit-propgrid-host';
       shelves.appendChild(gridHost); browser.appendChild(shelves); workspace.appendChild(browser);
-      const inspector = document.createElement('aside'); inspector.className = 'refit-propinspector'; inspector.setAttribute('aria-label', 'Selected equipment details');
+      const inspector = document.createElement('aside'); inspector.className = 'refit-propinspector'; inspector.setAttribute('aria-label', 'Detalles del equipo seleccionado');
       const preview = document.createElement('section'); preview.id = 'refit-selected-prop';
       preview.className = 'refit-selected-prop'; preview.setAttribute('aria-label', 'Selected prop');
       inspector.appendChild(preview);
@@ -1528,7 +1528,7 @@ const Build = (() => {
          flagships assemble them. Grouping comes from the catalog's own `grp` field (worldmodel),
          never hand-kept here; an ungrouped blueprint falls into the last section rather than
          vanishing (a card the catalog ships must always be stampable). */
-      paletteLabel = 'THE LINE LIBRARY';
+      paletteLabel = 'LA BIBLIOTECA DE LÍNEAS';
       /* THE CONVEYORS TAB IN THE LIBRARY'S OWN LOOK (2026-09-30 — Andrew: "the long sentences underneath each machine … I hate it
          … stop resorting back to the old ugly UI"). Laid out like the Props tab beside it: two section keys (the FURNITURE ·
          EQUIPMENT · ABILITIES row's look), then a grid of big glass tiles — a line's miniature or a machine's own art, its name,
@@ -1622,14 +1622,14 @@ const Build = (() => {
   /* one line per WORKFLOW machine — what it DOES, by OUTCOME, in plain words (2026-09-27 audit P2/P3/P4: the old lines spoke
      factory — lane, crate, out-lane — and JOINER and MERGER read as the same machine). Never a footprint. */
   const PALETTE_PURPOSE = {
-    intake: 'where work comes in: a schedule, a chat message, a watched folder or another app calling in starts the line here',
-    bay: 'one step: the agent you put here does this part of the job and passes the result on',
-    filter: 'sorts by task type (code, research or everything else) and sends each type down its own belt',
-    merger: 'lets several belts share one; nothing waits and nothing is combined, each job goes on alone',
-    splitter: 'one belt into several. With a JOINER after the branches every branch gets a copy; without one, jobs take turns',
-    joiner: 'waits until every branch has finished, then sends ONE combined result on',
-    loop: 'sends the work back for another pass until the reviewer approves it (or passes run out), then on',
-    outbox: 'where the finished result comes out; click it on the live floor to read every result'
+    intake: 'donde entra el trabajo: un horario, un mensaje de chat, una carpeta vigilada u otra app que llama inicia la línea aquí',
+    bay: 'un paso: el agente que pongas aquí hace esta parte del trabajo y pasa el resultado',
+    filter: 'clasifica por tipo de tarea (código, investigación u otro) y envía cada tipo por su propia cinta',
+    merger: 'deja que varias cintas compartan una; nada espera y nada se combina, cada trabajo sigue solo',
+    splitter: 'una cinta en varias. Con un JOINER tras las ramas, cada rama recibe una copia; sin él, los trabajos van por turnos',
+    joiner: 'espera a que termine cada rama y luego envía UN resultado combinado',
+    loop: 'envía el trabajo de vuelta para otro repaso hasta que el revisor lo aprueba (o se agotan los repasos), y sigue',
+    outbox: 'donde sale el resultado terminado; haz clic en el suelo en vivo para leer cada resultado'
   };
   /* HOW EACH MACHINE IS WIRED, drawn (2026-09-27 audit P2): a tiny in→out diagram on every shelf tile, so SPLIT (one in, two
      out), JOINER (two in, a wait bar, one out), MERGER (two in, one out, no bar), FILTER (one in, three typed outs) and LOOP
@@ -1647,9 +1647,9 @@ const Build = (() => {
   const machineDiagramSVG = id => MACHINE_DIAGRAM[id] ? '<svg class="refit-machinediagram" viewBox="0 0 40 24" aria-hidden="true" focusable="false">' + MACHINE_DIAGRAM[id] + '</svg>' : '';
   // the shelf in the order work meets them, in three plain groups (a junction goes ON a belt)
   const MACHINE_GROUPS = [
-    ['THE LINE', 'work comes in, agents do the steps, the result comes out', ['bay', 'intake', 'outbox']],
-    ['BRANCH & COMBINE', 'drop these ON a belt', ['splitter', 'merger', 'joiner', 'filter']],
-    ['REPEAT', 'a reviewer can send work back', ['loop']]
+    ['LA LÍNEA', 'entra el trabajo, los agentes hacen los pasos, sale el resultado', ['bay', 'intake', 'outbox']],
+    ['RAMAS Y COMBINAR', 'suéltalos SOBRE una cinta', ['splitter', 'merger', 'joiner', 'filter']],
+    ['REPETIR', 'un revisor puede devolver el trabajo', ['loop']]
   ];
   /* THE MACHINES SHELF (2026-09-23 playtest fix). The Conveyors tab offered whole LINES and the BELT tool,
      but no single machine: INBOX, BAY, OUTBOX and every junction were reachable only by typing into the
@@ -1859,11 +1859,11 @@ const Build = (() => {
       if (tool !== 'select') selectTool('select', { silent: true, keepKit: true, keepGroup: true });
       setHand(null, { silent: true }); touchArm = on ? id : null; paintHandKeys(); setHint(); setCursor(); sfx('click');
     };
-    key('remove', 'REMOVE', 'R-CLICK', 'Tap a piece or a belt to remove it (a mouse: right-click it) · UNDO puts it back', () => armTouch('remove'));
-    key('pipette', 'PICK UP', 'Q', 'Tap a piece to hold one like it — its settings and crew too (a mouse: point at it and press Q)', () => armTouch('pipette'));
-    key('corner', 'CORNER', 'R', 'Flip which way a dragged belt turns its corner (a mouse: press R while dragging)', () => { flipPref = !flipPref; handPvKey = ''; paintHandKeys(); sfx('click'); });
-    key('alt', 'ALT VIEW', 'ALT', 'Show every setting, every SEND TO and every line’s stage count on the floor (a mouse: hold Alt)', () => { altLatched = !altLatched; paintHandKeys(); sfx('click'); });
-    if (lastCopy && lastCopy.type === 'lines') key('paste', 'PASTE', 'Ctrl+V', 'Pick up the last copy again: ' + lastCopy.label, () => holdClip(lastCopy, orientEv()));
+    key('remove', 'REMOVE', 'R-CLICK', 'Toca una pieza o una cinta para quitarla (con ratón: clic derecho) · DESHACER la devuelve', () => armTouch('remove'));
+    key('pipette', 'PICK UP', 'Q', 'Toca una pieza para sujetar una igual — con sus ajustes y su tripulación (con ratón: señálala y pulsa Q)', () => armTouch('pipette'));
+    key('corner', 'CORNER', 'R', 'Cambia el sentido en que una cinta arrastrada gira su esquina (con ratón: pulsa R mientras arrastras)', () => { flipPref = !flipPref; handPvKey = ''; paintHandKeys(); sfx('click'); });
+    key('alt', 'ALT VIEW', 'ALT', 'Muestra cada ajuste, cada SEND TO y el número de etapas de cada línea en el suelo (con ratón: mantén Alt)', () => { altLatched = !altLatched; paintHandKeys(); sfx('click'); });
+    if (lastCopy && lastCopy.type === 'lines') key('paste', 'PASTE', 'Ctrl+V', 'Recoge la última copia de nuevo: ' + lastCopy.label, () => holdClip(lastCopy, orientEv()));
     wrap.append(bar, keys);
     return wrap;
   }
@@ -1955,7 +1955,7 @@ const Build = (() => {
       '<div class="refit-preview-actions">' +
       (canTurn(c.id) ? '<button class="bb xs" type="button" data-preview-turn>↻ TURN · R</button>' : '') +
       (canFlip(c.id) ? '<button class="bb xs" type="button" data-preview-flip>⇆ FLIP · M</button>' : '') + '</div></div>' +
-      '<span class="refit-placement-note">Click a clear spot on the station · Esc cancels</span>';
+      '<span class="refit-placement-note">Haz clic en un punto libre de la estación · Esc cancela</span>';
     const alternatives = capOf(c) && capOf(c) !== 'computer' ? catalog().filter(p => capOf(p) === capOf(c)) : [];
     const more = root.querySelector('.refit-prop-more');
     more?.querySelector('.refit-designs')?.remove();
@@ -2083,35 +2083,35 @@ const Build = (() => {
   /* PLAIN DESCRIPTIONS (2026-09-30 — "the simplest friendliest UI possible, no confusion"): a line's tip says what it does in
      everyday words — no lanes, gates or doors */
   const LINE_PURPOSE = {
-    front_desk: 'one agent does each job, start to finish',
-    research_line: 'one agent digs up sources, the next writes the answer',
-    revision_loop: 'one agent drafts, a reviewer sends it back until it is right',
-    sorting_office: 'sends each request to the right specialist, by what it is about',
-    triage_desk: 'coding, research and everything else each go to their own specialist',
-    parallel_crew: 'each job goes to the next of three agents, and every result ships',
-    swarm_synthesis: 'three agents research the same job, one writes the answer',
-    second_opinion: 'two agents take the same job, and their answers are combined into one',
-    ship_out: 'no INBOX: whatever this agent finishes lands in the OUTBOX',
-    assembly_line: 'four agents in a row, each building on the last',
-    build_test: 'a builder makes it, a tester sends it back until it passes',
-    code_foundry: 'coding requests are built and reviewed until they pass; anything else goes to another agent',
-    gauntlet: 'two agents take the job, one combines their answers, and a reviewer checks it',
-    crucible: 'two reviewers in a row: the work has to pass both',
-    mission_control: 'sorts requests three ways, works each in two steps, and ships them all from one place',
-    deep_dive: 'three researchers dig, one writes it up, and a reviewer checks it',
-    allowance_desk: 'one agent, and the line can never spend more than $5 a day',
-    two_doors: 'two ways in (say, a schedule and a chat app), one agent does the work',
-    load_balancer: 'jobs take turns between two agents',
-    fire_escape: 'if the reviewer still is not happy after its tries, a fixer takes over',
+    front_desk: 'un agente hace cada trabajo, de principio a fin',
+    research_line: 'un agente busca fuentes, el siguiente redacta la respuesta',
+    revision_loop: 'un agente redacta y un revisor lo devuelve hasta que está bien',
+    sorting_office: 'envía cada solicitud al especialista adecuado, según de qué trate',
+    triage_desk: 'código, investigación y lo demás van cada uno a su especialista',
+    parallel_crew: 'cada trabajo pasa al siguiente de tres agentes, y cada resultado se envía',
+    swarm_synthesis: 'tres agentes investigan el mismo trabajo, uno redacta la respuesta',
+    second_opinion: 'dos agentes toman el mismo trabajo, y sus respuestas se combinan en una',
+    ship_out: 'sin INBOX: lo que este agente termine cae en la OUTBOX',
+    assembly_line: 'cuatro agentes en fila, cada uno construye sobre el anterior',
+    build_test: 'un constructor lo hace, un probador lo devuelve hasta que pasa',
+    code_foundry: 'las solicitudes de código se construyen y revisan hasta que pasan; lo demás va a otro agente',
+    gauntlet: 'dos agentes toman el trabajo, uno combina sus respuestas y un revisor lo comprueba',
+    crucible: 'dos revisores en fila: el trabajo debe pasar por ambos',
+    mission_control: 'clasifica las solicitudes en tres, trabaja cada una en dos pasos y las envía todas desde un sitio',
+    deep_dive: 'tres investigadores buscan, uno redacta y un revisor comprueba',
+    allowance_desk: 'un agente, y la línea nunca gasta más de $5 al día',
+    two_doors: 'dos puertas de entrada (p. ej. un horario y una app de chat), un agente hace el trabajo',
+    load_balancer: 'los trabajos van por turnos entre dos agentes',
+    fire_escape: 'si al revisor no le convence tras sus intentos, un arreglador toma el relevo',
   };
   /* PLAIN NAMES + KIND OF WORK (2026-09-28): each shelf line carries them in the catalog itself (WorldModel.BLUEPRINTS
      .plain / .work), so the shelf, the agent's station builder and the tests read one source. */
   const LINE_PLAIN = {}, LINE_WORK = {};
   for (const bp of ((typeof WorldModel !== 'undefined' && WorldModel.BLUEPRINTS) || [])) { if (bp.plain) LINE_PLAIN[bp.id] = bp.plain; if (bp.work) LINE_WORK[bp.id] = bp.work; }
   const LINE_WORK_GROUPS = [
-    { id: 'any', label: 'ANY JOB', blurb: 'one agent takes the work door to door' },
-    { id: 'write', label: 'WRITING & CONTENT', blurb: 'a draft, and a reviewer who can send it back' },
-    { id: 'code', label: 'BUILDING SOFTWARE', blurb: 'a builder makes the change, and it is checked before it ships' },
+    { id: 'any', label: 'ANY JOB', blurb: 'un agente lleva el trabajo de puerta en puerta' },
+    { id: 'write', label: 'WRITING & CONTENT', blurb: 'un borrador y un revisor que puede devolverlo' },
+    { id: 'code', label: 'BUILDING SOFTWARE', blurb: 'un constructor hace el cambio, y se comprueba antes de que salga' },
     { id: 'research', label: 'RESEARCH', blurb: 'buscar fuentes y luego redactar el resultado' },
     { id: 'volume', label: 'LOTS OF REQUESTS', blurb: 'clasificar el trabajo entrante, o repartirlo entre agentes' },
     { id: 'decide', label: 'DECISIONS', blurb: 'más de un intento antes de decidir' },
@@ -2524,7 +2524,7 @@ const Build = (() => {
       return;
     }
     const need = laid && laid.needs ? laid.needs : { w: bp.w, h: bp.h };
-    say(laid === undefined ? (stat ? stat.dataset.rest || '' : '') : 'needs more room');   // (the MAKE ROOM FOR IT key under the tile builds a room the size it needs)
+    say(laid === undefined ? (stat ? stat.dataset.rest || '' : '') : 'necesita más espacio');   // (the MAKE ROOM FOR IT key under the tile builds a room the size it needs)
     if (laid === undefined) { if (make) make.remove(); return; }
     if (make) return;
     const mk = document.createElement('button'); mk.type = 'button'; mk.className = 'bb refit-linetile-makeroom';
@@ -2553,12 +2553,12 @@ const Build = (() => {
       clearLineFields();
       lineType = bp.id; selectTool('line');
       sfx('chime');
-      flashTip(ev, 'ROOM ADDED — click inside it to place ' + bp.label + ' · UNDO removes the room', true);
+      flashTip(ev, 'SALA AÑADIDA — clic dentro para colocar ' + bp.label + ' · UNDO quita la sala', true);
       try { fitCamera(); } catch (e) {}
       return;
     }
     sfx('bad');
-    flashTip(ev, 'no clear space beside the station for a ' + W + '×' + H + ' room — use Rooms to draw one where you want it', false);
+    flashTip(ev, 'no hay espacio libre junto a la estación para una sala de ' + W + '×' + H + ' — usa Salas para dibujar una donde la quieras', false);
   }
   function stampLine(w, ev) {
     const bp = blueprintOf(lineType);
@@ -2595,14 +2595,14 @@ const Build = (() => {
       try { for (const id of (res.ids || [])) { const sp = station.propById(id); if (sp && sp.t === 'bay') { firstBay = sp.id; break; } } } catch (_) {}
       if (firstBay && typeof WorkflowPanel !== 'undefined') {
         try { rebake(); openFlowCard(firstBay); } catch (_) {}
-        flashTip(ev, String(LINE_PLAIN[bp.id] || bp.label).toUpperCase() + (laidOut ? ' LAID OUT TO FIT HERE' : ' PLACED') + ' — pick who works each step in the panel', true);
-      } else flashTip(ev, String(LINE_PLAIN[bp.id] || bp.label).toUpperCase() + ' PLACED — click each step to pick who works it', true);
+        flashTip(ev, String(LINE_PLAIN[bp.id] || bp.label).toUpperCase() + (laidOut ? ' COLOCADA PARA APTAR AQUÍ' : ' COLOCADA') + ' — elige quién hace cada paso en el panel', true);
+      } else flashTip(ev, String(LINE_PLAIN[bp.id] || bp.label).toUpperCase() + ' COLOCADA — clic en cada paso para elegir quién lo hace', true);
       if (typeof StationUI !== 'undefined' && StationUI.pokeQuests) { try { StationUI.pokeQuests(); } catch (_) {} }
       // belts just landed — the same first-touch coach a hand-laid run earns (points at ▸ PREVIEW)
       if (typeof Tutorial !== 'undefined' && Tutorial.onBeltPlaced) Tutorial.onBeltPlaced();
     } else {
       sfx('bad');
-      flashTip(ev, (res && res.msg) || 'needs clear deck — every tile on a room, nothing in the way', false);
+      flashTip(ev, (res && res.msg) || 'necesita cubierta libre — cada casilla en una habitación, nada de por medio', false);
     }
   }
 
@@ -2670,19 +2670,19 @@ const Build = (() => {
     const t = TOOLS.find(x => x.id === tool);
     // SURFACE means three different gestures depending on which surface is targeted — say which
     let verb = (t && t.verb) || (t && t.hint) || '';
-    if (tool === 'select' && buildGroup === 'props') verb = 'Pick a prop, then click the floor to place it · click a placed one to edit it';
-    if (tool === 'select' && buildGroup === 'workflow') verb = 'Drag a machine onto another to belt them · click a piece, then drag it onto open floor to move it · drag a belt to branch it · 1–8 pick a piece · Q picks up the one under the pointer · right-click removes a conveyor piece or belt · hold Alt to see every setting';
+    if (tool === 'select' && buildGroup === 'props') verb = 'Elige una prop y haz clic en el suelo para colocarla · haz clic en una colocada para editarla';
+    if (tool === 'select' && buildGroup === 'workflow') verb = 'Arrastra una máquina sobre otra para cintearlas · haz clic en una pieza y arrástrala a suelo libre para moverla · arrastra una cinta para ramificarla · 1–8 eligen una pieza · Q coge la que hay bajo el puntero · clic derecho quita una pieza o cinta de transporte · mantén Alt para ver cada ajuste';
     // THE HAND: what is held, what a click does with it, and how to put it down (or what the armed dock key's next tap does)
-    if (tool === 'select' && hand && hand.newLine) verb = 'Click where your line starts · Esc cancels';   // (the dock's hint bar shows ~45 characters; right-click cancels too)
-    else if (tool === 'select' && hand) verb = 'Holding ' + propLabel(hand.t) + (hand.agentId ? ' (crewed by ' + agentLabel(hand.agentId) + ')' : '') + ' · click to place it' + (JUNCTION_TAG_TYPES[hand.t] ? ' · click a belt to put it on that line' : '') + ' · right-click or Esc puts it down';
-    if (tool === 'dupe' && dupe && dupe.type === 'lines') verb = 'Holding ' + dupe.label + ' · click to place a copy (it stays in hand) · R turns it · right-click or Esc puts it down';   // THE HAND part 2
-    if (tool === 'select' && touchArm === 'remove') verb = 'REMOVE · tap a conveyor piece or a belt to remove it · tap REMOVE again to stop';
-    if (tool === 'select' && touchArm === 'pipette') verb = 'PICK UP · tap a piece to hold one like it · tap PICK UP again to stop';
-    if (tool === 'select' && buildGroup === 'rooms') verb = 'Pick a room type, then drag on the grid · click a room to move, resize or furnish it';
-    if (tool === 'select' && buildGroup === 'surfaces') verb = 'Pick a finish, then click a room to lay it · DECK, WALLS or SHELL';
-    if (tool === 'paint') verb = paintTarget === 'hull' ? 'click a room to re-clad its outside'
-      : paintTarget === 'walls' ? 'click a room to clad its walls'
-      : 'click a room to lay this deck · drag to paint tiles';
+    if (tool === 'select' && hand && hand.newLine) verb = 'Haz clic donde empieza tu línea · Esc cancela';   // (the dock's hint bar shows ~45 characters; right-click cancels too)
+    else if (tool === 'select' && hand) verb = 'Sujetando ' + propLabel(hand.t) + (hand.agentId ? ' (tripulada por ' + agentLabel(hand.agentId) + ')' : '') + ' · haz clic para colocarla' + (JUNCTION_TAG_TYPES[hand.t] ? ' · haz clic en una cinta para ponerla en esa línea' : '') + ' · clic derecho o Esc la suelta';
+    if (tool === 'dupe' && dupe && dupe.type === 'lines') verb = 'Sujetando ' + dupe.label + ' · haz clic para colocar una copia (se queda en la mano) · R la gira · clic derecho o Esc la suelta';   // THE HAND part 2
+    if (tool === 'select' && touchArm === 'remove') verb = 'QUITAR · toca una pieza o cinta de transporte para quitarla · toca QUITAR otra vez para parar';
+    if (tool === 'select' && touchArm === 'pipette') verb = 'COGER · toca una pieza para sujetar una igual · toca COGER otra vez para parar';
+    if (tool === 'select' && buildGroup === 'rooms') verb = 'Elige un tipo de sala y arrastra sobre la rejilla · haz clic en una sala para moverla, cambiarle el tamaño o amueblarla';
+    if (tool === 'select' && buildGroup === 'surfaces') verb = 'Elige un acabado y haz clic en una sala para aplicarlo · DECK, WALLS o SHELL';
+    if (tool === 'paint') verb = paintTarget === 'hull' ? 'haz clic en una sala para rechapar su exterior'
+      : paintTarget === 'walls' ? 'haz clic en una sala para chapar sus paredes'
+      : 'haz clic en una sala para poner este suelo · arrastra para pintar baldosas';
     // the PROP hint carries the orientation the next stamp will use, and only advertises the keys
     // this prop actually honours — a prop with one authored facing never mentions R.
     if (tool === 'prop' && !msg) {
@@ -2705,11 +2705,11 @@ const Build = (() => {
       help.hidden = tool === 'select';
       const guidance = {
         room: 'Choose a room type. Drag in empty space to set its size.',
-        hall: 'Choose a width, then drag between rooms to connect them.',
-        dupe: 'Click the room or prop you want to copy, then click a clear space to place the copy.',
-        reclaim: 'Click a room, prop or belt to remove it. Undo brings it back.',
-        belt: 'Click a machine, then the next one: the belt lays itself. Or drag to lay belt by hand.',
-        line: 'Choose a conveyor line, then click clear floor to place it. Assign agents after placing.'
+        hall: 'Elige un ancho y arrastra entre habitaciones para conectarlas.',
+        dupe: 'Haz clic en la habitación o prop que quieras copiar y luego en un espacio libre para colocar la copia.',
+        reclaim: 'Haz clic en una habitación, prop o cinta para quitarla. Deshacer la recupera.',
+        belt: 'Haz clic en una máquina y luego en la siguiente: la cinta se coloca sola. O arrastra para pasar cinta a mano.',
+        line: 'Elige una línea de transporte y haz clic en suelo libre para colocarla. Asigna agentes después.'
       };
       help.querySelector('span').textContent = msg || ((tool === 'dupe' && dupe && dupe.type === 'lines') ? verb : guidance[tool]) || verb;
       help.querySelector('button').textContent = 'CANCEL';
@@ -2876,8 +2876,8 @@ const Build = (() => {
      a card previews what it builds; applying replaces the layout in one undoable step (the old one is backed up), and a
      WORK preset opens its setup guide straight after. Staffing is that guide's next click — a preset never hires. */
   const PRESET_GROUPS = [
-    ['work', 'BUILT FOR YOUR WORK', 'A whole station for one kind of work. Its line is wired, every step has instructions, and a sample job is ready to try.'],
-    ['look', 'JUST THE LOOK', 'Rooms and furniture only. Add a line from the Lines shelf whenever you want one.'],
+    ['work', 'BUILT FOR YOUR WORK', 'Una estación completa para un tipo de trabajo. Su línea está cableada, cada paso tiene instrucciones y hay un trabajo de ejemplo listo para probar.'],
+    ['look', 'SOLO LA APARIENCIA', 'Solo habitaciones y mobiliario. Añade una línea desde la estantería de Líneas cuando la quieras.'],
   ];
   function presetPreviewHTML(item, doc) {
     const guide = StationTemplates.guides && StationTemplates.guides[item.id];
@@ -2887,8 +2887,8 @@ const Build = (() => {
     return '<span><b>' + esc(item.name) + '</b> · ' + rooms + '</span>'
       + '<span class="station-build-flow">' + guide.flow.map(esc).join(' <i>→</i> ') + '</span>'
       + '<span>' + esc(guide.purpose) + '</span>'
-      + '<span class="station-build-need">Next you choose who works ' + (steps.length === 1 ? 'its one step' : 'its ' + steps.length + ' steps') + ' (' + esc(steps.join(', ')) + '). One agent can work every step.'
-      + (item.purpose === 'code' ? ' Point its Inbox at your project folder so the Builder works on your code.' : '') + '</span>';
+      + '<span class="station-build-need">Ahora eliges quién hace ' + (steps.length === 1 ? 'su único paso' : 'sus ' + steps.length + ' pasos') + ' (' + esc(steps.join(', ')) + '). Un agente puede hacer cada paso.'
+      + (item.purpose === 'code' ? ' Apunta su Inbox a tu carpeta de proyecto para que el Constructor trabaje en tu código.' : '') + '</span>';
   }
   // community sharing is open only while communitymaps.js says so (CommunityMaps.live, its COMMUNITY_LIVE switch): until
   // then SHARE TO COMMUNITY and the COMMUNITY MAPS gallery are not built at all, and the sheet never asks for the gallery
@@ -2900,12 +2900,12 @@ const Build = (() => {
     g.className = 'refit-guide refit-station-builds refit-workflow-editor';
     g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-label','Preajustes de estación');
     g.innerHTML = '<div class="refit-guide-box station-build-box"><div class="station-build-heading"><div><span class="station-build-eyebrow">MODO CONSTRUCCIÓN / PRECONFIGURACIONES</span><h2>Un lugar para tu trabajo</h2></div><button class="bb sm" data-workflow-close>VOLVER A CONSTRUIR</button></div>' +
-      '<p class="station-build-intro">Pick a station for the kind of work you do, then make it yours. Every station includes your workstation and all five essentials.</p>' +
+      '<p class="station-build-intro">Elige una estación para el tipo de trabajo que haces y hazla tuya. Cada estación incluye tu puesto de trabajo y los cinco esenciales.</p>' +
       '<div class="station-build-scroll">' + PRESET_GROUPS.map(([id, label, blurb]) => '<section class="station-build-section" data-build-section="' + id + '"><div class="station-build-section-head"><h3>' + label + '</h3><p>' + esc(blurb) + '</p></div><div class="station-build-grid" aria-label="' + esc(label.toLowerCase()) + '"></div></section>').join('') +
       (typeof BuildShare !== 'undefined' ? '<section class="station-build-section" data-build-section="shared"><div class="station-build-section-head"><h3>CONSTRUCCIONES COMPARTIDAS</h3><p>Guarda esta distribución como archivo para compartirla, o abre uno que alguien te envió. Solo viajan salas, muebles y transportes.</p><span class="station-build-share-keys"><button class="bb sm" type="button" data-export-build>EXPORTAR ESTA ESTACIÓN</button><button class="bb sm" type="button" data-import-build>IMPORTAR UNA CONSTRUCCIÓN…</button>' + (communityLive() ? '<button class="bb sm" type="button" data-share-community>COMPARTIR CON LA COMUNIDAD</button>' : '') + '<input type="file" accept=".json,application/json" hidden data-import-file></span></div><div class="station-build-grid" aria-label="construcciones compartidas"></div></section>' : '') +
       (typeof BuildShare !== 'undefined' && communityLive() ? '<section class="station-build-section" data-build-section="community"><div class="station-build-section-head"><h3>MAPAS DE LA COMUNIDAD</h3><p>Estaciones que otros jugadores construyeron y compartieron. Solo viajan distribuciones: tú eliges quién las trabaja.</p><span class="station-build-community-note" role="status"></span></div><div class="station-build-grid" aria-label="mapas de la comunidad"></div></section>' : '') + '</div>' +
       '<div class="station-build-footer"><div class="station-build-status" role="status">Selecciona un preajuste para ver qué construye.</div>' +
-      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTAURAR ANTERIOR</button><button class="bb refit-primary" data-use-build disabled>CHOOSE A PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
+      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTAURAR ANTERIOR</button><button class="bb refit-primary" data-use-build disabled>ELIGE UN PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
     g.style.setProperty('--station-build-scale', typeof U.uiZoom === 'function' ? U.uiZoom() : 1);
     const closeP = () => { g.remove(); if (typeof CommunityMaps !== 'undefined') CommunityMaps.release(); root?.querySelector('#refit-stations')?.focus(); };
     cardRegister(g, closeP); root.appendChild(g);
@@ -3032,10 +3032,10 @@ const Build = (() => {
   const MAP_CREDIT_KEY = 'starnet.communityMapCredit';
   function shareOutcomeText(res, what) {
     if (res.ok) return '';
-    if (res.outcome === 'unknown') return (res.error ? res.error + ' ' : '') + 'This station cannot tell whether the ' + what + ' arrived. Check your account page on account.starnetos.com before you send it again.';
-    if (res.linked === false) return 'Link this station to your StarNet account first (STORE › LINK STATION). A free account works. Nothing was shared.';
+    if (res.outcome === 'unknown') return (res.error ? res.error + ' ' : '') + 'Esta estación no puede saber si ' + what + ' llegó. Revisa tu página de cuenta en account.starnetos.com antes de reenviar.';
+    if (res.linked === false) return 'Vincula esta estación a tu cuenta de StarNet primero (TIENDA › VINCULAR ESTACIÓN). Una cuenta gratis sirve. Nada se compartió.';
     if (res.code === 'token_rejected') return res.error;
-    return (res.error || 'StarNet refused it.') + ' Nothing was shared.';
+    return (res.error || 'StarNet lo rechazó.') + ' Nada se compartió.';
   }
   function openShareToCommunity(g, status, shareKey) {
     const section = g.querySelector('[data-build-section="shared"]');
@@ -3056,9 +3056,9 @@ const Build = (() => {
       '<label for="sbs-title">NOMBRE</label><input id="sbs-title" class="refit-input" maxlength="40" autocomplete="off">' +
       '<label for="sbs-credit">CRÉDITO COMO</label><input id="sbs-credit" class="refit-input" maxlength="40" autocomplete="off" placeholder="tu nombre o apodo">' +
       '<label for="sbs-desc">UNA LÍNEA SOBRE EL <span class="sbs-dim">opcional</span></label><input id="sbs-desc" class="refit-input" maxlength="200" autocomplete="off">' +
-      '<label class="sbs-agree"><input type="checkbox" id="sbs-agree"> <span>I made this station and share it under CC BY 4.0: anyone may build it and change it, with credit to me.</span></label>' +
-      '<p class="sbs-travel">Only the layout travels: <b>' + esc(travels) + '</b>. Your crew, step instructions, project folders and connections stay home' + (r.dropped.made ? ', and so do your ' + n(r.dropped.made, 'made prop', 'made props') : '') + '.' + (pic.why ? ' ' + esc(pic.why) : '') + '</p>' +
-      '<p class="sbs-travel">A person looks at every map before it appears in the community gallery.</p>' +
+      '<label class="sbs-agree"><input type="checkbox" id="sbs-agree"> <span>Hice esta estación y la comparto bajo CC BY 4.0: cualquiera puede construirla y cambiarla, con crédito para mí.</span></label>' +
+      '<p class="sbs-travel">Solo viaja el diseño: <b>' + esc(travels) + '</b>. Tu tripulación, las instrucciones de los pasos, las carpetas de proyecto y las conexiones se quedan en casa' + (r.dropped.made ? ', y lo mismo con tus ' + n(r.dropped.made, 'prop hecha', 'props hechas') : '') + '.' + (pic.why ? ' ' + esc(pic.why) : '') + '</p>' +
+      '<p class="sbs-travel">Una persona revisa cada mapa antes de que aparezca en la galería comunitaria.</p>' +
       '<div class="sbs-keys"><button class="bb refit-primary" type="button" data-sbs-send>ENVIAR A REVISIÓN</button><button class="bb" type="button" data-sbs-cancel>CANCEL</button></div></div>';
     panel.querySelector('img').src = pic.dataUrl;
     const title = panel.querySelector('#sbs-title'), creditIn = panel.querySelector('#sbs-credit'), desc = panel.querySelector('#sbs-desc'), agree = panel.querySelector('#sbs-agree');
@@ -3140,8 +3140,8 @@ const Build = (() => {
 
   function sharedBuildCopy(name, stats, dropped, lead) {
     const n = (k, one, many) => k + ' ' + (k === 1 ? one : many);
-    const left = ['Crew, step instructions, project folders and connections stay with the station that made it.'];
-    if (dropped.made) left.push(n(dropped.made, 'made prop was', 'made props were') + ' left out: made props belong to the station that paid for them.');
+    const left = ['Tripulación, instrucciones de pasos, carpetas de proyecto y conexiones se quedan con la estación que la hizo.'];
+    if (dropped.made) left.push(n(dropped.made, 'prop hecho', 'props hechos') + ' quedó(n) fuera: los props hechos pertenecen a la estación que los pagó.');
     if (stats.lines) left.push('Its ' + (stats.lines === 1 ? 'line arrives' : 'lines arrive') + ' wired but unstaffed, with no step instructions.');
     return '<span>' + lead + '<b>' + esc(name) + '</b> · ' + n(stats.rooms, 'room', 'rooms') + ' · ' + n(stats.props, 'prop', 'props') + '</span>'
       + '<span class="station-build-need">' + left.map(esc).join(' ') + '</span>';
@@ -3212,31 +3212,31 @@ const Build = (() => {
       const ready = e.ready && rosterOK;
       const signature = JSON.stringify(station.serialize());
       const sr = finSampleRes?.key===e.key && finSampleRes?.exampleSignature===signature ? finSampleRes : null;
-      const status = e.issue ? e.issue : !rosterOK ? 'Choose an agent from your crew for each step.' : sr?.pending ? 'Job in progress…' : sr?.view?.ok ? 'Job delivered · the harness confirmed delivery to the outbox.' : 'Ready · every step has an agent.';   // (org D7) one word set with its ▶ SEND A REAL JOB key: a real job, never 'the sample'; (org D4 polish) the status says the state, the key above names the act
+      const status = e.issue ? e.issue : !rosterOK ? 'Elige un agente de tu tripulación para cada paso.' : sr?.pending ? 'Trabajo en curso…' : sr?.view?.ok ? 'Trabajo entregado · el arnés confirmó la entrega a la outbox.' : 'Listo · cada paso tiene agente.';   // (org D7) one word set with its ▶ SEND A REAL JOB key: a real job, never 'the sample'; (org D4 polish) the status says the state, the key above names the act
       const canSummon = typeof App !== 'undefined' && !!App.summonAgent;
       const firstAid = e.roles[0] && e.roles[0].agentId;
       const offerAll = e.roles.length > 1 && !!firstAid && e.roles.some(r=>r.agentId!==firstAid);
       const software = station.doc().meta.templateId === 'software';
       const body = g.querySelector('[data-example-body]');
       body.innerHTML = '<p class="example-purpose">'+esc(e.purpose)+'</p><div class="example-flow" aria-label="Cómo funciona la línea">'+e.flow.map(x=>'<span>'+esc(x)+'</span>').join('<b>→</b>')+'</div>'+
-        '<h4>Choose who works each step</h4><div class="example-roles">'+e.roles.map((r,i)=>'<div class="example-role"><b>'+(i+1)+'. '+esc(r.name)+'</b><span>'+esc(r.description)+'</span>'+
+        '<h4>Elige quién trabaja cada paso</h4><div class="example-roles">'+e.roles.map((r,i)=>'<div class="example-role"><b>'+(i+1)+'. '+esc(r.name)+'</b><span>'+esc(r.description)+'</span>'+
           '<div class="example-role-pick"><select class="refit-input" aria-label="'+esc(r.name)+' agente" data-example-agent="'+esc(r.propId)+'"'+(pending?' disabled':'')+'><option value="">Elige un agente</option>'+agents.map(a=>'<option value="'+esc(a.id)+'"'+(a.id===r.agentId?' selected':'')+'>'+esc(a.name||a.id)+'</option>').join('')+'</select>'+
           (canSummon && r.role ? '<button type="button" class="bb sm" data-example-recruit="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>+ RECRUIT</button>' : '')+'</div>'+
-          (needsPc(r) ? '<div class="example-role-fix"><span>This agent has no desk of its own here.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ DA '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' UN ESCRITORIO</button></div>' : '')+'</div>').join('')+'</div>'+
+          (needsPc(r) ? '<div class="example-role-fix"><span>Este agente no tiene un escritorio propio aquí.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ DA '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' UN ESCRITORIO</button></div>' : '')+'</div>').join('')+'</div>'+
         (offerAll ? '<button type="button" class="bb sm example-all" data-example-all'+(pending?' disabled':'')+'>DALE A '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' CADA PASO</button>' : '')+
-        '<p class="example-note">'+(agents.length ? 'One agent can work every step. ' : 'You have no agents yet. ')+(canSummon ? 'RECRUIT adds that step\'s specialist to your crew; it costs nothing until it works.' : '')+'</p>'+
-        '<p class="example-note">Assignments save when selected. Each step\'s instructions live on its Bay; click the Bay to edit them.</p>'+
+        '<p class="example-note">'+(agents.length ? 'Un agente puede hacer cada paso. ' : 'Aún no tienes agentes. ')+(canSummon ? 'RECRUIT adds that step\'s specialist to your crew; it costs nothing until it works.' : '')+'</p>'+
+        '<p class="example-note">Las asignaciones se guardan al seleccionar. Las instrucciones de cada paso viven en su Bahía; clic en la Bahía para editarlas.</p>'+
         '<section class="example-sample"><h4>Enviar un trabajo real</h4><p>'+esc(e.sample.replace(/^SAMPLE JOB: /,''))+'</p><p class="example-note">Este es un trabajo real: los agentes que elegiste lo ejecutan con sus propios modelos y aplican los costos habituales de modelo.</p><button class="bb refit-primary" data-example-run'+(!ready||pending?' disabled':'')+'>'+(pending?'TRABAJO EN CURSO…':sr?.view?.ok?'↻ ENVIARLO OTRA VEZ':'▶ ENVIAR UN TRABAJO REAL')+'</button></section>'+
         '<p class="example-status" role="status">'+esc(status)+'</p>'+
-        (sr?.view ? '<div class="example-result">'+finSampleHTML(sr.view)+finOnwardHTML(sr)+(sr.output?'<details><summary>Read the finished result</summary><pre>'+esc(sr.output)+'</pre></details>':'')+'</div>' : '')+
+        (sr?.view ? '<div class="example-result">'+finSampleHTML(sr.view)+finOnwardHTML(sr)+(sr.output?'<details><summary>Leer el resultado terminado</summary><pre>'+esc(sr.output)+'</pre></details>':'')+'</div>' : '')+
         /* NEXT: USE IT FOR REAL — one click to the Inbox's own settings in the Workflow panel (what starts it; the working
            folder a software line builds in), instead of a sentence about where to click */
-        '<section class="example-next"><h4>Use it for real</h4><p>'+(software ? 'Choose the project folder the Builder works in, and when the line runs: on a schedule or from a chat app.' : 'Choose when the line runs: on a schedule or from a chat app.')+' Finished work lands in its OUTBOX and is also filed in DELIVERABLES.</p>'+
+        '<section class="example-next"><h4>Usarlo de verdad</h4><p>'+(software ? 'Elige la carpeta de proyecto en la que trabaja el Builder, y cuándo corre la línea: por horario o desde una app de chat.' : 'Elige cuándo corre la línea: por horario o desde una app de chat.')+' El trabajo terminado llega a su OUTBOX y también se archiva en DELIVERABLES.</p>'+
         (e.inboxId ? '<button type="button" class="bb" data-example-inbox'+(pending?' disabled':'')+'>'+(software ? 'ABRIR EL BUZÓN: CARPETA + INICIO' : 'ABRIR EL BUZÓN: CÓMO EMPIEZA')+'</button>' : '')+'</section>';
       body.querySelectorAll('[data-example-agent]').forEach(select => { select.onchange = () => {
         const propId = select.dataset.exampleAgent;
         const result = station.assignPropAgent(propId,select.value);
-        if (!result.ok) say(result.msg || 'That assignment could not be saved.');
+        if (!result.ok) say(result.msg || 'Esa asignación no se pudo guardar.');
         else { refresh(); g.querySelector('[data-example-agent="'+propId+'"]')?.focus(); }
       }; });
       body.querySelectorAll('[data-example-recruit]').forEach(b => { b.onclick = () => {
@@ -3245,13 +3245,13 @@ const Build = (() => {
         const ri = WorldModel.bayRoleInfo ? WorldModel.bayRoleInfo(r.role) : null;
         const a = summonForRole(r.role, ri), res = a && station.assignPropAgent(r.propId, a.id);
         if (res && res.ok) { sfx('chime'); refresh(); }
-        else { b.disabled = false; sfx('bad'); say(a ? 'Recruited, but the step refused the assignment. Pick the new agent from the list.' : 'Recruiting failed. Pick an agent from your crew instead.'); }
+        else { b.disabled = false; sfx('bad'); say(a ? 'Reclutado, pero el paso rechazó la asignación. Elige el nuevo agente de la lista.' : 'El reclutamiento falló. Elige un agente de tu tripulación en su lugar.'); }
       }; });
       body.querySelectorAll('[data-example-pc]').forEach(b => { b.onclick = () => {
         b.disabled = true;
         const res = requisitionPcFor(b.dataset.examplePc);
         if (res.ok) { bumpGeo(); sfx('chime'); refresh(); }
-        else { b.disabled = false; sfx('bad'); say(res.reason === 'no-room-for-a-desk' ? 'There is no clear floor for a desk in this room. Make some space, then try again.' : 'A workstation could not be placed here.'); }
+        else { b.disabled = false; sfx('bad'); say(res.reason === 'no-room-for-a-desk' ? 'No hay suelo libre para un escritorio en esta sala. Deja sitio e inténtalo de nuevo.' : 'No se pudo colocar una estación de trabajo aquí.'); }
       }; });
       const inboxBtn = body.querySelector('[data-example-inbox]');
       if (inboxBtn) inboxBtn.onclick = () => { closeP(); try { rebake(); openFlowCard(e.inboxId); } catch (_) {} };
@@ -3301,27 +3301,27 @@ const Build = (() => {
     const G = guideNames();
     g.innerHTML = `
       <div class="refit-guide-card refit-guide-wide" role="dialog" aria-modal="true" aria-labelledby="refit-guide-title">
-        <span class="refit-guide-kicker">BUILD MODE · QUICK GUIDE</span><h3 id="refit-guide-title">Shape your station</h3>
-        <p class="refit-guide-lead">Add rooms, choose equipment, and make the space your own. When you want a repeatable workflow, connect an inbox, an agent’s bay, and an outbox.</p>
+        <span class="refit-guide-kicker">MODO CONSTRUCCIÓN · GUÍA RÁPIDA</span><h3 id="refit-guide-title">Dale forma a tu estación</h3>
+        <p class="refit-guide-lead">Añade salas, elige equipamiento y haz el espacio tuyo. Cuando quieras un workflow repetible, conecta una inbox, la BAY de un agente y una outbox.</p>
         <div class="refit-steps">
           <div class="refit-step" data-art="room">
             <span class="refit-step-n">1</span>
-            <b>MAKE SPACE</b>
-            <span>Choose <b>ROOM</b> and click or drag on the grid. Use <b>SURFACE</b> to change its floor.</span>
+            <b>HACER ESPACIO</b>
+            <span>Elige <b>ROOM</b> y haz clic o arrastra en la rejilla. Usa <b>SURFACE</b> para cambiar su suelo.</span>
           </div>
           <div class="refit-step" data-art="bay">
             <span class="refit-step-n">2</span>
-            <b>ASSIGN AN AGENT</b>
-            <span>Open <b>${esc(G.tab)}</b>, press <b>1</b> (or pick <b>BAY</b> from its hotbar) and click the floor. Click it: the <b>Workflow panel</b> docks beside the floor — choose an agent and describe their step.</span>
+            <b>ASIGNAR UN AGENTE</b>
+            <span>Abre <b>${esc(G.tab)}</b>, pulsa <b>1</b> (o elige <b>BAY</b> de su hotbar) y haz clic en el suelo. Al hacer clic: el <b>Panel de workflow</b> se acopla junto al suelo — elige un agente y describe su paso.</span>
           </div>
           <div class="refit-step" data-art="belt">
             <span class="refit-step-n">3</span>
-            <b>CONNECT THE STEPS</b>
-            <span><b>Drag</b> from one machine onto the next — the belt follows your pointer and lays itself (a selected machine moves onto open floor; Shift + drag always moves). Connect <b>INBOX → BAY → OUTBOX</b>; drag a belt’s middle to branch it. The bay needs an assigned agent to do the work. Drag an <b>OUTBOX onto another line’s INBOX</b> to send its finished work onward with that line’s crew and budget.</span>
+            <b>CONECTAR LOS PASOS</b>
+            <span><b>Arrastra</b> desde una máquina hasta la siguiente — la cinta sigue a tu puntero y se coloca sola (una máquina seleccionada se mueve al suelo libre; Shift + arrastrar siempre mueve). Conecta <b>INBOX → BAY → OUTBOX</b>; arrastra el medio de una cinta para ramificarla. La BAY necesita un agente asignado para hacer el trabajo. Arrastra una <b>OUTBOX sobre la INBOX de otra línea</b> para enviar su trabajo terminado con el equipo y el presupuesto de esa línea.</span>
           </div>
         </div>
-        <p class="refit-guide-foot">For a head start, open <b>${esc(G.tab)} › ${esc(G.lines)}</b> (${G.lineCount} ready-made layouts), stamp one, then assign its bays. <b>${esc(G.preview)}</b> animates the routing and runs no AI job. To test for real, click any machine on a line and use <b>STEP TEST</b> in its Workflow panel: it runs the real agents one step at a time and pauses at every hand-off so you can read or edit what moves on.</p>
-        <div class="refit-guide-shortcuts"><span><b>Wheel</b> Zoom</span><span><b>Space + drag</b> Pan</span><span><b>Ctrl + Z</b> Undo</span><span><b>Click</b> Select</span><span><b>Drag a selected piece</b> Move it</span><span><b>Drag a box</b> Select several</span><span><b>Ctrl + C · V</b> Copy · paste</span><span><b>SAVE &amp; EXIT</b> Leave (or Esc twice)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">EMPEZAR A CONSTRUIR</button>
+        <p class="refit-guide-foot">Para empezar con ventaja, abre <b>${esc(G.tab)} › ${esc(G.lines)}</b> (${G.lineCount} diseños listos), estampa uno y luego asigna sus BAYs. <b>${esc(G.preview)}</b> anima la ruta y no ejecuta ningún trabajo de IA. Para probar de verdad, haz clic en cualquier máquina de una línea y usa <b>PRUEBA DE PASO</b> en su Panel de workflow: ejecuta a los agentes reales paso a paso y se pausa en cada traspaso para que leas o edites lo que avanza.</p>
+        <div class="refit-guide-shortcuts"><span><b>Rueda</b> Zoom</span><span><b>Space + arrastrar</b> Mover</span><span><b>Ctrl + Z</b> Deshacer</span><span><b>Clic</b> Seleccionar</span><span><b>Arrastrar una pieza seleccionada</b> Moverla</span><span><b>Arrastrar una caja</b> Seleccionar varias</span><span><b>Ctrl + C · V</b> Copiar · pegar</span><span><b>GUARDAR Y SALIR</b> Salir (o Esc dos veces)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">EMPEZAR A CONSTRUIR</button>
       </div>`;
     root.appendChild(g);
     g.querySelectorAll('.refit-step').forEach(s => {
@@ -3351,7 +3351,7 @@ const Build = (() => {
   function summonForRole(role, ri) {
     if (typeof App === 'undefined' || !App.summonAgent) return null;
     const cls = (ri && ri.cls && typeof Specialties !== 'undefined' && Specialties.get) ? Specialties.get(ri.cls) : null;
-    const duty = 'You crew this station line as its ' + role + ' — you ' + ((ri && ri.desc) || 'work this dock') + '.';
+    const duty = 'Tripulas esta línea de estación como su ' + role + ' — tú ' + ((ri && ri.desc) || 'haces este muelle') + '.';
     const spec = Object.assign({}, cls || { name: role, model: 'balanced' });
     spec.purpose = duty + (cls && cls.purpose ? '\n\n' + cls.purpose : '');
     // a role that borrows another class (TESTER rides the reviewer class) names its recruit for the STEP — the button said
@@ -3402,17 +3402,17 @@ const Build = (() => {
       const ch = recOf(b);
       const destinations = ch ? (ch.next || []).map(n => names(dch ? (aod[n] || n) : n)) : [];
       if (ch && ch.outbox) destinations.push('Results outbox');
-      if (ch && ch.deadEnd) destinations.push('Disconnected end — connect a destination');
+      if (ch && ch.deadEnd) destinations.push('Extremo desconectado — conecta un destino');
       return { propId: b.propId, label: b.role || (b.agentId ? names(b.agentId) : 'Unassigned step'),
-        agent: b.agentId ? names(b.agentId) : 'Choose an agent',
-        receives: b.agentId && plan && (rd ? rd[b.propId] : (plan.reach && plan.reach[b.agentId])) ? 'Receives incoming work' : '',
-        sends: destinations.length ? destinations.join(' / ') : 'No confirmed onward route' };
+        agent: b.agentId ? names(b.agentId) : 'Elige un agente',
+        receives: b.agentId && plan && (rd ? rd[b.propId] : (plan.reach && plan.reach[b.agentId])) ? 'Recibe trabajo entrante' : '',
+        sends: destinations.length ? destinations.join(' / ') : 'Sin ruta de salida confirmada' };
     });
     const exits = bays.filter(b => { const ch = recOf(b); return !!(ch && ch.outbox); }).length;
     return { steps,
-      start: comp && comp.intakes.length ? 'Inbox — configure what starts this workflow below' : 'No inbox on this line',
-      result: exits ? 'Connected to a results outbox' : 'No confirmed route to an outbox',
-      compact: (comp && comp.intakes.length ? 'Inbox' : 'No inbox') + ' → ' + bays.length + ' step' + (bays.length === 1 ? '' : 's') + ' → ' + (exits ? 'Outbox' : 'Check output route') };
+      start: comp && comp.intakes.length ? 'INBOX — configura qué inicia este workflow abajo' : 'Sin INBOX en esta línea',
+      result: exits ? 'Conectada a una OUTBOX de resultados' : 'Sin ruta confirmada a una OUTBOX',
+      compact: (comp && comp.intakes.length ? 'Inbox' : 'No inbox') + ' → ' + bays.length + ' step' + (bays.length === 1 ? '' : 's') + ' → ' + (exits ? 'Outbox' : 'Revisa la ruta de salida') };
   }
   /* REFIT-WORKFLOW-PURE-END */
   /* which position does this dock's agent hold on the COMPILED line? (inbox-trigger, 2026-08-05)
@@ -3741,14 +3741,14 @@ const Build = (() => {
       b.onclick = () => {
         if ((p.agentId || '') === aid) return;
         const res = assignDesk(p.id, aid);
-        feedback(res, orientEv(), aid ? (agentLabel(aid) + ' sits here now') : 'nobody sits here now');
+        feedback(res, orientEv(), aid ? (agentLabel(aid) + ' está aquí ahora') : 'nadie está aquí ahora');
         renderSelection();
       };
       row.append(b);
     };
     for (const a of agents) {
       const other = station.propsByAgent(a.id).some(q => q.id !== p.id && WORKSTATION_TYPES[q.t]);
-      chip(a.name || a.id, a.id, other && a.id !== p.agentId ? (a.name || a.id) + ' moves here from its other desk' : '');
+      chip(a.name || a.id, a.id, other && a.id !== p.agentId ? (a.name || a.id) + ' se muda aquí desde su otro escritorio' : '');
     }
     if (p.agentId) chip('NOBODY', '');
     return box;
@@ -3833,9 +3833,9 @@ const Build = (() => {
   function loopRuleTxt(when, max) {
     const n = max || 5, passes = n + ' pass' + (n === 1 ? '' : 'es');
     if (when === 'approved' || when === 'revise') {
-      return 'goes round until the reviewer’s last line says VERDICT: ' + when + ' (the reviewer is told to end with one; no verdict = round again), or MAX PASSES (' + passes + ') — then leaves on DONE marked unapproved.';
+      return 'da vueltas hasta que la última línea del revisor diga VERDICT: ' + when + ' (al revisor se le indica terminar con una; sin veredicto = otra vuelta), o MAX PASSES (' + passes + ') — y luego sale por DONE marcado como no aprobado';
     }
-    if (when) return 'goes round again ONLY while the reviewer’s output reads as ' + when.toUpperCase() + ' work; anything else leaves on DONE. MAX PASSES (' + passes + ') ends it regardless.';
+    if (when) return 'da otra vuelta SOLO mientras la salida del revisor se lea como trabajo de ' + when.toUpperCase() + '; lo demás sale por DONE. MAX PASSES (' + passes + ') lo termina de todos modos';
     return 'no verdict picked: every pass goes round until MAX PASSES (' + passes + ') is spent, then leaves on DONE.';
   }
   /* a LOOP gate's exits, labelled by DIRECTION and by WHAT THEY LEAD TO — read off the compiled plan (local
@@ -3861,7 +3861,7 @@ const Build = (() => {
         if (k === home) { to = 'round again'; kind = 'self'; break; }
         if (bayAt[k]) { to = 'to ' + String(nameOf ? nameOf(bayAt[k]) : bayAt[k]).toUpperCase(); kind = 'bay'; dock = dockAt[k] || null; break; }
         // a BAY with no agent yet is still where the belt goes (2026-09-28 retest: a fresh split read "nowhere yet" twice)
-        if (emptyAt[k]) { to = 'to a BAY with no agent yet'; kind = 'bay'; dock = emptyAt[k]; break; }
+        if (emptyAt[k]) { to = 'a una BAY sin agente aún'; kind = 'bay'; dock = emptyAt[k]; break; }
         if (outs[k]) { to = 'OUTBOX'; kind = 'outbox'; break; }
         if (junctions[k]) { to = 'a ' + (KIND[junctions[k].kind] || 'JUNCTION'); kind = 'junction'; break; }
         if (seen[k]) break;
@@ -3876,7 +3876,7 @@ const Build = (() => {
   // the sentence under the DONE picker: which exit is the BACK lane (the other one) and where it re-enters
   function loopBackTxt(exits, done) {
     const back = (exits || []).find(x => x.dir !== done) || null;
-    if (!back) return 'no BACK lane yet — the gate needs a second exit that leads upstream, or nothing goes round';
+    if (!back) return 'aún no hay carril BACK — la compuerta necesita una segunda salida hacia aguas arriba, o nada da la vuelta';
     if (back.kind === 'bay') return 'BACK lane: ' + back.label + ' — work goes back there for another pass';
     return 'BACK lane: ' + back.label + ' — a back lane must lead to an upstream dock';
   }
@@ -3948,24 +3948,24 @@ const Build = (() => {
     });
     // a look-alike's key is just REMOVE BELT FROM ▴ NORTH / REMOVE BELT 2 (its sentence above names the machines); the machines ride
     // along only where two groups of look-alikes would share that short key
-    const short = conns.map((c, i) => tag[i] ? 'REMOVE BELT ' + tag[i] : 'REMOVE ' + words[i]);
+    const short = conns.map((c, i) => tag[i] ? 'QUITAR CINTA ' + tag[i] : 'QUITAR ' + words[i]);
     const keyText = short.map((k, i) => short.filter(x => x === k).length > 1 ? k + ' · ' + words[i] : k);
     conns.forEach((c, i) => li.push((!tag[i] ? 'This belt runs' : /^\d/.test(tag[i]) ? 'Belt ' + tag[i] + ' runs' : 'The belt ' + tag[i].toLowerCase() + ' runs') + ' from <b>' + esc(machineName(c.from)) + '</b> to <b>' + esc(machineName(c.to)) + '</b>.'));
-    if (loose) li.push('This belt is <b>loose</b> — it joins no two machines, so nothing rides it. Drag from one machine onto the next to connect them; right-click removes this one.');
+    if (loose) li.push('Esta cinta está <b>suelta</b> — no une a dos máquinas, así que nada viaja en ella. Arrastra desde una máquina a la siguiente para conectarlas; clic derecho quita esta.');
     else if (r) {
-      if (r.agents.length) li.push('Work riding this lane reaches <b>' + r.agents.map(a => esc(agentLabelFor(a))).join(' + ') + '</b>.');
+      if (r.agents.length) li.push('El trabajo que viaja por este carril llega a <b>' + r.agents.map(a => esc(agentLabelFor(a))).join(' + ') + '</b>.');
       if (r.unbound) li.push('It passes <b>' + r.unbound + ' uncrewed dock' + (r.unbound === 1 ? '' : 's') + '</b> — crew them or crates ride past.');
-      if (r.outbox) li.push('It <b>ships out at the OUTBOX</b>.');
+      if (r.outbox) li.push('Sale <b>enviado por la OUTBOX</b>.');
       if (r.deadEnd) li.push('A branch <b>dead-ends</b> — nothing consumes there.');
-      if (!r.agents.length && !r.unbound && !r.outbox && !r.deadEnd) li.push('This tile isn’t on the compiled line yet — connect it to a machine.');
-    } else li.push('No compiled route yet — lay the line to a machine and this card reads its destination.');
+      if (!r.agents.length && !r.unbound && !r.outbox && !r.deadEnd) li.push('Esta baldosa aún no está en la línea compilada — conéctala a una máquina.');
+    } else li.push('Aún no hay ruta compilada — lleva la línea a una máquina y esta tarjeta leerá su destino.');
     const back = linksMemoed().some(l => (l.path||[]).some(q=>q.x===tx&&q.y===ty) && station.isBackLink && station.isBackLink(l.id));
-    if(back) li.push('<b>LOOP BACK belt.</b> Removing it stops retries; the DONE exit stays. Undo restores it.');
+    if(back) li.push('<b>cinta LOOP BACK.</b> Quitarla detiene los reintentos; la salida DONE sigue. Deshacer la restaura.');
     const g = document.createElement('div');
     g.className = 'refit-guide refit-belt-card refit-workflow-editor';
     g.innerHTML = '<div class="refit-guide-card" role="dialog" aria-modal="true" aria-labelledby="workflow-title">'
-      + workflowIntroHTML('BELT · ' + (DIRWORD[dir] || dir), 'Where this belt takes work', 'Belts connect the steps in your workflow. Their direction decides where work travels next.')
-      + '<div class="workflow-body"><section class="workflow-section"><h4>Connected destinations</h4><ul>' + li.map(s => '<li>' + s + '</li>').join('') + '</ul></section></div>'
+      + workflowIntroHTML('BELT · ' + (DIRWORD[dir] || dir), 'A dónde lleva el trabajo esta cinta', 'Las cintas conectan los pasos de tu flujo. Su dirección decide hacia dónde viaja el trabajo.')
+      + '<div class="workflow-body"><section class="workflow-section"><h4>Destinos conectados</h4><ul>' + li.map(s => '<li>' + s + '</li>').join('') + '</ul></section></div>'
       + '<div class="workflow-footer"><span>Drag a belt’s middle to branch it · Ctrl+drag reshapes it · right-click removes it.</span>'
       // one connection: REMOVE BELT; a tile two connections share: one key per connection (never a guess at which goes)
       + (conns.length > 1 ? conns.map((c, i) => '<button type="button" class="btn-sm" data-rmlink="' + i + '">' + esc(keyText[i]) + '</button>').join('')
@@ -4022,18 +4022,18 @@ const Build = (() => {
       const rowHtml = ROWS.map(([tag, label]) => {
         const btns = lanes.length
           ? lanes.map(d => '<button type="button" class="bb sm lane-btn' + (selOf(tag) === d ? ' sel' : '') + '" data-tag="' + tag + '" data-dir="' + d + '" aria-pressed="' + (selOf(tag) === d) + '">' + esc(exits.find(x => x.dir === d)?.label || d + ' ' + J_ARROW[d]) + '</button>').join('')
-          : '<span class="refit-note bad">Connect an outgoing belt first.</span>';
+          : '<span class="refit-note bad">Conecta primero una cinta saliente.</span>';
         return '<div class="refit-route-row"><span class="refit-route-lbl">' + label + '</span><div class="workflow-lane-options">' + btns + '</div></div>';
       }).join('');
       g.innerHTML = '<div class="refit-guide-card" role="dialog" aria-modal="true" aria-labelledby="workflow-title">'
-        + workflowIntroHTML('FILTER · SORT TASKS', 'Send each kind of task the right way', 'Choose a path for coding tasks, research tasks and everything else. The Filter reads each task and sends it along the matching belt.')
-        + '<div class="workflow-body workflow-columns"><div class="workflow-main"><section class="workflow-section"><h4>Choose a destination for each kind</h4>'
-        + '<p class="workflow-help">“Everything else” is the fallback. Set it so other tasks have somewhere to go.</p>'
+        + workflowIntroHTML('FILTER · ORDENAR TAREAS', 'Envía cada tipo de tarea por el camino correcto', 'Elige un camino para tareas de código, de investigación y todo lo demás. El Filtro lee cada tarea y la envía por la cinta que corresponde.')
+        + '<div class="workflow-body workflow-columns"><div class="workflow-main"><section class="workflow-section"><h4>Elige un destino para cada tipo</h4>'
+        + '<p class="workflow-help">“Todo lo demás” es el plan B. Ajústalo para que otros trabajos tengan adónde ir.</p>'
         + '<div class="refit-filter-rows">' + rowHtml + '</div></section></div>'
-        + '<aside class="workflow-aside"><section class="workflow-section"><h4>Which tasks get sorted?</h4>'
-        + '<p class="workflow-help">Tasks without an assigned agent use these rules. A task already addressed to an agent follows that agent’s path.</p></section>'
-        + '<section class="workflow-section"><h4>Need another destination?</h4><p class="workflow-help">Close this panel and drag this Filter onto another Bay (or use BELT) to connect them. Its destination appears here.</p></section></aside></div>'
-        + '<div class="workflow-footer"><span>Save routes to apply your choices.</span><button type="button" class="btn-sm" id="j-clear">CLEAR ROUTES</button><button type="button" class="btn-sm" id="j-cancel">CANCEL</button><button type="button" class="btn-sm refit-primary" id="j-ok">▸ SAVE ROUTES</button></div></div>';
+        + '<aside class="workflow-aside"><section class="workflow-section"><h4>¿Qué tareas se clasifican?</h4>'
+        + '<p class="workflow-help">Los trabajos sin agente asignado usan estas reglas. Un trabajo ya dirigido a un agente sigue el camino de ese agente.</p></section>'
+        + '<section class="workflow-section"><h4>¿Necesitas otro destino?</h4><p class="workflow-help">Cierra este panel y arrastra este Filtro sobre otra BAY (o usa BELT) para conectarlas. Su destino aparece aquí.</p></section></aside></div>'
+        + '<div class="workflow-footer"><span>Guarda las rutas para aplicar tus elecciones.</span><button type="button" class="btn-sm" id="j-clear">BORRAR RUTAS</button><button type="button" class="btn-sm" id="j-cancel">CANCEL</button><button type="button" class="btn-sm refit-primary" id="j-ok">▸ SAVE ROUTES</button></div></div>';
       root.appendChild(g);
       g.querySelector('[data-workflow-close]').onclick = closeP;
       requestAnimationFrame(() => g.classList.add('refit-swap'));
@@ -4068,9 +4068,9 @@ const Build = (() => {
     g.className = 'refit-guide refit-connector-editor';
     const closeP = () => { if (g.parentNode) g.parentNode.removeChild(g); };
     cardRegister(g, closeP);
-    g.innerHTML = '<div class="refit-guide-card"><h3>▮ CONNECTOR PORTAL — bind an MCP server</h3>'
+    g.innerHTML = '<div class="refit-guide-card"><h3>▮ PUERTO CONECTOR — vincula un servidor MCP</h3>'
       + '<ul><li>This gateway grants its bay\'s agent the <b>live tools</b> of ONE configured connector.</li>'
-      + '<li>Bind it below — the portal then rides that server\'s state and pulses when its tools fire.</li></ul>'
+      + '<li>Víncula aquí abajo — el portal se montará en el estado de ese servidor y latirá cuando sus herramientas se disparen.</li></ul>'
       + '<div class="refit-conn-rows" id="c-rows">loading…</div>'
       + '<div class="refit-actions"><button type="button" class="btn-sm" id="c-unbind">✕ UNBIND</button><button type="button" class="btn-sm" id="c-cancel">CANCEL</button></div></div>';
     root.appendChild(g);
@@ -4078,7 +4078,7 @@ const Build = (() => {
     const rowsEl = g.querySelector('#c-rows');
     // semantic state → dot class (theme vars, no inline hex): up=ok · warming/offline=warn · error=bad
     const STATE_CLASS = { connected: 'ok', ready: 'ok', up: 'ok', cached: 'warn', warming: 'warn', offline: 'warn', down: 'warn', error: 'bad' };
-    const bind = (id, label) => { const res = station.bindConnector(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'bound → ' + (label || id), true); closeP(); } else sfx('bad'); };
+    const bind = (id, label) => { const res = station.bindConnector(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'vinculado → ' + (label || id), true); closeP(); } else sfx('bad'); };
     g.querySelector('#c-unbind').onclick = () => { station.bindConnector(propId, ''); sfx('click'); flashTip(ev, 'portal unbound', true); closeP(); };
     g.querySelector('#c-cancel').onclick = closeP;
     g.addEventListener('click', e => { if (e.target === g) closeP(); });
@@ -4108,15 +4108,15 @@ const Build = (() => {
     const closeP = () => { if (g.parentNode) g.parentNode.removeChild(g); };
     cardRegister(g, closeP);
     g.innerHTML = '<div class="refit-guide-card"><h3>▮ TERMINAL DE PLUGIN — elige su plugin</h3>'
-      + '<ul><li>This terminal gives its room’s agent the chosen plugin’s <b>tools</b> (each call asks you first, unless you choose Always or Full access).</li>'
-      + '<li>Clicking it in the station opens that plugin’s window.</li></ul>'
-      + '<div class="refit-conn-rows" id="pl-rows">loading…</div>'
-      + '<div class="refit-actions"><button type="button" class="btn-sm" id="pl-unbind">✕ UNBIND</button><button type="button" class="btn-sm" id="pl-cancel">CANCEL</button></div></div>';
+      + '<ul><li>Esta terminal le da al agente de su sala las <b>herramientas</b> del plugin elegido (cada llamada te pregunta primero, salvo que elijas Siempre o Acceso total).</li>'
+      + '<li>Hacer clic en ella dentro de la estación abre la ventana de ese plugin.</li></ul>'
+      + '<div class="refit-conn-rows" id="pl-rows">cargando…</div>'
+      + '<div class="refit-actions"><button type="button" class="btn-sm" id="pl-unbind">✕ DESVINCULAR</button><button type="button" class="btn-sm" id="pl-cancel">CANCELAR</button></div></div>';
     root.appendChild(g);
     requestAnimationFrame(() => g.classList.add('refit-swap'));
     const rowsEl = g.querySelector('#pl-rows');
-    const bind = (id, label) => { const res = station.bindPlugin(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'bound → ' + (label || id), true); closeP(); } else sfx('bad'); };
-    g.querySelector('#pl-unbind').onclick = () => { station.bindPlugin(propId, ''); sfx('click'); flashTip(ev, 'terminal unbound', true); closeP(); };
+    const bind = (id, label) => { const res = station.bindPlugin(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'vinculado → ' + (label || id), true); closeP(); } else sfx('bad'); };
+    g.querySelector('#pl-unbind').onclick = () => { station.bindPlugin(propId, ''); sfx('click'); flashTip(ev, 'terminal desvinculada', true); closeP(); };
     g.querySelector('#pl-cancel').onclick = closeP;
     g.addEventListener('click', e => { if (e.target === g) closeP(); });
     if (typeof fetch === 'undefined') { rowsEl.innerHTML = '<div class="refit-conn-note">sin sidecar — no se pueden listar plugins aquí.</div>'; return; }
@@ -4124,8 +4124,8 @@ const Build = (() => {
       const all = (j && j.plugins) || [];
       const list = all.filter(x => x.active);
       const boundOff = p.pluginId ? all.find(x => x.id === p.pluginId && !x.active) : null;
-      const offNote = boundOff ? '<div class="refit-conn-note">Bound to <b>' + esc(boundOff.name || boundOff.id) + '</b>, which is off' + (boundOff.pending ? ' (changed since you approved it)' : '') + ' — turn it on in ⇄ ABILITIES → EXTENSIONS.</div>'
-        : (p.pluginId && !all.some(x => x.id === p.pluginId) ? '<div class="refit-conn-note">Bound to <b>' + esc(p.pluginId) + '</b>, which was removed.</div>' : '');
+      const offNote = boundOff ? '<div class="refit-conn-note">Vinculado a <b>' + esc(boundOff.name || boundOff.id) + '</b>, que está apagado' + (boundOff.pending ? ' (cambió desde que lo aprobaste)' : '') + ' — turn it on in ⇄ ABILITIES → EXTENSIONS.</div>'
+        : (p.pluginId && !all.some(x => x.id === p.pluginId) ? '<div class="refit-conn-note">Vinculado a <b>' + esc(p.pluginId) + '</b>, que fue eliminado.</div>' : '');
       if (!list.length) { rowsEl.innerHTML = offNote + '<div class="refit-conn-note">Aún no hay plugins activados — crea o aprueba uno en <b>⇄ CAPACIDADES → EXTENSIONES</b> y luego enlázalo aquí.</div>'; return; }
       rowsEl.innerHTML = list.map(x => {
         const sel = (x.id === p.pluginId);
@@ -4344,7 +4344,7 @@ const Build = (() => {
     note(t.x, t.y, '① WORK COMES IN HERE', '#e8c860');
     // the auto ride's word is said by the line's own door on the floor — never at the last pointer spot (that was over the panel)
     const at = auto ? tileClient(t.x, t.y) : ev;
-    flashTip(at, auto ? 'LINE READY — a test crate rides it now (free: no agent runs). ' + PREVIEW_LABEL + ' › WATCH IT replays it' : 'test work riding — watch the loop', true);
+    flashTip(at, auto ? 'LÍNEA LISTA — una caja de prueba viaja en ella ahora (gratis: no corre ningún agente). ' + PREVIEW_LABEL + ' › VERLA LO REPITE' : 'trabajo de prueba en marcha — mira el bucle', true);
     sfx('click');
     return true;
   }
@@ -4654,7 +4654,7 @@ const Build = (() => {
       + steps.map((s, i) => '<button type="button" class="bb fl-step' + (s.done ? ' done' : '') + '" data-ord="' + s.id + '"'
         + ' title="' + esc(s.tip) + '">' + (s.done ? '✓ ' : '+ ') + esc(s.label) + '</button>').join('')
       // the release valve (Andrew): five needs, and permission to ignore the other ~137 props
-      + '<div class="fl-opt">Choose what your task needs. You can already chat. Matching badges are alternatives, not a checklist.</div>';
+      + '<div class="fl-opt">Elige lo que tu tarea necesita. Ya puedes chatear. Las insignias que combinan son alternativas, no una lista de comprobación.</div>';
     finCardEl.querySelector('.fl-x').onclick = () => {
       try { localStorage.setItem(ORDERS_KEY(), '1'); } catch (e) {}
       sfx('click'); renderOrders();
@@ -4726,7 +4726,7 @@ const Build = (() => {
       <button type="button" class="bb fl-step${crewDone ? ' done' : ''}" data-act="crew"${crewDone ? ' disabled' : ''}>${esc(crewTxt)}</button>
       <button type="button" class="bb fl-step${st.feedDone ? ' done' : ''}" data-act="feed"${st.feedDone ? ' disabled' : ''}>${esc(feedTxt)}</button>
       <button type="button" class="bb fl-step${sampleOn ? '' : ' off'}${sr && sr.view && sr.view.ok ? ' done' : ''}" data-act="sample" title="${esc(sampleTip)}"><span class="fl-lbl">${esc(sampleTxt).replace('OTRO ENVÍO', '<span class="fl-again">OTRO ENVÍO</span>')}</span></button>
-      ${sr && sr.view ? finSampleHTML(sr.view) + finOnwardHTML(sr) : onward ? '<div class="fl-result fl-onward"><span class="fl-result-k">SEND TO</span> ' + esc(onward) + '</div>' : ''}`;
+      ${sr && sr.view ? finSampleHTML(sr.view) + finOnwardHTML(sr) : onward ? '<div class="fl-result fl-onward"><span class="fl-result-k">ENVIAR A</span> ' + esc(onward) + '</div>' : ''}`;
     finCardEl.querySelector('.fl-x').onclick = () => { finMark(station, c.key, 'dis'); sfx('click'); renderFinCard(); };
     const example = currentPresetExample();
     const overviewButton = finCardEl.querySelector('[data-act="overview"]');
@@ -4772,7 +4772,7 @@ const Build = (() => {
   function finSampleHTML(v) {
     if (!v) return '';
     // a STOPPED job is the Commander's own act, not a refusal: it says so, with what already ran and what it cost
-    if (v.stopped) return '<div class="fl-result stopped"><div><span class="fl-result-k">STOPPED</span> ' + esc(String(v.reason || '').replace(/^stopped\s*[—-]\s*/i, '') || 'you stopped this job') + '</div>'
+    if (v.stopped) return '<div class="fl-result stopped"><div><span class="fl-result-k">STOPPED</span> ' + esc(String(v.reason || '').replace(/^stopped\s*[—-]\s*/i, '') || 'detuviste este trabajo') + '</div>'
       + (v.stages.length ? '<div><span class="fl-result-k">RAN</span> ' + esc(v.stages.join(' ▸ ')) + '</div>' : '')
       + (v.usd != null ? '<div><span class="fl-result-k">COST</span> $' + esc(v.usd.toFixed(4)) + '</div>' : '') + '</div>';
     if (!v.ok) return '<div class="fl-result bad"><span class="fl-result-k">REFUSED</span> ' + esc(v.reason || 'no reason given') + '</div>';
@@ -4799,10 +4799,10 @@ const Build = (() => {
     const o = W && W.onwardResult && valPlan && typeof Pipeline !== 'undefined' ? W.onwardResult(sr, valPlan, Pipeline, w && w.lineName ? id => w.lineName(id) : null) : null;
     if (!o) return '';
     const to = esc((o.names || []).join(' and '));
-    if (o.kind === 'refused') return '<div class="fl-result bad"><span class="fl-result-k">NOT SENT ON</span> to ' + esc(o.name) + ' — ' + esc(o.why) + '</div>';
-    if (o.kind === 'sent') return '<div class="fl-result"><span class="fl-result-k">SENT ON</span> to ' + esc(o.name) + ' — its crew works this result next, at its own cost</div>';
-    if (o.kind === 'sends') return '<div class="fl-result"><span class="fl-result-k">SEND TO</span> this line sends its finished work on to ' + to + ' — WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent</div>';
-    return '<div class="fl-result"><span class="fl-result-k">SEND TO</span> an OUTBOX on this line sends on to ' + to + ' — if this job was handed on, WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent</div>';
+    if (o.kind === 'refused') return '<div class="fl-result bad"><span class="fl-result-k">NO ENVIADO EN</span> a ' + esc(o.name) + ' — ' + esc(o.why) + '</div>';
+    if (o.kind === 'sent') return '<div class="fl-result"><span class="fl-result-k">ENVIADO EN</span> a ' + esc(o.name) + ' — su tripulación trabaja este resultado a continuación, a su propio costo</div>';
+    if (o.kind === 'sends') return '<div class="fl-result"><span class="fl-result-k">ENVIAR A</span> esta línea envía su trabajo terminado a ' + to + ' — WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió</div>';
+    return '<div class="fl-result"><span class="fl-result-k">ENVIAR A</span> una OUTBOX de esta línea envía a ' + to + ' — si este trabajo fue traspasado, WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió</div>';
   }
   /* POST THE LINE BEFORE RUNNING IT (2026-08-22). BUILD MODE freezes the world, so the plan the sidecar routes by
      is the one posted at the LAST BUILD MODE CLOSE — a sample fired right after an edit ran the OLD line while
@@ -4818,11 +4818,11 @@ const Build = (() => {
     return Promise.resolve(p).then(s => {
       if (!s) return null;
       const errs = (s.errors || []);
-      if (errs.length) return { refuse: 'line not posted — fix the floor first: ' + errs.map(e => VAL_LABEL[e.code] || e.code).filter((v, i, a) => a.indexOf(v) === i).join(' · ') };
-      if (s.refusedHash && s.refusedHash === s.lastHash) return { refuse: 'the station refused this line — fix the nags on the floor first' };
-      if (s.stale || s.inflight || s.retryPending) return { refuse: 'line not posted — sidecar unreachable, the old line was NOT run' };
+      if (errs.length) return { refuse: 'línea no publicada — arregla el suelo primero: ' + errs.map(e => VAL_LABEL[e.code] || e.code).filter((v, i, a) => a.indexOf(v) === i).join(' · ') };
+      if (s.refusedHash && s.refusedHash === s.lastHash) return { refuse: 'la estación rechazó esta línea — arregla primero las quejas en el suelo' };
+      if (s.stale || s.inflight || s.retryPending) return { refuse: 'línea no publicada — sidecar inalcanzable, la línea vieja NO corrió' };
       return null;
-    }, () => ({ refuse: 'line not posted — the old line was NOT run' }));
+    }, () => ({ refuse: 'línea no publicada — la línea vieja NO corrió' }));
   }
   /* RUN-GATE-PURE-END */
   function finRunSample(c, options = {}) {
@@ -4870,8 +4870,8 @@ const Build = (() => {
     finSampleRes.stopping = true; finSig = ''; if (running) renderFinCard();
     const undo = j => { if (finSampleRes && finSampleRes.pending) { finSampleRes.stopping = false; finSig = ''; if (running) renderFinCard(); } return j; };
     return fetch(finApi('/api/routing/sample/stop'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
-      .then(r => r.json().catch(() => null).then(j => (j && j.ok) ? j : undo(j || { ok: false, error: 'the stop was not accepted (HTTP ' + r.status + ')' })))
-      .catch(() => undo({ ok: false, error: 'sidecar unreachable — the job may still be running (E-STOP stops everything)' }));
+      .then(r => r.json().catch(() => null).then(j => (j && j.ok) ? j : undo(j || { ok: false, error: 'la parada no fue aceptada (HTTP ' + r.status + ')' })))
+      .catch(() => undo({ ok: false, error: 'sidecar inalcanzable — el trabajo puede seguir corriendo (E-STOP detiene todo)' }));
   }
   // per-frame: hide while anything coach-like is up (same gate family as the first ride), else pin
   // the card beside the line's bounding box in screen space (the flashTip/clientX coordinate basis).
@@ -5052,7 +5052,7 @@ const Build = (() => {
       const now = StationBuilder.strandedHalls(station).filter(id => !before.has(id));
       if (!now.length) return r;
       const h = station.roomById(now[0]);
-      return { ok: false, error: 'STRANDS_HALL', msg: ((h && h.name) || 'A hallway') + ' would lead nowhere · keep it joined to two rooms, or delete the hallway first' };
+      return { ok: false, error: 'STRANDS_HALL', msg: ((h && h.name) || 'Un pasillo') + ' no iría a ninguna parte · mantenlo unido a dos salas, o borra primero el pasillo' };
     });
   }
   // the ONE room-removal path the card and the DELETE tool both take (flash, undo nudge, honest refusal)
@@ -5084,11 +5084,11 @@ const Build = (() => {
     g.className = 'refit-guide refit-door-picker';
     g.innerHTML = `
       <div class="refit-guide-card">
-        <h3>▮ AIRLOCK — ROOM SEAL</h3>
+        <h3>▮ ESCLUSA — SELLADO DE SALA</h3>
         <ul><li>A <b>SEALED</b> room is contained on the floor — its agent’s body can’t path in or out (a staging seal, the unmerged-branch look).</li>
         <li><b>OPEN</b> = connected to the trunk hub · <b>JAMMED</b> = a merge conflict (sealed).</li>
         <li>A spatial seal — it doesn’t change what the agent’s run can do; its tools &amp; permissions come from its BAY.</li>
-        ${isTrunk ? '<li><b>This is the trunk room</b> — it never seals (the integration hub).</li>' : ''}</ul>
+        ${isTrunk ? '<li><b>Esta es la sala principal</b> — nunca se sella (el hub de integración).</li>' : ''}</ul>
         <div class="refit-agents">${rows}</div>
         <div class="refit-actions">
           <button type="button" class="btn-sm" id="door-cancel">CANCEL</button>
@@ -5308,7 +5308,7 @@ const Build = (() => {
           const no = station.connectRefusal ? station.connectRefusal(pid, null) : null;
           if (no) { sfx('bad'); flashTip(ev, no.msg, false); return; }
           // (an OUTBOX arms a SEND TO: its one destination is another line's INBOX — never a belt)
-          connectFrom = pid; sfx('click'); flashTip(ev, pp.t === 'outbox' ? 'SEND TO — now click another line’s INBOX: each job that finishes cleanly here starts a job on it' : 'FROM ▸ ' + (propSpec(pp.t).label || pp.t).toUpperCase() + ' — now click a destination', true); return;
+          connectFrom = pid; sfx('click'); flashTip(ev, pp.t === 'outbox' ? 'SEND TO — ahora haz clic en la INBOX de otra línea: cada trabajo que termina limpio aquí inicia uno en ella' : 'FROM ▸ ' + (propSpec(pp.t).label || pp.t).toUpperCase() + ' — now click a destination', true); return;
         }
         if (connectFrom === pid) { connectFrom = null; hideTip(); return; }
         // the armed OUTBOX's second click on an INBOX: SEND TO (refused in its own words — this same line, a circle)
@@ -5547,15 +5547,15 @@ const Build = (() => {
   function turnUnderCursor(dir) {
     const ev = orientEv(), p = orientTarget();
     if (p) {
-      if (!canTurn(p.t)) { sfx('bad'); flashTip(ev, propLabel(p.t) + (/^user_/.test(p.t) ? ' has no side view yet \u00b7 select it and pick SIDE VIEW (about 30\u00a2) to turn it' : ' only faces one way — its turned art is not drawn')); return; }
+      if (!canTurn(p.t)) { sfx('bad'); flashTip(ev, propLabel(p.t) + (/^user_/.test(p.t) ? ' aún no tiene vista lateral \u00b7 selecciónala y elige VISTA LATERAL (unos 30\u00a2) para girarla' : ' solo mira a una cara — su arte girado no está dibujado')); return; }
       const nr = nextFace(p.t, p.r | 0, dir);
       const res = station.faceProp(p.id, nr, propBox(p.t, nr, p));
       if (res && res.ok) pushFlash([{ x1: p.x, y1: p.y, x2: p.x + p.w - 1, y2: p.y + p.h - 1 }], false);   // p is mutated in place → the NEW box
       feedback(res, ev, 'turned · facing ' + FACE_WORD[(p.r | 0) & 3]);
       return;
     }
-    if (!placingProp()) { sfx('bad'); flashTip(ev, 'hover a placed prop to turn it, or pick one from the Props tab'); return; }
-    if (!canTurn(propType)) { sfx('bad'); flashTip(ev, propLabel(propType) + (/^user_/.test(propType) ? ' has no side view yet \u00b7 MAKE SIDE VIEW (about 30\u00a2) turns it' : ' only faces one way — its turned art is not drawn')); return; }
+    if (!placingProp()) { sfx('bad'); flashTip(ev, 'pasa el cursor sobre una prop colocada para girarla, o elige una de la pestaña Props'); return; }
+    if (!canTurn(propType)) { sfx('bad'); flashTip(ev, propLabel(propType) + (/^user_/.test(propType) ? ' aún no tiene vista lateral \u00b7 HACER VISTA LATERAL (unos 30\u00a2) la gira' : ' solo mira a una cara — su arte girado no está dibujado')); return; }
     propRot = nextFace(propType, propRot, dir) & 3;
     renderPropPreview();
     renderEquipmentInfo();
@@ -5572,7 +5572,7 @@ const Build = (() => {
       feedback(res, ev, (res && res.m) ? 'flipped' : 'unflipped');
       return;
     }
-    if (!placingProp()) { sfx('bad'); flashTip(ev, 'hover a placed prop to flip it, or pick one from the Props tab'); return; }
+    if (!placingProp()) { sfx('bad'); flashTip(ev, 'pasa el cursor sobre una prop colocada para voltearla, o elige una de la pestaña Props'); return; }
     if (!canFlip(propType)) { sfx('bad'); flashTip(ev, propLabel(propType) + ' cannot be flipped — its light is painted in, not derived'); return; }
     propMir = propMir ? 0 : 1;
     renderPropPreview();
@@ -5601,7 +5601,7 @@ const Build = (() => {
     // THE CARD AND THE FLOOR ARE ONE LINE: a click on a line machine opens the docked Workflow panel on it
     // (or re-selects it there), without panning — the floor is where the Commander is looking
     if(WF_PART[p.t]){const id=p.id;inspectTimer=setTimeout(()=>{if(running&&selectedPropId===id&&!pinchLock){finFocusLine(id);openWorkflowPanel(id,true);}},400);}
-    setHint('Selected '+propLabel(p.t)+' · '+dragWords(p)+' · choose an action in the build kit');
+    setHint('Selected '+propLabel(p.t)+' · '+dragWords(p)+' · elige una acción en el kit de construcción');
   }
   // what a drag on the SELECTED piece does, in words (ONE GESTURE, THE TARGET DECIDES — a conveyor machine belts onto a machine)
   const dragWords = p => CONNECT_TYPES[p.t] ? 'drag it onto another machine to belt them, onto open floor to move it' : 'drag it to move it';
@@ -5627,7 +5627,7 @@ const Build = (() => {
     const p=station&&station.propById(selectedPropId);host.hidden=!p;root.classList.toggle('has-selection',!!p);
     if(!p){host.replaceChildren();return;}
     host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'drag onto floor to move, onto a machine to belt':'arrástralo para moverlo')+' · las flechas ajustan':'')+'</small></span>'
-      +'<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Deselect · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
+      +'<button class="bb sm refit-sel-x" type="button" aria-label="Deseleccionar" data-tip="Deseleccionar · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     propArtInto(host.querySelector('.refit-sel-art'),p);
     host.querySelector('.refit-sel-x').onclick=()=>{selectedPropId=null;renderSelection();setHint();sfx('click');};
     const actions=host.querySelector('.refit-selection-actions');
@@ -5722,7 +5722,7 @@ const Build = (() => {
     if (beltSel() || clipWorthy()) return duplicateClip(ev);   // (THE HAND part 2: a conveyor piece comes with its crew, brief and settings)
     const p = station.propById(selectedPropId); if (!p) return false;
     const spec = copySpecOf(p), at = freeSpotNear(spec, p.x, p.y);
-    if (!at) { sfx('bad'); flashTip(ev, 'no clear floor beside it for a copy — clear some space, or COPY it to place one anywhere'); return true; }
+    if (!at) { sfx('bad'); flashTip(ev, 'no hay suelo libre junto a ella para una copia — deja sitio, o cópiala (COPY) para colocarla donde quieras'); return true; }
     const res = station.addProp(Object.assign({ t: spec.t, x: at.x, y: at.y, w: spec.w, h: spec.h, block: spec.block }, spec.cfg));
     if (res && res.ok) {
       pushFlash([{ x1: at.x, y1: at.y, x2: at.x + spec.w - 1, y2: at.y + spec.h - 1 }], false);
@@ -5731,7 +5731,7 @@ const Build = (() => {
       if (typeof Tutorial !== 'undefined' && Tutorial.onPropPlaced) Tutorial.onPropPlaced(spec.t);
       if (res.id) { selectedPropId = res.id; renderSelection(); }
     }
-    feedback(res, ev, 'duplicated · the copy is selected · Ctrl+D again for another');
+    feedback(res, ev, 'duplicado · la copia está seleccionada · Ctrl+D de nuevo para otro');
     return true;
   }
   let lastCopy = null;   // the last thing picked up with Ctrl+C / COPY (a prop, a room, or a CLIP of floor) — Ctrl+V picks it up again
@@ -5770,7 +5770,7 @@ const Build = (() => {
     const bs = beltSel(), nb = bs ? bs.links.length + bs.tiles.length : 0;
     if (!live.length && nb) setHint(nb + (nb === 1 ? ' belt' : ' belts') + ' selected · Delete removes ' + (nb === 1 ? 'it' : 'them'));
     else if (live.length > 1 || (live.length && nb)) setHint(live.length + ' selected' + (nb ? ' with ' + nb + (nb === 1 ? ' belt' : ' belts') : '') + ' · drag any of them to move them together · Ctrl+C copies · Ctrl+D duplicates · Delete removes');
-    else if (live.length === 1) setHint('Selected ' + propLabel(station.propById(live[0]).t) + ' · ' + dragWords(station.propById(live[0])) + ' · choose an action in the build kit');
+    else if (live.length === 1) setHint('Selected ' + propLabel(station.propById(live[0]).t) + ' · ' + dragWords(station.propById(live[0])) + ' · elige una acción en el kit de construcción');
     else setHint();
   }
   const propRect = (p, dx, dy) => ({ x1: p.x + (dx | 0), y1: p.y + (dy | 0), x2: p.x + (dx | 0) + (p.w || 1) - 1, y2: p.y + (dy | 0) + (p.h || 1) - 1 });
@@ -6028,7 +6028,7 @@ const Build = (() => {
   function holdClip(held, ev, said) {
     selectTool('dupe', { keepGroup: true, silent: true }); dupe = held; clipGhostMemo = null; sfx('click');
     flashTip(ev, said || ('SOSTENIENDO ' + held.label + ' — clic para colocar · R la gira · clic derecho la suelta'), true);
-    setHint('holding ' + held.label + ' — click to place a copy (it stays in hand) · R turns it · right-click / Esc puts it down');
+    setHint('sujetando ' + held.label + ' — haz clic para colocar una copia (se queda en la mano) · R la gira · clic derecho / Esc la suelta');
   }
   // COPY (cut: CUT) → a CLIP in hand, the ghost under the pointer; Ctrl+V picks the last one up again
   function copyClip(ev, cut) {
@@ -6090,7 +6090,7 @@ const Build = (() => {
       flashTip(ev, 'duplicated · ' + clipWord(c).toLowerCase() + ' · the copies are selected · Ctrl+D again for another', true);
       return true;
     }
-    sfx('bad'); flashTip(ev, 'no clear floor beside it for a copy — Ctrl+C, then click where there is room', false);
+    sfx('bad'); flashTip(ev, 'no hay suelo libre junto a ella para una copia — Ctrl+C y haz clic donde haya sitio', false);
     return true;
   }
   // the paste is centred on the pointer (the prototype's anchor), so turning it keeps it under the hand
@@ -6119,10 +6119,10 @@ const Build = (() => {
     if (typeof LineEdit === 'undefined' || !LineEdit.layoutGraphNear || typeof station.clipGraph !== 'function') return { ok: false, msg: 'this floor cannot lay a copy out' };
     try {
       const gr = station.clipGraph(c, { agent: agentHere });
-      if (!gr || !gr.ok) return { ok: false, msg: (gr && gr.msg) || 'this copy cannot be laid out' };
+      if (!gr || !gr.ok) return { ok: false, msg: (gr && gr.msg) || 'esta copia no se puede colocar' };
       const L = LineEdit.layoutGraphNear(station, gr.graph, { x: at.tx, y: at.ty });
-      return L && L.ok ? { ok: true, L } : { ok: false, msg: (L && L.msg) || 'there is no clear floor near here to lay this copy out on' };
-    } catch (e) { return { ok: false, msg: 'the layout failed — ' + String((e && e.message) || e) }; }
+      return L && L.ok ? { ok: true, L } : { ok: false, msg: (L && L.msg) || 'no hay suelo libre cerca para colocar esta copia' };
+    } catch (e) { return { ok: false, msg: 'el layout falló — ' + String((e && e.message) || e) }; }
   }
   // the engine's answer for this tile: { ok, L } | { ok:false, msg } — undefined while it is still being asked
   function clipLaidFor(tx, ty) {
@@ -6152,7 +6152,7 @@ const Build = (() => {
       lay = known || layClipNear(c, w);
       if (lay.ok) {
         const r2 = station.pasteLinesLaid(c, lay.L, { agent: agentHere });
-        if (r2 && r2.ok) { res = r2; laid = true; } else lay = { ok: false, msg: (r2 && (r2.short || r2.msg)) || 'the copy could not be laid' };
+        if (r2 && r2.ok) { res = r2; laid = true; } else lay = { ok: false, msg: (r2 && (r2.short || r2.msg)) || 'la copia no se pudo colocar' };
       }
     }
     if (!(res && res.ok)) { sfx('bad'); flashTip(ev, 'CAN’T PASTE HERE — ' + String((lay && !lay.ok && lay.msg) || (res && (res.short || res.msg)) || 'it does not fit').toUpperCase(), false); return; }
@@ -6250,7 +6250,7 @@ const Build = (() => {
     if (!runRoomEdit({ clear: rm.name }, ev, { kind: 'clear' }, confirmed)) return;
     const gone = was.filter(p => !station.propById(p.id));
     gone.forEach(p => vanishProp(p)); renderSelection(); flashUndo();
-    flashTip(ev, 'cleared ' + gone.length + (gone.length === 1 ? ' piece' : ' pieces') + ' · its lines and desks stay · one Undo brings them back', true);
+    flashTip(ev, 'cleared ' + gone.length + (gone.length === 1 ? ' pieza' : ' piezas') + ' · sus líneas y escritorios se quedan · un Undo las trae de vuelta', true);
   }
   function deleteSelectedRoom(ev) {
     const rm = station.roomById(selectedRoomId); if (!rm) return;
@@ -6318,7 +6318,7 @@ const Build = (() => {
       const inOld = (x, y) => rm.rects.some(r => x >= r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2), inNew = (x, y) => x >= nr.x1 && x <= nr.x2 && y >= nr.y1 && y <= nr.y2;
       outer: for (const p of station.props()) for (let y = p.y; y < p.y + (p.h || 1); y++) for (let x = p.x; x < p.x + (p.w || 1); x++)
         if (inOld(x, y) && !inNew(x, y)) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'Move the ' + propLabel(p.t) + ' first · it would be left off the deck' }; break outer; }
-      if (v.ok) for (const k of Object.keys(station.belts() || {})) { const q = k.split(','); if (inOld(+q[0], +q[1]) && !inNew(+q[0], +q[1])) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'A belt would be left off the deck · clear it first' }; break; } }
+      if (v.ok) for (const k of Object.keys(station.belts() || {})) { const q = k.split(','); if (inOld(+q[0], +q[1]) && !inNew(+q[0], +q[1])) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'Una cinta quedaría fuera del suelo · quítala primero' }; break; } }
     } else v = { ok: false, error: (v && v.error) || 'BLOCKED', msg: String((v && v.msg) || 'blocked').replace(/^\w/, c => c.toUpperCase()) };
     resizeMemo = { key, v };
     return v;
@@ -6353,7 +6353,7 @@ const Build = (() => {
     const shape = plain ? (b.x2 - b.x1 + 1) + ' × ' + (b.y2 - b.y1 + 1) : rm.rects.length + ' sections';
     host.innerHTML = '<div class="refit-sel-head"><span class="refit-sel-art is-room" aria-hidden="true"></span><span class="refit-sel-name">'
       + '<input class="refit-room-name" type="text" maxlength="40" aria-label="Nombre de la habitación" placeholder="nombra esta habitación" value="' + esc(rm.name || '') + '">'
-      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · the spawn room' : '') + ' · drag inside to move · las flechas ajustan') + '</small></span>'
+      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · la sala de aparición' : '') + ' · drag inside to move · las flechas ajustan') + '</small></span>'
       + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Suelta la habitación · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     // the art well: the room's own deck, painted by the bake
     try {
@@ -6473,7 +6473,7 @@ const Build = (() => {
     if (!tiles.size) return null;
     const hits = linksMemoed().filter(l => (l.path||[]).some(q => tiles.has(q.x+','+q.y)));
     const link = hits.length === 1 && hits[0].from.prop && hits[0].to.prop ? hits[0] : null;
-    const v = t === 'bay' && link && station.canInsertBayBetween ? station.canInsertBayBetween(link.from.prop,link.to.prop,{w:size.w,h:size.h,block:true}) : {ok:false,short:'A BELT RUNS HERE',msg:'Drop it beside the belt; a BAY can insert into one clear connection.'};
+    const v = t === 'bay' && link && station.canInsertBayBetween ? station.canInsertBayBetween(link.from.prop,link.to.prop,{w:size.w,h:size.h,block:true}) : {ok:false,short:'A BELT RUNS HERE',msg:'Suéltala junto a la cinta; una BAY puede insertarse en una conexión libre.'};
     return {link,v};
   }
   // a BAY dropped on a belt lands where insertBayBetween puts it (the model's own dry run — canInsertBayBetween's x, y), never at
@@ -6497,7 +6497,7 @@ const Build = (() => {
     // NEXT to one, snap it onto the nearest belt tile instead of leaving an inert junction (the exact
     // silent failure of the 2026-07-05 playtest). Dropped ON a belt already? Unchanged. (junctionSnap — the hover ghost asks the same)
     const snapped = junctionSnap(propType, px, py);
-    if (snapped) { px = snapped.x; py = snapped.y; flashTip(ev, 'snapped onto the line', true); }
+    if (snapped) { px = snapped.x; py = snapped.y; flashTip(ev, 'encajada en la línea', true); }
     const placement = { t: propType, x: px, y: py, w: s.w, h: s.h, block: propSpec(propType).blocks !== false };
     const pr = propFacing(propType), pm = propFlipOn(propType);
     if (pr) placement.r = pr;                            // orientation rides the placement (omitted when south)
@@ -6564,7 +6564,7 @@ const Build = (() => {
     if (res && res.ok && WORKSTATION_TYPES[propType]) {
       if (owner) { deskOwner = null; setHint(); }   // the next desk dropped is nobody's until picked
       selectedPropId = res.id; renderSelection();   // the tool stays armed; the new desk's card asks who sits there
-      return feedback(res, ev, owner ? (agentLabel(owner) + '’s desk · they sit here now') : 'desk placed · pick who sits here');
+      return feedback(res, ev, owner ? (agentLabel(owner) + '’s escritorio · está aquí ahora') : 'escritorio colocado · elige quién está aquí');
     }
     if (onBelt) return feedback(res, ev, propLabel(propType) + ' PUT ON THE LINE' + (propType === 'filter' ? ' · EVERYTHING ELSE KEEPS THIS LANE' : propType === 'loop' ? ' · DONE KEEPS THIS LANE — BELT ITS BACK LANE TO AN EARLIER BAY' : ''));
     feedback(res, ev, grant ? ('PLACED · ' + grant + ' equipment') : ('placed ' + ((typeof PropSprites !== 'undefined' && PropSprites.isUserProp && PropSprites.isUserProp(propType)) ? String((PropSprites.spec(propType) || {}).label || 'made prop').toLowerCase() : propType)));   // a made prop's id is internal; say its name
@@ -6606,7 +6606,7 @@ const Build = (() => {
         const a = station.addProp(placement);
         if (a && a.ok) { made.push(a.id); laid.push({ x1: r.x, y1: r.y, x2: r.x + r.w - 1, y2: r.y + r.h - 1 }); }
       }
-      return made.length ? { ok: true } : { ok: false, msg: 'every spot on that row is taken — drag along clear floor' };
+      return made.length ? { ok: true } : { ok: false, msg: 'todos los sitios de esa fila están ocupados — arrastra por suelo libre' };
     });
     if (res && res.ok) {
       pushFlash(laid, false);
@@ -6616,7 +6616,7 @@ const Build = (() => {
       renderEquipmentInfo(propType);
     }
     const skipped = row.length - made.length;
-    feedback(res, ev, 'laid a row of ' + made.length + (skipped ? ' · ' + skipped + ' taken spot' + (skipped === 1 ? '' : 's') + ' skipped' : '') + ' · one Undo takes the row back');
+    feedback(res, ev, 'laid a row of ' + made.length + (skipped ? ' · ' + skipped + ' taken spot' + (skipped === 1 ? '' : 's') + ' skipped' : '') + ' · un Undo recupera la fila');
   }
   // a row in hand: every spot's art where it will land (a taken one red and faint), and how many the release will lay
   function drawRowGhost(t, now, g) {
@@ -7508,7 +7508,7 @@ const Build = (() => {
     //  belt taken up, so there is no "moved — its belts were taken up" to say any more — wave 2, worldmodel-09)
     const relaid = Array.isArray(res.relaid) ? res.relaid.length : 0;
     if (relaid) return okMsg.replace(/ · Undo restores the previous position$/, '') + ' · its belt' + (relaid === 1 ? '' : 's') + ' came with it';
-    return left ? 'moved — its belts stayed behind · reconnect with BELT (Undo puts it back)' : okMsg;
+    return left ? 'movido — sus cintas se quedaron atrás · reconecta con BELT (Undo lo devuelve)' : okMsg;
   }
   // a move ghost's verdict (SETTLE above): furniture is judged at once (no compile); a conveyor piece shows its footprint
   // verdict on the tiles it crosses and its full route verdict where the pointer rests
@@ -8498,26 +8498,26 @@ const Build = (() => {
        a step BEFORE the splitter to write the parts; with none, the switch adds a PLANNER there (the INBOX can't divide). */
     const divides = copies && !!plan.junctions[lk].divide;
     const toTurns = copies
-      ? (joins.length ? { ok: true, swap: joins } : { ok: false, msg: 'a JOINER further down the line combines these branches — make that one a MERGER to let them take turns' })
+      ? (joins.length ? { ok: true, swap: joins } : { ok: false, msg: 'un JOINER más abajo en la línea combina estas ramas — haz ese un MERGER para que se turnen' })
       : { ok: true, already: true };
-    const noSecond = { ok: false, msg: 'run a second belt OUT of the splitter first: drag from the SPLITTER onto the next machine' };
+    const noSecond = { ok: false, msg: 'lanza primero una segunda cinta por la SALIDA del splitter: arrastra desde el SPLITTER hasta la siguiente máquina' };
     const toCopy = !copies
       ? (lanes.length < 2 ? noSecond
         : meet && meet.kind === 'merge' && propAt(meet.at) ? { ok: true, swap: [propAt(meet.at)] }
-        : { ok: false, msg: 'the branches never meet at one MERGER — belt them into one JOINER where they come back together (the JOINER on the hotbar, key 6)' })
+        : { ok: false, msg: 'las ramas nunca se encuentran en un solo MERGER — cínctalas a un JOINER donde vuelvan a unirse (el JOINER de la hotbar, tecla 6)' })
       : divides ? { ok: true, swap: [] } : { ok: true, already: true };
     let toDivide = divides ? { ok: true, already: true } : toCopy.already ? { ok: true, swap: [] } : toCopy.ok ? { ok: true, swap: toCopy.swap } : toCopy;
     if (toDivide.ok && !toDivide.already && !(Pipeline.splitFedByDock && Pipeline.splitFedByDock(plan, lk))) {
       // nothing but the INBOX feeds the splitter: a PLANNER step goes in on the belt that does
       let from = null;
       try { const g = station.lineGraph(splitId); const inl = g && g.ok ? g.graph.links.filter(l => l.to && l.to.node === splitId) : []; if (inl.length === 1) from = inl[0].from.node; } catch (e) { from = null; }
-      toDivide = from ? Object.assign({}, toDivide, { addLead: from }) : { ok: false, msg: 'put a step (a BAY) on the belt into the splitter first — it writes the parts each branch gets' };
+      toDivide = from ? Object.assign({}, toDivide, { addLead: from }) : { ok: false, msg: 'pon primero un paso (una BAY) en la cinta dentro del splitter — escribe las partes que recibe cada rama' };
     }
     return { mode: divides ? 'divide' : copies ? 'copy' : 'turns', toCopy, toTurns, toDivide };
   }
   function setSplitMode(splitId, mode) {
     const info = splitModeInfo(splitId);
-    if (!info) return { ok: false, msg: 'this splitter is not on a line yet' };
+    if (!info) return { ok: false, msg: 'este splitter aún no está en una línea' };
     const step = mode === 'divide' ? info.toDivide : mode === 'copy' ? info.toCopy : info.toTurns;
     if (step.already) return { ok: true, already: true };
     if (!step.ok) return { ok: false, msg: step.msg };
@@ -8527,13 +8527,13 @@ const Build = (() => {
       for (const id of step.swap) { const r = station.swapJoinerMerger(id); if (!r.ok) return r; }
       if (mode === 'divide' && step.addLead) {
         const r = lineEditRun('insertStep', step.addLead, { from: step.addLead, to: splitId, role: 'PLANNER' });
-        if (!r || !r.ok) return { ok: false, msg: (r && (r.msg || r.error)) || 'there is no room for a PLANNER step before the splitter' };
+        if (!r || !r.ok) return { ok: false, msg: (r && (r.msg || r.error)) || 'no hay sitio para un paso PLANNER antes del splitter' };
       }
       if ((mode === 'divide') !== dividing) { const r = station.setSplitDivide(splitId, mode === 'divide'); if (!r.ok) return r; }
       return { ok: true };
     }, mode === 'divide' ? 'SPLIT THE JOB' : 'SPLITTER');   // (the undo says what it took back — setSplitDivide's own label is skipped in a batch)
     if (res && res.ok) { try { rebake(); } catch (e) { /* the frame loop recompiles */ } }
-    return res && res.ok ? { ok: true, mode } : { ok: false, msg: (res && (res.msg || res.error)) || 'could not switch' };
+    return res && res.ok ? { ok: true, mode } : { ok: false, msg: (res && (res.msg || res.error)) || 'no se pudo cambiar' };
   }
   function junctionTagText(p) {
     const jp = probePlanOnceCrewed() || valPlan, cfg = (jp && jp.junctions && jp.junctions[p.x + ',' + p.y]) || null;
@@ -9621,7 +9621,7 @@ const Build = (() => {
       out += '<div class="pc-assign">⚠ ' + esc(findingWhy(e)) + '</div>';
     }
     if (brushedHookups().some(h => h.propId === placed.id))
-      out += '<div class="pc-assign">⚠ A belt from another lane brushes this ' + esc(propLabel(placed.t)) + ' — the floor reads them as ONE line, so it hooks here. Leave a 1-tile gap to keep them apart.</div>';
+      out += '<div class="pc-assign">⚠ Una cinta de otro carril roza este ' + esc(propLabel(placed.t)) + ' — el suelo los lee como UNA línea, así que encaja aquí. Deja una brecha de 1 tile para mantenerlos separados.</div>';
     return out;
   }
   let propCardKey = null;

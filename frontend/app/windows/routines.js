@@ -108,7 +108,7 @@
         '</div>' +
         '<div id="rt-preview" class="dim" style="min-height:1em;font-size:.9em"></div>' +
         '<details class="sn-menu-options"><summary>Access &amp; other options</summary>' +
-          '<div class="sn-menu-tabs" role="group" aria-label="Advanced schedule options">' +
+          '<div class="sn-menu-tabs" role="group" aria-label="Opciones avanzadas de programación">' +
           ['Contexto', 'Ejecución', 'Entrega', 'Acceso'].map((label, i) => '<button type="button" data-auto-tab="' + i + '" aria-pressed="' + (i === 0) + '">' + label + '</button>').join('') + '</div>' +
           '<div data-auto-panel="0"><p class="sn-menu-note">Dale a cada ejecución los archivos y contexto que necesita.</p>' +
             '<label class="sn-menu-field">Carpeta del proyecto<input id="rt-workdir" class="key-input" placeholder="Ruta absoluta aprobada (opcional)"></label>' +

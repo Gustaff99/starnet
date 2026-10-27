@@ -34,16 +34,16 @@
      today; a lock with no START FRESH and no fix of its own leaves the sidecar's message to speak. */
   function storageNextStep(storage) {
     const s = storage || {};
-    if (s.reason === 'busy') return s.canStartFresh ? '' : ' Restart StarNet to try again.';
+    if (s.reason === 'busy') return s.canStartFresh ? '' : ' Reinicia StarNet para reintentar.';
     if (s.reason === 'key-unavailable') return s.canStartFresh ? ' Usa START FRESH solo si no puedes desbloquear o reparar la tienda de credenciales.' : ' Desbloquea la tienda de credenciales y reinicia StarNet.';
-    return s.canStartFresh ? ' START FRESH sets the unreadable files aside and lets you sign in to each service again.' : '';
+    return s.canStartFresh ? ' START FRESH aparta los archivos ilegibles y te deja iniciar sesión de nuevo en cada servicio.' : '';
   }
   /* An open store's storage notes. `notice` is a store StarNet does not count as encrypted (fallback, or a seal not yet
      checked), so it is headed that way. `migrationNotice` is an older sign-in file left beside a SEALED store: a plain
      heading, never 'not encrypted'. */
   function storageNoticeHtml(storage) {
     const s = storage || {};
-    return (s.notice ? '<div class="mc-notice"><b>Credential storage · not encrypted</b>' + esc(s.notice) + '</div>' : '') +
+    return (s.notice ? '<div class="mc-notice"><b>Almacenamiento de credenciales · no cifrado</b>' + esc(s.notice) + '</div>' : '') +
       (s.migrationNotice ? '<div class="mc-notice"><b>Credential storage</b>' + esc(s.migrationNotice) + '</div>' : '');
   }
   /* START FRESH's answer: where the old files went. Finishing an interrupted attempt also returns `previous`, the
@@ -144,7 +144,7 @@
           '<select id="mc-agent" class="key-input" aria-label="Propietario de la Safe Cell"><option value="">cargando agentes de Safe Cell…</option></select>' +
           '<div class="mc-hint" id="mc-agent-hint">El servidor corre dentro de la Safe Cell persistente de este agente, nunca como hijo interactivo del host.</div>' +
           '<input id="mc-command" class="key-input" placeholder="comando — p. ej. npx" autocomplete="off" spellcheck="false">' +
-          '<textarea id="mc-args" class="key-input mc-kv" placeholder="arguments, one per line:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace" spellcheck="false" rows="3"></textarea>' +
+          '<textarea id="mc-args" class="key-input mc-kv" placeholder="argumentos, uno por línea:&#10;-y&#10;@modelcontextprotocol/server-filesystem&#10;/workspace" spellcheck="false" rows="3"></textarea>' +
           '<input id="mc-cwd" class="key-input" placeholder="cwd del contenedor (opcional; por defecto /workspace)" autocomplete="off" spellcheck="false">' +
           '<textarea id="mc-env" class="key-input mc-kv" placeholder="entorno (opcional), uno por línea:&#10;SERVICE_TOKEN=value" spellcheck="false" rows="2"></textarea>' +
           '<div class="mc-hint">Comando y argumentos usan argv exacto sin shell. Los secretos quedan fuera de las listas de procesos; un env en blanco al editar conserva los valores guardados.</div>' +
@@ -264,7 +264,7 @@
           <input id="hk-cmd" class="key-input" placeholder="p. ej. node scripts/run-summary.js" autocomplete="off" spellcheck="false">
           <details class="ext-details"><summary>Nombre y detalles técnicos</summary>
             <label for="hk-name">Nombre <span class="dim">(opcional)</span></label>
-            <input id="hk-name" class="key-input" placeholder="p. ej. Run summary" autocomplete="off" maxlength="60">
+            <input id="hk-name" class="key-input" placeholder="p. ej. Ejecutar resumen" autocomplete="off" maxlength="60">
             <p class="mc-hint">Esto es un hook. El evento llega como JSON por stdin. Los comandos corren sin shell; pon pipes y redirecciones en un script. Los hooks before-tool pueden bloquear una herramienta imprimiendo <code>{"decision":"block","reason":"why"}</code>.</p>
           </details>
           <p class="mc-hint">Corre con los permisos de tu equipo. Activa solo comandos en los que confíes.</p>
@@ -374,7 +374,7 @@
         { id: 'advanced', label: 'CREAR / AVANZADO', sections: ['extensions', 'exchange'] }
       ],
       searchLabel: 'Buscar habilidades',
-      searchPlaceholder: 'search abilities…',   // fits the rail's search box whole (the long hint was cut at 'search a platform,')
+      searchPlaceholder: 'buscar habilidades…',   // fits the rail's search box whole (the long hint was cut at 'search a platform,')
       searchEmptyText: 'Ninguna habilidad coincide con esa búsqueda. Prueba otra plataforma, herramienta o skill.'
     });
     lanes.forEach(l => { try { if (typeof l.wire === 'function') l.wire(); } catch (_) {} });
@@ -618,8 +618,8 @@
           }
         });
       });
-      const errors = (hooks ? hooks.errors || [] : ['Could not load commands. Try again.'])
-        .concat(plugins ? plugins.errors || [] : ['Could not load plugins. Try again.']);
+      const errors = (hooks ? hooks.errors || [] : ['No se pudieron cargar los comandos. Inténtalo de nuevo.'])
+        .concat(plugins ? plugins.errors || [] : ['No se pudieron cargar los plugins. Inténtalo de nuevo.']);
       extSay(errors[0] || '', !!errors.length);
       return !errors.length;
     }
@@ -645,7 +645,7 @@
       else if (kind === 'plugin-revoke') ok = await extPost('/api/plugins/revoke', { id: btn.dataset.id }, btn);
       else if (kind === 'plugin-place') {
         const host = typeof PluginHost !== 'undefined' ? PluginHost : null;
-        const r = host ? host.placeTerminal(btn.dataset.id) : { ok: false, msg: 'plugin windows are not available in this build' };
+        const r = host ? host.placeTerminal(btn.dataset.id) : { ok: false, msg: 'las ventanas de plugin no están disponibles en esta build' };
         if (!r || !r.ok) { extSay('No se pudo colocar su terminal: ' + ((r && (r.msg || r.error)) || 'desconocido') + '. Coloca un TERMINAL DE PLUGIN en MODO CONSTRUCCIÓN.', true); return; }
         try { sfx('ok'); } catch (_) {}
         await renderExtensions();
@@ -654,10 +654,10 @@
       }
       else if (kind === 'plugin-open') {
         const host = typeof PluginHost !== 'undefined' ? PluginHost : null;
-        if (!host) { extSay('plugin windows are not available in this build', true); return; }
+        if (!host) { extSay('las ventanas de plugin no están disponibles en esta build', true); return; }
         if (!host.open(btn.dataset.id, btn.dataset.screen)) {
           await host.refresh();   // approved in another window, or just now: learn about it, then try once more
-          if (!host.open(btn.dataset.id, btn.dataset.screen)) extSay('that window is not available — is the plugin still on?', true);
+          if (!host.open(btn.dataset.id, btn.dataset.screen)) extSay('esa ventana no está disponible — ¿el plugin sigue encendido?', true);
         }
         return;
       }
@@ -682,7 +682,7 @@
         if (ok) { openAfter = newId; done = 'Plugin creado y su ventana abierta. Encuentra su código en Detalles y código.'; id.value = ''; nm.value = ''; ds.value = ''; pluginIdEdited = false; extEditor('', false); }
       }
       else if (kind === 'plugin-where') {
-        if (!extPluginDir) { extSay('the station has not reported a plugins folder yet', true); return; }
+        if (!extPluginDir) { extSay('la estación aún no ha reportado una carpeta de plugins', true); return; }
         const path = extPluginDir + (btn.dataset.id ? '/' + btn.dataset.id : '');
         try { await navigator.clipboard.writeText(path); extSay('Ruta copiada a tu portapapeles.'); }
         catch (_) { extSay(path); }   // no clipboard permission — show it rather than fail silently
@@ -711,8 +711,8 @@
               const r = PluginHost.placeTerminal(pid);
               if (r && r.ok) { try { localStorage.setItem('starnet.pluginTerminalsPlaced', JSON.stringify(placedBefore.concat([pid]).slice(-200))); } catch (_) { /* per-browser memory only */ } }
               const n = p.tools.length + ' tool' + (p.tools.length === 1 ? '' : 's');
-              const note = r && r.ok ? (r.existing ? '' : ' Its terminal now stands in the lead’s room, so the lead can use its ' + n + '.')
-                : ' Its terminal could not be placed (' + ((r && (r.msg || r.error)) || 'unknown') + ') — place a PLUGIN TERMINAL in BUILD MODE.';
+              const note = r && r.ok ? (r.existing ? '' : ' Su terminal ahora está en la sala del lead, para que el lead pueda usar su ' + n + '.')
+                : ' No se pudo colocar su terminal (' + ((r && (r.msg || r.error)) || 'desconocido') + ') — coloca una TERMINAL DE PLUGIN en BUILD MODE.';
               done = (done || 'Plugin on.') + note;
             }
           } catch (_) {}
@@ -754,12 +754,12 @@
       if (cuBusy) return;
       cuBusy = true;
       if (cuState) cuRender(cuState);
-      cuMessage.textContent = payload.action === 'install' ? 'Downloading and verifying CUA…' : 'Checking…';
+      cuMessage.textContent = payload.action === 'install' ? 'Descargando y verificando CUA…' : 'Comprobando…';
       try {
         const response = await Harness.api.post('/api/computer-control', payload, { timeoutMs: 240000 });
         if (!response.ok || response.j?.error) throw new Error(response.j?.error || 'Fallo la solicitud de control de ordenador');
         cuRender(response.j);
-        cuMessage.textContent = response.j.checkDetail || (payload.action === 'install' ? 'Installed. Select CUA to use it for new runs.' : 'Selection saved. Start a new run to use it.');
+        cuMessage.textContent = response.j.checkDetail || (payload.action === 'install' ? 'Instalado. Selecciona CUA para usarlo en nuevas ejecuciones.' : 'Selección guardada. Inicia una nueva ejecución para usarlo.');
       } catch (e) { cuMessage.textContent = e.message || 'Fallo la solicitud de control de ordenador'; }
       finally { cuBusy = false; await cuRefresh(); }
     }
@@ -793,7 +793,7 @@
       // off to the same BUILD MODE deep-link the SKILLS library's PLACE uses (arms the palette on the prop),
       // which is the honest path: the prop still lands where the Commander puts it.
       const hint = inert
-        ? '<span class="ts-inert">no ' + esc(t.object || 'prop') + ' in this agent’s workspace — choose one matching prop for this ability' +
+        ? '<span class="ts-inert">no hay ' + esc(t.object || 'prop') + ' en el workspace de este agente — elige una prop que combine con esta habilidad' +
             (t.object ? '<button class="bb xs ts-place" type="button" data-ts-place="' + esc(t.object) + '">⚒ PLACE ONE</button>' : '') +
           '</span>'
         : '';
@@ -838,7 +838,7 @@
         if (request !== tsRequest || !body.isConnected) return;
         if (!j || j.error || !j.authority) throw new Error((j && j.error) || 'authority unavailable');
         const a = j.authority;
-        tsAuthorityEl.textContent = a.name + ' · ' + a.approvalLabel + ' · ' + a.filesystemLabel + '. ' + a.revoke + ' Capability grants shown here; the current task, service connection and operating system can still limit execution.';
+        tsAuthorityEl.textContent = a.name + ' · ' + a.approvalLabel + ' · ' + a.filesystemLabel + '. ' + a.revoke + ' Concesiones de capacidad mostradas aquí; la tarea actual, la conexión del servicio y el sistema operativo aún pueden limitar la ejecución.';
         const list = (j && j.toolsets) || [];
         list.forEach(t => { if (t && t.id) tsLabels[t.id] = t.label || t.id; });   // the toast names the ability, not its id
         tsListEl.innerHTML = '<div class="ability-readout" aria-label="Selected agent toolset availability">' +
@@ -902,7 +902,7 @@
       const oauthNote = body.querySelector('#mc-oauth-note'); if (oauthNote) oauthNote.style.display = tp === 'oauth' ? '' : 'none';
       const dead = tp === 'stdio' && stdioAgents.length === 0;
       addBtn.disabled = dead;
-      addBtn.title = dead ? 'set an agent’s execution profile to SAFE CELL first' : '';
+      addBtn.title = dead ? 'pon primero el perfil de ejecución de un agente en SAFE CELL' : '';
       addBtn.textContent = tp === 'oauth' ? (editing ? '✓ SAVE & SIGN IN' : '+ ADD & SIGN IN') : (editing ? '✓ SAVE & RECONNECT' : '+ ADD & CONNECT');
     }
     body.querySelector('#mc-transport').addEventListener('click', ev => {
@@ -916,13 +916,13 @@
         stdioAgents = ((j && j.agents) || []).filter(x => x && x.agentId && x.profile && x.profile.id === 'safe-cell' && x.environment && x.environment.effectiveBackend === 'docker' && x.environment.safeCell && x.environment.safeCell.hostileCodeSandbox === true);
       } catch (_) { stdioAgents = []; }
       sel.innerHTML = stdioAgents.length
-        ? '<option value="">choose a Safe Cell agent…</option>' + stdioAgents.map(x => '<option value="' + esc(x.agentId) + '">' + esc(x.agentId) + ' — SAFE CELL</option>').join('')
+        ? '<option value="">elige un agente de Safe Cell…</option>' + stdioAgents.map(x => '<option value="' + esc(x.agentId) + '">' + esc(x.agentId) + ' — SAFE CELL</option>').join('')
         : '<option value="">no Safe Cell agents available</option>';
       if (selected && stdioAgents.some(x => x.agentId === selected)) sel.value = selected;
       const hint = body.querySelector('#mc-agent-hint');
       if (hint) hint.textContent = stdioAgents.length
-        ? 'The server runs inside this agent’s persistent Safe Cell, never as an interactive host child.'
-        : 'Set an agent’s execution profile to SAFE CELL first, then return here. Docker must also be available on this machine.';
+        ? 'El servidor corre dentro de la Safe Cell persistente de este agente, nunca como hijo interactivo del host.'
+        : 'Pon el perfil de ejecución de un agente en SAFE CELL primero y vuelve aquí. Docker también debe estar disponible en esta máquina.';
       if (transport() === 'stdio') setTransport('stdio');
     }
 
@@ -940,7 +940,7 @@
     function resetForm() {
       editing = null;
       formH.textContent = 'AÑADIR UN CONECTOR';
-      addBtn.textContent = '+ ADD & CONNECT';
+      addBtn.textContent = '+ AÑADIR Y CONECTAR';
       cancelBtn.style.display = 'none';
       idInput.disabled = false;
       ['#mc-id', '#mc-label', '#mc-url', '#mc-token', '#mc-headers', '#mc-timeout', '#mc-command', '#mc-args', '#mc-cwd', '#mc-env']
@@ -968,7 +968,7 @@
         body.querySelector('#mc-env').value = '';
         loadStdioAgents(c.agentId || '');
         msgEl.classList.remove('ok');
-        msgEl.textContent = c.hasEnv ? 'Saved environment values are hidden; leave env blank to keep them.' : '';
+        msgEl.textContent = c.hasEnv ? 'Los valores de entorno guardados están ocultos; deja env en blanco para conservarlos.' : '';
       } else {
         body.querySelector('#mc-url').value = c.url || '';
         body.querySelector('#mc-token').value = '';   // never round-trip the token
@@ -1059,7 +1059,7 @@
           notices.innerHTML += '<div class="mc-notice"><b>Almacenamiento de credenciales</b>' + esc(storageError) + '</div>';
           // START FRESH is the exit the sidecar offers for a store it cannot open (wrong key, damaged, unrecognized):
           // the old files are moved aside, never deleted, and every service is signed in again.
-          listEl.innerHTML = '<div class="mc-detail">Your saved connections have not been erased.' + storageNextStep(storage) + '</div>' +
+          listEl.innerHTML = '<div class="mc-detail">Tus conexiones guardadas no se han borrado.' + storageNextStep(storage) + '</div>' +
             (storage.canStartFresh ? '<div class="mc-acts"><button class="bb sm danger" id="mc-start-fresh" type="button">START FRESH</button></div>' : '');
           const fresh = listEl.querySelector('#mc-start-fresh');
           if (fresh && typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
@@ -1086,7 +1086,7 @@
         }
         else {
           listEl.innerHTML = '<div class="empty-state"><span class="es-glyph">⧉</span>' +
-            '<b>NO CONNECTORS YET</b><span>Attach an MCP server to give your agents external tools — GitHub, Slack, a database.</span>' +
+            '<b>SIN CONECTORES AÚN</b><span>Añade un servidor MCP para dar a tus agentes herramientas externas — GitHub, Slack, una base de datos.</span>' +
             '<button class="es-cta" id="mc-empty-cta" type="button">+ ADD A CONNECTOR</button></div>';
           const cta = listEl.querySelector('#mc-empty-cta');
           if (cta) cta.addEventListener('click', () => { sfx('click'); const idf = body.querySelector('#mc-id'); if (idf) idf.focus(); });
@@ -1095,7 +1095,7 @@
       } catch (_) {
         body.querySelector('#mc-overview').textContent = 'Estado del servicio no disponible';
         body.querySelector('#mc-notices').textContent = '';
-        listEl.innerHTML = '<div class="mc-detail">Could not read connections. Retry when the station is available.</div>';
+        listEl.innerHTML = '<div class="mc-detail">No se pudieron leer las conexiones. Reintenta cuando la estación esté disponible.</div>';
       }
     }
     const postJSON = (path, payload) => fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1120,7 +1120,7 @@
     // the one honest sentence for a failed read: offline vs the station refusing/erroring.
     const readFailLine = (res, offlineMsg) => res.offline
       ? '<div class="mc-detail">' + esc(offlineMsg) + '</div>'
-      : '<div class="mc-detail">couldn\'t read this from the station' + (res.status ? ' (HTTP ' + res.status + ')' : '') + ' — it is running, so this is not a start-it problem. Retry, and check the station log if it persists.</div>';
+      : '<div class="mc-detail">no se pudo leer esto de la estación' + (res.status ? ' (HTTP ' + res.status + ')' : '') + ' — está funcionando, así que no es un problema de arrancarlo. Reintenta y mira el log de la estación si persiste.</div>';
     async function removeConnector(id, btn) {
       if (btn) btn.disabled = true;
       try {
@@ -1195,7 +1195,7 @@
       const id = (idInput.value || '').trim();
       const label = (body.querySelector('#mc-label').value || '').trim();
       const tp = transport();
-      if (!id) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'an id is required'; return; }
+      if (!id) { sfx('bad'); msgEl.classList.remove('ok'); msgEl.textContent = 'se necesita un id'; return; }
       const httpMode = tp !== 'stdio';
       const payload = { id, label, transport: httpMode ? 'http' : 'stdio', enabled: true };
       if (httpMode) {
@@ -1269,7 +1269,7 @@
       const btn = ccListEl && ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"] button[data-cc-act]');
       if (btn && (btn.dataset.ccAct === 'signin' || btn.dataset.ccAct === 'signin-cancel')) {
         btn.dataset.ccAct = 'signin'; btn.textContent = id === 'github' ? 'INICIAR SESIÓN CON GITHUB' : '▸ INICIAR SESIÓN'; btn.disabled = false;
-        btn.title = 'opens a secure browser sign-in (OAuth)';
+        btn.title = 'abre un inicio de sesión seguro del navegador (OAuth)';
       }
     }
     // auth tier chip: glyph, label, colour. Drives the honest "what will adding this cost me" cue.
@@ -1287,15 +1287,15 @@
         ? ['', 'configuración manual', 'var(--gold)']
         : e.appPassword ? ['', 'contraseña de app', 'var(--gold)']
         : (e.signInAvailable === false ? ['', e.releaseDeferred ? 'diferido' : 'inicio de sesión no disponible', 'var(--gold)'] : (CC_CHIP[e.authType] || CC_CHIP.none));
-      const origin = e.googleApi ? '<span class="cc-badge cc-official" title="StarNet connector using Google’s APIs">STARNET · GOOGLE API</span>' : e.platformApi
-        ? (e.apiVia ? '<span class="cc-badge cc-community" title="this vendor publishes no API of its own">via ' + esc(e.apiVia) + '</span>'
+      const origin = e.googleApi ? '<span class="cc-badge cc-official" title="conector de StarNet que usa las APIs de Google">STARNET · GOOGLE API</span>' : e.platformApi
+        ? (e.apiVia ? '<span class="cc-badge cc-community" title="este vendor no publica su propia API">via ' + esc(e.apiVia) + '</span>'
                     : '<span class="cc-badge cc-official" title="API REST de primera parte documentada por el proveedor">✓ API oficial</span>')
-        : (e.official ? '<span class="cc-badge cc-official" title="first-party server, run by the vendor">✓ official</span>'
-                      : '<span class="cc-badge cc-community" title="community-run server">community</span>');
+        : (e.official ? '<span class="cc-badge cc-official" title="servidor de primera parte, operado por el vendor">✓ oficial</span>'
+                      : '<span class="cc-badge cc-community" title="servidor comunitario">comunidad</span>');
       let action;
       if (e.installed) action = '<button class="bb xs" data-cc-act="manage" data-id="' + esc(cardId) + '">GESTIONAR SERVICIO</button>' +
         // a rejected or revoked app password is fixed HERE (the login error says so): re-open the same form
-        (e.appPassword ? '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">NEW APP PASSWORD</button>' : '');
+        (e.appPassword ? '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">NUEVA CONTRASEÑA DE APP</button>' : '');
       else if (e.platformApi) action = '<button class="bb xs" data-cc-act="platform" data-id="' + esc(cardId) + '">CONFIGURAR CLAVE API</button>';
       else if (e.googleApi && e.signInAvailable === false) action =
         '<button class="bb xs" disabled>' + (e.releaseDeferred ? 'DIFERIDO' : 'INICIO DE SESIÓN DE GOOGLE NO DISPONIBLE') + '</button>';
@@ -1303,27 +1303,27 @@
         ? '<button class="bb xs" data-cc-act="signin" data-id="' + esc(cardId) + '" title="abre un inicio de sesión seguro en el navegador (OAuth)">' + (e.id === 'google-files' ? 'ELEGIR ARCHIVOS DE GOOGLE' : e.deviceFlow ? 'INICIAR SESIÓN CON GITHUB' : e.googleApi ? 'INICIAR SESIÓN CON GOOGLE' : '▸ INICIAR SESIÓN') + '</button>'
         : (e.via
           // url-less oauth entry reachable through an aggregator: a LIVE jump to that card, never a mute dead button.
-          ? '<button class="bb xs" data-cc-act="via" data-id="' + esc(cardId) + '" data-via="' + esc(e.via) + '" title="no direct endpoint — jump to the connector that reaches it">▸ VIA ' + esc(e.via.toUpperCase()) + '</button>'
-          : '<button class="bb xs" data-cc-act="soon" disabled title="not directly wired yet — see the note">SOON</button>');   // an oauth entry with no endpoint and no aggregator is honestly not sign-in-able
+          ? '<button class="bb xs" data-cc-act="via" data-id="' + esc(cardId) + '" data-via="' + esc(e.via) + '" title="sin endpoint directo — salta al conector que lo alcanza">▸ VÍA ' + esc(e.via.toUpperCase()) + '</button>'
+          : '<button class="bb xs" data-cc-act="soon" disabled title="aún no cableado directamente — mira la nota">PRONTO</button>');   // an oauth entry with no endpoint and no aggregator is honestly not sign-in-able
       else if (e.authType === 'apikey') action = '<button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">' + (e.appPassword ? 'CONFIGURAR CONTRASEÑA DE APP' : 'CONFIGURAR CLAVE API') + '</button>';
-      else action = '<button class="bb sm" data-cc-act="add" data-id="' + esc(cardId) + '">+ ADD</button>';
+      else action = '<button class="bb sm" data-cc-act="add" data-id="' + esc(cardId) + '">+ AÑADIR</button>';
       const keyDelivery = e.keyHeader
         ? '<code>' + esc(e.keyHeader) + ': &hellip;</code>'
         : '<code>Authorization: Bearer &hellip;</code>';
       const keyField = e.appPassword
-        ? '<div class="cc-key cc-apppw" style="display:none"><div class="mc-hint">1. Turn on 2-Step Verification for your Google account. <a href="https://myaccount.google.com/signinoptions/two-step-verification" target="_blank" rel="noopener">2-Step Verification ↗</a>' +
-            '<br>2. Create an app password (any name, for example StarNet). <a href="' + esc(e.homepage || 'https://myaccount.google.com/apppasswords') + '" target="_blank" rel="noopener">Create app password ↗</a>' +
-            '<br>3. Enter your Gmail address and the 16-letter app password, then choose CONNECT.</div>' +
+        ? '<div class="cc-key cc-apppw" style="display:none"><div class="mc-hint">1. Activa la verificación en dos pasos para tu cuenta de Google. <a href="https://myaccount.google.com/signinoptions/two-step-verification" target="_blank" rel="noopener">Verificación en dos pasos ↗</a>' +
+            '<br>2. Crea una contraseña de app (cualquier nombre, por ejemplo StarNet). <a href="' + esc(e.homepage || 'https://myaccount.google.com/apppasswords') + '" target="_blank" rel="noopener">Crear contraseña de app ↗</a>' +
+            '<br>3. Introduce tu dirección de Gmail y la contraseña de app de 16 caracteres, y elige CONECTAR.</div>' +
             '<input type="text" inputmode="email" class="key-input" data-cc-addr="' + esc(cardId) + '" aria-label="Gmail address" placeholder="you@gmail.com" autocomplete="off" spellcheck="false">' +
-            '<input type="password" class="key-input" data-cc-key="' + esc(cardId) + '" aria-label="Google app password" placeholder="16-letter app password" autocomplete="off" spellcheck="false">' +
-            '<div class="mc-hint">This uses an app password, not Google sign-in. StarNet talks to Gmail directly from this computer (IMAP and SMTP); the password is saved with your other connector credentials on this computer and never shown again.' +
-            ' Mail read through this connection is never sent to StarNet Managed. On a work or school account, an administrator can turn app passwords off. Remove the connection or revoke the app password in your Google account at any time.</div></div>'
+            '<input type="password" class="key-input" data-cc-key="' + esc(cardId) + '" aria-label="Contraseña de aplicación de Google" placeholder="Contraseña de aplicación de 16 caracteres" autocomplete="off" spellcheck="false">' +
+            '<div class="mc-hint">Esto usa una contraseña de app, no el inicio de sesión de Google. StarNet habla con Gmail directamente desde esta computadora (IMAP y SMTP); la contraseña se guarda con tus otras credenciales de conectores en esta computadora y nunca se muestra de nuevo.' +
+            ' El correo leído por esta conexión nunca se envía a StarNet Managed. En una cuenta de trabajo o escuela, un administrador puede apagar las contraseñas de app. Quita la conexión o revoca la contraseña de app en tu cuenta de Google cuando quieras.</div></div>'
         : (e.authType === 'apikey' || e.deviceFlow) && !e.platformApi
         ? '<div class="cc-key" style="display:none"><div class="mc-hint">1. Abre tu cuenta de ' + esc(e.name) + ' y crea una clave o token API. ' + (e.homepage ? '<a href="' + esc(e.homepage) + '" target="_blank" rel="noopener">Abrir ' + esc(e.name) + ' ↗</a>' : '') + '<br>2. Pégalo abajo y elige CONECTAR.</div><input type="password" class="key-input" data-cc-key="' + esc(cardId) + '" aria-label="Clave o token API de ' + esc(e.name) + '" placeholder="Clave / token API de ' + esc(e.name) + '" autocomplete="off" spellcheck="false">' +
-            '<div class="mc-hint">Stored locally by the sidecar, sent as ' + keyDelivery + ', never displayed again.</div></div>'
+            '<div class="mc-hint">Guardada localmente por el sidecar, enviada como ' + keyDelivery + ', nunca mostrada de nuevo.</div></div>'
         : '';
       const clientField = e.googleApi && e.signInAvailable === false
-        ? '<div class="mc-hint">' + esc(e.signInMessage || 'Google sign-in is not available in this build. StarNet needs to finish enabling it. No account setup is required from you.') + '</div>' : '';
+        ? '<div class="mc-hint">' + esc(e.signInMessage || 'El inicio de sesión de Google no está disponible en esta build. StarNet necesita terminar de habilitarlo. No necesitas configurar tu cuenta.') + '</div>' : '';
       const home = e.homepage ? ' <a class="cc-home dim" href="' + esc(e.homepage) + '" target="_blank" rel="noopener">site ↗</a>' : '';
       // data-search: the console search box (stationui.js doFilter) matches textContent + this attribute, so a
       // Commander typing "google drive" reaches the Google Workspace card even though those words are only in
@@ -1338,12 +1338,12 @@
             (e.docsUrl ? ' · <a class="dim" href="' + esc(e.docsUrl) + '" target="_blank" rel="noopener">docs ↗</a>' : '') + '</div>'
         : '';
       const setupHint = e.installed ? 'Setup saved — manage access or reconnect.'
-        : e.signInAvailable === false ? (e.signInMessage || 'Sign-in is unavailable in this build.')
-        : e.platformApi ? (e.unattendedSupported === false ? 'Manual setup required. See the service instructions before adding a key.' : 'Requires an API key from your account. Guided setup opens the key form.')
-        : e.appPassword ? 'Needs a Google app password.'
-        : e.authType === 'apikey' ? 'Requires an API key or token from your account.'
-        : e.authType === 'oauth' ? (e.url ? 'Sign in in your browser, then return here to check the connection.' : 'Connect through the service shown below.')
-        : e.local ? 'Start the local service first, then connect.' : 'No account credentials needed.';
+        : e.signInAvailable === false ? (e.signInMessage || 'El inicio de sesión no está disponible en esta build.')
+        : e.platformApi ? (e.unattendedSupported === false ? 'Necesita configuración manual. Mira las instrucciones del servicio antes de añadir una clave.' : 'Necesita una clave API de tu cuenta. La configuración guiada abre el formulario de la clave.')
+        : e.appPassword ? 'Necesita una contraseña de app de Google.'
+        : e.authType === 'apikey' ? 'Necesita una clave API o token de tu cuenta.'
+        : e.authType === 'oauth' ? (e.url ? 'Inicia sesión en tu navegador y vuelve aquí para comprobar la conexión.' : 'Conecta a través del servicio mostrado abajo.')
+        : e.local ? 'Arranca primero el servicio local y conecta.' : 'No necesita credenciales de cuenta.';
       // data-auth / data-installed drive the tier filter above. They mirror the chip the card already
       // shows, so the filter can never disagree with what is printed on the card.
       return '<div class="cc-card' + (e.installed ? ' cc-on' : '') + '" data-id="' + esc(cardId) + '"' + alias +
@@ -1351,16 +1351,16 @@
           ' style="--ci:' + (ci || 0) + '">' +
           '<div class="cc-head">' + ccSeal(e) + '<div class="cc-identity"><b>' + esc(e.name) + '</b>' +
             '<span class="cc-chip" style="color:' + chip[2] + '" title="' + esc(chip[1]) + '">' + (chip[0] ? chip[0] + ' ' : '') + esc(chip[1]) + '</span></div></div>' +
-          (e.appPassword ? '<div class="cc-blurb dim" data-tip="' + esc(e.blurb) + '">IMAP · SMTP · app password</div>' : '<div class="cc-blurb dim">' + esc(e.blurb) + '</div>') + '<details class="cc-details"><summary>Connection details</summary><div class="cc-details-body">' + clientField + origin + presets + platformMeta + (e.installed ? '<div class="mc-hint">' + (e.releaseDeferred ? 'Conexión guardada retenida. Abre Gestionar Servicio para verlo o eliminarlo.' : 'Configuración guardada. Abre Gestionar Servicio para comprobar el acceso o reconectar.') + '</div>' : '') + '</div></details>' + keyField +
+          (e.appPassword ? '<div class="cc-blurb dim" data-tip="' + esc(e.blurb) + '">IMAP · SMTP · contraseña de aplicación</div>' : '<div class="cc-blurb dim">' + esc(e.blurb) + '</div>') + '<details class="cc-details"><summary>Detalles de la conexión</summary><div class="cc-details-body">' + clientField + origin + presets + platformMeta + (e.installed ? '<div class="mc-hint">' + (e.releaseDeferred ? 'Conexión guardada retenida. Abre Gestionar Servicio para verlo o eliminarlo.' : 'Configuración guardada. Abre Gestionar Servicio para comprobar el acceso o reconectar.') + '</div>' : '') + '</div></details>' + keyField +
           '<div class="mc-hint cc-setup-hint">' + esc(setupHint) + '</div>' +
-          '<div class="cc-acts">' + action + home + '</div>' + (e.deviceFlow && !e.installed ? '<details><summary>Use a personal access token instead</summary><button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">SET UP TOKEN</button></details>' : '') +
+          '<div class="cc-acts">' + action + home + '</div>' + (e.deviceFlow && !e.installed ? '<details><summary>Usa un token de acceso personal en su lugar</summary><button class="bb xs" data-cc-act="key" data-id="' + esc(cardId) + '">CREAR TOKEN</button></details>' : '') +
         '</div>';
     }
     function ccGroupHTML(g) {
       if (!g.connectors || !g.connectors.length) return '';
       return '<div class="cc-group"><div class="sec"><span class="sec-l">' + esc(g.category) + '</span>' +
           '<span class="sec-tag">' + g.connectors.length + '</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-        (g.category === 'Popular' ? '<p class="mc-hint">A curated starting point for everyday work.</p>' : '') +
+        (g.category === 'Popular' ? '<p class="mc-hint">Un punto de partida curado para el trabajo de cada día.</p>' : '') +
         '<div class="cc-grid">' + g.connectors.map((e, i) => {
           const alternate = ccAlternatives.get(e.catalogId || e.id);
           return alternate ? '<div class="cc-service">' + ccCard(e, i) + '<details class="cc-alternatives"><summary>Advanced: ' + esc(e.name) + ' API connection</summary>' + ccCard(alternate, i) + '</details></div>' : ccCard(e, i);
@@ -1414,7 +1414,7 @@
           out.connectors.push.apply(out.connectors, g.connectors || []);
         }
         ccCache = groups.flatMap(g => g.connectors).concat([...ccAlternatives.values()]);
-        ccListEl.innerHTML = ccPopularGroups(groups).map(ccGroupHTML).join('') || '<div class="mc-detail">catalog is empty.</div>';
+        ccListEl.innerHTML = ccPopularGroups(groups).map(ccGroupHTML).join('') || '<div class="mc-detail">el catálogo está vacío.</div>';
         ccApplyFilter();   // a refresh re-renders every card, so re-assert the active tier filter
         const search = body.querySelector('.con-search-in');
         if (search && search.value.trim()) search.dispatchEvent(new Event('input', { bubbles: true }));
@@ -1422,9 +1422,9 @@
           const jid = ccJumpPending; ccJumpPending = null;
           const card = ccListEl.querySelector('.cc-card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(jid) : jid) + '"]');
           if (card) { if (card.hidden) ccSetFilter('all'); ccFlash(card); }
-          else { ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = '✕ "' + jid + '" is not in the catalog'; }
+          else { ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = '✕ "' + jid + '" no está en el catálogo'; }
         }
-      } catch (_) { ccListEl.innerHTML = '<div class="mc-detail">sidecar offline — start it to browse the catalog.</div>'; }
+      } catch (_) { ccListEl.innerHTML = '<div class="mc-detail">sidecar fuera de línea — arráncalo para navegar el catálogo.</div>'; }
     }
     /* Tier filter. Hides cards, then hides any category group left with nothing visible — a category
        heading over an empty grid reads as a broken render. The per-group count re-states what is SHOWN
@@ -1462,8 +1462,8 @@
         }
         none.hidden = false;
         none.textContent = ccFilter === 'installed'
-          ? 'No saved services from the catalog yet — pick ALL to connect one.'
-          : 'No catalog entry uses that setup type.';
+          ? 'Aún no hay servicios guardados del catálogo — elige TODOS para conectar uno.'
+          : 'Ninguna entrada del catálogo usa ese tipo de configuración.';
       } else if (none) none.hidden = true;
     }
     function ccSetFilter(f) {
@@ -1500,7 +1500,7 @@
         else if (j.status && j.status.state === 'up') {
           ccMsgEl.classList.add('ok'); ccMsgEl.textContent = '✓ ' + e.name + ' connected — ' + (j.status.toolCount || 0) + ' herramienta(s) disponible(s)'; sfx('click');
           notify('Conector "' + e.name + '" conectado', 'good');
-        } else { ccMsgEl.textContent = '✕ ' + ((j.status && j.status.detail) || ('could not connect (' + (j.state || 'error') + ')')); sfx('bad'); }
+        } else { ccMsgEl.textContent = '✕ ' + ((j.status && j.status.detail) || ('no se pudo conectar (' + (j.state || 'error') + ')')); sfx('bad'); }
       } catch (err) { ccMsgEl.textContent = '✕ ' + ((err && err.message) || 'no se pudo alcanzar el sidecar'); sfx('bad'); }
       ccRefresh();   // reflect the new installed state on the cards
       refresh();     // and repaint the MCP CONNECTORS list (same underlying connector set)
@@ -1526,7 +1526,7 @@
           '<p>' + esc((e && e.blurb) || 'Conecta el servicio de Google seleccionado usando los permisos que apruebes en Google.') + '</p>' +
           '<p>Cuando un agente usa esta conexión, el contenido del servicio de Google puede enviarse a tu proveedor de modelos de IA seleccionado. Con StarNet Credits, esas solicitudes también pasan por la pasarela de créditos de StarNet.</p>' +
           '<p>Las credenciales de inicio de sesión se guardan en este dispositivo. Las conversaciones, archivos y memorias pueden retener contenido de tus solicitudes. Eliminar la conexión borra sus credenciales guardadas; no borra el trabajo previo ni revoca el acceso en tu cuenta de Google.</p>' +
-          '<p><a class="bb sm" href="https://starnetos.com/legal/privacy#google-workspace" target="_blank" rel="noopener">Google data use and removal details ↗</a></p>' +
+          '<p><a class="bb sm" href="https://starnetos.com/legal/privacy#google-workspace" target="_blank" rel="noopener">Detalles del uso y borrado de datos de Google ↗</a></p>' +
           '<div class="mc-acts"><button class="bb sm" data-google-continue>CONTINUE TO GOOGLE</button><button class="bb sm" data-google-cancel>CANCEL</button></div>';
         out.classList.remove('ok'); out.textContent = '';
         out.before(notice);
@@ -1559,7 +1559,7 @@
         if (j.deviceFlow) device = j;
       } catch (err) {
         ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id);
-        if (controller.signal.aborted) { out.textContent = 'sign-in for ' + label + ' cancelada — pulsa INICIAR SESIÓN para reintentar.'; return; }
+        if (controller.signal.aborted) { out.textContent = 'inicio de sesión para ' + label + ' cancelado — pulsa INICIAR SESIÓN para reintentar.'; return; }
         out.textContent = '✕ ' + ((err && err.message) || 'solicitud fallida'); sfx('bad'); return;
       }
       if (controller.signal.aborted) return;
@@ -1569,7 +1569,7 @@
         // The consent window never opened (popup-blocked in a browser, or the OS-browser hand-off failed on
         // desktop). Do NOT start the poll — a "waiting for sign-in" claim against a window that doesn't exist
         // is the exact lie this fix removes. Tell the truth and stop.
-        out.textContent = '✕ couldn’t open the sign-in page for ' + label + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return;
+        out.textContent = '✕ no se pudo abrir la página de inicio de sesión para ' + label + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); ccPending.delete(id); ccAttempts.delete(id); ccResetSignBtn(id); return;
       }
       const win = opened.win;   // popup handle when in a browser; null on desktop (opened in the real browser)
       ccPendingWin.set(id, win || null);   // remembered so a CANCEL can close a still-open popup
@@ -1602,8 +1602,8 @@
       notice.className = 'ext-editor mc-form github-device-code';
       notice.setAttribute('aria-label', 'Iniciar sesión con GitHub');
       notice.style.cssText = 'position:fixed;inset:0;margin:auto;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;padding:24px;background:#17140e;color:var(--ph,#ddbd83);border:1px solid var(--gold,#ac853e);z-index:10000;box-shadow:0 0 0 100vmax #0009';
-      notice.innerHTML = '<strong>CONNECT GITHUB</strong><p>1. Copy this code: <code style="font-size:20px;user-select:all">' + esc(device.userCode) + '</code> <button class="bb sm" data-device-copy>COPY CODE</button></p>' +
-        '<p>2. Open GitHub, enter the code, and approve StarNet’s repository and organization access.</p>' +
+      notice.innerHTML = '<strong>CONECTAR GITHUB</strong><p>1. Copia este código: <code style="font-size:20px;user-select:all">' + esc(device.userCode) + '</code> <button class="bb sm" data-device-copy>COPIAR CÓDIGO</button></p>' +
+        '<p>2. Abre GitHub, introduce el código y aprueba el acceso de StarNet a tu repositorio y organización.</p>' +
         '<p>3. Vuelve aquí. StarNet verificará y guardará tu conexión en este dispositivo.</p>' +
         '<div class="mc-acts"><button class="bb sm" data-device-open>OPEN GITHUB</button><button class="bb sm" data-device-cancel>CANCEL</button></div><p data-device-status role="status"></p>';
       document.body.appendChild(notice); notice.showModal();
@@ -1664,7 +1664,7 @@
       try { if (w && !w.closed) w.close(); } catch (_) {}
       ccResetSignBtn(id);
       const e = ccEntry(id); const label = (e && e.name) || id;
-      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'sign-in for ' + label + ' cancelada — pulsa INICIAR SESIÓN para reintentar.'; sfx('tick');
+      ccMsgEl.classList.remove('ok'); ccMsgEl.textContent = 'inicio de sesión para ' + label + ' cancelado — pulsa INICIAR SESIÓN para reintentar.'; sfx('tick');
     }
     ccListEl.addEventListener('click', async ev => {
       const copyBtn = ev.target.closest('button[data-cc-copy]');
@@ -1782,7 +1782,7 @@
         if (!keyed.length) {
           // The sentence named a destination and gave nothing to click — the same dead-end shape as the
           // inert toolset row. `data-ab-to` is the front door's own jump contract, handled by the router.
-          kyPlatEl.innerHTML = '<div class="mc-detail">No keyed platform connected yet — add one from the CATALOG (the entries marked <b style="color:var(--gold)">API key</b>). ' +
+          kyPlatEl.innerHTML = '<div class="mc-detail">Aún no hay ninguna plataforma con clave conectada — añade una del CATÁLOGO (las entradas marcadas <b style="color:var(--gold)">clave API</b>). ' +
             '<button type="button" class="bb xs" data-ab-to="catalog">⊞ OPEN CATALOG</button></div>';
           return;
         }
@@ -1811,21 +1811,21 @@
       const op = k.source === '1password';
       const notYet = op && !k.refReady && /^not read yet/.test(k.refError || '');
       const state = !k.enabled ? ['var(--ph-dim)', '○ off']
-        : (!op || k.refReady ? ['var(--ok)', '● live for agents']
-          : (notYet ? ['var(--gold)', '◐ reads from 1Password on use'] : ['var(--bad)', '✕ 1Password not read']));
+        : (!op || k.refReady ? ['var(--ok)', '● activo para agentes']
+          : (notYet ? ['var(--gold)', '◐ lee de 1Password al usarlo'] : ['var(--bad)', '✕ 1Password no leído']));
       return '<div class="mc-row" data-id="' + esc(k.id) + '" style="--ci:' + (i || 0) + '">' +
         '<div class="mc-top">' +
           '<span class="set-row mc-enable"><input type="checkbox" data-ky-act="toggle"' + (k.enabled ? ' checked' : '') + ' aria-label="Enable key ' + esc(k.name) + '"></span>' +
           '<b>' + esc(k.name) + '</b> <span class="dim">' + esc(op ? '1Password' : k.last4) + '</span>' +
           '<span class="mc-state" style="color:' + state[0] + '">' + state[1] + '</span></div>' +
         '<div class="mc-url dim">env var <code>' + esc(k.envVar) + '</code>' + docs + '</div>' +
-        (op ? '<div class="mc-url dim">from <code>' + esc(k.ref) + '</code>' + (k.refReady && k.refReadAt ? ' · read ' + kyReadAgo(k.refReadAt) : '') + '</div>' +
+        (op ? '<div class="mc-url dim">de <code>' + esc(k.ref) + '</code>' + (k.refReady && k.refReadAt ? ' · leído ' + kyReadAgo(k.refReadAt) : '') + '</div>' +
           (k.refError && !notYet ? '<div class="mc-url" style="color:' + (k.refReady ? 'var(--gold)' : 'var(--bad)') + '">' + esc(k.refError) + '</div>' : '') : '') +
         // THE UNATTENDED GRANT, stated plainly. `enabled` = an agent may spend this while you watch;
         // this second switch = ...and while you don't (cron, Night Shift, a Telegram message). Default OFF
         // and never inferred, so pasting a key can't silently change what happens overnight.
         '<div class="set-row ky-auto"><input type="checkbox" data-ky-act="autonomy"' + (k.autonomous ? ' checked' : '') +
-          (k.enabled && unattendedSupported ? '' : ' disabled') + ' aria-label="Allow unattended use of ' + esc(k.name) + '">' +
+          (k.enabled && unattendedSupported ? '' : ' disabled') + ' aria-label="Permitir el uso sin supervisión de ' + esc(k.name) + '">' +
           '<span class="dim">' + (!unattendedSupported
             ? 'solo sesiones supervisadas — ' + esc(k.unattendedReason || 'el uso sin supervisión no está soportado')
             : (k.autonomous
@@ -1838,11 +1838,11 @@
       // same law as readJSON's banner above: an errored read must never render as a CONFIRMED
       // empty key list, and a refusal (403 plain-text) is not an offline station.
       const res = await readJSON('/api/servicekeys');
-      if (!res.ok) { kyListEl.innerHTML = readFailLine(res, 'sidecar offline — start it to manage keys.'); return; }
+      if (!res.ok) { kyListEl.innerHTML = readFailLine(res, 'sidecar fuera de línea — arráncalo para gestionar claves.'); return; }
       const list = (res.json && res.json.keys) || [];
       const n = body.querySelector('#ky-mine-n'); if (n) n.textContent = String(list.length);
       kyListEl.innerHTML = list.length ? list.map(kyRow).join('')
-        : '<div class="mc-detail">No API keys connected yet — choose a platform in CATALOG, or add a custom key below.</div>';
+        : '<div class="mc-detail">Aún no hay claves API conectadas — elige una plataforma en CATÁLOGO o añade una clave personalizada abajo.</div>';
     }
     body.querySelector('#ky-add').addEventListener('click', async () => {
       const name = (kyNameEl.value || '').trim(), key = (kyKeyEl.value || '').trim(), docsUrl = (kyDocsEl.value || '').trim();
@@ -1955,7 +1955,7 @@
         const opened = await openSignIn(j.url);
         if (!opened.opened) {
           // No consent window opened → don't poll and don't claim one is waiting (truthful-telemetry law).
-          msgEl.textContent = '✕ couldn’t open the Spotify sign-in page' + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); return;
+          msgEl.textContent = '✕ no se pudo abrir la página de inicio de sesión de Spotify' + (opened.where === 'popup' ? ' — permite ventanas emergentes para este sitio e inténtalo de nuevo.' : ' — inténtalo de nuevo.'); sfx('bad'); return;
         }
         msgEl.textContent = 'Aprueba el acceso en ' + (opened.where === 'browser' ? 'tu navegador' : 'la ventana que se abrió') + ', y luego vuelve aquí — esto se actualiza automáticamente.';
         sfx('click');

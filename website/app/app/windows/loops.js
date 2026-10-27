@@ -168,8 +168,8 @@
            queue of candidates stays scannable; the label states exactly what it is measured against, because a
            loop does not commit between passes and an earlier un-approved pass may have touched these files too. */
         (p.diff
-          ? '<details class="lp-diff"><summary>▸ view the change</summary>' +
-            '<div class="lp-diff-note dim">unified diff for the files this pass touched, against your last commit</div>' +
+          ? '<details class="lp-diff"><summary>▸ ver el cambio</summary>' +
+            '<div class="lp-diff-note dim">diff unificado de los archivos que esta pasada tocó, contra tu último commit</div>' +
             '<pre class="lp-diff-body">' + diffHTML(p.diff) + '</pre></details>'
           : '') +
         ((p.files && p.files.length)

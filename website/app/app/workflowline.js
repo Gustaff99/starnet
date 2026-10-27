@@ -676,11 +676,11 @@
     const mine = (Array.isArray(list) ? list : []).filter(t => t && t.lineId === lineId);
     const live = mine.filter(t => t.enabled && !t.blockedBy);
     const sentences = [];
-    const folders = live.filter(t => t.kind === 'folder').map(t => 'when a file lands in ' + ((t.config && t.config.path) || 'its folder'));
+    const folders = live.filter(t => t.kind === 'folder').map(t => 'cuando un archivo llega a ' + ((t.config && t.config.path) || 'su carpeta'));
     const hooks = live.filter(t => t.kind === 'webhook');
     for (const s of folders) sentences.push(s);
-    if (hooks.length === 1) sentences.push('when its webhook' + (hooks[0].name ? ' "' + hooks[0].name + '"' : '') + ' is called');
-    else if (hooks.length > 1) sentences.push('when one of its ' + hooks.length + ' webhooks is called');
+    if (hooks.length === 1) sentences.push('cuando se llama a su webhook' + (hooks[0].name ? ' "' + hooks[0].name + '"' : ''));
+    else if (hooks.length > 1) sentences.push('cuando se llama a uno de sus ' + hooks.length + ' webhooks');
     return { mine, live, sentences };
   }
 
@@ -702,13 +702,13 @@
       const ev = lineEventTriggers(x.lt.triggers, x.lineKey);
       out.events = ev.sentences;
       for (const t of ev.mine) if (t && t.enabled && t.blockedBy) {
-        out.paused.push((t.kind === 'folder' ? 'its folder trigger (' + ((t.config && t.config.path) || 'a folder') + ')'
-          : 'its webhook' + (t.name ? ' "' + t.name + '"' : '')) + ' is waiting: ' + t.blockedBy);
+        out.paused.push((t.kind === 'folder' ? 'su trigger de carpeta (' + ((t.config && t.config.path) || 'una carpeta') + ')'
+          : 'su webhook' + (t.name ? ' "' + t.name + '"' : '')) + ' en espera: ' + t.blockedBy);
         /* …and as the START it is, held with the server's own reason (org wire AUTO-P15-1): WORKFLOWS' STARTS line said 'by hand only'
            for a line whose folder trigger the E-STOP or the day cap held. `held` = the trigger and channel starts the server holds back
            (a routine held by the switch is offSchedules), each in the words of the start it is. */
-        out.held.push((t.kind === 'folder' ? 'when a file lands in ' + ((t.config && t.config.path) || 'its folder') : 'when its webhook' + (t.name ? ' "' + t.name + '"' : '') + ' is called')
-          + ' (waiting: ' + String(t.blockedBy).replace(/ · /g, ' — ') + ')');
+        out.held.push((t.kind === 'folder' ? 'cuando un archivo llega a ' + ((t.config && t.config.path) || 'su carpeta') : 'cuando se llama a su webhook' + (t.name ? ' "' + t.name + '"' : ''))
+          + ' (en espera: ' + String(t.blockedBy).replace(/ · /g, ' — ') + ')');
       }
     }
     if (x.cron && Array.isArray(x.cron.jobs)) {
@@ -718,7 +718,7 @@
         if (!r.startsLine) continue;
         if (armed) out.schedules.push(said(r.display));
         else {
-          out.paused.push('its routine "' + r.name + '" (' + said(r.display) + ') is saved but ' + (x.cron.halted ? 'the scheduler is stopped (E-STOP)' : 'the scheduler is off'));
+          out.paused.push('su rutina "' + r.name + '" (' + said(r.display) + ') está guardada pero ' + (x.cron.halted ? 'el programador está detenido (E-STOP)' : 'el programador está apagado'));
           // …and named apart for the INBOX node and the INBOX section (2026-09-27 audit T1: the panel said "no schedule"
           // right above the schedule the Commander had just saved)
           if (r.enabled !== false) out.offSchedules.push(said(r.display));
@@ -730,7 +730,7 @@
       for (const c of out.chanRows) {
         if (c.feeds !== true) continue;
         if (c.connected) { if (out.channels.indexOf(c.label.split(' ')[0]) < 0) out.channels.push(c.label.split(' ')[0]); }
-        else { out.paused.push('its ' + c.label + ' channel answers as its first step but is not connected'); out.held.push('when a ' + c.label.split(' ')[0] + ' message arrives (not connected)'); }
+        else { out.paused.push('su canal ' + c.label + ' responde como su primer paso pero no está conectado'); out.held.push('cuando ' + c.label.split(' ')[0] + ' recibe un mensaje (no conectado)'); }
       }
     }
     return out;
