@@ -581,7 +581,7 @@ A.ok(/view = 'build'/.test(editWireSeg), 'EDIT opens the builder form (with the 
 const bfhSeg = mkt.slice(mkt.indexOf('function buildFormHTML('), mkt.indexOf('const KIT_PICKABLE'));
 A.ok(/const editing = editingId \? Specialties\.get\(editingId\) : null/.test(bfhSeg), 'buildFormHTML resolves the class being edited');
 A.ok(/Edit custom class/.test(bfhSeg), 'the builder titles itself EDIT CUSTOM CLASS when editing');
-A.ok(/SAVE CHANGES/.test(bfhSeg), 'the edit CTA reads SAVE CHANGES (not CREATE CLASS)');
+A.ok(/GUARDAR CAMBIOS/.test(bfhSeg), 'the edit CTA reads GUARDAR CAMBIOS (not CREAR CLASE)');
 A.ok(/value="' \+ esc\(d\.name \|\| ''\)/.test(bfhSeg) && /value="' \+ esc\(d\.tagline \|\| ''\)/.test(bfhSeg), 'the builder prefills name + tagline from the spec');
 A.ok(/esc\(d\.purpose \|\| ''\)/.test(bfhSeg) && /esc\(d\.manual \|\| ''\)/.test(bfhSeg), 'the builder prefills purpose + standing orders from the spec');
 // HONESTY: the edit copy states editing does NOT retroactively mutate already-summoned agents (they own their loadout).
