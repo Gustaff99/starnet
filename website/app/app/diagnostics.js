@@ -312,7 +312,7 @@
       if (!text) {
         let err = host.querySelector('.diag-block');
         if (!err) { err = document.createElement('div'); err.className = 'diag-block msg'; host.appendChild(err); }
-        err.textContent = 'could not read diagnostics — is the app still running?';
+        err.textContent = 'no se pudieron leer los diagnósticos — ¿la app sigue funcionando?';
         return '';
       }
       let block = host.querySelector('.diag-block');
@@ -338,7 +338,7 @@
         });
         bar.appendChild(again);
         // help the manual path: one click selects the whole block so Ctrl+C just works.
-        const selectAll = document.createElement('button'); selectAll.type = 'button'; selectAll.className = 'bb sm'; selectAll.textContent = 'select all';
+        const selectAll = document.createElement('button'); selectAll.type = 'button'; selectAll.className = 'bb sm'; selectAll.textContent = 'seleccionar todo';
         selectAll.addEventListener('click', () => {
           try { const r = document.createRange(); r.selectNodeContents(pre); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); pre.focus(); } catch (_) {}
         });

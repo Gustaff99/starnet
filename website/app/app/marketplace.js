@@ -266,7 +266,7 @@ const Marketplace = (() => {
       '<div class="mkt" tabindex="-1">' +
         '<div class="mkt-head">' +
           '<div class="mkt-nameplate"><span class="mkt-sub" id="mkt-sub">' + esc(subtitle()) + '</span></div>' +
-          '<div class="mkt-search">⌕ <input id="mkt-q" type="text" autocomplete="off" spellcheck="false" placeholder="Find a class…" aria-label="Search classes"></div>' +
+          '<div class="mkt-search">⌕ <input id="mkt-q" type="text" autocomplete="off" spellcheck="false" placeholder="Busca una clase…" aria-label="Buscar clases"></div>' +
         '</div>' +
         '<div class="mkt-bar" id="mkt-bar"></div>' +
         '<div class="mkt-stage" id="mkt-stage"></div>' +
@@ -462,8 +462,8 @@ const Marketplace = (() => {
       railBuckets().forEach(b => { if (counts[b] > 0 || b === 'general') rail += cat(b, CAT_LABEL[b] || b); });
       rail += cat('mine', 'MINE');
       html += '<span class="mkt-lanes-lbl">BROWSE</span><div class="mkt-lanes">' + rail + '</div>' +
-        '<button class="mkt-from-notes bb sm" title="turn notes or a sample into a useful draft">DRAFT FROM YOUR NOTES</button>' +
-        '<button class="mkt-import bb sm" title="import a recipe from a JSON file">⇪ IMPORT</button>' +
+        '<button class="mkt-from-notes bb sm" title="convierte notas o una muestra en un borrador útil">BORRADOR DESDE TUS NOTAS</button>' +
+        '<button class="mkt-import bb sm" title="importa una receta desde un archivo JSON">⇪ IMPORTAR</button>' +
         '<input type="file" id="mkt-import-file" accept="application/json,.json" hidden>';
     } else {
       // FILTER counts span the WHOLE roster — built-ins AND the Commander's customs (audit item 8) — so a lane
@@ -481,7 +481,7 @@ const Marketplace = (() => {
       // new agent (summon/pick mode carries ctx.onPick) — a deploy-only bay has no agent to create. Mirrors the
       // recipes-tab ⇪ IMPORT control's look (mkt-import pushes it to the right; bb sm is the shared button chrome).
       if (ctx && ctx.onPick) {
-        html += '<button class="mkt-import mkt-import-agent bb sm" title="bring an agent over from OpenClaw or Hermes">⇪ IMPORT AGENT</button>';
+        html += '<button class="mkt-import mkt-import-agent bb sm" title="trae un agente desde OpenClaw o Hermes">⇪ IMPORTAR AGENTE</button>';
       }
     }
     bar.innerHTML = html;
@@ -648,7 +648,7 @@ const Marketplace = (() => {
     // deploy mode keeps the SAVE-THIS-AGENT toolbar; summon drops the stale "pre-fills the wake screen" hint —
     // the subtitle already states the summon promise, and the dossier's CONFIGURE panel + shelves carry the rest.
     const toolbar = deploy
-      ? '<div class="mkt-toolbar"><button class="bb sm mkt-saveas">＋ SAVE THIS AGENT AS A CLASS</button></div>'
+      ? '<div class="mkt-toolbar"><button class="bb sm mkt-saveas">＋ GUARDAR ESTE AGENTE COMO CLASE</button></div>'
       : '';
     let html = toolbar;
 
@@ -656,7 +656,7 @@ const Marketplace = (() => {
     // NAME / APPEARANCE / MODEL used to live here as a collapsible SUMMON CONFIG strip, which split the summon
     // decision across both panes (2026-08-15): pick on the left, read on the right, then scroll BACK left to
     // configure. They now live in the dossier's CONFIGURE panel, directly above the button they feed.
-    const buildTile = '<button class="mkt-build" type="button" aria-label="build a custom class">' +
+    const buildTile = '<button class="mkt-build" type="button" aria-label="construir una clase a medida">' +
       '<span class="mkt-build-plus" aria-hidden="true">＋</span><span class="mkt-build-lbl">BUILD A CUSTOM CLASS</span></button>';
     const allBuiltins = Specialties.builtins();
     const builtins = filt(allBuiltins);
@@ -742,7 +742,7 @@ const Marketplace = (() => {
       '<p class="mkt-detail-note">Keep the first choice below, or choose a model for this agent.</p>' + summonModelBarHTML(s),
       agentReferenceHTML(s)
     ];
-    return '<section class="mkt-config" aria-label="configure this agent">' +
+    return '<section class="mkt-config" aria-label="configurar este agente">' +
       '<div class="mkt-recruit-identity">' + summonSkinStageHTML() + '<div class="mkt-recruit-fields">' + summonNameBarHTML() + '</div></div>' +
       '<div class="mkt-recipe-detail-tabs" role="tablist" aria-label="Recruit settings">' +
       ['Appearance', 'Model', 'Role'].map((label, i) => '<button type="button" role="tab" id="recruit-tab-' + i +
@@ -825,7 +825,7 @@ const Marketplace = (() => {
   function consentStripHTML() {
     const ps = profileApi(); if (!ps || !ps.summary || !ps.summary()) return '';
     return '<div class="mkt-consent-strip">◉ STARNET keeps a local preference profile. When Scout drafts a new option, a bounded summary is sent only to your configured model. ' +
-      'Pause or wipe it anytime in STATION FAMILIARITY below. <button class="bb sm mkt-fam-ack">GOT IT</button></div>';
+      'Pause or wipe it anytime in STATION FAMILIARITY below. <button class="bb sm mkt-fam-ack">YA LO SÉ</button></div>';
   }
 
   // Keep the raw value visible so a 19-character paste can be explained, never silently clipped.
@@ -926,7 +926,7 @@ const Marketplace = (() => {
       const rated = (u && typeof u === 'object' && u.rated && typeof u.rated === 'object') ? u.rated : null;
       const g = rated ? (Number(rated.great) || 0) : 0, m = rated ? (Number(rated.miss) || 0) : 0;
       const arrow = (g > m && g > 0) ? ' · rated ▲' : (m > g && m > 0) ? ' · rated ▽' : '';
-      return '<span class="mkt-chip mkt-life" title="your own launches' + (arrow ? ' + your ratings' : '') + '">↻ ran ' + Math.floor(n) + '×' + esc(arrow) + '</span>';
+      return '<span class="mkt-chip mkt-life" title="tus propios lanzamientos' + (arrow ? ' + tus valoraciones' : '') + '">↻ corrió ' + Math.floor(n) + '×' + esc(arrow) + '</span>';
     } catch (_) { return ''; }
   }
   function recipeCardHTML(r, i) {
@@ -939,9 +939,9 @@ const Marketplace = (() => {
     // SOP: a recipe with host-checked acceptance says so on the card — the one glance that separates "a prompt"
     // from "a procedure the station holds itself to".
     const na = (r.acceptance || []).length;
-    const sop = na ? '<span class="mkt-chip" title="host-checked acceptance">◇ ' + na + ' check' + (na === 1 ? '' : 's') + '</span>' : '';
+    const sop = na ? '<span class="mkt-chip" title="aceptación verificada por la estación">◇ ' + na + ' verificación' + (na === 1 ? '' : 'es') + '</span>' : '';
     const dr = recipeDrift && recipeDrift[r.id];
-    const drift = (dr && dr.status === 'drift') ? '<span class="mkt-chip bad" title="the latest run differs from its good history">⚠ DRIFT</span>' : '';
+    const drift = (dr && dr.status === 'drift') ? '<span class="mkt-chip bad" title="la última ejecución difiere de su buen historial">⚠ DERIVA</span>' : '';
     // no `--accent` — same one-phosphor rule as the class rows above (see the note on mkt-card there).
     // The recipe library was the worse offender: not ONE of its seals was the station's colour.
     return '<button class="mkt-card' + (sel ? ' sel' : '') + '" type="button" data-id="' + esc(r.id) + '" style="--ci:' + (i || 0) + '">' +
@@ -987,7 +987,7 @@ const Marketplace = (() => {
   // narrow-viewport escape hatch: at <=820px the dossier is a full-width sheet OVER the roster, so it needs a
   // visible way back (the stranded-state fix). Hidden at wide widths by CSS (both panes show side by side).
   function dossierBackHTML() {
-    return '<button type="button" class="mkt-dos-back" aria-label="back to the library">‹ LIBRARY</button>';
+    return '<button type="button" class="mkt-dos-back" aria-label="volver a la biblioteca">‹ BIBLIOTECA</button>';
   }
   function dossierHTML() {
     return dossierBackHTML() + ((tab === 'recipes' && hasRecipes()) ? recipeDossierHTML() : agentDossierHTML());
@@ -1236,13 +1236,13 @@ const Marketplace = (() => {
       ? '<div class="mkt-r-cadhint">◷ naturally recurring — suggests <b>' + esc(cadenceLabel(r.cadence)) + '</b></div>' : '';
     // TWEAK + EXPORT are on EVERY dossier (fork/export any recipe); EDIT/DELETE only on your own customs.
     const tweakBtn = '<button class="bb sm mkt-recipe-tweak" data-id="' + esc(r.id) + '">CUSTOMIZE A COPY</button>';
-    const exportBtn = '<button class="bb sm mkt-recipe-export" data-id="' + esc(r.id) + '" title="download this recipe as a portable JSON file">DOWNLOAD RECIPE</button>';
+    const exportBtn = '<button class="bb sm mkt-recipe-export" data-id="' + esc(r.id) + '" title="descarga esta receta como archivo JSON portable">DESCARGAR RECETA</button>';
     // your own recipe: ✐ EDIT + ⌫ DELETE sit in the dossier header. They used to live in the third tab of a
     // collapsed details block, behind COPY — users couldn't find delete at all, and a copy saved under the old
     // name looked exactly like an edit that "didn't stick" next to an unchanged twin (user feedback 10-03).
     const ownActs = r.custom
       ? '<div class="mkt-cta-row mkt-own-acts">' +
-        '<button class="bb sm mkt-recipe-edit" data-id="' + esc(r.id) + '" title="change this recipe in place">✐ EDIT</button>' +
+        '<button class="bb sm mkt-recipe-edit" data-id="' + esc(r.id) + '" title="cambia esta receta en el sitio">✐ EDITAR</button>' +
         '<button class="bb sm danger mkt-recipe-del" data-id="' + esc(r.id) + '">⌫ DELETE</button></div>'
       : '';
     const custActs = '<div class="mkt-cta-row">' + tweakBtn + exportBtn + '</div>';
@@ -1270,7 +1270,7 @@ const Marketplace = (() => {
       '<details class="mkt-recipe-instructions"><summary>View full instructions</summary><pre id="mkt-l-preview"></pre></details>';
     const reuse = '<p class="mkt-detail-note">Make a version of your own, or run this recipe on a schedule.</p>' +
       '<div class="mkt-reuse-actions">' + custActs +
-      '<button class="bb sm mkt-launch-options" data-id="' + esc(r.id) + '">SET UP A SCHEDULE</button></div>' +
+      '<button class="bb sm mkt-launch-options" data-id="' + esc(r.id) + '">PROGRAMAR</button></div>' +
       liveRoutineBadgeHTML(r) + forkLine + savedLine;
     return '<div class="mkt-dos-scroll mkt-recipe-simple"><div class="mkt-dos-hero">' +
       '<div class="mkt-dos-hi"><div class="mkt-dos-name">' + esc(r.name) + '</div>' +
@@ -1279,7 +1279,7 @@ const Marketplace = (() => {
       '<details class="mkt-brief mkt-recipe-details"><summary>Options &amp; recipe details</summary>' +
       '<div class="mkt-recipe-detail-tabs" role="tablist" aria-label="Recipe details">' + tabs + '</div>' +
       panel(0, options) + panel(1, workflow) + panel(2, reuse) + '</details>' +
-      '<button class="mkt-cta-main mkt-do-launch">▸ START SESSION</button>' +
+      '<button class="mkt-cta-main mkt-do-launch">▸ INICIAR SESIÓN</button>' +
       '<div class="mkt-cta-sub">Opens a new session with ' + esc(who) + '.</div></div></div>';
 
   }
@@ -1313,10 +1313,10 @@ const Marketplace = (() => {
     }).join('');
     const consent = !acked()
       ? '<div class="mkt-fam-consent">STARNET learns what you work on to tailor these picks. The profile is stored locally; bounded summaries are sent to your configured model only when it drafts a recommendation. ' +
-        'Pause or wipe it anytime, right here. <button class="bb sm mkt-fam-ack">GOT IT</button></div>' : '';
+        'Pause or wipe it anytime, right here. <button class="bb sm mkt-fam-ack">YA LO SÉ</button></div>' : '';
     const acts = '<div class="mkt-fam-acts">' +
         '<span class="mkt-fam-priv">◇ local-first · pause stops browser and sidecar personalization</span>' +
-        '<button class="bb sm mkt-fam-pause">' + (on ? '❚❚ PAUSE LEARNING' : '▸ RESUME LEARNING') + '</button>' +
+        '<button class="bb sm mkt-fam-pause">' + (on ? '❚❚ PAUSAR APRENDIZAJE' : '▸ REANUDAR APRENDIZAJE') + '</button>' +
         '<button class="bb sm danger mkt-fam-forget">⌫ FORGET</button></div>';
     return '<div class="mkt-fam open' + (on ? '' : ' paused') + '">' + head +
       '<div class="mkt-fam-body">' + consent + '<div class="mkt-fam-bars">' + bars + '</div>' + acts + '</div></div>';
@@ -1483,7 +1483,7 @@ const Marketplace = (() => {
   function declineGlyphHTML(surface, id, name) {
     return '<span class="mkt-rec-decline" role="button" tabindex="0" data-decline-surface="' + esc(surface) + '"' +
       ' data-decline-id="' + esc(id) + '" data-decline-name="' + esc(name) + '"' +
-      ' aria-label="not interested — stop recommending this" title="not interested — stop recommending this">✕</span>';
+      ' aria-label="no me interesa — deja de recomendar esto" title="no me interesa — deja de recomendar esto">✕</span>';
   }
   function trackRecommendation(surface, item, why, rank) {
     try {
@@ -1581,8 +1581,8 @@ const Marketplace = (() => {
           '<div class="mkt-rec-tag">' + esc(d.tagline || '') + '</div></div></div>' +
       (p.why ? '<div class="mkt-rec-why"><span class="mkt-rec-why-k">WHY</span> ' + esc(p.why) + '</div>' : '') +
       '<div class="mkt-prospect-prov">◇ drafted by the station from your work — review &amp; save to add it</div>' +
-      '<div class="mkt-prospect-acts"><button class="bb sm mkt-prospect-open" data-prospect="' + esc(p.id) + '">▸ REVIEW &amp; SAVE</button>' +
-        '<button class="bb sm mkt-prospect-dismiss" data-prospect="' + esc(p.id) + '" aria-label="dismiss this drafted role forever" title="dismiss forever — the station won\'t draft this role again">✕</button></div>' +
+      '<div class="mkt-prospect-acts"><button class="bb sm mkt-prospect-open" data-prospect="' + esc(p.id) + '">▸ REVISAR Y GUARDAR</button>' +
+        '<button class="bb sm mkt-prospect-dismiss" data-prospect="' + esc(p.id) + '" aria-label="descartar este papel borrador para siempre" title="descartar para siempre — la estación no volverá a proponer este papel">✕</button></div>' +
     '</div>';
   }
   /* ---------- R6: the "FOR YOU" row (ranked by dossier interest lanes + goal-text keyword match) ----------
@@ -2010,8 +2010,8 @@ const Marketplace = (() => {
           '<div class="mkt-rec-tag">' + esc(base) + '</div></div></div>' +
       '<div class="mkt-rec-why"><span class="mkt-rec-why-k">FOUND</span> ' + esc(f.quote) + '</div>' +
       '<div class="mkt-prospect-prov">◇ read from your blessed project — nothing runs without your word</div>' +
-      '<div class="mkt-prospect-acts"><button class="bb sm mkt-disc-take" data-disc="' + esc(f.id) + '">▸ HAND IT TO THE CREW</button>' +
-        '<button class="bb sm mkt-disc-dismiss" data-disc="' + esc(f.id) + '" aria-label="dismiss this finding forever" title="dismiss forever — this exact finding won’t come back">✕</button></div>' +
+      '<div class="mkt-prospect-acts"><button class="bb sm mkt-disc-take" data-disc="' + esc(f.id) + '">▸ PASÁRLO A LA TRIPULACIÓN</button>' +
+        '<button class="bb sm mkt-disc-dismiss" data-disc="' + esc(f.id) + '" aria-label="descartar este hallazgo para siempre" title="descartar para siempre — este hallazgo exacto no volverá">✕</button></div>' +
     '</div>';
   }
 
@@ -2025,8 +2025,8 @@ const Marketplace = (() => {
           '<div class="mkt-rec-tag">' + esc(d.tagline || '') + '</div></div></div>' +
       (p.why ? '<div class="mkt-rec-why"><span class="mkt-rec-why-k">WHY</span> ' + esc(p.why) + '</div>' : '') +
       '<div class="mkt-prospect-prov">◇ drafted by the station from your work — review &amp; save to add it</div>' +
-      '<div class="mkt-prospect-acts"><button class="bb sm mkt-scout-recipe-open" data-scout="' + esc(p.id) + '">▸ REVIEW &amp; SAVE</button>' +
-        '<button class="bb sm mkt-scout-recipe-dismiss" data-scout="' + esc(p.id) + '" aria-label="dismiss this drafted recipe forever" title="dismiss forever — the station won\'t draft this recipe again">✕</button></div>' +
+      '<div class="mkt-prospect-acts"><button class="bb sm mkt-scout-recipe-open" data-scout="' + esc(p.id) + '">▸ REVISAR Y GUARDAR</button>' +
+        '<button class="bb sm mkt-scout-recipe-dismiss" data-scout="' + esc(p.id) + '" aria-label="descartar esta receta borrador para siempre" title="descartar para siempre — la estación no volverá a proponer esta receta">✕</button></div>' +
     '</div>';
   }
   function suggestCardHTML(c) {
@@ -2034,7 +2034,7 @@ const Marketplace = (() => {
       '<div class="mkt-rec-top"><span class="mkt-suggest-spark" aria-hidden="true">✨</span>' +
         '<div class="mkt-rec-id"><div class="mkt-rec-name">' + esc(c.template) + '</div>' +
           '<div class="mkt-rec-tag">you’ve asked this ' + c.count + ' times</div></div></div>' +
-      '<div class="mkt-suggest-acts"><button class="bb sm mkt-suggest-review" data-key="' + esc(c.key) + '">▸ REVIEW &amp; SAVE</button>' +
+      '<div class="mkt-suggest-acts"><button class="bb sm mkt-suggest-review" data-key="' + esc(c.key) + '">▸ REVISAR Y GUARDAR</button>' +
         '<button class="bb sm mkt-suggest-dismiss" data-key="' + esc(c.key) + '" aria-label="dismiss this suggestion" title="not a recipe">✕</button></div>' +
     '</div>';
   }
@@ -2704,7 +2704,7 @@ const Marketplace = (() => {
       '<p class="mkt-hint">bring an agent over from OpenClaw or Hermes — its persona, standing orders and curated memory come with it. keys never transfer.</p>' +
       '<div class="mkt-imp-rows">' + rows + pick + '</div>' +
       scanning + err +
-      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button></div>' +
+      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button></div>' +
     '</div>';
   }
   function harnessPreviewHTML() {
@@ -2754,7 +2754,7 @@ const Marketplace = (() => {
       '<div class="mkt-imp-sect">WHAT TRANSFERS</div><div class="mkt-imp-transfers">' + transfers + '</div>' +
       dailyNote +
       warnHTML +
-      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button>' +
+      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button>' +
         '<button class="bb sm mkt-imp-recruit">▸ RECRUIT</button></div>' +
     '</div>';
   }
@@ -2898,7 +2898,7 @@ const Marketplace = (() => {
       const what = p.type === 'file' ? 'file' : 'folder';
       return '<span class="mkt-p-path">' +
         '<input type="text" class="mkt-in mkt-p-in" data-key="' + key + '" spellcheck="false" placeholder="' + (ph || esc('the ' + what + ' path')) + '" value="' + esc(val) + '">' +
-        '<button type="button" class="bb sm mkt-p-browse" data-key="' + key + '" data-mode="' + esc(p.type) + '" title="choose a ' + what + ' on this machine">⌸ BROWSE</button>' +
+        '<button type="button" class="bb sm mkt-p-browse" data-key="' + key + '" data-mode="' + esc(p.type) + '" title="elige un ' + what + ' de esta máquina">⌸ EXPLORAR</button>' +
         '</span><span class="mkt-p-note" data-note="' + key + '">picking a ' + what + ' fills the box — nothing is read until you launch</span>';
     }
     if (p.type === 'connector') {
@@ -3000,12 +3000,12 @@ const Marketplace = (() => {
         '</div>' : '';
     // the action row switches on the mode: RUN NOW + MAKE ROUTINE side by side; in routine mode a CONFIRM button.
     const acts = (launchMode === 'routine')
-      ? '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button>' +
+      ? '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button>' +
           '<button class="bb sm mkt-launch-run-alt">▸ RUN NOW INSTEAD</button>' +
-          '<button class="bb sm mkt-do-routine">◷ SCHEDULE IT</button></div>'
-      : '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button>' +
-          '<button class="bb sm mkt-do-launch">▸ START SESSION</button>' +
-          '<button class="bb sm mkt-do-makeroutine" title="puts this recipe on a schedule — it becomes a ROUTINE you can manage in AUTOMATE › SCHEDULES">◷ MAKE ROUTINE</button></div>';
+          '<button class="bb sm mkt-do-routine">◷ PROGRAMARLO</button></div>'
+      : '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button>' +
+          '<button class="bb sm mkt-do-launch">▸ INICIAR SESIÓN</button>' +
+          '<button class="bb sm mkt-do-makeroutine" title="pone esta receta en programación — se convierte en una RUTINA que puedes administrar en AUTOMATIZAR › PROGRAMACIONES">◷ HACER RUTINA</button></div>';
     const modeNote = (launchMode === 'routine')
       ? '◷ fills the blanks ONCE, then runs the same directive on your chosen cadence as <b class="mkt-runas-name">' + esc(runAsName()) + '</b> — it becomes a ROUTINE (manage or stop it any time in AUTOMATE › SCHEDULES).'
       : '▸ opens a new session and starts this workflow with <b>' + esc(who) + '</b>.';
@@ -3234,12 +3234,12 @@ const Marketplace = (() => {
     fetch('/api/cron', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(res => res.json().catch(() => ({})).then(d => ({ ok: res.ok, d })))
       .then(({ ok, d }) => {
-        if (!ok || (d && d.error)) { sfx('bad'); note((d && d.error) || 'could not schedule the routine', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ SCHEDULE IT'; } return; }
+        if (!ok || (d && d.error)) { sfx('bad'); note((d && d.error) || 'no se pudo programar la rutina', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ PROGRAMARLO'; } return; }
         // the mint gate's refusals are 200s with NO error key — treating them as success said "scheduled"
         // about a routine the server refused to create (declined name) or silently swapped for an old one
         // (near-duplicate). Same fix as the AUTOMATION window.
-        if (d && d.declined) { sfx('bad'); note(d.message || 'this routine name was deleted before — pick a different name', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ SCHEDULE IT'; } return; }
-        if (d && d.duplicate) { sfx('bad'); note('a similar routine already exists' + (d.job && d.job.name ? (': "' + d.job.name + '"') : '') + ' — nothing new was created', 'warn'); if (btn) { btn.disabled = false; btn.textContent = '◷ SCHEDULE IT'; } return; }
+        if (d && d.declined) { sfx('bad'); note(d.message || 'este nombre de rutina se borró antes — elige un nombre distinto', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ PROGRAMARLO'; } return; }
+        if (d && d.duplicate) { sfx('bad'); note('ya existe una rutina similar' + (d.job && d.job.name ? (': "' + d.job.name + '"') : '') + ' — no se creó nada nuevo', 'warn'); if (btn) { btn.disabled = false; btn.textContent = '◷ PROGRAMARLO'; } return; }
         cronJobs = null;   // invalidate the cache so the dossier's live-routine badge refreshes
         sfx('click');
         // said as it happened (the server's verdict, never assumed): a routine that cannot fire never reads as scheduled
@@ -3249,7 +3249,7 @@ const Marketplace = (() => {
         else note('routine scheduled: ' + said + (sch && sch.armedNow ? ' · scheduling is now on' : '') + '. find it in AUTOMATE › SCHEDULES.', 'good');
         launchId = null; launchMode = 'run'; close();
       })
-      .catch(() => { sfx('bad'); note('could not reach the scheduler', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ SCHEDULE IT'; } });
+      .catch(() => { sfx('bad'); note('no se pudo llegar al programador', 'bad'); if (btn) { btn.disabled = false; btn.textContent = '◷ PROGRAMARLO'; } });
   }
 
   /* ---------- the unified recipe editor (R2) ----------
@@ -3337,17 +3337,17 @@ const Marketplace = (() => {
       (isChoice
         ? '<input class="mkt-in mkt-r-popts" data-i="' + i + '" maxlength="180" value="' + esc(p.options || '') + '" placeholder="options, comma separated" aria-label="choice options">'
         : '<input class="mkt-in mkt-r-pph" data-i="' + i + '" maxlength="48" value="' + esc(p.placeholder || '') + '" placeholder="hint (optional)" aria-label="param placeholder">') +
-      '<select class="mkt-in mkt-r-ptype" data-i="' + i + '" aria-label="what kind of value">' +
+      '<select class="mkt-in mkt-r-ptype" data-i="' + i + '" aria-label="qué tipo de valor">' +
         PARAM_TYPE_OPTS.map(t => '<option value="' + esc(t.id) + '"' + (type === t.id ? ' selected' : '') + '>' + esc(t.label) + '</option>').join('') +
       '</select>' +
-      '<label class="mkt-r-preq" title="required at launch"><input type="checkbox" class="mkt-r-preq-cb" data-i="' + i + '"' + (p.required ? ' checked' : '') + '> req</label>' +
+      '<label class="mkt-r-preq" title="obligatorio al lanzar"><input type="checkbox" class="mkt-r-preq-cb" data-i="' + i + '"' + (p.required ? ' checked' : '') + '> req</label>' +
       '<button type="button" class="bb xs danger mkt-r-prm" data-i="' + i + '" aria-label="remove param">✕</button>' +
       '</div>';
   }
   function paramsGridHTML() {
     const rows = editParams.map(paramRowHTML).join('');
     return '<div class="mkt-r-params" id="mkt-r-params">' + rows + '</div>' +
-      '<button type="button" class="bb xs mkt-r-padd">＋ ADD FILL-IN</button>' +
+      '<button type="button" class="bb xs mkt-r-padd">＋ AÑADIR CAMPO</button>' +
       '<span class="mkt-hint mkt-r-phint"> — or leave empty and STARNET derives them from the {tokens} in your directive.</span>';
   }
   // SOP acceptance rows: one typed check per row. The TYPE picks which second box applies (path / command) and
@@ -3371,9 +3371,9 @@ const Marketplace = (() => {
           ACC_TYPE_OPTS.map(t => '<option value="' + esc(t.id) + '"' + (type === t.id ? ' selected' : '') + '>' + esc(t.label) + '</option>').join('') +
         '</select>' +
         '<input class="mkt-in mkt-r-aconn" data-i="' + i + '" maxlength="80" value="' + esc(a.connector || '') + '" placeholder="connector id, e.g. gmail" aria-label="connector id">' +
-        '<input class="mkt-in mkt-r-atool" data-i="' + i + '" maxlength="80" value="' + esc(a.tool || '') + '" placeholder="READ tool, e.g. search_messages" aria-label="read tool">' +
+        '<input class="mkt-in mkt-r-atool" data-i="' + i + '" maxlength="80" value="' + esc(a.tool || '') + '" placeholder="herramienta READ, p. ej. search_messages" aria-label="herramienta de lectura">' +
         '<input class="mkt-in mkt-r-aargs mkt-grow" data-i="' + i + '" maxlength="2000" value="' + esc(a.args || '') + '" placeholder="args JSON, e.g. {&quot;q&quot;:&quot;{client} invoice&quot;}" aria-label="read args">' +
-        '<input class="mkt-in mkt-r-atext mkt-grow" data-i="' + i + '" maxlength="500" value="' + esc(a.contains || '') + '" placeholder="the read must show this text" aria-label="expected text">' +
+        '<input class="mkt-in mkt-r-atext mkt-grow" data-i="' + i + '" maxlength="500" value="' + esc(a.contains || '') + '" placeholder="la lectura debe mostrar este texto" aria-label="expected text">' +
         '<button type="button" class="bb xs danger mkt-r-arm" data-i="' + i + '" aria-label="remove check">✕</button>' +
         '</div>';
     }
@@ -3383,11 +3383,11 @@ const Marketplace = (() => {
       '</select>' +
       (isCmd
         ? '<input class="mkt-in mkt-r-acmd mkt-grow" data-i="' + i + '" maxlength="1000" value="' + esc(a.command || '') + '" placeholder="exact command, e.g. npm test" aria-label="check command">'
-        : '<input class="mkt-in mkt-r-apath mkt-grow" data-i="' + i + '" maxlength="260" value="' + esc(a.path || '') + '" placeholder="workspace path, e.g. out/{client}-invoice.md" aria-label="artifact path">') +
+        : '<input class="mkt-in mkt-r-apath mkt-grow" data-i="' + i + '" maxlength="260" value="' + esc(a.path || '') + '" placeholder="ruta del espacio de trabajo, p. ej. out/{client}-invoice.md" aria-label="artifact path">') +
       (type === 'artifact_contains'
-        ? '<input class="mkt-in mkt-r-atext mkt-grow" data-i="' + i + '" maxlength="500" value="' + esc(a.text || '') + '" placeholder="must contain this text" aria-label="required text">' : '') +
+        ? '<input class="mkt-in mkt-r-atext mkt-grow" data-i="' + i + '" maxlength="500" value="' + esc(a.text || '') + '" placeholder="debe contener este texto" aria-label="required text">' : '') +
       (type === 'artifact_sha256'
-        ? '<input class="mkt-in mkt-r-asha mkt-grow" data-i="' + i + '" maxlength="64" value="' + esc(a.sha256 || '') + '" placeholder="64-hex digest (or a {token})" aria-label="sha256">' : '') +
+        ? '<input class="mkt-in mkt-r-asha mkt-grow" data-i="' + i + '" maxlength="64" value="' + esc(a.sha256 || '') + '" placeholder="dígito hexadecimal de 64 (o un {token})" aria-label="sha256">' : '') +
       '<button type="button" class="bb xs danger mkt-r-arm" data-i="' + i + '" aria-label="remove check">✕</button>' +
       '</div>';
   }
@@ -3426,25 +3426,25 @@ const Marketplace = (() => {
       '<p class="mkt-hint">' + intro + '</p>' +
       '<div class="mkt-save-row"><label class="mkt-lbl">ICON<input class="mkt-in mkt-emoji-in" id="mkt-r-emoji" maxlength="2" value="' + esc(seedEmoji) + '"></label>' +
         '<label class="mkt-lbl mkt-grow">NAME<input class="mkt-in" id="mkt-r-name" maxlength="40" value="' + esc(seedName) + '" placeholder="e.g. Morning Standup"></label></div>' +
-      '<label class="mkt-lbl">TAGLINE<input class="mkt-in" id="mkt-r-tag" maxlength="48" value="' + esc(seedTag) + '" placeholder="one line — what it’s for"></label>' +
-      '<label class="mkt-lbl">DIRECTIVE TEMPLATE<textarea class="mkt-in mkt-r-task" id="mkt-r-task" rows="4" placeholder="e.g. Summarize {project} progress since {since} and flag blockers.">' + esc(seedTask || '') + '</textarea></label>' +
+      '<label class="mkt-lbl">TAGLINE<input class="mkt-in" id="mkt-r-tag" maxlength="48" value="' + esc(seedTag) + '" placeholder="una línea — para qué sirve"></label>' +
+      '<label class="mkt-lbl">DIRECTIVE TEMPLATE<textarea class="mkt-in mkt-r-task" id="mkt-r-task" rows="4" placeholder="p. ej. Resume el progreso de {project} desde {since} y marca bloqueos.">' + esc(seedTask || '') + '</textarea></label>' +
       '<div class="mkt-r-tokens" id="mkt-r-tokens"></div>' +
       '<label class="mkt-lbl">FILL-INS <span class="mkt-lbl-hint">— the blanks filled at launch</span></label>' +
       paramsGridHTML() +
       '<label class="mkt-lbl">PROCEDURE <span class="mkt-lbl-hint">— optional; one step per line, followed in order</span>' +
-        '<textarea class="mkt-in mkt-r-steps" id="mkt-r-steps" rows="3" placeholder="e.g.\nPull this week\'s orders from {source}\nDraft the summary\nSave it to out/{client}-weekly.md">' + esc(editSteps.join('\n')) + '</textarea></label>' +
+        '<textarea class="mkt-in mkt-r-steps" id="mkt-r-steps" rows="3" placeholder="p. ej.\nTrae los pedidos de esta semana de {source}\nRedacta el resumen\nGuárdalo en out/{client}-weekly.md">' + esc(editSteps.join('\n')) + '</textarea></label>' +
       '<label class="mkt-lbl">ACCEPTANCE CHECKS <span class="mkt-lbl-hint">— optional; the run is not done until every one holds</span></label>' +
       acceptGridHTML() +
       '<label class="mkt-lbl">LIVE PREVIEW <span class="mkt-lbl-hint">— what your agent receives</span></label>' +
       '<pre class="mkt-r-preview" id="mkt-r-preview"></pre>' +
-      '<label class="mkt-lbl">GEAR IT DRAWS ON <span class="mkt-lbl-hint">— advisory; a WANT badge if the station lacks it, never a lock</span></label>' +
+      '<label class="mkt-lbl">HERRAMIENTAS DE LAS QUE SE SIRVE <span class="mkt-lbl-hint">— orientativo; una insignia WANT si la estación no lo tiene, nunca un bloqueo</span></label>' +
       '<div class="mkt-chips" id="mkt-r-gear">' + gearPickHTML() + '</div>' +
       '<div class="mkt-save-row">' +
         '<label class="mkt-lbl mkt-grow">CATEGORY<select class="mkt-in" id="mkt-r-cat">' + catSelectHTML() + '</select></label>' +
         '<label class="mkt-lbl mkt-grow">SUGGESTED CADENCE<select class="mkt-in" id="mkt-r-cad">' + cadSelectHTML() + '</select></label>' +
       '</div>' +
-      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button>' +
-        '<button class="bb sm mkt-do-recipe-save">' + (editing ? '✓ SAVE CHANGES' : forking ? '✓ SAVE MY VERSION' : '✓ SAVE RECIPE') + '</button></div></div>';
+      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button>' +
+        '<button class="bb sm mkt-do-recipe-save">' + (editing ? '✓ GUARDAR CAMBIOS' : forking ? '✓ GUARDAR MI VERSIÓN' : '✓ GUARDAR RECETA') + '</button></div></div>';
   }
   function wireRecipeSaveForm(stage) {
     const back = stage.querySelector('.mkt-cancel');
@@ -3646,8 +3646,8 @@ const Marketplace = (() => {
       '<p class="mkt-hint">' + intro + '</p>' +
       '<div class="mkt-save-row"><label class="mkt-lbl">ICON<input class="mkt-in mkt-emoji-in" id="mkt-f-emoji" maxlength="2" value="' + esc(d.emoji || '✦') + '"></label>' +
         '<label class="mkt-lbl mkt-grow">NAME<input class="mkt-in" id="mkt-f-name" maxlength="28" value="' + esc(d.name || '') + '" placeholder="e.g. Market Researcher"></label></div>' +
-      '<label class="mkt-lbl">TAGLINE<input class="mkt-in" id="mkt-f-tag" maxlength="48" value="' + esc(d.tagline || '') + '" placeholder="one line — what it’s for"></label>' +
-      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button>' +
+      '<label class="mkt-lbl">TAGLINE<input class="mkt-in" id="mkt-f-tag" maxlength="48" value="' + esc(d.tagline || '') + '" placeholder="una línea — para qué sirve"></label>' +
+      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button>' +
         '<button class="bb sm mkt-do-save' + ctaCls + '">' + ctaText + '</button></div></div>';
   }
   function wireSaveForm(stage) {
@@ -3693,16 +3693,16 @@ const Marketplace = (() => {
     const sw = BUILD_ACCENTS.map((c, i) => '<button type="button" class="mkt-sw' + (c === buildAccent ? ' sel' : '') +
       '" data-acc="' + c + '" style="background:' + c + '" aria-label="' + BUILD_ACCENT_NAMES[i] + '" title="' + BUILD_ACCENT_NAMES[i] + '"></button>').join('');
     // icons are glyph-only keys (the label is the hover tip + aria name) so the whole set fits one compact row.
-    const icons = '<div class="mkt-class-icons" role="group" aria-label="Class icon">' + CLASS_ICONS.map(([glyph, label]) =>
+    const icons = '<div class="mkt-class-icons" role="group" aria-label="Icono de la clase">' + CLASS_ICONS.map(([glyph, label]) =>
       '<button type="button" data-class-icon="' + esc(glyph) + '" aria-pressed="' + (glyph === previewEmoji) + '" aria-label="' + label + '" title="' + label + '">' + glyph + '</button>').join('') +
-      '<input class="mkt-in mkt-class-own" id="mkt-b-emoji" maxlength="16" value="' + esc(previewEmoji) + '" aria-label="Or type your own icon" title="Or type your own"></div>';
+      '<input class="mkt-in mkt-class-own" id="mkt-b-emoji" maxlength="16" value="' + esc(previewEmoji) + '" aria-label="o escribe tu propio icono" title="O escribe el tuyo"></div>';
     // identity header: the live seal beside the name — what you are making, in one glance.
     const ident = '<div class="mkt-class-ident"><div class="mkt-coin" id="mkt-build-coin"><span class="mkt-coin-emoji" id="mkt-build-emoji">' + esc(previewEmoji) + '</span></div>' +
       '<label class="mkt-lbl mkt-grow">Name<input class="mkt-in" id="mkt-b-name" maxlength="28" value="' + esc(d.name || '') + '" placeholder="e.g. Travel Planner"></label></div>';
     const fields =
-      '<label class="mkt-lbl">What should it do?<textarea class="mkt-in" id="mkt-b-purpose" rows="3" placeholder="Describe its job and what a good result looks like.">' + esc(d.purpose || '') + '</textarea></label>' +
+      '<label class="mkt-lbl">¿Qué debe hacer?<textarea class="mkt-in" id="mkt-b-purpose" rows="3" placeholder="Describe su trabajo y cómo se ve un buen resultado.">' + esc(d.purpose || '') + '</textarea></label>' +
       '<label class="mkt-lbl"><span>How should it work? <span class="mkt-opt">optional</span></span><textarea class="mkt-in" id="mkt-b-manual" rows="2" placeholder="e.g. Compare costs, cite sources, ask before booking.">' + esc(d.manual || '') + '</textarea></label>' +
-      '<label class="mkt-lbl"><span>One-line description <span class="mkt-opt">optional · shown on its card</span></span><input class="mkt-in" id="mkt-b-tag" maxlength="48" value="' + esc(d.tagline || '') + '" placeholder="Plans practical trips around your budget"></label>' +
+      '<label class="mkt-lbl"><span>One-line description <span class="mkt-opt">optional · shown on its card</span></span><input class="mkt-in" id="mkt-b-tag" maxlength="48" value="' + esc(d.tagline || '') + '" placeholder="Planea viajes prácticos según tu presupuesto"></label>' +
       '<div class="mkt-lbl">Icon</div>' + icons +
       '<div class="mkt-lbl">Suit color</div><div class="mkt-swatches" id="mkt-b-acc">' + sw + '</div>';
     // the ONE line that replaces three tabs of pickers — and it is the truth (see the block comment above).
@@ -3712,7 +3712,7 @@ const Marketplace = (() => {
     return '<div class="mkt-save mkt-build-form mkt-class-editor"><div class="mkt-save-h">' + (editing ? 'Edit custom class' : 'Build a custom class') + '</div>' +
       '<p class="mkt-detail-note">' + (editing ? 'Changes apply to future recruits. Existing crew members keep their settings.' : 'Give it a name and a job. Everything else is ready to go.') + '</p>' +
       ident + fields + builtIn +
-      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ BACK</button><button class="bb sm mkt-do-build">' + (editing ? 'SAVE CHANGES' : 'CREATE CLASS') + '</button></div></div>';
+      '<div class="mkt-save-acts"><button class="bb sm mkt-cancel">‹ ATRÁS</button><button class="bb sm mkt-do-build">' + (editing ? 'GUARDAR CAMBIOS' : 'CREAR CLASE') + '</button></div></div>';
   }
   function wireBuildForm(stage) {
     const iconChoices = stage.querySelectorAll('[data-class-icon]');

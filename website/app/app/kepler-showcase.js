@@ -20,18 +20,18 @@
   if(new URLSearchParams(location.search).get('fitAudit')==='1'){
     const audit=document.createElement('aside');audit.id='kepler-fit-audit';
     audit.style.cssText='position:fixed;bottom:10px;left:10px;z-index:99999;max-width:360px;padding:10px;background:#091214f5;color:#d7c89d;border:1px solid #746546;font:12px VT323,monospace';
-    audit.innerHTML='<b>LOCAL DEPTH REVIEW</b><br><select aria-label="Review furniture"></select><div></div><output style="display:block;white-space:pre-wrap"></output>';
+    audit.innerHTML='<b>REVISIÓN DE PROFUNDIDAD LOCAL</b><br><select aria-label="Revisar muebles"></select><div></div><output style="display:block;white-space:pre-wrap"></output>';
     const choose=audit.querySelector('select'),buttons=audit.querySelector('div'),out=audit.querySelector('output');
-    let filled=false,last='Choose furniture, then walk behind/in front or use a seat.';
+    let filled=false,last='Elige un mueble, luego camina por detrás/por delante o usa un asiento.';
     const current=()=>{
       const doc=World.stationDoc();if(!doc)return null;
       const geo=WorldModel.deserialize(doc).projectGeometry(),p=geo.props.find(p=>p.id===choose.value),b=World.bodies().find(b=>b.hero);
       return p&&b?{p,b,geo}:null;
     };
-    const add=(name,fn)=>{const b=document.createElement('button');b.textContent=name;b.style.margin='6px 4px 6px 0';b.onclick=()=>{const s=current();if(s)last=name+': '+(fn(s)?'planned':'unavailable');};buttons.append(b);};
-    add('Walk behind',({p,b})=>World._dbgReviewWalk(b.id,Math.floor(p.x+p.w/2),p.y-1));
-    add('Walk in front',({p,b})=>World._dbgReviewWalk(b.id,Math.floor(p.x+p.w/2),p.y+p.h));
-    add('Use seat',({p,b})=>World._dbgReviewSeat(b.id,p.id));
+    const add=(name,fn)=>{const b=document.createElement('button');b.textContent=name;b.style.margin='6px 4px 6px 0';b.onclick=()=>{const s=current();if(s)last=name+': '+(fn(s)?'planificado':'no disponible');};buttons.append(b);};
+    add('Caminar por detrás',({p,b})=>World._dbgReviewWalk(b.id,Math.floor(p.x+p.w/2),p.y-1));
+    add('Caminar por delante',({p,b})=>World._dbgReviewWalk(b.id,Math.floor(p.x+p.w/2),p.y+p.h));
+    add('Usar asiento',({p,b})=>World._dbgReviewSeat(b.id,p.id));
     choose.onchange=()=>{const doc=World.stationDoc(),p=doc&&doc.props.find(p=>p.id===choose.value);if(!p)return;const room=Object.values(doc.rooms).find(r=>(r.rects||[]).some(r=>p.x>=r.x1&&p.x<=r.x2&&p.y>=r.y1&&p.y<=r.y2));if(room)frame(room.id);};
     document.body.append(audit);
     setInterval(()=>{

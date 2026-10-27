@@ -7,7 +7,7 @@
  const panel=document.createElement('aside');panel.id='projection-audit';panel.setAttribute('aria-label','Projection verification');
  panel.style.cssText='position:fixed;z-index:999999;right:12px;bottom:44px;max-width:360px;padding:12px;background:#091214ef;border:1px solid #746546;color:#d7c89d;font:12px VT323,monospace';
  const report=document.createElement('output'),button=document.createElement('button');
- button.textContent='Measure frame cadence';button.className='bb';button.style.cssText='background:#172124;color:#ded5b6;border:1px solid #746546;padding:6px;margin-top:8px';
+ button.textContent='Medir cadencia de cuadros';button.className='bb';button.style.cssText='background:#172124;color:#ded5b6;border:1px solid #746546;padding:6px;margin-top:8px';
  const status=PropRemaster.status();
  const receipt={views:status.views.length,failures:status.failures,propCachePixels:status.pixels,propCacheMiB:+(status.pixels*4/1048576).toFixed(2),propCacheBudgetMiB:48,readyAfterMs:Math.round(performance.now()-start)};
  function render(){report.textContent=JSON.stringify(receipt,null,2);report.style.whiteSpace='pre-wrap';panel.dataset.receipt=JSON.stringify(receipt);}
@@ -20,7 +20,7 @@
    document.removeEventListener('visibilitychange',visibility);
    const sorted=samples.slice().sort((a,b)=>a-b),quantile=q=>+(sorted[Math.min(sorted.length-1,Math.floor(sorted.length*q))]||0).toFixed(2);
    receipt.cadence={samples:samples.length,medianMs:quantile(.5),p95Ms:quantile(.95),maxMs:quantile(1),hiddenDuringSample:cancelled,label:'Visible-tab rAF cadence; not a GPU benchmark'};
-   render();button.disabled=false;button.textContent='Measure frame cadence';
+   render();button.disabled=false;button.textContent='Medir cadencia de cuadros';
   }requestAnimationFrame(frame);
  };
  panel.append(report,button);document.body.append(panel);render();

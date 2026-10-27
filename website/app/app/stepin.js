@@ -3,7 +3,7 @@
    An agent browsing on its own hits a login, a 2FA code or a CAPTCHA and calls browser.need_human. Its run parks
    on the sidecar's handoff host (own id, own 30-minute wait) and a `browser.handoff` event arrives here over the
    station SSE bridge. This window shows THAT agent's live browser — the same headless Chrome, the same page — as
-   a streamed picture, and forwards the Commander's pointer, keys and paste into it. HAND BACK resumes the agent on
+   a streamed picture, and forwards the Commander's pointer, keys and paste into it. ENTREGAR resumes the agent on
    the page they left it on; CAN'T DO IT tells it to take another route.
 
    TRUTH (the product's core law): every state painted here is a sidecar record (GET /api/browser/handoffs, or the
@@ -122,21 +122,21 @@ const StepIn = (() => {
     host.innerHTML = '<div class="si-root">'
       + '<div class="si-strip"><span class="si-lamp" aria-hidden="true"></span><span class="si-name"></span><span class="si-st"></span><span class="si-clock"></span></div>'
       + '<div class="si-tabs" hidden></div>'
-      // the hands sit ABOVE the picture, beside the agent's ask: HAND BACK must never scroll out of a short window
+      // the hands sit ABOVE the picture, beside the agent's ask: ENTREGAR must never scroll out of a short window
       + '<div class="si-head"><p class="si-ask"></p>'
       +   '<div class="si-foot">'
-      +     '<button type="button" class="bb si-take" hidden>TAKE THE WHEEL</button>'
-      +     '<button type="button" class="bb si-back" hidden>HAND BACK</button>'
-      +     '<button type="button" class="bb sm si-cancel" hidden>CAN\'T DO IT</button>'
+      +     '<button type="button" class="bb si-take" hidden>TOMAR EL CONTROL</button>'
+      +     '<button type="button" class="bb si-back" hidden>ENTREGAR</button>'
+      +     '<button type="button" class="bb sm si-cancel" hidden>NO PUEDE</button>'
       +   '</div>'
       + '</div>'
       + '<p class="si-note" role="status"></p>'
       + '<div class="si-screen" data-mode="none">'
-      +   '<div class="si-view" tabindex="0" aria-label="The agent\'s browser. Click to drive it; your keys go to the page." hidden><img class="si-img" alt="Live view of the agent\'s browser" draggable="false"></div>'
+      +   '<div class="si-view" tabindex="0" aria-label="El navegador del agente. Clic para conducirlo; tus teclas van a la página." hidden><img class="si-img" alt="Vista en vivo del navegador del agente" draggable="false"></div>'
       +   '<div class="si-off"><span class="si-off-h"></span><small class="si-off-s"></small></div>'
       + '</div>'
       + '<p class="si-keep"></p>'
-      + '<details class="si-more"><summary>SAVED SIGN-INS &amp; HISTORY</summary><div class="si-hist"></div><div class="si-saved"></div></details>'
+      + '<details class="si-more"><summary>SESIONES GUARDADAS &amp; HISTORY</summary><div class="si-hist"></div><div class="si-saved"></div></details>'
       + '</div>';
     const q = s => host.querySelector(s);
     view = { host, root: q('.si-root'), img: q('.si-img'), vp: q('.si-view'), frame: null, seq: 0, streamId: '', abort: null, pending: [], inflight: false, moveAt: 0, moveTimer: 0, clockTimer: 0, note: '' };
@@ -144,7 +144,7 @@ const StepIn = (() => {
     q('.si-take').addEventListener('click', () => act('take'));
     q('.si-back').addEventListener('click', () => act('back'));
     const cancelBtn = q('.si-cancel');
-    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(cancelBtn, { armedLabel: 'CAN\'T DO IT — SURE?', onConfirm: () => act('cancel') });
+    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(cancelBtn, { armedLabel: 'NO PUEDE — SURE?', onConfirm: () => act('cancel') });
     else cancelBtn.addEventListener('click', () => act('cancel'));
     q('.si-tabs').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (!b) return; focusId = b.getAttribute('data-id'); stopStream(); paint(); });
     view.clockTimer = setInterval(() => { if (!view || !view.host.isConnected) { unmount(); return; } paintClock(); }, 1000);
@@ -224,7 +224,7 @@ const StepIn = (() => {
       take.hidden = taken; back.hidden = !taken; cancel.hidden = false;
       // said before you take the wheel; while you drive, the picture gets the room (the line would only repeat)
       q('.si-keep').textContent = taken ? '' : (h.remembered
-        ? 'This browser keeps its sign-ins: later runs start signed in. SAVED SIGN-INS below can forget them.'
+        ? 'This browser keeps its sign-ins: later runs start signed in. SESIONES GUARDADAS below can forget them.'
         : 'This run\'s browser is temporary: a sign-in here lasts only until the run ends.');
       if (taken) {
         q('.si-screen').setAttribute('data-mode', 'live');
@@ -235,7 +235,7 @@ const StepIn = (() => {
         q('.si-screen').setAttribute('data-mode', 'off');
         view.vp.hidden = true;
         q('.si-off-h').textContent = agentName(h.agentId) + ' IS PAUSED' + (h.where ? ' ON ' + h.where.toUpperCase() : '');
-        q('.si-off-s').textContent = 'Take the wheel to drive its browser yourself. It is frozen until you hand it back, and it never sees what you type. It never solves a human check on its own.';
+        q('.si-off-s').textContent = 'Toma el control para conducir su navegador tú mismo. Está congelado hasta que se lo devuelvas, y nunca ve lo que escribes. Nunca resuelve una verificación humana por sí solo.';
       }
     }
     paintClock();
@@ -252,13 +252,13 @@ const StepIn = (() => {
     const sig = JSON.stringify([signins.profile, signins.inUse, sites.map(s => s.host + s.at)]);
     if (saved.getAttribute('data-sig') === sig) return;   // never rebuild an armed FORGET button under the pointer
     saved.setAttribute('data-sig', sig);
-    saved.innerHTML = '<h4 class="si-h">SAVED SIGN-INS</h4>'
+    saved.innerHTML = '<h4 class="si-h">SESIONES GUARDADAS</h4>'
       + (sites.length
-        ? '<ul class="si-list">' + sites.map(s => '<li><b>' + esc(s.host) + '</b> <small>signed in for ' + esc(agentName(s.agentId)) + ' · ' + esc(rel(s.at)) + '</small></li>').join('') + '</ul>'
-          + '<p class="si-dim">Sites you signed in to through STEP-IN. A site can still sign the browser out on its own.</p>'
-        : '<p class="si-dim">' + (signins.profile ? 'The station browser has a saved profile, but no STEP-IN sign-ins are recorded in it.' : 'No saved sign-ins. The station browser profile is empty.') + '</p>')
-      + (signins.profile ? '<button type="button" class="bb sm si-forget"' + (signins.inUse ? ' disabled' : '') + '>FORGET ALL SIGN-INS</button>'
-        + (signins.inUse ? '<p class="si-dim">A run is using the station browser right now. Forget works once it finishes.</p>' : '') : '');
+        ? '<ul class="si-list">' + sites.map(s => '<li><b>' + esc(s.host) + '</b> <small>sesión iniciada para ' + esc(agentName(s.agentId)) + ' · ' + esc(rel(s.at)) + '</small></li>').join('') + '</ul>'
+          + '<p class="si-dim">Sitios a los que iniciaste sesión a través de STEP-IN. Un sitio aún puede cerrar la sesión del navegador por sí solo.</p>'
+        : '<p class="si-dim">' + (signins.profile ? 'El navegador de la estación tiene un perfil guardado, pero no hay sesiones de STEP-IN registradas en él.' : 'No hay sesiones guardadas. El perfil del navegador de la estación está vacío.') + '</p>')
+      + (signins.profile ? '<button type="button" class="bb sm si-forget"' + (signins.inUse ? ' disabled' : '') + '>OLVIDAR TODAS LAS SESIONES</button>'
+        + (signins.inUse ? '<p class="si-dim">Una ejecución está usando el navegador de la estación ahora mismo. Olvidar funciona cuando termine.</p>' : '') : '');
     const f = saved.querySelector('.si-forget');
     if (f && typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) {
       ArmConfirm.wire(f, { armedLabel: 'FORGET EVERY SIGN-IN — SURE?', onConfirm: async () => {

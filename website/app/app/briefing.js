@@ -19,7 +19,7 @@
 'use strict';
 const Briefing = (() => {
   const STREAM = 'briefing';
-  const TITLE = 'While you were away';
+  const TITLE = 'Mientras no estabas';
   const AWAY_MS = 30 * 60000;       // "genuinely away" — matches the sidecar's NIGHTSHIFT_AWAY_MS default
   const BOOT_DELAY_MS = 1600;       // let the floor + COMMS settle (same cadence family as ReturnStore)
   const SEEN_EVERY_MS = 60000;      // presence stamps while the Commander is here — one a minute vs the 30-minute threshold

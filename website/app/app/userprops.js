@@ -204,7 +204,7 @@ const UserProps = (() => {
         const j = r && r.ok ? r.job : null;
         // the station no longer knows this job (it settled while it restarted): stop instead of polling forever
         if (!j && r && r.code === 'not_found' && ++missing >= 3) {
-          resolve({ id, status: 'failed', costUsd: 0, error: { code: 'lost', message: 'The station lost track of this job. If it finished, it is in MADE BY YOU; check your credit history for its charge.' } });
+          resolve({ id, status: 'failed', costUsd: 0, error: { code: 'lost', message: 'La estación perdió el rastro de este trabajo. Si terminó, está en HECHO POR TI; revisa tu historial de créditos por su cargo.' } });
           return;
         }
         if (j) missing = 0;

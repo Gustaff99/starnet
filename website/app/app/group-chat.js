@@ -102,7 +102,7 @@ const GroupChat = (() => {
         if (!pickMany) {
           // one tap answers: every key waits while it is on its way (no second answer), a refusal frees them again
           if (sending) return; sending = true;
-          for (const k of keys) k.disabled = true; key.classList.add('chosen'); hint.textContent = 'Sending your answer…';
+          for (const k of keys) k.disabled = true; key.classList.add('chosen'); hint.textContent = 'Enviando tu respuesta…';
           try {
             const r = await answerQuestion(groupId, q.id, option);
             // the pressed key leaves with its card: the keyboard lands in the message box, never on <body>
@@ -446,7 +446,7 @@ const GroupChat = (() => {
     // the message box says who hears it: in a group, everyone (the lead answers an un-@ed message)
     const input = $('chat-input');
     if (input) {
-      if (enabled) { if (basePlaceholder == null) basePlaceholder = input.placeholder || ''; input.placeholder = 'Message the group · @ picks one agent'; if (active?.id === ws?.id) setGroupPlaceholder(); }
+      if (enabled) { if (basePlaceholder == null) basePlaceholder = input.placeholder || ''; input.placeholder = 'Mensaje al grupo · @ elige un agente'; if (active?.id === ws?.id) setGroupPlaceholder(); }
       else if (basePlaceholder != null) { input.placeholder = basePlaceholder; basePlaceholder = null; }
     }
     if (active?.id === ws?.id) return;
@@ -547,7 +547,7 @@ const GroupChat = (() => {
      vocabulary (a ruled line, [ tags ]), rebuilt from backend membership on every paint, so it can't go stale. */
   function masthead(g) {
     const d = h('div', { class: 'cmsg broadcast gc-masthead', role: 'note' }), stack = h('span', { class: 'bc-stack' });
-    const who = h('span', { class: 'bc-line' }); who.append('GROUP CHAT · ');
+    const who = h('span', { class: 'bc-line' }); who.append('CHAT DE GRUPO · ');
     const order = [g.leadId, ...g.members.filter(id => id !== g.leadId)].filter(id => g.members.includes(id));
     order.forEach((id, i) => {
       if (i) who.append(' · ');
@@ -1322,8 +1322,8 @@ const GroupChat = (() => {
         inList.replaceChildren(...ins.map(a => row(a, true))); outList.replaceChildren(...outs.map(a => row(a, false)));
         for (const r of [...inList.children, ...outList.children]) r.hidden = !!q && !r.dataset.agentName.includes(q);
         outEmpty.replaceChildren();
-        if (!outs.length) { outEmpty.append('Your whole crew is already in this chat. Recruit more under CREW.'); }
-        hint.replaceChildren('Talk to one agent with ', h('b', {}, '@name'), '. Without an @, ', h('b', {}, name(leadNow())), ' answers. Everyone here sees the whole conversation and its shared files.');
+        if (!outs.length) { outEmpty.append('Toda tu tripulación ya está en este chat. Recluta más en CREW.'); }
+        hint.replaceChildren('Háblale a un agente con ', h('b', {}, '@name'), '. Sin @, ', h('b', {}, name(leadNow())), ' responde. Todos aquí ven la conversación completa y sus archivos compartidos.');
         if (current) shown = current.members.join('\n') + '|' + current.leadId;
         delta.textContent = status || (current ? ins.length + (ins.length === 1 ? ' agent' : ' agents') + ' in this chat' : '+ ADD starts a group chat');
         delta.classList.toggle('ok', statusOk);

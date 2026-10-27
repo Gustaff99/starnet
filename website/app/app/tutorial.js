@@ -1046,14 +1046,14 @@ const Tutorial = (() => {
     briefEl = document.createElement('div'); briefEl.className = 'tut-brief' + (reduceMotion() ? ' no-anim' : '');
     briefEl.setAttribute('role', 'status'); briefEl.setAttribute('aria-live', 'polite');
     const head = document.createElement('div'); head.className = 'tut-brief-head';
-    const title = document.createElement('span'); title.className = 'tut-brief-title'; title.textContent = '▸ FIRST STEPS';
+    const title = document.createElement('span'); title.className = 'tut-brief-title'; title.textContent = '▸ PRIMEROS PASOS';
     // scope the live-region to the count so each tick announces "3/6", not a re-read of all six rows
     const count = document.createElement('span'); count.className = 'tut-brief-count'; count.setAttribute('aria-live', 'polite'); count.setAttribute('aria-atomic', 'true');
     const x = document.createElement('button'); x.className = 'tut-brief-x'; x.title = 'dismiss'; x.textContent = '✕';
     x.onclick = dismissBrief;
     head.appendChild(title); head.appendChild(count); head.appendChild(x);
     const list = document.createElement('ul'); list.className = 'tut-brief-list'; list.setAttribute('aria-live', 'off');   // suppress full-list re-read on each tick (the count carries the delta)
-    const foot = document.createElement('div'); foot.className = 'tut-brief-foot'; foot.textContent = 'reopen any time — § FIELD MANUAL in the ▣ SYSTEM dock';
+    const foot = document.createElement('div'); foot.className = 'tut-brief-foot'; foot.textContent = 'reabre cuando quieras — § MANUAL DE CAMPO en el muelle ▣ SISTEMA';
     briefEl.appendChild(head); briefEl.appendChild(list); briefEl.appendChild(foot);
     document.body.appendChild(briefEl);
     placeBrief();
@@ -1084,7 +1084,7 @@ const Tutorial = (() => {
       if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('first steps complete — you’ve got the controls', 'gold');
       if (briefEl) {
         briefEl.classList.add('complete');
-        const t = briefEl.querySelector('.tut-brief-title'); if (t) t.textContent = '✓ FIRST STEPS COMPLETE';
+        const t = briefEl.querySelector('.tut-brief-title'); if (t) t.textContent = '✓ PRIMEROS PASOS COMPLETOS';
         briefDoneTimer = setTimeout(hideBrief, 4200);
       }
     }
@@ -1141,12 +1141,12 @@ const Tutorial = (() => {
     const apps = kind === 'apps';
     return '<details class="platform-guide" data-platform-guide="' + kind + '"' + (guidedPlatform === kind ? ' open' : '') + '>'
       + '<summary>' + (apps ? 'Connect a work app — step by step' : 'Chat from another platform — step by step') + '</summary>'
-      + '<p class="fm-note">Find this again: <b>BUILD › CONNECT › ' + (apps ? 'ABILITIES › CATALOG' : 'CANALES') + '</b>.</p>'
+      + '<p class="fm-note">Vuelve a encontrarlo: <b>BUILD › CONNECT › ' + (apps ? 'ABILITIES › CATALOG' : 'CANALES') + '</b>.</p>'
       + '<ol><li>' + (apps ? 'Use Search abilities above to find your app. Its card shows the setup it needs.' : 'Choose your platform in the list. Its setup guide explains where to get the details it needs.') + '</li>'
       + '<li>' + (apps ? 'Use the card’s action. SIGN IN opens account authorization; API key asks for a key from that service. Follow any setup instructions and review the access requested.' : 'Follow that platform’s setup instructions, then use its CONNECT action. Complete pairing if the platform asks for it.') + '</li>'
       + '<li>' + (apps ? 'Check the status beside the service. A saved key is not a tested connection. If setup fails, read the message there before retrying.' : 'Check the platform’s status, then send your agent a message there. Seeing the reply is your end-to-end check.') + '</li></ol>'
-      + (apps ? '<p class="fm-note">Once connected, return to COMMS and ask for a small read, such as listing your next calendar events. Check the actual reply. You do not need to place a portal to sign in.</p>' : '')
-      + '<button class="bb xs" type="button" data-platform-back>BACK TO CONNECTION GUIDE</button></details>';
+      + (apps ? '<p class="fm-note">Una vez conectado, vuelve a COMMS y pide una lectura pequeña, como listar tus próximos eventos de calendario. Comprueba la respuesta real. No necesitas colocar un portal para iniciar sesión.</p>' : '')
+      + '<button class="bb xs" type="button" data-platform-back>VOLVER A LA GUÍA DE CONEXIÓN</button></details>';
   }
   function wirePlatformGuide(body) {
     body.querySelectorAll('[data-platform-guide]').forEach(el => {
@@ -1159,30 +1159,30 @@ const Tutorial = (() => {
   const FM_TABS = ['FIRST MISSION', 'CONNECT PLATFORMS', 'CONTROLS', 'CREW', 'GEAR', 'LINES', 'PROGRESS', 'HELP'];
   // STATION SYSTEMS: on a growing dock some paths a chapter names are not buttons yet — say where every one of them is.
   // ONE note, printed in every chapter that names a staged system (FIRST MISSION, CREW, LINES, HELP — org P10).
-  const stagedNote = () => ((typeof Systems !== 'undefined' && Systems.staged && Systems.staged()) ? '<p class="fm-note">Your dock adds buttons as you use the station. Any place named here that is not in your dock yet opens from <b>WORK › QUESTS › PROGRESS</b>, which lists every station system.</p>' : '');
+  const stagedNote = () => ((typeof Systems !== 'undefined' && Systems.staged && Systems.staged()) ? '<p class="fm-note">Tu muelle añade botones a medida que usas la estación. Cualquier lugar nombrado aquí que aún no esté en tu muelle se abre desde <b>WORK › QUESTS › PROGRESS</b>, que lista todos los sistemas de la estación.</p>' : '');
   function fmContent(tab) {
     if (tab === 'CONNECT PLATFORMS') {
-      return '<p class="fm-lead">Bring the apps you already use into your station. What would you like to connect?</p>'
+      return '<p class="fm-lead">Trae las apps que ya usas a tu estación. ¿Qué te gustaría conectar?</p>'
         + '<div class="fm-map">'
-        + fmEntry('WORK APPS', 'Let your agent work with your apps', 'Use your mail, calendar, documents and other services from COMMS. Browse the current catalog to see what is available.<br><b>BUILD › CONNECT › ABILITIES › CATALOG</b><div class="fm-actions"><button type="button" class="fm-action" data-platform-start="apps">SHOW ME WHERE TO CONNECT APPS ↗</button></div>')
-        + fmEntry('MESSAGING', 'Talk to your agent from another platform', 'Connect a messaging platform so you can chat with your agent there. Each platform has its own setup guide.<br><b>BUILD › CONNECT › CHANNELS</b><div class="fm-actions"><button type="button" class="fm-action" data-platform-start="messaging">SHOW ME WHERE TO CONNECT MESSAGING ↗</button></div>')
-        + '</div><p class="fm-note">For example, using Slack as a work tool and chatting with your agent from Slack are different connections. Choose the path for what you want to do.</p>'
-        + '<p class="fm-note">You can connect one now or return whenever you need it: <b>SYSTEM › FIELD MANUAL › CONNECT PLATFORMS</b>. Connecting accounts is optional.</p>'
-        + fmAction('comms', 'I’LL CONNECT LATER');
+        + fmEntry('WORK APPS', 'Que tu agente trabaje con tus apps', 'Usa tu correo, calendario, documentos y otros servicios desde COMMS. Explora el catálogo actual para ver qué hay disponible.<br><b>BUILD › CONNECT › ABILITIES › CATALOG</b><div class="fm-actions"><button type="button" class="fm-action" data-platform-start="apps">MUÉSTRAME DÓNDE CONECTAR APPS ↗</button></div>')
+        + fmEntry('MESSAGING', 'Habla con tu agente desde otra plataforma', 'Conecta una plataforma de mensajería para chatear con tu agente allí. Cada plataforma tiene su propia guía de configuración.<br><b>BUILD › CONNECT › CHANNELS</b><div class="fm-actions"><button type="button" class="fm-action" data-platform-start="messaging">MUÉSTRAME DÓNDE CONECTAR MENSAJERÍA ↗</button></div>')
+        + '</div><p class="fm-note">Por ejemplo, usar Slack como herramienta de trabajo y chatear con tu agente desde Slack son conexiones diferentes. Elige el camino para lo que quieres hacer.</p>'
+        + '<p class="fm-note">Puedes conectar una ahora o volver cuando la necesites: <b>SYSTEM › MANUAL DE CAMPO › CONECTAR PLATAFORMAS</b>. Conectar cuentas es opcional.</p>'
+        + fmAction('comms', 'LO CONECTARÉ DESPUÉS');
     }
     if (tab === 'FIRST MISSION') {
-      return '<p class="fm-lead">You command the station. Your crew does real work on your computer. Start with one useful result.</p>'
-        + '<div class="fm-route" aria-label="The work cycle"><span>GIVE A JOB</span><i aria-hidden="true">→</i><span>FOLLOW THE RUN</span><i aria-hidden="true">→</i><span>CHECK THE RESULT</span></div>'
-        + fmEntry('01', 'Choose your objective', 'Open <b>COMMS</b>, the chat panel, and pick the agent on the line. Say what you want, give the material to work from, and describe the finished result.')
-        + fmMission('Turn rough notes into a plan', '<b>“Turn these notes into a checklist for tomorrow. Put the most important task first. Keep it under ten items: [paste your notes].”</b> Replace the bracketed text with your notes, then send. This first job needs no connector or production line.')
-        + fmEntry('02', 'Stay on the channel', 'Watch the reply and tool activity in COMMS. If the agent needs context, answer in the conversation. If an approval appears, read the proposed action and choose whether to allow it. Movement around the station accompanies activity; the run details tell you what actually happened.')
-        + fmEntry('03', 'Inspect the payoff', 'Read the checklist and ask for a revision if it misses the mark. For jobs that create files or apps, use <b>WORK › MY WORK › DELIVERABLES</b> and <b>OPEN</b> the result. A finished run is your cue to inspect the work.')
-        + '<div class="fm-actions">' + fmAction('comms', 'GO TO COMMS') + fmAction('deliverables', 'OPEN DELIVERABLES') + '</div>'
-        + '<p class="fm-note">Need an idea? <b>WORK › MY WORK › RECIPES</b> has ready-made jobs. Every chapter is available now; read in any order. The quick tour below is optional.</p>'
+      return '<p class="fm-lead">Tú mandas la estación. Tu tripulación hace trabajo real en tu ordenador. Empieza con un resultado útil.</p>'
+        + '<div class="fm-route" aria-label="El ciclo de trabajo"><span>DAR UN TRABAJO</span><i aria-hidden="true">→</i><span>SEGUIR LA EJECUCIÓN</span><i aria-hidden="true">→</i><span>REVISAR EL RESULTADO</span></div>'
+        + fmEntry('01', 'Elige tu objetivo', 'Abre <b>COMMS</b>, el panel de chat, y elige el agente de la línea. Di qué quieres, da el material de trabajo y describe el resultado final.')
+        + fmMission('Convierte notas sueltas en un plan', '<b>«Convierte estas notas en una lista de tareas para mañana. Pon la tarea más importante primero. Máximo diez elementos: [pega tus notas].»</b> Reemplaza el texto entre corchetes con tus notas y envía. Este primer trabajo no necesita conector ni línea de producción.')
+        + fmEntry('02', 'Quédate en el canal', 'Observa la respuesta y la actividad de herramientas en COMMS. Si el agente necesita contexto, responde en la conversación. Si aparece una aprobación, lee la acción propuesta y elige si permitirlo. El movimiento por la estación acompaña la actividad; los detalles de la ejecución te dicen qué pasó realmente.')
+        + fmEntry('03', 'Inspecciona el resultado', 'Lee la lista de tareas y pide una revisión si no acierta. Para trabajos que crean archivos o apps, usa <b>WORK › MI TRABAJO › ENTREGABLES</b> y <b>ABRIR</b> el resultado. Una ejecución terminada es tu señal para inspeccionar el trabajo.')
+        + '<div class="fm-actions">' + fmAction('comms', 'IR A COMMS') + fmAction('deliverables', 'ABRIR ENTREGABLES') + '</div>'
+        + '<p class="fm-note">¿Necesitas una idea? <b>WORK › MI TRABAJO › RECETAS</b> tiene trabajos listos. Cada capítulo está disponible ahora; lee en cualquier orden. El tour rápido de abajo es opcional.</p>'
         + stagedNote();
     }
     if (tab === 'CONTROLS') {
-      const keys = [['0', 'Select / inspect'], ['1', 'Room'], ['2', 'Hallway'], ['3', 'Surface'], ['5', 'Delete'], ['6', 'Props'], ['7', 'Belt'], ['8', 'Copy'], ['9', 'Conveyor lines']];
+      const keys = [['0', 'Seleccionar / inspeccionar'], ['1', 'Sala'], ['2', 'Pasillo'], ['3', 'Superficie'], ['5', 'Eliminar'], ['6', 'Props'], ['7', 'Cinta'], ['8', 'Copiar'], ['9', 'Líneas de cinta']];
       // keys outside BUILD MODE (org P30): each one is a real handler. F11 fullscreen.js, Ctrl+Shift+H hudmode.js and
       // Ctrl +/-/0 stationui.js TEXT SIZE work from any screen. Esc and Shift+F10 mean what the focused thing makes them
       // mean (P30 review fix): a window's Esc closes it (stationui.js), but in COMMS Esc stops a live turn (chat.js
@@ -1191,82 +1191,82 @@ const Tutorial = (() => {
       // P30 polish: the four global keys are a short 2x2 key list; the three focus keys read whole sentences, so they get
       // a one-column list of their own with an aligned key column. A key is only keys ("in COMMS" is the label's
       // context, never inside the chip); ' / ' in a key splits it into separate chips (Ctrl + = and Ctrl + -).
-      const anywhere = [['F11', 'Full screen on / off'], ['Ctrl + Shift + H', 'HUD mode on / off'], ['Ctrl + = / Ctrl + -', 'Text size up / down'], ['Ctrl + 0', 'Text size back to AUTO']];
-      const onFocus = [['Esc', 'In a window: close it. In a text field the first Esc only leaves the field, so a draft is never lost.'], ['Esc', 'In COMMS: stops the running turn. On a focused approval card: Deny. On a focused question card: answers “use your judgment”.'], ['Shift + F10', 'On a focused row: a session or project row opens its actions; a crew row opens the agent’s dossier.']];
+      const anywhere = [['F11', 'Pantalla completa on / off'], ['Ctrl + Shift + H', 'Modo HUD on / off'], ['Ctrl + = / Ctrl + -', 'Tamaño de texto arriba / abajo'], ['Ctrl + 0', 'Tamaño de texto de vuelta a AUTO']];
+      const onFocus = [['Esc', 'En una ventana: ciérrala. En un campo de texto el primer Esc solo sale del campo, así que un borrador nunca se pierde.'], ['Esc', 'En COMMS: detiene el turno en curso. En una tarjeta de aprobación con foco: Denegar. En una tarjeta de pregunta con foco: responde «usa tu criterio».'], ['Shift + F10', 'En una fila con foco: una fila de sesión o proyecto abre sus acciones; una fila de tripulación abre el expediente del agente.']];
       const keyRows = rows => rows.map(([key, label]) => '<div><dt>' + key.split(' / ').map(k => '<kbd>' + k + '</kbd>').join(' ') + '</dt><dd>' + label + '</dd></div>').join('');
-      return '<p class="fm-lead">Your control deck: chat to give orders, the bottom menus to manage the station, BUILD MODE to build.</p>'
-        + fmEntry('CHAT', 'Send a command', '<kbd>Enter</kbd> sends. <kbd>Shift + Enter</kbd> adds a line. Type <kbd>/</kbd> to browse slash commands. Use the agent picker in COMMS to choose who receives your message.')
-        + '<div class="fm-map fm-dock"><div><b>CREW</b><span>Agents, recruitment, your Commander dossier.</span></div><div><b>WORK</b><span>Tasks, deliverables, recipes, automation, quests.</span></div><div><b>BUILD</b><span>Refit the station, manage abilities, connect channels.</span></div><div><b>APPS</b><span>The apps your crew built for you. The APPS button shows up with your first one; until then NEW APP is under BUILD.</span></div><div><b>SYSTEM</b><span>This manual, settings, updates, notifications.</span></div></div>'
-        + '<h3 class="fm-subhead">ANYWHERE</h3><p class="fm-note">The first four keys work from any screen. <kbd>Esc</kbd> and <kbd>Shift + F10</kbd> act on what has focus, so read their rows before you press them in COMMS.</p>'
+      return '<p class="fm-lead">Tu panel de control: chat para dar órdenes, los menús inferiores para gestionar la estación, BUILD MODE para construir.</p>'
+        + fmEntry('CHAT', 'Envía un comando', '<kbd>Enter</kbd> envía. <kbd>Shift + Enter</kbd> añade una línea. Escribe <kbd>/</kbd> para ver comandos slash. Usa el selector de agente en COMMS para elegir quién recibe tu mensaje.')
+        + '<div class="fm-map fm-dock"><div><b>CREW</b><span>Agentes, reclutamiento, tu expediente de Comandante.</span></div><div><b>WORK</b><span>Tareas, entregables, recetas, automatización, misiones.</span></div><div><b>BUILD</b><span>Refit de la estación, gestionar habilidades, conectar canales.</span></div><div><b>APPS</b><span>Las apps que tu tripulación construyó para ti. El botón APPS aparece con la primera; hasta entonces NEW APP está bajo BUILD.</span></div><div><b>SYSTEM</b><span>Este manual, ajustes, actualizaciones, notificaciones.</span></div></div>'
+        + '<h3 class="fm-subhead">EN CUALQUIER LUGAR</h3><p class="fm-note">Las cuatro primeras teclas funcionan desde cualquier pantalla. <kbd>Esc</kbd> y <kbd>Shift + F10</kbd> actúan sobre lo que tiene foco, así que lee sus filas antes de pulsarlas en COMMS.</p>'
         + '<dl class="fm-keys">' + keyRows(anywhere) + '</dl><dl class="fm-keys fm-keys-wide">' + keyRows(onFocus) + '</dl>'
-        + '<h3 class="fm-subhead">BUILD › BUILD MODE</h3><p class="fm-note">These keys work while BUILD MODE is open and you are not typing in a field. In the <b>Conveyors</b> tab, <kbd>1</kbd>–<kbd>8</kbd> pick a conveyor piece from its hotbar instead (BAY, INBOX, OUTBOX, SPLITTER, MERGER, JOINER, FILTER, LOOP); <kbd>0</kbd> and <kbd>9</kbd> work in every tab.</p>'
+        + '<h3 class="fm-subhead">BUILD › BUILD MODE</h3><p class="fm-note">Estas teclas funcionan mientras BUILD MODE está abierto y no estás escribiendo en un campo. En la pestaña <b>Conveyors</b>, <kbd>1</kbd>–<kbd>8</kbd> eligen una pieza de cinta desde su hotbar (BAY, INBOX, OUTBOX, SPLITTER, MERGER, JOINER, FILTER, LOOP); <kbd>0</kbd> y <kbd>9</kbd> funcionan en cada pestaña.</p>'
         + '<dl class="fm-keys">' + keyRows(keys) + '</dl>'
-        + fmEntry(null, 'Camera &amp; editing', '<kbd>Space + drag</kbd> pans; the scroll wheel zooms. <kbd>F</kbd> fits the station. <kbd>R</kbd> rotates supported props; <kbd>Shift + R</kbd> rotates back; <kbd>M</kbd> mirrors. <kbd>Ctrl / ⌘ + Z</kbd> undoes; add <kbd>Shift</kbd> to redo. <kbd>Esc</kbd> backs out of the current card, placement, or tool before leaving BUILD MODE.')
-        + fmEntry(null, 'Select &amp; move', 'Click a piece to select it, then drag it onto open floor to move it; a selection of several moves together, one undo, its belts re-laid. Drag a machine onto another machine to belt them, selected or not; a machine that is not selected, dragged onto open floor, lays a belt there and asks what goes on its end. <kbd>Shift + drag</kbd> moves any piece. Click a room to select it, then drag inside it to move it with everything on it (<kbd>Shift + drag</kbd> over a belt in it works too); drag its gold edge handles to resize it. The arrow keys nudge the selection a tile (<kbd>Shift</kbd>: five).')
-        + fmEntry(null, 'Select, copy &amp; paste', 'Drag a box across empty floor to select everything it touches, belts included; <kbd>Shift</kbd> adds. Double-click a conveyor piece to select its whole line. <kbd>Ctrl + C</kbd> copies the selection with its belts, settings, names, instructions and crew, <kbd>Ctrl + X</kbd> cuts it, and <kbd>Ctrl + V</kbd> picks the copy up again: it follows your pointer, green where it fits and red where it does not, <kbd>R</kbd> turns it, and a click places it (a pasted INBOX starts a new line). <kbd>Ctrl + D</kbd> duplicates the selection beside itself; <kbd>Del</kbd> removes it.')
-        + fmEntry(null, 'The hand', 'Hold a junction and click a belt to insert it. <kbd>Q</kbd> picks up a copy of the piece under the pointer; hold <kbd>Alt</kbd> to inspect line settings and SEND TO arcs. A whole line’s selection card offers COPY LINE and DELETE LINE. <kbd>R</kbd> flips a dragged belt’s corner or turns the paste ghost.')
-        + fmMission('Make room for an idea', 'Open BUILD MODE, open the <b>Rooms</b> tab (or press <kbd>1</kbd> from any tab but Conveyors) and drag out a room. Open the <b>Props</b> tab, choose a prop, then click the floor to place it. Use Undo to reverse an edit.')
-        + fmAction('refit', 'ENTER BUILD MODE');
+        + fmEntry(null, 'Cámara y edición', '<kbd>Space + arrastrar</kbd> desplaza; la rueda del ratón hace zoom. <kbd>F</kbd> ajusta la estación. <kbd>R</kbd> rota props soportados; <kbd>Shift + R</kbd> rota de vuelta; <kbd>M</kbd> espeja. <kbd>Ctrl / ⌘ + Z</kbd> deshace; añade <kbd>Shift</kbd> para rehacer. <kbd>Esc</kbd> sale de la tarjeta, colocación o herramienta actual antes de dejar BUILD MODE.')
+        + fmEntry(null, 'Seleccionar y mover', 'Haz clic en una pieza para seleccionarla, luego arrástrala al suelo libre para moverla; una selección múltiple se mueve junta, un solo deshacer, sus cintas se recolocan. Arrastra una máquina sobre otra para conectarlas con cinta, seleccionada o no; una máquina no seleccionada, arrastrada al suelo libre, pone una cinta allí y pregunta qué va en su extremo. <kbd>Shift + arrastrar</kbd> mueve cualquier pieza. Haz clic en una sala para seleccionarla, luego arrastra dentro para moverla con todo lo que tenga (<kbd>Shift + arrastrar</kbd> sobre una cinta dentro también funciona); arrastra sus asas doradas de borde para redimensionar. Las flechas mueven la selección un tile (<kbd>Shift</kbd>: cinco).')
+        + fmEntry(null, 'Seleccionar, copiar y pegar', 'Arrastra un recuadro sobre suelo libre para seleccionar todo lo que toque, cintas incluidas; <kbd>Shift</kbd> añade. Doble clic en una pieza de cinta selecciona su línea completa. <kbd>Ctrl + C</kbd> copia la selección con sus cintas, ajustes, nombres, instrucciones y tripulación, <kbd>Ctrl + X</kbd> la corta, y <kbd>Ctrl + V</kbd> vuelve a tomar la copia: sigue tu puntero, verde donde cabe y rojo donde no, <kbd>R</kbd> la gira, y un clic la coloca (un INBOX pegado inicia una línea nueva). <kbd>Ctrl + D</kbd> duplica la selección junto a sí misma; <kbd>Del</kbd> la elimina.')
+        + fmEntry(null, 'La mano', 'Mantén un junction y haz clic en una cinta para insertarla. <kbd>Q</kbd> toma una copia de la pieza bajo el puntero; mantén <kbd>Alt</kbd> para inspeccionar ajustes de línea y arcos de SEND TO. La tarjeta de selección de una línea completa ofrece COPY LINE y DELETE LINE. <kbd>R</kbd> gira la esquina de una cinta arrastrada o rota el fantasma de pegado.')
+        + fmMission('Haz hueco para una idea', 'Abre BUILD MODE, abre la pestaña <b>Rooms</b> (o pulsa <kbd>1</kbd> desde cualquier pestaña excepto Conveyors) y arrastra una sala. Abre la pestaña <b>Props</b>, elige un prop, luego haz clic en el suelo para colocarlo. Usa Deshacer para revertir una edición.')
+        + fmAction('refit', 'ENTRAR EN BUILD MODE');
     }
     if (tab === 'CREW') {
-      return '<p class="fm-lead">Give each crew member a clear role. Pick the right agent for the job, then keep its conversation together.</p>'
-        + fmEntry('ROSTER', 'Recruit &amp; configure', '<b>CREW › RECRUIT</b> adds an agent. In <b>CREW › AGENTS</b>, inspect its identity, model, abilities, and configuration. The model belongs to the agent, so changing it affects that agent across its chats.')
-        + fmEntry('COMMS', 'Direct messages &amp; group work', 'Choose an agent in COMMS for a direct conversation. Use <b>Add agents</b> to bring crew into a group conversation. Use <b>Sessions</b> to return to an earlier conversation and its run history.')
-        + fmEntry('WORK', 'Know where a job lives', '<b>TASKS</b> holds planned board work. Chats, routines, and while-away runs live as <b>Sessions in COMMS</b>; not every conversation becomes a board task. <b>DELIVERABLES</b> is where you find produced outputs.')
-        + fmEntry('VOICE', 'Talk to your crew', 'Use the microphone in COMMS to speak, or the hands-free control for a live conversation. <b>SYSTEM › SETTINGS › LOOK &amp; SOUND</b> configures voice and microphone options, including different voices for individual agents.')
-        + '<p class="fm-note">Every crew member you recruit is a real, separate agent with its own identity, workspace, memory, and sessions. Specialists own their desk; other equipment is shared through the station’s overseer.</p>'
+      return '<p class="fm-lead">Da a cada miembro de la tripulación un rol claro. Elige el agente adecuado para el trabajo, luego mantén su conversación junta.</p>'
+        + fmEntry('ROSTER', 'Reclutar y configurar', '<b>CREW › RECRUIT</b> añade un agente. En <b>CREW › AGENTS</b>, inspecciona su identidad, modelo, habilidades y configuración. El modelo pertenece al agente, así que cambiarlo afecta a ese agente en todos sus chats.')
+        + fmEntry('COMMS', 'Mensajes directos y trabajo grupal', 'Elige un agente en COMMS para una conversación directa. Usa <b>Add agents</b> para traer tripulación a una conversación grupal. Usa <b>Sessions</b> para volver a una conversación anterior y su historial de ejecuciones.')
+        + fmEntry('WORK', 'Saber dónde vive un trabajo', '<b>TASKS</b> guarda trabajo planificado del tablero. Chats, rutinas y ejecuciones while-away viven como <b>Sessions en COMMS</b>; no toda conversación se convierte en tarea del tablero. <b>DELIVERABLES</b> es donde encuentras las salidas producidas.')
+        + fmEntry('VOICE', 'Habla con tu tripulación', 'Usa el micrófono en COMMS para hablar, o el control manos libres para una conversación en vivo. <b>SYSTEM › AJUSTES › ASPECTO Y SONIDO</b> configura opciones de voz y micrófono, incluyendo voces diferentes para agentes individuales.')
+        + '<p class="fm-note">Cada miembro de tripulación que reclutas es un agente real y separado con su propia identidad, espacio de trabajo, memoria y sesiones. Los especialistas tienen su escritorio; el resto del equipo se comparte a través del supervisor de la estación.</p>'
         + stagedNote()
-        + '<div class="fm-actions">' + fmAction('agents', 'INSPECT CREW') + fmAction('tasks', 'OPEN TASKS') + '</div>';
+        + '<div class="fm-actions">' + fmAction('agents', 'INSPECCIONAR TRIPULACIÓN') + fmAction('tasks', 'ABRIR TASKS') + '</div>';
     }
     if (tab === 'GEAR') {
       const gear = [
-        ['desk', 'WORKSTATION', 'A desk, console, or pixel rig gives an agent a work position. A routed agent needs its own workstation; the Workflow panel lists what a line still needs.'],
-        ['war_intelcab', 'CABINET', 'File tools: read and write within the agent’s configured reach. Includes safes, vaults, racks, and shelves.'],
-        ['comms_dish', 'DISH', 'Web search and page access. Uplinks and beacons provide the same capability.'],
-        ['gigs_servercart', 'SERVER', 'Persistent notebook and reusable skill procedures. Relay stacks and cores also provide memory.'],
-        ['connector_portal', 'CONNECTOR PORTAL', 'Tools from a bound connector. Connect the service in ABILITIES and check its status; placing a portal alone does not sign you in.'],
-        ['workbench', 'WORKBENCH', 'Run terminal commands and verification tools under the agent’s configured permissions and reach.'],
-        ['studio', 'MEDIA STUDIO', 'Image generation and image analysis. Available providers and their configuration determine which operations can run.'],
-        ['jukebox', 'JUKEBOX', 'Spotify search and playback controls. Requires Spotify to be connected in ABILITIES.']
+        ['desk', 'WORKSTATION', 'Un escritorio, consola o rig de píxeles da a un agente una posición de trabajo. Un agente enrutado necesita su propio workstation; el panel Workflow lista qué necesita aún una línea.'],
+        ['war_intelcab', 'CABINET', 'Herramientas de archivos: leer y escribir dentro del alcance configurado del agente. Incluye cajas fuertes, bóvedas, racks y estantes.'],
+        ['comms_dish', 'DISH', 'Búsqueda web y acceso a páginas. Uplinks y beacons proporcionan la misma capacidad.'],
+        ['gigs_servercart', 'SERVER', 'Cuaderno persistente y procedimientos de habilidad reutilizables. Relay stacks y cores también proporcionan memoria.'],
+        ['connector_portal', 'CONNECTOR PORTAL', 'Herramientas de un conector vinculado. Conecta el servicio en ABILITIES y comprueba su estado; colocar un portal solo no te inicia sesión.'],
+        ['workbench', 'WORKBENCH', 'Ejecutar comandos de terminal y herramientas de verificación bajo los permisos y alcance configurados del agente.'],
+        ['studio', 'MEDIA STUDIO', 'Generación e análisis de imágenes. Los proveedores disponibles y su configuración determinan qué operaciones pueden ejecutarse.'],
+        ['jukebox', 'JUKEBOX', 'Búsqueda de Spotify y controles de reproducción. Requiere Spotify conectado en ABILITIES.']
       ];
-      return '<p class="fm-lead">Equipment gives the station abilities. Inspect a prop’s capability label before you place it.</p>'
+      return '<p class="fm-lead">El equipo da habilidades a la estación. Inspecciona la etiqueta de capacidad de un prop antes de colocarlo.</p>'
         + '<div class="fm-gear-grid">' + gear.map(([prop, title, text]) => fmEntry(typeof WorldModel !== 'undefined' ? WorldModel.grantLabelForProp(prop) : null, title, text)).join('') + '</div>'
-        + fmEntry('DECOR', 'Make the station yours', 'Plants, rugs, and other decoration shape the atmosphere. They do not grant tools. Workflow machines such as bays and splitters have their own job: see LINES.')
-        + fmEntry('ACCESS', 'Equipment &amp; permission are separate', 'A prop grants a CAPABILITY — what an agent can attempt, not blanket consent. Profiles, shared equipment, and Full Power can also supply abilities. Check the agent’s actual tool readout in <b>AGENTS</b> and the settings in <b>ABILITIES</b>. Settings &gt; Permissions decides whether an action asks or runs without another prompt.')
+        + fmEntry('DECOR', 'Haz la estación tuya', 'Plantas, alfombras y otras decoraciones dan forma a la atmósfera. No otorgan herramientas. Las máquinas de Workflow como bays y splitters tienen su propio trabajo: ver LINES.')
+        + fmEntry('ACCESS', 'Equipo y permiso son separados', 'Un prop otorga una CAPACIDAD — lo que un agente puede intentar, no consentimiento global. Perfiles, equipo compartido y Full Power también pueden aportar habilidades. Comprueba la lectura real de herramientas del agente en <b>AGENTS</b> y los ajustes en <b>ABILITIES</b>. Settings &gt; Permissions decide si una acción pregunta o se ejecuta sin otro prompt.')
         + fmEntry('ASK / FULL POWER', 'Elige cuánto control entregar', 'En los modos restringidos, la lectura de archivos locales y el guardado en el cuaderno privado no preguntan. Otras acciones pueden preguntar salvo que ya estén aprobadas o esté activada el ACCESO TOTAL. Los modos ASK y de alcance más estrecho conservan sus restricciones. <b>POTENCIA TOTAL es de todo el equipo</b>: archivos protegidos, comandos arbitrarios, apps visibles y control de pantalla/entrada están en el alcance. No aporta credenciales faltantes, servicios desconectados ni privilegios del SO.')
-        + fmAction('connectors', 'OPEN ABILITIES');
+        + fmAction('connectors', 'ABRIR ABILITIES');
     }
     if (tab === 'LINES') {
       const R = refitNames(), e = fmEsc;
       const junctions = R.machines.filter(m => m.junction);
-      return '<p class="fm-lead">Turn repeatable work into a production line. You can still give ordinary jobs in COMMS without building belts.</p>'
-        + '<div class="fm-route"><span>INBOX<small>work arrives</small></span><i aria-hidden="true">→</i><span>BAY<small>agent + instructions</small></span><i aria-hidden="true">→</i><span>OUTBOX<small>output leaves</small></span></div>'
-        + fmEntry('01', 'Place the stations', 'In BUILD MODE, open <b>' + e(R.tab) + ' › ' + e(R.machinesShelf) + '</b> and place an INBOX, BAY, and OUTBOX. Click the BAY: the <b>Workflow panel</b> docks beside the floor — assign an agent and define its step. Each assigned agent needs its own workstation. If one is missing, the panel says which BAY needs a workstation; click that line to go to it.')
-        + fmEntry('02', 'Connect the route', '<b>Drag from one machine onto the next</b>: the belt follows your pointer and lays itself (<kbd>R</kbd> flips its corner) — selected or not, so the BAY you just crewed belts the same way. A selected piece dragged onto open floor moves instead. Connect INBOX → BAY, then BAY → OUTBOX. Drag the middle of a belt to branch it; let go on empty floor to pick what goes there; right-click removes a piece or a belt. (' + e(R.belt) + ' still connects by two clicks.) Inspect the route and fix any flagged breaks.')
-        + fmEntry('03', 'Give the line a source', 'Click the INBOX: its Workflow panel answers <b>What starts this line?</b> — add a schedule there, or a message on a connected channel (<b>BUILD › CONNECT › CHANNELS</b> connects the platforms; <b>WORK › AUTOMATE</b> manages routines and loops). A line can run when you send it a job; a schedule, folder, webhook, or SEND TO from another line can start it automatically.')
-        + fmEntry('04', 'Hand work to another line', 'Drag a line’s <b>OUTBOX</b> onto another line’s <b>INBOX</b>, or pick a line under <b>SEND TO</b> in the OUTBOX’s Workflow panel. Each job that finishes cleanly starts a separate job on that line, with its own crew and budget; one that can’t go is marked <b>NOT sent on</b>, with the reason. A circle is refused. Pick <b>NOWHERE</b> to stop sending. Copying a line leaves its external SEND TO and project folder behind; set them on the copy if needed.')
-        + fmEntry('TEST', 'Rehearse, then test for real', '<b>' + e(R.preview) + '</b> in the BUILD MODE top bar (or in any line’s Workflow panel) opens one TEST with three modes. <b>WATCH IT</b> is free: a crate rides the route and no agent runs. <b>STEP THROUGH</b> runs the real agents one step at a time and pauses at every hand-off so you can read or edit what moves on; nothing is delivered. <b>SEND A REAL JOB</b> runs it end to end and the result lands in the OUTBOX.')
-        + fmEntry('BRANCHES', 'Add steps when you need them', junctions.map(m => '<b>' + e(m.label) + '</b>: ' + e(m.purpose) + '.').join(' ') + ' Assign agents to bays, not to belt tiles.')
-        + fmMission('Start with a layout', 'In BUILD MODE, press <kbd>' + e(R.lineKey) + '</kbd> or open <b>' + e(R.tab) + ' › ' + e(R.lines) + '</b>: ' + (typeof R.lineCount === 'number' ? R.lineCount + ' ' : '') + 'ready-made layouts. Stamp one, then inspect its bays and feed before running your job.')
-        + '<p class="fm-note"><b>Recipes = WHAT.</b> A job to launch. <b>Skills = HOW.</b> Reusable instructions. <b>Routines = WHEN.</b> Scheduled work. <b>Loops = UNTIL.</b> Repeated work with a stopping condition.</p>'
+      return '<p class="fm-lead">Convierte trabajo repetible en una línea de producción. Sigues pudiendo dar trabajos ordinarios en COMMS sin construir cintas.</p>'
+        + '<div class="fm-route"><span>INBOX<small>llega el trabajo</small></span><i aria-hidden="true">→</i><span>BAY<small>agente + instrucciones</small></span><i aria-hidden="true">→</i><span>OUTBOX<small>sale la salida</small></span></div>'
+        + fmEntry('01', 'Coloca las estaciones', 'En BUILD MODE, abre <b>' + e(R.tab) + ' › ' + e(R.machinesShelf) + '</b> y coloca un INBOX, BAY y OUTBOX. Haz clic en el BAY: el <b>panel Workflow</b> se acopla junto al suelo — asigna un agente y define su paso. Cada agente asignado necesita su propio workstation. Si falta uno, el panel dice qué BAY necesita workstation; haz clic en esa línea para ir a él.')
+        + fmEntry('02', 'Conecta la ruta', '<b>Arrastra de una máquina a la siguiente</b>: la cinta sigue tu puntero y se coloca sola (<kbd>R</kbd> gira su esquina) — seleccionada o no, así que el BAY que acabas de tripular se cinta de la misma forma. Una pieza seleccionada arrastrada al suelo libre se mueve en su lugar. Conecta INBOX → BAY, luego BAY → OUTBOX. Arrastra el medio de una cinta para ramificarla; suelta sobre suelo libre para elegir qué va allí; clic derecho elimina una pieza o una cinta. (' + e(R.belt) + ' sigue conectando por dos clics.) Inspecciona la ruta y corrige cualquier rotura marcada.')
+        + fmEntry('03', 'Da a la línea una fuente', 'Haz clic en el INBOX: su panel Workflow responde <b>¿Qué inicia esta línea?</b> — añade un horario allí, o un mensaje en un canal conectado (<b>BUILD › CONNECT › CHANNELS</b> conecta las plataformas; <b>WORK › AUTOMATE</b> gestiona rutinas y loops). Una línea puede ejecutarse cuando le envías un trabajo; un horario, carpeta, webhook o SEND TO de otra línea pueden iniciarla automáticamente.')
+        + fmEntry('04', 'Pasa trabajo a otra línea', 'Arrastra el <b>OUTBOX</b> de una línea sobre el <b>INBOX</b> de otra, o elige una línea bajo <b>SEND TO</b> en el panel Workflow del OUTBOX. Cada trabajo que termina limpiamente inicia un trabajo separado en esa línea, con su propia tripulación y presupuesto; uno que no puede ir se marca <b>NOT sent on</b>, con la razón. Un círculo es rechazado. Elige <b>NOWHERE</b> para dejar de enviar. Copiar una línea deja su SEND TO externo y carpeta de proyecto atrás; configúralos en la copia si es necesario.')
+        + fmEntry('TEST', 'Ensaya, luego prueba de verdad', '<b>' + e(R.preview) + '</b> en la barra superior de BUILD MODE (o en el panel Workflow de cualquier línea) abre un TEST con tres modos. <b>WATCH IT</b> es gratis: una caja recorre la ruta y ningún agente se ejecuta. <b>STEP THROUGH</b> ejecuta los agentes reales paso a paso y se pausa en cada hand-off para que leas o edites lo que avanza; nada se entrega. <b>SEND A REAL JOB</b> lo ejecuta de punta a punta y el resultado cae en el OUTBOX.')
+        + fmEntry('BRANCHES', 'Añade pasos cuando los necesites', junctions.map(m => '<b>' + e(m.label) + '</b>: ' + e(m.purpose) + '.').join(' ') + ' Asigna agentes a bays, no a tiles de cinta.')
+        + fmMission('Empieza con un layout', 'En BUILD MODE, pulsa <kbd>' + e(R.lineKey) + '</kbd> o abre <b>' + e(R.tab) + ' › ' + e(R.lines) + '</b>: ' + (typeof R.lineCount === 'number' ? R.lineCount + ' ' : '') + 'layouts listos. Sella uno, luego inspecciona sus bays y feed antes de ejecutar tu trabajo.')
+        + '<p class="fm-note"><b>Recetas = QUÉ.</b> Un trabajo para lanzar. <b>Habilidades = CÓMO.</b> Instrucciones reutilizables. <b>Rutinas = CUÁNDO.</b> Trabajo programado. <b>Loops = HASTA QUE.</b> Trabajo repetido con condición de parada.</p>'
         + stagedNote()
-        + fmAction('workflows', 'OPEN FLUJOS');
+        + fmAction('workflows', 'ABRIR FLUJOS');
     }
     if (tab === 'PROGRESS') {
-      return '<p class="fm-lead">The campaign is your real life. Set a goal, take useful steps, and record what changed.</p>'
-        + fmEntry('YOU', 'Commander progress', 'Open <b>WORK › QUESTS</b> to reach the QUEST LOG. Define a life goal and what success means. Record completed actions and metrics as you go. Confirm the outcome when it actually happens: finishing the plan alone does not complete the goal.')
-        + fmMission('Name a finish line you can recognize', '<b>Goal:</b> play a song for a friend. <b>Success:</b> play the whole song without stopping. <b>First step:</b> practise the chorus. Record the practice now; confirm the goal after the performance.')
-        + fmEntry('CREW', 'Agent experience', 'Positive feedback on agent work grows that agent’s XP. Your Commander journey and the crew’s track record are separate. Neither level locks capabilities behind a grind.')
-        + fmEntry('NEXT STEP', 'Keep the plan useful', 'Use the QUEST LOG to report progress, extend a plan, or defer a suggestion that does not fit. The station can suggest a next action; you decide whether it belongs in your life.')
-        + fmAction('quests', 'OPEN QUEST LOG');
+      return '<p class="fm-lead">La campaña es tu vida real. Fija un objetivo, da pasos útiles y registra qué cambió.</p>'
+        + fmEntry('YOU', 'Progreso del Comandante', 'Abre <b>WORK › QUESTS</b> para llegar al QUEST LOG. Define un objetivo de vida y qué significa el éxito. Registra acciones completadas y métricas a medida que avanzas. Confirma el resultado cuando realmente ocurra: terminar el plan solo no completa el objetivo.')
+        + fmMission('Nombra una meta que puedas reconocer', '<b>Objetivo:</b> tocar una canción para un amigo. <b>Éxito:</b> tocar la canción entera sin parar. <b>Primer paso:</b> ensaya el estribillo. Registra el ensayo ahora; confirma el objetivo tras la actuación.')
+        + fmEntry('CREW', 'Experiencia del agente', 'El feedback positivo sobre el trabajo de un agente hace crecer su XP. Tu viaje de Comandante y el historial de la tripulación son separados. Ningún nivel bloquea capacidades detrás de un grind.')
+        + fmEntry('NEXT STEP', 'Mantén el plan útil', 'Usa el QUEST LOG para reportar progreso, extender un plan o posponer una sugerencia que no encaja. La estación puede sugerir una siguiente acción; tú decides si pertenece a tu vida.')
+        + fmAction('quests', 'ABRIR QUEST LOG');
     }
-    return '<p class="fm-lead">When the station stalls, follow the evidence. Start with the message beside the job.</p>'
-      + fmEntry('NO REPLY', 'Check the connection', 'Open <b>SYSTEM › SETTINGS › AI &amp; MODELS</b> and check the selected provider’s sign-in or key. Check the agent’s model in COMMS. Read the error before retrying; a missing connection needs fixing first.')
-      + fmEntry('WAITING', 'Look for a decision', 'Return to the job’s COMMS session: <b>NEEDS YOU</b> at the top of SESSIONS lists every job waiting on you (also <b>NOTIFICATIONS › NEEDS YOU</b>). Answer a context question or approve or deny the pending action. An unanswered question is not a running tool.')
-      + fmEntry('MISSING TOOL', 'Check ability &amp; reach', 'Inspect the agent in <b>CREW › AGENTS</b>. In <b>BUILD › CONNECT › ABILITIES</b>, check toolsets and connector status. Equipment, permissions, service sign-in, and operating-system access each affect what can run.')
-      + fmEntry('COLD LINE', 'Inspect feed, bay, and route', 'In BUILD MODE, check the inbox feed, bay assignment, assigned agent workstation, and belt connections. A sample crate moving does not establish that a real job ran.')
-      + fmEntry('WHERE IS IT?', 'Find the session or output', 'Return to <b>COMMS › Sessions</b> for the conversation. Open <b>WORK › MY WORK › DELIVERABLES</b> for generated files and apps. Check <b>TASKS</b> if it was planned board work.')
-      + fmEntry('STOP', 'Interrupt work', 'Use the stop control in COMMS for the current run. Stopping a run does not undo actions it already completed; inspect the result before starting again.')
+    return '<p class="fm-lead">Cuando la estación se atasca, sigue la evidencia. Empieza con el mensaje junto al trabajo.</p>'
+      + fmEntry('NO REPLY', 'Comprueba la conexión', 'Abre <b>SYSTEM › AJUSTES › AI &amp; MODELS</b> y comprueba el login o la clave del proveedor seleccionado. Comprueba el modelo del agente en COMMS. Lee el error antes de reintentar; una conexión faltante necesita arreglarse primero.')
+      + fmEntry('WAITING', 'Busca una decisión', 'Vuelve a la sesión COMMS del trabajo: <b>NEEDS YOU</b> en la parte superior de SESSIONS lista cada trabajo que espera tu decisión (también <b>NOTIFICATIONS › NEEDS YOU</b>). Responde una pregunta de contexto o aprueba o deniega la acción pendiente. Una pregunta sin responder no es una herramienta en ejecución.')
+      + fmEntry('MISSING TOOL', 'Comprueba habilidad y alcance', 'Inspecciona el agente en <b>CREW › AGENTS</b>. En <b>BUILD › CONNECT › ABILITIES</b>, comprueba toolsets y estado del conector. Equipo, permisos, login del servicio y acceso del sistema operativo cada uno afecta qué puede ejecutarse.')
+      + fmEntry('COLD LINE', 'Inspecciona feed, bay y ruta', 'En BUILD MODE, comprueba el feed del inbox, la asignación del bay, el workstation del agente asignado y las conexiones de cinta. Una caja de muestra moviéndose no establece que un trabajo real se ejecutó.')
+      + fmEntry('WHERE IS IT?', 'Encuentra la sesión o salida', 'Vuelve a <b>COMMS › Sessions</b> para la conversación. Abre <b>WORK › MI TRABAJO › ENTREGABLES</b> para archivos y apps generados. Comprueba <b>TASKS</b> si era trabajo planificado del tablero.')
+      + fmEntry('STOP', 'Interrumpe el trabajo', 'Usa el control de parada en COMMS para la ejecución actual. Detener una ejecución no deshace acciones que ya completó; inspecciona el resultado antes de volver a empezar.')
       + stagedNote()
       + '<div class="fm-actions">' + fmAction('settings', 'OPEN SETTINGS') + fmAction('comms', 'RETURN TO COMMS') + '</div>';
   }

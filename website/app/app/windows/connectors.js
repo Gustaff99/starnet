@@ -1168,7 +1168,7 @@
           msgEl.classList.remove('ok'); msgEl.textContent = 'recargando ' + id + '…';
           const j = await (await postJSON('/api/connectors/refresh', { id })).json().catch(() => ({}));
           if (j.status && j.status.state === 'up') { msgEl.classList.add('ok'); msgEl.textContent = '✓ ' + id + ' — ' + (j.status.toolCount || 0) + ' herramienta(s)'; }
-          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'no conectado'); }
+          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'no se conectó'); }
           sfx('click');
         }
       } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'solicitud fallida'); sfx('bad'); }

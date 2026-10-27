@@ -2206,8 +2206,8 @@ const World = (() => {
     const skip=document.createElement('button');skip.className='bb';skip.textContent='Skip arrival →';
     controls.append(caption,skip);document.body.appendChild(controls);
     const title=document.createElement('div');title.className='arrival-identity';title.setAttribute('aria-hidden','true');
-    const name=document.createElement('strong');name.textContent=agent.name||'Your agent';
-    const greeting=document.createElement('span');greeting.textContent='FIRST CONTACT';title.append(greeting,name);title.style.opacity='0';document.body.appendChild(title);
+    const name=document.createElement('strong');name.textContent=agent.name||'Tu agente';
+    const greeting=document.createElement('span');greeting.textContent='PRIMER CONTACTO';title.append(greeting,name);title.style.opacity='0';document.body.appendChild(title);
     const scene=arrivalScene={at:performance.now(),reduced,stamp,controls,caption,title,turned:false,phase:'',timer:null};
     const finish=()=>{if(arrivalScene!==scene)return;cancelArrival();wakeDarkTarget=.16;if(agent)agent.dir='south';if(onDone)onDone();};
     skip.onclick=finish;
@@ -8082,7 +8082,7 @@ const World = (() => {
     const cw = cv.width, ch = cv.height;
     const promptA = (1 - p) * (0.45 + 0.55 * Math.abs(Math.sin(now / 700)));   // a breathing prompt that fades as it fills
     if (promptA > 0.02) {
-      const label = (kindlePeak > 0.12 && !kindleHolding && p > 0.01) ? 'don’t stop —' : 'hold to wake it';
+      const label = (kindlePeak > 0.12 && !kindleHolding && p > 0.01) ? 'no sueltes —' : 'mantén para despertar';
       ctx.font = "16px 'VT323', 'Courier New', monospace";
       ctx.fillStyle = 'rgba(255,170,60,' + promptA.toFixed(3) + ')';
       ctx.fillText(label, cw / 2, ch * 0.74);

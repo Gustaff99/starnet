@@ -36,8 +36,8 @@
   }catch(e){report.textContent=e.stack||String(e);document.body.dataset.result='fail';}
  }
  const picker=document.createElement('select');picker.id='groupPicker';picker.setAttribute('aria-label','Catalog group');for(const name of Object.keys(groups)){const option=document.createElement('option');option.value=name;option.textContent=name;picker.append(option);}picker.onchange=()=>{const url=new URL(location.href);url.searchParams.set('group',picker.value);history.replaceState(null,'',url);render(picker.value);};document.querySelector('#groups').append(picker);
- const size=document.createElement('button');let large=false;size.textContent='Enlarge';size.onclick=()=>{large=!large;cv.style.maxHeight=large?'none':'calc(100vh - 265px)';cv.style.maxWidth=large?'none':'100%';size.textContent=large?'Fit room':'Enlarge';};document.querySelector('#groups').append(size);
- const power=document.createElement('button');power.textContent='Screen art preview: off';power.onclick=()=>{powered=!powered;power.textContent='Screen art preview: '+(powered?'on':'off');render(currentGroup);};document.querySelector('header').append(power);
- const link=document.createElement('a');link.href='/?propSet=projection';link.textContent='Saved station';document.querySelector('#groups').append(link);
+ const size=document.createElement('button');let large=false;size.textContent='Enlarge';size.onclick=()=>{large=!large;cv.style.maxHeight=large?'none':'calc(100vh - 265px)';cv.style.maxWidth=large?'none':'100%';size.textContent=large?'Ajustar a la sala':'Ampliar';};document.querySelector('#groups').append(size);
+ const power=document.createElement('button');power.textContent='Vista previa de arte de pantalla: apagado';power.onclick=()=>{powered=!powered;power.textContent='Vista previa de arte de pantalla: '+(powered?'encendido':'apagado');render(currentGroup);};document.querySelector('header').append(power);
+ const link=document.createElement('a');link.href='/?propSet=projection';link.textContent='Estación guardada';document.querySelector('#groups').append(link);
  render(new URLSearchParams(location.search).get('group') in groups?new URLSearchParams(location.search).get('group'):'storage');
 })().catch(e=>{document.querySelector('#report').textContent=e.stack||String(e);document.body.dataset.result='fail';});

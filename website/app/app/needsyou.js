@@ -522,9 +522,9 @@ const NeedsYou = (() => {
         // detached: the rerun is the routine's own job. Its lines ride the page's ONE run stream (Harness.streamPost), never a
         // connection of their own held for the whole run — a few Retries must not leave Approve/Deny without one.
         const r = await Harness.streamPost('/api/cron/run', { id: i.routineId, detach: true });
-        if (!r.ok) throw new Error((r.j && r.j.error) || (r.status ? 'HTTP ' + r.status : 'the station could not be reached'));
+        if (!r.ok) throw new Error((r.j && r.j.error) || (r.status ? 'HTTP ' + r.status : 'no se pudo alcanzar la estación'));
         if (typeof Workstreams !== 'undefined' && Workstreams.markRead) Workstreams.markRead(i.wsId);   // the new run is what counts now
-        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Running ' + i.what.replace(/ failed$/, '') + ' again', 'good');
+        if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Ejecutando de nuevo ' + i.what.replace(/ failed$/, '') + '', 'good');
       } catch (e) {
         if (btn) { btn.disabled = false; btn.textContent = 'Retry'; }
         if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Could not rerun it: ' + ((e && e.message) || e), 'warn');

@@ -1417,8 +1417,8 @@ const WorkflowPanel = (() => {
           if (r && r.ok) {
             const nx = (Array.isArray(r.localNext) && r.localNext[0]) ? r.localNext[0] : (Array.isArray(r.next) && r.next[0] ? relFmt(r.next[0]) : '');
             const said = H.human(r.display);
-            pvEl.innerHTML = '✓ <span' + (said !== r.display ? ' data-tip="' + esc(r.display) + '"' : '') + '>' + esc(said) + '</span>' + (nx ? ' → next: ' + esc(nx) : '');
-          } else pvEl.innerHTML = '<span class="trg-warn">' + esc((r && r.error) || 'unrecognized schedule') + '</span>';
+            pvEl.innerHTML = '✓ <span' + (said !== r.display ? ' data-tip="' + esc(r.display) + '"' : '') + '>' + esc(said) + '</span>' + (nx ? ' → siguiente: ' + esc(nx) : '');
+          } else pvEl.innerHTML = '<span class="trg-warn">' + esc((r && r.error) || 'programación no reconocida') + '</span>';
         }).catch(() => {});
       }, 300);
     };

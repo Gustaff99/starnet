@@ -16,10 +16,10 @@ const ProjectHome = (() => {
   }
   function setup() {
     if (panel) return;
-    panel = el('section', 'project-home'); panel.hidden = true; panel.setAttribute('aria-label', 'Project controls');
-    panel.innerHTML = '<div class="ph-view-head"><button class="btn ph-back">‹ Back to chat</button><span class="ph-view-title"></span></div>' +
-      '<p class="ph-notice" role="status"></p><section class="ph-crew"><p>Preferred crew <span class="ph-crew-count"></span></p><p class="ph-help">The orchestrator can also bring in other station agents.</p><div class="ph-crew-list"></div><button class="btn ph-save">SAVE CREW</button><span class="ph-crew-note" role="status"></span></section>' +
-      '<section class="ph-history"><p class="ph-empty">No delegated work yet.</p><div class="ph-activity"></div></section>';
+    panel = el('section', 'project-home'); panel.hidden = true; panel.setAttribute('aria-label', 'Controles de proyecto');
+    panel.innerHTML = '<div class="ph-view-head"><button class="btn ph-back">‹ Volver al chat</button><span class="ph-view-title"></span></div>' +
+      '<p class="ph-notice" role="status"></p><section class="ph-crew"><p>Tripulación preferida <span class="ph-crew-count"></span></p><p class="ph-help">El orquestador también puede traer otros agentes de la estación.</p><div class="ph-crew-list"></div><button class="btn ph-save">GUARDAR TRIPULACIÓN</button><span class="ph-crew-note" role="status"></span></section>' +
+      '<section class="ph-history"><p class="ph-empty">Aún no hay trabajo delegado.</p><div class="ph-activity"></div></section>';
     document.getElementById('chat-panel').insertBefore(panel, document.getElementById('chat-log'));
     updates = el('div', 'ph-updates'); updates.setAttribute('aria-label', 'Agent updates');
     actions = el('div', 'ph-actions'); actions.hidden = true;
@@ -128,8 +128,8 @@ const ProjectHome = (() => {
   function createCard(id) {
     const node = el('details', 'ph-card'), summary = el('summary'), title = el('span', 'ph-task'), agent = el('span', 'ph-agent'), status = el('span', 'ph-status');
     const body = el('div', 'ph-card-body'), prompt = el('p'), result = el('pre', 'ph-result'), tools = el('p', 'ph-tools'), artifacts = el('p', 'ph-tools'), directions = el('pre', 'ph-directions'), controls = el('div', 'ph-controls');
-    const input = el('textarea'); input.rows = 2; input.placeholder = 'Give this agent a direction…'; input.setAttribute('aria-label', 'Direction for this work');
-    const send = el('button', 'btn', 'SEND DIRECTION'), stop = el('button', 'btn', 'STOP WORK'), receipt = el('p', 'ph-receipt'); receipt.setAttribute('role', 'status');
+    const input = el('textarea'); input.rows = 2; input.placeholder = 'Dale a este agente una dirección…'; input.setAttribute('aria-label', 'Dirección para este trabajo');
+    const send = el('button', 'btn', 'ENVIAR DIRECCIÓN'), stop = el('button', 'btn', 'DETENER TRABAJO'), receipt = el('p', 'ph-receipt'); receipt.setAttribute('role', 'status');
     summary.append(agent, status, title); controls.append(input, send, stop); body.append(prompt, result, tools, artifacts, directions, controls, receipt); node.append(summary, body);
     const update = el('button', 'ph-inline');
     update.onclick = () => { showView('activity'); node.open = true; node.scrollIntoView({ block: 'nearest' }); summary.focus(); };
@@ -150,7 +150,7 @@ const ProjectHome = (() => {
   async function saveCrew() {
     const token = epoch, button = panel.querySelector('.ph-save'), note = panel.querySelector('.ph-crew-note'); button.disabled = true;
     const preferredAgents = Array.from(panel.querySelectorAll('.ph-crew-list input:checked')).map(n => n.value);
-    try { const data = await request('/api/projects/workspace', { root, preferredAgents }); if (token !== epoch) return; crewDirty = false; render(data); note.textContent = 'Crew preferences saved.'; }
+    try { const data = await request('/api/projects/workspace', { root, preferredAgents }); if (token !== epoch) return; crewDirty = false; render(data); note.textContent = 'Preferencias de tripulación guardadas.'; }
     catch (error) { if (token === epoch) note.textContent = error.message; }
     finally { if (token === epoch) button.disabled = false; }
   }

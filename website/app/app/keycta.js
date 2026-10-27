@@ -111,7 +111,7 @@ const KeyCTA = (() => {
       return ok;
     });
   }
-  function freeLabel() { return ollamaReady ? '◇ RUN FREE LOCALLY (OLLAMA)' : '◇ SET UP OLLAMA (FREE · LOCAL)'; }
+  function freeLabel() { return ollamaReady ? '◇ RUN FREE LOCALLY (OLLAMA)' : '◇ CONFIGURAR OLLAMA (GRATIS · LOCAL)'; }
   function paintFreeLabel() {
     const b = el('key-cta'); if (!b) return;
     const f = b.querySelector('.key-cta-free'); if (f) f.textContent = freeLabel();
@@ -164,7 +164,7 @@ const KeyCTA = (() => {
     }
     spokenChoices = Chat.choices([
       { label: primaryLabel(gap), value: 'primary' },
-      { label: '⇄ USE A DIFFERENT PROVIDER', value: 'switch', quiet: true },
+      { label: '⇄ USAR OTRO PROVEEDOR', value: 'switch', quiet: true },
       { label: freeLabel(), value: 'free', quiet: true }
     ], it => { if (it && it.value === 'free') useOllama(); else if (it && it.value === 'primary') fixGap(); else openSettings(); });   // onPick hands back the chip item
     // Opening the model picker from this external prompt must not also count as its outside click.
@@ -199,9 +199,9 @@ const KeyCTA = (() => {
       // THREE DOORS, not one: name the missing thing (key / link), offer any other provider, offer the free
       // local path. Issue #6: a single "ADD IN SETTINGS" left an unlinked STARNET pick with no way out.
       '<span class="key-cta-acts">' +
-        '<button type="button" class="key-cta-act">⚙ ADD IN SETTINGS</button>' +
-        '<button type="button" class="key-cta-alt">⇄ USE A DIFFERENT PROVIDER</button>' +
-        '<button type="button" class="key-cta-free">◇ SET UP OLLAMA (FREE · LOCAL)</button>' +
+        '<button type="button" class="key-cta-act">⚙ AÑADIR EN AJUSTES</button>' +
+        '<button type="button" class="key-cta-alt">⇄ USAR OTRO PROVEEDOR</button>' +
+        '<button type="button" class="key-cta-free">◇ CONFIGURAR OLLAMA (GRATIS · LOCAL)</button>' +
       '</span>';
     b.querySelector('.key-cta-act').addEventListener('click', ev => { ev.stopPropagation(); fixGap(); });
     b.querySelector('.key-cta-alt').addEventListener('click', openSettings);

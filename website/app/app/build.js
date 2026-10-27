@@ -657,14 +657,14 @@ const Build = (() => {
     if (!makeJob) {
       const bal = makeCredits && makeCredits.linked ? makeCredits.balanceUsd : null;
       if (bal != null && bal > 0 && bal < MAKE_PRICE) return { text: 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' restantes \u00b7 no alcanza para fabricar una prop (unos $0.35)', tone: 'bad', door: true };
-      return { text: (bal != null && bal > 0 ? 'StarNet credits \u00b7 $' + bal.toFixed(2) + ' left' : 'StarNet credits') + ' \u00b7 primero un preview (unos 5\u00a2), y luego fabricarla (unos $0.35; una vista lateral unos $0.30)', tone: '' };
+      return { text: (bal != null && bal > 0 ? 'Créditos StarNet \u00b7 $' + bal.toFixed(2) + ' restantes' : 'StarNet credits') + ' \u00b7 primero un preview (unos 5\u00a2), y luego fabricarla (unos $0.35; una vista lateral unos $0.30)', tone: '' };
     }
-    const j = makeJob, spent = j.costUsd > 0 ? ' \u00b7 $' + j.costUsd.toFixed(2) + ' so far' : '';
-    if (j.status === 'done' && j.kind === 'side') return { text: 'Side view made \u00b7 cost $' + (Number(j.costUsd) || 0).toFixed(2) + (j.costPending ? ' (final cost settling)' : '') + ' \u00b7 press R to turn it', tone: 'ok' };
-    if (j.status === 'done') return { text: 'Made ' + (j.label || j.noun) + ' \u00b7 cost $' + (Number(j.costUsd) || 0).toFixed(2) + (j.costPending ? ' (final cost settling \u00b7 see credit history)' : '') + (j.placeHint ? ' \u00b7 place it from FURNITURE \u25b8 MADE BY YOU' : ' \u00b7 in MADE BY YOU'), tone: 'ok' };
-    if (j.status === 'failed') return { text: ((j.error && j.error.message) || 'That prop could not be made.') + (j.costUsd > 0 ? ' Spent $' + j.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
-    const step = MAKE_STEP[j.step] || 'Working';
-    const tries = (j.step === 'drawing' || j.step === 'retrying' || j.step === 'checking') && j.tries ? ' (try ' + j.tries + ' of ' + (j.maxTries || 3) + ')' : '';
+    const j = makeJob, spent = j.costUsd > 0 ? ' \u00b7 $' + j.costUsd.toFixed(2) + ' hasta ahora' : '';
+    if (j.status === 'done' && j.kind === 'side') return { text: 'Vista lateral hecha \u00b7 costo $' + (Number(j.costUsd) || 0).toFixed(2) + (j.costPending ? ' (costo final pendiente)' : '') + ' \u00b7 pulsa R para girarla', tone: 'ok' };
+    if (j.status === 'done') return { text: 'Hecho ' + (j.label || j.noun) + ' \u00b7 costo $' + (Number(j.costUsd) || 0).toFixed(2) + (j.costPending ? ' (costo final pendiente \u00b7 ver historial de créditos)' : '') + (j.placeHint ? ' \u00b7 colócalo desde MUEBLES \u25b8 HECHO POR TI' : ' \u00b7 en HECHO POR TI'), tone: 'ok' };
+    if (j.status === 'failed') return { text: ((j.error && j.error.message) || 'Ese prop no se pudo fabricar.') + (j.costUsd > 0 ? ' Gasto $' + j.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
+    const step = MAKE_STEP[j.step] || 'Trabajando';
+    const tries = (j.step === 'drawing' || j.step === 'retrying' || j.step === 'checking') && j.tries ? ' (intento ' + j.tries + ' de ' + (j.maxTries || 3) + ')' : '';
     return { text: step + tries + '\u2026' + spent, tone: 'busy' };
   }
   function paintMakeStatus() {
@@ -755,7 +755,7 @@ const Build = (() => {
           if (root) { setLibraryPlacement(true); renderPalette(); }
         } else {
           makeJob = { ...makeJob, placeHint: true };
-          if (root) { renderPalette(); renderSelection(); setHint('Made ' + (makeJob.label || makeJob.noun) + ' \u00b7 place it from FURNITURE \u25b8 MADE BY YOU'); }
+          if (root) { renderPalette(); renderSelection(); setHint('Hecho ' + (makeJob.label || makeJob.noun) + ' \u00b7 colócalo desde MUEBLES \u25b8 HECHO POR TI'); }
         }
       } else if (root) renderSelection();
       paintMakeStatus();
@@ -811,7 +811,7 @@ const Build = (() => {
       makePreview = { id: r.job.id, noun, preview: res.preview, costUsd: res.job && res.job.costUsd, costPending: !!(res.job && res.job.costPending) };
       makeMsg = { text: 'Previsualización lista · hazlo, o prueba otro', tone: 'ok' };
     } else {
-      makeMsg = { text: ((res && res.job && res.job.error && res.job.error.message) || (res && res.message) || 'No se pudo hacer esa previsualización.') + (res && res.job && res.job.costUsd > 0 ? ' Spent $' + res.job.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
+      makeMsg = { text: ((res && res.job && res.job.error && res.job.error.message) || (res && res.message) || 'No se pudo hacer esa previsualización.') + (res && res.job && res.job.costUsd > 0 ? ' Gasto $' + res.job.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
     }
     paintPreviewCard(); paintMakeStatus();
   }

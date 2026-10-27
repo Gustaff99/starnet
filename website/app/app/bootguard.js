@@ -291,10 +291,10 @@
       try { if (typeof Diag !== 'undefined' && Diag && Diag.fetchText) extra = Promise.resolve(Diag.fetchText()).catch(() => ''); } catch (_) {}
       extra.then(t => copyText(mine + (t ? '\n\n' + t : ''))).then(ok => {
         copyBtn.disabled = false;
-        copyBtn.textContent = ok ? '✓ DIAGNOSTICS COPIED' : '⧉ COPY FAILED — SELECT THE TEXT ABOVE';
-      }, () => { copyBtn.disabled = false; copyBtn.textContent = '⧉ COPY FAILED — SELECT THE TEXT ABOVE'; });
+        copyBtn.textContent = ok ? '✓ DIAGNÓSTICOS COPIADOS' : '⧉ COPIA FALLIDA — SELECCIONA EL TEXTO DE ARRIBA';
+      }, () => { copyBtn.disabled = false; copyBtn.textContent = '⧉ COPIA FALLIDA — SELECCIONA EL TEXTO DE ARRIBA'; });
     };
-    const reloadBtn = doc.createElement('button'); reloadBtn.type = 'button'; reloadBtn.className = 'btn-xl bgf-reload'; reloadBtn.textContent = '⟳ RELOAD';
+    const reloadBtn = doc.createElement('button'); reloadBtn.type = 'button'; reloadBtn.className = 'btn-xl bgf-reload'; reloadBtn.textContent = '⟳ RECARGAR';
     reloadBtn.onclick = () => { try { root.location.reload(); } catch (_) {} };
     acts.appendChild(copyBtn); if (!old) acts.appendChild(reloadBtn);   // RELOAD cannot update a web engine
     card.appendChild(head); card.appendChild(lead); card.appendChild(list); card.appendChild(pre); card.appendChild(acts);

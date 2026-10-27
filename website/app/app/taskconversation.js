@@ -28,7 +28,7 @@ const TaskConversation = (() => {
         if(at>=0){lines.splice(at,1);input.value=lines.join('\n').replace(/^\n+|\n+$/g,'');}
         else {
           const next=input.value.trim() ? input.value.trim()+'\n'+option : option;
-          if(next.length>input.maxLength){feedback.textContent='Your answer is full. Edit it before adding another starting point.';return;}
+          if(next.length>input.maxLength){feedback.textContent='Tu respuesta está llena. Edítala antes de añadir otro punto de partida.';return;}
           input.value=next;
         }
         refresh();input.focus();
@@ -36,13 +36,13 @@ const TaskConversation = (() => {
       options.appendChild(b);
     }
     // one hint line, under the keys it explains (the keyboard tip lives in the box's placeholder)
-    const hint=el('div','tc-hint','Tap one to add it to your answer below, then edit and send.');
+    const hint=el('div','tc-hint','Toca uno para añadirlo a tu respuesta de abajo, luego edítala y envía.');
     if(options.children.length) {card.appendChild(options);card.appendChild(hint);}
-    const label=el('label','tc-answer-label','Your answer');
+    const label=el('label','tc-answer-label','Tu respuesta');
     const input=el('textarea','tc-answer');input.rows=3;input.maxLength=3800;
-    input.setAttribute('aria-label','Your answer');input.placeholder='Describe it in your own words. Rough notes are fine. Enter sends · Shift + Enter adds a line.';
+    input.setAttribute('aria-label','Tu respuesta');input.placeholder='Descríbelo con tus propias palabras. Las notas aproximadas valen. Enter envía · Shift + Enter añade una línea.';
     label.appendChild(input);card.appendChild(label);
-    const actions=el('div','tc-actions'), submit=el('button','consent-btn primary','Send answer'), skip=el('button','consent-btn tc-skip','Usa tu criterio');
+    const actions=el('div','tc-actions'), submit=el('button','consent-btn primary','Enviar respuesta'), skip=el('button','consent-btn tc-skip','Usa tu criterio');
     submit.type=skip.type='button';actions.appendChild(submit);actions.appendChild(skip);card.appendChild(actions);
     const feedback=el('div','tc-feedback');feedback.setAttribute('role','status');card.appendChild(feedback);
     // the question leads; the model's reasoning, its understanding and its draft are one tap away, never a wall above the answer
@@ -74,16 +74,16 @@ const TaskConversation = (() => {
     async function answer(delegated) {
       if(busy||done)return false;
       const typed=input.value.trim();
-      const text=delegated ? (typed ? typed+'\nUse your judgment for the remaining choices.' : 'use your judgment') : typed;
+      const text=delegated ? (typed ? typed+'\nUsa tu criterio para las decisiones restantes.' : 'usa tu criterio') : typed;
       if(!text)return false;
-      busy=true;feedback.textContent='Sending your answer…';refresh();
+      busy=true;feedback.textContent='Enviando tu respuesta…';refresh();
       try {
         const accepted=await send(text);
         if(done)return false;   // settled on another surface while this send was in flight: that outcome stands
-        if(accepted===false)throw Error('This question is no longer waiting. Your text is kept here; send it in COMMS to continue.');
-        done=true;feedback.textContent='Answer sent';
+        if(accepted===false)throw Error('Esta pregunta ya no está esperando. Tu texto se queda aquí; envíalo en COMMS para continuar.');
+        done=true;feedback.textContent='Respuesta enviada';
         options.remove();label.remove();actions.remove();hint.remove();
-        whole.remove();card.classList.add('tc-answered');card.setAttribute('aria-label','Shared task context');
+        whole.remove();card.classList.add('tc-answered');card.setAttribute('aria-label','Contexto de tarea compartido');
         const receipt=el('details','tc-receipt');receipt.appendChild(el('summary','','You answered: '+text.slice(0,100)+(text.length>100?'…':'')));
         receipt.appendChild(el('p','tc-answer-sent',text));card.appendChild(receipt);
         return true;

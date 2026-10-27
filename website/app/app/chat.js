@@ -5094,7 +5094,7 @@ const Chat = (() => {
     // the ONE door that always works, prop or no prop on the floor: open the OUTBOX window — every listed
     // run readable + rateable in one place (2026-07-16; a floor with no OUTBOX placed had no other path).
     if (typeof StationUI !== 'undefined' && StationUI.openTerm) {
-      const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir TO REVIEW';
+      const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir POR REVISAR';
       ob.onclick = () => StationUI.openTerm('outbox');
       foot.appendChild(ob);
     }
@@ -5262,7 +5262,7 @@ const Chat = (() => {
         }
         const acts = document.createElement('div'); acts.className = 'turnin-rate';
         if (folded && typeof StationUI !== 'undefined' && StationUI.openTerm) {
-          const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir TO REVIEW';
+          const ob = document.createElement('button'); ob.className = 'consent-btn'; ob.textContent = '▸ abrir POR REVISAR';
           ob.onclick = () => StationUI.openTerm('outbox');
           acts.appendChild(ob);
         }
