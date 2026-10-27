@@ -44,7 +44,7 @@
   function storageNoticeHtml(storage) {
     const s = storage || {};
     return (s.notice ? '<div class="mc-notice"><b>Almacenamiento de credenciales · no cifrado</b>' + esc(s.notice) + '</div>' : '') +
-      (s.migrationNotice ? '<div class="mc-notice"><b>Credential storage</b>' + esc(s.migrationNotice) + '</div>' : '');
+      (s.migrationNotice ? '<div class="mc-notice"><b>Almacenamiento de credenciales</b>' + esc(s.migrationNotice) + '</div>' : '');
   }
   /* START FRESH's answer: where the old files went. Finishing an interrupted attempt also returns `previous`, the
      folders that attempt filled; with nothing left to move it has no movedTo, and the marker that named those folders
@@ -1168,7 +1168,7 @@
           msgEl.classList.remove('ok'); msgEl.textContent = 'recargando ' + id + '…';
           const j = await (await postJSON('/api/connectors/refresh', { id })).json().catch(() => ({}));
           if (j.status && j.status.state === 'up') { msgEl.classList.add('ok'); msgEl.textContent = '✓ ' + id + ' — ' + (j.status.toolCount || 0) + ' herramienta(s)'; }
-          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'no conectado'); }
+          else { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + id + ' — ' + ((j.status && j.status.detail) || j.error || 'no se conectó'); }
           sfx('click');
         }
       } catch (e) { msgEl.classList.remove('ok'); msgEl.textContent = '✕ ' + ((e && e.message) || 'solicitud fallida'); sfx('bad'); }

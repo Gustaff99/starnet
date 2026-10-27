@@ -46,10 +46,10 @@ A.ok(/migrateConnectorCatalogKeyHeaders/.test(host) && /headers\[catalogEntry\.k
   A.ok(/Restart StarNet to try again\.[\s\S]{0,40}If it is still locked after a restart, START FRESH/.test(read('sidecar/connector-vault.js')), 'the busy lock message names the restart before START FRESH');
   const unreachable = next({ reason: 'key-unavailable', canStartFresh: true });
   A.ok(!/unreadable files aside/.test(unreachable), 'an unreachable OS store is never steered to START FRESH as unreadable: ' + unreachable);
-  A.ok(/START FRESH only if you cannot unlock/.test(unreachable), 'it puts unlocking the credential store before START FRESH: ' + unreachable);
-  A.eq(next({ reason: 'busy', canStartFresh: false }), ' Restart StarNet to try again.', 'a busy lock with no START FRESH says restart');
-  A.ok(/START FRESH sets the unreadable files aside/.test(next({ reason: 'key-mismatch', canStartFresh: true })), 'a wrong-key store keeps the START FRESH line');
-  A.eq(next({ reason: 'key-unavailable', canStartFresh: false }), ' Unlock the credential store and restart StarNet.', 'the unlock advice is for an unreachable OS store');
+  A.ok(/Usa START FRESH solo si no puedes desbloquear/.test(unreachable), 'it puts unlocking the credential store before START FRESH: ' + unreachable);
+  A.eq(next({ reason: 'busy', canStartFresh: false }), ' Reinicia StarNet para reintentar.', 'a busy lock with no START FRESH says restart');
+  A.ok(/START FRESH aparta los archivos ilegibles/.test(next({ reason: 'key-mismatch', canStartFresh: true })), 'a wrong-key store keeps the START FRESH line');
+  A.eq(next({ reason: 'key-unavailable', canStartFresh: false }), ' Desbloquea la tienda de credenciales y reinicia StarNet.', 'the unlock advice is for an unreachable OS store');
   A.eq(next({ reason: 'unreadable', canStartFresh: false }), '', 'any other lock with no START FRESH leaves the sidecar message to speak');
   A.ok(/storageNextStep\(storage\)/.test(A.fnBody(connectors, 'async function refresh(')), 'the panel uses it');
 }
@@ -65,8 +65,8 @@ A.ok(/migrateConnectorCatalogKeyHeaders/.test(host) && /headers\[catalogEntry\.k
   const html = s => (ctx.html ? ctx.html(s) : '');
   const leftover = html({ encrypted: true, notice: null, migrationNotice: 'An older connector sign-in file could not be removed <x>.' });
   A.ok(leftover.includes('could not be removed &lt;x>'), 'the leftover-file warning reaches the panel, escaped: ' + leftover);
-  A.ok(/<b>Credential storage<\/b>/.test(leftover) && !/not encrypted/.test(leftover), 'under a plain heading, never "not encrypted": ' + leftover);
-  A.ok(/Credential storage · not encrypted<\/b>Saved WITHOUT encryption/.test(html({ encrypted: false, fallback: true, notice: 'Saved WITHOUT encryption' })), 'the unencrypted notice keeps its heading');
+  A.ok(/<b>Almacenamiento de credenciales<\/b>/.test(leftover) && !/not encrypted/.test(leftover), 'under a plain heading, never "not encrypted": ' + leftover);
+  A.ok(/Almacenamiento de credenciales · no cifrado<\/b>Guardado SIN cifrar/.test(html({ encrypted: false, fallback: true, notice: 'Guardado SIN cifrar' })), 'the unencrypted notice keeps its heading');
   A.eq(html({ encrypted: true, notice: null, migrationNotice: null }), '', 'nothing to say, nothing drawn');
   A.ok(/notices\.innerHTML \+= storageNoticeHtml\(storage\)/.test(A.fnBody(connectors, 'async function refresh(')), 'the panel draws it');
 }
