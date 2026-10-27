@@ -2,92 +2,101 @@
 
 <img src=".github/media/starnet-logo-glow.png" alt="StarNet" width="560">
 
-**A living pixel-art station where real AI agents do real work.**
+**Una estación pixel-art viva donde agentes de IA reales hacen trabajo real.**
 
-[![Download](https://img.shields.io/github/v/release/androoAGI/starnet-releases?label=download&color=f5a623)](https://github.com/androoAGI/starnet-releases/releases/latest)
-[![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-4a90d9)](INSTALL.md)
-[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
-[![Local-first](https://img.shields.io/badge/local--first-your%20machine%2C%20your%20data-8250df)](PRIVACY.md)
+[![Descarga](https://img.shields.io/github/v/release/androoAGI/starnet-releases?label=descarga&color=f5a623)](https://github.com/androoAGI/starnet-releases/releases/latest)
+[![Plataformas](https://img.shields.io/badge/plataforma-Windows%20%7C%20macOS-4a90d9)](INSTALL.md)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-2ea44f)](LICENSE)
+[![Local-first](https://img.shields.io/badge/local--first-tu%20m%C3%A1quina%2C%20tus%20datos-8250df)](PRIVACY.md)
 
-[Download](https://github.com/androoAGI/starnet-releases/releases/latest) ·
-[Install guide](INSTALL.md) ·
-[Run from source](#run-from-source) ·
-[Docs](docs/INDEX.md) ·
-[Contributing](CONTRIBUTING.md)
+[Descarga](https://github.com/androoAGI/starnet-releases/releases/latest) ·
+[Guía de instalación](INSTALL.md) ·
+[Ejecutar desde fuente](#ejecutar-desde-fuente) ·
+[Documentación](docs/INDEX.md) ·
+[Contribuir](CONTRIBUTING.md)
 
-<img src=".github/media/station-iso.png" alt="The StarNet station — rooms, crew, and workstations rendered from live harness state" width="540">
+<img src=".github/media/station-iso.png" alt="La estación StarNet — habitaciones, tripulación y puestos de trabajo renderizados desde el estado en vivo del harness" width="540">
 
 </div>
 
-StarNet is a local-first desktop harness where you create AI agents, organize them into a
-pixel-art space station, and watch them perform real work with real models and tools. The
-station is not decoration — it is a projection of live runtime state, and the product contract
-is literal: **A room is a capability-scoped team**, **a hallway is** an authorized handoff
-lane, and **a placed object is a real capability grant**.
-The layout you draw *is* the workflow the agents run.
+> **Este es el fork en español de StarNet.** La interfaz completa está traducida al
+> castellano: menús, botones, diálogos, estados, errores, ayuda y textos de accesibilidad.
+> Los identificadores, protocolos, APIs y anglicismos técnicos necesarios se conservan en
+> inglés. El repositorio original es [androoAGI/starnet](https://github.com/androoAGI/starnet);
+> este fork se sincroniza con él periódicamente.
 
-Start with one agent, then place bays or summon specialists to run **more, concurrently** —
-each a **genuinely distinct, bounded agent run** with its own workspace and permissions.
-The harness performs **real model calls, real tools, real cost** rather than animating a
-simulation.
+StarNet es un harness de escritorio local-first donde creas agentes de IA, los organizas en una
+estación espacial pixel-art y los ves realizar trabajo real con modelos y herramientas reales.
+La estación no es decoración: es una proyección del estado de ejecución en vivo, y el contrato
+del producto es literal: **una habitación es un equipo con ámbito de capacidades**,
+**un pasillo es** un carril de traspaso autorizado, y **un objeto colocado es una concesión real
+de capacidad**.
+El layout que dibujas *es* el flujo de trabajo que los agentes ejecutan.
 
-## Features
+Comienza con un agente, luego coloca bahías o invoca especialistas para ejecutar **más, en
+paralelo** — cada uno una **ejecución de agente genuinamente distinta y acotada** con su propio
+espacio de trabajo y permisos.
+El harness realiza **llamadas de modelo reales, herramientas reales, coste real** en lugar de
+animar una simulación.
+
+## Características
 
 | | |
 | --- | --- |
-| **A crew, not a chatbot** | Create agents with distinct classes, personas, and loadouts. Run several at once — each gets its own workspace, transcript, memory, and bounded permissions. |
-| **Bring your own models** | Paste an OpenRouter key, or sign in with supported provider accounts (Anthropic, OpenAI, Google) — keys live in the OS keychain, never in the frontend. |
-| **Message it from anywhere** | Wire agents to Telegram, Discord, Slack, Signal, or Matrix and talk to your station away from the desk. |
-| **Night Shift** | Leave the station running and agents keep working inside an explicit, adjustable leash — every away-action is logged and reviewable. |
-| **Recipes, skills, schedules** | Launch proven multi-step recipes, grant reusable skills, and put work on cron schedules with visible output. |
-| **Asks before it guesses** | Task Briefs turn ambiguity into one concrete question with options — over any connected channel — instead of a silent wrong guess. |
-| **Finished work has a front door** | Deliverables land in the OUTBOX as real files you open, not chat scrollback you archaeology. |
-| **MCP connectors** | Attach Model Context Protocol servers and paste-a-key/OAuth connectors to extend what agents can touch. |
-| **Voice** | Push-to-talk dictation in, one consistent station voice out. |
-| **Real ledgers** | Spend, budgets, and run history persist on disk and are shown as-is. |
+| **Una tripulación, no un chatbot** | Crea agentes con clases, personas y equipamientos distintos. Ejecuta varios a la vez — cada uno obtiene su propio espacio de trabajo, transcripción, memoria y permisos acotados. |
+| **Trae tus propios modelos** | Pega una clave de OpenRouter, o inicia sesión con cuentas de proveedor soportadas (Anthropic, OpenAI, Google) — las claves viven en el keychain del SO, nunca en el frontend. |
+| **Mensaje desde cualquier lugar** | Conecta agentes a Telegram, Discord, Slack, Signal o Matrix y habla con tu estación lejos del escritorio. |
+| **Turno de noche** | Deja la estación corriendo y los agentes siguen trabajando dentro de una correa explícita y ajustable — cada acción en ausencia se registra y es revisable. |
+| **Recetas, habilidades, horarios** | Lanza recetas probadas de varios pasos, concede habilidades reutilizables y pon trabajo en horarios cron con salida visible. |
+| **Pregunta antes de adivinar** | Los Briefings de Tarea convierten la ambigüedad en una pregunta concreta con opciones — por cualquier canal conectado — en lugar de un fallo silencioso. |
+| **El trabajo terminado tiene puerta frontal** | Los entregables llegan a la OUTBOX como archivos reales que abres, no como scroll de chat para arqueología. |
+| **Conectores MCP** | Conecta servidores Model Context Protocol y conectores de pegar-clave/OAuth para extender lo que los agentes pueden tocar. |
+| **Voz** | Dictado push-to-talk de entrada, una voz de estación consistente de salida. |
+| **Libros reales** | Gasto, presupuestos e historial de ejecución persisten en disco y se muestran tal cual. |
 
-## What is real
+## Lo que es real
 
-- Model calls stream through the local Node sidecar.
-- Tools operate through explicit capability and consent checks.
-- Agent memory, transcripts, spend records, tasks, and schedules persist on disk.
-- Multiple agents run concurrently with separate workspaces and bounded permissions.
-- The visual station projects the same runtime state the harness can prove.
+- Las llamadas de modelo fluyen a través del sidecar Node local.
+- Las herramientas operan mediante comprobaciones explícitas de capacidad y consentimiento.
+- La memoria de agentes, transcripciones, registros de gasto, tareas y horarios persisten en disco.
+- Múltiples agentes corren en paralelo con espacios de trabajo separados y permisos acotados.
+- La estación visual proyecta el mismo estado de ejecución que el harness puede demostrar.
 
-StarNet does not simulate revenue, completed work, model activity, or spend. Its core product
-law is that **the interface must never assert state the harness cannot prove.**
+StarNet no simula ingresos, trabajo completado, actividad de modelo ni gasto. Su ley de producto
+central es que **la interfaz nunca debe afirmar un estado que el harness no puede demostrar.**
 
-## Download
+## Descarga
 
-Desktop builds are published on the
-[StarNet releases page](https://github.com/androoAGI/starnet-releases/releases/latest).
+Las builds de escritorio se publican en la
+[página de releases de StarNet](https://github.com/androoAGI/starnet-releases/releases/latest).
 
-| Platform | Asset |
+| Plataforma | Archivo |
 | --- | --- |
 | **Windows** (10/11, 64-bit) | `StarNet_<version>_x64-setup.exe` |
-| **macOS — Apple Silicon** (M1 or later) | `StarNet_<version>_aarch64.dmg` |
+| **macOS — Apple Silicon** (M1 o posterior) | `StarNet_<version>_aarch64.dmg` |
 | **macOS — Intel** | `StarNet_<version>_x64.dmg` |
 
-> **Apple Silicon note:** use the native `aarch64` DMG. Avoid the `x64` DMG on Apple Silicon:
-> it runs under Rosetta 2 rather than using the native architecture.
+> **Nota Apple Silicon:** usa el DMG nativo `aarch64`. Evita el DMG `x64` en Apple Silicon:
+> se ejecuta bajo Rosetta 2 en lugar de usar la arquitectura nativa.
 
-The public release train supports Windows and macOS. It refuses to stage a release unless the
-Windows installer passes Authenticode and timestamp verification, both Mac builds pass
-Developer ID checks and Apple notarization, and every updater artifact has a valid updater
-signature. Those are pipeline requirements, not proof that a particular downloaded or installed
-copy was tested on your machine; [INSTALL.md](INSTALL.md) explains what to verify and when to stop.
-Linux packages are internal build artifacts only and are not a supported public release target.
+El tren de release público soporta Windows y macOS. Se niega a preparar un release a menos que
+el instalador de Windows pase la verificación Authenticode y de timestamp, ambas builds de Mac
+pasen las comprobaciones de Developer ID y la notarización de Apple, y cada artefacto del
+actualizador tenga una firma de actualizador válida. Esos son requisitos de pipeline, no prueba
+de que una copia particular descargada o instalada fue probada en tu máquina;
+[INSTALL.md](INSTALL.md) explica qué verificar y cuándo detenerse.
+Los paquetes Linux son solo artefactos de build interna y no son un objetivo de release público soportado.
 
-> **Early release:** Windows is the most-tested desktop target. macOS has less real-world
-> coverage. Broken? Tell us:
+> **Release temprano:** Windows es el objetivo de escritorio más probado. macOS tiene menos
+> cobertura real. ¿Algo roto? Dinos:
 > **androo.agi@gmail.com**.
 
-## Run from source
+## Ejecutar desde fuente
 
-Requirements: Node.js 18+ (Node.js 22 matches CI), Git. Rust and the
-[Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) only for the desktop shell.
+Requisitos: Node.js 18+ (Node.js 22 coincide con CI), Git. Rust y los
+[prerequisitos de Tauri](https://v2.tauri.app/start/prerequisites/) solo para el shell de escritorio.
 
-The sidecar uses Node core modules only, so it runs without installing anything:
+El sidecar usa solo módulos core de Node, por lo que se ejecuta sin instalar nada:
 
 ```bash
 git clone https://github.com/androoAGI/starnet.git
@@ -95,110 +104,123 @@ cd starnet
 node sidecar/index.js
 ```
 
-Open <http://localhost:8787>, then connect a provider —
-**bring your own OpenRouter API key (BYOK)** or use a supported OAuth sign-in. Provider requests leave your machine when you run an agent;
-station state, transcripts, memory, and ledgers stay in the local StarNet workspace unless you
-explicitly use a network tool or connector. See [PRIVACY.md](PRIVACY.md) for the full data map.
+Abre <http://localhost:8787>, luego conecta un proveedor —
+**trae tu propia clave API de OpenRouter (BYOK)** o usa un inicio de sesión OAuth soportado. Las
+peticiones de proveedor salen de tu máquina cuando ejecutas un agente;
+el estado de la estación, transcripciones, memoria y libros permanecen en el espacio de trabajo
+local de StarNet a menos que uses explícitamente una herramienta o conector de red. Ver
+[PRIVACY.md](PRIVACY.md) para el mapa de datos completo.
 
-### Run free with a local model
+### Ejecutar gratis con un modelo local
 
-No key, no account, no bill: install [Ollama](https://ollama.com), pull a model
-(`ollama pull qwen3:8b`), and pick **OLLAMA** as the provider — on the first-run brain screen, or
-later in **SETTINGS → PROVIDERS**. StarNet talks to Ollama on `127.0.0.1:11434` and only reports
-it ready once it can list your local models. Pick a model that supports tools (`ollama show <model>`
-lists them): agents act through tool calls. Honest caveat: local models are smaller than the
-cloud ones, so expect slower and rougher work on long tasks, and a task needs a large context
-window — an 8B model takes about 10 GB of graphics memory while it works.
+Sin clave, sin cuenta, sin factura: instala [Ollama](https://ollama.com), descarga un modelo
+(`ollama pull qwen3:8b`), y elige **OLLAMA** como proveedor — en la pantalla de primera
+ejecución del cerebro, o más tarde en **AJUSTES → PROVEEDORES**. StarNet habla con Ollama en
+`127.0.0.1:11434` y solo reporta listo cuando puede listar tus modelos locales. Elige un modelo
+que soporte herramientas (`ollama show <model>` las lista): los agentes actúan mediante llamadas
+de herramienta. Aclaración honesta: los modelos locales son más pequeños que los de la nube,
+así que espera trabajo más lento y menos pulido en tareas largas, y una tarea necesita una
+ventana de contexto grande — un modelo de 8B consume unos 10 GB de memoria gráfica mientras
+trabaja.
 
-For desktop development:
+Para desarrollo de escritorio:
 
 ```bash
 npm ci
-npm run desktop:dev     # dev shell
-npm run desktop:build   # build installers locally
+npm run desktop:dev     # shell de desarrollo
+npm run desktop:build   # build local de instaladores
 ```
 
-## Terminal mode
+## Modo terminal
 
-The desktop app ships a `starnet` command beside it. Run it with no arguments and it opens a live
-dashboard on the station the app is running: the crew down the left (a spinner on whoever is working),
-the chosen agent's conversation beside it, and every approval as a card you answer with `y` or `n`
-(`v` shows the full request first). It reads the same state the app does, so it never shows work the
-station cannot prove.
+La app de escritorio incluye un comando `starnet` junto a ella. Ejecútalo sin argumentos y abre
+un dashboard en vivo sobre la estación que la app está ejecutando: la tripulación a la izquierda
+(un spinner en quien esté trabajando), la conversación del agente elegido al lado, y cada
+aprobación como una tarjeta que respondes con `y` o `n`
+(`v` muestra primero la solicitud completa). Lee el mismo estado que la app, así que nunca
+muestra trabajo que la estación no puede demostrar.
 
-StarNet doesn't have to be open. With it closed, `starnet` starts it in the background: the same station
-with your keys (they stay in the app's keychain), and no window opens; the tray icon shows it's running.
-When the last `starnet` session ends it closes again, unless routines are armed or StarNet is set to stay
-in the tray (the same as closing its window). Opening StarNet while it runs shows that same station; on
-macOS, open it from its menu-bar icon (Open StarNet), since a Dock click doesn't bring that window back yet.
+StarNet no tiene que estar abierto. Con él cerrado, `starnet` lo inicia en segundo plano: la
+misma estación con tus claves (permanecen en el keychain de la app), y no se abre ventana; el
+icono de bandeja muestra que está corriendo.
+Cuando la última sesión de `starnet` termina, se cierra de nuevo, a menos que haya rutinas
+armadas o StarNet esté configurado para permanecer en la bandeja (lo mismo que cerrar su
+ventana). Abrir StarNet mientras corre muestra esa misma estación; en macOS, ábrelo desde su
+icono de barra de menús (Open StarNet), ya que un clic en el Dock aún no trae de vuelta esa
+ventana.
 
-| Platform | The command |
+| Plataforma | El comando |
 | --- | --- |
 | **Windows** | `%LOCALAPPDATA%\StarNet\bin\starnet.cmd` |
 | **macOS** | `/Applications/StarNet.app/Contents/Resources/bin/starnet` |
 
-So you can just type `starnet` in a new terminal: the Windows installer puts that folder on your user
-`PATH` (the uninstaller takes it off), and on macOS StarNet links the command into `~/.local/bin` the
-first time it starts, adding that folder to `~/.zprofile` if no shell profile has it yet
-(`STARNET_NO_CLI_LINK=1` turns that off). Other commands: `starnet ls` (every agent
-and its open asks), `starnet approve` / `starnet deny`, `starnet watch` (the live event stream, one line
-each), `starnet flow` (workflows) and `starnet -p "<task>"` (one run, answer on stdout).
-`starnet --help` lists them all. From a checkout, use `node bin/starnet.js`.
+Así que solo tienes que escribir `starnet` en un terminal nuevo: el instalador de Windows pone
+esa carpeta en tu `PATH` de usuario (el desinstalador la quita), y en macOS StarNet enlaza el
+comando en `~/.local/bin` la primera vez que arranca, añadiendo esa carpeta a `~/.zprofile` si
+ningún perfil de shell lo tiene aún
+(`STARNET_NO_CLI_LINK=1` lo desactiva). Otros comandos: `starnet ls` (cada agente
+y sus preguntas abiertas), `starnet approve` / `starnet deny`, `starnet watch` (el flujo de
+eventos en vivo, una línea cada uno), `starnet flow` (workflows) y `starnet -p "<tarea>"`
+(una ejecución, respuesta en stdout).
+`starnet --help` los lista todos. Desde un checkout, usa `node bin/starnet.js`.
 
-## Coming from OpenClaw or Hermes?
+## ¿Vienes de OpenClaw o Hermes?
 
-StarNet can import an existing agent: point it at your on-disk OpenClaw or Hermes home and it
-mints a StarNet agent from the persona, instructions, memory, and model it finds. API keys
-never transfer — you re-enter those in CONNECT › ABILITIES › CONNECTED › API KEYS.
+StarNet puede importar un agente existente: apunta a tu home de OpenClaw o Hermes en disco y
+crea un agente StarNet desde la persona, instrucciones, memoria y modelo que encuentre. Las
+claves API nunca se transfieren — las vuelves a introducir en CONECTAR › HABILIDADES ›
+CONECTADOS › CLAVES API.
 
-## Architecture
+## Arquitectura
 
-| Path | Responsibility |
+| Ruta | Responsabilidad |
 | --- | --- |
-| `frontend/` | Vanilla JavaScript station world and desktop UI. |
-| `sidecar/` | Local Node agent runtime: providers, tools, persistence, budgets, consent. |
-| `shared/` | Additive cross-boundary event and schema contracts. |
-| `src-tauri/` | Rust/Tauri desktop shell and bundled runtime. |
-| `test/` | Unit, contract, integration, and release gates. |
-| `qa/` | Live QA receipts, journeys, findings ledger, and release-readiness authority. |
+| `frontend/` | Mundo de estación JavaScript vanilla y UI de escritorio. |
+| `sidecar/` | Runtime local de agentes Node: proveedores, herramientas, persistencia, presupuestos, consentimiento. |
+| `shared/` | Contratos aditivos de eventos y esquemas entre fronteras. |
+| `src-tauri/` | Shell de escritorio Rust/Tauri y runtime empaquetado. |
+| `test/` | Unitarios, de contrato, integración y puertas de release. |
+| `qa/` | Recibos de QA en vivo, journeys, libro de hallazgos y autoridad de readiness de release. |
 
-The frontend consumes real sidecar events over localhost HTTP/NDJSON and SSE. Secrets belong
-to the local authority:
-**Secrets are held by the sidecar / OS keychain, never in the frontend**.
+El frontend consume eventos reales del sidecar sobre localhost HTTP/NDJSON y SSE. Los secretos
+pertenecen a la autoridad local:
+**Los secretos los guarda el sidecar / keychain del SO, nunca en el frontend**.
 
-Start with [docs/INDEX.md](docs/INDEX.md) for the living documentation. Older planning
-documents remain in the repository as design history and are labeled accordingly.
+Comienza con [docs/INDEX.md](docs/INDEX.md) para la documentación viva. Los documentos de
+planificación antiguos permanecen en el repositorio como historia de diseño y están etiquetados
+como tales.
 
 ## Testing
 
 ```bash
-npm run test:fast          # required merge gate
-npm run test:http          # live sidecar HTTP/E2E suite
-npm test                   # validation + world + fast + HTTP suites
-npm run security:secrets   # full-history secret scan; requires Gitleaks in PATH
+npm run test:fast          # puerta de merge requerida
+npm run test:http          # suite en vivo HTTP/E2E del sidecar
+npm test                   # suites de validación + world + fast + HTTP
+npm run security:secrets   # escaneo de secretos en todo el historial; requiere Gitleaks en PATH
 ```
 
-The release aggregate is `npm run qa:ready`. It is candidate-bound: any new commit invalidates
-the prior READY receipt until the affected live gates are rerun.
+El agregado de release es `npm run qa:ready`. Es vinculante al candidato: cualquier commit nuevo
+invalida el recibo READY anterior hasta que las puertas en vivo afectadas se rerunen.
 
-## Contributing and security
+## Contribuir y seguridad
 
-Contributions are welcome — read [CONTRIBUTING.md](CONTRIBUTING.md) and follow the
-[Code of Conduct](CODE_OF_CONDUCT.md).
+Las contribuciones son bienvenidas — lee [CONTRIBUTING.md](CONTRIBUTING.md) y sigue el
+[Código de Conducta](CODE_OF_CONDUCT.md).
 
-Do not report vulnerabilities in a public issue. Follow [SECURITY.md](SECURITY.md) for private
-reporting instructions.
+No reportes vulnerabilidades en un issue público. Sigue [SECURITY.md](SECURITY.md) para
+instrucciones de reporte privado.
 
-## License
+## Licencia
 
-StarNet is open source under the [MIT License](LICENSE). Third-party components remain
-under their original licenses — see [NOTICE.md](NOTICE.md).
+StarNet es open source bajo la [Licencia MIT](LICENSE). Los componentes de terceros permanecen
+bajo sus licencias originales — ver [NOTICE.md](NOTICE.md).
 
-**The MIT License covers the code only.** The **StarNet** name, the logo, the station artwork
-and sprites, and the rest of the project's brand identity are owned by Andrew Sims and are
-**not** licensed with it — no trademark or other brand rights are granted, expressly or by
-implication.
+**La Licencia MIT cubre solo el código.** El nombre **StarNet**, el logo, el arte de la
+estación y los sprites, y el resto de la identidad de marca del proyecto son propiedad de
+Andrew Sims y **no** están licenciados con ella — no se conceden derechos de marca ni otros
+derechos de marca, expresamente ni por implicación.
 
-MIT means you may fork, modify, and redistribute the code, including commercially. What you
-may not do is ship it as StarNet: forks and derivatives must use their own name, logo, and
-artwork, and must not present themselves as this project or as endorsed by it.
+MIT significa que puedes forkear, modificar y redistribuir el código, incluyendo
+comercialmente. Lo que no puedes hacer es distribuirlo como StarNet: los forks y derivados
+deben usar su propio nombre, logo y arte, y no pueden presentarse como este proyecto ni como
+endosados por él.
