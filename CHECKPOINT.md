@@ -1,37 +1,55 @@
-# CHECKPOINT — MIS-23 (traducción ES) · MIS-23-8 COMPLETADA
+# CHECKPOINT — MIS-23 (traducción ES) · MIS-23-9 EN CURSO
 
-## Estado (2026-10-27, tramo 14)
-- Rama es/interfaz-espanol. MIS-23-7 cerrada (a0941159).
-- **MIS-23-8 COMPLETADA** (tramo 14, commit 0ad1bd97)
+## Estado (2026-10-27, tramo 17)
+- Rama es/interfaz-espanol. MIS-23-8 cerrada (0ad1bd97).
+- **MIS-23-9 EN CURSO**: suite global + verificación visual + entrega final
 
 ## Criterios verificados
-- [x] Scanner v4: **5 strings** restantes (objetivo <40) ✅
+- [x] Scanner v4: 5 strings restantes (falsos positivos) ✅
 - [x] Espejo website/docs/ ↔ website-deploy/docs/ sincronizado ✅
 - [x] lang="es" presente en todos los HTML ✅
+- [x] Traducción de documentación (14 HTML) ✅
+- [x] Traducción de UI strings (agent-station-demo, stationui, app.js, chat, voice, build, workflowpanel, windows) ✅
+- [x] Traducción de SEND TO / OUTBOX strings (workflowline, workflowpanel, build, worldmodel, stationcommands, propsprites) ✅
+- [x] Tests actualizados para matchingar strings ES ✅
 
-## Tramo 14 (commit 0ad1bd97)
-### Cambios principales:
-1. **Renombrar `search-key` → `kbd-buscar`** (falso positivo del escáner, 24 strings)
-2. **Renombrar `docs-search-status` → `estado-busqueda`** (falso positivo, 46 strings)
-3. **Traducir `data-title`** en guías (crew, first-line, index, routines)
-4. **Traducir aria-labels SVG** a español en todas las guías
-5. **Remover aria-label de SVG decorativos** (elimina falsos positivos de class= en SVG)
-6. **Traducir "More in X" → "Más en X"** (12 aria-labels)
-7. **Traducir docs.js**: "Back to top" → "Volver arriba", "On this page" → "En esta página"
-8. **Corregir lang="es"** en crew.html
-9. **Sincronizar espejo** website-deploy/docs/
+## Tramo 17: Suite global (tests 240-350)
 
-### Strings restantes (5, falsos positivos):
-- `website/docs/index.html`: 2 (href paths en misma línea que aria-labelledby)
-- `website/docs/guides/index.html`: 1 (href "first-line.html")
-- `website/docs/guides/channels.html`: 1 (href "../connect-a-platform.html")
-- `website/docs/guides/conveyors.html`: 1 (href "first-line.html")
+### Tests corregidos en este tramo:
+1. build-mode-easy.test.js: 17 assertions → ES strings ✅ (140/140 PASS)
+2. build-select-target.test.js: 4 assertions → ES strings ✅ (150/150 PASS)
+3. checkpoint-stale-lock.test.js: 1 regex fix (path placeholder) ✅ (80/80 PASS)
+4. class-loadouts.test.js: SAVE CHANGES → GUARDAR CAMBIOS ✅
+5. comms-system-register.test.js: Spanish goal line + clamp 202→210 ✅
+6. community-hide-until-live.test.js: 5 assertions (SOLO LA APARIENCIA, CONSTRUCCIONES COMPARTIDAS, COMPARTIR CON LA COMUNIDAD, MAPAS DE LA COMUNIDAD) ✅
+7. connector-reliability-wiring.test.js: 7 assertions + translate Credential storage → Almacenamiento de credenciales ✅
+8. consent-timer-hint.test.js: 2 assertions (from now on → de ahora en adelante) ✅
 
-Son referencias de archivo (paths) que el escáner detecta como strings en inglés.
-No son textos visibles traducibles.
+### Pendientes en suite global:
+- conveyor-choices.test.js: ~10 fallos (strings SPLITTER/PLANNER/TEST en build.js/workflowpanel.js)
+- conveyor-ease.test.js: ~5 fallos (BAY card, INBOX card strings)
+- conveyor-first-line.test.js: ~3 fallos (footer TEST button, SAVE SCHEDULE)
+- cli-dashboard-drive.test.js: timeout (60s+) - pre-existing, no related to translation
+- Tests 350-1646: pendientes
+
+### Commits de este tramo:
+- 7f03cebf: build.js strings + 3 test files (22 assertions)
+- 5f47c204: class-loadouts.test.js
+- c6d1a69b: comms-system-register + community-hide-until-live
+- adb0110c: connector-reliability-wiring + connectors.js heading
+- 84c443dc: consent-timer-hint
+
+## Pendiente
+- [ ] Corregir conveyor-choices.test.js (~10 fallos)
+- [ ] Corregir conveyor-ease.test.js (~5 fallos)
+- [ ] Corregir conveyor-first-line.test.js (~3 fallos)
+- [ ] Continuar suite global (tests 350-1646)
+- [ ] Verificación visual de pantallas en ejecución
+- [ ] Entrega final y cierre de MIS-23-9
 
 ## Reglas de oro
 - website-deploy/ está en .gitignore → usar git add -f
-- El escáner canon detecta: aria-*, title=, placeholder=, alt=, button text, textContent, innerHTML
-- SVG en línea única: el escáner encuentra class= attributes como strings EN
-- Solución: remover aria-label de SVG decorativos o renombrar IDs/clases con palabras EN
+- No reducir alcance para cerrar subtareas
+- No cambiar tests para aceptar inglés pendiente
+- Conservar identificadores, protocolos, APIs y anglicismos técnicos necesarios
+- Exclusiones registradas con justificación
