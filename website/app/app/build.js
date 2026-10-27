@@ -22,23 +22,23 @@ const Build = (() => {
        moves together, its belts re-laid); a machine dragged ONTO another machine lays a belt (THE HAND) — selected or not, the target
        decides (refine 10-11); Shift+drag moves anything; a selected ROOM moves by a drag inside it. Key 4 stays free — no other
        tool's number changed. */
-    { id: 'select', key: '0', label: 'SELECT', verb: 'click to select · drag a machine onto another to belt them · drag a selected piece onto open floor to move it', hint: 'click to select · drag a selected piece to move it · drag a box to select several', cursor: 'default' },
-    { id: 'room', key: '1', label: 'ROOM', verb: 'click to place · drag to size', hint: 'click the deck to place a room at the last size you drew, or drag out any size', cursor: 'crosshair' },
-    { id: 'hall', key: '2', label: 'HALLWAY', verb: 'click to run · drag to size', hint: 'click to run a corridor at the last length you drew, or drag along an axis for any length', cursor: 'crosshair' },
+    { id: 'select', key: '0', label: 'SELECCIONAR', verb: 'clic para seleccionar · arrastra una máquina sobre otra para enlazarlas · arrastra una pieza seleccionada a suelo libre para moverla', hint: 'clic para seleccionar · arrastra una pieza seleccionada para moverla · arrastra un recuadro para seleccionar varias', cursor: 'default' },
+    { id: 'room', key: '1', label: 'SALA', verb: 'clic para colocar · arrastra para dimensionar', hint: 'clic en el suelo para colocar una sala con el último tamaño que dibujaste, o arrastra para cualquier tamaño', cursor: 'crosshair' },
+    { id: 'hall', key: '2', label: 'PASILLO', verb: 'clic para trazar · arrastra para dimensionar', hint: 'clic para trazar un pasillo con la última longitud que dibujaste, o arrastra a lo largo de un eje para cualquier longitud', cursor: 'crosshair' },
     // 'paint' stays the INTERNAL id (the drag mode, the model's paintTiles verb, the key map and every
     // saved reference key off it) — only the display name changed. The tool stopped being "paint" the
     // day it grew wall cladding and a material axis: it now sets what a room's surfaces are MADE OF,
     // deck and walls, so it's SURFACE. Same law as the skynet.* keys: rename the label, never the key.
-    { id: 'paint', key: '3', label: 'SURFACE', verb: 'click a room to lay this deck', hint: 'click a room to lay the selected deck · drag to paint single tiles in the colour', cursor: 'cell' },
+    { id: 'paint', key: '3', label: 'SUPERFICIE', verb: 'clic en una sala para poner este suelo', hint: 'clic en una sala para poner el suelo seleccionado · arrastra para pintar casillas sueltas con el color', cursor: 'cell' },
     /* DELETE, not RECLAIM (2026-08-07). "Reclaim" is salvage-economy fiction from a tier system
        that was never built — the button's whole job is to remove a thing, and every player already
        knows the word for that. Same law as SURFACE above: the LABEL changed, the tool id `reclaim`
        did not (the key map, the drag mode, the model verb and every saved reference key ride it). */
-    { id: 'reclaim', key: '5', label: 'DELETE', verb: 'click anything to delete it', hint: 'click a room, prop, or belt to delete it · drag across a belt to clear the whole run (UNDO restores it)', cursor: 'not-allowed' },
-    { id: 'prop', key: '6', label: 'PROPS', verb: 'click the deck to place it', hint: 'browse equipment and decoration, then click the deck to place your selection', cursor: 'crosshair' },
-    { id: 'belt', key: '7', label: 'BELT', verb: 'click one machine, then another · or drag across the floor to lay belt by hand', hint: 'CLICK one machine, then another — the belt lays itself · (or drag to lay tiles by hand)', cursor: 'crosshair' },
-    { id: 'dupe', key: '8', label: 'COPY', verb: 'click a room or prop to copy it', hint: 'click a room or prop to copy it · then every click stamps a copy — mirror your build fast', cursor: 'copy' },
-    { id: 'line', key: '9', label: 'CONVEYOR LINES', verb: 'choose a conveyor line below, then click clear floor to place it', hint: 'add connected workflow equipment to your existing station — choose a line, then place it on clear floor', cursor: 'copy' },
+    { id: 'reclaim', key: '5', label: 'BORRAR', verb: 'clic en cualquier cosa para borrarla', hint: 'clic en una sala, prop o cinta para borrarla · arrastra a lo largo de una cinta para limpiar el tramo entero (DESHACER la restaura)', cursor: 'not-allowed' },
+    { id: 'prop', key: '6', label: 'PROPS', verb: 'clic en el suelo para colocarlo', hint: 'explora equipos y decoración, luego clic en el suelo para colocar tu selección', cursor: 'crosshair' },
+    { id: 'belt', key: '7', label: 'CINTA', verb: 'clic en una máquina y luego en otra · o arrastra sobre el suelo para tender cinta a mano', hint: 'CLIC en una máquina y luego en otra — la cinta se tiende sola · (o arrastra para poner casillas a mano)', cursor: 'crosshair' },
+    { id: 'dupe', key: '8', label: 'COPIAR', verb: 'clic en una sala o prop para copiarlo', hint: 'clic en una sala o prop para copiarlo · luego cada clic estampa una copia — duplica tu construcción rápido', cursor: 'copy' },
+    { id: 'line', key: '9', label: 'LÍNEAS DE TRANSPORTE', verb: 'elige una línea de transporte abajo y luego clic en suelo libre para colocarla', hint: 'añade equipos de flujo conectados a tu estación existente — elige una línea y colócala en suelo libre', cursor: 'copy' },
   ];
   // Every tool stays visible. The Select landing offers two starting points without
   // arming a placement tool. Shortcut numbers remain compatible with the guide/tutorial.
@@ -428,22 +428,22 @@ const Build = (() => {
         <span class="refit-sub" id="refit-sub"></span>
         <span class="refit-spacer"></span>
         <span class="refit-zoom" id="refit-zoom">
-          <button class="bb sm refit-zoomb" id="refit-zout" title="zoom out (or scroll the wheel)">–</button>
-          <button class="bb sm refit-zoomlvl" id="refit-zlvl" title="reset zoom to 1 tile = 1 tile">100%</button>
-          <button class="bb sm refit-zoomb" id="refit-zin" title="zoom in (or scroll the wheel)">+</button>
+          <button class="bb sm refit-zoomb" id="refit-zout" title="alejar (o girar la rueda)">–</button>
+          <button class="bb sm refit-zoomlvl" id="refit-zlvl" title="reiniciar zoom a 1 casilla = 1 casilla">100%</button>
+          <button class="bb sm refit-zoomb" id="refit-zin" title="acercar (o girar la rueda)">+</button>
         </span>
         <span class="refit-cluster" id="refit-history">
           <button class="bb sm" id="refit-undo" title="undo (Ctrl+Z)">↶ UNDO</button>
           <button class="bb sm" id="refit-redo" title="redo (Ctrl+Shift+Z)">↷ REDO</button>
         </span>
-        <button class="bb sm" id="refit-fit" title="frame the station">⊹ FIT</button>
-        <button class="bb sm" id="refit-test" data-tip="Test this line: WATCH IT is free (a crate rides the belts, no agent runs); STEP THROUGH and SEND A REAL JOB run it for real.">${esc(PREVIEW_LABEL)}</button>
-        <button class="bb sm" id="refit-help" title="how to build">? HELP</button>
-        <button class="bb sm refit-primary" id="refit-done" title="finish + save (or press Esc twice)">SAVE & EXIT</button>
+        <button class="bb sm" id="refit-fit" title="encuadrar la estación">⊹ FIT</button>
+        <button class="bb sm" id="refit-test" data-tip="Prueba esta línea: MÍRALA es gratis (una caja viaja por las cintas, sin agente); PASO A PASO y ENVIAR UN TRABAJO REAL la ejecutan de verdad.">${esc(PREVIEW_LABEL)}</button>
+        <button class="bb sm" id="refit-help" title="cómo construir">? HELP</button>
+        <button class="bb sm refit-primary" id="refit-done" title="terminar + guardar (o pulsa Esc dos veces)">SAVE & EXIT</button>
       </div>
       <div class="refit-dock" role="region" aria-label="Construction kit">
         <div class="refit-dock-head"><span class="refit-dock-head-t">BUILD LIBRARY</span><button class="bb refit-presets-entry" id="refit-stations" type="button">▦ Presets</button><button class="bb sm" type="button" id="refit-kit-toggle" aria-expanded="true" aria-controls="refit-option-section">MINIMIZE ▴</button></div>
-        <nav class="refit-library-tabs" aria-label="Build categories"></nav>
+        <nav class="refit-library-tabs" aria-label="Categorías de construcción"></nav>
         <div class="refit-dock-section refit-mode-section">
           <div id="refit-tools"></div>
         </div>
@@ -687,8 +687,8 @@ const Build = (() => {
     if (cta) {
       cta.hidden = !need;
       if (need) {
-        cta.querySelector('span').textContent = need === 'link' ? 'Props are made with StarNet credits: about 5\u00a2 to preview, 35\u00a2 to make.' : 'You\u2019re out of StarNet credits. A prop is about 35\u00a2.';
-        cta.querySelector('button').textContent = need === 'link' ? 'GET STARNET CREDITS' : 'TOP UP CREDITS';
+        cta.querySelector('span').textContent = need === 'link' ? 'Los props se hacen con créditos de StarNet: unos 5\u00a2 para previsualizar, 35\u00a2 para hacer.' : 'Te has quedado sin créditos de StarNet. Un prop cuesta unos 35\u00a2.';
+        cta.querySelector('button').textContent = need === 'link' ? 'OBTENER CRÉDITOS DE STARNET' : 'RECARGAR CRÉDITOS';
       }
     }
     if (door) door.hidden = !!need || !((makeMsg && makeMsg.door) || (!makeMsg && st.door));   // the card above already carries the door
@@ -720,19 +720,19 @@ const Build = (() => {
       const made = typeof UserProps !== 'undefined' && UserProps.get ? UserProps.get(propType) : null;
       side.hidden = !(made && !made.side && !made.symmetric);   // a round prop already turns with its own art
       side.disabled = busy;
-      side.textContent = made ? '\u21bb MAKE SIDE VIEW \u00b7 ' + (made.label || 'this prop') : '\u21bb MAKE SIDE VIEW';
+      side.textContent = made ? '\u21bb VISTA LATERAL \u00b7 ' + (made.label || 'este prop') : '\u21bb VISTA LATERAL';
     }
   }
   async function startMakeSide(targetId) {
     const made = typeof UserProps !== 'undefined' && UserProps.get ? UserProps.get(targetId || propType) : null;
     if (!made || made.side || makeBusy || (makeJob && makeJob.status !== 'done' && makeJob.status !== 'failed')) return null;
     makeBusy = true;
-    makeMsg = { text: 'Starting the side view\u2026', tone: 'busy' }; paintMakeStatus();
+    makeMsg = { text: 'Iniciando la vista lateral…', tone: 'busy' }; paintMakeStatus();
     let r;
     try { r = await UserProps.makeSide(made.id); } finally { makeBusy = false; }
     if (r && r.ok && r.job) { watchMakeJob(r.job); return r; }
     makeJob = null;
-    makeMsg = { text: (r && r.message) || 'That side view could not be started.', tone: r && r.code === 'unreachable' ? '' : 'bad', door: r && (r.code === 'not_linked' || r.code === 'insufficient_credits') };
+    makeMsg = { text: (r && r.message) || 'No se pudo iniciar esa vista lateral.', tone: r && r.code === 'unreachable' ? '' : 'bad', door: r && (r.code === 'not_linked' || r.code === 'insufficient_credits') };
     paintMakeStatus();
     return r;
   }
@@ -773,11 +773,11 @@ const Build = (() => {
     if (!makePreview || !makePreview.preview) { card.hidden = true; card.replaceChildren(); return; }
     const p = makePreview.preview, fp = String(p.footprint || '').split('x');
     card.hidden = false;
-    card.innerHTML = '<img alt="Preview sketch of ' + esc(p.label || makePreview.noun) + '" src="' + esc(p.sketch) + '">' +
+    card.innerHTML = '<img alt="Boceto de ' + esc(p.label || makePreview.noun) + '" src="' + esc(p.sketch) + '">' +
       '<div class="refit-makeprop-previewtxt"><b>' + esc(p.label || makePreview.noun) + '</b>' +
       '<span>About ' + esc(fp[0] || '?') + '\u00d7' + esc(fp[1] || '?') + ' tiles, ' + previewMetres(p.height) + ' tall' + (p.profile ? ' \u00b7 shown side-on' : '') + (p.symmetric ? ' \u00b7 turns freely' : '') + '</span>' +
       '<small>Quick preview. The final is drawn in full detail from this, so small details can differ. ' + (makePreview.costPending ? 'Preview cost settling (see credit history).' : 'Preview cost $' + (Number(makePreview.costUsd) || 0).toFixed(2) + '.') + '</small>' +
-      '<div class="refit-makeprop-previewbtns"><button type="button" class="bb sm" id="refit-makeprop-makeit">MAKE IT \u00b7 ~$0.35</button><button type="button" class="bb sm" id="refit-makeprop-again">ANOTHER \u00b7 ~5\u00a2</button><button type="button" class="bb sm" id="refit-makeprop-drop" aria-label="Discard preview">\u2715</button></div></div>';
+      '<div class="refit-makeprop-previewbtns"><button type="button" class="bb sm" id="refit-makeprop-makeit">HACERLO \u00b7 ~$0.35</button><button type="button" class="bb sm" id="refit-makeprop-again">OTRO \u00b7 ~5\u00a2</button><button type="button" class="bb sm" id="refit-makeprop-drop" aria-label="Descartar el boceto">\u2715</button></div></div>';
     // the paid preview stays until MAKE IT really started (out of credit, busy, offline: it is still there to use)
     card.querySelector('#refit-makeprop-makeit').onclick = async () => { const pv = makePreview; sfx('click'); if (await startMakeProp(pv.noun, pv.id) && makePreview === pv) { makePreview = null; paintPreviewCard(); } focusMakeInput(); };
     card.querySelector('#refit-makeprop-again').onclick = () => { sfx('click'); startPreviewProp(makePreview.noun).then(focusMakeInput); };
@@ -790,7 +790,7 @@ const Build = (() => {
   async function startPreviewProp(noun) {
     noun = String(noun || '').trim();
     if (typeof UserProps === 'undefined') return;
-    if (!noun) { makeMsg = { text: 'Type an object first, like \u201ca grandfather clock\u201d.', tone: 'bad' }; paintMakeStatus(); focusMakeInput(); return; }
+    if (!noun) { makeMsg = { text: 'Escribe primero un objeto, como \u201cun reloj de pie\u201d.', tone: 'bad' }; paintMakeStatus(); focusMakeInput(); return; }
     if (makeBusy || (makeJob && makeJob.status !== 'done' && makeJob.status !== 'failed')) return;   // Enter can't sneak past the lock
     makeBusy = true;
     makeJob = null; makeMsg = { text: 'Previewing\u2026', tone: 'busy' }; paintMakeStatus();
@@ -804,14 +804,14 @@ const Build = (() => {
     } finally { makeBusy = false; }
     makeCreditsAsked = false; loadMakeCredits();
     if (!r || !r.ok || !r.job) {
-      makeMsg = { text: (r && r.message) || 'That preview could not be started.', tone: 'bad', door: r && (r.code === 'not_linked' || r.code === 'insufficient_credits') };
+      makeMsg = { text: (r && r.message) || 'No se pudo iniciar esa previsualización.', tone: 'bad', door: r && (r.code === 'not_linked' || r.code === 'insufficient_credits') };
       paintMakeStatus(); paintPreviewCard(); return;
     }
     if (res && res.ok && res.preview) {
       makePreview = { id: r.job.id, noun, preview: res.preview, costUsd: res.job && res.job.costUsd, costPending: !!(res.job && res.job.costPending) };
-      makeMsg = { text: 'Preview ready \u00b7 make it, or try another', tone: 'ok' };
+      makeMsg = { text: 'Previsualización lista · hazlo, o prueba otro', tone: 'ok' };
     } else {
-      makeMsg = { text: ((res && res.job && res.job.error && res.job.error.message) || (res && res.message) || 'That preview could not be made.') + (res && res.job && res.job.costUsd > 0 ? ' Spent $' + res.job.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
+      makeMsg = { text: ((res && res.job && res.job.error && res.job.error.message) || (res && res.message) || 'No se pudo hacer esa previsualización.') + (res && res.job && res.job.costUsd > 0 ? ' Spent $' + res.job.costUsd.toFixed(2) + '.' : ''), tone: 'bad' };
     }
     paintPreviewCard(); paintMakeStatus();
   }
@@ -825,7 +825,7 @@ const Build = (() => {
     if (r && r.ok && r.job) { watchMakeJob(r.job); return true; }
     const code = r && r.code;
     makeJob = null;
-    makeMsg = { text: (r && r.message) || 'That prop could not be started.', tone: code === 'unreachable' ? '' : 'bad', door: code === 'not_linked' || code === 'insufficient_credits' };
+    makeMsg = { text: (r && r.message) || 'No se pudo iniciar ese prop.', tone: code === 'unreachable' ? '' : 'bad', door: code === 'not_linked' || code === 'insufficient_credits' };
     paintMakeStatus();
     return false;
   }
@@ -871,7 +871,7 @@ const Build = (() => {
         try { seen = JSON.parse(localStorage.getItem('starnet.userprops.seen') || '[]'); } catch (_) { seen = []; }
         const miss = r.recent.find((x) => x && x.status === 'failed' && !seen.includes(x.id));
         if (miss) {
-          makeMsg = { text: 'While BUILD MODE was closed: ' + (miss.noun || 'a prop') + ' \u2014 ' + ((miss.error && miss.error.message) || 'it could not be made.'), tone: 'bad' };
+          makeMsg = { text: 'Mientras el MODO CONSTRUCCIÓN estaba cerrado: ' + (miss.noun || 'un prop') + ' \u2014 ' + ((miss.error && miss.error.message) || 'no se pudo hacer.'), tone: 'bad' };
           try { localStorage.setItem('starnet.userprops.seen', JSON.stringify(seen.concat(r.recent.map((x) => x.id)).slice(-50))); } catch (_) { /* per-viewer convenience only */ }
         }
       }
@@ -898,9 +898,9 @@ const Build = (() => {
         return { ok: true };
       });
     }
-    if (!res.ok) { makeJob = null; makeMsg = { text: 'At ' + Math.round(next * 100) + '% ' + copies.length + ' placed ' + (copies.length === 1 ? 'copy does' : 'copies do') + ' not fit where ' + (copies.length === 1 ? 'it stands' : 'they stand') + '. Move things aside or pick a smaller size.', tone: 'bad' }; paintMakeStatus(); return; }
+    if (!res.ok) { makeJob = null; makeMsg = { text: 'A ' + Math.round(next * 100) + '% ' + copies.length + ' ' + (copies.length === 1 ? 'copia colocada no' : 'copias colocadas no') + ' ' + (copies.length === 1 ? 'cabe donde está' : 'caben donde están') + '. Mueve cosas a un lado o elige un tamaño menor.', tone: 'bad' }; paintMakeStatus(); return; }
     const r = await UserProps.setScale(made.id, next);
-    if (!r || !r.ok) { if (copies.length && station.undo) station.undo(); makeJob = null; makeMsg = { text: (r && r.message) || 'That size could not be saved.', tone: 'bad' }; paintMakeStatus(); return; }
+    if (!r || !r.ok) { if (copies.length && station.undo) station.undo(); makeJob = null; makeMsg = { text: (r && r.message) || 'No se pudo guardar ese tamaño.', tone: 'bad' }; paintMakeStatus(); return; }
     makeJob = null;
     makeMsg = { text: (made.label || 'Prop') + ' size ' + Math.round(next * 100) + '% \u00b7 ' + g.front.footprint.w + '\u00d7' + g.front.footprint.h + ' tiles' + (copies.length ? ' \u00b7 ' + copies.length + ' placed ' + (copies.length === 1 ? 'copy' : 'copies') + ' resized' : ''), tone: 'ok' };
     if (selectedPropId && station) {   // the selected copy was re-laid under a new id: keep it selected
@@ -917,29 +917,29 @@ const Build = (() => {
     const made = typeof UserProps !== 'undefined' && UserProps.get ? UserProps.get(propType) : null;
     if (!made) return;
     const r = await UserProps.remove(made.id);
-    if (!r || !r.ok) { makeJob = null; makeMsg = { text: (r && r.message) || 'That prop could not be deleted.', tone: 'bad' }; paintMakeStatus(); return; }
+    if (!r || !r.ok) { makeJob = null; makeMsg = { text: (r && r.message) || 'No se pudo borrar ese prop.', tone: 'bad' }; paintMakeStatus(); return; }
     const copies = station ? station.props().filter((p) => p.t === made.id).map((p) => p.id) : [];
     if (copies.length && station.transact) station.transact(() => { for (const id of copies) { const x = station.removeProp(id); if (!x.ok) return x; } return { ok: true }; });
     if (typeof PropSprites !== 'undefined' && PropSprites.unregisterUserProp) PropSprites.unregisterUserProp(made.id);
     propType = 'plant'; propCat = 'all'; selectedPropId = null;
     makeJob = null;
-    makeMsg = { text: 'Deleted ' + (made.label || 'that prop') + (copies.length ? ' \u00b7 removed ' + copies.length + ' placed ' + (copies.length === 1 ? 'copy' : 'copies') : ''), tone: 'ok' };
+    makeMsg = { text: 'Borrado ' + (made.label || 'ese prop') + (copies.length ? ' \u00b7 eliminadas ' + copies.length + ' ' + (copies.length === 1 ? 'copia' : 'copias') + ' colocadas' : ''), tone: 'ok' };
     if (root) { renderPalette(); setLibraryPlacement(false); }
     paintMakeStatus();
     focusMakeInput();
   }
   function makePropPanel() {
-    const box = document.createElement('section'); box.className = 'refit-makeprop'; box.setAttribute('aria-label', 'Make a prop');
-    box.innerHTML = '<div class="refit-makeprop-head"><b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\u2019s style.</small></div>' +
+    const box = document.createElement('section'); box.className = 'refit-makeprop'; box.setAttribute('aria-label', 'Hacer un prop');
+    box.innerHTML = '<div class="refit-makeprop-head"><b>HACER UN OBJETO</b><small>Escribe cualquier objeto. StarNet lo dibuja con el estilo de la estaci\u00f3n.</small></div>' +
       '<div class="refit-makeprop-cta" id="refit-makeprop-cta" hidden><span></span><button type="button" class="bb sm" id="refit-makeprop-cta-go"></button></div>' +
-      '<div class="refit-makeprop-row"><input type="text" class="refit-input refit-searchfield" id="refit-makeprop-input" maxlength="60" spellcheck="false" autocomplete="off" aria-label="Object to make" placeholder="e.g. a grandfather clock">' +
-      '<button type="button" class="bb sm" id="refit-makeprop-go">PREVIEW</button></div>' +
+      '<div class="refit-makeprop-row"><input type="text" class="refit-input refit-searchfield" id="refit-makeprop-input" maxlength="60" spellcheck="false" autocomplete="off" aria-label="Objeto a hacer" placeholder="e.g. a grandfather clock">' +
+      '<button type="button" class="bb sm" id="refit-makeprop-go">VISTA PREVIA</button></div>' +
       '<div class="refit-makeprop-preview" id="refit-makeprop-preview" hidden></div>' +
       '<div class="refit-makeprop-foot"><span class="refit-makeprop-status" id="refit-makeprop-status" role="status" aria-live="polite"></span>' +
-      '<button type="button" class="bb sm" id="refit-makeprop-door" hidden>\u25b8 STARNET CREDITS</button></div>' +
-      '<div class="refit-makeprop-size" id="refit-makeprop-size" hidden><span class="refit-makeprop-sizelbl">SIZE</span><button type="button" class="bb sm" data-size="-1" aria-label="Smaller">\u2212</button><b class="refit-makeprop-sizeval">100%</b><button type="button" class="bb sm" data-size="1" aria-label="Bigger">+</button></div>' +
-      '<div class="refit-makeprop-actions"><button type="button" class="bb sm refit-makeprop-sidebtn" id="refit-makeprop-side" hidden>\u21bb MAKE SIDE VIEW</button>' +
-      '<button type="button" class="bb sm" id="refit-makeprop-del" hidden>\u2715 DELETE</button></div>';
+      '<button type="button" class="bb sm" id="refit-makeprop-door" hidden>\u25b8 CRÉDITOS DE STARNET</button></div>' +
+      '<div class="refit-makeprop-size" id="refit-makeprop-size" hidden><span class="refit-makeprop-sizelbl">TAMAÑO</span><button type="button" class="bb sm" data-size="-1" aria-label="Más pequeño">\u2212</button><b class="refit-makeprop-sizeval">100%</b><button type="button" class="bb sm" data-size="1" aria-label="Más grande">+</button></div>' +
+      '<div class="refit-makeprop-actions"><button type="button" class="bb sm refit-makeprop-sidebtn" id="refit-makeprop-side" hidden>\u21bb VISTA LATERAL</button>' +
+      '<button type="button" class="bb sm" id="refit-makeprop-del" hidden>\u2715 BORRAR</button></div>';
     const inp = box.querySelector('#refit-makeprop-input'), go = box.querySelector('#refit-makeprop-go');
     inp.value = makeDraft;
     inp.oninput = () => { makeDraft = inp.value; };
@@ -957,7 +957,7 @@ const Build = (() => {
     box.querySelectorAll('[data-size]').forEach((b) => { b.onclick = () => { sizeMadeProp(Number(b.dataset.size)); sfx('click'); }; });
     const delBtn = box.querySelector('#refit-makeprop-del');
     const copiesHere = station && UserProps.get && UserProps.get(propType) ? station.props().filter((p) => p.t === propType).length : 0;
-    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(delBtn, { armedLabel: '\u2715 DELETE FOR GOOD?' + (copiesHere ? ' \u00b7 removes ' + copiesHere + ' placed ' + (copiesHere === 1 ? 'copy' : 'copies') : '') + ' \u00b7 credits are not refunded', onArm: () => sfx('bad'), onConfirm: () => deleteMadeProp() });
+    if (typeof ArmConfirm !== 'undefined' && ArmConfirm.wire) ArmConfirm.wire(delBtn, { armedLabel: '\u2715 ¿BORRAR DEFINITIVAMENTE?' + (copiesHere ? ' \u00b7 elimina ' + copiesHere + ' ' + (copiesHere === 1 ? 'copia' : 'copias') + ' colocadas' : '') + ' \u00b7 los créditos no se devuelven', onArm: () => sfx('bad'), onConfirm: () => deleteMadeProp() });
     box.querySelector('#refit-makeprop-door').onclick = openCreditsDoor;
     box.querySelector('#refit-makeprop-cta-go').onclick = () => { openCreditsDoor(); sfx('click'); };
     setTimeout(() => { paintMakeStatus(); paintPreviewCard(); resumeMakeJob(); }, 0);
@@ -977,7 +977,7 @@ const Build = (() => {
     inp.autocomplete = 'off';
     inp.setAttribute('aria-label', 'Search props');
     // the count is READ from the catalog — a hardcoded "120" becomes a lie the first time a prop lands
-    inp.placeholder = 'Search ' + catalog().length + ' props · name, category or ability';
+    inp.placeholder = 'Buscar ' + catalog().length + ' objetos · nombre, categoría o capacidad';
     inp.oninput = () => {
       propQuery = inp.value;
       if (tool === 'prop') setLibraryPlacement(false);
@@ -995,7 +995,7 @@ const Build = (() => {
     clr.type = 'button';
     clr.className = 'bb sm refit-searchclear';
     clr.textContent = '✕';
-    clr.title = 'clear search';
+    clr.title = 'limpiar búsqueda';
     clr.onclick = () => { clearSearch(); sfx('click'); };
     row.appendChild(clr);
     return row;
@@ -1040,7 +1040,7 @@ const Build = (() => {
       intro.innerHTML = '<b>' + esc(propAbility ? abilityName(propAbility) + ' · CHOOSE A DESIGN' : 'FIVE CORE ABILITIES') + '</b><span>' +
         esc(propAbility ? 'Same ability, different appearance. One matching prop is enough in the relevant room.' : 'Real tools. Pick one design per ability you need.') + '</span>';
       if (propAbility) {
-        const back = document.createElement('button'); back.type = 'button'; back.className = 'bb sm refit-ability-back'; back.textContent = '← ALL ABILITIES';
+        const back = document.createElement('button'); back.type = 'button'; back.className = 'bb sm refit-ability-back'; back.textContent = '← TODAS LAS CAPACIDADES';
         back.onclick = () => { propAbility = ''; renderPropGrid(); }; intro.prepend(back);
       }
       host.appendChild(intro);
@@ -1055,7 +1055,7 @@ const Build = (() => {
       if (!on && propSection === 'abilities') note.hidden = true;
       host.appendChild(note);
       if (!list.length && on) {
-        const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'bb sm'; reset.textContent = 'CLEAR SEARCH';
+        const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'bb sm'; reset.textContent = 'LIMPIAR BÚSQUEDA';
         reset.onclick = () => clearSearch(); host.appendChild(reset);
       }
     }
@@ -1070,7 +1070,7 @@ const Build = (() => {
       const extras = catalog().filter(c => sectionOf(c) === 'abilities' && !coreCaps.has(capOf(c)));
       if (extras.length) {
         const label = document.createElement('div'); label.className = 'refit-ability-intro';
-        label.innerHTML = '<b>CONNECTED SERVICES</b><span>Optional equipment for connected accounts and tools.</span>'; host.appendChild(label);
+        label.innerHTML = '<b>SERVICIOS CONECTADOS</b><span>Equipamiento opcional para cuentas y herramientas conectadas.</span>'; host.appendChild(label);
         const extraGrid = document.createElement('div'); extraGrid.className = 'refit-propgrid';
         extras.forEach(c => extraGrid.appendChild(propTile(c))); host.appendChild(extraGrid);
       }
@@ -1092,7 +1092,7 @@ const Build = (() => {
   function renderAbilityOverview() {
     const wrap = document.createElement('section'); wrap.className = 'refit-ability-overview'; wrap.setAttribute('aria-label', 'Core tool access');
     const { agents, id } = libraryAgent();
-    wrap.innerHTML = '<div class="refit-access-head"><label>TOOL ACCESS FOR <select class="refit-input" aria-label="Inspect equipment for agent">' +
+    wrap.innerHTML = '<div class="refit-access-head"><label>HERRAMIENTAS DE <select class="refit-input" aria-label="Inspeccionar el equipo del agente">' +
       agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === id ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') +
       '</select></label><button class="bb xs" type="button" aria-label="Refresh tool access" data-refresh-access>↻</button></div><div class="refit-core-access"></div>';
     const chips = wrap.querySelector('.refit-core-access');
@@ -1182,7 +1182,7 @@ const Build = (() => {
     const sharingOpen = !!box.querySelector('details[open]');
     const propRoom = placedProp && station.roomById(station.roomAt(placedProp.x, placedProp.y));
     box.innerHTML = '<p class="refit-purpose">' + esc(facts.purpose || spec.desc || 'Station decoration.') + '</p>'
-      + (facts.cap ? (agents.length > 1 ? '<label> For <select class="refit-input" aria-label="Inspect equipment for agent">' + agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === aid ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') + '</select></label>' : '')
+      + (facts.cap ? (agents.length > 1 ? '<label> Para <select class="refit-input" aria-label="Inspeccionar el equipamiento para el agente">' + agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === aid ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') + '</select></label>' : '')
       + '<div class="equipment-status" role="status">Checking current access…</div>'
       + '<div>Equipment scope: ' + esc(facts.scope) + (propRoom ? ' · This copy: ' + esc(propRoom.name || propRoom.id) : '') + '</div>'
       + '<details' + (sharingOpen ? ' open' : '') + '><summary>Sharing, rooms & extra copies</summary><p>' + facts.count + ' matching prop' + (facts.count === 1 ? '' : 's') + '. ' + esc(facts.duplicates) + '</p>Without a workflow bay, the lead draws on equipment across the station. With a bay, an agent uses its desk room (or the bay room if it has no desk). Agents in that room share equipment; each needs its own desk. Moving or removing the last matching prop changes that room’s equipment; access settings may still supply its tools. Connect external services in Abilities.</details>' : '<div>' + esc(facts.duplicates) + '</div>');
@@ -1211,7 +1211,7 @@ const Build = (() => {
     if (head) {
       head.setAttribute('role', 'button'); head.tabIndex = 0;
       head.setAttribute('aria-expanded', String(open));
-      head.dataset.tip = open ? 'Close MAKE A PROP' : 'Make your own prop: type any object, StarNet draws it in the station\u2019s style (StarNet credits)';
+      head.dataset.tip = open ? 'Cerrar HACER UN PROP' : 'Haz tu propio prop: escribe cualquier objeto, StarNet lo dibuja con el estilo de la estación (créditos de StarNet)';
       const toggle = () => {
         if (busy) return;   // a running job, a preview or a message keeps it open
         makeOpen = !box.classList.contains('is-compact') ? false : true;
@@ -1274,7 +1274,7 @@ const Build = (() => {
       const KEYS = [['Click', 'select it'], ['Drag a box', 'select several'], ['Double-click', 'a whole line'], ['Shift + click', 'add or drop one'], ['Drag a machine', 'onto another: belt them'], ['Drag a selected one', 'onto floor: move it'], ['Shift + drag', 'move any piece'], ['Right-click', 'remove a piece'], ['Ctrl + drag a belt', 'reshape it'], ['Q · Alt', 'pick up · every setting'],
         ['Arrows', 'nudge · Shift: 5'], ['R · M', 'turn · flip'], ['Ctrl + D', 'duplicate'], ['Ctrl + C · X · V', 'copy · cut · paste'], ['Del', 'delete'], ['Ctrl + Z', 'undo'],
         ['Click a room', 'move · resize · furnish']];
-      note.innerHTML = '<b>Click anything to edit</b><div class="refit-keyrows">' + KEYS.map(([k, v]) => '<span class="refit-keyrow"><kbd>' + esc(k) + '</kbd><span>' + esc(v) + '</span></span>').join('') + '</div>';
+      note.innerHTML = '<b>Haz clic en lo que sea para editar</b><div class="refit-keyrows">' + KEYS.map(([k, v]) => '<span class="refit-keyrow"><kbd>' + esc(k) + '</kbd><span>' + esc(v) + '</span></span>').join('') + '</div>';
       pal.appendChild(note);
       const finder=document.createElement('select');finder.setAttribute('aria-label','Find a placed object');finder.className='refit-object-finder';
       const refresh=()=>{finder.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Find a placed object…';finder.append(blank);
@@ -1312,7 +1312,7 @@ const Build = (() => {
       pal.appendChild(grid);
       const note = document.createElement('div');
       note.className = 'refit-linenote';
-      note.textContent = 'A type is just the deck it starts with — SURFACE (3) re-lays any room later.';
+      note.textContent = 'Un tipo es solo el mazo con el que empieza — SUPERFICIE (3) vuelve a colocar cualquier habitación después.';
       pal.appendChild(note);
     } else if (tool === 'hall') {
       paletteLabel = 'WIDTH';
@@ -1349,7 +1349,7 @@ const Build = (() => {
       if (propSection === 'decoration' && typeof UserProps !== 'undefined') browser.append(makePropMount());
       else if (typeof UserProps !== 'undefined') {   // the door to MAKE A PROP from the other shelves: one click to FURNITURE with the field focused
         const door = document.createElement('button'); door.type = 'button'; door.className = 'bb sm refit-makeprop-door';
-        door.innerHTML = '<b>MAKE A PROP</b><small>Type any object. StarNet draws it in the station\u2019s style.</small>';
+        door.innerHTML = '<b>HACER UN PROP</b><small>Escribe cualquier objeto. StarNet lo dibuja con el estilo de la estación.</small>';
         door.onclick = () => { makeOpen = true; chooseLibrarySection('decoration'); setTimeout(() => { const f = root && root.querySelector('#refit-makeprop-input'); if (f) f.focus(); }, 0); sfx('click'); };
         browser.append(door);
       }
@@ -1360,7 +1360,7 @@ const Build = (() => {
       categoryTrigger.innerHTML = '<span class="refit-category-label">CATEGORY</span><b class="refit-category-current"></b><span class="refit-category-arrow" aria-hidden="true">▾</span>';
       categoryMenu.appendChild(categoryTrigger);
       const catRow = document.createElement('nav'); catRow.className = 'refit-propcats';
-      catRow.setAttribute('aria-label', 'Prop categories');
+      catRow.setAttribute('aria-label', 'Categorías de props');
       const sectionProps = catalog().filter(c => sectionOf(c) === propSection);
       ['all', ...new Set(sectionProps.map(c => c.cat))].forEach(g => {
         const b = document.createElement('button');
@@ -1489,9 +1489,9 @@ const Build = (() => {
         // preview what AUTO itself yields — the material's own tone, ignoring any hue currently picked
         b.appendChild(shell ? hullSwatchCanvas(hullMat, hullAutoBase(hullMat), 3, 28) : wallSwatchCanvas(wallMat, null, 3, 24));
         const nm = document.createElement('span'); nm.className = 'refit-matname';
-        nm.textContent = shell ? 'AUTO — THE MATERIAL’S OWN TONE' : 'AUTO — MATCH THE DECK';
+        nm.textContent = shell ? 'AUTO — EL TONO PROPIO DEL MATERIAL' : 'AUTO — IGUALAR AL SUELO';
         b.appendChild(nm);
-        b.title = shell ? 'the tone this material was drawn for' : 'match the room’s deck colour';
+        b.title = shell ? 'el tono para el que se dibujó este material' : 'igualar al color del suelo de la sala';
         b.onclick = () => { if (shell) hullStyle = 'follow'; else wallStyle = 'follow'; renderPalette(); sfx('click'); };
         hueGrid.appendChild(b);
       }
@@ -1517,7 +1517,7 @@ const Build = (() => {
       paletteLabel = 'THE LINE';
       const note = document.createElement('div');
       note.className = 'refit-selectnote';
-      note.innerHTML = '<b>Connect machines</b><span>Click where work starts, then where it goes next.</span>';
+      note.innerHTML = '<b>Conectar máquinas</b><span>Clic donde empieza el trabajo y luego donde va a continuación.</span>';
       pal.appendChild(note);
     } else if (tool === 'line' || ((tool === 'select' || tool === 'prop') && buildGroup === 'workflow')) {
       /* THE LINE LIBRARY (v3, 2026-08-30) — one-click whole layouts, now a browsable library.
@@ -1554,12 +1554,12 @@ const Build = (() => {
            its ghost on the pointer); the click places it where they choose, and the line grows the hand's way from there. */
         const own = document.createElement('button'); own.type = 'button'; own.className = 'bb refit-ownline' + (hand && hand.newLine ? ' active' : '');
         own.setAttribute('aria-pressed', String(!!(hand && hand.newLine)));
-        own.textContent = '＋ BUILD YOUR OWN LINE';
-        own.dataset.tip = 'Hold an INBOX: click the floor where your line starts, then drag from it to lay the belt to its next piece';
+        own.textContent = '＋ CONSIGUE TU PROPIA LÍNEA';
+        own.dataset.tip = 'Mantén una BANDA DE ENTRADA: clic en el suelo donde empieza tu línea y arrastra desde ella para tender la cinta a la siguiente pieza';
         own.onclick = () => startNewLine();
         pal.appendChild(own);
         const grid = document.createElement('div'); grid.className = 'refit-linegrid';
-        grid.setAttribute('aria-label', 'Line library');
+        grid.setAttribute('aria-label', 'Biblioteca de líneas');
         /* START FROM INTENT (2026-09-28): the ready-made line with the SHAPE of the Commander's own goal leads the shelf; its tip
            quotes their words so it is clear why — one click arms it (MAKE ROOM FOR IT when the deck is too small) */
         const goal = goalLine();
@@ -1961,7 +1961,7 @@ const Build = (() => {
     more?.querySelector('.refit-designs')?.remove();
     if (alternatives.length > 1) {
       const designs = document.createElement('button'); designs.className = 'bb xs refit-designs'; designs.type = 'button';
-      designs.textContent = 'OTHER DESIGNS · ' + alternatives.length; designs.setAttribute('aria-label', 'Choose another design for ' + abilityName(capOf(c)));
+      designs.textContent = 'OTROS DISEÑOS · ' + alternatives.length; designs.setAttribute('aria-label', 'Elige otro diseño para ' + abilityName(capOf(c)));
       designs.onclick = () => chooseAbility(capOf(c), true); if (more) more.prepend(designs);
     }
     const nativeW = box.w * 12 + 24, nativeH = box.h * 12 + 24;
@@ -2112,9 +2112,9 @@ const Build = (() => {
     { id: 'any', label: 'ANY JOB', blurb: 'one agent takes the work door to door' },
     { id: 'write', label: 'WRITING & CONTENT', blurb: 'a draft, and a reviewer who can send it back' },
     { id: 'code', label: 'BUILDING SOFTWARE', blurb: 'a builder makes the change, and it is checked before it ships' },
-    { id: 'research', label: 'RESEARCH', blurb: 'dig up sources, then write it up' },
-    { id: 'volume', label: 'LOTS OF REQUESTS', blurb: 'sort the incoming work, or share it across agents' },
-    { id: 'decide', label: 'DECISIONS', blurb: 'more than one take before you decide' },
+    { id: 'research', label: 'RESEARCH', blurb: 'buscar fuentes y luego redactar el resultado' },
+    { id: 'volume', label: 'LOTS OF REQUESTS', blurb: 'clasificar el trabajo entrante, o repartirlo entre agentes' },
+    { id: 'decide', label: 'DECISIONS', blurb: 'más de un intento antes de decidir' },
   ];
   /* SET UP BEFORE YOU PLACE (2026-09-28): the armed card offers the line's daily spending cap (when it has an INBOX) and
      its review tries (when it has a LOOP). Session-scoped per line; stampLine passes them INTO the stamp
@@ -2141,10 +2141,10 @@ const Build = (() => {
   function linePrefsEl(bp) {
     const hasIn = bp.props.some(x => x.t === 'intake'), p = linePrefsOf(bp);
     const el = document.createElement('div'); el.className = 'refit-lineprefs';
-    el.setAttribute('role', 'group'); el.setAttribute('aria-label', 'Set up ' + (LINE_PLAIN[bp.id] || bp.label) + ' before you place it');
+    el.setAttribute('role', 'group'); el.setAttribute('aria-label', 'Set up ' + (LINE_PLAIN[bp.id] || bp.label) + ' antes de colocarlo');
     const row = (label, opts, cur, key) => '<div class="refit-lineprefs-row"><span class="refit-lineprefs-k">' + label + '</span>'
       + opts.map(([v, t]) => '<button type="button" class="bb sm" data-pref="' + key + '" data-val="' + (v == null ? '' : v) + '" aria-pressed="' + (v === cur) + '">' + esc(t) + '</button>').join('') + '</div>';
-    el.innerHTML = '<div class="refit-lineprefs-hd">SET UP BEFORE YOU PLACE</div>'
+    el.innerHTML = '<div class="refit-lineprefs-hd">CONFIGÚRALO ANTES DE COLOCAR</div>'
       + (hasIn ? row('DAILY CAP', LINE_CAPS, p.cap, 'cap') : '')
       + (p.tries != null ? row('REVIEW TRIES', [1, 2, 3, 4, 5].map(n => [n, String(n)]), p.tries, 'tries') : '');
     el.querySelectorAll('[data-pref]').forEach(b => b.onclick = ev => {
@@ -2528,7 +2528,7 @@ const Build = (() => {
     if (laid === undefined) { if (make) make.remove(); return; }
     if (make) return;
     const mk = document.createElement('button'); mk.type = 'button'; mk.className = 'bb refit-linetile-makeroom';
-    mk.textContent = '＋ MAKE ROOM FOR IT'; mk.setAttribute('aria-label', 'Build a room big enough for ' + bp.label);
+    mk.textContent = '＋ HAZLE HUECO'; mk.setAttribute('aria-label', 'Construye una sala lo bastante grande para ' + bp.label);
     mk.onclick = e => makeRoomFor(bp.id, e);
     b.after(mk);
   }
@@ -2898,14 +2898,14 @@ const Build = (() => {
     cardCloseAll();
     const g = document.createElement('div');
     g.className = 'refit-guide refit-station-builds refit-workflow-editor';
-    g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-label','Station presets');
-    g.innerHTML = '<div class="refit-guide-box station-build-box"><div class="station-build-heading"><div><span class="station-build-eyebrow">BUILD MODE / STATION PRESETS</span><h2>A place for your work</h2></div><button class="bb sm" data-workflow-close>BACK TO BUILD</button></div>' +
+    g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-label','Preajustes de estación');
+    g.innerHTML = '<div class="refit-guide-box station-build-box"><div class="station-build-heading"><div><span class="station-build-eyebrow">MODO CONSTRUCCIÓN / PRECONFIGURACIONES</span><h2>Un lugar para tu trabajo</h2></div><button class="bb sm" data-workflow-close>VOLVER A CONSTRUIR</button></div>' +
       '<p class="station-build-intro">Pick a station for the kind of work you do, then make it yours. Every station includes your workstation and all five essentials.</p>' +
       '<div class="station-build-scroll">' + PRESET_GROUPS.map(([id, label, blurb]) => '<section class="station-build-section" data-build-section="' + id + '"><div class="station-build-section-head"><h3>' + label + '</h3><p>' + esc(blurb) + '</p></div><div class="station-build-grid" aria-label="' + esc(label.toLowerCase()) + '"></div></section>').join('') +
-      (typeof BuildShare !== 'undefined' ? '<section class="station-build-section" data-build-section="shared"><div class="station-build-section-head"><h3>SHARED BUILDS</h3><p>Save this layout as a file to share, or open one someone sent you. Only rooms, furniture and conveyors travel.</p><span class="station-build-share-keys"><button class="bb sm" type="button" data-export-build>EXPORT THIS STATION</button><button class="bb sm" type="button" data-import-build>IMPORT A BUILD…</button>' + (communityLive() ? '<button class="bb sm" type="button" data-share-community>SHARE TO COMMUNITY</button>' : '') + '<input type="file" accept=".json,application/json" hidden data-import-file></span></div><div class="station-build-grid" aria-label="shared builds"></div></section>' : '') +
-      (typeof BuildShare !== 'undefined' && communityLive() ? '<section class="station-build-section" data-build-section="community"><div class="station-build-section-head"><h3>COMMUNITY MAPS</h3><p>Stations other players built and shared. Only layouts travel: you choose who works them.</p><span class="station-build-community-note" role="status"></span></div><div class="station-build-grid" aria-label="community maps"></div></section>' : '') + '</div>' +
-      '<div class="station-build-footer"><div class="station-build-status" role="status">Select a preset to see what it builds.</div>' +
-      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTORE PREVIOUS</button><button class="bb refit-primary" data-use-build disabled>CHOOSE A PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
+      (typeof BuildShare !== 'undefined' ? '<section class="station-build-section" data-build-section="shared"><div class="station-build-section-head"><h3>CONSTRUCCIONES COMPARTIDAS</h3><p>Guarda esta distribución como archivo para compartirla, o abre uno que alguien te envió. Solo viajan salas, muebles y transportes.</p><span class="station-build-share-keys"><button class="bb sm" type="button" data-export-build>EXPORTAR ESTA ESTACIÓN</button><button class="bb sm" type="button" data-import-build>IMPORTAR UNA CONSTRUCCIÓN…</button>' + (communityLive() ? '<button class="bb sm" type="button" data-share-community>COMPARTIR CON LA COMUNIDAD</button>' : '') + '<input type="file" accept=".json,application/json" hidden data-import-file></span></div><div class="station-build-grid" aria-label="construcciones compartidas"></div></section>' : '') +
+      (typeof BuildShare !== 'undefined' && communityLive() ? '<section class="station-build-section" data-build-section="community"><div class="station-build-section-head"><h3>MAPAS DE LA COMUNIDAD</h3><p>Estaciones que otros jugadores construyeron y compartieron. Solo viajan distribuciones: tú eliges quién las trabaja.</p><span class="station-build-community-note" role="status"></span></div><div class="station-build-grid" aria-label="mapas de la comunidad"></div></section>' : '') + '</div>' +
+      '<div class="station-build-footer"><div class="station-build-status" role="status">Selecciona un preajuste para ver qué construye.</div>' +
+      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTAURAR ANTERIOR</button><button class="bb refit-primary" data-use-build disabled>CHOOSE A PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
     g.style.setProperty('--station-build-scale', typeof U.uiZoom === 'function' ? U.uiZoom() : 1);
     const closeP = () => { g.remove(); if (typeof CommunityMaps !== 'undefined') CommunityMaps.release(); root?.querySelector('#refit-stations')?.focus(); };
     cardRegister(g, closeP); root.appendChild(g);
@@ -2963,7 +2963,7 @@ const Build = (() => {
         if (item.file || !item.open) return choose();
         status.textContent = 'Opening ' + item.name + '…';
         item.open().then(r => { item.file = r.text; preview = r.preview; if (mine === openSeq && button.isConnected) choose(); })
-          .catch(e => { if (mine !== openSeq) return; status.textContent = String(e && e.message || 'That map could not be opened.'); sfx('bad'); });
+          .catch(e => { if (mine !== openSeq) return; status.textContent = String(e && e.message || 'No se pudo abrir ese mapa.'); sfx('bad'); });
       };
       grid.appendChild(button);
       return button;
@@ -2978,7 +2978,7 @@ const Build = (() => {
     if (shareKey) shareKey.onclick = () => openShareToCommunity(g, status, shareKey);
     apply.onclick = () => {
       if(!selected)return;
-      if(!armed){armed=true;apply.textContent='CONFIRM — USE '+selected.name;status.textContent='Replace the current rooms, props, and conveyors with '+selected.name+'? Agents and conversations remain. Click again to apply.';return;}
+      if(!armed){armed=true;apply.textContent='CONFIRMAR — USAR '+selected.name;status.textContent='Reemplaza las habitaciones, objetos y transportadores actuales por '+selected.name+'? Los agentes y conversaciones se mantienen. Haz clic de nuevo para aplicar.';return;}
       try {
         // a shared build is re-read against the live floor's ids at the moment it lands (the same headroom a preset gets)
         let doc;
@@ -2998,7 +2998,7 @@ const Build = (() => {
         const result=station.replaceLayout(saved);
         if(!result.ok){localStorage.setItem(backupKey,originalBackup);throw Error(result.msg||result.error);}
         fitCamera();closeP();
-      }catch(e){status.textContent='Could not restore the previous layout: '+e.message;}
+      }catch(e){status.textContent='No se pudo restaurar el diseño anterior: '+e.message;}
     };
   }
 
@@ -3044,7 +3044,7 @@ const Build = (() => {
     const open = section.querySelector('.station-build-sharepanel');
     if (open) { open.querySelector('#sbs-title')?.focus(); return; }
     const r = BuildShare.exportBuild(station.serialize(), WorldModel, { name: station.doc().meta.name });
-    if (r.error) { status.textContent = 'This station could not be shared: it has no layout to send.'; sfx('bad'); return; }
+    if (r.error) { status.textContent = 'No se pudo compartir esta estación: no tiene una distribución que enviar.'; sfx('bad'); return; }
     const read = BuildShare.readBuild(r.text, WorldModel, 1);
     const pic = CommunityMaps.picture(read.doc, r.dropped, drawPlan);
     let credit = ''; try { credit = localStorage.getItem(MAP_CREDIT_KEY) || ''; } catch (_) {}
@@ -3052,27 +3052,27 @@ const Build = (() => {
     const travels = [n(r.stats.rooms, 'room', 'rooms'), n(r.stats.props, 'prop', 'props')].concat(r.stats.lines ? [n(r.stats.lines, 'line', 'lines')] : []).join(' · ');
     const panel = document.createElement('div');
     panel.className = 'station-build-sharepanel';
-    panel.innerHTML = '<div class="sbs-pic"><img alt="The picture that goes with this map"></div><div class="sbs-form">' +
-      '<label for="sbs-title">NAME</label><input id="sbs-title" class="refit-input" maxlength="40" autocomplete="off">' +
-      '<label for="sbs-credit">CREDIT ME AS</label><input id="sbs-credit" class="refit-input" maxlength="40" autocomplete="off" placeholder="your name or handle">' +
-      '<label for="sbs-desc">ONE LINE ABOUT IT <span class="sbs-dim">optional</span></label><input id="sbs-desc" class="refit-input" maxlength="200" autocomplete="off">' +
+    panel.innerHTML = '<div class="sbs-pic"><img alt="La imagen que acompaña a este plano"></div><div class="sbs-form">' +
+      '<label for="sbs-title">NOMBRE</label><input id="sbs-title" class="refit-input" maxlength="40" autocomplete="off">' +
+      '<label for="sbs-credit">CRÉDITO COMO</label><input id="sbs-credit" class="refit-input" maxlength="40" autocomplete="off" placeholder="tu nombre o apodo">' +
+      '<label for="sbs-desc">UNA LÍNEA SOBRE EL <span class="sbs-dim">opcional</span></label><input id="sbs-desc" class="refit-input" maxlength="200" autocomplete="off">' +
       '<label class="sbs-agree"><input type="checkbox" id="sbs-agree"> <span>I made this station and share it under CC BY 4.0: anyone may build it and change it, with credit to me.</span></label>' +
       '<p class="sbs-travel">Only the layout travels: <b>' + esc(travels) + '</b>. Your crew, step instructions, project folders and connections stay home' + (r.dropped.made ? ', and so do your ' + n(r.dropped.made, 'made prop', 'made props') : '') + '.' + (pic.why ? ' ' + esc(pic.why) : '') + '</p>' +
       '<p class="sbs-travel">A person looks at every map before it appears in the community gallery.</p>' +
-      '<div class="sbs-keys"><button class="bb refit-primary" type="button" data-sbs-send>SEND FOR REVIEW</button><button class="bb" type="button" data-sbs-cancel>CANCEL</button></div></div>';
+      '<div class="sbs-keys"><button class="bb refit-primary" type="button" data-sbs-send>ENVIAR A REVISIÓN</button><button class="bb" type="button" data-sbs-cancel>CANCEL</button></div></div>';
     panel.querySelector('img').src = pic.dataUrl;
     const title = panel.querySelector('#sbs-title'), creditIn = panel.querySelector('#sbs-credit'), desc = panel.querySelector('#sbs-desc'), agree = panel.querySelector('#sbs-agree');
     title.value = String(station.doc().meta.name || '').slice(0, 40); creditIn.value = credit;
     const send = panel.querySelector('[data-sbs-send]');
     let unlinked = false;
     const close = () => { panel.remove(); shareKey.setAttribute('aria-pressed', 'false'); if (g.isConnected) shareKey.focus(); };
-    panel.querySelector('[data-sbs-cancel]').onclick = () => { close(); status.textContent = 'Nothing was shared.'; };
+    panel.querySelector('[data-sbs-cancel]').onclick = () => { close(); status.textContent = 'No se compartió nada.'; };
     send.onclick = async () => {
       const fields = { title: title.value.trim(), credit: creditIn.value.trim(), description: desc.value.trim(), agree: agree.checked, build: r.text, still: pic.dataUrl };
-      if (!fields.title) { status.textContent = 'Give the map a name.'; title.focus(); return; }
-      if (!fields.credit) { status.textContent = 'Add the name you want credited in the gallery.'; creditIn.focus(); return; }
-      if (!fields.agree) { status.textContent = 'Turn on the CC BY 4.0 agreement to share it: it is how others may build your station.'; agree.focus(); return; }
-      send.disabled = true; send.textContent = 'SENDING…'; status.textContent = 'Sending ' + fields.title + ' for review…';
+      if (!fields.title) { status.textContent = 'Ponle nombre al plano.'; title.focus(); return; }
+      if (!fields.credit) { status.textContent = 'Añade el nombre que quieres que aparezca en la galería.'; creditIn.focus(); return; }
+      if (!fields.agree) { status.textContent = 'Activa el acuerdo CC BY 4.0 para compartirlo: así es como otros podrán construir tu estación.'; agree.focus(); return; }
+      send.disabled = true; send.textContent = 'ENVIANDO…'; status.textContent = 'Enviando ' + fields.title + ' a revisión…';
       try { localStorage.setItem(MAP_CREDIT_KEY, fields.credit); } catch (_) {}
       const res = await CommunityMaps.share(fields);
       const shown = panel.isConnected && g.isConnected;
@@ -3080,13 +3080,13 @@ const Build = (() => {
         const name = res.submission.title || fields.title;
         if (!shown) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Sent ' + name + ' for review. Your Maps tab on account.starnetos.com shows where it stands.', 'good'); return; }
         close();
-        status.innerHTML = '<span>Sent for review: <b>' + esc(name) + '</b>.</span><span class="station-build-need">A person looks at it next. Once it is approved it appears in the community gallery with your name on it. Your Maps tab on account.starnetos.com shows where it stands.</span>';
+        status.innerHTML = '<span>Enviado para revisión: <b>' + esc(name) + '</b>.</span><span class="station-build-need">Después lo mira una persona. Cuando se apruebe, aparecerá en la galería de la comunidad con tu nombre. La pestaña Maps en account.starnetos.com muestra en qué estado está.</span>';
         sfx('click');
         return;
       }
       const text = shareOutcomeText(res.ok ? { ok: false, outcome: 'unknown', error: 'StarNet gave no readable answer.' } : res, 'map');
       if (!shown) { if (typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify(fields.title + ': ' + text, 'warn'); return; }
-      send.textContent = 'SEND FOR REVIEW';
+      send.textContent = 'ENVIAR A REVISIÓN';
       send.disabled = unlinked || res.linked === false;
       status.textContent = text;
       sfx('bad');
@@ -3099,7 +3099,7 @@ const Build = (() => {
       if (!c || c.linked !== false || !panel.isConnected) return;
       unlinked = true; send.disabled = true;
       const p = document.createElement('p'); p.className = 'sbs-travel sbs-link';
-      p.textContent = 'This station is not linked to a StarNet account yet. Link it first: STORE › LINK STATION (a free account works), then open SHARE TO COMMUNITY again.';
+      p.textContent = 'Esta estación aún no está vinculada a una cuenta de StarNet. Vínclala primero: STORE › VINCULAR ESTACIÓN (vale una cuenta gratuita) y abre COMPARTIR CON LA COMUNIDAD de nuevo.';
       panel.querySelector('.sbs-keys').before(p);
     });
   }
@@ -3111,16 +3111,16 @@ const Build = (() => {
     const section = g.querySelector('[data-build-section="community"]');
     if (!section || !communityLive()) return;
     const grid = section.querySelector('.station-build-grid'), note = section.querySelector('.station-build-community-note');
-    note.textContent = 'Reading the community gallery…';
+    note.textContent = 'Leyendo la galería de la comunidad…';
     CommunityMaps.load(true).then(c => {
       if (!g.isConnected) return;
       if (!c.ok) {
         if (c.error) console.warn('[community maps] gallery not read:', c.error);
-        note.textContent = c.off ? 'The community gallery is switched off on this station.' : 'The community gallery could not be read right now. Close PRESETS and open it again to retry.';
+        note.textContent = c.off ? 'La galería de la comunidad está desactivada en esta estación.' : 'No se pudo leer la galería de la comunidad ahora mismo. Cierra PREAJUSTES y ábrela de nuevo para reintentar.';
         return;
       }
-      if (!c.maps.length) { note.textContent = 'No community maps yet. Be the first: SHARE TO COMMUNITY, above.'; return; }
-      note.textContent = c.maps.length + (c.maps.length === 1 ? ' map' : ' maps') + ', each one checked by a person.';
+      if (!c.maps.length) { note.textContent = 'Aún no hay mapas de la comunidad. Sé el primero: COMPARTIR CON LA COMUNIDAD, arriba.'; return; }
+      note.textContent = c.maps.length + (c.maps.length === 1 ? ' map' : ' maps') + ', cada uno revisado por una persona.';
       for (const m of c.maps) {
         const item = {
           id: 'community-' + m.slug, name: m.title, rooms: m.stats.rooms, stats: m.stats,
@@ -3152,7 +3152,7 @@ const Build = (() => {
     if (!exp || !imp || !fileIn || !grid) return;
     exp.onclick = () => {
       const r = BuildShare.exportBuild(station.serialize(), WorldModel, { name: station.doc().meta.name });
-      if (r.error) { status.textContent = 'This station could not be exported.'; sfx('bad'); return; }
+      if (r.error) { status.textContent = 'No se pudo exportar esta estación.'; sfx('bad'); return; }
       const url = URL.createObjectURL(new Blob([r.text], { type: 'application/json' }));
       const a = document.createElement('a'); a.href = url; a.download = r.filename;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
@@ -3163,9 +3163,9 @@ const Build = (() => {
     fileIn.onchange = () => {
       const f = fileIn.files && fileIn.files[0]; fileIn.value = '';
       if (!f) return;
-      if (f.size > BuildShare.MAX_BYTES) { status.textContent = 'That file is too large to be a station build.'; sfx('bad'); return; }
+      if (f.size > BuildShare.MAX_BYTES) { status.textContent = 'Ese archivo es demasiado grande para ser una construcción de estación.'; sfx('bad'); return; }
       const reader = new FileReader();
-      reader.onerror = () => { status.textContent = 'That file could not be read.'; sfx('bad'); };
+      reader.onerror = () => { status.textContent = 'No se pudo leer ese archivo.'; sfx('bad'); };
       reader.onload = () => {
         const text = String(reader.result || '');
         const r = BuildShare.readBuild(text, WorldModel, station.doc()._nid + 100);
@@ -3197,7 +3197,7 @@ const Build = (() => {
     const g = document.createElement('div');
     g.className = 'refit-guide refit-preset-example';
     g.setAttribute('role','dialog'); g.setAttribute('aria-modal','true'); g.setAttribute('aria-label','Set up '+first.title);
-    g.innerHTML = '<div class="refit-guide-card"><header class="refit-prop-actions-head"><div><span class="ui-overline">SET UP YOUR STATION</span><h3>'+esc(first.title)+'</h3></div><button class="bb" data-workflow-close>CLOSE</button></header><div data-example-body></div></div>';
+    g.innerHTML = '<div class="refit-guide-card"><header class="refit-prop-actions-head"><div><span class="ui-overline">CONFIGURA TU ESTACIÓN</span><h3>'+esc(first.title)+'</h3></div><button class="bb" data-workflow-close>CERRAR</button></header><div data-example-body></div></div>';
     let unsubscribe;
     const closeP = () => { unsubscribe?.(); g.remove(); root?.querySelector('[data-build-group="workflow"]')?.focus(); };
     cardRegister(g,closeP); root.appendChild(g); g.querySelector('[data-workflow-close]').onclick = closeP;
@@ -3218,21 +3218,21 @@ const Build = (() => {
       const offerAll = e.roles.length > 1 && !!firstAid && e.roles.some(r=>r.agentId!==firstAid);
       const software = station.doc().meta.templateId === 'software';
       const body = g.querySelector('[data-example-body]');
-      body.innerHTML = '<p class="example-purpose">'+esc(e.purpose)+'</p><div class="example-flow" aria-label="How the line runs">'+e.flow.map(x=>'<span>'+esc(x)+'</span>').join('<b>→</b>')+'</div>'+
+      body.innerHTML = '<p class="example-purpose">'+esc(e.purpose)+'</p><div class="example-flow" aria-label="Cómo funciona la línea">'+e.flow.map(x=>'<span>'+esc(x)+'</span>').join('<b>→</b>')+'</div>'+
         '<h4>Choose who works each step</h4><div class="example-roles">'+e.roles.map((r,i)=>'<div class="example-role"><b>'+(i+1)+'. '+esc(r.name)+'</b><span>'+esc(r.description)+'</span>'+
-          '<div class="example-role-pick"><select class="refit-input" aria-label="'+esc(r.name)+' agent" data-example-agent="'+esc(r.propId)+'"'+(pending?' disabled':'')+'><option value="">Choose an agent</option>'+agents.map(a=>'<option value="'+esc(a.id)+'"'+(a.id===r.agentId?' selected':'')+'>'+esc(a.name||a.id)+'</option>').join('')+'</select>'+
+          '<div class="example-role-pick"><select class="refit-input" aria-label="'+esc(r.name)+' agente" data-example-agent="'+esc(r.propId)+'"'+(pending?' disabled':'')+'><option value="">Elige un agente</option>'+agents.map(a=>'<option value="'+esc(a.id)+'"'+(a.id===r.agentId?' selected':'')+'>'+esc(a.name||a.id)+'</option>').join('')+'</select>'+
           (canSummon && r.role ? '<button type="button" class="bb sm" data-example-recruit="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>+ RECRUIT</button>' : '')+'</div>'+
-          (needsPc(r) ? '<div class="example-role-fix"><span>This agent has no desk of its own here.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ GIVE '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' A DESK</button></div>' : '')+'</div>').join('')+'</div>'+
-        (offerAll ? '<button type="button" class="bb sm example-all" data-example-all'+(pending?' disabled':'')+'>GIVE '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' EVERY STEP</button>' : '')+
+          (needsPc(r) ? '<div class="example-role-fix"><span>This agent has no desk of its own here.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ DA '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' UN ESCRITORIO</button></div>' : '')+'</div>').join('')+'</div>'+
+        (offerAll ? '<button type="button" class="bb sm example-all" data-example-all'+(pending?' disabled':'')+'>DALE A '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' CADA PASO</button>' : '')+
         '<p class="example-note">'+(agents.length ? 'One agent can work every step. ' : 'You have no agents yet. ')+(canSummon ? 'RECRUIT adds that step\'s specialist to your crew; it costs nothing until it works.' : '')+'</p>'+
         '<p class="example-note">Assignments save when selected. Each step\'s instructions live on its Bay; click the Bay to edit them.</p>'+
-        '<section class="example-sample"><h4>Send a real job</h4><p>'+esc(e.sample.replace(/^SAMPLE JOB: /,''))+'</p><p class="example-note">This is one real job: the agents you chose run it on their own models, and normal model costs apply.</p><button class="bb refit-primary" data-example-run'+(!ready||pending?' disabled':'')+'>'+(pending?'JOB IN PROGRESS…':sr?.view?.ok?'↻ SEND IT AGAIN':'▶ SEND A REAL JOB')+'</button></section>'+
+        '<section class="example-sample"><h4>Enviar un trabajo real</h4><p>'+esc(e.sample.replace(/^SAMPLE JOB: /,''))+'</p><p class="example-note">Este es un trabajo real: los agentes que elegiste lo ejecutan con sus propios modelos y aplican los costos habituales de modelo.</p><button class="bb refit-primary" data-example-run'+(!ready||pending?' disabled':'')+'>'+(pending?'TRABAJO EN CURSO…':sr?.view?.ok?'↻ ENVIARLO OTRA VEZ':'▶ ENVIAR UN TRABAJO REAL')+'</button></section>'+
         '<p class="example-status" role="status">'+esc(status)+'</p>'+
         (sr?.view ? '<div class="example-result">'+finSampleHTML(sr.view)+finOnwardHTML(sr)+(sr.output?'<details><summary>Read the finished result</summary><pre>'+esc(sr.output)+'</pre></details>':'')+'</div>' : '')+
         /* NEXT: USE IT FOR REAL — one click to the Inbox's own settings in the Workflow panel (what starts it; the working
            folder a software line builds in), instead of a sentence about where to click */
         '<section class="example-next"><h4>Use it for real</h4><p>'+(software ? 'Choose the project folder the Builder works in, and when the line runs: on a schedule or from a chat app.' : 'Choose when the line runs: on a schedule or from a chat app.')+' Finished work lands in its OUTBOX and is also filed in DELIVERABLES.</p>'+
-        (e.inboxId ? '<button type="button" class="bb" data-example-inbox'+(pending?' disabled':'')+'>'+(software ? 'OPEN THE INBOX: FOLDER + START' : 'OPEN THE INBOX: HOW IT STARTS')+'</button>' : '')+'</section>';
+        (e.inboxId ? '<button type="button" class="bb" data-example-inbox'+(pending?' disabled':'')+'>'+(software ? 'ABRIR EL BUZÓN: CARPETA + INICIO' : 'ABRIR EL BUZÓN: CÓMO EMPIEZA')+'</button>' : '')+'</section>';
       body.querySelectorAll('[data-example-agent]').forEach(select => { select.onchange = () => {
         const propId = select.dataset.exampleAgent;
         const result = station.assignPropAgent(propId,select.value);
@@ -3321,7 +3321,7 @@ const Build = (() => {
           </div>
         </div>
         <p class="refit-guide-foot">For a head start, open <b>${esc(G.tab)} › ${esc(G.lines)}</b> (${G.lineCount} ready-made layouts), stamp one, then assign its bays. <b>${esc(G.preview)}</b> animates the routing and runs no AI job. To test for real, click any machine on a line and use <b>STEP TEST</b> in its Workflow panel: it runs the real agents one step at a time and pauses at every hand-off so you can read or edit what moves on.</p>
-        <div class="refit-guide-shortcuts"><span><b>Wheel</b> Zoom</span><span><b>Space + drag</b> Pan</span><span><b>Ctrl + Z</b> Undo</span><span><b>Click</b> Select</span><span><b>Drag a selected piece</b> Move it</span><span><b>Drag a box</b> Select several</span><span><b>Ctrl + C · V</b> Copy · paste</span><span><b>SAVE &amp; EXIT</b> Leave (or Esc twice)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">START BUILDING</button>
+        <div class="refit-guide-shortcuts"><span><b>Wheel</b> Zoom</span><span><b>Space + drag</b> Pan</span><span><b>Ctrl + Z</b> Undo</span><span><b>Click</b> Select</span><span><b>Drag a selected piece</b> Move it</span><span><b>Drag a box</b> Select several</span><span><b>Ctrl + C · V</b> Copy · paste</span><span><b>SAVE &amp; EXIT</b> Leave (or Esc twice)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">EMPEZAR A CONSTRUIR</button>
       </div>`;
     root.appendChild(g);
     g.querySelectorAll('.refit-step').forEach(s => {
@@ -3822,7 +3822,7 @@ const Build = (() => {
   function workflowIntroHTML(kicker, title, description) {
     return '<header class="workflow-header"><div><span class="workflow-kicker">' + esc(kicker) + '</span>'
       + '<h3 id="workflow-title">' + esc(title) + '</h3><p>' + esc(description) + '</p></div>'
-      + '<button type="button" class="bb workflow-close" data-workflow-close aria-label="Close setup">✕</button></header>';
+      + '<button type="button" class="bb workflow-close" data-workflow-close aria-label="Cerrar configuración">✕</button></header>';
   }
   /* REFIT-JUNCTION-PURE-BEGIN (extraction marker — test/refit-junction-cards.test.js evals this block with
      injected deps; PURE: params + locals only, no module state, no DOM). The LOOP card's lane labels and the
@@ -4085,7 +4085,7 @@ const Build = (() => {
     if (typeof fetch === 'undefined') { rowsEl.innerHTML = '<div class="refit-conn-note">no sidecar — can\'t list connectors here.</div>'; return; }
     fetch('/api/connectors').then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); }).then(j => {
       const list = (j && j.connectors) || [];
-      if (!list.length) { rowsEl.innerHTML = '<div class="refit-conn-note">No connected services yet — add one first in <b>BUILD › CONNECT › ABILITIES</b> (DISCOVER for the catalog, or ADD AN ABILITY › custom connection), then come back and bind it here.</div>'; return; }
+      if (!list.length) { rowsEl.innerHTML = '<div class="refit-conn-note">Aún no hay servicios conectados — añade uno primero en <b>CONSTRUIR › CONECTAR › CAPACIDADES</b> (EXPLORAR para el catálogo, o AÑADIR CAPACIDAD › conexión personalizada) y luego vuelve a enlazarlo aquí.</div>'; return; }
       rowsEl.innerHTML = list.map(c => {
         const sel = (c.id === p.connectorId), scls = STATE_CLASS[c.state] || '';
         const meta = c.toolCount ? (c.toolCount + ' tool' + (c.toolCount === 1 ? '' : 's')) : (c.state || 'idle');
@@ -4094,7 +4094,7 @@ const Build = (() => {
           + ' <span class="conn-meta">' + esc(meta) + '</span></button>';
       }).join('');
       rowsEl.querySelectorAll('.conn-row').forEach(b => b.onclick = () => bind(b.dataset.id, b.dataset.label));
-    }).catch(() => { rowsEl.innerHTML = '<div class="refit-conn-note">sidecar offline — start it to bind a connector.</div>'; });
+    }).catch(() => { rowsEl.innerHTML = '<div class="refit-conn-note">sidecar sin conexión — ábrelo para enlazar un conector.</div>'; });
   }
 
   /* PLUGIN TERMINAL binder — the connector portal's card, for plugins: which approved plugin this terminal IS. The list
@@ -4107,7 +4107,7 @@ const Build = (() => {
     g.className = 'refit-guide refit-connector-editor';
     const closeP = () => { if (g.parentNode) g.parentNode.removeChild(g); };
     cardRegister(g, closeP);
-    g.innerHTML = '<div class="refit-guide-card"><h3>▮ PLUGIN TERMINAL — choose its plugin</h3>'
+    g.innerHTML = '<div class="refit-guide-card"><h3>▮ TERMINAL DE PLUGIN — elige su plugin</h3>'
       + '<ul><li>This terminal gives its room’s agent the chosen plugin’s <b>tools</b> (each call asks you first, unless you choose Always or Full access).</li>'
       + '<li>Clicking it in the station opens that plugin’s window.</li></ul>'
       + '<div class="refit-conn-rows" id="pl-rows">loading…</div>'
@@ -4119,14 +4119,14 @@ const Build = (() => {
     g.querySelector('#pl-unbind').onclick = () => { station.bindPlugin(propId, ''); sfx('click'); flashTip(ev, 'terminal unbound', true); closeP(); };
     g.querySelector('#pl-cancel').onclick = closeP;
     g.addEventListener('click', e => { if (e.target === g) closeP(); });
-    if (typeof fetch === 'undefined') { rowsEl.innerHTML = '<div class="refit-conn-note">no sidecar — can’t list plugins here.</div>'; return; }
+    if (typeof fetch === 'undefined') { rowsEl.innerHTML = '<div class="refit-conn-note">sin sidecar — no se pueden listar plugins aquí.</div>'; return; }
     fetch('/api/plugins').then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); }).then(j => {
       const all = (j && j.plugins) || [];
       const list = all.filter(x => x.active);
       const boundOff = p.pluginId ? all.find(x => x.id === p.pluginId && !x.active) : null;
       const offNote = boundOff ? '<div class="refit-conn-note">Bound to <b>' + esc(boundOff.name || boundOff.id) + '</b>, which is off' + (boundOff.pending ? ' (changed since you approved it)' : '') + ' — turn it on in ⇄ ABILITIES → EXTENSIONS.</div>'
         : (p.pluginId && !all.some(x => x.id === p.pluginId) ? '<div class="refit-conn-note">Bound to <b>' + esc(p.pluginId) + '</b>, which was removed.</div>' : '');
-      if (!list.length) { rowsEl.innerHTML = offNote + '<div class="refit-conn-note">No plugins are on yet — create or approve one in <b>⇄ ABILITIES → EXTENSIONS</b>, then bind it here.</div>'; return; }
+      if (!list.length) { rowsEl.innerHTML = offNote + '<div class="refit-conn-note">Aún no hay plugins activados — crea o aprueba uno en <b>⇄ CAPACIDADES → EXTENSIONES</b> y luego enlázalo aquí.</div>'; return; }
       rowsEl.innerHTML = list.map(x => {
         const sel = (x.id === p.pluginId);
         const tools = Array.isArray(x.tools) ? x.tools.length : 0, wins = Array.isArray(x.screens) ? x.screens.length : 0;
@@ -4136,7 +4136,7 @@ const Build = (() => {
       }).join('');
       if (offNote) rowsEl.insertAdjacentHTML('afterbegin', offNote);
       rowsEl.querySelectorAll('.conn-row').forEach(b => b.onclick = () => bind(b.dataset.id, b.dataset.label));
-    }).catch(() => { rowsEl.innerHTML = '<div class="refit-conn-note">sidecar offline — start it to bind a plugin.</div>'; });
+    }).catch(() => { rowsEl.innerHTML = '<div class="refit-conn-note">sidecar sin conexión — ábrelo para enlazar un plugin.</div>'; });
   }
 
   /* ---------- test run (Polish B): send work down your belts with NO bot connected, and watch it sort to the
@@ -4618,7 +4618,7 @@ const Build = (() => {
     return starter.map(c => {
       const g = grantLabelOf(c) || '?';
       return { id: c.id, done: !!placed[g], cat: c.cat, label: g + ' — ' + c.label,
-        tip: 'Choose this ability when your work needs it. Props with the ' + g + ' badge are alternatives; inspect the selected prop for scope and current access.' };
+        tip: 'Elige esta capacidad cuando tu trabajo la necesite. Los props con la ' + g + ' insignia son alternativas; inspecciona el prop seleccionado para ver alcance y acceso actual.' };
     });
   }
 
@@ -4648,9 +4648,9 @@ const Build = (() => {
     } else if (sig === finSig) return;
     finSig = sig; finComp = null;
     finCardEl.className = 'refit-finline refit-orders';
-    finCardEl.innerHTML = '<div class="fl-head"><span class="fl-title">▸ EQUIPMENT BY PURPOSE</span>'
+    finCardEl.innerHTML = '<div class="fl-head"><span class="fl-title">▸ EQUIPO POR PROPÓSITO</span>'
       + '<span class="fl-count">' + done + ' on floor</span>'
-      + '<button type="button" class="bb sm fl-x" title="dismiss — you know the gear">✕</button></div>'
+      + '<button type="button" class="bb sm fl-x" title="descartar — ya conoces el equipo">✕</button></div>'
       + steps.map((s, i) => '<button type="button" class="bb fl-step' + (s.done ? ' done' : '') + '" data-ord="' + s.id + '"'
         + ' title="' + esc(s.tip) + '">' + (s.done ? '✓ ' : '+ ') + esc(s.label) + '</button>').join('')
       // the release valve (Andrew): five needs, and permission to ignore the other ~137 props
@@ -4713,19 +4713,19 @@ const Build = (() => {
     // the sample RESULT belongs to the line it rode (finSampleRes.key) — another line's card shows none
     const sr = (finSampleRes && finSampleRes.key === c.key) ? finSampleRes : null;
     const sampleOn = finSample === true && crewDone && !(sr && sr.pending);
-    const sampleTip = finSample !== true ? 'coming online soon' : (crewDone ? 'run ONE real job through the whole line (your INBOX test job, if you wrote one)' + (onward ? '. ' + onward : '') : 'Assign each step an agent first');
+    const sampleTip = finSample !== true ? 'coming online soon' : (crewDone ? 'ejecuta UN trabajo real por toda la línea (tu trabajo de prueba de BANDA DE ENTRADA, si escribiste uno)' + (onward ? '. ' + onward : '') : 'Asigna primero un agente a cada paso');
     // (org g7 D1, final round) the ③ label rides ONE span: .fl-step is a flex row, and a bare text run beside the amber
     // .fl-again span became its own flex item whose trailing space collapsed — '✓ DELIVERED —SEND ANOTHER'
     // (org D4/D5) the title is FINISH + the line's own name (one separator at most — a preset's name carries its own ·), FINISH SETUP
     // unnamed; the done row says ✓ DELIVERED like WORKFLOWS — both stay on the narrow card's lines instead of stranding a word
-    const sampleTxt = (sr && sr.pending) ? (sr.phase === 'post' ? '③ POSTING LINE…' : '③ RUNNING — THE JOB IS RIDING THE LINE…') : (sr && sr.view && sr.view.ok) ? '✓ DELIVERED — SEND ANOTHER' : '③ SEND A REAL JOB';
+    const sampleTxt = (sr && sr.pending) ? (sr.phase === 'post' ? '③ PUBLICANDO LÍNEA…' : '③ EN MARCHA — EL TRABAJO VIAJA POR LA LÍNEA…') : (sr && sr.view && sr.view.ok) ? '✓ ENTREGADO — OTRO ENVÍO' : '③ ENVÍA UN TRABAJO REAL';
     finCardEl.innerHTML = `
-      <div class="fl-head"><span class="fl-title">▸ FINISH ${lname ? esc(lname.toUpperCase()) : 'SETUP'}</span><button type="button" class="bb sm fl-x" title="dismiss for this line">✕</button></div>
+      <div class="fl-head"><span class="fl-title">▸ FINISH ${lname ? esc(lname.toUpperCase()) : 'SETUP'}</span><button type="button" class="bb sm fl-x" title="descartar para esta línea">✕</button></div>
       <div class="fl-overview">${esc(overview.compact)}</div>
-      <button type="button" class="bb fl-step" data-act="overview">EDIT STEPS & RESULT</button>
+      <button type="button" class="bb fl-step" data-act="overview">EDITAR PASOS Y RESULTADO</button>
       <button type="button" class="bb fl-step${crewDone ? ' done' : ''}" data-act="crew"${crewDone ? ' disabled' : ''}>${esc(crewTxt)}</button>
       <button type="button" class="bb fl-step${st.feedDone ? ' done' : ''}" data-act="feed"${st.feedDone ? ' disabled' : ''}>${esc(feedTxt)}</button>
-      <button type="button" class="bb fl-step${sampleOn ? '' : ' off'}${sr && sr.view && sr.view.ok ? ' done' : ''}" data-act="sample" title="${esc(sampleTip)}"><span class="fl-lbl">${esc(sampleTxt).replace('SEND ANOTHER', '<span class="fl-again">SEND ANOTHER</span>')}</span></button>
+      <button type="button" class="bb fl-step${sampleOn ? '' : ' off'}${sr && sr.view && sr.view.ok ? ' done' : ''}" data-act="sample" title="${esc(sampleTip)}"><span class="fl-lbl">${esc(sampleTxt).replace('OTRO ENVÍO', '<span class="fl-again">OTRO ENVÍO</span>')}</span></button>
       ${sr && sr.view ? finSampleHTML(sr.view) + finOnwardHTML(sr) : onward ? '<div class="fl-result fl-onward"><span class="fl-result-k">SEND TO</span> ' + esc(onward) + '</div>' : ''}`;
     finCardEl.querySelector('.fl-x').onclick = () => { finMark(station, c.key, 'dis'); sfx('click'); renderFinCard(); };
     const example = currentPresetExample();
@@ -5608,7 +5608,7 @@ const Build = (() => {
   /* THE SELECTED OBJECT, BESIDE THE LIBRARY (2026-10-01 build-mode upgrade). Selecting a placed prop used to REPLACE the whole Build
      Library with a column of keys, so placing the next thing meant deselecting first. It is now one compact card ABOVE the library —
      the object's own art and name, then its actions, each key wearing the keyboard shortcut that does the same thing (drag, R, M,
-     Ctrl+D, Ctrl+C, Delete, the arrows nudge) — and the library stays where it was. */
+     Ctrl+D, Ctrl+C, Delete, the las flechas ajustan) — and the library stays where it was. */
   function renderSelection(){
     const host=root&&root.querySelector('#refit-selection');if(!host)return;
     if(dropPick){host.hidden=false;root.classList.add('has-selection');return renderDropPick(host);}   // THE HAND: PICK WHAT GOES HERE docks where a selection does
@@ -5626,7 +5626,7 @@ const Build = (() => {
     }
     const p=station&&station.propById(selectedPropId);host.hidden=!p;root.classList.toggle('has-selection',!!p);
     if(!p){host.replaceChildren();return;}
-    host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'drag onto floor to move, onto a machine to belt':'drag it to move')+' · arrows nudge':'')+'</small></span>'
+    host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'drag onto floor to move, onto a machine to belt':'arrástralo para moverlo')+' · las flechas ajustan':'')+'</small></span>'
       +'<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Deselect · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     propArtInto(host.querySelector('.refit-sel-art'),p);
     host.querySelector('.refit-sel-x').onclick=()=>{selectedPropId=null;renderSelection();setHint();sfx('click');};
@@ -5647,15 +5647,15 @@ const Build = (() => {
       const k=UserProps.SCALES.includes(made.scale)?made.scale:1;
       if(k>UserProps.SCALES[0])add('SIZE \u2212',()=>sizeMadeProp(-1,p.t));
       if(k<UserProps.SCALES[UserProps.SCALES.length-1])add('SIZE + ('+Math.round(k*100)+'%)',()=>sizeMadeProp(1,p.t));
-      if(!made.side&&!made.symmetric)add('\u21bb SIDE VIEW',async()=>{setHint('Starting a side view of '+(made.label||'this prop')+'\u2026');const r=await startMakeSide(p.t);if(!r)setHint('A prop job is already running \u00b7 wait for it to finish');else setHint(r.ok?'Making a side view of '+(made.label||'this prop')+' \u00b7 about $0.30 \u00b7 it turns with R when it lands':(r.message||'That side view could not be started.'));});
+      if(!made.side&&!made.symmetric)add('\u21bb SIDE VIEW',async()=>{setHint('Iniciando una vista lateral de '+(made.label||'este prop')+'…');const r=await startMakeSide(p.t);if(!r)setHint('Ya hay un trabajo de prop en marcha · espera a que termine');else setHint(r.ok?'Haciendo una vista lateral de '+(made.label||'este prop')+' · unos $0.30 · gira con R al llegar':(r.message||'No se pudo iniciar esa vista lateral.'));});
     }
     if(isEditableProp(p.t)&&!WORKSTATION_TYPES[p.t])add('CONFIGURE',()=>configureProp(p,orientEv()));
     addKey('DELETE','Del',()=>deleteSelected(orientEv()),'refit-sel-del');
-    // typing an exact tile: its own key in the grid (the arrows nudge; this is for "put it at 12, 4"), the fields only when asked
+    // typing an exact tile: its own key in the grid (the las flechas ajustan; this is for "put it at 12, 4"), the fields only when asked
     addKey('POSITION','',()=>{positionOpen=!positionOpen;renderSelection();},'refit-sel-pos').setAttribute('aria-expanded',String(positionOpen));
     if(!positionOpen)return;
     const position=document.createElement('div');position.className='refit-position';
-    position.innerHTML='<label>X <input aria-label="Object grid X" type="number" step="1" value="'+p.x+'"></label><label>Y <input aria-label="Object grid Y" type="number" step="1" value="'+p.y+'"></label><button class="bb sm" type="button">APPLY POSITION</button>';
+    position.innerHTML='<label>X <input aria-label="Rejilla X del objeto" type="number" step="1" value="'+p.x+'"></label><label>Y <input aria-label="Rejilla Y del objeto" type="number" step="1" value="'+p.y+'"></label><button class="bb sm" type="button">APLICAR POSICIÓN</button>';
     position.querySelector('button').onclick=()=>{
       const inputs=position.querySelectorAll('input'),x=Number(inputs[0].value),y=Number(inputs[1].value);
       if(!Number.isInteger(x)||!Number.isInteger(y)){feedback({ok:false,msg:'Use whole tile coordinates'},orientEv());return;}
@@ -5665,7 +5665,7 @@ const Build = (() => {
   /* ---------- THE EDITOR KEYS (2026-10-01 build-mode upgrade) ----------
      What every editor does, on the SELECTED object: Delete/Backspace removes it, Ctrl+D drops a copy beside it (the copy is then
      the selection, so Ctrl+D again makes a row), Ctrl+C picks it up as a stamp (every click places a copy; Ctrl+V picks the last one
-     up again), the arrows nudge it a tile (Shift: five). Each is one ordinary edit — one UNDO. A lone prop's copy is the COPY tool's
+     up again), the las flechas lo ajustan a tile (Shift: five). Each is one ordinary edit — one UNDO. A lone prop's copy is the COPY tool's
      own pickup: orientation, a filter's routes, a door's seal travel with it; an agent binding never does. A conveyor piece, a group
      or a line copies as a CLIP (THE HAND part 2) — the belts between its machines, settings, names, briefs and the crew this station has. */
   function copySpecOf(p) {
@@ -5843,7 +5843,7 @@ const Build = (() => {
       if (r && r.error === 'OVERLAP') {
         const to = propRect(p, dx, dy), hit = station.props().find(q => !ids.has(q.id) && !propSpec(q.t).flat && rectsMeet(propRect(q), to));
         if (!hit) continue;
-        v = { ok: false, error: 'OVERLAP', msg: 'Blocked by ' + (propSpec(hit.t).label || hit.t) + ' · choose a clear space' }; break;
+        v = { ok: false, error: 'OVERLAP', msg: 'Blocked by ' + (propSpec(hit.t).label || hit.t) + ' · elige un espacio libre' }; break;
       }
       if (r && r.error === 'NEEDS_SURFACE' && ps.some(q => q.id !== p.id && rectsMeet(propRect(q), propRect(p)))) continue;   // its table moves with it
       v = r || { ok: false, msg: 'blocked' }; break;
@@ -5896,8 +5896,8 @@ const Build = (() => {
       return { ok: true };
     }, cut ? 'CUT' : (!was.length ? (nb === 1 ? 'BELT' : 'BELTS') : undefined));
     if (res && res.ok) { pushFlash(was.map(p => propRect(p)).concat(cells.map(q => ({ x1: q.x, y1: q.y, x2: q.x, y2: q.y }))), true); was.forEach(p => vanishProp(p)); if (!was.length) sfxVanish(); setSelection([]); flashUndo(); }
-    const what = (was.length ? was.length + (was.length === 1 ? ' thing' : ' things') : '') + (was.length && nb ? ' and ' : '') + (nb ? nb + (nb === 1 ? ' belt' : ' belts') : '');
-    if (verb !== 'CUT') feedback(res, ev, 'removed ' + what + ' · Undo restores ' + (was.length + nb === 1 ? 'it' : 'them'));
+    const what = (was.length ? was.length + (was.length === 1 ? ' OBJETO' : ' OBJETOS') : '') + (was.length && nb ? ' y ' : '') + (nb ? nb + (nb === 1 ? ' CINTA' : ' CINTAS') : '');
+    if (verb !== 'CUT') feedback(res, ev, 'eliminado: ' + what + ' · deshacer restaura ' + (was.length + nb === 1 ? 'lo' : 'los'));
     else if (!(res && res.ok)) feedback(res, ev, '');
     return !!(res && res.ok);
   }
@@ -6024,10 +6024,10 @@ const Build = (() => {
     return r && r.ok ? r.clip : null;
   }
   let clipSeq = 0;
-  const clipWord = c => c.n + (c.n === 1 ? ' PIECE' : ' PIECES') + (c.nb ? ' · ' + c.nb + (c.nb === 1 ? ' BELT' : ' BELTS') : '');
+  const clipWord = c => c.n + (c.n === 1 ? ' PIEZA' : ' PIEZAS') + (c.nb ? ' · ' + c.nb + (c.nb === 1 ? ' CINTA' : ' CINTAS') : '');
   function holdClip(held, ev, said) {
     selectTool('dupe', { keepGroup: true, silent: true }); dupe = held; clipGhostMemo = null; sfx('click');
-    flashTip(ev, said || ('HOLDING ' + held.label + ' — click to place · R turns it · right-click to drop'), true);
+    flashTip(ev, said || ('SOSTENIENDO ' + held.label + ' — clic para colocar · R la gira · clic derecho la suelta'), true);
     setHint('holding ' + held.label + ' — click to place a copy (it stays in hand) · R turns it · right-click / Esc puts it down');
   }
   // COPY (cut: CUT) → a CLIP in hand, the ghost under the pointer; Ctrl+V picks the last one up again
@@ -6037,20 +6037,20 @@ const Build = (() => {
     const held = { type: 'lines', clip: c, rot: 0, cid: ++clipSeq, label: line ? line.name : clipWord(c) };
     const notes = [];
     if (c.dropped) notes.push(c.dropped + ' SEND TO LEFT OUT (IT POINTS OUTSIDE THE COPY)');
-    if (c.oldBelts) notes.push(c.oldBelts + ' OLD HAND-OFF BELT' + (c.oldBelts === 1 ? '' : 'S') + ' LEFT OUT (A HAND-OFF IS SEND TO)');
-    if (c.crewLeft) notes.push(c.crewLeft + ' CREW LEFT OUT (NOT ON THIS STATION)');
+    if (c.oldBelts) notes.push(c.oldBelts + ' CINTA DE TRASPASO' + (c.oldBelts === 1 ? '' : 'S') + ' FUERA (UN TRASPASO ES UN SEND TO)');
+    if (c.crewLeft) notes.push(c.crewLeft + ' TRIPULANTE FUERA (NO ESTÁ EN ESTA ESTACIÓN)');
     /* a COPY carries the belts BETWEEN the copied machines only — the box's other belts (counted on its card, drawn gold) are said,
        never dropped silently (wave 2, build-22: "3 things · 4 belts" copied as "1 BELT"); a CUT says the same in cutLeavesBehind */
     if (!cut) {
       const bs = beltSel(), carried = new Set(cutLinksOf(ps.map(p => p.id))), left = bs ? bs.links.filter(id => !carried.has(id)).length + bs.tiles.length : 0;
-      if (left) notes.push(left + (left === 1 ? ' BELT' : ' BELTS') + ' LEFT OUT (' + (left === 1 ? 'IT RUNS' : 'THEY RUN') + ' OUTSIDE THE COPY)');
+      if (left) notes.push(left + (left === 1 ? ' CINTA' : ' CINTAS') + ' FUERA (' + (left === 1 ? 'CORRE' : 'CORREN') + ' FUERA DE LA COPIA)');
     }
     const lost = cut ? cutLeavesBehind(ps) : [];
     const whole = cut ? lineSelectionOf(ps) : null;
     if (cut && !(whole ? deleteLine(whole.id, ev, 'CUT') : deleteGroup(ev, 'CUT'))) return true;   // (refused: nothing was taken, nothing is held)
     lastCopy = held;
-    holdClip(held, ev, (cut ? 'CUT · ' : 'COPIED · ') + held.label + (notes.length ? ' · ' + notes.join(' · ') : '') + (lost.length ? ' · NOT CARRIED: ' + lost.join(', ') : '') + ' — click to place · R turns it');
-    if (lost.length) setHint('holding ' + held.label + ' — the paste is a NEW copy: ' + lost.join(', ').toLowerCase() + ' did not come with it (set them again on the paste) · Ctrl+Z puts the original back');
+    holdClip(held, ev, (cut ? 'CORTE · ' : 'COPIADO · ') + held.label + (notes.length ? ' · ' + notes.join(' · ') : '') + (lost.length ? ' · NO LLEVADO: ' + lost.join(', ') : '') + ' — clic para colocar · R la gira');
+    if (lost.length) setHint('sosteniendo ' + held.label + ' — el pegado es una COPIA nueva: ' + lost.join(', ').toLowerCase() + ' no vinieron con ella (configúralos de nuevo en el pegado) · Ctrl+Z restaura el original');
     return true;
   }
   /* what a CUT takes off the floor that its clip cannot bring back (a paste is a new copy with new ids): said on the cut, never
@@ -6059,13 +6059,13 @@ const Build = (() => {
   function cutLeavesBehind(ps) {
     const ids = new Set(ps.map(p => p.id)), out = [];
     const ins = ps.filter(p => p.t === 'intake');
-    if (ins.some(p => typeof p.projectRoot === 'string' && p.projectRoot.trim())) out.push('THE PROJECT FOLDER');
-    if (ins.length) out.push('ANY SCHEDULE OR WEBHOOK ON ' + (ins.length === 1 ? 'ITS INBOX' : 'ITS INBOXES'));
-    if (ps.some(p => (p.t === 'connector_portal' && p.connectorId) || (p.t === 'plugin_terminal' && p.pluginId))) out.push('CONNECTOR / PLUGIN BINDS');
-    if (ps.some(p => WORKSTATION_TYPES[p.t] && p.agentId)) out.push('DESK OWNERS');
-    if (station.props().some(p => !ids.has(p.id) && typeof p.sendTo === 'string' && ids.has(p.sendTo))) out.push('A SEND TO FROM ANOTHER LINE');
+    if (ins.some(p => typeof p.projectRoot === 'string' && p.projectRoot.trim())) out.push('LA CARPETA DEL PROYECTO');
+    if (ins.length) out.push('CUALQUIER PROGRAMACIÓN O WEBHOOK DE ' + (ins.length === 1 ? 'SU INBOX' : 'SUS INBOXES'));
+    if (ps.some(p => (p.t === 'connector_portal' && p.connectorId) || (p.t === 'plugin_terminal' && p.pluginId))) out.push('VÍNCULOS DE CONECTOR / PLUGIN');
+    if (ps.some(p => WORKSTATION_TYPES[p.t] && p.agentId)) out.push('PROPIETARIOS DE ESCRITORIO');
+    if (station.props().some(p => !ids.has(p.id) && typeof p.sendTo === 'string' && ids.has(p.sendTo))) out.push('UN SEND TO DESDE OTRA LÍNEA');
     const bs = beltSel(), carried = new Set(cutLinksOf(ps.map(p => p.id))), stay = bs ? bs.links.filter(id => !carried.has(id)).length + bs.tiles.length : 0;
-    if (stay) out.push(stay + (stay === 1 ? ' BELT' : ' BELTS') + ' OUTSIDE IT (LEFT WHERE ' + (stay === 1 ? 'IT RUNS' : 'THEY RUN') + ')');
+    if (stay) out.push(stay + (stay === 1 ? ' CINTA' : ' CINTAS') + ' FUERA (QUEDÓ DONDE ' + (stay === 1 ? 'CORRE' : 'CORREN') + ')');
     return out;
   }
   function cutSelected(ev) {
@@ -6184,7 +6184,7 @@ const Build = (() => {
     selectedPropId = null; groupIds = []; selBelts = null; positionOpen = false; furnishOpen = false; roomDelArmedAt = 0; roomAsk = null; sendCutArm = null;
     selectedRoomId = rm ? rm.id : null;
     renderSelection();
-    if (rm) { setHint('Selected ' + (rm.name || 'the room') + ' · drag inside it to move it · drag a gold handle to resize it · arrows nudge it · Del deletes'); sfx('click'); }
+    if (rm) { setHint('Selected ' + (rm.name || 'the room') + ' · drag inside it to move it · drag a gold handle to resize it · las flechas lo ajustan · Del deletes'); sfx('click'); }
     else setHint();
   }
   function roomTiles(rm) { let n = 0; for (const r of rm.rects) n += (r.x2 - r.x1 + 1) * (r.y2 - r.y1 + 1); return n; }
@@ -6254,7 +6254,7 @@ const Build = (() => {
   }
   function deleteSelectedRoom(ev) {
     const rm = station.roomById(selectedRoomId); if (!rm) return;
-    if (rm.id === station.spawnRoomId()) { sfx('bad'); flashTip(ev, 'the spawn room can’t be deleted — drag it to move it instead'); return; }
+    if (rm.id === station.spawnRoomId()) { sfx('bad'); flashTip(ev, 'la sala de aparición no se puede eliminar — arrástrala para moverla en su lugar'); return; }
     const now = performance.now();
     // (after a SEND TO cut warning FOR THIS ROOM the repeat confirms anywhere in its own 6 s window — reading it took longer than
     // the 2.5 s arm, live 10-12; any other room, or a lapsed warning, keeps the 2.5 s confirm)
@@ -6352,9 +6352,9 @@ const Build = (() => {
     const kd = station.ROOM_KINDS[rm.kind] || {}, b = rm.rects[0];
     const shape = plain ? (b.x2 - b.x1 + 1) + ' × ' + (b.y2 - b.y1 + 1) : rm.rects.length + ' sections';
     host.innerHTML = '<div class="refit-sel-head"><span class="refit-sel-art is-room" aria-hidden="true"></span><span class="refit-sel-name">'
-      + '<input class="refit-room-name" type="text" maxlength="40" aria-label="Room name" placeholder="name this room" value="' + esc(rm.name || '') + '">'
-      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · the spawn room' : '') + ' · drag inside to move · arrows nudge') + '</small></span>'
-      + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Let go of the room · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
+      + '<input class="refit-room-name" type="text" maxlength="40" aria-label="Nombre de la habitación" placeholder="nombra esta habitación" value="' + esc(rm.name || '') + '">'
+      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · the spawn room' : '') + ' · drag inside to move · las flechas ajustan') + '</small></span>'
+      + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Suelta la habitación · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     // the art well: the room's own deck, painted by the bake
     try {
       const matId = station.matOfRoom ? station.matOfRoom(rm.id) : (rm.floorMat || kd.mat);
@@ -6380,13 +6380,13 @@ const Build = (() => {
     if (!corridor && plain && furnishReady()) key('FURNISH', '', () => { furnishOpen = !furnishOpen; sfx('click'); renderSelection(); }, 'refit-room-furnish').setAttribute('aria-expanded', String(furnishOpen));
     if (!corridor && furnishReady() && station.props().some(p => station.roomAt(p.x, p.y) === rm.id)) key('CLEAR', '', () => clearRoom(rm, orientEv()));
     const del = key(isSpawn ? 'PROTECTED' : 'DELETE', isSpawn ? '' : 'Del', () => deleteSelectedRoom(orientEv()), 'refit-sel-del');
-    if (isSpawn) { del.disabled = true; del.setAttribute('data-tip', 'the spawn room can’t be deleted — drag it to move it instead'); }
+    if (isSpawn) { del.disabled = true; del.setAttribute('data-tip', 'la sala de aparición no se puede eliminar — arrástrala para moverla en su lugar'); }
     // the ask: what equipment goes, and the two ways on — never applied until FURNISH ANYWAY / CLEAR ANYWAY
     if (roomAsk) {
       const ask = document.createElement('div'); ask.className = 'refit-room-ask'; ask.setAttribute('role', 'alert');
       const what = roomAsk.kind === 'furnish' ? styleLabel(roomAsk.sid) : 'CLEAR';
-      ask.innerHTML = '<span>' + esc(what) + ' takes out ' + esc(roomAsk.gear.join(' · ')) + ' — agents here lose what ' + (roomAsk.gear.length === 1 ? 'it gives' : 'they give') + '</span>'
-        + '<div class="refit-room-ask-keys"><button type="button" class="bb sm refit-sel-act refit-sel-del">' + (roomAsk.kind === 'furnish' ? 'FURNISH ANYWAY' : 'CLEAR ANYWAY') + '</button><button type="button" class="bb sm refit-sel-act">KEEP IT</button></div>';
+      ask.innerHTML = '<span>' + esc(what) + ' quita ' + esc(roomAsk.gear.join(' · ')) + ' — los agentes de aquí pierden lo que ' + (roomAsk.gear.length === 1 ? 'da' : 'dan') + '</span>'
+        + '<div class="refit-room-ask-keys"><button type="button" class="bb sm refit-sel-act refit-sel-del">' + (roomAsk.kind === 'furnish' ? 'FURNISH ANYWAY' : 'CLEAR ANYWAY') + '</button><button type="button" class="bb sm refit-sel-act">MANTENERLO</button></div>';
       const [go, keep] = ask.querySelectorAll('button');
       const a = roomAsk;
       go.onclick = () => { if (a.kind === 'furnish') furnishRoom(rm, a.sid, orientEv(), true); else clearRoom(rm, orientEv(), true); };
@@ -6395,7 +6395,7 @@ const Build = (() => {
     }
     // FURNISH: every whole-room style the station builder knows, as tiles — one click lays it (one undo)
     if (furnishOpen && !corridor && plain && furnishReady()) {
-      const grid = document.createElement('div'); grid.className = 'refit-furnish-grid'; grid.setAttribute('aria-label', 'Furnish this room as');
+      const grid = document.createElement('div'); grid.className = 'refit-furnish-grid'; grid.setAttribute('aria-label', 'Amuebla esta sala como');
       for (const sid of RoomStyles.ROOM_ORDER || Object.keys(RoomStyles.ROOMS)) {
         const rec = RoomStyles.ROOMS[sid]; if (!rec) continue;
         const tile = document.createElement('button'); tile.type = 'button'; tile.className = 'refit-furnish-tile'; tile.dataset.style = sid;
@@ -6424,7 +6424,7 @@ const Build = (() => {
     const sub = (line ? 'whole line · ' + ps.length + ' pieces' + (beltWord ? ' · ' + beltWord : '') : ps.length ? [names, beltWord].filter(Boolean).join(' · ') : (nb === 1 ? 'the whole belt' : 'each one whole'))
       + (ps.length && pressMovesSelection() ? ' · drag any to move' : '');
     host.innerHTML = '<div class="refit-sel-head"><span class="refit-sel-art is-group" aria-hidden="true"></span><span class="refit-sel-name"><b>' + esc(title) + '</b><small>' + esc(sub) + '</small></span>'
-      + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect all" data-tip="Let go of all of them · Esc">✕</button></div><div class="refit-selection-actions"></div>';
+      + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect all" data-tip="Suéltalos todos · Esc">✕</button></div><div class="refit-selection-actions"></div>';
     const art = host.querySelector('.refit-sel-art');
     ps.slice(0, 3).forEach(p => propArtInto(art, p));
     host.querySelector('.refit-sel-x').onclick = () => { setSelection([]); sfx('click'); };
@@ -6532,7 +6532,7 @@ const Build = (() => {
           return a;
         }, propLabel(propType))
       : station.addProp(placement);
-    if (onBelt && res && !res.ok) res.msg = res.msg || 'that tile will not take it';
+    if (onBelt && res && !res.ok) res.msg = res.msg || 'esa casilla no lo aceptará';
     if (res && !res.ok) res.msg = placementReason({v:res,rects:[{x1:px,y1:py,x2:px+s.w-1,y2:py+s.h-1}]});
     if (foot && res && res.ok && res.x != null) { px = res.x; py = res.y; }   // an inserted BAY flashes where it LANDED (final floor lane M4)
     if (res && res.ok) {
@@ -6926,13 +6926,13 @@ const Build = (() => {
     const o = { flip: flipPref }, tile = { x: d.cur.tx, y: d.cur.ty };
     if (plan.kind === 'floor' || plan.kind === 'branchfloor') { openDropPick(d, plan, tile, ev); flipPref = false; paintHandKeys(); return; }   // (the picker keeps the corner it was shown with)
     let res = null, msg = '';
-    if (plan.kind === 'reshape') { res=station.reshapeLink(plan.link,tile.x,tile.y,o); msg='RESHAPED BELT · SAME MACHINES · CTRL+Z'; }
-    else if (plan.kind === 'connect') { res = station.connectBelt(d.propId, plan.to.id, o); msg = 'CONNECTED TO ' + mName(plan.to.id) + (res && res.count ? ' · ' + res.count + ' BELTS' : ''); }
-    else if (plan.kind === 'reroute') { res = station.relinkTo(plan.link, plan.to.id, o); msg = 'RE-ROUTED · NOW HANDS TO ' + mName(plan.to.id); }
-    else if (plan.kind === 'send') { res = station.setSendTo(d.propId, plan.to.id); msg = 'SENDS EVERY RESULT TO ' + mName(plan.to.id); }
-    else if (plan.kind === 'merge') { res = station.mergeBelt(d.propId, tile, o); msg = 'MERGED · A MERGER JOINS THE TWO BELTS'; }
-    else if (plan.kind === 'branch') { res = station.branchBelt(d.from, plan.to.id, o); msg = 'BRANCHED · A SPLITTER NOW FEEDS ' + mName(plan.to.id); }
-    else if (plan.kind === 'branchmerge') { res = station.branchBelt(d.from, tile, o); msg = 'BRANCHED INTO THE OTHER BELT'; }
+    if (plan.kind === 'reshape') { res=station.reshapeLink(plan.link,tile.x,tile.y,o); msg='CINTA REFORMULADA · MISMAS MÁQUINAS · CTRL+Z'; }
+    else if (plan.kind === 'connect') { res = station.connectBelt(d.propId, plan.to.id, o); msg = 'CONECTADO A ' + mName(plan.to.id) + (res && res.count ? ' · ' + res.count + ' CINTAS' : ''); }
+    else if (plan.kind === 'reroute') { res = station.relinkTo(plan.link, plan.to.id, o); msg = 'REDIRIGIDO · AHORA TRASPASA A ' + mName(plan.to.id); }
+    else if (plan.kind === 'send') { res = station.setSendTo(d.propId, plan.to.id); msg = 'ENVÍA CADA RESULTADO A ' + mName(plan.to.id); }
+    else if (plan.kind === 'merge') { res = station.mergeBelt(d.propId, tile, o); msg = 'FUNDIDO · UN MERGER UNE LAS DOS CINTAS'; }
+    else if (plan.kind === 'branch') { res = station.branchBelt(d.from, plan.to.id, o); msg = 'RAMIFICADO · UN SPLITTER AHORA ALIMENTA A ' + mName(plan.to.id); }
+    else if (plan.kind === 'branchmerge') { res = station.branchBelt(d.from, tile, o); msg = 'RAMIFICADO EN LA OTRA CINTA'; }
     if (res && res.ok) {
       sfx('chime'); flashTip(ev, msg, true);
       pushFlash(pathRects(plan.path).concat((plan.junctions || []).map(j => ({ x1: j.x, y1: j.y, x2: j.x, y2: j.y }))), false);
@@ -6974,10 +6974,10 @@ const Build = (() => {
   }
   function renderDropPick(host) {
     const dp = dropPick, fits = dp.opts.filter(q => q.ok), why = (dp.opts.find(q => !q.ok && q.msg) || {}).msg;
-    host.innerHTML = '<div class="refit-sel-head refit-droppick-head"><span class="refit-sel-name"><b>PICK WHAT GOES HERE</b><small>'
-      + (fits.length ? 'only what fits at the pin · one undo' : 'nothing fits at the pin') + '</small></span>'
-      + '<button class="bb sm refit-sel-x" type="button" aria-label="Cancel" data-tip="Cancel · Esc">✕</button></div>'
-      + (fits.length ? '<div class="refit-droppick"></div>' : '<p class="refit-droppick-none">' + esc(String(why || 'There is no room for a piece there — let go nearer clear floor.')) + '</p>');
+    host.innerHTML = '<div class="refit-sel-head refit-droppick-head"><span class="refit-sel-name"><b>ELIGE LO QUE VA AQUÍ</b><small>'
+      + (fits.length ? 'solo lo que cabe en el pin · un deshacer' : 'nada cabe en el pin') + '</small></span>'
+      + '<button class="bb sm refit-sel-x" type="button" aria-label="Cancelar" data-tip="Cancelar · Esc">✕</button></div>'
+      + (fits.length ? '<div class="refit-droppick"></div>' : '<p class="refit-droppick-none">' + esc(String(why || 'No hay hueco para una pieza ahí — suéltala más cerca de suelo libre.')) + '</p>');
     host.querySelector('.refit-sel-x').onclick = () => { setHand(null); };
     const grid = host.querySelector('.refit-droppick');
     if (grid) for (const q of fits) {
@@ -7143,7 +7143,7 @@ const Build = (() => {
   /* ---------- the zoom control (2026-08-07) ----------
      Zoom was wheel-only and said so nowhere but a hint line: a Commander on a trackpad, or one who
      simply never scrolled over the canvas, had no way to find it. – / % / + in the action deck makes
-     it a control you can SEE, and the readout doubles as a "you are here" for the camera. Both keep
+     it a control you can SEE, and the readout doubles as a "estás aquí" for the camera. Both keep
      the VIEW CENTRE fixed (the wheel anchors on the pointer; a button has no pointer to anchor on,
      and anchoring on the last pointer position would make the floor lurch away from the button). */
   function zoomAboutCentre(next) {
@@ -7190,10 +7190,10 @@ const Build = (() => {
     if (sig === statSig) return;   // the sub is re-read every frame; only touch the DOM when it moved
     const first = statSig === '';
     statSig = sig;
-    const bits = [rooms + (rooms === 1 ? ' ROOM' : ' ROOMS')];
-    if (halls) bits.push(halls + (halls === 1 ? ' HALL' : ' HALLS'));
-    bits.push(tiles + ' TILES');
-    if (machines) bits.push(machines + (machines === 1 ? ' OBJECT' : ' OBJECTS'));
+    const bits = [rooms + (rooms === 1 ? ' SALA' : ' SALAS')];
+    if (halls) bits.push(halls + (halls === 1 ? ' PASILLO' : ' PASILLOS'));
+    bits.push(tiles + ' CASILLAS');
+    if (machines) bits.push(machines + (machines === 1 ? ' OBJETO' : ' OBJETOS'));
     /* THE STATION'S OWN NAME FOR ITS SIZE. A pure LABEL on a number already shown — no gauge, no
        gate, nothing unlocks at a threshold (sandbox law); crossing one is simply the floor earning
        a bigger word, which is the whole point of building. Announced once, when it happens. */
@@ -7259,7 +7259,7 @@ const Build = (() => {
       const nowMs = (typeof performance !== 'undefined' && performance.now) ? performance.now() : 0;
       if (escExitArmedAt && nowMs - escExitArmedAt < ESC_EXIT_WINDOW_MS) { escExitArmedAt = 0; return close(); }
       escExitArmedAt = nowMs || 1;
-      showTip('PRESS ESC AGAIN TO SAVE & EXIT', true); clearTimeout(tipTimer); tipTimer = setTimeout(hideTip, ESC_EXIT_WINDOW_MS);
+      showTip('PULSA ESC OTRA VEZ PARA GUARDAR Y SALIR', true); clearTimeout(tipTimer); tipTimer = setTimeout(hideTip, ESC_EXIT_WINDOW_MS);
       return;
     }
     escExitArmedAt = 0;   // any other key disarms the pending exit
@@ -7282,7 +7282,7 @@ const Build = (() => {
     if (ev.key === 'r' || ev.key === 'R') { ev.preventDefault(); turnUnderCursor(ev.shiftKey ? -1 : 1); return; }
     if (ev.key === 'm' || ev.key === 'M') { ev.preventDefault(); flipUnderCursor(); return; }
     if ((ev.ctrlKey || ev.metaKey) && (ev.key === 'a' || ev.key === 'A') && tool === 'select') { ev.preventDefault(); selectAllProps(orientEv()); return; }
-    // a selected ROOM: Delete twice deletes it (everything on it goes, one Undo brings it back), the arrows nudge it (Shift: five)
+    // a selected ROOM: Delete twice deletes it (everything on it goes, one Undo brings it back), the las flechas lo ajustan (Shift: five)
     if (selectedRoomId && tool === 'select') {
       if (ev.key === 'Delete' || ev.key === 'Backspace') { ev.preventDefault(); deleteSelectedRoom(orientEv()); return; }
       const RA = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[ev.key];
@@ -7299,7 +7299,7 @@ const Build = (() => {
       const ARROW = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[ev.key];
       if (ARROW) { ev.preventDefault(); const n = ev.shiftKey ? 5 : 1; nudgeSelected(ARROW[0] * n, ARROW[1] * n, orientEv()); return; }
     }
-    // ...and under an armed tool whose drag on the selection moves it (pressMovesSelection): its card says "arrows nudge" there too
+    // ...and under an armed tool whose drag on the selection moves it (pressMovesSelection): its card says "las flechas ajustan" there too
     if ((selectedPropId || groupIds.length) && tool !== 'select' && pressMovesSelection()) {
       const ARROW = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[ev.key];
       if (ARROW) { ev.preventDefault(); const n = ev.shiftKey ? 5 : 1; nudgeSelected(ARROW[0] * n, ARROW[1] * n, orientEv()); return; }
@@ -7963,7 +7963,7 @@ const Build = (() => {
     ctx.stroke();
     ctx.fillStyle = 'rgba(150,225,255,0.16)';
     ctx.fillRect(hx * t, hy * t, t, t);
-    // corner ticks on the aimed tile — the "you are here" the flat fill alone doesn't carry
+    // corner ticks on the aimed tile — the "estás aquí" the flat fill alone doesn't carry
     const k = Math.min(t * 0.34, 5 / zoom);
     ctx.strokeStyle = 'rgba(190,240,255,0.85)'; ctx.lineWidth = 1.4 / zoom;
     const X = hx * t, Y = hy * t;
@@ -9316,14 +9316,14 @@ const Build = (() => {
     if (g.kind === 'resize') return (g.v && g.v.msg) || 'Choose a clear space';   // a room's own refusal names its own reason
     if (g.v && g.v.short) return g.v.short;   // a refusal with a floor caption of its own (a belt out of an OUTBOX / into an INBOX)
     const code = g.v && g.v.error;
-    if (code === 'OFF_DECK') return 'Place this on a room floor';
-    if (code === 'NEEDS_WALL') return 'Place this against the back wall';
-    if (code === 'NEEDS_SURFACE') return 'Place this on a table or counter';
+    if (code === 'OFF_DECK') return 'Coloca esto en el suelo de una sala';
+    if (code === 'NEEDS_WALL') return 'Coloca esto contra la pared del fondo';
+    if (code === 'NEEDS_SURFACE') return 'Coloca esto en una mesa o encimera';
     if (code === 'OVERLAP') {
       const ignore = drag && drag.mode === 'propmove' ? drag.propId : null;
       const hit = station.props().find(p=>p.id!==ignore && !propSpec(p.t).flat && g.rects.some(r=>p.x<=r.x2 && p.x+p.w-1>=r.x1 && p.y<=r.y2 && p.y+p.h-1>=r.y1));
-      if (hit) return 'Blocked by '+(propSpec(hit.t).label || hit.t)+' · choose a clear space';
-      return 'Overlaps another room · move beside its edge';
+      if (hit) return 'Blocked by '+(propSpec(hit.t).label || hit.t)+' · elige un espacio libre';
+      return 'Se solapa con otra sala · muévela junto a su borde';
     }
     return (g.v && g.v.msg) || 'Choose a clear space';
   }
@@ -9338,8 +9338,8 @@ const Build = (() => {
     ctx.strokeStyle = 'rgba(120,220,255,0.85)'; ctx.lineWidth = 1.2 / zoom; ctx.setLineDash([4 / zoom, 3 / zoom]);
     ctx.strokeRect(X + 0.5 / zoom, Y + 0.5 / zoom, W - 1 / zoom, H - 1 / zoom);
     ctx.restore();
-    const nb = bb.n, what = [ids.length ? ids.length + (ids.length === 1 ? ' THING' : ' THINGS') : '', nb ? nb + (nb === 1 ? ' BELT' : ' BELTS') : ''].filter(Boolean).join(' · ');
-    ghostBadge(t, what ? [what, drag.add ? 'RELEASE TO ADD THEM' : 'RELEASE TO SELECT'] : ['DRAG ACROSS WHAT YOU WANT'], !!what, r);
+    const nb = bb.n, what = [ids.length ? ids.length + (ids.length === 1 ? ' OBJETO' : ' OBJETOS') : '', nb ? nb + (nb === 1 ? ' CINTA' : ' CINTAS') : ''].filter(Boolean).join(' · ');
+    ghostBadge(t, what ? [what, drag.add ? 'SUELTA PARA AÑADIRLOS' : 'SUELTA PARA SELECCIONAR'] : ['ARRASTRA SOBRE LO QUE QUIERAS'], !!what, r);
   }
   // belt tiles outlined (a selection's belts in gold, the box's in cyan) — dashed, drawn geometry (never convey.drawBelts, H9)
   function drawBeltCells(t, cells, col) {
@@ -9371,13 +9371,13 @@ const Build = (() => {
     if (badT.length) drawBeltPreview(t, { path: badT }, BAD);
     const bb = { x1: g.ax, y1: g.ay, x2: g.ax + c.w - 1, y2: g.ay + c.h - 1 };
     const lines = ['PASTE · ' + String(dupe.label || '').toUpperCase() + (dupe.rot ? ' · TURNED ' + dupe.rot * 90 : '')];
-    if (ok) lines.push('CLICK TO PLACE · R TURNS IT');
+    if (ok) lines.push('CLIC PARA COLOCAR · R LO GIRA');
     else {
-      lines.push(String(g.v.short || g.v.msg || 'IT DOES NOT FIT HERE').toUpperCase());
+      lines.push(String(g.v.short || g.v.msg || 'NO CABE AQUÍ').toUpperCase());
       // the layout engine's own answer for this spot (clipLaidFor — asked once the pointer rests): the promise only when it fits
       const laid = layable(c) ? clipLaidFor(g.tx, g.ty) : null;
-      if (laid && laid.ok) lines.push('A CLICK LAYS IT OUT TO FIT NEARBY');
-      else if (laid) lines.push(String(laid.msg || 'IT CANNOT BE LAID OUT HERE EITHER').toUpperCase());
+      if (laid && laid.ok) lines.push('UN CLIC LO DISTRIBUYE PARA QUE CABE CERCA');
+      else if (laid) lines.push(String(laid.msg || 'TAMPOCO SE PUEDE DISTRIBUIR AQUÍ').toUpperCase());
     }
     ghostBadge(t, lines, ok, bb);
   }
@@ -9415,7 +9415,7 @@ const Build = (() => {
       for (const k of drag.cells) { const p = k.split(','); if (station.roomAt(+p[0], +p[1]) === drag.roomId) { ctx.fillRect(+p[0] * t, +p[1] * t, t, t); n++; } }
       ctx.globalAlpha = 1;
       const bb = cellsRect(drag.cells);
-      if (bb) ghostBadge(t, [n + (n === 1 ? ' TILE' : ' TILES')], true, bb);
+      if (bb) ghostBadge(t, [n + (n === 1 ? ' CASILLA' : ' CASILLAS')], true, bb);
       return;
     }
     // reclaim drag: tint the belt tiles the drag will clear (destructive red), like the paint brush
@@ -9425,7 +9425,7 @@ const Build = (() => {
       for (const k of drag.cells) { const p = k.split(','); if (station.beltAt(+p[0], +p[1])) { ctx.fillRect(+p[0] * t, +p[1] * t, t, t); n++; } }
       ctx.globalAlpha = 1;
       const bb = cellsRect(drag.cells);
-      if (bb) ghostBadge(t, n ? [n + (n === 1 ? ' BELT' : ' BELTS'), 'RELEASE TO CLEAR'] : ['DRAG ALONG A BELT'], n > 0, bb);
+      if (bb) ghostBadge(t, n ? [n + (n === 1 ? ' CINTA' : ' CINTAS'), 'SUELTA PARA LIMPIAR'] : ['ARRASTRA A LO LARGO DE UNA CINTA'], n > 0, bb);
       return;
     }
     if (drag && drag.mode === 'box') { drawSelectBox(t); return; }
@@ -9491,17 +9491,17 @@ const Build = (() => {
       : (tool === 'hall' ? (Math.max(w, h) + ' LONG × ' + Math.min(w, h) + ' WIDE') : (w + ' × ' + h));
     const lines = [dims];
     // a sized footprint also gets its area — "how much floor is this?" is the other question a drag asks
-    if (!g.belt && !g.move && g.kind !== 'line' && w * h > 1) lines[0] = dims + '   ' + (w * h) + ' TILES';
+    if (!g.belt && !g.move && g.kind !== 'line' && w * h > 1) lines[0] = dims + '   ' + (w * h) + ' CASILLAS';
     // (a line that fits laid out: the drawn shape will not go here, but the click lays the same line out round what stands here)
     if (!ok) lines.push(g.kind === 'line' && g.laid ? 'THE DRAWN SHAPE DOES NOT FIT HERE — IT WILL BE LAID OUT TO FIT' : ((footprint && footprint.msg) || placementReason(g)).toUpperCase());
     // the hover preview teaches BOTH gestures: this size on a click, any size on a drag
-    else if (g.stamp) lines.push(g.insert ? (propType === 'bay' ? 'INSERT A STEP — THE LINE MAKES ROOM' : 'CLICK TO PUT IT ON THIS BELT') : g.kind === 'prop' ? (rowable(propType) ? 'CLICK TO PLACE · DRAG FOR A ROW' : 'CLICK TO PLACE') : 'CLICK TO PLACE · DRAG TO SIZE');
+    else if (g.stamp) lines.push(g.insert ? (propType === 'bay' ? 'INSERTAR UN PASO — LA LÍNEA HACE HUECO' : 'CLIC PARA PONERLO EN ESTA CINTA') : g.kind === 'prop' ? (rowable(propType) ? 'CLICK TO PLACE · DRAG FOR A ROW' : 'CLIC PARA COLOCAR') : 'CLIC PARA COLOCAR · ARRASTRA PARA DIMENSIONAR');
     /* SPACING (2026-09-27 audit B4): a dock hooks every belt in the 1-tile ring around it, so two docks with one empty tile
        between them share that tile — a belt there hooks BOTH, and the job goes nowhere. Said while the ghost is in hand,
        never refused (sandbox law): the Commander may still want them tight. */
     if (ok && g.kind === 'prop' && placingProp() && RING_DOCK_T[propType] && !linkedFloor()) {
       const near = station.props().find(p => RING_DOCK_T[p.t] && p.x - 1 <= r0.x2 + 1 && r0.x1 - 1 <= p.x + (p.w || 1) && p.y - 1 <= r0.y2 + 1 && r0.y1 - 1 <= p.y + (p.h || 1));
-      if (near) lines.push('CLOSE TO THE ' + String(propLabel(near.t)).toUpperCase() + ' — LEAVE 2 TILES OR THEIR BELTS TOUCH');
+      if (near) lines.push('CERCA DEL ' + String(propLabel(near.t)).toUpperCase() + ' — DEJA 2 CASILLAS O QUE SUS CINTAS TOQUEN');
     }
     if (links) lines.push('WILL CONNECT TO ' + linkNames(links));
     if (ok && g.v && g.v.checking) lines.push(CHECKING_ROUTE);   // (SETTLE: the route is judged once the pointer rests)
@@ -9553,14 +9553,14 @@ const Build = (() => {
     // a player who only meets it as a red ghost has been told "no" without being told "why".
     const mount = c.mount === 'surface' ? ' · stands on a table'
       : c.stack ? ' · deck or table'
-      : (c.surface ? ' · things can stand on it' : '');
+      : (c.surface ? ' · las cosas pueden estar encima' : '');
     const foot = c.w + '×' + c.h + (c.blocks === false ? ' · walkable' : ' · solid') + mount;
-    const desc = c.desc || (fn ? '' : 'Decor — looks only. Sets the mood; no effect on how the station runs.');
+    const desc = c.desc || (fn ? '' : 'Decoración — solo aspecto. Da ambiente; no afecta al funcionamiento de la estación.');
     let assign = '';
     if (placed && WORKSTATION_TYPES[placed.t]) {
       assign = placed.agentId
         ? '<div class="pc-assign ok">▸ HOSTED BY ' + esc(agentLabel(placed.agentId)) + '</div>'
-        : '<div class="pc-assign">UNASSIGNED — click to choose an agent</div>';
+        : '<div class="pc-assign">SIN ASIGNAR — clic para elegir un agente</div>';
     } else if (placed && placed.t === 'bay') {
       if (placed.agentId) {
         assign = '<div class="pc-assign ok">▸ AGENT ' + esc(agentLabel(placed.agentId)) + '</div>';
@@ -9578,16 +9578,16 @@ const Build = (() => {
         // an unbound ROLE dock introduces itself here on hover (its floor placard is muted while hovered)
         const ri = (placed.role && typeof WorldModel !== 'undefined' && WorldModel.bayRoleInfo) ? WorldModel.bayRoleInfo(placed.role) : null;
         assign = ri ? '<div class="pc-assign">NEEDS A ' + esc(placed.role) + ' — ' + esc(ri.desc) + ' — click to crew</div>'
-          : '<div class="pc-assign">NO AGENT — click to assign</div>';
+          : '<div class="pc-assign">SIN AGENTE — clic para asignar</div>';
       }
     } else if (placed && placed.t === 'plugin_terminal') {
       assign = placed.pluginId
         ? '<div class="pc-assign ok">▸ PLUGIN ' + esc(placed.pluginId) + '</div>'
-        : '<div class="pc-assign">UNBOUND — click to choose a plugin</div>';
+        : '<div class="pc-assign">SIN ENLAZAR — clic para elegir un plugin</div>';
     } else if (placed && placed.t === 'connector_portal') {
       assign = placed.connectorId
         ? '<div class="pc-assign ok">▸ BOUND ' + esc(placed.connectorId) + '</div>'
-        : '<div class="pc-assign">UNBOUND — click to bind a server</div>';
+        : '<div class="pc-assign">SIN ENLAZAR — clic para enlazar un servidor</div>';
     } else if (placed && placed.t === 'intake' && placed.label) {
       // a NAMED line's INBOX hover names the line (line naming) — the card is the ONE hover voice in
       // BUILD MODE (one-voice law), so the fact rides here; the canvas glance covers the card-less contexts.
@@ -9609,8 +9609,8 @@ const Build = (() => {
     let out = '';
     if (JUNCTION_TAG_TYPES[placed.t] && valPlan && cacheGeo) {
       const o = cacheGeo.origin || { tx: 0, ty: 0 }, cfg = valPlan.junctions && valPlan.junctions[(placed.x - o.tx) + ',' + (placed.y - o.ty)];
-      const mode = placed.t === 'splitter' ? (cfg ? (fanoutOnceCrewed()[(placed.x - o.tx) + ',' + (placed.y - o.ty)] ? 'Every branch gets a copy: a JOINER follows the branches.' : 'Jobs take turns between the branches (no JOINER after them).') : null)
-        : placed.t === 'joiner' ? (cfg && cfg.expect > 1 ? 'Waits for ' + cfg.expect + ' branches, then sends one combined result on.' : null)
+      const mode = placed.t === 'splitter' ? (cfg ? (fanoutOnceCrewed()[(placed.x - o.tx) + ',' + (placed.y - o.ty)] ? 'Every branch gets a copy: a JOINER follows the branches.' : 'Los trabajos se turnan entre las ramas (sin REUNIDOR tras ellas).') : null)
+        : placed.t === 'joiner' ? (cfg && cfg.expect > 1 ? 'Waits for ' + cfg.expect + ' ramas, y luego envía un único resultado combinado.' : null)
         : placed.t === 'loop' ? (cfg ? 'Sends work back up to ' + (cfg.max || 5) + ' times' + (cfg.when ? ', until the verdict is ' + String(cfg.when).toUpperCase() : '') + '.' : null) : null;
       if (mode) out += '<div class="pc-assign ok">▸ ' + esc(mode) + '</div>';
     }

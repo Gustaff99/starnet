@@ -58,14 +58,14 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   A.ok(line.name === 'Research + write' && st.propById(line.intakeId).label === 'Research + write', '…named on its INBOX (one name, the shelf\'s)');
   A.ok(line.steps.map(s => s.role + ':' + s.agentId).join() === 'RESEARCHER:nova,WRITER:nova', '…every step crewed by the one agent');
   A.ok(line.steps[0].brief === WL.defaultBrief('RESEARCHER').does && line.steps[1].brief === WL.defaultBrief('WRITER').does, '…with each step\'s instructions');
-  A.ok(line.ready.ready && !line.ready.blocking.length, '…and READY TO RUN: the router can run it now (' + JSON.stringify(line.ready.blocking) + ')');
+  A.ok(line.ready.ready && !line.ready.blocking.length, '…y LISTO PARA EJECUTAR: el router puede ejecutarlo ahora (' + JSON.stringify(line.ready.blocking) + ')');
   A.ok(S.view === 'line' && S.line === line.key && S.pick === null, 'the window opens the new workflow, on its job box');
-  A.ok(S.msg && /Research \+ write is on your floor/.test(S.msg.text) && !S.msg.bad, '…saying so in the window (a toast would sit over the SEND key)');
+  A.ok(S.msg && /está en tu suelo/.test(S.msg.text) && !S.msg.bad, '…saying so in the window (a toast would sit over the SEND key)');
 
   /* ---------- 2. status is the compiled plan's readiness ---------- */
   st.assignPropAgent(line.steps[1].id, '');
   const unready = WW._floor().lines[0];
-  A.ok(!unready.ready.ready && unready.ready.blocking.some(b => /BAY 2 \(WRITER\) needs an agent/.test(b.what)), 'an unstaffed step: NEEDS SETUP, and which step needs whom');
+  A.ok(!unready.ready.ready && unready.ready.blocking.some(b => /BAY 2 \(WRITER\) needs an agent/.test(b.what)), 'un paso sin agente: NECESITA AJUSTES, y qué paso necesita a quién');
   st.assignPropAgent(line.steps[1].id, 'nova');
   A.ok(WW._floor().lines[0].ready.ready, 'crewed again: READY');
 
@@ -116,7 +116,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     (busOn['workitem.placed'] || []).forEach(fn => fn({ kind: 'handoff', workitemId: 'w1', lineId: line.key, jobId: delivered.id }));
     (busOn['workitem.delivered'] || []).forEach(fn => fn({ workitemId: 'w1', finalQueueId: 'outbox' }));
     await new Promise(r => setTimeout(r, 750));
-    A.ok(folded.length === 1 && folded[0].runId === 'rh1' && folded[0].title === 'the first job', 'a delivered hand-off is folded into TO REVIEW from its own record, titled by the job as it first arrived — ' + JSON.stringify(folded));
+    A.ok(folded.length === 1 && folded[0].runId === 'rh1' && folded[0].title === 'the first job', 'una entrega entregada se pliega en POR REVISAR desde su propio registro, titled by the job as it first arrived — ' + JSON.stringify(folded));
     S.jobs = []; S.out = null;
   }
 
@@ -180,7 +180,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const noNotes = Object.assign({}, job, { notes: [] });
     A.ok(WW._styleKept(noNotes), 'fixture: the window reads the panel-kept example as STYLE KEPT');
     WW._putStyleBack(noNotes);
-    A.ok((st.propById(dockId).brief || '') === plain && !WW._styleKept(noNotes), 'PUT IT BACK takes the panel-kept example out (it silently did nothing): ' + JSON.stringify((st.propById(dockId).brief || '').slice(-80)));
+    A.ok((st.propById(dockId).brief || '') === plain && !WW._styleKept(noNotes), 'DEVOLVERLO saca el ejemplo mantenido en el panel (it silently did nothing): ' + JSON.stringify((st.propById(dockId).brief || '').slice(-80)));
     for (let i = 0; i < 4; i++) await tick();
     // DESIGN ANCHOR (2026-10-11): KEEP THIS STYLE also makes the approval the Commander's station-wide taste (the sidecar reads the
     // delivered run's real files / palette / fonts / image args), and PUT IT BACK takes that back too
@@ -189,10 +189,10 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     WW._keepStyle(job);
     for (let i = 0; i < 4; i++) await tick();
     A.ok(WW._styleKept(job), 'fixture: the style is kept on the step');
-    A.eq(keepPosts(), [{ runId: 'r2' }], 'KEEP THIS STYLE posts the DELIVERED run (runs[0]) to the station taste');
+    A.eq(keepPosts(), [{ runId: 'r2' }], 'MANTENER ESTE ESTILO publica la ejecución ENTREGADA (runs[0]) to the station taste');
     WW._putStyleBack(job);
     for (let i = 0; i < 4; i++) await tick();
-    A.eq(keepPosts(), [{ runId: 'r2' }, { runId: 'r2', undo: true }], 'PUT IT BACK takes the station-wide approval back too');
+    A.eq(keepPosts(), [{ runId: 'r2' }, { runId: 'r2', undo: true }], 'DEVOLVERLO también recupera la aprobación de la estación');
     A.ok((st.propById(dockId).brief || '') === plain, 'and the step is as it was');
   }
 
@@ -213,7 +213,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     fetches.length = 0;
     WW._keepStyle(job); WW._putStyleBack(job);
     await tick();
-    A.ok(!WW._styleKept(job), 'PUT IT BACK restores the step immediately while reference capture is pending');
+    A.ok(!WW._styleKept(job), 'DEVOLVERLO restaura el paso inmediatamente mientras la captura de referencia está pendiente');
     A.eq(posts(), [{ runId: 'r2' }], 'the withdrawal waits for the pending keep instead of overtaking it');
     // A separate run is independent, and a view change cannot cancel this run's pending undo.
     S.job = null; S.view = 'list';
@@ -238,7 +238,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     A.eq(posts(), [{ runId: 'r2' }], 'rapid keep/undo/keep sends only the first request while it is unsettled');
     finishFirst(); for (let i = 0; i < 4; i++) await tick();
     A.eq(writes, ['keep', 'undo', 'keep'], 'all repeated style changes commit in user order');
-    A.ok(WW._styleKept(job) && memory.some(r => r.sourceRunId === 'r2' && r.feedbackKept), 'the last KEEP THIS STYLE agrees on the step and in crew memory');
+    A.ok(WW._styleKept(job) && memory.some(r => r.sourceRunId === 'r2' && r.feedbackKept), 'el último MANTENER ESTE ESTILO coincide en el paso y en la memoria de la tripulación');
 
     // A failed keep does not poison the queue: undo is still necessary when the response was lost after persistence.
     fetches.length = 0; let n = 0;
@@ -253,7 +253,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   const css = rd('frontend/css/workflows-window.css'), glass = rd('frontend/app/glass-demo.js'), sc = rd('frontend/app/stationcommands.js');
   A.ok(/<button class="bb" id="bb-automate" data-family="automate"/.test(html) && /\{ id: 'workflows', k: 'workflows', label: 'FLUJOS'/.test(fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'stationui.js'), 'utf8')) && !/bbWorkflows\.onclick/.test(app), 'WORK › AUTOMATIZAR › FLUJOS opens this window through the dock (never Build Mode)');
   A.ok(html.indexOf('app/windows/workflows.js') > html.indexOf('app/stationui.js') && /css\/workflows-window\.css/.test(html), 'it loads after the window manager, with its stylesheet');
-  A.ok(/function editLine\(propId\) \{[\s\S]{0,400}openFlowCard\(propId\)/.test(build) && /lineWords: \(\) => \(\{ plain: LINE_PLAIN, purpose: LINE_PURPOSE \}\)/.test(build), 'EDIT WORKFLOW opens the full editor on this line; the window speaks the shelf\'s own words');
+  A.ok(/function editLine\(propId\) \{[\s\S]{0,400}openFlowCard\(propId\)/.test(build) && /lineWords: \(\) => \(\{ plain: LINE_PLAIN, purpose: LINE_PURPOSE \}\)/.test(build), 'EDITAR FLUJO abre el editor completo en esta línea; the window speaks the shelf\'s own words');
   A.ok(/class="consent-btn ob-wf">ABRIR EN FLUJOS<\/button>/.test(outbox) && /WorkflowsWindow\.openByStream\(rw\.streamId, 'deliverables'\)/.test(outbox), 'ENTREGABLES › TO REVIEW opens a workflow job\'s own record here');
   A.ok(/const work = w\.classList\.contains\('wfw-win'\);/.test(glass) && /work \? available \* \.8/.test(glass), 'it opens tall enough for the job and its result');
   // the window's status reads the panel's facts — the ones station.layout gives the lead (stationcommands.js describeLayout)
@@ -338,9 +338,9 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const sl = WW.startLines().find(x => x.key === l0.key);
     A.ok(sl && sl.dockId === entry && sl.agentId === 'nova', 'startLines: the line\'s first routed step and its agent (HORARIOS › RUN BY)');
     // the page: STARTS sits between Send it a job and Last jobs; its key opens EDIT WORKFLOW at 'Or start it automatically'
-    A.ok(/\+ '<\/section>' \+ startsHTML\(l\) \+ '<section class="wfw-sec"><h3>Last jobs<\/h3>'/.test(src), 'STARTS: sits between the job box and LAST JOBS');
-    A.ok(/data-act="automatic" data-tip="[^"]+">⊕ MAKE IT AUTOMATIC<\/button>/.test(src) && /data-act="automatic" data-tip="[^"]+">⊕ CHANGE STARTS<\/button>/.test(src)
-      && /const started = !!t && t\.split\(' · '\)\.slice\(1\)\.some\(p => !\/could not be read\$\/\.test\(p\)\);/.test(src) && /B\(\)\.editLine\(l\.intakeId\)\)\) return;\s*\n\s*if \(typeof WorkflowPanel !== 'undefined' && WorkflowPanel\.revealStarts\)/.test(src), '⊕ MAKE IT AUTOMATIC opens the editor on the INBOX and reveals its starts');
+    A.ok(/\+ '<\/section>' \+ startsHTML\(l\) \+ '<section class="wfw-sec"><h3>Last jobs<\/h3>'/.test(src), 'INICIOS: está entre la caja de trabajo y ÚLTIMOS TRABAJOS');
+    A.ok(/data-act="automatic" data-tip="[^"]+">⊕ HACERLO AUTOMÁTICO<\/button>/.test(src) && /data-act="automatic" data-tip="[^"]+">⊕ CHANGE INICIOS<\/button>/.test(src)
+      && /const started = !!t && t\.split\(' · '\)\.slice\(1\)\.some\(p => !\/could not be read\$\/\.test\(p\)\);/.test(src) && /B\(\)\.editLine\(l\.intakeId\)\)\) return;\s*\n\s*if \(typeof WorkflowPanel !== 'undefined' && WorkflowPanel\.revealStarts\)/.test(src), '⊕ HACERLO AUTOMÁTICO abre el editor en la BANDEJA y revela sus inicios');
     const panelSrc = rd('frontend/app/workflowpanel.js');
     A.ok(/<section class="wf-sec" id="wf-starts"><h3>Or start it automatically<\/h3>/.test(panelSrc) && /selectFromFloor, revealStarts, showTest,/.test(panelSrc), 'the panel names that section and exports revealStarts');
     // (live walk 10-14) the section lands BELOW the pinned line map (sticky at top:0), never under it
@@ -351,7 +351,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     A.ok(/const pinned = !!\(map && typeof getComputedStyle === 'function' && getComputedStyle\(map\)\.position === 'sticky'\);/.test(panelSrc)
       && /sc\.scrollTop \+= startsScrollBy\(sec\.getBoundingClientRect\(\)\.top, sc\.getBoundingClientRect\(\)\.top, pinned \? map\.getBoundingClientRect\(\)\.height : 0, z\);/.test(panelSrc),
       'scrollToStarts subtracts the map\'s height only while the map is actually sticky');
-    A.ok(src.includes('las ejecuciones programadas, por canal, por carpeta y por webhook se archivan en ENTREGABLES'), 'an empty LAST JOBS says where scheduled, channel, folder and webhook runs are filed');
+    A.ok(src.includes('las ejecuciones programadas, por canal, por carpeta y por webhook se archivan en ENTREGABLES'), 'un ÚLTIMOS TRABAJOS vacío dice dónde se archivan las ejecuciones programadas, por canal, por carpeta y por webhook');
     // (org wire AUTO-P15-3) every start that writes no job record is named there: a folder or webhook trigger never records a line job
     const trSrc = rd('sidecar/routing/trigger-runner.js');
     A.ok(!/jobs\.start\(|LineJobs/.test(trSrc), 'fixture: trigger-runner records no line job (if it ever does, its runs show in LAST JOBS and this note changes)');
@@ -364,11 +364,11 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const was = ctx.ReturnStore.pendingRows;
     ctx.ReturnStore.pendingRows = () => [{ runId: 'rp14', agentId: 'nova', title: 'three facts about the moon' }];
     const waiting = WW._resultHTML(line, dj), plain = waiting.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-    A.ok(!/data-act="toreview"/.test(waiting) && !/ENTREGABLES/.test(plain) && !/in the OUTBOX/.test(plain), 'a job still in TO REVIEW carries no door on to ENTREGABLES (the OUTBOX\'s own page) and never says "in the OUTBOX": ' + plain.slice(0, 160));
-    A.ok(/<div class="wfw-rate" data-rate-for="rp14"><\/div>/.test(waiting), '…and carries the rate host TO REVIEW mounts (Chat.awayRate) for its run');
+    A.ok(!/data-act="toreview"/.test(waiting) && !/ENTREGABLES/.test(plain) && !/in the OUTBOX/.test(plain), 'un trabajo aún en POR REVISAR no lleva ninguna puerta hacia ENTREGABLES (the OUTBOX\'s own page) and never says "in the OUTBOX": ' + plain.slice(0, 160));
+    A.ok(/<div class="wfw-rate" data-rate-for="rp14"><\/div>/.test(waiting), '…y lleva el anfitrión de evaluación que POR REVISAR monta (Chat.awayRate) for its run');
     ctx.ReturnStore.pendingRows = () => [];
     const rated = WW._resultHTML(line, dj);
-    A.ok(!/TO REVIEW/.test(rated) && !/wfw-rate/.test(rated), 'a job already rated (no pending row) says nothing about TO REVIEW and offers no rating');
+    A.ok(!/TO REVIEW/.test(rated) && !/wfw-rate/.test(rated), 'un trabajo ya evaluado (sin fila pendiente) no dice nada sobre POR REVISAR y no ofrece evaluación');
     ctx.ReturnStore.pendingRows = was;
     A.ok(/Chat\.awayRate\(host, rw, clear\)/.test(src) && /ReturnStore\.resolve\(rw\.runId, 'workflows'\)/.test(src), 'rating here resolves the same crate TO REVIEW holds (the windows/outbox.js path), naming itself so ReturnStore repaints TO REVIEW');
     A.ok(/\brefresh\b/.test(src.slice(src.lastIndexOf('return {'))) && /const refresh = runIds => \{\s*if \(!alive\(\)\) return;/.test(src), 'FLUJOS exports refresh (ReturnStore\'s nudge when its run is rated in TO REVIEW or COMMS), a no-op while closed (returnstore-rate-sync runs it: only the shown run\'s rating repaints)');
@@ -379,13 +379,13 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   /* ---------- org P17 (2026-10-14): FLUJOS and the Workflow panel use ONE word set for the same line ---------- */
   {
     const panelSrc = rd('frontend/app/workflowpanel.js'), buildSrc = rd('frontend/app/build.js');
-    A.ok(src.includes('<span class="wfw-st ok">✓ DELIVERED</span>') && src.includes('<b class="ok">✓ DELIVERED</b>') && !src.includes('✓ DONE'), 'a finished job reads ✓ DELIVERED in LAST JOBS and on its result (the panel\'s ✓ DONE is its close key)');
-    A.ok(src.includes('>▶ SEND A JOB</button>') && panelSrc.includes("'▶ SEND A JOB')") && panelSrc.includes('id="wf-sendnow" hidden>▶ SEND A JOB</button>'), '▶ SEND A JOB in both editors');
-    A.ok(panelSrc.includes(": '▶ SEND A REAL JOB') + '</button>'") && panelSrc.includes("['real', 'SEND A REAL JOB',") && panelSrc.includes('real agents, real cost, and the result lands') && !/costs a run'/.test(panelSrc + buildSrc), 'TEST\'s key reads ▶ SEND A REAL JOB like the FINISH and COMMS cards; its cost is the help sentence above it (org D4 polish)');
-    A.ok(src.includes('>↻ SEND IT AGAIN</button>') && panelSrc.includes('id="wf-nr-again">↻ SEND IT AGAIN</button>') && !/RUN THE SAME JOB AGAIN</.test(src + panelSrc), '↻ SEND IT AGAIN after a fix, in both');
-    A.ok(panelSrc.includes('<span>✎ NEEDS CHANGES</span>') && panelSrc.includes("'SUGGEST CHANGES'") && panelSrc.includes('★ KEEP THIS STYLE</button>'), 'the panel says ✎ NEEDS CHANGES · SUGGEST CHANGES · ★ KEEP THIS STYLE, as FLUJOS does');
-    A.ok(src.includes("'\">GIVE ' + esc(String(a.name || a.id).toUpperCase()) + ' EVERY STEP</button>'") && buildSrc.includes("'>GIVE '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' EVERY STEP</button>'") && !src.includes('DOES EVERY STEP') && !buildSrc.includes('DOES EVERY STEP') && src.includes(' A DESK</button>') && buildSrc.includes(">⊕ GIVE '+esc(") && panelSrc.includes('id="wf-pc">⊕ GIVE \' + esc(') && src.includes('">⊕ GIVE \' + esc(NAME('), 'GIVE <NAME> EVERY STEP (an action, never a status beside a picker that names someone else) and GIVE <NAME> A DESK in FLUJOS, BUILD and the panel');
-    A.ok(buildSrc.includes("▸ FINISH ${lname ? esc(lname.toUpperCase()) : 'SETUP'}") && !buildSrc.includes("'FINISH THE LINE'"), 'the FINISH card reads FINISH <LINE NAME>, or FINISH SETUP unnamed (org D4/D5: never FINISH SETUP · NAME, which wrapped)');
+    A.ok(src.includes('<span class="wfw-st ok">✓ ENTREGADO</span>') && src.includes('<b class="ok">✓ ENTREGADO</b>') && !src.includes('✓ DONE'), 'un trabajo terminado se lee ✓ ENTREGADO en ÚLTIMOS TRABAJOS y en su resultado (the panel\'s ✓ DONE is its close key)');
+    A.ok(src.includes('>▶ ENVIAR TRABAJO</button>') && panelSrc.includes("'▶ ENVIAR UN TRABAJO')") && panelSrc.includes('id="wf-sendnow" hidden>▶ ENVIAR UN TRABAJO</button>'), '▶ ENVIAR TRABAJO en ambos editores');
+    A.ok(panelSrc.includes(": '▶ ENVIAR UN TRABAJO REAL') + '</button>'") && panelSrc.includes("['real', 'ENVIAR UN JOB REAL',") && panelSrc.includes('agentes reales, costo real') && !/costs a run'/.test(panelSrc + buildSrc), 'TEST\'s key reads ▶ SEND A REAL JOB like the FINISH and COMMS cards; its cost is the help sentence above it (org D4 polish)');
+    A.ok(src.includes('>↻ ENVIARLO OTRA VEZ</button>') && panelSrc.includes('id="wf-nr-again">↻ ENVIARLO OTRA VEZ</button>') && !/RUN THE SAME JOB AGAIN</.test(src + panelSrc), '↻ ENVIARLO OTRA VEZ después de un arreglo, en ambos');
+    A.ok(panelSrc.includes('<span>✎ NECESITA CAMBIOS</span>') && panelSrc.includes("'SUGERIR CAMBIOS'") && panelSrc.includes('★ MANTENER ESTE ESTILO</button>'), 'el panel dice ✎ NECESITA CAMBIOS · SUGERIR CAMBIOS · ★ MANTENER ESTE ESTILO, como FLUJOS');
+    A.ok(src.includes("'\">DA ' + esc(String(a.name || a.id).toUpperCase()) + ' CADA PASO</button>'") && buildSrc.includes("'>DALE A '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' CADA PASO</button>'") && !src.includes('DOES EVERY STEP') && !buildSrc.includes('DOES EVERY STEP') && src.includes(' UN ESCRITORIO</button>') && buildSrc.includes(">⊕ DA '+esc(") && panelSrc.includes('id="wf-pc">⊕ DA \' + esc(') && src.includes('">⊕ DA \' + esc(NAME('), 'DA <NAME> CADA PASO (una acción, nunca un estado junto a un selector que nombra a otro) y DA <NAME> UN ESCRITORIO en FLUJOS, BUILD y el panel');
+    A.ok(buildSrc.includes("▸ FINISH ${lname ? esc(lname.toUpperCase()) : 'SETUP'}") && !buildSrc.includes("'FINISH THE LINE'"), 'la tarjeta TERMINAR se lee TERMINAR <NOMBRE DE LÍNEA>, o TERMINAR AJUSTES sin nombre (org D4/D5: never FINISH SETUP · NAME, which wrapped)');
     A.ok(!/Elige un workflow/.test(rd('frontend/app/windows/loops.js')) && /Elige un tipo de loop/.test(rd('frontend/app/windows/loops.js')), 'BUCLES DE OBJETIVO asks for a kind of loop, never "a workflow"');
   }
 
@@ -400,21 +400,21 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const led = WW._newHTML(WW._floor());
     A.eq(tilesOf(led).join(), 'mission_control,research_line,revision_loop,front_desk,build_test', 'a goal line off the four leads them');
     const goalTile = (/<button type="button" class="wfw-tile wfw-goal"[^>]*>[\s\S]*?<\/button>/.exec(led) || [''])[0];
-    A.ok(/data-tip="“ship my app every week” — a crew plans it and checks it/.test(goalTile) && /<span class="wfw-tstat">\d+ steps?( · reviewed| · side by side)?<\/span>/.test(goalTile), '…its tip quotes their words, its one small line is the step count like every tile and CONVEYORS › LINES (no sentence under the tile): ' + goalTile.slice(0, 200));
+    A.ok(/data-tip="“ship my app every week” — a crew plans it and checks it/.test(goalTile) && /<span class="wfw-tstat">\d+ pasos?( · revisado| · lado a lado)?<\/span>/.test(goalTile), '…its tip quotes their words, its one small line is the step count like every tile and CONVEYORS › LINES (no sentence under the tile): ' + goalTile.slice(0, 200));
     A.ok(!/<span class="wfw-tstat">[^<]{40,}/.test(led), 'every tile keeps one short stat line');
     A.ok(/<div class="wfw-tgroup wfw-goalhd"[^>]*>PARA TU OBJETIVO <span class="wfw-goalq">“ship my app every week”<\/span><\/div><button type="button" class="wfw-tile wfw-goal"/.test(led) && /wfw-goal"[\s\S]*?<\/button><div class="wfw-tgroup">FLUJOS COMUNES<\/div>/.test(led), 'the goal tile sits under the shelf\'s gold FOR YOUR GOAL heading, the four under COMMON FLUJOS (org D2 polish)');
     // (org g7 D2, final round) the shelf claims a goal only by NAMING it — never a match for the empty 'What should it make?' box
     A.ok(/PARA TU OBJETIVO <span class="wfw-goalq">“ship my app every week”<\/span>/.test(led) && /<textarea id="wfw-describe"[^>]*><\/textarea>/.test(led), 'with the box still empty, the heading names the goal it matched: the Commander\'s own words');
     ctx.Build.goalLine = () => ({ id: 'mission_control', why: 'w', quote: '  ' });
     A.ok(!/PARA TU OBJETIVO/.test(WW._newHTML(WW._floor())) && tilesOf(WW._newHTML(WW._floor())).length === 4, 'a goal with no words to name shows no goal shelf at all');
-    A.ok(/' · side by side'/.test(src), 'a SPLITTER line says its steps work side by side');
+    A.ok(/' · lado a lado'/.test(src), 'una línea SPLITTER dice que sus pasos trabajan lado a lado');
     A.ok(/\.wfw-tile\.wfw-goal \{ grid-column: 1 \/ -1; \}/.test(rd('frontend/css/workflows-window.css')), 'the goal tile takes a row of its own, so the four starters under it stay a whole grid');
     ctx.Build.goalLine = () => ({ id: 'research_line', why: 'w', quote: 'q' });
     A.eq(tilesOf(WW._newHTML(WW._floor())).join(), 'research_line,revision_loop,front_desk,build_test', 'a goal line that IS one of the four is not shown twice');
     ctx.Build.goalLine = () => ({ id: 'no_such_line', why: 'w', quote: 'q' });
     A.eq(tilesOf(WW._newHTML(WW._floor())).length, 4, 'an unknown goal id adds nothing');
-    A.ok(/More ready-made workflows are in the Build Library ›/.test(WW._newHTML(WW._floor())), 'the More ready-made workflows link stays, in the SET IT UP note\'s word (org D5 polish)');
-    A.ok(/picks one of 20 ready-made workflows/.test(WW._newHTML(WW._floor())), 'SET IT UP FOR ME says it chooses from the whole shelf, in this page\'s word (workflows, org D11)');
+    A.ok(/Más flujos listos están en la Biblioteca de Construcción ›/.test(WW._newHTML(WW._floor())), 'the More ready-made workflows link stays, in the SET IT UP note\'s word (org D5 polish)');
+    A.ok(/elige uno de 20 flujos listos/.test(WW._newHTML(WW._floor())), 'SET IT UP FOR ME says it chooses from the whole shelf, in this page\'s word (workflows, org D11)');
     delete ctx.Build.goalLine;
     S.pick = S0.pick; S.drafting = S0.drafting;
     const buildSrc = rd('frontend/app/build.js');

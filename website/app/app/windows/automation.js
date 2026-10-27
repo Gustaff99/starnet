@@ -140,5 +140,5 @@
     }
   }
 
-  StationUI.registerWindow('automation', 'AUTOMATION', buildAutomation, { console: true, className: 'automation-win' });
+  StationUI.registerWindow('automation', 'AUTOMATIZACIÓN', buildAutomation, { console: true, className: 'automation-win' });
 })();

@@ -35,7 +35,7 @@
   function storageNextStep(storage) {
     const s = storage || {};
     if (s.reason === 'busy') return s.canStartFresh ? '' : ' Restart StarNet to try again.';
-    if (s.reason === 'key-unavailable') return s.canStartFresh ? ' Use START FRESH only if you cannot unlock or repair the credential store.' : ' Unlock the credential store and restart StarNet.';
+    if (s.reason === 'key-unavailable') return s.canStartFresh ? ' Usa START FRESH solo si no puedes desbloquear o reparar la tienda de credenciales.' : ' Desbloquea la tienda de credenciales y reinicia StarNet.';
     return s.canStartFresh ? ' START FRESH sets the unreadable files aside and lets you sign in to each service again.' : '';
   }
   /* An open store's storage notes. `notice` is a store StarNet does not count as encrypted (fallback, or a seal not yet
