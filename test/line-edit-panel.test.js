@@ -36,13 +36,13 @@ A.ok(/if \(fl\.moves\) \{ drawMoves\(fl, k, t\); continue; \}/.test(build) && /f
 A.ok(/pushFlash\(/.test(run) && /Tutorial\.onPropPlaced/.test(run) && /rebake\(\)/.test(run), '…what it placed flashes, the tutorial hears it, and the plan recompiles at once');
 A.ok(/lineEdit: \(op, propId, args, how\) => lineEditRun\(op, propId, args, how\)/.test(build) && /canLineEdit: \(op, propId, args\) =>[^\n]*LineEdit\.check\(/.test(build), 'the panel host offers lineEdit and canLineEdit (the dry answer that greys a button out)');
 const own = at(build, '      /* BUILD YOUR OWN (conveyor-links phase D)', '      /* START FROM INTENT');
-A.ok(/BUILD YOUR OWN LINE/.test(own) && /own\.onclick = \(\) => startNewLine\(\);/.test(own), 'the Conveyors tab has BUILD YOUR OWN LINE: it puts an INBOX in hand');
+A.ok(/CONSIGUE TU PROPIA LÍNEA/.test(own) && /own\.onclick = \(\) => startNewLine\(\);/.test(own), 'the Conveyors tab has CONSIGUE TU PROPIA LÍNEA: it puts an INBOX in hand');
 A.ok(!/lineEditRun\(|LineEdit\.|openWorkflowPanel\(/.test(own), '…and never lays a line (or opens a panel) itself — the Commander places the INBOX where they click');
 
 // the panel's edits
 const shape = at(panel, '  function shapeHTML(p) {', '  /* ---------- the footer');
-for (const [op, what] of [['moveStep\', p.id, { id: p.id, dir: -1 }', '◂ EARLIER'], ['moveStep\', p.id, { id: p.id, dir: 1 }', 'LATER ▸'], ['addLoop', '⟲ ADD A REVIEW'],
-  ["addBranch', p.id, { around: p.id, mode: 'copy' }", '⑂ SECOND OPINION'], ["addBranch', p.id, { around: p.id, mode: 'turns' }", '⑂ SHARE THE LOAD'], ['removeStep', '✕ REMOVE STEP'], ['wrapLine', '▸ MAKE IT A LINE']])
+for (const [op, what] of [['moveStep\', p.id, { id: p.id, dir: -1 }', '◂ EARLIER'], ['moveStep\', p.id, { id: p.id, dir: 1 }', 'LATER ▸'], ['addLoop', '⟲ AÑADIR UNA REVISIÓN'],
+  ["addBranch', p.id, { around: p.id, mode: 'copy' }", '⑂ SEGUNDA OPINIÓN'], ["addBranch', p.id, { around: p.id, mode: 'turns' }", '⑂ REPARTIR LA CARGA'], ['removeStep', '✕ QUITAR PASO'], ['wrapLine', '▸ HACERLO LÍNEA']])
   A.ok(shape.indexOf("editBtn('" + op) >= 0 && shape.indexOf(what) >= 0, 'a BAY\'s card offers ' + what);
 A.ok(/editBtn\('removeLoop', p\.id/.test(panel) && /REMOVE THE REVIEW/.test(panel), 'a LOOP gate\'s card offers REMOVE THE REVIEW');
 const ins = at(panel, '  function inserterHTML(from, to, f) {', '  function nodeHTML(n, f) {');
@@ -57,15 +57,15 @@ const wire = at(panel, '  function wireEdits(scope) {', '  // a BAY\'s line edit
 A.ok(/classList\.contains\('off'\)/.test(wire) && /refuse\(b\.dataset\.tip, b\)/.test(wire), '…and clicking it says the reason instead of trying (in the panel, under the key — 2026-10-09)');
 A.ok(/saveOpenFields\(\)/.test(at(panel, '  function lineEdit(op, id, args, okMsg, how, anchor) {', '  // one edit as a button')), 'a half-typed brief is saved before an edit changes the floor under it');
 // the SPLITTER's and the FILTER's shape edits
-A.ok(/editBtn\('addArm', p\.id, \{ split: p\.id \}, '⑂ ADD A BRANCH'/.test(panel) && /editBtn\('removeArm', p\.id, \{ split: p\.id, head: l\.dock \}, '✕ ' \+ branchLabel\(f, l\.dock\)/.test(panel), 'a SPLITTER\'s card offers ADD A BRANCH and a ✕ for each branch…');
+A.ok(/editBtn\('addArm', p\.id, \{ split: p\.id \}, '⑂ AÑADIR RAMA'/.test(panel) && /editBtn\('removeArm', p\.id, \{ split: p\.id, head: l\.dock \}, '✕ ' \+ branchLabel\(f, l\.dock\)/.test(panel), 'a SPLITTER\'s card offers AÑADIR RAMA and a ✕ for each branch…');
 A.ok(/'BAY ' \+ \(i \+ 1\) \+ \(d && d\.role \? ' · ' \+ d\.role : ''\)/.test(at(panel, '  function branchLabel(f, pid) {', '  function laneName(')), '…each named BAY n · ROLE, as the strip names it (two WRITER branches never read alike)');
-A.ok(/editBtn\('addRoute', p\.id, \{ id: p\.id, tag \}, '\+ A STEP FOR ' \+ lbl/.test(panel) && /\.error !== 'HAS_ROUTE'/.test(panel), 'a FILTER\'s card offers a step for a type it has no route for (never one it has)');
-A.ok(/editBtn\('removeSorter', p\.id, \{ id: p\.id \}, '✕ REMOVE THE SORTER'/.test(panel), '…and REMOVE THE SORTER');
+A.ok(/editBtn\('addRoute', p\.id, \{ id: p\.id, tag \}, '\+ UNA ETAPA PARA ' \+ lbl/.test(panel) && /\.error !== 'HAS_ROUTE'/.test(panel), 'a FILTER\'s card offers a step for a type it has no route for (never one it has)');
+A.ok(/editBtn\('removeSorter', p\.id, \{ id: p\.id \}, '✕ QUITAR EL ORDENADOR'/.test(panel), '…and QUITAR EL ORDENADOR');
 const le = at(panel, '  function lineEdit(op, id, args, okMsg, how, anchor) {', '  // one edit as a button');
-A.ok(/res\.canTidy && op !== 'tidy' && !\(how && how\.tidy\)/.test(le) && /S\.armTidy = \{ key, t: Date\.now\(\) \}/.test(le) && /click it again to TIDY the line round it/.test(le), 'no room where the line stands: the button ARMS in place and says a second click tidies round it');
+A.ok(/res\.canTidy && op !== 'tidy' && !\(how && how\.tidy\)/.test(le) && /S\.armTidy = \{ key, t: Date\.now\(\) \}/.test(le) && /clic de nuevo para ORDENAR la línea alrededor/.test(le), 'no room where the line stands: the button ARMS in place and says a second click tidies round it');
 A.ok(/'⌗ TIDY LINE TO FIT IT\?'/.test(btn) && /data-tidy-armed="1"/.test(btn), '…the armed button says what the second click does');
 A.ok(/tidy \? \{ tidy: true \} : null/.test(wire), '…and the second click asks the editor to lay the line out afresh round the change');
-A.ok(/res\.tidied \? ' · the whole line laid out afresh round it' : res\.relaid \? ' · the belts round it re-routed'/.test(le), 'the confirmation says when belts were re-routed or the line laid afresh');
+A.ok(/res\.tidied \? ' · toda la línea reorganizada en torno a él' : res\.relaid \? ' · las cintas en torno a él re-ruteadas'/.test(le), 'the confirmation says when belts were re-routed or the line laid afresh');
 
 // ROLE chips: a step's name, one undo, only real roles
 A.ok(/data-role="' \+ esc\(r\) \+ '" aria-pressed=/.test(panel) && /setPropRole\(p\.id, b\.getAttribute\('aria-pressed'\) === 'true' \? '' : b\.dataset\.role\)/.test(panel), 'a BAY\'s ROLE chips set its role (clicking the pressed one clears it)');

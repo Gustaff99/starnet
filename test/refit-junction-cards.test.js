@@ -37,12 +37,12 @@ const workflow = new Function(build.slice(build.indexOf('*/', wbi) + 2, build.la
   const plan = { reach: { writer: true }, chains: { writer: { next: ['reviewer', 'writer'] }, reviewer: { next: [], outbox: true } } };
   const read = workflow(comp, plan, a => a.toUpperCase());
   A.eq(read.steps[0].sends, 'REVIEWER / WRITER', 'branch and loop destinations retain real graph edges, not invented stage order');
-  A.eq(read.steps[2].agent, 'Choose an agent', 'unassigned step has an actionable label');
-  A.eq(read.steps[2].sends, 'No confirmed onward route', 'unbound steps do not claim routing');
-  A.eq(read.result, 'Connected to a results outbox', 'output connection comes from compiled chain');
-  A.eq(workflow(comp, null, a => a).result, 'No confirmed route to an outbox', 'missing plan never claims successful result');
+  A.eq(read.steps[2].agent, 'Elige un agente', 'unassigned step has an actionable label');
+  A.eq(read.steps[2].sends, 'Sin ruta de salida confirmada', 'unbound steps do not claim routing');
+  A.eq(read.result, 'Conectada a una OUTBOX de resultados', 'output connection comes from compiled chain');
+  A.eq(workflow(comp, null, a => a).result, 'Sin ruta confirmada a una OUTBOX', 'missing plan never claims successful result');
   plan.chains.reviewer = { next: [], deadEnd: true };
-  A.ok(/Disconnected end/.test(workflow(comp, plan, a => a).steps[1].sends), 'disconnected output names the recovery action');
+  A.ok(/Extremo desconectado/.test(workflow(comp, plan, a => a).steps[1].sends), 'disconnected output names the recovery action');
 }
 
 // a real floor: INBOX → WRITER → LOOP gate; gate E → REVIEWER → OUTBOX, gate S → belt back to WRITER
@@ -81,7 +81,7 @@ const workflow = new Function(build.slice(build.indexOf('*/', wbi) + 2, build.la
   A.eq(byDir.S && byDir.S.kind, 'bay', 'destination kind is carried for the BACK sentence');
   A.ok(/BACK lane: S → to WRITER/.test(pure.loopBackTxt(exits, 'E')), 'with DONE = E the card says S is the back lane and where it re-enters');
   A.ok(/BACK lane: E → to REVIEWER/.test(pure.loopBackTxt(exits, 'S')), 'flipping DONE flips the back sentence');
-  A.ok(/no BACK lane/.test(pure.loopBackTxt([exits[0]], exits[0].dir)), 'a one-exit gate is told it has no way round');
+  A.ok(/aún no hay carril BACK/.test(pure.loopBackTxt([exits[0]], exits[0].dir)), 'a one-exit gate is told it has no way round');
   A.eq(pure.loopExitLabels(null, tile).length, 0, 'no plan → no exits, never a throw');
 
   /* ---------- 2. MODEL round-trip: the config the cards write compiles into plan.junctions (inside plan.hash) ---------- */
@@ -141,12 +141,12 @@ A.ok(/loop-when/.test(flow) && /\['code', 'CODE'\], \['research', 'RESEARCH'\], 
   'LOOP verdict tag is a pick of the ONLY tags the classifier can produce (a typed "approved" could never match)');
 A.ok(/\['approved', 'APPROVED'\], \['revise', 'REVISE'\]/.test(flow) && /loop-verdict/.test(flow), 'LOOP verdict picks: APPROVED / REVISE (the words routing/verdict.js parses) sit beside the classifier tags (2026-08-22)');
 A.ok(/loopRuleTxt\(p\.when, p\.maxIter \|\| loopMaxDef\)/.test(flow) && /loopRuleTxt\(res\.when/.test(flow), 'the card copy and saved-note use the same rule, including the saved pass limit');
-A.ok(/goes round until the reviewer’s last line says VERDICT: ' \+ when/.test(build) && /or MAX PASSES/.test(build) && /marked unapproved/.test(build), 'the verdict rule copy: round until VERDICT: <word> or MAX PASSES, then DONE marked unapproved — what chain.js runs');
-A.ok(/goes round again ONLY while the reviewer’s output reads as/.test(build), 'the classifier-tag rule copy is unchanged: the tag keeps it looping, anything else leaves on DONE');
+A.ok(/da vueltas hasta que la última línea del revisor diga VERDICT: ' \+ when/.test(build) && /o MAX PASSES/.test(build) && /marcado como no aprobado/.test(build), 'the verdict rule copy: round until VERDICT: <word> or MAX PASSES, then DONE marked unapproved — what chain.js runs');
+A.ok(/da otra vuelta SOLO mientras la salida del revisor se lea como/.test(build), 'the classifier-tag rule copy is unchanged: the tag keeps it looping, anything else leaves on DONE');
 A.ok(/station\(\)\.configureJunction\(p\.id, Object\.keys\(cfg\)\.length \? cfg : null\)/.test(flow), 'gate saves go through configureJunction (the validated model path)');
 A.ok(/el\._saveGate = saveGate;/.test(flow) && /if \(el\._saveGate\) el\._saveGate\(\);/.test(panelSrc), 'closing the panel saves the gate config (ESC never discards it)');
 A.ok(/for \(const n of \[jnTimeout, loopMax\]\)[\s\S]{0,300}addEventListener\('blur', saveGate\)[\s\S]{0,200}e\.key === 'Enter'/.test(flow), 'number fields save on blur AND Enter');
-A.ok(/lbNote\.textContent = \(res\.limits \? '✓ line budget saved/.test(flow), 'LINE BUDGET confirms ON THE CARD after a save (blur or Enter)');
+A.ok(/lbNote\.textContent = \(res\.limits \? '✓ presupuesto de línea guardado/.test(flow), 'LINE BUDGET confirms ON THE CARD after a save (blur or Enter)');
 A.ok(!/JSON\.stringify\(plan\.(junctions|gate)/.test(src('world.js')), 'nothing was added to the plan-poster key — junction config rides plan.hash already');
 
 // palette purposes: every WORKFLOW machine has a one-line purpose in the tile tooltip
@@ -156,14 +156,14 @@ A.ok(/b\.setAttribute\('aria-description', c\.label[^\n]*purpose/.test(build), '
 const tile = build.slice(build.indexOf('function propTile('), build.indexOf('function renderPropPreview('));
 A.ok(/setAttribute\('data-tip'/.test(tile) && !/b\.title\s*=|setAttribute\('data-no-tip'/.test(tile), 'catalog tiles use the shared brief tooltip without a native bubble');
 // 2026-09-27 audit P3: named by OUTCOME — the JOINER waits and combines, the MERGER shares a belt and combines nothing
-A.ok(/joiner: 'waits until every branch has finished, then sends ONE combined result on'/.test(pm) && /merger: '[^']*nothing waits and nothing is combined/.test(pm), 'MERGER (nothing waits, nothing combined) vs JOINER (waits, one combined result) are distinguishable by tooltip alone');
+A.ok(/joiner: 'espera a que termine cada rama y luego envía UN resultado combinado'/.test(pm) && /merger: '[^']*nada espera y nada se combina/.test(pm), 'MERGER (nothing waits, nothing combined) vs JOINER (waits, one combined result) are distinguishable by tooltip alone');
 
 // sample-run feedback: rendered on the card, scoped to its line, ③ ticks only on delivered
 const fin = build.slice(build.indexOf('function renderFinCard'), build.indexOf('function positionFinCard'));
 A.ok(/finSampleRes\.key === c\.key/.test(fin), 'the readout belongs to the line it rode');
 A.ok(/sampleResultView\(j, r\.status, agentLabel\)/.test(fin), 'the response is parsed through the pure view (never discarded)');
 A.ok(/sr && sr\.view && sr\.view\.ok \? ' done' : ''/.test(fin), '③ ticks only on the view\'s ok (= server `delivered`)');
-A.ok(/THE JOB IS RIDING THE LINE/.test(fin), 'an in-flight job is shown as in flight, not as done');
+A.ok(/EL TRABAJO VIAJA POR LA LÍNEA/.test(fin), 'an in-flight job is shown as in flight, not as done');
 A.ok(/finSampleHTML\(sr\.view\)/.test(fin) && /fl-result/.test(fin), 'the result block is rendered into the card');
 A.ok(!/sample job dispatched — watch the line/.test(fin), 'the old fire-and-forget flash is gone');
 
