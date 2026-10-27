@@ -1,0 +1,22 @@
+{
+  "sourceIssueId": "8dcc7ae8-5cae-477f-9146-8c21df9847a5",
+  "verdict": "human_required",
+  "cause": "El fallo más reciente atribuido al verificador es un error del entorno de shell: el comando solicitado invocó `which`, que no está instalado (exit 127). No demuestra un fallo de la aplicación ni de la prueba visual. La causa anterior de la captura en screen-splash no puede reevaluarse contra el estado de cambios de la fuente porque el paquete de escalada context.json y su diff/snapshots, requeridos para esta revisión, no están presentes en el clon. Tampoco está disponible el documento supervision-policy de la misión fuente, necesario para completar una revisión automática conforme al procedimiento.",
+  "evidence": [
+    "CHECKPOINT.AUTO.md identifica el último commandKey 71757e892e6cfa9f57fb6aaf690f4341c37b87be874960322644e63f3bb7a722, con exitCode 127 y log .pi/compaction/tool-output-38e7f8af1d0ebe02a8a9.txt.",
+    "El log contiene /bin/bash: línea 1: which: orden no encontrada; no contiene salida del test ni evidencia de regresión de producto.",
+    "El log anterior .pi/compaction/tool-output-84a51b531f4a293042cf.txt también termina en error de invocación: no existe /tmp/resolve-conflicts.py.",
+    "El log de captura referido en el contexto de la tarea describe que `npm run shoot` no alcanzó el suelo de juego y quedó en screen-splash; esto es una observación concreta previa, pero falta el diff/snapshot indicado para vincularlo a los cambios de fuente.",
+    "En el entorno actual `type -a node npm bash` confirma que node, npm y bash están disponibles; `which` no es necesario para descubrirlos.",
+    "No existe el paquete solicitado en /home/gus/paperclip-projects/codex-mis-23/.paperclip-context/62d5f981-b5f5-4def-9f2f-f3986891bd68/context.json ni se encontró el documento supervision-policy en los árboles de proyectos y stack accesibles.",
+    "El checkout está en 37f577f8527e1b862e5c4689464b1272328356b0; el único cambio sin commit observado es CHECKPOINT.AUTO.md. No hay cambios de producto para corregir en este checkout."
+  ],
+  "plan": [
+    "El supervisor debe adjuntar/reponer context.json y los snapshots/diff del manifiesto, junto con supervision-policy de la misión fuente, en el contexto accesible de esta revisión.",
+    "Con el paquete repuesto, comparar el estado del snapshot con scripts/shoot.mjs, scripts/lib/shootRun.mjs y el estado visual del arranque para reproducir por separado el fallo screen-splash; no inferir causas de proxy, cuotas o proveedor sin evidencia.",
+    "Para evitar el fallo de shell ya demostrado, reemplazar cualquier comprobación `which X` del procedimiento por `command -v X` (builtin de bash) y registrar explícitamente qué binario resuelve.",
+    "Ejecutar primero la comprobación visual mínima `npm run shoot -- --only ingame` con puertos de sidecar/CDP libres; si supera la pantalla inicial, continuar con `node scripts/golden.mjs` y registrar manifiesto, salida y capturas. Si falla en splash, conservar artefactos y aislar el bootstrap antes de tocar traducciones.",
+    "Aplicar como máximo una corrección mínima respaldada por ese diagnóstico y repetir las verificaciones pertinentes; no modificar tests para aceptar cadenas inglesas pendientes ni cerrar la misión si falta revisión visual."
+  ],
+  "humanAction": "Supervisor: facilite el paquete de escalada (context.json, diff y snapshots) y el documento supervision-policy en una ruta legible para esta revisión; después reanude la revisión especialista."
+}
