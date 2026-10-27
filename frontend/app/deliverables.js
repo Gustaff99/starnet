@@ -132,7 +132,7 @@
     if (!core || !core.invoke) return false;
     if (f.sandboxed) {
       try { await core.invoke('open_external_url', { url: href }); }
-      catch (_) { if (say) say('Could not open that safe preview in your browser.', true); }
+      catch (_) { if (say) say('No se pudo abrir esa vista previa segura en tu navegador.', true); }
       return true;
     }
     try {
@@ -147,9 +147,9 @@
       // library card for its run is really drawn there (pointBelow) — a cleared or filtered-out run has none, so it and a
       // library row whose key never wired keep the old real places to look.
       catch (_) {
-        if (folderKey && folderKey.click) { folderKey.click(); if (say) say('Could not open that file — showing where it is saved instead.', true); }
-        else if (say && pointBelow) say('Could not open that file — open its run in the library below; the folder key on its file row shows where it is saved.', true);
-        else if (say) say('Could not open that file — use its session or workspace folder to find it on disk.', true);
+        if (folderKey && folderKey.click) { folderKey.click(); if (say) say('No se pudo abrir ese archivo — mostrando en su lugar dónde está guardado.', true); }
+        else if (say && pointBelow) say('No se pudo abrir ese archivo — abre su ejecución en la biblioteca de abajo; la tecla de carpeta de su fila de archivo muestra dónde está guardado.', true);
+        else if (say) say('No se pudo abrir ese archivo — usa su carpeta de sesión o de trabajo para encontrarlo en disco.', true);
       }
     }
     return true;
@@ -196,8 +196,8 @@
       // may clear it. Say the real reason instead of showing them an HTTP code they cannot act on.
       const gone = /\b404\b/.test(String((e && e.message) || ''));
       if (say) say(gone
-        ? 'That file is no longer on disk — it was moved or deleted after this deliverable was recorded.'
-        : 'Could not preview that file: ' + e.message, true);
+        ? 'Ese archivo ya no está en disco — se movió o se borró después de que se registró este entregable.'
+        : 'No se pudo previsualizar ese archivo: ' + e.message, true);
     } finally { if (state.previewAbort === controller) state.previewAbort = null; }
     return true;
   }
@@ -275,6 +275,7 @@
     return 'EARLIER';
   }
   const BUCKETS = ['TODAY', 'THIS WEEK', 'EARLIER'];
+  const BUCKET_ES = { TODAY: 'HOY', 'THIS WEEK': 'ESTA SEMANA', EARLIER: 'ANTES' };
 
   // "2h ago" for the glance; the exact stamp still shows in the details drawer. Same vocabulary the sessions and
   // projects rails already use, so the three surfaces read as one system.
@@ -297,7 +298,7 @@
     implemented: { label: 'IMPLEMENTED', cls: 'ok' },
     pending: { label: 'NEEDS A DECISION', cls: 'warn' },
     failed: { label: 'FAILED', cls: 'bad' },
-    discarded: { label: 'DISCARDED', cls: 'off' }
+    discarded: { label: 'DESCARTADO', cls: 'off' }
   };
   function pillOf(status) {
     return Object.prototype.hasOwnProperty.call(PILLS, status) ? PILLS[status] : { label: String(status || 'UNKNOWN').toUpperCase(), cls: 'off' };
@@ -322,13 +323,13 @@
     const revoke = () => revokePreview(openState);
     // self-driving lane 5: no second DELIVERABLES heading under the MY WORK tab that already says it, and one short line where
     // a four-line paragraph sat (TO REVIEW still lands right after this p.muted — stationui's deliverables builder)
-    body.innerHTML = '<div class="cfg dlv"><p class="muted dlv-lead" title="Previews open safely inside StarNet in a browser; desktop OPEN uses your file app.">Everything your crew made, filed by project — open one for the ask, the answer and every file.</p>' +
+    body.innerHTML = '<div class="cfg dlv"><p class="muted dlv-lead" title="Las vistas previas se abren de forma segura dentro de StarNet en un navegador; ABRIR de escritorio usa tu app de archivos.">Todo lo que hizo tu tripulación, archivado por proyecto — abre uno para ver la petición, la respuesta y cada archivo.</p>' +
       '<div id="dl-head" class="dlv-head-strip"></div><div id="dl-run-scope" class="cfg-block" hidden></div>' +
-      '<div class="deliverables-toolbar"><input id="dl-query" aria-label="Search deliverables" placeholder="search title, agent, project"><select id="dl-status" aria-label="Filter deliverables"><option value="">ALL</option><option value="pending">NEEDS A DECISION</option><option value="produced">DONE</option><option value="kept">KEPT</option><option value="implemented">IMPLEMENTED</option><option value="failed">FAILED</option><option value="discarded">DISCARDED</option></select><button class="bb sm" id="dl-clear-shown" data-tip="Takes these cards out of the library (not TO REVIEW&rsquo;s rating list) — the files stay on disk, and UNDO brings them back." hidden>CLEAR ALL</button>' +
+      '<div class="deliverables-toolbar"><input id="dl-query" aria-label="Buscar entregables" placeholder="buscar título, agente, proyecto"><select id="dl-status" aria-label="Filtrar entregables"><option value="">TODOS</option><option value="pending">NECESITA UNA DECISIÓN</option><option value="produced">HECHO</option><option value="kept">CONSERVADO</option><option value="implemented">IMPLEMENTADO</option><option value="failed">FALLÓ</option><option value="discarded">DESCARTADO</option></select><button class="bb sm" id="dl-clear-shown" data-tip="Saca estas tarjetas de la biblioteca (no la lista de valoraciones de TO REVIEW) — los archivos quedan en disco, y DESHACER los devuelve." hidden>BORRAR TODO</button>' +
         // the two upkeep keys fold behind ONE quiet MORE key (org pass 10-14, P13): search, the status filter, the KIND chips and
         // CLEAR ALL/THESE stay in view (FOLD BY FREQUENCY); the fold opens inline in this row — never a popover.
         '<details class="dlv-tools" id="dl-tools"><summary class="bb sm" aria-label="More library tools">MORE <span class="dlv-tools-car" aria-hidden="true">▸</span></summary>' +
-        '<span class="dlv-tools-keys"><button class="bb sm" id="dl-refresh">REFRESH</button><button class="bb sm" id="dl-clean" data-tip="Previews first: removes only the records of failed and discarded runs — files are not deleted, and UNDO brings them back">DELETE FAILED &amp; DISCARDED RECORDS</button></span></details></div>' +
+        '<span class="dlv-tools-keys"><button class="bb sm" id="dl-refresh">REFRESH</button><button class="bb sm" id="dl-clean" data-tip="Primero las vistas previas: borra solo los registros de ejecuciones fallidas y descartadas — los archivos no se eliminan, y DESHACER los devuelve">ELIMINAR REGISTROS FALLIDOS Y DESCARTADOS</button></span></details></div>' +
       '<div id="dl-kinds" class="dlv-kinds"></div>' +
       '<div id="dl-msg" class="msg" aria-live="polite"></div><div id="dl-cleanup"></div>' +
       '<div class="dlv-split"><nav id="dl-rail" class="dlv-rail" aria-label="Projects"></nav><div id="dl-list" class="dlv-main"></div></div></div>';
@@ -338,7 +339,7 @@
     const runScope = body.querySelector('#dl-run-scope');
     const renderRunScope = () => {
       runScope.hidden = !runFilter;
-      runScope.innerHTML = runFilter ? '<b>OUTPUTS FROM THIS STEP</b><p>' + esc(runFilter.label) + '</p><button class="bb sm" id="dl-all-runs">SHOW ALL WORK</button>' : '';
+      runScope.innerHTML = runFilter ? '<b>SALIDAS DE ESTE PASO</b><p>' + esc(runFilter.label) + '</p><button class="bb sm" id="dl-all-runs">VER TODO EL TRABAJO</button>' : '';
       runScope.querySelector('button')?.addEventListener('click', () => { runFilter = null; q.value = ''; status.value = ''; project = ''; kind = ''; renderRunScope(); load(); });
     };
     // org P01: NEEDS YOU's build row lands here on NEEDS A DECISION — the same status filter the summary's route drives
@@ -358,7 +359,7 @@
       const row = (key, name, count, extra) =>
         '<button class="dlv-proj' + (project === key ? ' on' : '') + '" data-project="' + esc(key) + '">' +
         '<span class="dlv-proj-n">' + esc(name) + '</span><span class="dlv-proj-c">' + count + '</span>' + (extra || '') + '</button>';
-      rail.innerHTML = row('', 'ALL WORK', total) + projects.map(p =>
+      rail.innerHTML = row('', 'TODO EL TRABAJO', total) + projects.map(p =>
         row(p.unfiled ? 'unfiled' : p.root, p.name, p.count, p.blessed ? '' : '<span class="dlv-proj-rev">folder access revoked</span>')
       ).join('');
     }
@@ -389,7 +390,7 @@
       const mainFirst = lis => (mainAt > 0 ? [lis[mainAt]].concat(lis.filter((_, i) => i !== mainAt)) : lis).join('');
       const sec = (label, inner) => inner ? '<div class="dlv-sec"><h5>' + label + '</h5>' + inner + '</div>' : '';
       // THE ASK — the Commander's own words, quoted rather than paraphrased.
-      const ask = sec('WHAT YOU ASKED FOR', r.ask ? '<p class="dlv-quote">' + esc(r.ask) + '</p>' : '');
+      const ask = sec('LO QUE PEDISTE', r.ask ? '<p class="dlv-quote">' + esc(r.ask) + '</p>' : '');
       // WHAT CAME BACK — the agent's recorded closing message, and ONLY when the run kept one. It deliberately
       // does NOT fall back to the deliverable's summary: that sentence is already on the row directly above, and
       // reprinting it here would put the same words on screen twice, forty pixels apart. A section that repeats
@@ -403,15 +404,15 @@
         // the main file leads the list (its OPEN is the drawer's first key — org pass 10-14, P13); the rows are built in the
         // backend's order first, so every data-file index still points at its own file
         ? '<ul class="dlv-files">' + mainFirst((r.files || []).map((f, fi) => f.openUrl
-            ? '<li><a class="bb sm' + (r.main && f.path === r.main ? ' dlv-hero' : '') + '" data-file="' + fi + '" href="' + esc(openHref(f)) + '" target="_blank" rel="noopener">OPEN</a><span class="dlv-fname">' + esc(f.path) + '</span><span class="dlv-fsize">' + esc(fmtSize(f.bytes)) + '</span>' + (r.main && f.path === r.main ? '<span class="dlv-fmain">the main one</span>' : '') + '<span class="dlv-floc" data-floc="' + fi + '"></span></li>'
-            : '<li><span class="dlv-fname off">' + esc(f.path) + '</span><span class="dlv-fsize">no longer available</span></li>')) + '</ul>'
-        : '<p class="dlv-none">This run recorded no files.</p>';
-      const openSession = (r.jobId ? '<button class="bb sm" data-act="workflow">OPEN IN WORKFLOWS</button>' : '') + ((run && run.streamId) ? '<button class="bb sm" data-act="session">↗ OPEN THE FULL CONVERSATION</button>' : '');
-      const decide = ((r.actions && r.actions.keep) ? '<button class="bb sm" data-act="keep">KEEP IT</button>' : '') +
-        ((r.actions && r.actions.discard) ? '<button class="bb sm danger" data-act="discard">DISCARD</button>' : '') +
+            ? '<li><a class="bb sm' + (r.main && f.path === r.main ? ' dlv-hero' : '') + '" data-file="' + fi + '" href="' + esc(openHref(f)) + '" target="_blank" rel="noopener">ABRIR</a><span class="dlv-fname">' + esc(f.path) + '</span><span class="dlv-fsize">' + esc(fmtSize(f.bytes)) + '</span>' + (r.main && f.path === r.main ? '<span class="dlv-fmain">el principal</span>' : '') + '<span class="dlv-floc" data-floc="' + fi + '"></span></li>'
+            : '<li><span class="dlv-fname off">' + esc(f.path) + '</span><span class="dlv-fsize">ya no disponible</span></li>')) + '</ul>'
+        : '<p class="dlv-none">Esta ejecución no registró archivos.</p>';
+      const openSession = (r.jobId ? '<button class="bb sm" data-act="workflow">ABRIR EN FLUJOS</button>' : '') + ((run && run.streamId) ? '<button class="bb sm" data-act="session">↗ ABRIR LA CONVERSACIÓN COMPLETA</button>' : '');
+      const decide = ((r.actions && r.actions.keep) ? '<button class="bb sm" data-act="keep">CONSERVARLO</button>' : '') +
+        ((r.actions && r.actions.discard) ? '<button class="bb sm danger" data-act="discard">DESCARTAR</button>' : '') +
         // DONE WITH IT (2026-10-10): clears the card out of the library — files stay on disk, UNDO brings it back. An
         // undecided build is the one row that can't go: it still needs KEEP IT or DISCARD (the backend refuses it too).
-        (r.status !== 'pending' ? '<button class="bb sm" data-act="clear" data-tip="Takes it out of this library. The files stay on disk.">✓ DONE · CLEAR</button>' : '');
+        (r.status !== 'pending' ? '<button class="bb sm" data-act="clear" data-tip="Lo saca de esta biblioteca. Los archivos quedan en disco.">✓ HECHO · BORRAR</button>' : '');
       const acts = (openSession || decide) ? '<div class="row dlv-acts">' + openSession + decide + '</div>' : '';
       return ask + back + sec('FILES', fileRows) + acts;
     }
@@ -424,7 +425,7 @@
          and "**TEASER 1:**" on the glance is markup, not a sentence. An unnamed file says nothing under its name: its name and
          the facts band are the plain facts ("the agent did not name this one" was an apology, not information). */
       const sum = plainLine(r.summary);
-      const say2 = '<b class="dlv-title' + (r.authored ? '' : ' plain') + '">' + esc(r.title || 'Untitled output') + '</b>' + (sum ? '<p class="dlv-sum">' + esc(sum) + '</p>' : '');
+      const say2 = '<b class="dlv-title' + (r.authored ? '' : ' plain') + '">' + esc(r.title || 'Salida sin título') + '</b>' + (sum ? '<p class="dlv-sum">' + esc(sum) + '</p>' : '');
       // THE FACTS BAND — every item here is provable from the run log.
       // "size unknown" is for a file we could not measure. A row with NO files has nothing to measure, so it says
       // so — the two are different facts and the wrong one reads as a failed read.
@@ -450,7 +451,7 @@
       if (nProjects) bits.push('across <b>' + nProjects + '</b> ' + (nProjects === 1 ? 'project' : 'projects'));
       if (summary.newestAt) bits.push('newest <b>' + esc(agoOf(summary.newestAt, Date.now())) + '</b>');
       const pend = summary.pending
-        ? '<button class="dlv-needs" data-status="pending">' + summary.pending + ' need' + (summary.pending === 1 ? 's' : '') + ' a decision</button>' : '';
+        ? '<button class="dlv-needs" data-status="pending">' + summary.pending + ' necesita' + (summary.pending === 1 ? '' : 'n') + ' una decisión</button>' : '';
       head.innerHTML = '<div class="dlv-sumline">' + bits.join(' · ') + '</div>' + pend;
     }
 
@@ -478,8 +479,8 @@
         // YET" over a library that has 40 rows behind a filter is simply false.
         const filtered = !!(runFilter || project || kind || q.value || status.value);
         list.innerHTML = '<div class="dlv-empty">' + (filtered ? 'NO MATCHES.' : 'NOTHING HERE YET.') + '<br><span>' +
-          (runFilter ? 'No recorded outputs from this step match this view. A completed run may have no files; use SHOW ALL WORK to return to the library.' : filtered ? 'Nothing in the library fits this view. Clear the filters to see everything.' : 'When a run creates or changes files, it lands here with the agent’s own name for it, the crew that worked on it, and the project it was for.') +
-          '</span>' + (filtered && !runFilter ? '<div><button class="bb sm" data-clear-filters>CLEAR FILTERS</button></div>' : '') + '</div>';
+          (runFilter ? 'Ninguna salida registrada de este paso coincide con esta vista. Una ejecución completada puede no tener archivos; usa VER TODO EL TRABAJO para volver a la biblioteca.' : filtered ? 'Nada en la biblioteca encaja con esta vista. Borra los filtros para ver todo.' : 'Cuando una ejecución crea o cambia archivos, llega aquí con el nombre que el agente le puso, la tripulación que trabajó en ella y el proyecto para el que era.') +
+          '</span>' + (filtered && !runFilter ? '<div><button class="bb sm" data-clear-filters>BORRAR FILTROS</button></div>' : '') + '</div>';
         return;
       }
       const now = Date.now();
@@ -488,7 +489,7 @@
       // each time heading carries its own CLEAR — "I'm done with everything from before this week" is one click, not forty
       // (a heading over only undecided builds has nothing the server would clear, so it carries none)
       list.innerHTML = BUCKETS.filter(b => groups[b] && groups[b].length)
-        .map(b => '<section class="dlv-bucket"><h4><span>' + b + '</span>' + (canClear[b] ? '<button type="button" class="dlv-bclear" data-bucket="' + b + '">CLEAR ' + b + '</button>' : '') + '</h4>' + groups[b].join('') + '</section>').join('');
+        .map(b => '<section class="dlv-bucket"><h4><span>' + (BUCKET_ES[b] || b) + '</span>' + (canClear[b] ? '<button type="button" class="dlv-bclear" data-bucket="' + b + '">BORRAR ' + (BUCKET_ES[b] || b) + '</button>' : '') + '</h4>' + groups[b].join('') + '</section>').join('');
       wireDiscards();
       wireClears();
     }
@@ -515,14 +516,14 @@
         const kept = j.skipped ? ' ' + j.skipped + (j.skipped === 1 ? ' still needs' : ' still need') + ' a decision and stayed.' : '';
         sayUndo(j.cleared
           ? 'Cleared ' + j.cleared + (j.cleared === 1 ? ' deliverable' : ' deliverables') + ' from the library. The files stay on disk.' + kept
-          : (j.skipped ? 'Nothing cleared —' + kept.replace(/ and stayed\.$/, ': KEEP IT or DISCARD first.') : 'Nothing to clear here.'), j.cleared ? j.undoToken : '');
-      } catch (e) { if (b) b.disabled = false; say('Could not clear: ' + e.message, true); }
+          : (j.skipped ? 'Nada limpiado —' + kept.replace(/ and stayed\.$/, ': KEEP IT or DISCARD first.') : 'Nada que limpiar aquí.'), j.cleared ? j.undoToken : '');
+      } catch (e) { if (b) b.disabled = false; say('No se pudo borrar: ' + e.message, true); }
     }
     // the count is what the clear will actually take (undecided builds stay), or no count when the page cannot prove it
     function clearShownLabel() {
       const filtered = !!(runFilter || project || kind || q.value || status.value);
       const n = runFilter ? rows.filter(clearableRow).length : clearable;
-      return (filtered ? 'CLEAR THESE' : 'CLEAR ALL') + (n == null ? '' : ' ' + n);
+      return (filtered ? 'BORRAR ESTOS' : 'BORRAR TODO') + (n == null ? '' : ' ' + n);
     }
     /* What a clear of this view would take. A sidecar that sends its own count (clearable) is the answer. Otherwise only
        a count this page can prove: the complete list it was sent; a status filter (every match has that one status); or
@@ -544,7 +545,7 @@
         shown.dataset.wired = '1';
         ArmConfirm.wire(shown, {
           armedLabel: 'CLEAR THEM — SURE?',
-          onArm: () => say('Clears every deliverable in this view out of the library (anything still waiting for a decision stays). The files stay on disk, and UNDO brings them back. Click again to confirm.'),
+          onArm: () => say('Borra de la biblioteca cada entregable de esta vista (lo que siga esperando una decisión se queda). Los archivos permanecen en disco, y DESHACER los recupera. Haz clic de nuevo para confirmar.'),
           onDisarm: () => { shown.textContent = clearShownLabel(); restoreMsg(); },
           onConfirm: () => clearRows(runFilter ? { ids: rows.map(r => r.id) } : { filter: curFilter() }, shown)
         });
@@ -558,7 +559,7 @@
         const bucket = btn.dataset.bucket;
         ArmConfirm.wire(btn, {
           armedLabel: 'CLEAR ' + bucket + ' — SURE?',
-          onArm: () => say('Clears everything under ' + bucket + ' in this view out of the library. The files stay on disk, and UNDO brings them back. Click again to confirm.'),
+          onArm: () => say('Borra todo bajo ' + bucket + ' de esta vista fuera de la biblioteca. Los archivos permanecen en disco, y DESHACER los recupera. Haz clic de nuevo para confirmar.'),
           onDisarm: restoreMsg,
           onConfirm: () => {
             const now = Date.now();
@@ -594,7 +595,7 @@
         if (!r) return;
         b.dataset.wired = '1';
         ArmConfirm.wire(b, {
-          armedLabel: 'DISCARD — SURE?',
+          armedLabel: '¿DESCARTAR — SEGURO?',
           onArm: () => say('Discarding “' + (r.title || 'this output') + '” also removes its Workshop files permanently. Click again to confirm.', true),
           onDisarm: restoreMsg,   // disarming just clears the warning (the last clear's UNDO comes back); it is not an excuse to restate the count
           onConfirm: () => decide(r, 'discard', b)
@@ -621,7 +622,7 @@
         // same number in different words. (The last clear's UNDO is an action result: it stays.)
         restoreMsg();
       }
-      catch (e) { say('Could not load the library: ' + e.message, true); }
+      catch (e) { say('No se pudo cargar la biblioteca: ' + e.message, true); }
     }
     // DISCARD is irreversible (it deletes the Workshop files), so it asks — but with the station's own
     // 2-step arm/confirm, never `window.confirm`. A native dialog is OS chrome painted over the phosphor
@@ -725,10 +726,10 @@
       const headBtn = ev.target.closest('.dlv-head');
       if (headBtn) return toggleCard(headBtn);
       const b = ev.target.closest('button[data-act]'); if (!b) return; const card = b.closest('[data-i]'), r = rows[Number(card.dataset.i)]; if (!r) return;
-      // "open the session this came from" — the run's real workstream, via the same seam the OUTBOX uses.
+      // "abre la sesión de la que viene" — the run's real workstream, via the same seam the OUTBOX uses.
       if (b.dataset.act === 'session') {
         const sid = r.run && r.run.streamId;
-        if (!sid) return say('That run did not record a session to open.', true);
+        if (!sid) return say('Esa ejecución no registró una sesión que abrir.', true);
         // #87: a workflow step's or routine's stream is not in the COMMS rail yet, and App.openWorkstream
         // silently no-ops on an id it doesn't know. ReturnStore.openWork adopts the stream and folds in its
         // durable transcript first (the OUTBOX's ↗ OPEN seam), and says false when it truly can't be read.
@@ -742,13 +743,13 @@
           }
         } catch (_) { ok = false; }
         b.disabled = false;
-        if (!ok) return say('Could not read that conversation — its transcript is not on the station any more.', true);
+        if (!ok) return say('No se pudo leer esa conversación — su transcripción ya no está en la estación.', true);
         if (typeof StationUI !== 'undefined') StationUI.h.workConversation('deliverables');
         return;
       }
       // a WORKFLOW job's row opens its own record in WORKFLOWS (its line, its steps, NEEDS CHANGES / SEND IT AGAIN)
       if (b.dataset.act === 'workflow') {
-        if (typeof WorkflowsWindow === 'undefined' || !WorkflowsWindow.open || !WorkflowsWindow.showJob) return say('The WORKFLOWS window is not available here.', true);
+        if (typeof WorkflowsWindow === 'undefined' || !WorkflowsWindow.open || !WorkflowsWindow.showJob) return say('La ventana de FLUJOS no está disponible aquí.', true);
         WorkflowsWindow.open({ view: 'line', line: r.line, job: null }, 'deliverables');
         WorkflowsWindow.showJob(r.jobId);
         return;
@@ -779,8 +780,8 @@
     const tools = body.querySelector('#dl-tools');
     if (tools && tools.addEventListener) tools.addEventListener('toggle', () => { const c = tools.querySelector('.dlv-tools-car'); if (c) c.textContent = tools.open ? '▾' : '▸'; });
     body.querySelector('#dl-clean').addEventListener('click', async () => {
-      try { const p = await post('/api/deliverables/cleanup-preview', { statuses: ['discarded', 'failed'] }); cleanup.innerHTML = '<div class="cfg-block"><b>CLEANUP PREVIEW</b><p>' + p.targets.length + ' discarded/failed lifecycle record(s) will be removed. ' + p.protected.length + ' pending, kept, or produced record(s) are protected. Files are not deleted.</p>' + (p.targets.length ? '<details class="dlv-clean-list"><summary>SEE THE ' + p.targets.length + ' RECORD' + (p.targets.length === 1 ? '' : 'S') + '</summary><ul>' + p.targets.map(r => '<li>' + esc(r.title) + ' · ' + esc(r.status) + ' · ' + esc(r.runId || r.id) + '</li>').join('') + '</ul></details>' : '') + '<div class="row dlv-acts"><button class="bb sm danger" id="dl-clean-apply" ' + (p.targets.length ? '' : 'disabled') + '>REMOVE EXACTLY THESE ' + p.targets.length + ' RECORDS</button><button class="bb sm" id="dl-clean-cancel">CANCEL</button></div></div>'; cleanup.querySelector('#dl-clean-cancel').addEventListener('click', () => { cleanup.innerHTML = ''; }); const apply = cleanup.querySelector('#dl-clean-apply'); if (apply) apply.addEventListener('click', async () => { try { const c = await post('/api/deliverables/cleanup', { statuses: p.statuses, fingerprint: p.fingerprint }); cleanup.innerHTML = '<div class="msg ok">Removed ' + c.removed + ' record(s). <button class="bb sm" id="dl-undo">UNDO</button></div>'; cleanup.querySelector('#dl-undo').addEventListener('click', async () => { const u = await post('/api/deliverables/cleanup-undo', { undoToken: c.undoToken }); say('Restored ' + u.restored + ' record(s).'); cleanup.innerHTML = ''; await load(); }); await load(); } catch (e) { say(e.message, true); } }); }
-      catch (e) { say('Could not preview cleanup: ' + e.message, true); }
+      try { const p = await post('/api/deliverables/cleanup-preview', { statuses: ['discarded', 'failed'] }); cleanup.innerHTML = '<div class="cfg-block"><b>CLEANUP PREVIEW</b><p>' + p.targets.length + ' registro(s) de ciclo de vida descartados/fallidos se eliminarán. ' + p.protected.length + ' registro(s) pendientes, conservados o producidos están protegidos. Los archivos no se eliminan.</p>' + (p.targets.length ? '<details class="dlv-clean-list"><summary>VER ' + (p.targets.length === 1 ? 'EL ' : 'LOS ') + p.targets.length + ' REGISTRO' + (p.targets.length === 1 ? '' : 'S') + '</summary><ul>' + p.targets.map(r => '<li>' + esc(r.title) + ' · ' + esc(r.status) + ' · ' + esc(r.runId || r.id) + '</li>').join('') + '</ul></details>' : '') + '<div class="row dlv-acts"><button class="bb sm danger" id="dl-clean-apply" ' + (p.targets.length ? '' : 'disabled') + '>ELIMINAR EXACTAMENTE ESTOS ' + p.targets.length + ' REGISTROS</button><button class="bb sm" id="dl-clean-cancel">CANCELAR</button></div></div>'; cleanup.querySelector('#dl-clean-cancel').addEventListener('click', () => { cleanup.innerHTML = ''; }); const apply = cleanup.querySelector('#dl-clean-apply'); if (apply) apply.addEventListener('click', async () => { try { const c = await post('/api/deliverables/cleanup', { statuses: p.statuses, fingerprint: p.fingerprint }); cleanup.innerHTML = '<div class="msg ok">Eliminado ' + c.removed + ' registro(s). <button class="bb sm" id="dl-undo">DESHACER</button></div>'; cleanup.querySelector('#dl-undo').addEventListener('click', async () => { const u = await post('/api/deliverables/cleanup-undo', { undoToken: c.undoToken }); say('Restaurado ' + u.restored + ' registro(s).'); cleanup.innerHTML = ''; await load(); }); await load(); } catch (e) { say(e.message, true); } }); }
+      catch (e) { say('No se pudo previsualizar la limpieza: ' + e.message, true); }
     });
     body._deliverablesCleanup = revoke;
     load();

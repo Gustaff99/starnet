@@ -27,10 +27,10 @@
   const notify = (msg, cls) => { const ui = UI(); if (ui && ui.notify) ui.notify(msg, cls || 'good', 'general', { transient: true }); };
   const post = (url, body) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const EXAMPLES = [
-    ['Habit Tracker', 'A tracker for my daily habits: I add habits, tick them off each day, and see my streaks. Keep what I enter.'],
-    ['Focus Timer', 'A pomodoro timer: 25 minutes of focus, 5 of break, with a big clock, start/pause, and a count of sessions today. Make it look like a retro arcade cabinet.'],
-    ['Idea Board', 'A board where I jot ideas as cards, drag them between Now / Later / Maybe, and search them. Keep what I enter.'],
-    ['Weekly Recap', 'Every Friday evening, a one-page recap of what my crew finished this week, grouped by project. Refresh weekly.']
+    ['Rastreador de hábitos', 'Un rastreador para mis hábitos diarios: añado hábitos, los marco cada día y veo mis rachas. Conserva lo que escribo.'],
+    ['Temporizador de foco', 'Un temporizador pomodoro: 25 minutos de foco, 5 de descanso, con un reloj grande, iniciar/pausa y un recuento de sesiones de hoy. Que se vea como una cabina de arcade retro.'],
+    ['Tablero de ideas', 'Un tablero donde apunto ideas como tarjetas, las arrastro entre Ahora / Después / Quizás, y las busco. Conserva lo que escribo.'],
+    ['Resumen semanal', 'Cada viernes por la tarde, un resumen de una página de lo que mi tripulación terminó esta semana, agrupado por proyecto. Actualiza semanalmente.']
   ];
 
   async function load() {
@@ -91,7 +91,7 @@
     }
     if (list.length > 12) {
       const more = document.createElement('small'); more.className = 'bb-apps-more';
-      more.textContent = '+ ' + (list.length - 12) + ' more in MANAGE APPS';
+      more.textContent = '+ ' + (list.length - 12) + ' más en APLICACIONES';
       box.appendChild(more);
     }
     const sep = document.createElement('div'); sep.className = 'bb-apps-sep'; sep.setAttribute('role', 'separator');
@@ -100,18 +100,18 @@
   // the dock's one line for an app: whether it exists yet / when it last changed, and whether it refreshes itself
   function dockLine(a) {
     const last = Math.max(a.updatedAt || 0, a.changedAt || 0);
-    const first = refreshing.has(a.id) ? 'Refreshing now' : last ? 'Updated ' + ago(last) : a.builtAt ? 'Built ' + ago(a.builtAt) : 'Not built yet';
+    const first = refreshing.has(a.id) ? 'Actualizando ahora' : last ? 'Actualizado ' + ago(last) : a.builtAt ? 'Construido ' + ago(a.builtAt) : 'Aún no construido';
     const s = a.schedule;
-    return first + (s && !s.missing && s.enabled !== false ? ' · ' + (routinesOn ? 'refreshes ' + s.display : 'routines off') : '');
+    return first + (s && !s.missing && s.enabled !== false ? ' · ' + (routinesOn ? 'actualiza ' + s.display : 'rutinas apagadas') : '');
   }
 
   function ago(t) {
     if (!t) return '';
     const s = Math.max(0, Math.floor((Date.now() - t) / 1000));
-    if (s < 60) return 'just now';
-    if (s < 3600) return Math.floor(s / 60) + 'm ago';
-    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
-    return Math.floor(s / 86400) + 'd ago';
+    if (s < 60) return 'ahora mismo';
+    if (s < 3600) return Math.floor(s / 60) + ' min atrás';
+    if (s < 86400) return Math.floor(s / 3600) + ' h atrás';
+    return Math.floor(s / 86400) + ' d atrás';
   }
   function when(t) {
     if (!t) return '';
@@ -124,16 +124,16 @@
   // one honest line: whether it exists yet, when it last got data, and what the schedule will really do
   function statusOf(a) {
     const parts = [];
-    if (refreshing.has(a.id)) parts.push('Refreshing now');
+    if (refreshing.has(a.id)) parts.push('Actualizando ahora');
     const last = Math.max(a.updatedAt || 0, a.changedAt || 0);
-    parts.push(last ? 'Updated ' + ago(last) : a.builtAt ? 'Built ' + ago(a.builtAt) : 'Not built yet');
+    parts.push(last ? 'Actualizado ' + ago(last) : a.builtAt ? 'Construido ' + ago(a.builtAt) : 'Aún no construido');
     const s = a.schedule;
-    if (s && s.missing) parts.push('its refresh routine was removed');
+    if (s && s.missing) parts.push('su rutina de actualización fue eliminada');
     else if (s) {
-      if (s.enabled === false) parts.push('refresh paused' + (routinesOn ? '' : ' · routines are OFF'));
-      else if (!routinesOn) parts.push('refreshes ' + s.display + ' — but routines are OFF');
-      else parts.push('refreshes ' + s.display + (s.nextRunAt ? ' · next ' + when(s.nextRunAt) : ''));
-      if (s.lastStatus === 'error') parts.push('last refresh failed' + (s.lastError ? ': ' + String(s.lastError).slice(0, 90) : ''));
+      if (s.enabled === false) parts.push('actualización en pausa' + (routinesOn ? '' : ' · routines are OFF'));
+      else if (!routinesOn) parts.push('refreshes ' + s.display + ' — pero las rutinas están APAGADAS');
+      else parts.push('refreshes ' + s.display + (s.nextRunAt ? ' · siguiente ' + when(s.nextRunAt) : ''));
+      if (s.lastStatus === 'error') parts.push('la última actualización falló' + (s.lastError ? ': ' + String(s.lastError).slice(0, 90) : ''));
     }
     return parts.join(' · ');
   }
@@ -201,25 +201,25 @@
       // closing this window must not cancel it (detach). The run's lines ride the page's ONE run stream (Harness.streamPost),
       // so a refresh no longer holds one of the browser's six connections to the station for its whole run.
       const r = await Harness.streamPost('/api/cron/run', { id: a.schedule.jobId, detach: true });
-      if (!r.ok) { const j = r.j || {}; notify(a.name + ': ' + ((j && (j.error || j.message)) || 'the refresh could not start'), 'warn'); return; }
-      notify(a.name + ': refresh started — your crew is on it.');   // said only once the station accepted the run
+      if (!r.ok) { const j = r.j || {}; notify(a.name + ': ' + ((j && (j.error || j.message)) || 'la actualización no pudo iniciar'), 'warn'); return; }
+      notify(a.name + ': actualización iniciada — tu tripulación se ocupa.');   // said only once the station accepted the run
       await r.done;   // the run streams until it finishes
-    } catch (e) { notify(a.name + ': the refresh did not finish — ' + ((e && e.message) || e), 'warn'); }
+    } catch (e) { notify(a.name + ': la actualización no terminó — ' + ((e && e.message) || e), 'warn'); }
     finally { refreshing.delete(id); await load(); paintAll(id); }
   }
   async function turnOnRoutines() {
     try {
       const r = await post('/api/cron/arm', { enabled: true });
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      notify('Scheduling is on: your apps refresh on schedule.');
-    } catch (_) { notify('Could not turn scheduling on — open WORK › AUTOMATE › SCHEDULES to check.', 'warn'); return; }
+      notify('La programación está activa: tus apps se actualizan según el horario.');
+    } catch (_) { notify('No se pudo activar la programación — abre TRABAJO › AUTOMATIZAR › PROGRAMACIONES para comprobar.', 'warn'); return; }
     await load(); paintAll();
   }
   async function removeApp(id) {
     try {
       const r = await post('/api/apps/delete', { id });
-      if (!r.ok) { const j = await r.json().catch(() => ({})); notify((j && j.error) || 'Could not delete that app.', 'warn'); return false; }
-    } catch (_) { notify('Could not delete that app — the station did not answer.', 'warn'); return false; }
+      if (!r.ok) { const j = await r.json().catch(() => ({})); notify((j && j.error) || 'No se pudo borrar esa app.', 'warn'); return false; }
+    } catch (_) { notify('No se pudo borrar esa app — la estación no respondió.', 'warn'); return false; }
     dropLocal(id);
     await load(); rerenderList();
     return true;
@@ -238,8 +238,8 @@
     try {
       const r = await post('/api/apps/rename', { id, name: n });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) { notify((j && j.error) || 'Could not rename that app.', 'warn'); return false; }
-    } catch (_) { notify('Could not rename that app — the station did not answer.', 'warn'); return false; }
+      if (!r.ok || !j.ok) { notify((j && j.error) || 'No se pudo renombrar esa app.', 'warn'); return false; }
+    } catch (_) { notify('No se pudo renombrar esa app — la estación no respondió.', 'warn'); return false; }
     await load();
     const a = find(id), h = host();
     if (a && h && h.renameApp) h.renameApp(id, a.name);
@@ -263,23 +263,23 @@
     if (!bar) {
       bar = document.createElement('form');
       bar.className = 'app-bar';
-      bar.innerHTML = '<div class="app-bar-row"><input class="apps-field app-change" maxlength="1500" autocomplete="off" aria-label="Describe a change to this app" placeholder="Describe a change — how it looks, what it shows, how it works">' +
-        '<button class="apps-btn primary app-change-go" type="submit">CHANGE</button><button class="apps-btn app-refresh" type="button" hidden>⟳ REFRESH</button></div>' +
-        '<div class="app-bar-status"><span class="app-status" role="status"></span><button class="apps-btn app-auto-toggle" type="button" aria-expanded="false">AUTO-UPDATE</button><button class="apps-btn app-arm" type="button" hidden>▶ TURN SCHEDULING ON</button></div>' +
+      bar.innerHTML = '<div class="app-bar-row"><input class="apps-field app-change" maxlength="1500" autocomplete="off" aria-label="Describe un cambio en esta app" placeholder="Describe un cambio — cómo se ve, qué muestra, cómo funciona">' +
+        '<button class="apps-btn primary app-change-go" type="submit">CAMBIAR</button><button class="apps-btn app-refresh" type="button" hidden>⟳ ACTUALIZAR</button></div>' +
+        '<div class="app-bar-status"><span class="app-status" role="status"></span><button class="apps-btn app-auto-toggle" type="button" aria-expanded="false">ACTUALIZACIÓN AUTO</button><button class="apps-btn app-arm" type="button" hidden>▶ ACTIVAR PROGRAMACIÓN</button></div>' +
         // AUTO-UPDATE: how often, and what each update does — in the Commander's own words
         '<div class="app-auto" hidden>' +
-          '<div class="app-auto-h">Update this app by itself</div>' +
-          '<div class="app-auto-every" role="group" aria-label="How often">' + CADENCES.map((c) => '<button class="apps-btn apps-chip" type="button" aria-pressed="false" data-every="' + c[0] + '">' + c[1] + '</button>').join('') + '</div>' +
-          '<label class="app-auto-l">Each update should…</label>' +
-          '<textarea class="apps-field app-auto-task" rows="2" maxlength="2000" aria-label="What each update should do" placeholder="e.g. refresh what it shows · add today\'s numbers · give it a new look every Monday"></textarea>' +
-          '<div class="app-auto-acts"><button class="apps-btn primary app-auto-save" type="button">SAVE</button><span class="app-auto-note" role="status"></span></div>' +
+          '<div class="app-auto-h">Que esta app se actualice sola</div>' +
+          '<div class="app-auto-every" role="group" aria-label="Con qué frecuencia">' + CADENCES.map((c) => '<button class="apps-btn apps-chip" type="button" aria-pressed="false" data-every="' + c[0] + '">' + c[1] + '</button>').join('') + '</div>' +
+          '<label class="app-auto-l">Cada actualización debe…</label>' +
+          '<textarea class="apps-field app-auto-task" rows="2" maxlength="2000" aria-label="Qué debe hacer cada actualización" placeholder="p. ej. actualizar lo que muestra · añadir las cifras de hoy · darle una nueva cara cada lunes"></textarea>' +
+          '<div class="app-auto-acts"><button class="apps-btn primary app-auto-save" type="button">GUARDAR</button><span class="app-auto-note" role="status"></span></div>' +
         '</div>';
       bar.addEventListener('submit', (e) => {
         e.preventDefault();
         const inp = bar.querySelector('.app-change');
         const r = change(id, inp.value);
-        if (r.ok) { inp.value = ''; held.delete(id); notify(r.state === 'queued' ? 'Queued — your crew takes it when the current task finishes.' : 'Sent to your crew — follow along in COMMS.'); paintAll(id); }
-        else if (r.state !== 'empty') notify('COMMS is not ready yet — your text is kept here; press the button again in a moment.', 'warn');
+        if (r.ok) { inp.value = ''; held.delete(id); notify(r.state === 'queued' ? 'En cola — tu tripulación se ocupa al terminar la tarea actual.' : 'Sent to your crew — follow along in COMMS.'); paintAll(id); }
+        else if (r.state !== 'empty') notify('COMMS aún no está listo — tu texto se guarda aquí; pulsa el botón de nuevo en un momento.', 'warn');
       });
       bar.querySelector('.app-refresh').addEventListener('click', () => refreshNow(id));
       bar.querySelector('.app-arm').addEventListener('click', () => turnOnRoutines());
@@ -291,8 +291,8 @@
   }
   // AUTO-UPDATE — the cadences on offer (the routine system goes down to a minute; each update is a crew run, so
   // the shortest here is 15 minutes; anything that must tick live is the page's own JS)
-  const CADENCES = [['off', 'Off'], ['every 15m', 'Every 15 min'], ['every 1h', 'Hourly'], ['every 6h', 'Every 6h'], ['every 1d', 'Daily'], ['every 7d', 'Weekly']];
-  const DEFAULT_TASK = 'Bring it up to date: refresh what it shows with current information.';
+  const CADENCES = [['off', 'Apagado'], ['every 15m', 'Cada 15 min'], ['every 1h', 'Cada hora'], ['every 6h', 'Cada 6 h'], ['every 1d', 'Diario'], ['every 7d', 'Semanal']];
+  const DEFAULT_TASK = 'Ponlo al día: actualiza lo que muestra con información actual.';
   function wireAuto(bar, id) {
     const panel = bar.querySelector('.app-auto'), toggle = bar.querySelector('.app-auto-toggle');
     let chips = bar.querySelectorAll('.app-auto-every [data-every]');
@@ -318,17 +318,17 @@
       }
       press(s ? s.every : 'off');
       task.value = (s && s.task) || DEFAULT_TASK;
-      note.textContent = 'Each update is a crew run on your model.';
+      note.textContent = 'Cada actualización es una ejecución de tu tripulación sobre tu modelo.';
     });
     chips.forEach((c) => c.addEventListener('click', () => press(c.dataset.every)));
     save.addEventListener('click', async () => {
       const t = task.value.trim();
-      if (pick !== 'off' && !t) { note.textContent = 'Say what each update should do.'; task.focus(); return; }
+      if (pick !== 'off' && !t) { note.textContent = 'Di qué debe hacer cada actualización.'; task.focus(); return; }
       save.disabled = true; note.textContent = 'Saving…';
       try {
         const r = await post('/api/apps/schedule', { id, every: pick, task: t });
         const j = await r.json().catch(() => ({}));
-        if (!r.ok || !j.ok) throw new Error((j && j.error) || 'the station could not save that');
+        if (!r.ok || !j.ok) throw new Error((j && j.error) || 'la estación no pudo guardar eso');
         await load();
         panel.hidden = true; toggle.setAttribute('aria-expanded', 'false');
         paintAll(id);   // said inline: the toggle and the status line under the window now read the new schedule
@@ -339,18 +339,18 @@
   function paintBar(bar, a) {
     if (!bar) return;
     const at = bar.querySelector('.app-auto-toggle');
-    if (at) { const s = a && a.schedule; at.textContent = s && !s.missing ? 'AUTO-UPDATE · ' + (s.enabled === false ? 'paused' : String(s.display || s.every).replace(/^every /, '')) : 'AUTO-UPDATE'; }
+    if (at) { const s = a && a.schedule; at.textContent = s && !s.missing ? 'ACTUALIZACIÓN AUTO · ' + (s.enabled === false ? 'en pausa' : String(s.display || s.every).replace(/^every /, '')) : 'ACTUALIZACIÓN AUTO'; }
     bar.querySelector('.app-status').textContent = a ? statusOf(a) : '';
     const s = a && a.schedule, busy = !!(a && refreshing.has(a.id));
     const rf = bar.querySelector('.app-refresh');
     rf.hidden = !(s && s.jobId && !s.missing);
-    rf.disabled = busy; rf.textContent = busy ? '⟳ REFRESHING…' : '⟳ REFRESH';
+    rf.disabled = busy; rf.textContent = busy ? '⟳ ACTUALIZANDO…' : '⟳ ACTUALIZAR';
     bar.querySelector('.app-arm').hidden = !(s && !s.missing && !routinesOn);
     // an app the crew has not built yet: the box builds it (and holds a description that could not be sent)
     const inp = bar.querySelector('.app-change'), go = bar.querySelector('.app-change-go');
     const unbuilt = !!a && !built(a);
-    go.textContent = unbuilt ? 'BUILD' : 'CHANGE';
-    inp.placeholder = unbuilt ? 'Describe what it should do — your crew builds it' : 'Describe a change — how it looks, what it shows, how it works';
+    go.textContent = unbuilt ? 'CONSTRUIR' : 'CAMBIAR';
+    inp.placeholder = unbuilt ? 'Describe lo que debe hacer — tu tripulación lo construye' : 'Describe un cambio — cómo se ve, qué muestra, cómo funciona';
     if (a && held.has(a.id) && !inp.value && document.activeElement !== inp) inp.value = held.get(a.id);
   }
   // repaint from what is already known (no fetch): every bar of `id` (or all), and the list's status lines
@@ -359,7 +359,7 @@
     if (listEl && listEl.isConnected) listEl.querySelectorAll('.app-row').forEach((row) => {
       const a = find(row.dataset.app); if (!a) return;
       const st = row.querySelector('.app-row-status'); if (st) st.textContent = statusOf(a);
-      const rb = row.querySelector('[data-app-refresh]'); if (rb) { rb.disabled = refreshing.has(a.id); rb.textContent = refreshing.has(a.id) ? '⟳ REFRESHING…' : '⟳ REFRESH NOW'; }
+      const rb = row.querySelector('[data-app-refresh]'); if (rb) { rb.disabled = refreshing.has(a.id); rb.textContent = refreshing.has(a.id) ? '⟳ ACTUALIZANDO…' : '⟳ ACTUALIZAR AHORA'; }
     });
   }
   function refreshBar(id) { return load().then(() => paintAll(id)); }
@@ -369,15 +369,15 @@
   let listEl = null;
   function rerenderList() {
     if (!listEl || !listEl.isConnected) return;
-    if (loadError && !list.length) { listEl.innerHTML = '<div class="ext-empty">Could not load your apps — the station did not answer. <button class="apps-btn" type="button" data-app-retry>RETRY</button></div>'; return; }
-    if (!list.length) { listEl.innerHTML = '<div class="ext-empty">No apps yet. Describe one above — your crew builds it in its own window.</div>'; return; }
+    if (loadError && !list.length) { listEl.innerHTML = '<div class="ext-empty">No se pudieron cargar tus apps — la estación no respondió. <button class="apps-btn" type="button" data-app-retry>REINTENTAR</button></div>'; return; }
+    if (!list.length) { listEl.innerHTML = '<div class="ext-empty">Aún no hay apps. Describe una arriba — tu tripulación la construye en su propia ventana.</div>'; return; }
     // a card = NAME + ONE short status line + its keys; the description is the hover tip (no sentences under tiles)
     listEl.innerHTML = list.map((a) => '<div class="mc-row ext-row app-row" data-app="' + esc(a.id) + '"' +
       (a.description ? ' data-tip="' + esc(a.description) + '" aria-description="' + esc(a.description) + '"' : '') + '>' +
       '<div class="mc-top"><b class="app-row-name">' + esc(a.name) + '</b><span class="mc-state ' + (built(a) ? 'app-ready' : 'app-unbuilt') + '">' + (built(a) ? '● ready' : '○ not built yet') + '</span></div>' +
       '<div class="mc-hint app-row-status">' + esc(statusOf(a)) + '</div>' +
       '<div class="mc-acts"><button class="apps-btn" type="button" data-app-open="' + esc(a.id) + '">OPEN</button>' +
-      (a.schedule && a.schedule.jobId && !a.schedule.missing ? '<button class="apps-btn" type="button" data-app-refresh="' + esc(a.id) + '"' + (refreshing.has(a.id) ? ' disabled' : '') + '>' + (refreshing.has(a.id) ? '⟳ REFRESHING…' : '⟳ REFRESH NOW') + '</button>' : '') +
+      (a.schedule && a.schedule.jobId && !a.schedule.missing ? '<button class="apps-btn" type="button" data-app-refresh="' + esc(a.id) + '"' + (refreshing.has(a.id) ? ' disabled' : '') + '>' + (refreshing.has(a.id) ? '⟳ ACTUALIZANDO…' : '⟳ ACTUALIZAR AHORA') + '</button>' : '') +
       '<button class="apps-btn" type="button" data-app-rename="' + esc(a.id) + '">RENAME</button>' +
       '<button class="apps-btn danger" type="button" data-app-delete="' + esc(a.id) + '">DELETE</button></div></div>').join('');
     listEl.querySelectorAll('[data-app-delete]').forEach((btn) => {
@@ -393,7 +393,7 @@
     if (!a || !nameEl || row.querySelector('.app-rename-in')) return;
     const inp = document.createElement('input');
     inp.className = 'apps-field app-rename-in'; inp.maxLength = 60; inp.value = a.name; inp.autocomplete = 'off';
-    inp.setAttribute('aria-label', 'New name for ' + a.name);
+    inp.setAttribute('aria-label', 'Nuevo nombre para ' + a.name);
     let done = false;
     const finish = async (save) => {
       if (done) return; done = true;
@@ -408,15 +408,15 @@
   }
   function buildWindow(body) {
     body.innerHTML =
-      '<form class="apps-new mc-form" aria-label="New app">' +
-      '<div class="apps-h">NEW APP</div>' +
-      '<label for="app-name">Name</label>' +
+      '<form class="apps-new mc-form" aria-label="Nueva app">' +
+      '<div class="apps-h">NUEVA APP</div>' +
+      '<label for="app-name">Nombre</label>' +
       '<input id="app-name" class="apps-field" maxlength="60" autocomplete="off" aria-describedby="apps-msg" placeholder="Call it anything">' +
-      '<label for="app-what">What should it do?</label>' +
-      '<textarea id="app-what" class="apps-field apps-what" maxlength="1500" rows="4" aria-describedby="apps-msg" placeholder="In your own words: what it shows or does, how it should look, and whether it updates by itself."></textarea>' +
-      '<div class="mc-hint">It can be anything — a dashboard, a tracker, a tool, a game. Say how it should look and work; where you don\'t, it matches the station.</div>' +
-      '<div class="apps-examples"><span class="mc-hint">Try:</span>' + EXAMPLES.map((e, i) => '<button class="apps-btn apps-chip" type="button" aria-pressed="false" data-app-example="' + i + '">' + esc(e[0]) + '</button>').join('') + '</div>' +
-      '<div class="mc-acts"><button class="apps-btn primary" id="app-create" type="submit">+ BUILD IT</button><span id="apps-msg" class="mc-hint apps-msg" role="status"></span></div>' +
+      '<label for="app-what">¿Qué debe hacer?</label>' +
+      '<textarea id="app-what" class="apps-field apps-what" maxlength="1500" rows="4" aria-describedby="apps-msg" placeholder="Con tus propias palabras: qué muestra o hace, cómo debe verse, y si se actualiza solo."></textarea>' +
+      '<div class="mc-hint">Puede ser lo que sea — un panel, un seguidor, una herramienta, un juego. Di cómo debe verse y funcionar; donde no lo digas, se adapta a la estación.</div>' +
+      '<div class="apps-examples"><span class="mc-hint">Prueba:</span>' + EXAMPLES.map((e, i) => '<button class="apps-btn apps-chip" type="button" aria-pressed="false" data-app-example="' + i + '">' + esc(e[0]) + '</button>').join('') + '</div>' +
+      '<div class="mc-acts"><button class="apps-btn primary" id="app-create" type="submit">+ CONSTRUIR</button><span id="apps-msg" class="mc-hint apps-msg" role="status"></span></div>' +
       '</form>' +
       '<div class="apps-h">YOUR APPS</div>' +
       '<div class="apps-list"><div class="mc-hint">loading…</div></div>';
@@ -429,15 +429,15 @@
       ev.preventDefault();
       if (btn.disabled) return;
       const name = nameEl.value.trim(), what = whatEl.value.trim();
-      if (!name) { msg.textContent = 'Give it a name.'; nameEl.focus(); return; }
-      if (!what) { msg.textContent = 'Say what it should do.'; whatEl.focus(); return; }
+      if (!name) { msg.textContent = 'Ponle un nombre.'; nameEl.focus(); return; }
+      if (!what) { msg.textContent = 'Di qué debe hacer.'; whatEl.focus(); return; }
       btn.disabled = true; msg.textContent = 'Creating…';
       try {
         const out = await create(name, what);
         nameEl.value = ''; whatEl.value = '';
         msg.textContent = out.sent.ok
-          ? (out.sent.state === 'queued' ? 'Created — queued: your crew builds it when the current task finishes.' : 'Building — follow along in COMMS.')
-          : 'Created, but COMMS was not ready, so your crew does not have it yet. Your description is in the box under the app\'s window — press BUILD there.';
+          ? (out.sent.state === 'queued' ? 'Creado — en cola: tu tripulación lo construye al terminar la tarea actual.' : 'Building — follow along in COMMS.')
+          : 'Creado, pero COMMS no estaba listo, así que tu tripulación aún no lo tiene. Tu descripción está en el recuadro bajo la ventana de la app — pulsa CONSTRUIR allí.';
         rerenderList();
       } catch (e) { msg.textContent = (e && e.message) || String(e); }
       finally { btn.disabled = false; }
@@ -451,7 +451,7 @@
       if (r) { refreshNow(r.dataset.appRefresh); return; }
       const n = ev.target.closest('[data-app-rename]');
       if (n) { startRename(n.dataset.appRename); return; }
-      if (ev.target.closest('[data-app-retry]')) { listEl.innerHTML = '<div class="mc-hint">loading…</div>'; load().then(rerenderList); }
+      if (ev.target.closest('[data-app-retry]')) { listEl.innerHTML = '<div class="mc-hint">cargando…</div>'; load().then(rerenderList); }
     });
     load().then(rerenderList);
   }

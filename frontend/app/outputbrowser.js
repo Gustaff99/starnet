@@ -119,19 +119,19 @@
     body.innerHTML =
       '<div class="ob" data-mode="empty">'
       + '<form class="ob-bar" autocomplete="off">'
-      + '<button type="button" class="bb sm ob-ic ob-back" aria-label="Back">' + icon('back') + '</button>'
-      + '<button type="button" class="bb sm ob-ic ob-fwd" aria-label="Forward">' + icon('forward') + '</button>'
-      + '<button type="button" class="bb sm ob-ic ob-reload" aria-label="Reload">' + icon('reload') + '</button>'
+      + '<button type="button" class="bb sm ob-ic ob-back" aria-label="Atrás">' + icon('back') + '</button>'
+      + '<button type="button" class="bb sm ob-ic ob-fwd" aria-label="Adelante">' + icon('forward') + '</button>'
+      + '<button type="button" class="bb sm ob-ic ob-reload" aria-label="Recargar">' + icon('reload') + '</button>'
       + '<div class="ob-addr"><span class="ob-lamp" aria-hidden="true"></span><span class="ob-who"></span>'
-      + '<input class="ob-url" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" maxlength="2000" aria-label="Address" placeholder="Type an address or search"></div>'
+      + '<input class="ob-url" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" maxlength="2000" aria-label="Dirección" placeholder="Escribe una dirección o busca"></div>'
       + '</form>'
       + '<div class="ob-strip"><div class="ob-recent"></div>'
-      + '<button type="button" class="bb sm ob-front" hidden>SHOW WINDOW</button>'
+      + '<button type="button" class="bb sm ob-front" hidden>VER VENTANA</button>'
       + '<button type="button" class="bb sm ob-follow" aria-pressed="false"></button>'
-      + '<button type="button" class="bb sm ob-out">OPEN OUTSIDE</button></div>'
+      + '<button type="button" class="bb sm ob-out">ABRIR AFUERA</button></div>'
       + '<div class="ob-stage">'
-      + '<iframe class="ob-frame" title="Agent-made page" sandbox="allow-scripts allow-forms allow-modals allow-pointer-lock" referrerpolicy="no-referrer" hidden></iframe>'
-      + '<div class="ob-vp" tabindex="0" role="application" aria-label="Live browser picture" hidden><img class="ob-live" alt="" draggable="false"></div>'
+      + '<iframe class="ob-frame" title="Página creada por un agente" sandbox="allow-scripts allow-forms allow-modals allow-pointer-lock" referrerpolicy="no-referrer" hidden></iframe>'
+      + '<div class="ob-vp" tabindex="0" role="application" aria-label="Imagen del navegador en vivo" hidden><img class="ob-live" alt="" draggable="false"></div>'
       + '<div class="ob-empty"></div>'
       + '</div>'
       + '<p class="ob-note" role="status"></p>'
@@ -181,7 +181,7 @@
     ui.frame.addEventListener('load', () => {
       if (!state.ui || state.mode !== 'page' || ui.frame.hidden || !ui.frame.getAttribute('src')) return;
       state.loadedAt = Date.now();
-      setNote((state.lastCause === 'updated' ? 'Updated on disk, reloaded at ' : 'Showing the file on disk as of ') + new Date(state.loadedAt).toLocaleTimeString() + '.');
+      setNote((state.lastCause === 'updated' ? 'Actualizado en disco, recargado a las ' : 'Showing the file on disk as of ') + new Date(state.loadedAt).toLocaleTimeString() + '.');
       ui.root.dataset.state = 'live';
     });
     paintBar();
@@ -203,14 +203,14 @@
     const su = station().setup;
     if (su && (su.state === 'downloading' || su.state === 'unpacking')) {
       const mb = n => Math.round(n / 1048576);
-      return 'Setting up the browser for the first time (this computer has no Chrome, Edge or Chromium): '
+      return 'Configurando el navegador por primera vez (este equipo no tiene Chrome, Edge ni Chromium): '
         + (su.state === 'unpacking' ? 'unpacking…' : 'downloading Chromium' + (su.total ? ', ' + mb(su.received) + ' of ' + mb(su.total) + ' MB' : '') + '…');
     }
-    if (su && su.state === 'failed' && !station().open) return 'Could not set up a browser on this computer: ' + su.error;
-    const win = station().visible ? ' It is open in its own window too (SHOW WINDOW).' : '';
-    if (d && d.signIn) return 'Sign in here: click the page and type. The agent is waiting and never sees what you type. Click Done in COMMS when you have finished.';
-    if (d) return agentLabel(d.agentId) + ' is using the browser. You can click and type in it too.' + win;
-    return 'The station browser, shared by you and your agents.' + (station().visible ? ' Use it in its own window, or click this live view to type in it.' : ' Click the page to type in it.') + (station().remembered ? ' Sign-ins are saved.' : '');
+    if (su && su.state === 'failed' && !station().open) return 'No se pudo configurar un navegador en este equipo: ' + su.error;
+    const win = station().visible ? ' También está abierta en su propia ventana (VER VENTANA).' : '';
+    if (d && d.signIn) return 'Inicia sesión aquí: haz clic en la página y escribe. El agente espera y nunca ve lo que escribes. Pulsa Listo en COMMS cuando termines.';
+    if (d) return agentLabel(d.agentId) + ' está usando el navegador. También puedes hacer clic y escribir en él.' + win;
+    return 'El navegador de la estación, compartido entre ti y tus agentes.' + (station().visible ? ' Use it in its own window, or click this live view to type in it.' : ' Click the page to type in it.') + (station().remembered ? ' Sign-ins are saved.' : '');
   }
   function setDriver(d) {
     const was = state.driver ? state.driver.runId + (state.driver.signIn ? '+' : '') : '', is = d ? d.runId + (d.signIn ? '+' : '') : '';
@@ -239,12 +239,12 @@
     ui.back.disabled = ui.fwd.disabled = !yours || state.busy;
     ui.reload.disabled = !(m === 'page' || yours) || state.busy;
     ui.out.disabled = !((m === 'page' && t) || ((m === 'watch' || m === 'live') && state.page && /^https?:/i.test(state.page.url || '')));
-    ui.follow.textContent = state.follow ? 'FOLLOW: ON' : 'FOLLOW: OFF';
+    ui.follow.textContent = state.follow ? 'SEGUIR: SÍ' : 'SEGUIR: NO';
     ui.follow.setAttribute('aria-pressed', String(state.follow));
     ui.follow.classList.toggle('on', state.follow);
     ui.follow.title = state.follow
-      ? 'On: this window opens by itself when an agent starts browsing or makes a web page.'
-      : 'Off: this window opens only when you open it. Turn on to have it open by itself when an agent starts browsing or makes a web page.';
+      ? 'Activado: esta ventana se abre sola cuando un agente empieza a navegar o crea una página web.'
+      : 'Apagado: esta ventana solo se abre cuando tú la abres. Actívala para que se abra sola cuando un agente empiece a navegar o cree una página web.';
     paintStrip();
   }
   function paintStrip() {
@@ -252,16 +252,16 @@
     const ui = state.ui, parts = [], st = station();
     if (st.open || st.driver) {
       const d = st.driver;
-      parts.push('<button type="button" class="ob-chip ob-livechip' + (state.mode === 'live' ? ' on' : '') + '" data-k="live" title="' + esc(d ? agentLabel(d.agentId) + ' is driving the station browser' : 'The station browser') + '">'
-        + (d ? '<span class="ob-dot' + (st.handoff ? ' ask' : '') + '" aria-hidden="true"></span>' + esc(agentLabel(d.agentId).toUpperCase()) + (st.handoff ? ' · NEEDS YOU' : ' · DRIVING') : 'BROWSER') + '</button>');
+      parts.push('<button type="button" class="ob-chip ob-livechip' + (state.mode === 'live' ? ' on' : '') + '" data-k="live" title="' + esc(d ? agentLabel(d.agentId) + ' está conduciendo el navegador de la estación' : 'El navegador de la estación') + '">'
+        + (d ? '<span class="ob-dot' + (st.handoff ? ' ask' : '') + '" aria-hidden="true"></span>' + esc(agentLabel(d.agentId).toUpperCase()) + (st.handoff ? ' · TE NECESITA' : ' · CONDUCIENDO') : 'NAVEGADOR') + '</button>');
     }
     (state.live.agents || []).forEach((a, i) => {
       const on = state.mode === 'watch' && state.watch && state.watch.runId === a.runId;
-      parts.push('<button type="button" class="ob-chip' + (on ? ' on' : '') + '" data-k="agent" data-i="' + i + '" title="' + esc(agentLabel(a.agentId)) + (a.handoff ? ' needs you in its browser' : ' has a browser of its own open: watch it') + '">'
-        + '<span class="ob-dot' + (a.handoff ? ' ask' : '') + '" aria-hidden="true"></span>' + esc(agentLabel(a.agentId).toUpperCase()) + (a.handoff ? ' · NEEDS YOU' : ' · OWN BROWSER') + '</button>');
+      parts.push('<button type="button" class="ob-chip' + (on ? ' on' : '') + '" data-k="agent" data-i="' + i + '" title="' + esc(agentLabel(a.agentId)) + (a.handoff ? ' te necesita en su navegador' : ' tiene su propio navegador abierto: míralo') + '">'
+        + '<span class="ob-dot' + (a.handoff ? ' ask' : '') + '" aria-hidden="true"></span>' + esc(agentLabel(a.agentId).toUpperCase()) + (a.handoff ? ' · TE NECESITA' : ' · NAVEGADOR PROPIO') + '</button>');
     });
     const others = state.recent.filter(x => !(state.mode === 'page' && keyOf(x) === keyOf(state.target)));
-    if (others.length) parts.push('<span class="ob-rlab">PAGES</span>' + others.map(x => '<button type="button" class="ob-chip" data-k="page" data-i="' + state.recent.indexOf(x) + '" title="' + esc(agentLabel(x.agentId) + ' · ' + x.path) + '">' + esc(baseOf(x.path)) + '</button>').join(''));
+    if (others.length) parts.push('<span class="ob-rlab">PÁGINAS</span>' + others.map(x => '<button type="button" class="ob-chip" data-k="page" data-i="' + state.recent.indexOf(x) + '" title="' + esc(agentLabel(x.agentId) + ' · ' + x.path) + '">' + esc(baseOf(x.path)) + '</button>').join(''));
     const html = parts.join('');
     if (ui.recent.innerHTML !== html) ui.recent.innerHTML = html;
   }
@@ -278,8 +278,8 @@
     state.mode = 'empty'; state.page = null;
     stopStreams(); stage('empty');
     state.ui.root.dataset.state = closedWhy ? 'ended' : 'empty';
-    state.ui.empty.innerHTML = (closedWhy ? '<p>' + esc(closedWhy) + '</p>' : '<p>Type an address above to open the browser.</p>')
-      + '<p class="ob-dim">This is the station\'s browser. When an agent browses, it drives this one and you watch it here. When no agent is using it, it\'s yours.</p>';
+    state.ui.empty.innerHTML = (closedWhy ? '<p>' + esc(closedWhy) + '</p>' : '<p>Escribe una dirección arriba para abrir el navegador.</p>')
+      + '<p class="ob-dim">Este es el navegador de la estación. Cuando un agente navega, conduce este y tú lo ves aquí. Cuando ningún agente lo usa, es tuyo.</p>';
     setNote('');
     paintBar(true);
   }
@@ -299,19 +299,19 @@
     stopStreams();
     paintBar(true);
     ui.root.dataset.state = 'loading';
-    setNote('Loading…');
+    setNote('Cargando…');
     const ok = await exists(t);
     if (seq !== state.loadSeq || !mounted() || state.mode !== 'page') return;
     if (ok === false) {
       stage('empty');
-      ui.empty.innerHTML = '<p>That page isn\'t on disk any more.</p><p class="ob-dim">' + esc(t.path) + ' was moved or deleted after the agent wrote it.</p>';
+      ui.empty.innerHTML = '<p>Esa página ya no está en disco.</p><p class="ob-dim">' + esc(t.path) + ' se movió o se borró después de que el agente la escribiera.</p>';
       ui.root.dataset.state = 'missing'; setNote('');
       return;
     }
     const url = pageUrl(t);
     if (!url) {
       stage('empty');
-      ui.empty.innerHTML = '<p>The station isn\'t reachable, so this page can\'t be shown right now.</p>';
+      ui.empty.innerHTML = '<p>La estación no es alcanzable, así que esta página no se puede mostrar ahora mismo.</p>';
       ui.root.dataset.state = 'missing'; setNote('');
       return;
     }
@@ -344,7 +344,7 @@
     if (a && a.handoff) return showHandoff(w.agentId);
     stage('live');
     ui.root.dataset.state = 'live';
-    setNote('Watching ' + agentLabel(w.agentId) + '\'s own browser. View only: the agent is driving.');
+    setNote('Mirando el navegador propio de ' + agentLabel(w.agentId) + '. Solo visualización: el agente está conduciendo.');
     paintBar(true);
     if (ui.watchStream) ui.watchStream.start();
   }
@@ -356,9 +356,9 @@
     let id = '';
     try { const l = (typeof StepIn !== 'undefined' && typeof StepIn.live === 'function') ? StepIn.live() : []; const h = l.find(x => x && x.agentId === agentId); if (h) id = String(h.id); } catch (_) { id = ''; }
     const canOpen = typeof StepIn !== 'undefined' && typeof StepIn.open === 'function';
-    ui.empty.innerHTML = '<p>' + name + ' needs you in the browser.</p>'
-      + '<p class="ob-dim">It is paused on a page only you can get past (a sign-in, a code, a human check). Take the wheel in STEP-IN, then hand it back.</p>'
-      + (canOpen ? '<button type="button" class="bb sm" data-act="stepin" data-id="' + esc(id) + '">STEP IN</button>' : '');
+    ui.empty.innerHTML = '<p>' + name + ' te necesita en el navegador.</p>'
+      + '<p class="ob-dim">Está pausado en una página que solo tú puedes pasar (un acceso, un código, una comprobación humana). Toma el volante en ENTRAR, y devuélvelo después.</p>'
+      + (canOpen ? '<button type="button" class="bb sm" data-act="stepin" data-id="' + esc(id) + '">ENTRAR</button>' : '');
     setNote('');
     paintBar(true);
   }
@@ -370,7 +370,7 @@
       if (code === 'handoff') { refreshLive(); return showHandoff(agentId); }
       stage('empty');
       ui.root.dataset.state = 'ended';
-      ui.empty.innerHTML = '<p>' + esc(agentLabel(agentId).toUpperCase()) + '\'s own browser closed.</p><p class="ob-dim">' + (code === 'ended' ? 'The run finished, and its private browser went with it.' : code === 'closed' ? 'It has no page open right now.' : esc((b && b.error) || 'The picture stopped.')) + '</p>';
+      ui.empty.innerHTML = '<p>' + esc(agentLabel(agentId).toUpperCase()) + ' cerró su navegador propio.</p><p class="ob-dim">' + (code === 'ended' ? 'La ejecución terminó, y su navegador privado se fue con ella.' : code === 'closed' ? 'Ahora mismo no tiene ninguna página abierta.' : esc((b && b.error) || 'La imagen se detuvo.')) + '</p>';
       setNote(''); state.page = null; paintBar(true); refreshLive();
       return;
     }
@@ -378,7 +378,7 @@
       if (code === 'handoff') { refreshLive(); return showHandoff(state.driver ? state.driver.agentId : (station().driver || {}).agentId); }
       // "closed" may be stale: the window was closed and has already been started again (by you or an agent). Ask the
       // station before giving up the picture — only a browser the station says is closed shows as closed.
-      const why = code === 'closed' ? 'The browser is closed.' : ((b && b.error) || 'The picture stopped.');
+      const why = code === 'closed' ? 'El navegador está cerrado.' : ((b && b.error) || 'La imagen se detuvo.');
       refreshLive().then(() => {
         if (!mounted() || state.mode !== 'live') return;
         const now = Date.now();
@@ -400,7 +400,7 @@
     // a typed address always wins: it supersedes a back/forward/reload (or an earlier address) still in flight
     const op = ++state.opSeq;
     state.busy = true; paintBar();
-    setNote('Opening…');
+    setNote('Abriendo…');
     /* A SLOW START SHOWS ITS PICTURE (measured 2026-10-01 at ~90% CPU: switching to a Chrome window, the old browser
        took 10+ s to exit and the open answered after ~30 s — the window sat on a blank "Opening…"). While the open is
        in flight, ask the station each second, and as soon as it says the browser is up, show the live picture (the
@@ -411,7 +411,7 @@
         if (op === state.opSeq && mounted() && state.busy && station().open && state.mode !== 'live') {
           clearInterval(early);
           state.mode = 'live'; state.watch = null;
-          startLive(); setNote('Opening…');
+          startLive(); setNote('Abriendo…');
         }
       });
     }, 1000);
@@ -423,11 +423,11 @@
     if (r.status !== 200 || !r.body.ok) {
       if (r.body && r.body.code === 'driving') {
         // say why nothing happened, put the real address back, and keep saying it (a status refresh must not bury it)
-        const why = agentLabel(r.body.agentId) + ' is driving the browser right now. Wait for it to finish (or stop the run), then type your address.';
+        const why = agentLabel(r.body.agentId) + ' está conduciendo el navegador ahora mismo. Espera a que termine (o detén la ejecución), y luego escribe tu dirección.';
         try { ui.url.blur(); } catch (_) { /* focus is best-effort */ }
         refreshLive().then(() => { if (!mounted()) return; if (state.mode !== 'live') showLive(); paintBar(true); setNote(why); });
         setNote(why);
-      } else setNote('Could not open that: ' + ((r.body && r.body.error) || 'the station did not answer') + '.');
+      } else setNote('No se pudo abrir eso: ' + ((r.body && r.body.error) || 'la estación no respondió') + '.');
       paintBar();
       return;
     }
@@ -446,7 +446,7 @@
     const r = await postJson('/api/browser/view/nav', { action }).catch(() => ({ status: 0, body: {} }));
     if (op !== state.opSeq) return;
     state.busy = false;
-    if (r.status !== 200) setNote('Could not go ' + action + ': ' + ((r.body && r.body.error) || 'the station did not answer') + '.');
+    if (r.status !== 200) setNote('No se pudo ir ' + action + ': ' + ((r.body && r.body.error) || 'la estación no respondió') + '.');
     paintBar();
   }
   function reload() {
@@ -457,12 +457,12 @@
     let url = '';
     if (state.mode === 'page' && state.target) url = pageUrl(state.target);
     else if ((state.mode === 'watch' || state.mode === 'live') && state.page && /^https?:/i.test(state.page.url || '')) url = state.page.url;
-    if (!url) { notify('could not open that — the station may be unreachable'); return; }
+    if (!url) { notify('no se pudo abrir eso — la estación puede ser inalcanzable'); return; }
     const core = tauriCore();
-    if (core && core.invoke) { Promise.resolve(core.invoke('open_external_url', { url })).catch(() => notify('could not open your browser')); return; }
+    if (core && core.invoke) { Promise.resolve(core.invoke('open_external_url', { url })).catch(() => notify('no se pudo abrir tu navegador')); return; }
     let win = null;
     try { win = root.open(url, '_blank', 'noopener'); } catch (_) { win = null; }
-    if (!win) notify('your browser blocked the new tab — allow popups for the station, then try again');
+    if (!win) notify('tu navegador bloqueó la pestaña nueva — permite ventanas emergentes para la estación e inténtalo de nuevo');
   }
 
   function setFollow(on) {
@@ -632,7 +632,7 @@
     b.classList.toggle('live', (mine || !!a) && !ask);
     b.classList.toggle('ask', ask);
     b.classList.toggle('open', !!st.open);
-    const tip = ask ? name + ' needs you in the browser' : (mine || a) ? name + ' is using the browser: watch it' : st.driver ? agentLabel(st.driver.agentId) + ' is using the browser' : 'Browser';
+    const tip = ask ? name + ' te necesita en el navegador' : (mine || a) ? name + ' está usando el navegador: míralo' : st.driver ? agentLabel(st.driver.agentId) + ' está usando el navegador' : 'Navegador';
     b.setAttribute('aria-label', tip);
     if (b.hasAttribute('data-tip')) b.setAttribute('data-tip', tip); else b.title = tip;
   }
@@ -658,16 +658,16 @@
      Where the station browser lives. Same button idiom as AUTONOMY (.set-themes / .set-theme / .sel), so no new
      chrome. The live line under it says what is RUNNING now, from the station — never just what was clicked. */
   const MODE_TEXT = {
-    window: 'A real Chrome window on your desktop that you and your agents share. Sign in, type and paste in it like any browser; the BROWSER window follows it.',
-    builtin: 'Hidden inside StarNet: nothing opens on your desktop. The BROWSER window shows the page.',
-    chrome: 'Your own Chrome, with your logins. Agents ask before acting on each site. Needs the StarNet extension in your Chrome.'
+    window: 'Una ventana real de Chrome en tu escritorio que compartes con tus agentes. Inicia sesión, escribe y pega en ella como en cualquier navegador; la ventana NAVEGADOR la sigue.',
+    builtin: 'Oculta dentro de StarNet: nada se abre en tu escritorio. La ventana NAVEGADOR muestra la página.',
+    chrome: 'Tu propio Chrome, con tus accesos. Los agentes piden permiso antes de actuar en cada sitio. Necesita la extensión de StarNet en tu Chrome.'
   };
   function mountSettings(el, arrange) {
     el.innerHTML = '<p class="set-about" id="brw-desc">' + esc(MODE_TEXT.window) + '</p>'
-      + '<div class="set-sub"><span class="set-sub-k">WHERE IT RUNS</span><span class="set-sub-d">for you and for your agents</span></div>'
+      + '<div class="set-sub"><span class="set-sub-k">DÓNDE SE EJECUTA</span><span class="set-sub-d">para ti y para tus agentes</span></div>'
       + '<div class="set-themes" id="brw-mode">'
-      + '<button type="button" class="set-theme" data-mode="window" title="' + esc(MODE_TEXT.window) + '">CHROME WINDOW</button>'
-      + '<button type="button" class="set-theme" data-mode="builtin" title="' + esc(MODE_TEXT.builtin) + '">BUILT-IN</button>'
+      + '<button type="button" class="set-theme" data-mode="window" title="' + esc(MODE_TEXT.window) + '">VENTANA CHROME</button>'
+      + '<button type="button" class="set-theme" data-mode="builtin" title="' + esc(MODE_TEXT.builtin) + '">INTEGRADO</button>'
       // YOUR CHROME (your own Chrome via the StarNet extension) is not offered until that extension exists (release review)
       + '</div>'
       + '<p class="set-about dim" id="brw-state" role="status"></p>';
@@ -679,22 +679,22 @@
       wrap.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('sel', !!s && b.dataset.mode === s.mode));
       desc.textContent = MODE_TEXT[(s && s.mode) || 'window'];
       const lines = [];
-      const fallback = s && s.effective === 'window' ? 'uses a Chrome window' : 'browses built-in';
-      if (s && s.mode === 'chrome' && !s.chromeAvailable) lines.push('The StarNet extension is not paired with your Chrome yet, so the station ' + fallback + ' until it is.');
-      if (s && s.mode === 'window' && s.effective === 'builtin') lines.push('No Chrome window can open here (no screen, or no Chrome, Edge or Chromium installed), so the station browses built-in.');
-      if (s && s.running && s.running !== s.effective) lines.push('The browser that is open now keeps its old mode until an agent finishes with it; it switches after that.');
-      else if (s && s.running) lines.push('Running now: ' + (s.running === 'window' ? 'a Chrome window' : 'built-in') + '.');
+      const fallback = s && s.effective === 'window' ? 'usa una ventana de Chrome' : 'navega con el integrado';
+      if (s && s.mode === 'chrome' && !s.chromeAvailable) lines.push('La extensión de StarNet aún no está emparejada con tu Chrome, así que la estación ' + fallback + ' hasta que esté.');
+      if (s && s.mode === 'window' && s.effective === 'builtin') lines.push('No se puede abrir una ventana de Chrome aquí (no hay pantalla, o no hay Chrome, Edge ni Chromium instalado), así que la estación navega con el integrado.');
+      if (s && s.running && s.running !== s.effective) lines.push('El navegador abierto ahora mantiene su modo anterior hasta que un agente termine de usarlo; cambia después.');
+      else if (s && s.running) lines.push('Ahora: ' + (s.running === 'window' ? 'una ventana de Chrome' : 'el integrado') + '.');
       stateLine.textContent = lines.join(' ');
     };
-    getJson('/api/browser/settings').then(r => { if (r.status === 200 && r.body && r.body.ok) paint(r.body); else stateLine.textContent = 'Could not read the browser setting from the station.'; }).catch(() => { stateLine.textContent = 'Could not read the browser setting from the station.'; });
+    getJson('/api/browser/settings').then(r => { if (r.status === 200 && r.body && r.body.ok) paint(r.body); else stateLine.textContent = 'No se pudo leer la configuración del navegador de la estación.'; }).catch(() => { stateLine.textContent = 'No se pudo leer la configuración del navegador de la estación.'; });
     wrap.addEventListener('click', ev => {
       const b = ev.target && ev.target.closest ? ev.target.closest('[data-mode]') : null;
       if (!b || (current && current.mode === b.dataset.mode)) return;
-      stateLine.textContent = 'Saving…';
+      stateLine.textContent = 'Guardando…';
       postJson('/api/browser/settings', { mode: b.dataset.mode }).then(r => {
         if (r.status === 200 && r.body && r.body.ok) { paint(r.body); refreshLive(); }
-        else stateLine.textContent = 'Could not save: ' + ((r.body && r.body.error) || 'the station did not answer') + '.';
-      }).catch(() => { stateLine.textContent = 'Could not save: the station did not answer.'; });
+        else stateLine.textContent = 'No se pudo guardar: ' + ((r.body && r.body.error) || 'la estación no respondió') + '.';
+      }).catch(() => { stateLine.textContent = 'No se pudo guardar: la estación no respondió.'; });
     });
   }
 

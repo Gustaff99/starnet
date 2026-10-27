@@ -64,10 +64,10 @@
       box.innerHTML = snap.devices.map(d =>
         '<div class="set-row rmt-dev" data-dev="' + esc(d.id) + '">' +
           '<span class="dot' + (live.has(d.id) ? ' on' : '') + '"></span> ' + esc(d.name) +
-          ' <span class="dim">— ' + (live.has(d.id) ? 'connected now' : (d.lastSeenAt ? 'last seen ' + esc(ago(Date.now() - d.lastSeenAt)) : 'never connected')) +
+          ' <span class="dim">— ' + (live.has(d.id) ? 'conectado ahora' : (d.lastSeenAt ? 'último visto ' + esc(ago(Date.now() - d.lastSeenAt)) : 'nunca conectado')) +
           ' · code ' + esc(d.fingerprint) + '</span>' +
-          ' <label class="dim" title="This phone asks before every step that needs an OK, even for agents on full access"><input type="checkbox" data-askfirst="' + esc(d.id) + '"' + (d.askFirst ? ' checked' : '') + '> ALWAYS ASK</label>' +
-          ' <button class="bb xs danger" type="button" data-remove="' + esc(d.id) + '">REMOVE</button>' +
+          ' <label class="dim" title="Este teléfono pregunta antes de cada paso que necesita un OK, incluso para agentes con acceso total"><input type="checkbox" data-askfirst="' + esc(d.id) + '"' + (d.askFirst ? ' checked' : '') + '> SIEMPRE PREGUNTAR</label>' +
+          ' <button class="bb xs danger" type="button" data-remove="' + esc(d.id) + '">QUITAR</button>' +
         '</div>').join('');
       box.querySelectorAll('[data-askfirst]').forEach(cb => {
         cb.onchange = async () => {
@@ -115,12 +115,12 @@
       try { qr = (typeof QR !== 'undefined' && p.pairUrl) ? QR.svg(p.pairUrl, { quiet: 4 }) : ''; } catch (_) { qr = ''; }
       box.innerHTML =
         '<div class="rmt-pair">' +
-          (qr ? '<div class="rmt-qr" role="img" aria-label="Pairing code for your phone">' + qr + '</div>' : '') +
+          (qr ? '<div class="rmt-qr" role="img" aria-label="Código de emparejamiento para tu teléfono">' + qr + '</div>' : '') +
           '<div class="rmt-pair-text">' +
-            '<p class="set-about">Scan this with your phone’s camera. It opens StarNet Remote and pairs this one phone. On an iPhone it first shows you how to put StarNet on your Home Screen, so it works like an app.</p>' +
-            '<p class="set-about">Station code: <b>' + esc(p.fingerprint) + '</b> — your phone will show the same.</p>' +
+            '<p class="set-about">Escanea esto con la cámara de tu teléfono. Abre StarNet Remote y empareja este teléfono. En un iPhone primero te muestra cómo poner StarNet en tu pantalla de inicio, para que funcione como una app.</p>' +
+            '<p class="set-about">Código de estación: <b>' + esc(p.fingerprint) + '</b> — tu teléfono mostrará el mismo.</p>' +
             '<p class="set-about dim" id="rmt-exp"></p>' +
-            '<div class="set-save"><button class="bb xs" type="button" id="rmt-copy">COPY LINK</button><button class="bb xs" type="button" id="rmt-cancel">CANCEL</button></div>' +
+            '<div class="set-save"><button class="bb xs" type="button" id="rmt-copy">COPIAR ENLACE</button><button class="bb xs" type="button" id="rmt-cancel">CANCELAR</button></div>' +
           '</div>' +
         '</div>';
       box.hidden = false;
@@ -131,8 +131,8 @@
       };
       const tick = () => {
         const left = p.expiresAt - Date.now();
-        if (left <= 0) { closePairing(); say('That pairing code expired. Press PAIR A PHONE for a new one.'); return; }
-        const e = $('rmt-exp'); if (e) e.textContent = 'Works once, for the next ' + Math.floor(left / 60000) + ':' + String(Math.floor(left / 1000) % 60).padStart(2, '0') + '.';
+        if (left <= 0) { closePairing(); say('Ese código de emparejamiento expiró. Pulsa EMPAREJAR UN TELÉFONO para uno nuevo.'); return; }
+        const e = $('rmt-exp'); if (e) e.textContent = 'Funciona una vez, durante los próximos ' + Math.floor(left / 60000) + ':' + String(Math.floor(left / 1000) % 60).padStart(2, '0') + '.';
       };
       tick(); pairTimer = setInterval(tick, 1000);
       const before = (snap && snap.devices ? snap.devices.length : 0);

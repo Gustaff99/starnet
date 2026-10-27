@@ -7,10 +7,10 @@
   else root.FirstValue = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   const TASKS = [
-    { id: 'client-update', name: 'Draft a weekly client update', words: /\b(client|customer|report|update|status)\b/i, outcome: 'A concise update with progress, blockers, next steps, and missing facts clearly marked.' },
-    { id: 'meeting-actions', name: 'Turn meeting notes into actions', words: /\b(meeting|meetings|notes|minutes|follow.?up)\b/i, outcome: 'A recap and action list with owners and dates only where the source names them.' },
-    { id: 'inbox-replies', name: 'Draft replies to messages', words: /\b(email|emails|inbox|messages|replies)\b/i, outcome: 'Prioritized draft replies, with questions and commitments left for your review.' },
-    { id: 'custom', name: 'Handle something else', outcome: 'The result you describe, grounded in the source you provide.' }
+    { id: 'client-update', name: 'Borrador de un resumen semanal para el cliente', words: /\b(client|customer|report|update|status)\b/i, outcome: 'Un resumen conciso con avances, bloqueos, próximos pasos y los datos faltantes claramente marcados.' },
+    { id: 'meeting-actions', name: 'Convierte notas de reunión en acciones', words: /\b(meeting|meetings|notes|minutes|follow.?up)\b/i, outcome: 'Un recapitulado y una lista de acciones con responsables y fechas solo donde la fuente los indique.' },
+    { id: 'inbox-replies', name: 'Borrador de respuestas a mensajes', words: /\b(email|emails|inbox|messages|replies)\b/i, outcome: 'Respuestas borrador priorizadas, con preguntas y compromisos dejados para tu revisión.' },
+    { id: 'custom', name: 'Manejar algo más', outcome: 'El resultado que describes, basado en la fuente que proporciones.' }
   ];
   let configured = {};
   // Unsaved source material stays only in this page's memory, never browser storage.
@@ -23,7 +23,7 @@
   function suggest(texts) {
     const pain = (Array.isArray(texts) ? texts : [texts]).map(clean).filter(Boolean).join('\n');
     const matched = TASKS.find(t => t.words && t.words.test(pain));
-    return { task: matched || (pain ? TASKS[3] : TASKS[0]), pain, reason: pain ? 'Based on your current work profile; change it if it does not fit' : 'One concrete place to begin; change it to fit your work' };
+    return { task: matched || (pain ? TASKS[3] : TASKS[0]), pain, reason: pain ? 'Basado en tu perfil de trabajo actual; cámbialo si no encaja' : 'Un punto de partida concreto; adáptalo a tu trabajo' };
   }
   function approvedProjects(rows, sources) {
     const projects = (Array.isArray(rows) ? rows : []).filter(p => p && p.blessed === true && clean(p.root)).map(p => ({ root: p.root, name: clean(p.displayPath) || p.root }));
@@ -38,10 +38,10 @@
     const v = input || {}, task = TASKS.find(t => t.id === v.intent) || TASKS[0];
     const source = v.source === 'folder' ? 'folder' : 'sample';
     const sample = clean(v.sample), folder = clean(v.root), request = clean(v.request);
-    if (task.id === 'custom' && !request) return { error: 'Describe the useful result you want.' };
-    if (source === 'sample' && !sample) return { error: 'Paste a real sample or choose an approved folder.' };
-    if (source === 'sample' && sample.length > 16000) return { error: 'Use a sample of 16,000 characters or fewer.' };
-    if (source === 'folder' && !folder) return { error: 'Select the approved folder to use.' };
+    if (task.id === 'custom' && !request) return { error: 'Describe el resultado útil que quieres.' };
+    if (source === 'sample' && !sample) return { error: 'Pega una muestra real o elige una carpeta aprobada.' };
+    if (source === 'sample' && sample.length > 16000) return { error: 'Usa una muestra de 16.000 caracteres o menos.' };
+    if (source === 'folder' && !folder) return { error: 'Selecciona la carpeta aprobada a usar.' };
     const objective = request || task.name;
     const directive = [
       'Task: ' + objective,
@@ -76,17 +76,17 @@
     let roots = [], alive = true, loading = false;
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
     el.innerHTML = '<form class="fv-form">' +
-      '<p class="fv-lead">Give the station one real source. Get a useful draft to review.</p>' +
+      '<p class="fv-lead">Dale a la estación una fuente real. Obtén un borrador útil para revisar.</p>' +
       '<p class="fv-reason">' + esc(ctx.reason || proposed.reason) + '</p>' +
       (proposed.pain ? '<blockquote class="fv-pain">' + esc(proposed.pain.slice(0, 500)) + '</blockquote>' : '') +
-      '<div class="fv-options" role="group" aria-label="Choose the first useful result">' + TASKS.map(t => '<button type="button" class="bb fv-option" data-intent="' + t.id + '" aria-pressed="' + (intent === t.id) + '">' + esc(t.name) + '</button>').join('') + '</div>' +
+      '<div class="fv-options" role="group" aria-label="Elige el primer resultado útil">' + TASKS.map(t => '<button type="button" class="bb fv-option" data-intent="' + t.id + '" aria-pressed="' + (intent === t.id) + '">' + esc(t.name) + '</button>').join('') + '</div>' +
       '<p class="fv-outcome"></p>' +
-      '<label class="fv-field">What should the result do? <span>(optional for suggested tasks)</span><textarea class="key-input fv-request" rows="2" maxlength="2000" placeholder="For example: a short Friday update for the client, with next steps"></textarea></label>' +
-      '<fieldset class="fv-sources"><legend>Choose the source</legend><label><input type="radio" name="fv-source" value="sample" checked> Paste a sample</label> <label><input type="radio" name="fv-source" value="folder"> Use an approved folder</label></fieldset>' +
-      '<label class="fv-field fv-sample-field">Notes, messages, or a previous report<textarea class="key-input fv-sample" rows="7" maxlength="16000" placeholder="Paste the real material to work from. Nothing is sent until you click Create draft."></textarea></label>' +
-      '<div class="fv-folder-field" hidden><label class="fv-field">Approved source folder<select class="key-input fv-root" aria-label="Approved source folder"><option value="">Choose a folder…</option></select></label><div class="fv-actions"><button type="button" class="bb fv-projects">Manage approved folders</button><button type="button" class="bb fv-refresh">Refresh folders</button></div><p>Selecting a folder here does not grant access. Manage approved folders to add or revoke access.</p></div>' +
-      '<p class="fv-preview">The agent will use the selected source, create a draft, and identify missing facts. You review the result before deciding what happens next.</p>' +
-      '<p class="fv-status" role="status" aria-live="polite"></p><div class="fv-actions"><button type="submit" class="bb fv-run">Create draft</button><button type="button" class="bb fv-model">Model & connection</button><button type="button" class="bb fv-platforms">Connect my platforms</button><button type="button" class="bb fv-clear">Clear draft</button></div><p class="muted">Your draft stays here while you visit setup. Return through Recipes → Draft from your notes. Reloading the app clears unsent drafts.</p></form>';
+      '<label class="fv-field">¿Qué debe hacer el resultado? <span>(opcional para tareas sugeridas)</span><textarea class="key-input fv-request" rows="2" maxlength="2000" placeholder="Por ejemplo: un breve resumen del viernes para el cliente, con próximos pasos"></textarea></label>' +
+      '<fieldset class="fv-sources"><legend>Elige la fuente</legend><label><input type="radio" name="fv-source" value="sample" checked> Pega una muestra</label> <label><input type="radio" name="fv-source" value="folder"> Usa una carpeta aprobada</label></fieldset>' +
+      '<label class="fv-field fv-sample-field">Notas, mensajes o un informe anterior<textarea class="key-input fv-sample" rows="7" maxlength="16000" placeholder="Pega el material real para trabajar. Nada se envía hasta que pulses Crear borrador."></textarea></label>' +
+      '<div class="fv-folder-field" hidden><label class="fv-field">Carpeta de fuente aprobada<select class="key-input fv-root" aria-label="Carpeta de fuente aprobada"><option value="">Elige una carpeta…</option></select></label><div class="fv-actions"><button type="button" class="bb fv-projects">Gestionar carpetas aprobadas</button><button type="button" class="bb fv-refresh">Actualizar carpetas</button></div><p>Seleccionar una carpeta aquí no otorga acceso. Gestiona las carpetas aprobadas para añadir o revocar acceso.</p></div>' +
+      '<p class="fv-preview">El agente usará la fuente seleccionada, creará un borrador e identificará los datos faltantes. Revisas el resultado antes de decidir qué hacer después.</p>' +
+      '<p class="fv-status" role="status" aria-live="polite"></p><div class="fv-actions"><button type="submit" class="bb fv-run">Crear borrador</button><button type="button" class="bb fv-model">Modelo y conexión</button><button type="button" class="bb fv-platforms">Conectar mis plataformas</button><button type="button" class="bb fv-clear">Borrar borrador</button></div><p class="muted">Tu borrador se queda aquí mientras visitas la configuración. Vuelve por Recetas → Borrador desde tus notas. Recargar la app borra los borradores no enviados.</p></form>';
     const q = s => el.querySelector(s), status = message => { if (alive) q('.fv-status').textContent = message; };
     q('.fv-request').value = ctx.request || (intent === 'custom' ? proposed.pain : '');
     q('.fv-sample').value = ctx.sample || '';
@@ -120,52 +120,52 @@
         fetch('/api/discovery/sources', { cache: 'no-store' }).then(async res => res.ok ? res.json() : null)
       ]);
       const res = projectResult.status === 'fulfilled' ? projectResult.value : { ok: false };
-      if (!res.ok) throw new Error('Could not verify approved folders. Retry or paste a sample.');
+      if (!res.ok) throw new Error('No se pudieron verificar las carpetas aprobadas. Reintenta o pega una muestra.');
       const data = res.data;
       if (!alive) return [];
       const sources = sourceResult.status === 'fulfilled' && sourceResult.value ? sourceResult.value.sources : [];
       roots = approvedProjects(data.projects, sources);
-      q('.fv-root').innerHTML = '<option value="">' + (roots.length ? 'Choose a folder…' : 'No approved folders yet') + '</option>' + roots.map(p => '<option value="' + esc(p.root) + '">' + esc(p.name) + '</option>').join('');
+      q('.fv-root').innerHTML = '<option value="">' + (roots.length ? 'Elige una carpeta…' : 'Todavía no hay carpetas aprobadas') + '</option>' + roots.map(p => '<option value="' + esc(p.root) + '">' + esc(p.name) + '</option>').join('');
       q('.fv-root').value = roots.some(p => p.root === chosen) ? chosen : '';
       return roots;
     }
-    q('.fv-refresh').onclick = () => refreshRoots().then(() => status('Approved folders refreshed.')).catch(e => status(e.message));
-    q('.fv-projects').onclick = () => { remember(); return ctx.onProjects ? ctx.onProjects() : status('Open Projects in the session rail to add or revoke an approved folder, then refresh here.'); };
+    q('.fv-refresh').onclick = () => refreshRoots().then(() => status('Carpetas aprobadas actualizadas.')).catch(e => status(e.message));
+    q('.fv-projects').onclick = () => { remember(); return ctx.onProjects ? ctx.onProjects() : status('Abre Proyectos en el riel de la sesión para añadir o revocar una carpeta aprobada, y actualiza aquí.'); };
     q('.fv-platforms').onclick = () => { remember(); if (typeof Tutorial !== 'undefined' && Tutorial.showPlatformConnections) Tutorial.showPlatformConnections(); };
-    q('.fv-model').onclick = () => { remember(); return ctx.onModelSetup ? ctx.onModelSetup() : status('Open SETTINGS › AI & MODELS to configure your agent’s model, then return here.'); };
+    q('.fv-model').onclick = () => { remember(); return ctx.onModelSetup ? ctx.onModelSetup() : status('Abre AJUSTES › IA Y MODELOS para configurar el modelo de tu agente, y vuelve aquí.'); };
     q('.fv-clear').onclick = () => {
       q('.fv-request').value = ''; q('.fv-sample').value = ''; q('.fv-root').value = '';
       q('input[value="sample"]').checked = true; q('input[value="folder"]').checked = false;
       ctx.root = ''; delete ctx.findingId; delete ctx.reason; delete ctx.pain;
       retain = false; sourceMode(); clearDraft();
       const reason = q('.fv-reason'), painQuote = q('.fv-pain');
-      if (reason) reason.textContent = 'Choose a task and provide the source you want to use.';
+      if (reason) reason.textContent = 'Elige una tarea y proporciona la fuente que quieres usar.';
       if (painQuote) painQuote.hidden = true;
       if (ctx.onClear) ctx.onClear();
-      status('Draft cleared.');
+      status('Borrador borrado.');
     };
     q('form').onsubmit = async event => {
       event.preventDefault(); if (loading) return;
       const built = compose({ intent, request: q('.fv-request').value, sample: q('.fv-sample').value, source: q('input[value="folder"]').checked ? 'folder' : 'sample', root: q('.fv-root').value });
       if (built.error) { status(built.error); return; }
-      loading = true; q('.fv-run').disabled = true; status('Checking the launch…');
+      loading = true; q('.fv-run').disabled = true; status('Comprobando el lanzamiento…');
       try {
         if (built.source === 'folder') {
           const liveRoots = await refreshRoots();
-          if (!liveRoots.some(p => p.root === built.root)) throw new Error('That folder is no longer approved. Choose another source.');
+          if (!liveRoots.some(p => p.root === built.root)) throw new Error('Esa carpeta ya no está aprobada. Elige otra fuente.');
         }
         if (!alive) return;
-        if (!ctx.onLaunch) throw new Error('The work launcher is unavailable. Reopen Recipes and try again.');
+        if (!ctx.onLaunch) throw new Error('El lanzador de trabajo no está disponible. Reabre Recetas e inténtalo de nuevo.');
         const launched = await ctx.onLaunch(built.recipe, built.values, { source: built.source, root: built.root });
-        if (launched !== true) throw new Error('The task did not start. Check the model connection and whether the agent is busy, then retry.');
+        if (launched !== true) throw new Error('La tarea no empezó. Revisa la conexión del modelo y si el agente está ocupado, e inténtalo de nuevo.');
         retain = false; clearDraft();
-        status('Request sent. Follow the run and review its result in COMMS.');
+        status('Solicitud enviada. Sigue la ejecución y revisa su resultado en COMMS.');
         if (ctx.onOpenWork) ctx.onOpenWork();
-      } catch (e) { status(e.message || 'The task did not start. Your input is still here.'); }
+      } catch (e) { status(e.message || 'La tarea no empezó. Tu entrada sigue aquí.'); }
       finally { loading = false; if (alive) q('.fv-run').disabled = false; }
     };
     if (ctx.source === 'folder' || (ctx.root && ctx.source !== 'sample')) { q('input[value="sample"]').checked = false; q('input[value="folder"]').checked = true; sourceMode(); }
-    if (canResume) status('Your unsent draft has been restored.');
+    if (canResume) status('Tu borrador no enviado ha sido restaurado.');
     refreshRoots().catch(e => { if (ctx.root) status(e.message); });
     return { destroy() { remember(); alive = false; }, refresh: refreshRoots };
   }
