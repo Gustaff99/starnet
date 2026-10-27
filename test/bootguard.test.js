@@ -104,7 +104,7 @@ A.ok(!/bootguard\.js"[^>]*\bdefer\b/.test(INDEX), 'bootguard is NOT deferred —
   A.ok(b && b.attrs.role === 'alert', 'banner is an aria alert');
   const buttons = [];
   (function walk(el) { if (el.tagName === 'BUTTON') buttons.push(el); el.children.forEach(walk); })(b);
-  A.eq(buttons.map(x => x.textContent), ['⧉ COPY DIAGNOSTICS', '⟳ RELOAD'], 'banner offers COPY DIAGNOSTICS + RELOAD');
+  A.eq(buttons.map(x => x.textContent), ['⧉ COPY DIAGNOSTICS', '⟳ RECARGAR'], 'banner offers COPY DIAGNOSTICS + RELOAD');
   A.ok(buttons.every(x => /\bbtn(-xl)?\b/.test(x.className)), 'both controls wear station button skins (no white HTML controls)');
   buttons[1].onclick();
   A.eq(t.sandbox.__reloaded, 1, 'RELOAD reloads the page');
@@ -276,7 +276,7 @@ function retryable(t, opts) {
     copyBtn.onclick();
     await new Promise(r => setTimeout(r, 10));
     A.ok(copied.includes('STARNET BOOT GUARD') && copied.includes('Chat (app/chat.js)') && copied.endsWith('SIDECAR REPORT'), 'copy = page-side boot report + the sidecar report via Diag');
-    A.eq(copyBtn.textContent, '✓ DIAGNOSTICS COPIED', 'button confirms the copy');
+    A.eq(copyBtn.textContent, '✓ DIAGNÓSTICOS COPIADOS', 'button confirms the copy');
   }
   {
     let copied = '';

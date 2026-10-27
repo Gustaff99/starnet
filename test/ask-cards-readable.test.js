@@ -101,7 +101,7 @@ const byClass = (root, c) => all(root).filter(e => e._cls && e._cls.has(c));
   let refuse; answerReply = new Promise(r => { refuse = r; });
   byClass(card, 'gc-q-choice')[0].fire('click'); await settle();
   A.ok(byClass(card, 'gc-q-choice').every(k => k.disabled) && byClass(card, 'gc-q-choice')[0]._cls.has('chosen'), 'one tap: every key waits, the chosen one is marked');
-  A.eq(byClass(card, 'gc-q-hint')[0].textContent, 'Sending your answer…', 'the hint says it is on its way');
+  A.eq(byClass(card, 'gc-q-hint')[0].textContent, 'Enviando tu respuesta…', 'the hint says it is on its way');
   byClass(card, 'gc-q-choice')[1].fire('click'); await settle();
   refuse({ ok: false, error: 'offline' }); await settle();
   A.eq(posts.filter(p => p.op === 'answerQuestion').length, 1, 'a second tap while it was on its way sent nothing');

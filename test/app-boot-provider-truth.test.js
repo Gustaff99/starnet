@@ -23,7 +23,7 @@ A.ok(/Chat\.init\([\s\S]{0,900}beginBridgeAuthorityGate\(\)/.test(src), 'bridge 
 // PL-08: Custom has a required endpoint. That prerequisite must win BEFORE model validation, because
 // selectProviderUI refreshes the model catalog asynchronously and can briefly leave a stale Codex slug.
 const wake = src.slice(src.indexOf('async function onWakeAttempt'), src.indexOf('/* ---------- resume ---------- */'));
-const endpointGate = wake.indexOf("enter your Custom /v1 base URL.");
+const endpointGate = wake.indexOf("introduce tu URL base Custom /v1.");
 const modelGate = wake.indexOf('if (!model)');
 A.ok(endpointGate >= 0 && modelGate >= 0 && endpointGate < modelGate, 'Custom endpoint validation wins before model validation');
 

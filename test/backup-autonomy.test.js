@@ -15,7 +15,7 @@ const bundle=key=>JSON.stringify({schema:Backup.SCHEMA,version:Backup.VERSION,st
   }
   result={ok:false,error:'disk full'};
   const refused=await Backup.importFile(bundle('starnet.autonomy.v1'));
-  assert.equal(refused.ok,false);assert.match(refused.error,/partly restored.*disk full/);
+  assert.equal(refused.ok,false);assert.match(refused.error,/Copia restaurada en parte.*disk full/);
   const count=calls.length;
   assert.equal((await Backup.importFile(JSON.stringify({schema:Backup.SCHEMA,version:Backup.VERSION,store:{'starnet.save':'{}'}}))).ok,true);
   assert.equal(calls.length,count,'backup without autonomy must not reset it');

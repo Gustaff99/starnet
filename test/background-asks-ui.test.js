@@ -112,7 +112,7 @@ A.ok(repaints.indexOf('ny') >= 0, 'NEEDS YOU repaints after a withdrawal');
 A.ok(!Channels.allPending().some(x => x.p.promptId === 'own9'), 'a run\'s own ask in the snapshot is never filed by this path');
 ctx.__reconcile({ ts: 21000, prompts: [{ runId: 'lead1', promptId: 'p9', background: true, askedAt: 19000, streamId: 'ws_lead', workerStreamId: 'ws_rook' }] });
 A.ok(Channels.pendingAllOf('ws_lead').some(p => p.promptId === 'p9'), 'an ask younger than the snapshot\'s grace is never withdrawn on an absence');
-A.ok(retired.indexOf('p2:■ no longer waiting on you') >= 0, 'a withdrawn ask\'s fallback card is retired too (its keys would answer nothing)');
+A.ok(retired.indexOf('p2:■ ya no espera tu respuesta') >= 0, 'a withdrawn ask\'s fallback card is retired too (its keys would answer nothing)');
 A.ok(retired.every(r => !/nothing was approved|denied|approved/.test(r)), 'in neutral words: this page does not know what settled it, so it claims no decision');
 
 // a background ask with no home on this page is announced ONCE, not again on every 30-s snapshot
@@ -173,7 +173,7 @@ Channels.reset();
   const card = (id, extra) => octx.__cards.set(id, Object.assign({ wsId: 'ws_lead', runId: 'lead1', worker: false, retire: t => lines.push(id + ':' + t) }, extra));
   card('own'); card('clone', { worker: true, background: true });
   octx.__retireRun('ws_lead', 'lead1');
-  A.eq(lines, ['own:■ the run ended before an answer — nothing was approved'], 'the lead\'s run end retires its own card, never a background worker\'s (still live on the station)');
+  A.eq(lines, ['own:■ la ejecución terminó antes de la respuesta — nada se aprobó'], 'the lead\'s run end retires its own card, never a background worker\'s (still live on the station)');
   A.ok(octx.__cards.has('clone'), 'the background card stays open and answerable');
   A.eq(octx.__retireOne('clone', '■ no longer waiting on you'), true, 'a background card retires on its own settle');
   A.eq(lines[1], 'clone:■ no longer waiting on you', '…in the words its caller chose');
@@ -182,7 +182,7 @@ Channels.reset();
   A.ok(/openConsentCards\.set\(String\(p\.promptId\), \{ wsId: ws\.id, runId: String\(p\.runId \|\| ''\), worker: !!\(p\.workerAgentId \|\| p\.workerRunId\), background: p\.background === true,/.test(ch),
     'permissionRow records whether a card is a background worker\'s ask');
   // a background worker STOPPED while its ask waited: the station says stopped (not expired), and the card says so
-  A.ok(/tag\.textContent = resp\.stopped \? '■ ' \+ askerName\(p, ws\) \+ ' stopped before an answer — nothing was approved' : resp\.expired \?/.test(ch),
+  A.ok(/tag\.textContent = resp\.stopped \? '■ ' \+ askerName\(p, ws\) \+ ' se detuvo antes de la respuesta — nada se aprobó' : resp\.expired \?/.test(ch),
     'a stopped worker\'s card reads that it stopped, never "no answer in time"');
 }
 
