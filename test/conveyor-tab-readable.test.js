@@ -25,9 +25,9 @@ A.ok(branch.length > 400, 'found the Conveyors tab branch');
 A.ok(/secs\.className = 'refit-prop-sections refit-conv-sections'/.test(branch) && /b\.className = 'bb refit-prop-section'/.test(branch), 'LINES · MACHINES are the Props tab\'s section keys');
 A.ok(/\[\['lines', LINES_LABEL, blueprints\(\)\.length\], \['machines', MACHINES_LABEL, workflowMachines\(\)\.length\]\]/.test(branch), '…each counting the real catalog');
 A.ok(/if \(convSection === 'machines'\) pal\.appendChild\(machinePalette\(\)\);/.test(branch), 'MACHINES shows the machine grid');
-A.ok(/own\.className = 'bb refit-ownline'/.test(branch) && /'＋ BUILD YOUR OWN LINE'/.test(branch), 'LINES opens with BUILD YOUR OWN LINE');
+A.ok(/own\.className = 'bb refit-ownline'/.test(branch) && /'＋ CONSIGUE TU PROPIA LÍNEA'/.test(branch), 'LINES opens with BUILD YOUR OWN LINE');
 A.ok(!/refit-lineintro|refit-linenote|LINE_SENTENCE/.test(branch) && !/LINE_SENTENCE/.test(build), 'no intro paragraph and no footnote on the tab');
-A.ok(!/refit-lineintro/.test(build) && /note\.innerHTML = '<b>Connect machines<\/b><span>Click where work starts, then where it goes next\.<\/span>'/.test(build), 'the BELT tool opens on a title and one line, like the other tabs — not a paragraph');
+A.ok(!/refit-lineintro/.test(build) && /note\.innerHTML = '<b>Conectar máquinas<\/b><span>Clic donde empieza el trabajo y luego donde va a continuación\.<\/span>'/.test(build), 'the BELT tool opens on a title and one line, like the other tabs — not a paragraph');
 A.ok(/if \(tool === 'line'\) convSection = 'lines';/.test(branch), 'an armed line always shows its card and its SET UP row');
 
 /* ---------- a machine tile: art, name, wiring — the purpose is its tip ---------- */
@@ -64,7 +64,7 @@ A.ok(px.every(n => n >= 14), 'nothing the tab sets itself is under 14px (' + px.
    one click from open (a session-kept toggle); the shelf holding the ARMED line is always open; nothing is removed */
 {
   const shelf = at(build, 'const goal = goalLine();', 'pal.appendChild(grid);');
-  A.ok(/grid\.appendChild\(lineGroupHd\('FOR YOUR GOAL', 'refit-goalhd'\)\);/.test(shelf), 'FOR YOUR GOAL still leads, open');
+  A.ok(/grid\.appendChild\(lineGroupHd\('PARA TU OBJETIVO', 'refit-goalhd'\)\);/.test(shelf), 'FOR YOUR GOAL still leads, open');
   A.ok(/const open = lineShelfShown\(g\.id, groups\[g\.id\]\);/.test(shelf) && /g\.id === LINE_SHELF_OPEN \? lineGroupHd\(g\.label\) : lineShelfToggle\(g, groups\[g\.id\]\.length, open\)/.test(shelf) && /if \(open\) for \(const bp of groups\[g\.id\]\) addLineCell\(grid, bp\);/.test(shelf), 'ANY JOB is a plain open heading; every other shelf a fold key, its tiles only when open');
   A.ok(/const LINE_SHELF_OPEN = 'any';/.test(build) && /\{ id: 'any', label: 'ANY JOB'/.test(build), 'the open shelf is ANY JOB');
   A.ok(/const lineShelfShown = \(id, bps\) => id === LINE_SHELF_OPEN \|\| \(lineShelfOpen\.has\(id\) \? lineShelfOpen\.get\(id\) : \(tool === 'line' && bps\.some\(bp => bp\.id === lineType\)\)\);/.test(build), 'a shelf opened or folded stays so; untouched, the ARMED line\'s shelf opens');
