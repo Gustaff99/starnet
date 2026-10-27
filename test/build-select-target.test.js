@@ -89,7 +89,7 @@ function drag(R, id, tiles, o) {
   A.ok(g.plans[1] && g.plans[1].ok && g.plans[1].kind === 'connect', 'the ghost is the hand\'s green CONNECT verdict');
   A.eq(pos(s, R.B3), at, 'the selected BAY did not move');
   A.ok(links(s) === before + ' ' + R.B3 + '>' + R.B5 || links(s).split(' ').includes(R.B3 + '>' + R.B5), 'the belt BAY → next BAY is laid');
-  A.ok(/^OK CONNECTED TO /.test(R.said[R.said.length - 1]), 'the floor says CONNECTED (the hand\'s own words)');
+  A.ok(/^OK CONECTADO A /.test(R.said[R.said.length - 1]), 'the floor says CONNECTED (the hand\'s own words)');
   A.eq(ctx.selectedPropId, R.B3, 'it stays selected (its Workflow panel keeps its BAY)');
   s.undo();
   A.eq(links(s), before, 'ONE undo takes the belt back');
@@ -149,10 +149,10 @@ function drag(R, id, tiles, o) {
   const at = pos(s, R.O), before = JSON.stringify(s.serialize());
   const h = drag(R, R.O, [[56, 10], [32, 24]]);
   A.eq(h.modes[1], 'handbelt', 'over the INBOX the selected OUTBOX is the hand');
-  A.ok(h.plans[1] && h.plans[1].ok === false && /A LOOP/.test(h.plans[1].why), 'the ghost goes RED with the loop refusal: ' + (h.plans[1] && h.plans[1].why));
+  A.ok(h.plans[1] && h.plans[1].ok === false && /CÍRCULO/.test(h.plans[1].why), 'the ghost goes RED with the loop refusal: ' + (h.plans[1] && h.plans[1].why));
   A.eq(JSON.stringify(s.serialize()), before, 'let go on the red verdict: nothing changes');
   A.eq(pos(s, R.O), at, '…the OUTBOX did not move');
-  A.ok(/^NO A LOOP/.test(R.said[R.said.length - 1]), 'the floor says why, in the same words');
+  A.ok(/^NO UN CÍRCULO/.test(R.said[R.said.length - 1]), 'the floor says why, in the same words');
 }
 /* 7. a belt the hand would MERGE into counts as a target; a junction's move onto a line stays its own move */
 {
@@ -268,7 +268,7 @@ function drag(R, id, tiles, o) {
   const down = between('function onDown(ev) {', 'const CLICK_SLOP');
   A.ok(/mode:'reshapepress',linkId:matches\[0\]\.id/.test(down) && /if\(matches\.length>1\)\{sfx\('bad'\);flashTip\(ev,'THIS TILE CARRIES '\+matches\.length\+' BELTS — CTRL\+DRAG A TILE ONLY ONE BELT RIDES TO RESHAPE IT',false\);return;\}/.test(down)
     && /if\(matches\.length===1\)\{/.test(down), 'a Ctrl+press on a loose / unlinked belt falls through to the belt card (it said THIS TILE CARRIES 0 BELTS); two belts on the tile say how to pick one');
-  A.ok(/\['Ctrl \+ drag a belt', 'reshape it'\]/.test(src) && /Ctrl\+drag reshapes it/.test(src), 'the gesture is on the key list and on the belt card');
+  A.ok(/\['Ctrl \+ arrastrar una cinta', 'redibujarla'\]/.test(src) && /Ctrl\+arrastrar la redibuja/.test(src), 'the gesture is on the key list and on the belt card');
 }
 /* 13. build-10: R's corner flip belongs to the drag it was pressed in — every way that drag ends consumes it */
 {

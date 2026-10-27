@@ -106,7 +106,7 @@ const Build = (() => {
   // every label NAMES THE FIX, in words (mirrors world.js NAG_LABEL — keep the two in sync)
   const VAL_LABEL = {
     // ORPHAN_BAY names its fix (2026-10-09 P0: NOT ON THE LINE said what was wrong, never what to do)
-    ORPHAN_SOURCE: 'SIN CONECTAR — ÁRRALO A UNA BAY', ORPHAN_BAY: 'SIN LÍNEA — CINTA POR DENTRO',
+    ORPHAN_SOURCE: 'SIN CONEXIÓN — ARRASTRALA A UNA BAHÍA', ORPHAN_BAY: 'SIN LÍNEA — CINTA POR DENTRO',
     // a belt that only TOUCHES the junction corner feeds nothing: the lane must run THROUGH the junction tile
     // (SHORT on the floor — the full sentence rides the hover card, VAL_WHY: the long form ran wider than a room)
     BAY_NOT_FED: 'SIN ALIMENTAR — CINTA POR DENTRO',
@@ -1277,7 +1277,7 @@ const Build = (() => {
       note.innerHTML = '<b>Haz clic en lo que sea para editar</b><div class="refit-keyrows">' + KEYS.map(([k, v]) => '<span class="refit-keyrow"><kbd>' + esc(k) + '</kbd><span>' + esc(v) + '</span></span>').join('') + '</div>';
       pal.appendChild(note);
       const finder=document.createElement('select');finder.setAttribute('aria-label','Buscar un objeto colocado');finder.className='refit-object-finder';
-      const refresh=()=>{finder.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Find a placed object…';finder.append(blank);
+      const refresh=()=>{finder.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Buscar un objeto colocado…';finder.append(blank);
         for(const p of station.props().slice().sort((a,b)=>propLabel(a.t).localeCompare(propLabel(b.t)))){const o=document.createElement('option');o.value=p.id;o.textContent=propLabel(p.t)+' · '+p.x+', '+p.y;finder.append(o);}};
       refresh();finder.onfocus=refresh;
       finder.onchange=()=>{const p=station.propById(finder.value);if(!p)return;onInspect(p,orientEv());zoom=Math.max(zoom,1);panX=cv.width*.72-(p.x+p.w/2)*T()*zoom;panY=cv.height*.5-(p.y+p.h/2)*T()*zoom;};
@@ -1290,7 +1290,7 @@ const Build = (() => {
          station won't deliver. Now you pick FOUNDRY because you can see the rust tread. */
       paletteLabel = 'TYPE';
       const grid = document.createElement('div'); grid.className = 'refit-matgrid refit-kindgrid';
-      grid.setAttribute('aria-label', 'Room types');
+      grid.setAttribute('aria-label', 'Tipos de sala');
       station.KIND_ORDER.forEach(k => {
         const def = station.ROOM_KINDS[k]; if (!def) return;
         const active = tool === 'room' && k === kind;   // nothing armed = nothing lit: the grid is a choice, not a state
@@ -1305,7 +1305,7 @@ const Build = (() => {
         b.appendChild(nm);
         const hueDef = station.FLOOR_STYLES[def.floor];
         b.title = def.label + ' — ' + ((station.FLOOR_MATERIALS[def.mat] || {}).label || def.mat || 'plate')
-          + ' deck in ' + ((hueDef && hueDef.label) || def.floor) + ' (SURFACE re-lays it any time)';
+          + ' suelo de ' + ((hueDef && hueDef.label) || def.floor) + ' (SUPERFICIE lo recoloca cuando quieras)';
         b.onclick = () => { kind = k; if (tool !== 'room') selectTool('room', { silent: true }); else { renderPalette(); setHint(); } sfx('click'); };
         grid.appendChild(b);
       });
@@ -2692,7 +2692,7 @@ const Build = (() => {
          'clear deck tile' copy steered people to empty floor and three hand-wired belts. */
       const JUNC = { splitter: 1, joiner: 1, filter: 1, merger: 1, loop: 1 };
       if (WORKSTATION_TYPES[propType]) verb = (spec ? spec.label + ' · ' : '') + 'click a clear deck tile to place ' + (deskOwner ? agentLabel(deskOwner) + '’s desk' : 'it, then pick who sits there');
-      else verb = (spec ? spec.label + ' · ' : '') + (JUNC[propType] ? 'drop it ON a belt to put it on that line, or on clear floor' : 'click a clear deck tile to place' + (rowable(propType) ? ' · drag for a row' : ''));
+      else verb = (spec ? spec.label + ' · ' : '') + (JUNC[propType] ? 'drop it ON a belt to put it on that line, or on clear floor' : 'clic en un tile libre para colocar' + (rowable(propType) ? ' · arrastra para una fila' : ''));
       const bits = [];
       if (canTurn(propType)) bits.push('R turn (facing ' + FACE_WORD[propFacing(propType)] + ')');
       if (canFlip(propType)) bits.push('M flip' + (propFlipOn(propType) ? ' ✓' : ''));
@@ -3966,7 +3966,7 @@ const Build = (() => {
     g.innerHTML = '<div class="refit-guide-card" role="dialog" aria-modal="true" aria-labelledby="workflow-title">'
       + workflowIntroHTML('BELT · ' + (DIRWORD[dir] || dir), 'A dónde lleva el trabajo esta cinta', 'Las cintas conectan los pasos de tu flujo. Su dirección decide hacia dónde viaja el trabajo.')
       + '<div class="workflow-body"><section class="workflow-section"><h4>Destinos conectados</h4><ul>' + li.map(s => '<li>' + s + '</li>').join('') + '</ul></section></div>'
-      + '<div class="workflow-footer"><span>Drag a belt’s middle to branch it · Ctrl+drag reshapes it · right-click removes it.</span>'
+      + '<div class="workflow-footer"><span>Arrastra el medio de una cinta para ramificarla · Ctrl+arrastrar la redibuja · clic derecho la quita.</span>'
       // one connection: REMOVE BELT; a tile two connections share: one key per connection (never a guess at which goes)
       + (conns.length > 1 ? conns.map((c, i) => '<button type="button" class="btn-sm" data-rmlink="' + i + '">' + esc(keyText[i]) + '</button>').join('')
         : '<button type="button" class="btn-sm" id="belt-remove">REMOVE BELT</button>')
@@ -5601,10 +5601,10 @@ const Build = (() => {
     // THE CARD AND THE FLOOR ARE ONE LINE: a click on a line machine opens the docked Workflow panel on it
     // (or re-selects it there), without panning — the floor is where the Commander is looking
     if(WF_PART[p.t]){const id=p.id;inspectTimer=setTimeout(()=>{if(running&&selectedPropId===id&&!pinchLock){finFocusLine(id);openWorkflowPanel(id,true);}},400);}
-    setHint('Selected '+propLabel(p.t)+' · '+dragWords(p)+' · elige una acción en el kit de construcción');
+    setHint('Seleccionada '+propLabel(p.t)+' · '+dragWords(p)+' · elige una acción en el kit de construcción');
   }
   // what a drag on the SELECTED piece does, in words (ONE GESTURE, THE TARGET DECIDES — a conveyor machine belts onto a machine)
-  const dragWords = p => CONNECT_TYPES[p.t] ? 'drag it onto another machine to belt them, onto open floor to move it' : 'drag it to move it';
+  const dragWords = p => CONNECT_TYPES[p.t] ? 'arrástrala sobre otra máquina para conectarlas, sobre el suelo vacío para moverla' : 'arrástrala para moverla';
   /* THE SELECTED OBJECT, BESIDE THE LIBRARY (2026-10-01 build-mode upgrade). Selecting a placed prop used to REPLACE the whole Build
      Library with a column of keys, so placing the next thing meant deselecting first. It is now one compact card ABOVE the library —
      the object's own art and name, then its actions, each key wearing the keyboard shortcut that does the same thing (drag, R, M,
@@ -5626,7 +5626,7 @@ const Build = (() => {
     }
     const p=station&&station.propById(selectedPropId);host.hidden=!p;root.classList.toggle('has-selection',!!p);
     if(!p){host.replaceChildren();return;}
-    host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'drag onto floor to move, onto a machine to belt':'arrástralo para moverlo')+' · las flechas ajustan':'')+'</small></span>'
+    host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'sobre el suelo: moverla, sobre una máquina: conectarla':'arrástrala para moverla')+' · las flechas ajustan':'')+'</small></span>'
       +'<button class="bb sm refit-sel-x" type="button" aria-label="Deseleccionar" data-tip="Deseleccionar · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     propArtInto(host.querySelector('.refit-sel-art'),p);
     host.querySelector('.refit-sel-x').onclick=()=>{selectedPropId=null;renderSelection();setHint();sfx('click');};
@@ -5658,8 +5658,8 @@ const Build = (() => {
     position.innerHTML='<label>X <input aria-label="Rejilla X del objeto" type="number" step="1" value="'+p.x+'"></label><label>Y <input aria-label="Rejilla Y del objeto" type="number" step="1" value="'+p.y+'"></label><button class="bb sm" type="button">APLICAR POSICIÓN</button>';
     position.querySelector('button').onclick=()=>{
       const inputs=position.querySelectorAll('input'),x=Number(inputs[0].value),y=Number(inputs[1].value);
-      if(!Number.isInteger(x)||!Number.isInteger(y)){feedback({ok:false,msg:'Use whole tile coordinates'},orientEv());return;}
-      const res=station.moveProp(p.id,x-p.x,y-p.y);feedback(res,orientEv(),moveMsg(res,0,'position updated'));renderSelection();
+      if(!Number.isInteger(x)||!Number.isInteger(y)){feedback({ok:false,msg:'usa coordenadas de tile enteras'},orientEv());return;}
+      const res=station.moveProp(p.id,x-p.x,y-p.y);feedback(res,orientEv(),moveMsg(res,0,'posición actualizada'));renderSelection();
     };host.append(position);
   }
   /* ---------- THE EDITOR KEYS (2026-10-01 build-mode upgrade) ----------
@@ -5769,8 +5769,8 @@ const Build = (() => {
     renderSelection();
     const bs = beltSel(), nb = bs ? bs.links.length + bs.tiles.length : 0;
     if (!live.length && nb) setHint(nb + (nb === 1 ? ' belt' : ' belts') + ' selected · Delete removes ' + (nb === 1 ? 'it' : 'them'));
-    else if (live.length > 1 || (live.length && nb)) setHint(live.length + ' selected' + (nb ? ' with ' + nb + (nb === 1 ? ' belt' : ' belts') : '') + ' · drag any of them to move them together · Ctrl+C copies · Ctrl+D duplicates · Delete removes');
-    else if (live.length === 1) setHint('Selected ' + propLabel(station.propById(live[0]).t) + ' · ' + dragWords(station.propById(live[0])) + ' · elige una acción en el kit de construcción');
+    else if (live.length > 1 || (live.length && nb)) setHint(live.length + ' seleccionada' + (nb ? ' con ' + nb + (nb === 1 ? ' cinta' : ' cintas') : '') + ' · arrastra cualquiera para moverlas juntas · Ctrl+C copia · Ctrl+D duplica · Del elimina');
+    else if (live.length === 1) setHint('Seleccionada ' + propLabel(station.propById(live[0]).t) + ' · ' + dragWords(station.propById(live[0])) + ' · elige una acción en el kit de construcción');
     else setHint();
   }
   const propRect = (p, dx, dy) => ({ x1: p.x + (dx | 0), y1: p.y + (dy | 0), x2: p.x + (dx | 0) + (p.w || 1) - 1, y2: p.y + (dy | 0) + (p.h || 1) - 1 });
@@ -6184,7 +6184,7 @@ const Build = (() => {
     selectedPropId = null; groupIds = []; selBelts = null; positionOpen = false; furnishOpen = false; roomDelArmedAt = 0; roomAsk = null; sendCutArm = null;
     selectedRoomId = rm ? rm.id : null;
     renderSelection();
-    if (rm) { setHint('Selected ' + (rm.name || 'the room') + ' · drag inside it to move it · drag a gold handle to resize it · las flechas lo ajustan · Del deletes'); sfx('click'); }
+    if (rm) { setHint('Seleccionada ' + (rm.name || 'la sala') + ' · arrastra dentro para moverla · arrastra una asa dorada para redimensionarla · las flechas la ajustan · Del elimina'); sfx('click'); }
     else setHint();
   }
   function roomTiles(rm) { let n = 0; for (const r of rm.rects) n += (r.x2 - r.x1 + 1) * (r.y2 - r.y1 + 1); return n; }
@@ -6258,7 +6258,7 @@ const Build = (() => {
     const now = performance.now();
     // (after a SEND TO cut warning FOR THIS ROOM the repeat confirms anywhere in its own 6 s window — reading it took longer than
     // the 2.5 s arm, live 10-12; any other room, or a lapsed warning, keeps the 2.5 s confirm)
-    if (!roomDelArmedAt || now - roomDelArmedAt > (cutArmFor(rm.id) ? 6000 : 2500)) { roomDelArmedAt = now; sfx('tick'); flashTip(ev, 'press Delete again to delete ' + (rm.name || 'this room') + ' — everything on it goes (one Undo brings it back)'); return; }
+    if (!roomDelArmedAt || now - roomDelArmedAt > (cutArmFor(rm.id) ? 6000 : 2500)) { roomDelArmedAt = now; sfx('tick'); flashTip(ev, 'pulsa Del de nuevo para eliminar ' + (rm.name || 'esta sala') + ' — todo lo que hay en ella se va (un Deshacer lo recupera)'); return; }
     /* deselect only once the room is GONE (final floor lane M15): after a SEND TO cut warning ("DELETE AGAIN TO CONTINUE")
        the room stays selected and armed, so the next Delete goes straight through; a refused delete leaves a room that still stands */
     roomDelArmedAt = 0;
@@ -6317,7 +6317,7 @@ const Build = (() => {
     if (v && v.ok) {
       const inOld = (x, y) => rm.rects.some(r => x >= r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2), inNew = (x, y) => x >= nr.x1 && x <= nr.x2 && y >= nr.y1 && y <= nr.y2;
       outer: for (const p of station.props()) for (let y = p.y; y < p.y + (p.h || 1); y++) for (let x = p.x; x < p.x + (p.w || 1); x++)
-        if (inOld(x, y) && !inNew(x, y)) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'Move the ' + propLabel(p.t) + ' first · it would be left off the deck' }; break outer; }
+        if (inOld(x, y) && !inNew(x, y)) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'Mueve primero ' + propLabel(p.t) + ' · quedaría fuera del suelo' }; break outer; }
       if (v.ok) for (const k of Object.keys(station.belts() || {})) { const q = k.split(','); if (inOld(+q[0], +q[1]) && !inNew(+q[0], +q[1])) { v = { ok: false, error: 'CUTS_CONTENTS', msg: 'Una cinta quedaría fuera del suelo · quítala primero' }; break; } }
     } else v = { ok: false, error: (v && v.error) || 'BLOCKED', msg: String((v && v.msg) || 'blocked').replace(/^\w/, c => c.toUpperCase()) };
     resizeMemo = { key, v };
@@ -6353,7 +6353,7 @@ const Build = (() => {
     const shape = plain ? (b.x2 - b.x1 + 1) + ' × ' + (b.y2 - b.y1 + 1) : rm.rects.length + ' sections';
     host.innerHTML = '<div class="refit-sel-head"><span class="refit-sel-art is-room" aria-hidden="true"></span><span class="refit-sel-name">'
       + '<input class="refit-room-name" type="text" maxlength="40" aria-label="Nombre de la habitación" placeholder="nombra esta habitación" value="' + esc(rm.name || '') + '">'
-      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · la sala de aparición' : '') + ' · drag inside to move · las flechas ajustan') + '</small></span>'
+      + '<small>' + esc((kd.label || rm.kind) + ' · ' + shape + ' · ' + roomTiles(rm) + ' tiles' + (isSpawn ? ' · la sala de aparición' : '') + ' · arrastra dentro para mover · las flechas ajustan') + '</small></span>'
       + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Suelta la habitación · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     // the art well: the room's own deck, painted by the bake
     try {
@@ -6386,7 +6386,7 @@ const Build = (() => {
       const ask = document.createElement('div'); ask.className = 'refit-room-ask'; ask.setAttribute('role', 'alert');
       const what = roomAsk.kind === 'furnish' ? styleLabel(roomAsk.sid) : 'CLEAR';
       ask.innerHTML = '<span>' + esc(what) + ' quita ' + esc(roomAsk.gear.join(' · ')) + ' — los agentes de aquí pierden lo que ' + (roomAsk.gear.length === 1 ? 'da' : 'dan') + '</span>'
-        + '<div class="refit-room-ask-keys"><button type="button" class="bb sm refit-sel-act refit-sel-del">' + (roomAsk.kind === 'furnish' ? 'FURNISH ANYWAY' : 'CLEAR ANYWAY') + '</button><button type="button" class="bb sm refit-sel-act">MANTENERLO</button></div>';
+        + '<div class="refit-room-ask-keys"><button type="button" class="bb sm refit-sel-act refit-sel-del">' + (roomAsk.kind === 'furnish' ? 'AMUEBLAR DE TODAS FORMAS' : 'LIMPIAR DE TODAS FORMAS') + '</button><button type="button" class="bb sm refit-sel-act">MANTENERLO</button></div>';
       const [go, keep] = ask.querySelectorAll('button');
       const a = roomAsk;
       go.onclick = () => { if (a.kind === 'furnish') furnishRoom(rm, a.sid, orientEv(), true); else clearRoom(rm, orientEv(), true); };
@@ -6422,7 +6422,7 @@ const Build = (() => {
     const title = line ? line.name : ps.length ? ps.length + ' SELECTED' : beltWord.toUpperCase() + ' SELECTED';
     // (the card says how a group moves — its MOVE key is gone: SELECT MOVES. A selection of belts alone does not move by a drag)
     const sub = (line ? 'whole line · ' + ps.length + ' pieces' + (beltWord ? ' · ' + beltWord : '') : ps.length ? [names, beltWord].filter(Boolean).join(' · ') : (nb === 1 ? 'the whole belt' : 'each one whole'))
-      + (ps.length && pressMovesSelection() ? ' · drag any to move' : '');
+      + (ps.length && pressMovesSelection() ? ' · arrastra cualquiera para mover' : '');
     host.innerHTML = '<div class="refit-sel-head"><span class="refit-sel-art is-group" aria-hidden="true"></span><span class="refit-sel-name"><b>' + esc(title) + '</b><small>' + esc(sub) + '</small></span>'
       + '<button class="bb sm refit-sel-x" type="button" aria-label="Deselect all" data-tip="Suéltalos todos · Esc">✕</button></div><div class="refit-selection-actions"></div>';
     const art = host.querySelector('.refit-sel-art');
@@ -6616,7 +6616,7 @@ const Build = (() => {
       renderEquipmentInfo(propType);
     }
     const skipped = row.length - made.length;
-    feedback(res, ev, 'laid a row of ' + made.length + (skipped ? ' · ' + skipped + ' taken spot' + (skipped === 1 ? '' : 's') + ' skipped' : '') + ' · un Undo recupera la fila');
+    feedback(res, ev, 'colocada una fila de ' + made.length + (skipped ? ' · ' + skipped + ' puesto ocupado' + (skipped === 1 ? '' : 's') + ' omitido' + (skipped === 1 ? '' : 's') : '') + ' · un Undo recupera la fila');
   }
   // a row in hand: every spot's art where it will land (a taken one red and faint), and how many the release will lay
   function drawRowGhost(t, now, g) {
@@ -6636,8 +6636,8 @@ const Build = (() => {
     }
     let bb = g.rects[0];
     for (const r of g.rects) bb = { x1: Math.min(bb.x1, r.x1), y1: Math.min(bb.y1, r.y1), x2: Math.max(bb.x2, r.x2), y2: Math.max(bb.y2, r.y2) };
-    const lines = ['ROW OF ' + g.row.length + ' · ' + propLabel(propType)];
-    lines.push(!ok.length ? 'EVERY SPOT IS TAKEN' : ok.length < g.row.length ? 'RELEASE TO LAY ' + ok.length + ' · ' + (g.row.length - ok.length) + ' TAKEN' : 'RELEASE TO LAY ALL ' + ok.length);
+    const lines = ['FILA DE ' + g.row.length + ' · ' + propLabel(propType)];
+    lines.push(!ok.length ? 'TODOS LOS PUESTOS OCUPADOS' : ok.length < g.row.length ? 'SUELTA PARA COLOCAR ' + ok.length + ' · ' + (g.row.length - ok.length) + ' OCUPADOS' : 'SUELTA PARA COLOCAR TODOS ' + ok.length);
     ghostBadge(t, lines, ok.length > 0, bb);
   }
   function commitBeltRun(d, ev) {
@@ -6844,7 +6844,7 @@ const Build = (() => {
     if (settleKey !== key) { settleKey = key; settleAt = now; return false; }
     return now - settleAt >= SETTLE_MS;
   }
-  const CHECKING_ROUTE = 'CHECKING THE ROUTE';
+  const CHECKING_ROUTE = 'COMPROBANDO LA RUTA';
   let handPvKey = '', handPvMemo = null;
   function handPlan(d, force) {
     if (!d || !d.moved || !station) return null;
@@ -6965,7 +6965,7 @@ const Build = (() => {
     dropPick = null; renderSelection(); setHint();
     if (res && res.ok) {
       const newId = res.made || res.id, np = newId && station.propById(newId);
-      sfx('chime'); flashTip(at, propLabel(t) + ' PLACED AND CONNECTED' + (t === 'bay' ? ' · CLICK IT TO CREW IT' : ''), true);
+      sfx('chime'); flashTip(at, propLabel(t) + ' COLOCADO Y CONECTADO' + (t === 'bay' ? ' · CLIC PARA TRIPULARLA' : ''), true);
       const laid = newId && (station.links() || []).find(l => l.to && l.to.prop === newId);   // the belt it really got (never the stand-in's route)
       pushFlash(pathRects(laid ? laid.path : dp.path).concat(np ? [{ x1: np.x, y1: np.y, x2: np.x + np.w - 1, y2: np.y + np.h - 1 }] : []), false);
       if (np) landProps([np.id]);
@@ -9391,8 +9391,8 @@ const Build = (() => {
     for (const p of ps) { const r = propRect(p); ctx.fillStyle = fill; ctx.fillRect(r.x1 * t, r.y1 * t, (r.x2 - r.x1 + 1) * t, (r.y2 - r.y1 + 1) * t); drawPropSelection(p, t, line, false); }
     let bb = g.rects[0];
     for (const r of g.rects) bb = { x1: Math.min(bb.x1, r.x1), y1: Math.min(bb.y1, r.y1), x2: Math.max(bb.x2, r.x2), y2: Math.max(bb.y2, r.y2) };
-    const lines = ['MOVE ' + (g.dx >= 0 ? '+' : '') + g.dx + ', ' + (g.dy >= 0 ? '+' : '') + g.dy + ' · ' + ps.length + ' THINGS'];
-    if (!ok) lines.push(String((g.v && g.v.msg) || 'blocked').toUpperCase());
+    const lines = ['MOVER ' + (g.dx >= 0 ? '+' : '') + g.dx + ', ' + (g.dy >= 0 ? '+' : '') + g.dy + ' · ' + ps.length + ' OBJETOS'];
+    if (!ok) lines.push(String((g.v && g.v.msg) || 'bloqueado').toUpperCase());
     else if (checking) lines.push(CHECKING_ROUTE);
     ghostBadge(t, lines, ok, bb, checking);
   }
@@ -9495,7 +9495,7 @@ const Build = (() => {
     // (a line that fits laid out: the drawn shape will not go here, but the click lays the same line out round what stands here)
     if (!ok) lines.push(g.kind === 'line' && g.laid ? 'THE DRAWN SHAPE DOES NOT FIT HERE — IT WILL BE LAID OUT TO FIT' : ((footprint && footprint.msg) || placementReason(g)).toUpperCase());
     // the hover preview teaches BOTH gestures: this size on a click, any size on a drag
-    else if (g.stamp) lines.push(g.insert ? (propType === 'bay' ? 'INSERTAR UN PASO — LA LÍNEA HACE HUECO' : 'CLIC PARA PONERLO EN ESTA CINTA') : g.kind === 'prop' ? (rowable(propType) ? 'CLICK TO PLACE · DRAG FOR A ROW' : 'CLIC PARA COLOCAR') : 'CLIC PARA COLOCAR · ARRASTRA PARA DIMENSIONAR');
+    else if (g.stamp) lines.push(g.insert ? (propType === 'bay' ? 'INSERTAR UN PASO — LA LÍNEA HACE HUECO' : 'CLIC PARA PONERLO EN ESTA CINTA') : g.kind === 'prop' ? (rowable(propType) ? 'CLIC PARA COLOCAR · ARRASTRA PARA UNA FILA' : 'CLIC PARA COLOCAR') : 'CLIC PARA COLOCAR · ARRASTRA PARA DIMENSIONAR');
     /* SPACING (2026-09-27 audit B4): a dock hooks every belt in the 1-tile ring around it, so two docks with one empty tile
        between them share that tile — a belt there hooks BOTH, and the job goes nowhere. Said while the ghost is in hand,
        never refused (sandbox law): the Commander may still want them tight. */

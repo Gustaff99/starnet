@@ -55,14 +55,14 @@ for (const [label, key] of [['TURN', 'R'], ['FLIP', 'M'], ['DUPLICATE', 'Ctrl\\+
 // (SELECT MOVES, Andrew 10-11: "rather than a move button, which is annoying can we just make the select button allow the user to
 //  move" — the card has no MOVE key any more: the selected piece moves when dragged, and the card's sub-line says so; a conveyor
 //  machine's card says both halves of ONE GESTURE, THE TARGET DECIDES — onto floor it moves, onto a machine it belts)
-A.ok(!/addKey\('MOVE'/.test(sel) && /\(pressMovesSelection\(\)\?' · '\+\(CONNECT_TYPES\[p\.t\]\?'drag onto floor to move, onto a machine to belt':'drag it to move'\)\+' · arrows nudge':''\)\+'<\/small>/.test(sel), 'no MOVE key on the card — it says what a drag on the selected piece does (only where a drag on it does: pressMovesSelection)');
+A.ok(!/addKey\('MOVE'/.test(sel) && /\(pressMovesSelection\(\)\?' · '\+\(CONNECT_TYPES\[p\.t\]\?'sobre el suelo: moverla, sobre una máquina: conectarla':'arrástrala para moverla'\)\+' · las flechas ajustan':''\)\+'<\/small>/.test(sel), 'no MOVE key on the card — it says what a drag on the selected piece does (only where a drag on it does: pressMovesSelection)');
 A.ok(/finally \{ if \(ctx\) PropSprites\.setCtx\(ctx\); \}/.test(fn('propArtInto')), 'drawing the card art hands PropSprites back to the floor canvas');
 A.ok(/\.refit-overlay \.refit-selection-actions \{ display: grid; grid-template-columns: repeat\(3, minmax\(0,1fr\)\); gap: 5px; \}/.test(easy)
   && /@container \(max-width: 380px\) \{ \.refit-overlay \.refit-selection-actions \{ grid-template-columns: repeat\(2, minmax\(0,1fr\)\); \} \}/.test(easy),
   'actions three to a row, two where the dock is narrow (every key cap fits)');
 A.ok(/c\.width = 84; c\.height = 54;/.test(fn('propArtInto')) && /\.refit-sel-art \{ display: grid; place-items: center; width: 84px; height: 54px;/.test(easy),
   'the art well is 84x54, drawn at that size (a taller card squeezed the tile grid back to a sliver at 1440x900)');
-A.ok(/addKey\('POSITION','',\(\)=>\{positionOpen=!positionOpen;renderSelection\(\);\},'refit-sel-pos'\)/.test(sel) && /if\(!positionOpen\)return;/.test(sel) && /aria-label="Object grid X"/.test(sel),
+A.ok(/addKey\('POSITION','',\(\)=>\{positionOpen=!positionOpen;renderSelection\(\);\},'refit-sel-pos'\)/.test(sel) && /if\(!positionOpen\)return;/.test(sel) && /aria-label="Rejilla X del objeto"/.test(sel),
   'typing an exact tile is its own key in the grid; the X / Y fields appear only when asked');
 
 /* ---------- 3. the editor keys ---------- */
@@ -165,9 +165,9 @@ A.ok(/\(ev\.key === 'a' \|\| ev\.key === 'A'\) && tool === 'select'\) \{ ev\.pre
 A.ok(/if \(selectedPropId \|\| groupIds\.length \|\| selectedRoomId\) \{ selectTool\('select'\); return; \}/.test(key), 'Esc lets go of a group (or a room)');
 A.ok(/for\(const id of groupIds\)\{const gp=station\.propById\(id\);if\(gp\)drawPropSelection\(gp,t,'rgba\(244,200,112,\.9\)',false\);\}/.test(fn('drawHover')), 'every member wears the selection gold');
 A.ok(/if \(drag && drag\.mode === 'box'\) \{ drawSelectBox\(t\); return; \}/.test(build) && /if \(g\.group\) \{ drawGroupGhost\(t, now, g\); return; \}/.test(build), 'the box and a group drag each draw their own ghost');
-A.ok(/RELEASE TO SELECT/.test(fn('drawSelectBox')) && /' THINGS'\]/.test(fn('drawGroupGhost')), '…the box says how many it will take; the group ghost says how far and how many');
+A.ok(/SUELTA PARA SELECCIONAR/.test(fn('drawSelectBox')) && /' OBJETOS'\]/.test(fn('drawGroupGhost')), '…the box says how many it will take; the group ghost says how far and how many');
 A.ok(/groupmove: 1, roomresize: 1 \}/.test(build), 'a group drag and a room resize tick tile by tile like any move');
-A.ok(/<span><b>Drag a box<\/b> Select several<\/span>/.test(build), 'HELP teaches the box');
+A.ok(/<span><b>Arrastrar una caja<\/b> Seleccionar varias<\/span>/.test(build), 'HELP teaches the box');
 A.ok(/selection: \(\) => selectionIds\(\),/.test(build), 'CDP proof can read the selection');
 
 /* ---------- 6b. SELECT MOVES (Andrew 10-11: "rather than a move button, which is annoying can we just make the select button allow
@@ -188,8 +188,8 @@ A.ok(/\(shift \|\| p\.id === selectedPropId \|\| groupIds\.includes\(p\.id\)\) \
   && /const want = cursorFor\(ev\.shiftKey\);/.test(fn('onMove')),
   'the pointer says what a drag will do: move over a selected piece (or the selected room, or with Shift), aim over an unselected machine');
 A.ok(!/MOVE \(4\)|selectTool\('move'\)|\['4', 'Move'\]/.test(build + rd('frontend/app/tutorial.js')), 'no copy or key list names the retired MOVE (4)');
-A.ok(/<span><b>Drag a selected piece<\/b> Move it<\/span>/.test(build) && /\['Drag a machine', 'onto another: belt them'\], \['Drag a selected one', 'onto floor: move it'\], \['Shift \+ drag', 'move any piece'\]/.test(build)
-  && /fmEntry\(null, 'Select &amp; move', 'Click a piece to select it, then drag it onto open floor to move it;[^']*Drag a machine onto another machine to belt them, selected or not;/.test(rd('frontend/app/tutorial.js')),
+A.ok(/<span><b>Arrastrar una pieza seleccionada<\/b> Moverla<\/span>/.test(build) && /\['Arrastrar una máquina', 'sobre otra: conectarlas'\], \['Arrastrar una seleccionada', 'al suelo: moverla'\], \['Shift \+ arrastrar', 'mover cualquier pieza'\]/.test(build)
+  && /fmEntry\(null, 'Seleccionar y mover', 'Haz clic en una pieza para seleccionarla, luego arrástrala al suelo libre para moverla;[^']*Arrastra una máquina sobre otra para conectarlas con cinta, seleccionada o no;/.test(rd('frontend/app/tutorial.js')),
   'HELP, the Edit key caps and the Field Manual teach: drag a machine onto another to belt them (selected or not), drag a selected piece onto open floor to move it');
 
 /* ---------- 6c. SELECT MOVES — the review's repair pass (10-11) ---------- */
@@ -210,7 +210,7 @@ A.ok(/if \(tool !== 'select'\) return \(p && \(p\.id === selectedPropId \|\| gro
   '…and the pointer says so (the move cursor, no stamp ghost over the selected piece)');
 A.ok(/if \(\(selectedPropId \|\| groupIds\.length\) && tool !== 'select' && pressMovesSelection\(\)\) \{/.test(key), '…and the arrows nudge it there too, as its card says');
 // the cards teach the drag their MOVE keys used to
-A.ok(/' · drag inside to move · arrows nudge'\)/.test(fn('renderRoomCard')) && /\+ \(ps\.length && pressMovesSelection\(\) \? ' · drag any to move' : ''\);/.test(gc),
+A.ok(/' · arrastra dentro para mover · las flechas ajustan'\)/.test(fn('renderRoomCard')) && /\+ \(ps\.length && pressMovesSelection\(\) \? ' · arrastra cualquiera para mover' : ''\);/.test(gc),
   'the room card and the group card say how they move (the single card says "drag it to move")');
 // a selected room with no bare floor (a hallway its belt covers end to end): Shift over a belt in it grabs the room
 A.ok(/if \(inSelRoom && ev\.shiftKey && station\.beltAt\(w\.tx, w\.ty\)\) \{ drag = \{ mode: 'roompress', roomId: selectedRoomId, [^}]*viaBelt: true \}; return; \}/.test(down)
@@ -221,22 +221,22 @@ A.ok(/if \(ev\.key === 'Shift'\) \{ escExitArmedAt = 0;/.test(key), 'Shift still
 A.ok(/upCommit\(d, ev\);\n[^\n]*\n[^\n]*\n    if \(!drag\) setCursor\(\);/.test(fn('onUp')), 'the cursor is said again AFTER the release changed the selection (a just-selected machine shows the move cursor)');
 // the points of use that walked users into "I dragged to belt it and it moved" — the refine (10-11) made that drag WORK (a selected
 // machine let go on another machine belts them: test/build-select-target.test.js), so none of them teaches a deselect any more
-A.ok(!/ORPHAN_SOURCE_SELECTED/.test(build) && /ORPHAN_SOURCE: 'NOT CONNECTED — DRAG IT ONTO A BAY'/.test(build),
+A.ok(!/ORPHAN_SOURCE_SELECTED/.test(build) && /ORPHAN_SOURCE: 'SIN CONEXIÓN — ARRASTRALA A UNA BAHÍA'/.test(build),
   'an unconnected source says DRAG IT ONTO A BAY on the floor, selected or not (no DESELECT variant)');
-A.ok(/' PLACED AND CONNECTED' \+ \(t === 'bay' \? ' · CLICK IT TO CREW IT' : ''\)/.test(fn('commitDropPick'))
-  && /'run a second belt OUT of the splitter first: drag from the SPLITTER onto the next machine'/.test(fn('splitModeInfo'))
+A.ok(/' COLOCADO Y CONECTADO' \+ \(t === 'bay' \? ' · CLIC PARA TRIPULARLA' : ''\)/.test(fn('commitDropPick'))
+  && /'lanza primero una segunda cinta por la SALIDA del splitter: arrastra desde el SPLITTER hasta la siguiente máquina'/.test(fn('splitModeInfo'))
   && !/it was selected, so the drag MOVED it/.test(fn('commitPropMove')),
   'the drop-pick tip and the SPLITTER refusal say just the gesture; a selected machine let go on a machine is never a move to explain');
-A.ok(/const dragWords = p => CONNECT_TYPES\[p\.t\] \? 'drag it onto another machine to belt them, onto open floor to move it' : 'drag it to move it';/.test(build)
-  && /setHint\('Selected '\+propLabel\(p\.t\)\+' · '\+dragWords\(p\)\+' · choose an action in the build kit'\);/.test(fn('onInspect')),
+A.ok(/const dragWords = p => CONNECT_TYPES\[p\.t\] \? 'arrástrala sobre otra máquina para conectarlas, sobre el suelo vacío para moverla' : 'arrástrala para moverla';/.test(build)
+  && /setHint\('Seleccionada '\+propLabel\(p\.t\)\+' · '\+dragWords\(p\)\+' · elige una acción en el kit de construcción'\);/.test(fn('onInspect')),
   'the status line under a just-clicked machine says both halves: onto a machine belts, onto open floor moves');
 {
   const tut = rd('frontend/app/tutorial.js'), lines = tut.slice(tut.indexOf("if (tab === 'LINES') {"), tut.indexOf("if (tab === 'PROGRESS') {"));
-  const same = lines.indexOf('selected or not, so the BAY you just crewed belts the same way'), route = lines.indexOf('Connect INBOX → BAY, then BAY → OUTBOX');
-  A.ok(/Click the BAY: the <b>Workflow panel<\/b>/.test(lines) && same > 0 && route > same && !/deselect/i.test(lines),
+  const same = lines.indexOf('seleccionada o no, así que el BAY que acabas de tripular se cinta de la misma forma'), route = lines.indexOf('Conecta INBOX → BAY, luego BAY → OUTBOX');
+  A.ok(/Haz clic en el BAY: el <b>panel Workflow<\/b>/.test(lines) && same > 0 && route > same && !/deselect/i.test(lines),
     'the Field Manual LINES steps crew the BAY (selecting it) and then say the drag belts it all the same — no deselect step');
   const wfp = rd('frontend/app/workflowpanel.js');
-  A.ok(!/Esc lets go of it first|deselect it first/.test(wfp) && /'Drag from one machine onto the next to connect them\.'\]/.test(wfp),
+  A.ok(!/Esc lets go of it first|deselect it first/.test(wfp) && /'Arrastra de una máquina a la siguiente para conectarlas.'\]/.test(wfp),
     'the Workflow panel teaches the drag alone (selected or not, it belts)');
 }
 A.ok(/^\.refit-toolset-buttons\.is-edit \{ grid-template-columns: repeat\(3,minmax\(0,1fr\)\); \}/m.test(kit)
@@ -267,7 +267,7 @@ A.ok(/^\.refit-toolset-buttons\.is-edit \{ grid-template-columns: repeat\(3,minm
 /* ---------- 7. the tabs show their things ---------- */
 const pal = fn('renderPalette');
 A.ok(/if \(tool === 'select' && buildGroup === 'edit'\) \{/.test(pal) && !/Choose Room to add space/.test(pal) && !/Choose Surface to pick a floor/.test(pal), 'only the Edit tab keeps a note — Rooms and Surfaces show their things');
-A.ok(/\['Drag a box', 'select several'\]/.test(pal) && /\['Ctrl \+ D', 'duplicate'\]/.test(pal) && /\['Del', 'delete'\]/.test(pal) && /<kbd>' \+ esc\(k\) \+ '<\/kbd>/.test(pal),
+A.ok(/\['Arrastrar una caja', 'seleccionar varias'\]/.test(pal) && /\['Ctrl \+ D', 'duplicar'\]/.test(pal) && /\['Del', 'eliminar'\]/.test(pal) && /<kbd>' \+ esc\(k\) \+ '<\/kbd>/.test(pal),
   'Edit shows the editor\'s keys as key caps (the gestures no button shows, too)');
 A.ok(/note\.insertBefore\(finder, note\.querySelector\('\.refit-keyrows'\)\);/.test(pal), '…under the object finder, which acts');
 A.ok(/\} else if \(tool === 'room' \|\| \(tool === 'select' && buildGroup === 'rooms'\)\) \{/.test(pal) && /const active = tool === 'room' && k === kind;/.test(pal)
@@ -276,7 +276,7 @@ A.ok(/\} else if \(tool === 'room' \|\| \(tool === 'select' && buildGroup === 'r
 A.ok(/\} else if \(tool === 'paint' \|\| \(tool === 'select' && buildGroup === 'surfaces'\)\) \{\n      if \(tool === 'select'\) pal\.addEventListener\('click', armPaintFromBrowse, true\);/.test(pal)
   && /closest\('\.refit-mattile, \.refit-hue'\)\) selectTool\('paint', \{ silent: true \}\);/.test(fn('armPaintFromBrowse')),
   'Surfaces opens on its finishes; the first material or colour picked arms SURFACE with it');
-A.ok(/buildGroup === 'rooms'\) verb = 'Pick a room type, then drag on the grid · click a room to move, resize or furnish it'/.test(build) && /\['Click a room', 'move · resize · furnish'\]/.test(build) && /buildGroup === 'surfaces'\) verb = 'Pick a finish, then click a room to lay it/.test(build),
+A.ok(/buildGroup === 'rooms'\) verb = 'Elige un tipo de sala y arrastra sobre la rejilla · haz clic en una sala para moverla, cambiarle el tamaño o amueblarla'/.test(build) && /\['Haz clic en una habitación', 'mover · redimensionar · amueblar'\]/.test(build) && /buildGroup === 'surfaces'\) verb = 'Elige un acabado y haz clic en una sala para aplicarlo/.test(build),
   'the status line says what the open tab is for');
 
 /* ---------- 8. drag to lay a row ---------- */
@@ -292,11 +292,11 @@ A.ok(/drag = \{ mode: 'propstamp', start: w, cur: w, moved: false, cx: ev\.clien
 const cps = fn('commitPropStamp');
 A.ok(/const row = rowSpots\(d\);\n    if \(row\) return commitRow\(row, ev\);/.test(cps) && cps.indexOf('rowSpots(d)') > cps.indexOf('if (!d.moved)'), 'a drag lays the row; a click still places one (or inspects what it hit)');
 const cr = fn('commitRow');
-A.ok(/const res = station\.transact\(/.test(cr) && /landProps\(made, 45\)/.test(cr) && /taken spot/.test(cr) && /one Undo takes the row back/.test(cr),
+A.ok(/const res = station\.transact\(/.test(cr) && /landProps\(made, 45\)/.test(cr) && /puesto ocupado/.test(cr) && /un Undo recupera la fila/.test(cr),
   'the whole row is ONE transact (one UNDO), its copies drop in down the row, and a skipped spot is said');
-A.ok(/'ROW OF ' \+ g\.row\.length/.test(fn('drawRowGhost')) && /RELEASE TO LAY ALL /.test(fn('drawRowGhost')) && /if \(g\.row\) \{ drawRowGhost\(t, now, g\); return; \}/.test(build),
+A.ok(/'FILA DE ' \+ g\.row\.length/.test(fn('drawRowGhost')) && /SUELTA PARA COLOCAR TODOS /.test(fn('drawRowGhost')) && /if \(g\.row\) \{ drawRowGhost\(t, now, g\); return; \}/.test(build),
   'the row ghost shows every spot (taken ones red) and how many the release will lay');
-A.ok(/rowable\(propType\) \? 'CLICK TO PLACE · DRAG FOR A ROW' : 'CLICK TO PLACE'/.test(build) && /'click a clear deck tile to place' \+ \(rowable\(propType\) \? ' · drag for a row' : ''\)/.test(build),
+A.ok(/rowable\(propType\) \? 'CLIC PARA COLOCAR · ARRASTRA PARA UNA FILA' : 'CLIC PARA COLOCAR'/.test(build) && /'clic en un tile libre para colocar' \+ \(rowable\(propType\) \? ' · arrastra para una fila' : ''\)/.test(build),
   'the hover ghost and the status line teach the row where it exists');
 A.ok(/if \(!ids\.length && !bb\.n\) \{ if \(!d\.add\) setSelection\(\[\]\); return; \}/.test(fn('commitBox')), 'an empty box lets go quietly (a stray drag on bare floor is not buzzed at)');
 
@@ -319,19 +319,19 @@ A.ok(/const hd = selectedRoomId \? roomHandleAt\(ev\) : null;\n      if \(hd\) \
   'a press on the selected room\'s handle starts a resize before anything else is hit');
 A.ok(/r\.x1 = Math\.min\(r0\.x1 \+ dx, r0\.x2 - min \+ 1\)/.test(fn('resizedRect')) && /station\.MIN_ROOM \|\| 3/.test(fn('resizedRect')), 'a grabbed edge follows by whole tiles, never past the room minimum');
 const rk = fn('resizeCheck');
-A.ok(/station\.canPlaceRoom\(\[nr\], rm\.kind, rm\.id\)/.test(rk) && /it would be left off the deck/.test(rk) && /A belt would be left off the deck/.test(rk),
+A.ok(/station\.canPlaceRoom\(\[nr\], rm\.kind, rm\.id\)/.test(rk) && /quedaría fuera del suelo/.test(rk) && /Una cinta quedaría fuera del suelo/.test(rk),
   'the ghost asks resizeRoom\'s own two questions, naming what is in the way');
 A.ok(/const res = pre && pre\.ok \? keepsHalls\(\(\) => station\.resizeRoom\(rm\.id, nr\)\) : pre;/.test(fn('commitRoomResize')), 'the release resizes through WorldModel.resizeRoom (one undo), keeping every hallway joined');
 A.ok(/if \(g\.kind === 'resize'\) return/.test(fn('placementReason')), 'a resize refusal says the room\'s own reason (never "Blocked by" a prop inside it)');
 A.ok(/station\.moveRoom\(rm\.id, dx, dy\)/.test(fn('nudgeRoom')) && /deleteSelectedRoom\(orientEv\(\)\)/.test(key) && /nudgeRoom\(RA\[0\] \* n, RA\[1\] \* n, orientEv\(\)\)/.test(key),
   'with a room selected the arrows nudge it (its contents ride) and Delete deletes it');
-A.ok(/press Delete again to delete/.test(fn('deleteSelectedRoom')) && /now - roomDelArmedAt > \(cutArmFor\(rm\.id\) \? 6000 : 2500\)/.test(fn('deleteSelectedRoom')), '…on the SECOND press within 2.5 s (a room takes everything on it) — or anywhere in the 6 s window of a SEND TO cut warning for THIS room (final floor lane M15; repair: never a stale, unrelated warning’s)');
+A.ok(/pulsa Del de nuevo para eliminar/.test(fn('deleteSelectedRoom')) && /now - roomDelArmedAt > \(cutArmFor\(rm\.id\) \? 6000 : 2500\)/.test(fn('deleteSelectedRoom')), '…on the SECOND press within 2.5 s (a room takes everything on it) — or anywhere in the 6 s window of a SEND TO cut warning for THIS room (final floor lane M15; repair: never a stale, unrelated warning’s)');
 A.ok(/on\.forEach\(p => vanishProp\(p\)\)/.test(fn('doDeleteRoom')), 'a deleted room\'s contents dissolve');
 const re = fn('runRoomEdit');
 A.ok(/StationBuilder\.planEdit\(station\.serialize\(\), req, env\)/.test(re) && /StationBuilder\.apply\(station, r\.plan, env\)/.test(re), 'FURNISH / CLEAR are the station builder\'s own planned edit, applied as planned (one undo)');
 A.ok(/if \(gear\.length && !confirmed\) \{ roomAsk = /.test(re) && /WorldModel\.capForProp/.test(fn('gearLost')) && /back\.has\(p\.t\)/.test(fn('gearLost')),
   'a plan that takes EQUIPMENT out (and does not bring the same piece back) is not applied on the first click');
-A.ok(/FURNISH ANYWAY/.test(rc) && /KEEP IT/.test(rc) && /agents here lose what/.test(rc), '…the card names what goes, and the two ways on');
+A.ok(/AMUEBLAR DE TODAS FORMAS/.test(rc) && /MANTENERLO/.test(rc) && /los agentes de aquí pierden lo que/.test(rc), '…the card names what goes, and the two ways on');
 A.ok(/refurnish: \{ room: rm\.name, style: sid \}/.test(fn('furnishRoom')) && /landProps\(/.test(fn('furnishRoom')) && /vanishProp\(p\)/.test(fn('furnishRoom')), 'a furnished room drops in piece by piece; what it replaced dissolves');
 A.ok(/for \(const sid of RoomStyles\.ROOM_ORDER/.test(rc) && /propArtInto\(art, \{ t: icon/.test(rc) && /tile\.setAttribute\('data-tip', styleLabel\(sid\) \+ ' — ' \+ rec\.about\)/.test(rc),
   'the furnish tiles: art + name, the description is the hover tip (no sentences under tiles)');
