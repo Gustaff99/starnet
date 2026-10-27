@@ -106,56 +106,56 @@ const Build = (() => {
   // every label NAMES THE FIX, in words (mirrors world.js NAG_LABEL — keep the two in sync)
   const VAL_LABEL = {
     // ORPHAN_BAY names its fix (2026-10-09 P0: NOT ON THE LINE said what was wrong, never what to do)
-    ORPHAN_SOURCE: 'NOT CONNECTED — DRAG IT ONTO A BAY', ORPHAN_BAY: 'NOT ON A LINE — BELT INTO IT',
+    ORPHAN_SOURCE: 'SIN CONECTAR — ÁRRALO A UNA BAY', ORPHAN_BAY: 'SIN LÍNEA — CINTA POR DENTRO',
     // a belt that only TOUCHES the junction corner feeds nothing: the lane must run THROUGH the junction tile
     // (SHORT on the floor — the full sentence rides the hover card, VAL_WHY: the long form ran wider than a room)
-    BAY_NOT_FED: 'NOT FED — BELT INTO IT',
+    BAY_NOT_FED: 'SIN ALIMENTAR — CINTA POR DENTRO',
     // the belt into it starts inside the ring of the machine feeding it (placed a tile apart), so moving it is the fix
-    BAY_TOO_CLOSE: 'TOO CLOSE — MOVE IT 1 TILE AWAY',
-    CYCLE: 'LOOP! — BREAK THE CIRCLE', FILTER_NO_DEFAULT: 'NO DEFAULT LANE — CLICK', SPLIT_CREW: 'PLACE A DESK — TOOLS FOLLOW THE DOCK',
-    UNBOUND_BAY: 'NO AGENT — CLICK', SPLIT_ONE_LANE: 'NEEDS 2 OUT-LANES',
-    JOIN_ONE_LANE: 'NEEDS 2 IN-LANES',
+    BAY_TOO_CLOSE: 'MUY CERCA — ALEJA 1 CASILLA',
+    CYCLE: '¡BUCLE! — ROMPE EL CÍRCULO', FILTER_NO_DEFAULT: 'SIN CALLE POR DEFECTO — CLIC', SPLIT_CREW: 'COLOCA UN ESCRITORIO — LAS HERRAMIENTAS SIGUEN AL DOCK',
+    UNBOUND_BAY: 'SIN AGENTE — CLIC', SPLIT_ONE_LANE: 'NECESITA 2 CALLES DE SALIDA',
+    JOIN_ONE_LANE: 'NECESITA 2 CALLES DE ENTRADA',
     // the done lane defaults to the FIRST exit (E, S, W, N order); this only fires with no exit, or a done set to a non-exit
-    LOOP_NO_DONE: 'NO DONE LANE',
-    LOOP_NO_BACK: 'NO BACK LANE',
+    LOOP_NO_DONE: 'SIN CALLE DONE',
+    LOOP_NO_BACK: 'SIN CALLE DE VUELTA',
     // a junction touching no belt is fixed by belting into it (a junction moved onto the belt of a line is refused — it would take that
     // line: ANOTHER BELT RUNS HERE), so the nag names that gesture, never the refused move (wave 2, build-06)
-    ORPHAN_JUNCTION: 'NOT ON A BELT — BELT INTO IT',
-    BELT_BURIED: 'A PROP SITS ON THIS LINE — MOVE IT',
+    ORPHAN_JUNCTION: 'SIN CINTA — CINTA POR DENTRO',
+    BELT_BURIED: 'HAY UN PROP EN ESTA LÍNEA — MUÉVELO',
     // the docks feed each OTHER: no belt loop anywhere, but the work line would run forever, paying each lap
-    CHAIN_CYCLE: 'WORK LINE LOOPS — CUT ONE HANDOFF',
+    CHAIN_CYCLE: 'LA LÍNEA DA VUELTAS — CORTA UN TRASPASO',
     // the longest way through this line runs more stages than its stage ceiling: a job that goes that way stops part-way (2026-10-09 P0) — said on its INBOX
-    LINE_TOO_LONG: 'TOO LONG — RAISE THE LINE BUDGET',
+    LINE_TOO_LONG: 'MUY LARGA — SUBE EL PRESUPUESTO DE LÍNEA',
     // SEND TO (2026-10-10) — said on the OUTBOX whose hand-off is off; advice, never a blocker
-    SEND_TO_MISSING: 'SENDS NOWHERE — PICK A LINE', SEND_TO_SELF: 'SENDS TO ITSELF — PICK ANOTHER LINE',
-    SEND_TO_LOOP: 'SENDS IN A CIRCLE — CUT ONE SEND TO'
+    SEND_TO_MISSING: 'ENVIÁ A NINGÚN LADO — ELIGE LÍNEA', SEND_TO_SELF: 'SE ENVÍA A SÍ MISMA — ELIGE OTRA LÍNEA',
+    SEND_TO_LOOP: 'ENVÍA EN CÍRCULO — CORTA UN ENVÍO'
   };
   /* THE FULL SENTENCE for a finding whose floor label had to be cut short (2026-09-23 playtest: the NOT FED nag
      ran wider than the room). The floor keeps the short label; the machine's HOVER CARD and the Workflow panel's
      hints carry this — a glance says what is wrong, the card says exactly how to fix it. */
   const VAL_WHY = {
-    ORPHAN_BAY: 'This BAY isn’t on any line, so it only works when you message it directly. To add it to a line, drag from the machine that should hand it work onto this BAY — or pick BELT, click the machine that should hand it work, then this BAY (or click it and choose JOIN A LINE).',
-    BAY_NOT_FED: 'Not fed — no belt brings work into this BAY. Run a belt INTO it: drag from the machine before it onto this BAY (or BELT: click that machine, then this BAY). If the lane passes a junction, it must run THROUGH the junction’s tile, not past its corner.',
-    BAY_TOO_CLOSE: 'Too close — this BAY sits right beside the machine that feeds it, so the belt between them touches both at once and the job never arrives. Move one of them a tile further apart, then connect them again with BELT.',
-    ORPHAN_JUNCTION: 'This junction touches no belt, so it routes nothing. Belt into it: drag from the machine before it onto this junction (or pick BELT, click that machine, then this junction), then on to the machines after it. A junction cannot be moved onto a belt that already joins two machines — to put one ON a line, delete this one and drop a junction from the hotbar onto that belt.',
-    SPLIT_ONE_LANE: 'This SPLITTER needs two out-lanes — run belts THROUGH its tile: in on one side, out on two others.',
-    JOIN_ONE_LANE: 'This JOINER needs two in-lanes — run a second belt INTO its tile.',
-    LOOP_NO_DONE: 'This LOOP has no DONE lane — run a belt OUT of its tile onward (the first exit, in E/S/W/N order, is DONE unless you choose one).',
-    LOOP_NO_BACK: 'This LOOP has no BACK lane — run a second belt OUT of its tile back to an earlier BAY.',
-    LINE_TOO_LONG: 'Too long — the longest way through this line runs more stages than its LINE BUDGET allows, so a job that goes the longest way would stop part-way (the stages that ran are still paid for). Raise “max stages after the first” in this INBOX’s Workflow card › Optional limits · LINE BUDGET (24 at most), or shorten the line.',
-    SEND_TO_MISSING: 'This OUTBOX sends to an INBOX that is gone or starts no line yet (or the OUTBOX itself ends no line), so nothing is sent on. Click the OUTBOX and pick a line under SEND TO (or NOWHERE).',
-    SEND_TO_SELF: 'This OUTBOX sends its work back into its own line’s INBOX, so nothing is sent on. Click it and pick another line under SEND TO (or NOWHERE).',
+    ORPHAN_BAY: 'Esta BAY no está en ninguna línea, así que solo funciona cuando le envías un mensaje directamente. Para añadirla a una línea, arrastra desde la máquina que debe darle trabajo hasta esta BAY — o elige CINTA, haz clic en la máquina que debe darle trabajo y luego en esta BAY (o haz clic en ella y elige UNIRSE A UNA LÍNEA).',
+    BAY_NOT_FED: 'Sin alimentar — ninguna cinta trae trabajo a esta BAY. Pasa una cinta POR DENTRO: arrastra desde la máquina anterior hasta esta BAY (o CINTA: haz clic en esa máquina y luego en esta BAY). Si la calle pasa por una intersección, debe atravesar la casilla de la intersección, no pasar por su esquina.',
+    BAY_TOO_CLOSE: 'Muy cerca — esta BAY está justo al lado de la máquina que la alimenta, así que la cinta entre ambas las toca a la vez y el trabajo nunca llega. Aleja una de ellas una casilla más y vuelve a conectarlas con CINTA.',
+    ORPHAN_JUNCTION: 'Esta intersección no toca ninguna cinta, así que no enruta nada. Cíntala: arrastra desde la máquina anterior hasta esta intersección (o elige CINTA, haz clic en esa máquina y luego en esta intersección) y luego hacia las máquinas de después. Una intersección no se puede mover sobre una cinta que ya une dos máquinas — para poner una EN una línea, borra esta y suelta una intersección desde la hotbar sobre esa cinta.',
+    SPLIT_ONE_LANE: 'Este SPLITTER necesita dos calles de salida — pasa cintas POR SU casilla: una entrando por un lado, dos saliendo por otros.',
+    JOIN_ONE_LANE: 'Este JOINER necesita dos calles de entrada — pasa una segunda cinta POR SU casilla.',
+    LOOP_NO_DONE: 'Este LOOP no tiene calle DONE — pasa una cinta FUERA de su casilla hacia adelante (la primera salida, en orden E/S/W/N, es DONE salvo que elijas otra).',
+    LOOP_NO_BACK: 'Este LOOP no tiene calle de vuelta — pasa una segunda cinta FUERA de su casilla hacia una BAY anterior.',
+    LINE_TOO_LONG: 'Muy larga — el camino más largo de esta línea supera las etapas que permite su PRESUPUESTO DE LÍNEA, así que un trabajo que tome ese camino se detendría a medias (las etapas que corrieron siguen pagadas). Sube “etapas máximas después de la primera” en la tarjeta de Workflow de esta INBOX › Límites opcionales · PRESUPUESTO DE LÍNEA (24 como máximo), o acorta la línea.',
+    SEND_TO_MISSING: 'Esta OUTBOX envía a una INBOX que ya no existe o que aún no inicia ninguna línea (o la propia OUTBOX no termina ninguna línea), así que nada se envía. Haz clic en la OUTBOX y elige una línea en ENVIAR A (o NINGUNA).',
+    SEND_TO_SELF: 'Esta OUTBOX envía su trabajo de vuelta a la INBOX de su propia línea, así que nada se envía. Haz clic en ella y elige otra línea en ENVIAR A (o NINGUNA).',
     // (advice on the OUTBOX's card, never a floor nag — Pipeline.sendToFileAdvice says when it is true: final floor lane M19 / M29)
-    SEND_TO_PRIVATE_FILES: 'This line has no project folder, so the files its crew makes stay in each agent’s private workspace. The finished text rides on, but the next line’s crew cannot open those files. Give this line a shared project folder (on its INBOX) to hand files on.',
-    SEND_TO_LOOP: 'These lines send their work round in a circle, so every SEND TO on the circle is off — a job would never stop. Click one OUTBOX on the circle and set its SEND TO to NOWHERE or another line.'
+    SEND_TO_PRIVATE_FILES: 'Esta línea no tiene carpeta de proyecto, así que los archivos que hace su tripulación se quedan en el espacio privado de cada agente. El texto terminado viaja, pero la tripulación de la siguiente línea no puede abrir esos archivos. Dale a esta línea una carpeta de proyecto compartida (en su INBOX) para pasar archivos.',
+    SEND_TO_LOOP: 'Estas líneas envían su trabajo en círculo, así que cada ENVIAR A del círculo está apagado — un trabajo nunca se detendría. Haz clic en una OUTBOX del círculo y pon su ENVIAR A en NINGUNA u otra línea.'
   };
   const valWhy = code => VAL_WHY[code] || VAL_LABEL[code] || code;
   // a finding's full sentence for THIS machine — with its own numbers where the finding carries them (LINE_TOO_LONG)
   function findingWhy(e) {
     if (e && e.code === 'LINE_TOO_LONG' && e.stages > 0) {
       const fits = e.stages - 1 <= 24;
-      return 'Too long — the longest way through this line runs ' + e.stages + ' stages, but its LINE BUDGET allows ' + (e.maxHops + 1) + ' (the first + ' + e.maxHops + ' more), so a job that goes that way would stop at stage ' + (e.maxHops + 2) + ' (the stages that ran are still paid for). '
-        + (fits ? 'Raise “max stages after the first” to ' + (e.stages - 1) + ' in this INBOX’s Workflow card › Optional limits · LINE BUDGET, or shorten the line.' : 'No LINE BUDGET allows that many (25 stages at most): shorten the line.');
+      return 'Muy larga — el camino más largo de esta línea lleva ' + e.stages + ' etapas, pero su PRESUPUESTO DE LÍNEA permite ' + (e.maxHops + 1) + ' (la primera + ' + e.maxHops + ' más), así que un trabajo que tome ese camino se detendría en la etapa ' + (e.maxHops + 2) + ' (las etapas que corrieron siguen pagadas). '
+        + (fits ? 'Sube “etapas máximas después de la primera” a ' + (e.stages - 1) + ' en la tarjeta de Workflow de esta INBOX › Límites opcionales · PRESUPUESTO DE LÍNEA, o acorta la línea.' : 'Ningún PRESUPUESTO DE LÍNEA permite tantas (25 etapas como máximo): acorta la línea.');
     }
     return VAL_WHY[e && e.code] || null;
   }
@@ -408,7 +408,7 @@ const Build = (() => {
     // the chunks (and their dense plates) are not drawn again until the next open() takes the world's bake: free them now
     cache = null; cacheGeo = null; bakeDirty = true;
     const saved = opts.persist ? opts.persist() : false;
-    if (saved && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Station layout saved locally', 'good', undefined, { transient: true });
+    if (saved && typeof StationUI !== 'undefined' && StationUI.notify) StationUI.notify('Diseño de la estación guardado localmente', 'good', undefined, { transient: true });
     if (opts.world && opts.world.refit) opts.world.refit();     // recenter the live world on the new build
     if (opts.world && opts.world.start) opts.world.start();     // resume the live sim with the new build
     if (opts.onClose) opts.onClose();
@@ -424,7 +424,7 @@ const Build = (() => {
     root.innerHTML = `
       <canvas class="refit-canvas"></canvas>
       <div class="refit-top">
-        <span class="refit-title">BUILD MODE</span>
+        <span class="refit-title">MODO CONSTRUCCIÓN</span>
         <span class="refit-sub" id="refit-sub"></span>
         <span class="refit-spacer"></span>
         <span class="refit-zoom" id="refit-zoom">
@@ -439,10 +439,10 @@ const Build = (() => {
         <button class="bb sm" id="refit-fit" title="encuadrar la estación">⊹ FIT</button>
         <button class="bb sm" id="refit-test" data-tip="Prueba esta línea: MÍRALA es gratis (una caja viaja por las cintas, sin agente); PASO A PASO y ENVIAR UN TRABAJO REAL la ejecutan de verdad.">${esc(PREVIEW_LABEL)}</button>
         <button class="bb sm" id="refit-help" title="cómo construir">? HELP</button>
-        <button class="bb sm refit-primary" id="refit-done" title="terminar + guardar (o pulsa Esc dos veces)">SAVE & EXIT</button>
+        <button class="bb sm refit-primary" id="refit-done" title="terminar + guardar (o pulsa Esc dos veces)">GUARDAR Y SALIR</button>
       </div>
       <div class="refit-dock" role="region" aria-label="Construction kit">
-        <div class="refit-dock-head"><span class="refit-dock-head-t">BUILD LIBRARY</span><button class="bb refit-presets-entry" id="refit-stations" type="button">▦ Presets</button><button class="bb sm" type="button" id="refit-kit-toggle" aria-expanded="true" aria-controls="refit-option-section">MINIMIZE ▴</button></div>
+        <div class="refit-dock-head"><span class="refit-dock-head-t">BIBLIOTECA DE CONSTRUCCIÓN</span><button class="bb refit-presets-entry" id="refit-stations" type="button">▦ Presets</button><button class="bb sm" type="button" id="refit-kit-toggle" aria-expanded="true" aria-controls="refit-option-section">MINIMIZE ▴</button></div>
         <nav class="refit-library-tabs" aria-label="Categorías de construcción"></nav>
         <div class="refit-dock-section refit-mode-section">
           <div id="refit-tools"></div>
@@ -452,7 +452,7 @@ const Build = (() => {
           <div class="refit-section-label" id="refit-palette-label">OPTIONS</div>
           <div class="refit-palette" id="refit-palette"></div>
         </div>
-        <div class="refit-tool-help" id="refit-tool-help"><span></span><button class="bb sm" type="button" id="refit-stop">STOP PLACING</button></div>
+        <div class="refit-tool-help" id="refit-tool-help"><span></span><button class="bb sm" type="button" id="refit-stop">DETENER COLOCACIÓN</button></div>
         <div class="refit-hint" id="refit-hint"></div>
       </div>
       <div class="refit-tip" id="refit-tip"></div>
@@ -1037,8 +1037,8 @@ const Build = (() => {
     const list = propsForGrid();
     if (!on && propSection === 'abilities') {
       const intro = document.createElement('div'); intro.className = 'refit-ability-intro';
-      intro.innerHTML = '<b>' + esc(propAbility ? abilityName(propAbility) + ' · CHOOSE A DESIGN' : 'FIVE CORE ABILITIES') + '</b><span>' +
-        esc(propAbility ? 'Same ability, different appearance. One matching prop is enough in the relevant room.' : 'Real tools. Pick one design per ability you need.') + '</span>';
+      intro.innerHTML = '<b>' + esc(propAbility ? abilityName(propAbility) + ' · CHOOSE A DESIGN' : 'CINCO HABILIDADES BASE') + '</b><span>' +
+        esc(propAbility ? 'Misma habilidad, distinta apariencia. Un prop que coincida es suficiente en la habitación correspondiente.' : 'Herramientas reales. Elige un diseño por cada habilidad que necesites.') + '</span>';
       if (propAbility) {
         const back = document.createElement('button'); back.type = 'button'; back.className = 'bb sm refit-ability-back'; back.textContent = '← TODAS LAS CAPACIDADES';
         back.onclick = () => { propAbility = ''; renderPropGrid(); }; intro.prepend(back);
@@ -1051,7 +1051,7 @@ const Build = (() => {
       note.setAttribute('role', 'status');
       note.textContent = list.length
         ? (on ? 'SEARCH · ALL CATEGORIES' : propSection === 'abilities' ? 'ABILITY EQUIPMENT' : propCat === 'all' ? SECTION_NAMES[propSection] : catLabelOf(propCat)) + ' / ' + list.length + ' ITEMS'
-        : on ? 'No props match “' + propQuery.trim() + '”. Try a name or ability, such as web, files or desk.' : 'No equipment in this category.';
+        : on ? 'No hay props que coincidan con “' + propQuery.trim() + '”. Prueba con un nombre o habilidad, como web, files o desk.' : 'No hay equipo en esta categoría.';
       if (!on && propSection === 'abilities') note.hidden = true;
       host.appendChild(note);
       if (!list.length && on) {
@@ -1090,7 +1090,7 @@ const Build = (() => {
     return { agents, id: equipmentAgentId };
   }
   function renderAbilityOverview() {
-    const wrap = document.createElement('section'); wrap.className = 'refit-ability-overview'; wrap.setAttribute('aria-label', 'Core tool access');
+    const wrap = document.createElement('section'); wrap.className = 'refit-ability-overview'; wrap.setAttribute('aria-label', 'Acceso a herramientas base');
     const { agents, id } = libraryAgent();
     wrap.innerHTML = '<div class="refit-access-head"><label>HERRAMIENTAS DE <select class="refit-input" aria-label="Inspeccionar el equipo del agente">' +
       agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === id ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') +
@@ -1121,7 +1121,7 @@ const Build = (() => {
         b.querySelector('.refit-core-status').textContent = pending ? 'CHECKING ACCESS' : a.label;
       });
       const status = root.querySelector('.refit-propinspector .equipment-status');
-      if (status) status.textContent = pending ? 'Checking current access…' : EquipmentHelp.status(facts, view);
+      if (status) status.textContent = pending ? 'Comprobando el acceso actual…' : EquipmentHelp.status(facts, view);
     };
     if (key === equipmentAccessKey) { paint(equipmentAccessView, equipmentAccessView === undefined); return; }
     equipmentAccessKey = key; equipmentAccessView = undefined;
@@ -1148,13 +1148,13 @@ const Build = (() => {
     const key = [spec.id, id, geoVer].join('|');
     if (box.dataset.infoKey !== key) {
       box.dataset.infoKey = key;
-      const purpose = facts.purpose || PALETTE_PURPOSE[spec.id] || spec.desc || (category === 'decoration' ? 'Changes the look of your station. Adds no agent tools.' : 'Equipment for arranging work in the station.');
+      const purpose = facts.purpose || PALETTE_PURPOSE[spec.id] || spec.desc || (category === 'decoration' ? 'Solo cambia el aspecto de tu estación. No añade herramientas de agente.' : 'Equipamiento para organizar el trabajo en la estación.');
       box.innerHTML = '<p class="refit-purpose">' + esc(purpose) + '</p>' +
-        (facts.cap ? '<div class="equipment-status" role="status">Checking current access…</div><div class="refit-equipment-scope">' +
-        esc('Equipment sharing: ' + facts.scope + '.') + '</div>' :
-        category === 'decoration' ? '' : '<div class="refit-equipment-scope">Organizes the station; does not add an ability.</div>') +
+        (facts.cap ? '<div class="equipment-status" role="status">Comprobando el acceso actual…</div><div class="refit-equipment-scope">' +
+        esc('Compartir equipamiento: ' + facts.scope + '.') + '</div>' :
+        category === 'decoration' ? '' : '<div class="refit-equipment-scope">Organiza la estación; no añade una habilidad.</div>') +
         '<div class="refit-equipment-detail">' + esc(facts.cap ? facts.duplicates : spec.desc || '') +
-        (facts.cap ? '<p>Without a workflow bay, an agent draws on station equipment. With a bay, it uses equipment in its desk room (or bay room if there is no desk). Each workflow agent needs its own desk.</p><p>Connected accounts and providers are configured in Abilities.</p>' : '') + '</div>';
+        (facts.cap ? '<p>Sin una BAY de workflow, un agente usa el equipamiento de la estación. Con una BAY, usa el equipamiento de su sala de escritorio (o de su sala BAY si no tiene escritorio). Cada agente de workflow necesita su propio escritorio.</p><p>Las cuentas y proveedores conectados se configuran en Habilidades.</p>' : '') + '</div>';
     }
     refreshLibraryAccess(facts, id);
   }
@@ -1183,9 +1183,9 @@ const Build = (() => {
     const propRoom = placedProp && station.roomById(station.roomAt(placedProp.x, placedProp.y));
     box.innerHTML = '<p class="refit-purpose">' + esc(facts.purpose || spec.desc || 'Station decoration.') + '</p>'
       + (facts.cap ? (agents.length > 1 ? '<label> Para <select class="refit-input" aria-label="Inspeccionar el equipamiento para el agente">' + agents.map(a => '<option value="' + esc(a.id) + '"' + (a.id === aid ? ' selected' : '') + '>' + esc(a.name || a.id) + '</option>').join('') + '</select></label>' : '')
-      + '<div class="equipment-status" role="status">Checking current access…</div>'
-      + '<div>Equipment scope: ' + esc(facts.scope) + (propRoom ? ' · This copy: ' + esc(propRoom.name || propRoom.id) : '') + '</div>'
-      + '<details' + (sharingOpen ? ' open' : '') + '><summary>Sharing, rooms & extra copies</summary><p>' + facts.count + ' matching prop' + (facts.count === 1 ? '' : 's') + '. ' + esc(facts.duplicates) + '</p>Without a workflow bay, the lead draws on equipment across the station. With a bay, an agent uses its desk room (or the bay room if it has no desk). Agents in that room share equipment; each needs its own desk. Moving or removing the last matching prop changes that room’s equipment; access settings may still supply its tools. Connect external services in Abilities.</details>' : '<div>' + esc(facts.duplicates) + '</div>');
+      + '<div class="equipment-status" role="status">Comprobando el acceso actual…</div>'
+      + '<div>Alcance del equipamiento: ' + esc(facts.scope) + (propRoom ? ' · Esta copia: ' + esc(propRoom.name || propRoom.id) : '') + '</div>'
+      + '<details' + (sharingOpen ? ' open' : '') + '><summary>Compartir, salas y copias extra</summary><p>' + facts.count + ' matching prop' + (facts.count === 1 ? '' : 's') + '. ' + esc(facts.duplicates) + '</p>Sin una BAY de workflow, el líder usa el equipamiento de toda la estación. Con una BAY, un agente usa su sala de escritorio (o su sala BAY si no tiene escritorio). Los agentes de esa sala comparten equipamiento; cada uno necesita su propio escritorio. Mover o quitar la última prop que coincide cambia el equipamiento de esa sala; los ajustes de acceso aún pueden aportar sus herramientas. Conecta servicios externos en Habilidades.</details>' : '<div>' + esc(facts.duplicates) + '</div>');
     const select = box.querySelector('select');
     if (select) select.onchange = () => renderEquipmentInfo(spec.id, placedProp);
     const status = box.querySelector('.equipment-status');
@@ -1271,12 +1271,12 @@ const Build = (() => {
       paletteLabel = 'INSPECT';
       const note = document.createElement('div');
       note.className = 'refit-selectnote refit-keycard';
-      const KEYS = [['Click', 'select it'], ['Drag a box', 'select several'], ['Double-click', 'a whole line'], ['Shift + click', 'add or drop one'], ['Drag a machine', 'onto another: belt them'], ['Drag a selected one', 'onto floor: move it'], ['Shift + drag', 'move any piece'], ['Right-click', 'remove a piece'], ['Ctrl + drag a belt', 'reshape it'], ['Q · Alt', 'pick up · every setting'],
-        ['Arrows', 'nudge · Shift: 5'], ['R · M', 'turn · flip'], ['Ctrl + D', 'duplicate'], ['Ctrl + C · X · V', 'copy · cut · paste'], ['Del', 'delete'], ['Ctrl + Z', 'undo'],
-        ['Click a room', 'move · resize · furnish']];
+      const KEYS = [['Clic', 'seleccionar'], ['Arrastrar una caja', 'seleccionar varias'], ['Doble clic', 'una línea entera'], ['Shift + clic', 'añadir o soltar una'], ['Arrastrar una máquina', 'sobre otra: conectarlas'], ['Arrastrar una seleccionada', 'al suelo: moverla'], ['Shift + arrastrar', 'mover cualquier pieza'], ['Clic derecho', 'quitar una pieza'], ['Ctrl + arrastrar una cinta', 'redibujarla'], ['Q · Alt', 'recoger · cada ajuste'],
+        ['Flechas', 'ajustar · Shift: 5'], ['R · M', 'girar · voltear'], ['Ctrl + D', 'duplicar'], ['Ctrl + C · X · V', 'copiar · cortar · pegar'], ['Del', 'eliminar'], ['Ctrl + Z', 'deshazar'],
+        ['Haz clic en una habitación', 'mover · redimensionar · amueblar']];
       note.innerHTML = '<b>Haz clic en lo que sea para editar</b><div class="refit-keyrows">' + KEYS.map(([k, v]) => '<span class="refit-keyrow"><kbd>' + esc(k) + '</kbd><span>' + esc(v) + '</span></span>').join('') + '</div>';
       pal.appendChild(note);
-      const finder=document.createElement('select');finder.setAttribute('aria-label','Find a placed object');finder.className='refit-object-finder';
+      const finder=document.createElement('select');finder.setAttribute('aria-label','Buscar un objeto colocado');finder.className='refit-object-finder';
       const refresh=()=>{finder.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Find a placed object…';finder.append(blank);
         for(const p of station.props().slice().sort((a,b)=>propLabel(a.t).localeCompare(propLabel(b.t)))){const o=document.createElement('option');o.value=p.id;o.textContent=propLabel(p.t)+' · '+p.x+', '+p.y;finder.append(o);}};
       refresh();finder.onfocus=refresh;
@@ -1378,7 +1378,7 @@ const Build = (() => {
       categoryMenu.appendChild(catRow); shelves.appendChild(categoryMenu);
       const gridHost = document.createElement('div'); gridHost.id = 'refit-propgrid-host';
       shelves.appendChild(gridHost); browser.appendChild(shelves); workspace.appendChild(browser);
-      const inspector = document.createElement('aside'); inspector.className = 'refit-propinspector'; inspector.setAttribute('aria-label', 'Selected equipment details');
+      const inspector = document.createElement('aside'); inspector.className = 'refit-propinspector'; inspector.setAttribute('aria-label', 'Detalles del equipo seleccionado');
       const preview = document.createElement('section'); preview.id = 'refit-selected-prop';
       preview.className = 'refit-selected-prop'; preview.setAttribute('aria-label', 'Selected prop');
       inspector.appendChild(preview);
@@ -1528,7 +1528,7 @@ const Build = (() => {
          flagships assemble them. Grouping comes from the catalog's own `grp` field (worldmodel),
          never hand-kept here; an ungrouped blueprint falls into the last section rather than
          vanishing (a card the catalog ships must always be stampable). */
-      paletteLabel = 'THE LINE LIBRARY';
+      paletteLabel = 'LA BIBLIOTECA DE LÍNEAS';
       /* THE CONVEYORS TAB IN THE LIBRARY'S OWN LOOK (2026-09-30 — Andrew: "the long sentences underneath each machine … I hate it
          … stop resorting back to the old ugly UI"). Laid out like the Props tab beside it: two section keys (the FURNITURE ·
          EQUIPMENT · ABILITIES row's look), then a grid of big glass tiles — a line's miniature or a machine's own art, its name,
@@ -1622,14 +1622,14 @@ const Build = (() => {
   /* one line per WORKFLOW machine — what it DOES, by OUTCOME, in plain words (2026-09-27 audit P2/P3/P4: the old lines spoke
      factory — lane, crate, out-lane — and JOINER and MERGER read as the same machine). Never a footprint. */
   const PALETTE_PURPOSE = {
-    intake: 'where work comes in: a schedule, a chat message, a watched folder or another app calling in starts the line here',
-    bay: 'one step: the agent you put here does this part of the job and passes the result on',
-    filter: 'sorts by task type (code, research or everything else) and sends each type down its own belt',
-    merger: 'lets several belts share one; nothing waits and nothing is combined, each job goes on alone',
-    splitter: 'one belt into several. With a JOINER after the branches every branch gets a copy; without one, jobs take turns',
-    joiner: 'waits until every branch has finished, then sends ONE combined result on',
-    loop: 'sends the work back for another pass until the reviewer approves it (or passes run out), then on',
-    outbox: 'where the finished result comes out; click it on the live floor to read every result'
+    intake: 'donde entra el trabajo: un horario, un mensaje de chat, una carpeta vigilada u otra app que llama inicia la línea aquí',
+    bay: 'un paso: el agente que pongas aquí hace esta parte del trabajo y pasa el resultado',
+    filter: 'clasifica por tipo de tarea (código, investigación u otro) y envía cada tipo por su propia cinta',
+    merger: 'deja que varias cintas compartan una; nada espera y nada se combina, cada trabajo sigue solo',
+    splitter: 'una cinta en varias. Con un JOINER tras las ramas, cada rama recibe una copia; sin él, los trabajos van por turnos',
+    joiner: 'espera a que termine cada rama y luego envía UN resultado combinado',
+    loop: 'envía el trabajo de vuelta para otro repaso hasta que el revisor lo aprueba (o se agotan los repasos), y sigue',
+    outbox: 'donde sale el resultado terminado; haz clic en el suelo en vivo para leer cada resultado'
   };
   /* HOW EACH MACHINE IS WIRED, drawn (2026-09-27 audit P2): a tiny in→out diagram on every shelf tile, so SPLIT (one in, two
      out), JOINER (two in, a wait bar, one out), MERGER (two in, one out, no bar), FILTER (one in, three typed outs) and LOOP
@@ -1647,9 +1647,9 @@ const Build = (() => {
   const machineDiagramSVG = id => MACHINE_DIAGRAM[id] ? '<svg class="refit-machinediagram" viewBox="0 0 40 24" aria-hidden="true" focusable="false">' + MACHINE_DIAGRAM[id] + '</svg>' : '';
   // the shelf in the order work meets them, in three plain groups (a junction goes ON a belt)
   const MACHINE_GROUPS = [
-    ['THE LINE', 'work comes in, agents do the steps, the result comes out', ['bay', 'intake', 'outbox']],
-    ['BRANCH & COMBINE', 'drop these ON a belt', ['splitter', 'merger', 'joiner', 'filter']],
-    ['REPEAT', 'a reviewer can send work back', ['loop']]
+    ['LA LÍNEA', 'entra el trabajo, los agentes hacen los pasos, sale el resultado', ['bay', 'intake', 'outbox']],
+    ['RAMAS Y COMBINAR', 'suéltalos SOBRE una cinta', ['splitter', 'merger', 'joiner', 'filter']],
+    ['REPETIR', 'un revisor puede devolver el trabajo', ['loop']]
   ];
   /* THE MACHINES SHELF (2026-09-23 playtest fix). The Conveyors tab offered whole LINES and the BELT tool,
      but no single machine: INBOX, BAY, OUTBOX and every junction were reachable only by typing into the
@@ -1863,7 +1863,7 @@ const Build = (() => {
     key('pipette', 'PICK UP', 'Q', 'Tap a piece to hold one like it — its settings and crew too (a mouse: point at it and press Q)', () => armTouch('pipette'));
     key('corner', 'CORNER', 'R', 'Flip which way a dragged belt turns its corner (a mouse: press R while dragging)', () => { flipPref = !flipPref; handPvKey = ''; paintHandKeys(); sfx('click'); });
     key('alt', 'ALT VIEW', 'ALT', 'Show every setting, every SEND TO and every line’s stage count on the floor (a mouse: hold Alt)', () => { altLatched = !altLatched; paintHandKeys(); sfx('click'); });
-    if (lastCopy && lastCopy.type === 'lines') key('paste', 'PASTE', 'Ctrl+V', 'Pick up the last copy again: ' + lastCopy.label, () => holdClip(lastCopy, orientEv()));
+    if (lastCopy && lastCopy.type === 'lines') key('paste', 'PASTE', 'Ctrl+V', 'Recoge la última copia de nuevo: ' + lastCopy.label, () => holdClip(lastCopy, orientEv()));
     wrap.append(bar, keys);
     return wrap;
   }
@@ -2083,25 +2083,25 @@ const Build = (() => {
   /* PLAIN DESCRIPTIONS (2026-09-30 — "the simplest friendliest UI possible, no confusion"): a line's tip says what it does in
      everyday words — no lanes, gates or doors */
   const LINE_PURPOSE = {
-    front_desk: 'one agent does each job, start to finish',
-    research_line: 'one agent digs up sources, the next writes the answer',
-    revision_loop: 'one agent drafts, a reviewer sends it back until it is right',
-    sorting_office: 'sends each request to the right specialist, by what it is about',
-    triage_desk: 'coding, research and everything else each go to their own specialist',
-    parallel_crew: 'each job goes to the next of three agents, and every result ships',
-    swarm_synthesis: 'three agents research the same job, one writes the answer',
-    second_opinion: 'two agents take the same job, and their answers are combined into one',
-    ship_out: 'no INBOX: whatever this agent finishes lands in the OUTBOX',
-    assembly_line: 'four agents in a row, each building on the last',
-    build_test: 'a builder makes it, a tester sends it back until it passes',
-    code_foundry: 'coding requests are built and reviewed until they pass; anything else goes to another agent',
-    gauntlet: 'two agents take the job, one combines their answers, and a reviewer checks it',
-    crucible: 'two reviewers in a row: the work has to pass both',
-    mission_control: 'sorts requests three ways, works each in two steps, and ships them all from one place',
-    deep_dive: 'three researchers dig, one writes it up, and a reviewer checks it',
-    allowance_desk: 'one agent, and the line can never spend more than $5 a day',
-    two_doors: 'two ways in (say, a schedule and a chat app), one agent does the work',
-    load_balancer: 'jobs take turns between two agents',
+    front_desk: 'un agente hace cada trabajo, de principio a fin',
+    research_line: 'un agente busca fuentes, el siguiente redacta la respuesta',
+    revision_loop: 'un agente redacta y un revisor lo devuelve hasta que está bien',
+    sorting_office: 'envía cada solicitud al especialista adecuado, según de qué trate',
+    triage_desk: 'código, investigación y lo demás van cada uno a su especialista',
+    parallel_crew: 'cada trabajo pasa al siguiente de tres agentes, y cada resultado se envía',
+    swarm_synthesis: 'tres agentes investigan el mismo trabajo, uno redacta la respuesta',
+    second_opinion: 'dos agentes toman el mismo trabajo, y sus respuestas se combinan en una',
+    ship_out: 'sin INBOX: lo que este agente termine cae en la OUTBOX',
+    assembly_line: 'cuatro agentes en fila, cada uno construye sobre el anterior',
+    build_test: 'un constructor lo hace, un probador lo devuelve hasta que pasa',
+    code_foundry: 'las solicitudes de código se construyen y revisan hasta que pasan; lo demás va a otro agente',
+    gauntlet: 'dos agentes toman el trabajo, uno combina sus respuestas y un revisor lo comprueba',
+    crucible: 'dos revisores en fila: el trabajo debe pasar por ambos',
+    mission_control: 'clasifica las solicitudes en tres, trabaja cada una en dos pasos y las envía todas desde un sitio',
+    deep_dive: 'tres investigadores buscan, uno redacta y un revisor comprueba',
+    allowance_desk: 'un agente, y la línea nunca gasta más de $5 al día',
+    two_doors: 'dos puertas de entrada (p. ej. un horario y una app de chat), un agente hace el trabajo',
+    load_balancer: 'los trabajos van por turnos entre dos agentes',
     fire_escape: 'if the reviewer still is not happy after its tries, a fixer takes over',
   };
   /* PLAIN NAMES + KIND OF WORK (2026-09-28): each shelf line carries them in the catalog itself (WorldModel.BLUEPRINTS
@@ -2524,7 +2524,7 @@ const Build = (() => {
       return;
     }
     const need = laid && laid.needs ? laid.needs : { w: bp.w, h: bp.h };
-    say(laid === undefined ? (stat ? stat.dataset.rest || '' : '') : 'needs more room');   // (the MAKE ROOM FOR IT key under the tile builds a room the size it needs)
+    say(laid === undefined ? (stat ? stat.dataset.rest || '' : '') : 'necesita más espacio');   // (the MAKE ROOM FOR IT key under the tile builds a room the size it needs)
     if (laid === undefined) { if (make) make.remove(); return; }
     if (make) return;
     const mk = document.createElement('button'); mk.type = 'button'; mk.className = 'bb refit-linetile-makeroom';
@@ -2602,7 +2602,7 @@ const Build = (() => {
       if (typeof Tutorial !== 'undefined' && Tutorial.onBeltPlaced) Tutorial.onBeltPlaced();
     } else {
       sfx('bad');
-      flashTip(ev, (res && res.msg) || 'needs clear deck — every tile on a room, nothing in the way', false);
+      flashTip(ev, (res && res.msg) || 'necesita cubierta libre — cada casilla en una habitación, nada de por medio', false);
     }
   }
 
@@ -2705,11 +2705,11 @@ const Build = (() => {
       help.hidden = tool === 'select';
       const guidance = {
         room: 'Choose a room type. Drag in empty space to set its size.',
-        hall: 'Choose a width, then drag between rooms to connect them.',
-        dupe: 'Click the room or prop you want to copy, then click a clear space to place the copy.',
-        reclaim: 'Click a room, prop or belt to remove it. Undo brings it back.',
-        belt: 'Click a machine, then the next one: the belt lays itself. Or drag to lay belt by hand.',
-        line: 'Choose a conveyor line, then click clear floor to place it. Assign agents after placing.'
+        hall: 'Elige un ancho y arrastra entre habitaciones para conectarlas.',
+        dupe: 'Haz clic en la habitación o prop que quieras copiar y luego en un espacio libre para colocar la copia.',
+        reclaim: 'Haz clic en una habitación, prop o cinta para quitarla. Deshacer la recupera.',
+        belt: 'Haz clic en una máquina y luego en la siguiente: la cinta se coloca sola. O arrastra para pasar cinta a mano.',
+        line: 'Elige una línea de transporte y haz clic en suelo libre para colocarla. Asigna agentes después.'
       };
       help.querySelector('span').textContent = msg || ((tool === 'dupe' && dupe && dupe.type === 'lines') ? verb : guidance[tool]) || verb;
       help.querySelector('button').textContent = 'CANCEL';
@@ -2877,7 +2877,7 @@ const Build = (() => {
      WORK preset opens its setup guide straight after. Staffing is that guide's next click — a preset never hires. */
   const PRESET_GROUPS = [
     ['work', 'BUILT FOR YOUR WORK', 'A whole station for one kind of work. Its line is wired, every step has instructions, and a sample job is ready to try.'],
-    ['look', 'JUST THE LOOK', 'Rooms and furniture only. Add a line from the Lines shelf whenever you want one.'],
+    ['look', 'SOLO LA APARIENCIA', 'Solo habitaciones y mobiliario. Añade una línea desde la estantería de Líneas cuando la quieras.'],
   ];
   function presetPreviewHTML(item, doc) {
     const guide = StationTemplates.guides && StationTemplates.guides[item.id];
@@ -2905,7 +2905,7 @@ const Build = (() => {
       (typeof BuildShare !== 'undefined' ? '<section class="station-build-section" data-build-section="shared"><div class="station-build-section-head"><h3>CONSTRUCCIONES COMPARTIDAS</h3><p>Guarda esta distribución como archivo para compartirla, o abre uno que alguien te envió. Solo viajan salas, muebles y transportes.</p><span class="station-build-share-keys"><button class="bb sm" type="button" data-export-build>EXPORTAR ESTA ESTACIÓN</button><button class="bb sm" type="button" data-import-build>IMPORTAR UNA CONSTRUCCIÓN…</button>' + (communityLive() ? '<button class="bb sm" type="button" data-share-community>COMPARTIR CON LA COMUNIDAD</button>' : '') + '<input type="file" accept=".json,application/json" hidden data-import-file></span></div><div class="station-build-grid" aria-label="construcciones compartidas"></div></section>' : '') +
       (typeof BuildShare !== 'undefined' && communityLive() ? '<section class="station-build-section" data-build-section="community"><div class="station-build-section-head"><h3>MAPAS DE LA COMUNIDAD</h3><p>Estaciones que otros jugadores construyeron y compartieron. Solo viajan distribuciones: tú eliges quién las trabaja.</p><span class="station-build-community-note" role="status"></span></div><div class="station-build-grid" aria-label="mapas de la comunidad"></div></section>' : '') + '</div>' +
       '<div class="station-build-footer"><div class="station-build-status" role="status">Selecciona un preajuste para ver qué construye.</div>' +
-      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTAURAR ANTERIOR</button><button class="bb refit-primary" data-use-build disabled>CHOOSE A PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
+      '<div class="station-build-actions"><button class="bb" data-restore-build>RESTAURAR ANTERIOR</button><button class="bb refit-primary" data-use-build disabled>ELIGE UN PRESET</button></div><small class="station-build-note">Applying replaces rooms, props and conveyors. Your current layout is backed up; agents and conversations stay.</small></div></div>';
     g.style.setProperty('--station-build-scale', typeof U.uiZoom === 'function' ? U.uiZoom() : 1);
     const closeP = () => { g.remove(); if (typeof CommunityMaps !== 'undefined') CommunityMaps.release(); root?.querySelector('#refit-stations')?.focus(); };
     cardRegister(g, closeP); root.appendChild(g);
@@ -3057,8 +3057,8 @@ const Build = (() => {
       '<label for="sbs-credit">CRÉDITO COMO</label><input id="sbs-credit" class="refit-input" maxlength="40" autocomplete="off" placeholder="tu nombre o apodo">' +
       '<label for="sbs-desc">UNA LÍNEA SOBRE EL <span class="sbs-dim">opcional</span></label><input id="sbs-desc" class="refit-input" maxlength="200" autocomplete="off">' +
       '<label class="sbs-agree"><input type="checkbox" id="sbs-agree"> <span>I made this station and share it under CC BY 4.0: anyone may build it and change it, with credit to me.</span></label>' +
-      '<p class="sbs-travel">Only the layout travels: <b>' + esc(travels) + '</b>. Your crew, step instructions, project folders and connections stay home' + (r.dropped.made ? ', and so do your ' + n(r.dropped.made, 'made prop', 'made props') : '') + '.' + (pic.why ? ' ' + esc(pic.why) : '') + '</p>' +
-      '<p class="sbs-travel">A person looks at every map before it appears in the community gallery.</p>' +
+      '<p class="sbs-travel">Solo viaja el diseño: <b>' + esc(travels) + '</b>. Tu tripulación, las instrucciones de los pasos, las carpetas de proyecto y las conexiones se quedan en casa' + (r.dropped.made ? ', y lo mismo con tus ' + n(r.dropped.made, 'prop hecha', 'props hechas') : '') + '.' + (pic.why ? ' ' + esc(pic.why) : '') + '</p>' +
+      '<p class="sbs-travel">Una persona revisa cada mapa antes de que aparezca en la galería comunitaria.</p>' +
       '<div class="sbs-keys"><button class="bb refit-primary" type="button" data-sbs-send>ENVIAR A REVISIÓN</button><button class="bb" type="button" data-sbs-cancel>CANCEL</button></div></div>';
     panel.querySelector('img').src = pic.dataUrl;
     const title = panel.querySelector('#sbs-title'), creditIn = panel.querySelector('#sbs-credit'), desc = panel.querySelector('#sbs-desc'), agree = panel.querySelector('#sbs-agree');
@@ -3219,24 +3219,24 @@ const Build = (() => {
       const software = station.doc().meta.templateId === 'software';
       const body = g.querySelector('[data-example-body]');
       body.innerHTML = '<p class="example-purpose">'+esc(e.purpose)+'</p><div class="example-flow" aria-label="Cómo funciona la línea">'+e.flow.map(x=>'<span>'+esc(x)+'</span>').join('<b>→</b>')+'</div>'+
-        '<h4>Choose who works each step</h4><div class="example-roles">'+e.roles.map((r,i)=>'<div class="example-role"><b>'+(i+1)+'. '+esc(r.name)+'</b><span>'+esc(r.description)+'</span>'+
+        '<h4>Elige quién trabaja cada paso</h4><div class="example-roles">'+e.roles.map((r,i)=>'<div class="example-role"><b>'+(i+1)+'. '+esc(r.name)+'</b><span>'+esc(r.description)+'</span>'+
           '<div class="example-role-pick"><select class="refit-input" aria-label="'+esc(r.name)+' agente" data-example-agent="'+esc(r.propId)+'"'+(pending?' disabled':'')+'><option value="">Elige un agente</option>'+agents.map(a=>'<option value="'+esc(a.id)+'"'+(a.id===r.agentId?' selected':'')+'>'+esc(a.name||a.id)+'</option>').join('')+'</select>'+
           (canSummon && r.role ? '<button type="button" class="bb sm" data-example-recruit="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>+ RECRUIT</button>' : '')+'</div>'+
-          (needsPc(r) ? '<div class="example-role-fix"><span>This agent has no desk of its own here.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ DA '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' UN ESCRITORIO</button></div>' : '')+'</div>').join('')+'</div>'+
+          (needsPc(r) ? '<div class="example-role-fix"><span>Este agente no tiene un escritorio propio aquí.</span><button type="button" class="bb sm" data-example-pc="'+esc(r.propId)+'"'+(pending?' disabled':'')+'>⊕ DA '+esc(String(agentLabelFor(r.agentId)).toUpperCase())+' UN ESCRITORIO</button></div>' : '')+'</div>').join('')+'</div>'+
         (offerAll ? '<button type="button" class="bb sm example-all" data-example-all'+(pending?' disabled':'')+'>DALE A '+esc(String(agentLabelFor(firstAid)).toUpperCase())+' CADA PASO</button>' : '')+
-        '<p class="example-note">'+(agents.length ? 'One agent can work every step. ' : 'You have no agents yet. ')+(canSummon ? 'RECRUIT adds that step\'s specialist to your crew; it costs nothing until it works.' : '')+'</p>'+
+        '<p class="example-note">'+(agents.length ? 'One agent can work every step. ' : 'Aún no tienes agentes. ')+(canSummon ? 'RECRUIT adds that step\'s specialist to your crew; it costs nothing until it works.' : '')+'</p>'+
         '<p class="example-note">Assignments save when selected. Each step\'s instructions live on its Bay; click the Bay to edit them.</p>'+
         '<section class="example-sample"><h4>Enviar un trabajo real</h4><p>'+esc(e.sample.replace(/^SAMPLE JOB: /,''))+'</p><p class="example-note">Este es un trabajo real: los agentes que elegiste lo ejecutan con sus propios modelos y aplican los costos habituales de modelo.</p><button class="bb refit-primary" data-example-run'+(!ready||pending?' disabled':'')+'>'+(pending?'TRABAJO EN CURSO…':sr?.view?.ok?'↻ ENVIARLO OTRA VEZ':'▶ ENVIAR UN TRABAJO REAL')+'</button></section>'+
         '<p class="example-status" role="status">'+esc(status)+'</p>'+
-        (sr?.view ? '<div class="example-result">'+finSampleHTML(sr.view)+finOnwardHTML(sr)+(sr.output?'<details><summary>Read the finished result</summary><pre>'+esc(sr.output)+'</pre></details>':'')+'</div>' : '')+
+        (sr?.view ? '<div class="example-result">'+finSampleHTML(sr.view)+finOnwardHTML(sr)+(sr.output?'<details><summary>Leer el resultado terminado</summary><pre>'+esc(sr.output)+'</pre></details>':'')+'</div>' : '')+
         /* NEXT: USE IT FOR REAL — one click to the Inbox's own settings in the Workflow panel (what starts it; the working
            folder a software line builds in), instead of a sentence about where to click */
-        '<section class="example-next"><h4>Use it for real</h4><p>'+(software ? 'Choose the project folder the Builder works in, and when the line runs: on a schedule or from a chat app.' : 'Choose when the line runs: on a schedule or from a chat app.')+' Finished work lands in its OUTBOX and is also filed in DELIVERABLES.</p>'+
+        '<section class="example-next"><h4>Usarlo de verdad</h4><p>'+(software ? 'Elige la carpeta de proyecto en la que trabaja el Builder, y cuándo corre la línea: por horario o desde una app de chat.' : 'Elige cuándo corre la línea: por horario o desde una app de chat.')+' El trabajo terminado llega a su OUTBOX y también se archiva en DELIVERABLES.</p>'+
         (e.inboxId ? '<button type="button" class="bb" data-example-inbox'+(pending?' disabled':'')+'>'+(software ? 'ABRIR EL BUZÓN: CARPETA + INICIO' : 'ABRIR EL BUZÓN: CÓMO EMPIEZA')+'</button>' : '')+'</section>';
       body.querySelectorAll('[data-example-agent]').forEach(select => { select.onchange = () => {
         const propId = select.dataset.exampleAgent;
         const result = station.assignPropAgent(propId,select.value);
-        if (!result.ok) say(result.msg || 'That assignment could not be saved.');
+        if (!result.ok) say(result.msg || 'Esa asignación no se pudo guardar.');
         else { refresh(); g.querySelector('[data-example-agent="'+propId+'"]')?.focus(); }
       }; });
       body.querySelectorAll('[data-example-recruit]').forEach(b => { b.onclick = () => {
@@ -3245,13 +3245,13 @@ const Build = (() => {
         const ri = WorldModel.bayRoleInfo ? WorldModel.bayRoleInfo(r.role) : null;
         const a = summonForRole(r.role, ri), res = a && station.assignPropAgent(r.propId, a.id);
         if (res && res.ok) { sfx('chime'); refresh(); }
-        else { b.disabled = false; sfx('bad'); say(a ? 'Recruited, but the step refused the assignment. Pick the new agent from the list.' : 'Recruiting failed. Pick an agent from your crew instead.'); }
+        else { b.disabled = false; sfx('bad'); say(a ? 'Recruited, but the step refused the assignment. Pick the new agent from the list.' : 'El reclutamiento falló. Elige un agente de tu tripulación en su lugar.'); }
       }; });
       body.querySelectorAll('[data-example-pc]').forEach(b => { b.onclick = () => {
         b.disabled = true;
         const res = requisitionPcFor(b.dataset.examplePc);
         if (res.ok) { bumpGeo(); sfx('chime'); refresh(); }
-        else { b.disabled = false; sfx('bad'); say(res.reason === 'no-room-for-a-desk' ? 'There is no clear floor for a desk in this room. Make some space, then try again.' : 'A workstation could not be placed here.'); }
+        else { b.disabled = false; sfx('bad'); say(res.reason === 'no-room-for-a-desk' ? 'There is no clear floor for a desk in this room. Make some space, then try again.' : 'No se pudo colocar una estación de trabajo aquí.'); }
       }; });
       const inboxBtn = body.querySelector('[data-example-inbox]');
       if (inboxBtn) inboxBtn.onclick = () => { closeP(); try { rebake(); openFlowCard(e.inboxId); } catch (_) {} };
@@ -3301,27 +3301,27 @@ const Build = (() => {
     const G = guideNames();
     g.innerHTML = `
       <div class="refit-guide-card refit-guide-wide" role="dialog" aria-modal="true" aria-labelledby="refit-guide-title">
-        <span class="refit-guide-kicker">BUILD MODE · QUICK GUIDE</span><h3 id="refit-guide-title">Shape your station</h3>
-        <p class="refit-guide-lead">Add rooms, choose equipment, and make the space your own. When you want a repeatable workflow, connect an inbox, an agent’s bay, and an outbox.</p>
+        <span class="refit-guide-kicker">MODO CONSTRUCCIÓN · GUÍA RÁPIDA</span><h3 id="refit-guide-title">Dale forma a tu estación</h3>
+        <p class="refit-guide-lead">Añade salas, elige equipamiento y haz el espacio tuyo. Cuando quieras un workflow repetible, conecta una inbox, la BAY de un agente y una outbox.</p>
         <div class="refit-steps">
           <div class="refit-step" data-art="room">
             <span class="refit-step-n">1</span>
-            <b>MAKE SPACE</b>
-            <span>Choose <b>ROOM</b> and click or drag on the grid. Use <b>SURFACE</b> to change its floor.</span>
+            <b>HACER ESPACIO</b>
+            <span>Elige <b>ROOM</b> y haz clic o arrastra en la rejilla. Usa <b>SURFACE</b> para cambiar su suelo.</span>
           </div>
           <div class="refit-step" data-art="bay">
             <span class="refit-step-n">2</span>
-            <b>ASSIGN AN AGENT</b>
-            <span>Open <b>${esc(G.tab)}</b>, press <b>1</b> (or pick <b>BAY</b> from its hotbar) and click the floor. Click it: the <b>Workflow panel</b> docks beside the floor — choose an agent and describe their step.</span>
+            <b>ASIGNAR UN AGENTE</b>
+            <span>Abre <b>${esc(G.tab)}</b>, pulsa <b>1</b> (o elige <b>BAY</b> de su hotbar) y haz clic en el suelo. Al hacer clic: el <b>Panel de workflow</b> se acopla junto al suelo — elige un agente y describe su paso.</span>
           </div>
           <div class="refit-step" data-art="belt">
             <span class="refit-step-n">3</span>
-            <b>CONNECT THE STEPS</b>
-            <span><b>Drag</b> from one machine onto the next — the belt follows your pointer and lays itself (a selected machine moves onto open floor; Shift + drag always moves). Connect <b>INBOX → BAY → OUTBOX</b>; drag a belt’s middle to branch it. The bay needs an assigned agent to do the work. Drag an <b>OUTBOX onto another line’s INBOX</b> to send its finished work onward with that line’s crew and budget.</span>
+            <b>CONECTAR LOS PASOS</b>
+            <span><b>Arrastra</b> desde una máquina hasta la siguiente — la cinta sigue a tu puntero y se coloca sola (una máquina seleccionada se mueve al suelo libre; Shift + arrastrar siempre mueve). Conecta <b>INBOX → BAY → OUTBOX</b>; arrastra el medio de una cinta para ramificarla. La BAY necesita un agente asignado para hacer el trabajo. Arrastra una <b>OUTBOX sobre la INBOX de otra línea</b> para enviar su trabajo terminado con el equipo y el presupuesto de esa línea.</span>
           </div>
         </div>
-        <p class="refit-guide-foot">For a head start, open <b>${esc(G.tab)} › ${esc(G.lines)}</b> (${G.lineCount} ready-made layouts), stamp one, then assign its bays. <b>${esc(G.preview)}</b> animates the routing and runs no AI job. To test for real, click any machine on a line and use <b>STEP TEST</b> in its Workflow panel: it runs the real agents one step at a time and pauses at every hand-off so you can read or edit what moves on.</p>
-        <div class="refit-guide-shortcuts"><span><b>Wheel</b> Zoom</span><span><b>Space + drag</b> Pan</span><span><b>Ctrl + Z</b> Undo</span><span><b>Click</b> Select</span><span><b>Drag a selected piece</b> Move it</span><span><b>Drag a box</b> Select several</span><span><b>Ctrl + C · V</b> Copy · paste</span><span><b>SAVE &amp; EXIT</b> Leave (or Esc twice)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">EMPEZAR A CONSTRUIR</button>
+        <p class="refit-guide-foot">Para empezar con ventaja, abre <b>${esc(G.tab)} › ${esc(G.lines)}</b> (${G.lineCount} diseños listos), estampa uno y luego asigna sus BAYs. <b>${esc(G.preview)}</b> anima la ruta y no ejecuta ningún trabajo de IA. Para probar de verdad, haz clic en cualquier máquina de una línea y usa <b>PRUEBA DE PASO</b> en su Panel de workflow: ejecuta a los agentes reales paso a paso y se pausa en cada traspaso para que leas o edites lo que avanza.</p>
+        <div class="refit-guide-shortcuts"><span><b>Rueda</b> Zoom</span><span><b>Space + arrastrar</b> Mover</span><span><b>Ctrl + Z</b> Deshacer</span><span><b>Clic</b> Seleccionar</span><span><b>Arrastrar una pieza seleccionada</b> Moverla</span><span><b>Arrastrar una caja</b> Seleccionar varias</span><span><b>Ctrl + C · V</b> Copiar · pegar</span><span><b>GUARDAR Y SALIR</b> Salir (o Esc dos veces)</span></div><button class="btn-sm refit-primary" id="refit-guide-go">EMPEZAR A CONSTRUIR</button>
       </div>`;
     root.appendChild(g);
     g.querySelectorAll('.refit-step').forEach(s => {
@@ -3402,17 +3402,17 @@ const Build = (() => {
       const ch = recOf(b);
       const destinations = ch ? (ch.next || []).map(n => names(dch ? (aod[n] || n) : n)) : [];
       if (ch && ch.outbox) destinations.push('Results outbox');
-      if (ch && ch.deadEnd) destinations.push('Disconnected end — connect a destination');
+      if (ch && ch.deadEnd) destinations.push('Extremo desconectado — conecta un destino');
       return { propId: b.propId, label: b.role || (b.agentId ? names(b.agentId) : 'Unassigned step'),
-        agent: b.agentId ? names(b.agentId) : 'Choose an agent',
-        receives: b.agentId && plan && (rd ? rd[b.propId] : (plan.reach && plan.reach[b.agentId])) ? 'Receives incoming work' : '',
-        sends: destinations.length ? destinations.join(' / ') : 'No confirmed onward route' };
+        agent: b.agentId ? names(b.agentId) : 'Elige un agente',
+        receives: b.agentId && plan && (rd ? rd[b.propId] : (plan.reach && plan.reach[b.agentId])) ? 'Recibe trabajo entrante' : '',
+        sends: destinations.length ? destinations.join(' / ') : 'Sin ruta de salida confirmada' };
     });
     const exits = bays.filter(b => { const ch = recOf(b); return !!(ch && ch.outbox); }).length;
     return { steps,
-      start: comp && comp.intakes.length ? 'Inbox — configure what starts this workflow below' : 'No inbox on this line',
-      result: exits ? 'Connected to a results outbox' : 'No confirmed route to an outbox',
-      compact: (comp && comp.intakes.length ? 'Inbox' : 'No inbox') + ' → ' + bays.length + ' step' + (bays.length === 1 ? '' : 's') + ' → ' + (exits ? 'Outbox' : 'Check output route') };
+      start: comp && comp.intakes.length ? 'INBOX — configura qué inicia este workflow abajo' : 'Sin INBOX en esta línea',
+      result: exits ? 'Conectada a una OUTBOX de resultados' : 'Sin ruta confirmada a una OUTBOX',
+      compact: (comp && comp.intakes.length ? 'Inbox' : 'No inbox') + ' → ' + bays.length + ' step' + (bays.length === 1 ? '' : 's') + ' → ' + (exits ? 'Outbox' : 'Revisa la ruta de salida') };
   }
   /* REFIT-WORKFLOW-PURE-END */
   /* which position does this dock's agent hold on the COMPILED line? (inbox-trigger, 2026-08-05)
@@ -3948,7 +3948,7 @@ const Build = (() => {
     });
     // a look-alike's key is just REMOVE BELT FROM ▴ NORTH / REMOVE BELT 2 (its sentence above names the machines); the machines ride
     // along only where two groups of look-alikes would share that short key
-    const short = conns.map((c, i) => tag[i] ? 'REMOVE BELT ' + tag[i] : 'REMOVE ' + words[i]);
+    const short = conns.map((c, i) => tag[i] ? 'QUITAR CINTA ' + tag[i] : 'QUITAR ' + words[i]);
     const keyText = short.map((k, i) => short.filter(x => x === k).length > 1 ? k + ' · ' + words[i] : k);
     conns.forEach((c, i) => li.push((!tag[i] ? 'This belt runs' : /^\d/.test(tag[i]) ? 'Belt ' + tag[i] + ' runs' : 'The belt ' + tag[i].toLowerCase() + ' runs') + ' from <b>' + esc(machineName(c.from)) + '</b> to <b>' + esc(machineName(c.to)) + '</b>.'));
     if (loose) li.push('This belt is <b>loose</b> — it joins no two machines, so nothing rides it. Drag from one machine onto the next to connect them; right-click removes this one.');
@@ -3960,12 +3960,12 @@ const Build = (() => {
       if (!r.agents.length && !r.unbound && !r.outbox && !r.deadEnd) li.push('This tile isn’t on the compiled line yet — connect it to a machine.');
     } else li.push('No compiled route yet — lay the line to a machine and this card reads its destination.');
     const back = linksMemoed().some(l => (l.path||[]).some(q=>q.x===tx&&q.y===ty) && station.isBackLink && station.isBackLink(l.id));
-    if(back) li.push('<b>LOOP BACK belt.</b> Removing it stops retries; the DONE exit stays. Undo restores it.');
+    if(back) li.push('<b>cinta LOOP BACK.</b> Quitarla detiene los reintentos; la salida DONE sigue. Deshacer la restaura.');
     const g = document.createElement('div');
     g.className = 'refit-guide refit-belt-card refit-workflow-editor';
     g.innerHTML = '<div class="refit-guide-card" role="dialog" aria-modal="true" aria-labelledby="workflow-title">'
       + workflowIntroHTML('BELT · ' + (DIRWORD[dir] || dir), 'Where this belt takes work', 'Belts connect the steps in your workflow. Their direction decides where work travels next.')
-      + '<div class="workflow-body"><section class="workflow-section"><h4>Connected destinations</h4><ul>' + li.map(s => '<li>' + s + '</li>').join('') + '</ul></section></div>'
+      + '<div class="workflow-body"><section class="workflow-section"><h4>Destinos conectados</h4><ul>' + li.map(s => '<li>' + s + '</li>').join('') + '</ul></section></div>'
       + '<div class="workflow-footer"><span>Drag a belt’s middle to branch it · Ctrl+drag reshapes it · right-click removes it.</span>'
       // one connection: REMOVE BELT; a tile two connections share: one key per connection (never a guess at which goes)
       + (conns.length > 1 ? conns.map((c, i) => '<button type="button" class="btn-sm" data-rmlink="' + i + '">' + esc(keyText[i]) + '</button>').join('')
@@ -4022,18 +4022,18 @@ const Build = (() => {
       const rowHtml = ROWS.map(([tag, label]) => {
         const btns = lanes.length
           ? lanes.map(d => '<button type="button" class="bb sm lane-btn' + (selOf(tag) === d ? ' sel' : '') + '" data-tag="' + tag + '" data-dir="' + d + '" aria-pressed="' + (selOf(tag) === d) + '">' + esc(exits.find(x => x.dir === d)?.label || d + ' ' + J_ARROW[d]) + '</button>').join('')
-          : '<span class="refit-note bad">Connect an outgoing belt first.</span>';
+          : '<span class="refit-note bad">Conecta primero una cinta saliente.</span>';
         return '<div class="refit-route-row"><span class="refit-route-lbl">' + label + '</span><div class="workflow-lane-options">' + btns + '</div></div>';
       }).join('');
       g.innerHTML = '<div class="refit-guide-card" role="dialog" aria-modal="true" aria-labelledby="workflow-title">'
         + workflowIntroHTML('FILTER · SORT TASKS', 'Send each kind of task the right way', 'Choose a path for coding tasks, research tasks and everything else. The Filter reads each task and sends it along the matching belt.')
-        + '<div class="workflow-body workflow-columns"><div class="workflow-main"><section class="workflow-section"><h4>Choose a destination for each kind</h4>'
+        + '<div class="workflow-body workflow-columns"><div class="workflow-main"><section class="workflow-section"><h4>Elige un destino para cada tipo</h4>'
         + '<p class="workflow-help">“Everything else” is the fallback. Set it so other tasks have somewhere to go.</p>'
         + '<div class="refit-filter-rows">' + rowHtml + '</div></section></div>'
-        + '<aside class="workflow-aside"><section class="workflow-section"><h4>Which tasks get sorted?</h4>'
+        + '<aside class="workflow-aside"><section class="workflow-section"><h4>¿Qué tareas se clasifican?</h4>'
         + '<p class="workflow-help">Tasks without an assigned agent use these rules. A task already addressed to an agent follows that agent’s path.</p></section>'
-        + '<section class="workflow-section"><h4>Need another destination?</h4><p class="workflow-help">Close this panel and drag this Filter onto another Bay (or use BELT) to connect them. Its destination appears here.</p></section></aside></div>'
-        + '<div class="workflow-footer"><span>Save routes to apply your choices.</span><button type="button" class="btn-sm" id="j-clear">CLEAR ROUTES</button><button type="button" class="btn-sm" id="j-cancel">CANCEL</button><button type="button" class="btn-sm refit-primary" id="j-ok">▸ SAVE ROUTES</button></div></div>';
+        + '<section class="workflow-section"><h4>¿Necesitas otro destino?</h4><p class="workflow-help">Cierra este panel y arrastra este Filtro sobre otra BAY (o usa BELT) para conectarlas. Su destino aparece aquí.</p></section></aside></div>'
+        + '<div class="workflow-footer"><span>Guarda las rutas para aplicar tus elecciones.</span><button type="button" class="btn-sm" id="j-clear">BORRAR RUTAS</button><button type="button" class="btn-sm" id="j-cancel">CANCEL</button><button type="button" class="btn-sm refit-primary" id="j-ok">▸ SAVE ROUTES</button></div></div>';
       root.appendChild(g);
       g.querySelector('[data-workflow-close]').onclick = closeP;
       requestAnimationFrame(() => g.classList.add('refit-swap'));
@@ -4068,7 +4068,7 @@ const Build = (() => {
     g.className = 'refit-guide refit-connector-editor';
     const closeP = () => { if (g.parentNode) g.parentNode.removeChild(g); };
     cardRegister(g, closeP);
-    g.innerHTML = '<div class="refit-guide-card"><h3>▮ CONNECTOR PORTAL — bind an MCP server</h3>'
+    g.innerHTML = '<div class="refit-guide-card"><h3>▮ PUERTO CONECTOR — vincula un servidor MCP</h3>'
       + '<ul><li>This gateway grants its bay\'s agent the <b>live tools</b> of ONE configured connector.</li>'
       + '<li>Bind it below — the portal then rides that server\'s state and pulses when its tools fire.</li></ul>'
       + '<div class="refit-conn-rows" id="c-rows">loading…</div>'
@@ -4078,7 +4078,7 @@ const Build = (() => {
     const rowsEl = g.querySelector('#c-rows');
     // semantic state → dot class (theme vars, no inline hex): up=ok · warming/offline=warn · error=bad
     const STATE_CLASS = { connected: 'ok', ready: 'ok', up: 'ok', cached: 'warn', warming: 'warn', offline: 'warn', down: 'warn', error: 'bad' };
-    const bind = (id, label) => { const res = station.bindConnector(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'bound → ' + (label || id), true); closeP(); } else sfx('bad'); };
+    const bind = (id, label) => { const res = station.bindConnector(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'vinculado → ' + (label || id), true); closeP(); } else sfx('bad'); };
     g.querySelector('#c-unbind').onclick = () => { station.bindConnector(propId, ''); sfx('click'); flashTip(ev, 'portal unbound', true); closeP(); };
     g.querySelector('#c-cancel').onclick = closeP;
     g.addEventListener('click', e => { if (e.target === g) closeP(); });
@@ -4108,15 +4108,15 @@ const Build = (() => {
     const closeP = () => { if (g.parentNode) g.parentNode.removeChild(g); };
     cardRegister(g, closeP);
     g.innerHTML = '<div class="refit-guide-card"><h3>▮ TERMINAL DE PLUGIN — elige su plugin</h3>'
-      + '<ul><li>This terminal gives its room’s agent the chosen plugin’s <b>tools</b> (each call asks you first, unless you choose Always or Full access).</li>'
-      + '<li>Clicking it in the station opens that plugin’s window.</li></ul>'
-      + '<div class="refit-conn-rows" id="pl-rows">loading…</div>'
-      + '<div class="refit-actions"><button type="button" class="btn-sm" id="pl-unbind">✕ UNBIND</button><button type="button" class="btn-sm" id="pl-cancel">CANCEL</button></div></div>';
+      + '<ul><li>Esta terminal le da al agente de su sala las <b>herramientas</b> del plugin elegido (cada llamada te pregunta primero, salvo que elijas Siempre o Acceso total).</li>'
+      + '<li>Hacer clic en ella dentro de la estación abre la ventana de ese plugin.</li></ul>'
+      + '<div class="refit-conn-rows" id="pl-rows">cargando…</div>'
+      + '<div class="refit-actions"><button type="button" class="btn-sm" id="pl-unbind">✕ DESVINCULAR</button><button type="button" class="btn-sm" id="pl-cancel">CANCELAR</button></div></div>';
     root.appendChild(g);
     requestAnimationFrame(() => g.classList.add('refit-swap'));
     const rowsEl = g.querySelector('#pl-rows');
-    const bind = (id, label) => { const res = station.bindPlugin(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'bound → ' + (label || id), true); closeP(); } else sfx('bad'); };
-    g.querySelector('#pl-unbind').onclick = () => { station.bindPlugin(propId, ''); sfx('click'); flashTip(ev, 'terminal unbound', true); closeP(); };
+    const bind = (id, label) => { const res = station.bindPlugin(propId, id); if (res && res.ok) { sfx('click'); flashTip(ev, 'vinculado → ' + (label || id), true); closeP(); } else sfx('bad'); };
+    g.querySelector('#pl-unbind').onclick = () => { station.bindPlugin(propId, ''); sfx('click'); flashTip(ev, 'terminal desvinculada', true); closeP(); };
     g.querySelector('#pl-cancel').onclick = closeP;
     g.addEventListener('click', e => { if (e.target === g) closeP(); });
     if (typeof fetch === 'undefined') { rowsEl.innerHTML = '<div class="refit-conn-note">sin sidecar — no se pueden listar plugins aquí.</div>'; return; }
@@ -4124,8 +4124,8 @@ const Build = (() => {
       const all = (j && j.plugins) || [];
       const list = all.filter(x => x.active);
       const boundOff = p.pluginId ? all.find(x => x.id === p.pluginId && !x.active) : null;
-      const offNote = boundOff ? '<div class="refit-conn-note">Bound to <b>' + esc(boundOff.name || boundOff.id) + '</b>, which is off' + (boundOff.pending ? ' (changed since you approved it)' : '') + ' — turn it on in ⇄ ABILITIES → EXTENSIONS.</div>'
-        : (p.pluginId && !all.some(x => x.id === p.pluginId) ? '<div class="refit-conn-note">Bound to <b>' + esc(p.pluginId) + '</b>, which was removed.</div>' : '');
+      const offNote = boundOff ? '<div class="refit-conn-note">Vinculado a <b>' + esc(boundOff.name || boundOff.id) + '</b>, que está apagado' + (boundOff.pending ? ' (cambió desde que lo aprobaste)' : '') + ' — turn it on in ⇄ ABILITIES → EXTENSIONS.</div>'
+        : (p.pluginId && !all.some(x => x.id === p.pluginId) ? '<div class="refit-conn-note">Vinculado a <b>' + esc(p.pluginId) + '</b>, que fue eliminado.</div>' : '');
       if (!list.length) { rowsEl.innerHTML = offNote + '<div class="refit-conn-note">Aún no hay plugins activados — crea o aprueba uno en <b>⇄ CAPACIDADES → EXTENSIONES</b> y luego enlázalo aquí.</div>'; return; }
       rowsEl.innerHTML = list.map(x => {
         const sel = (x.id === p.pluginId);
@@ -4726,7 +4726,7 @@ const Build = (() => {
       <button type="button" class="bb fl-step${crewDone ? ' done' : ''}" data-act="crew"${crewDone ? ' disabled' : ''}>${esc(crewTxt)}</button>
       <button type="button" class="bb fl-step${st.feedDone ? ' done' : ''}" data-act="feed"${st.feedDone ? ' disabled' : ''}>${esc(feedTxt)}</button>
       <button type="button" class="bb fl-step${sampleOn ? '' : ' off'}${sr && sr.view && sr.view.ok ? ' done' : ''}" data-act="sample" title="${esc(sampleTip)}"><span class="fl-lbl">${esc(sampleTxt).replace('OTRO ENVÍO', '<span class="fl-again">OTRO ENVÍO</span>')}</span></button>
-      ${sr && sr.view ? finSampleHTML(sr.view) + finOnwardHTML(sr) : onward ? '<div class="fl-result fl-onward"><span class="fl-result-k">SEND TO</span> ' + esc(onward) + '</div>' : ''}`;
+      ${sr && sr.view ? finSampleHTML(sr.view) + finOnwardHTML(sr) : onward ? '<div class="fl-result fl-onward"><span class="fl-result-k">ENVIAR A</span> ' + esc(onward) + '</div>' : ''}`;
     finCardEl.querySelector('.fl-x').onclick = () => { finMark(station, c.key, 'dis'); sfx('click'); renderFinCard(); };
     const example = currentPresetExample();
     const overviewButton = finCardEl.querySelector('[data-act="overview"]');
@@ -4799,10 +4799,10 @@ const Build = (() => {
     const o = W && W.onwardResult && valPlan && typeof Pipeline !== 'undefined' ? W.onwardResult(sr, valPlan, Pipeline, w && w.lineName ? id => w.lineName(id) : null) : null;
     if (!o) return '';
     const to = esc((o.names || []).join(' and '));
-    if (o.kind === 'refused') return '<div class="fl-result bad"><span class="fl-result-k">NOT SENT ON</span> to ' + esc(o.name) + ' — ' + esc(o.why) + '</div>';
-    if (o.kind === 'sent') return '<div class="fl-result"><span class="fl-result-k">SENT ON</span> to ' + esc(o.name) + ' — its crew works this result next, at its own cost</div>';
-    if (o.kind === 'sends') return '<div class="fl-result"><span class="fl-result-k">SEND TO</span> this line sends its finished work on to ' + to + ' — WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent</div>';
-    return '<div class="fl-result"><span class="fl-result-k">SEND TO</span> an OUTBOX on this line sends on to ' + to + ' — if this job was handed on, WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent</div>';
+    if (o.kind === 'refused') return '<div class="fl-result bad"><span class="fl-result-k">NO ENVIADO EN</span> a ' + esc(o.name) + ' — ' + esc(o.why) + '</div>';
+    if (o.kind === 'sent') return '<div class="fl-result"><span class="fl-result-k">ENVIADO EN</span> a ' + esc(o.name) + ' — su tripulación trabaja este resultado a continuación, a su propio costo</div>';
+    if (o.kind === 'sends') return '<div class="fl-result"><span class="fl-result-k">ENVIAR A</span> esta línea envía su trabajo terminado a ' + to + ' — WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió</div>';
+    return '<div class="fl-result"><span class="fl-result-k">ENVIAR A</span> una OUTBOX de esta línea envía a ' + to + ' — si este trabajo fue traspasado, WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió</div>';
   }
   /* POST THE LINE BEFORE RUNNING IT (2026-08-22). BUILD MODE freezes the world, so the plan the sidecar routes by
      is the one posted at the LAST BUILD MODE CLOSE — a sample fired right after an edit ran the OLD line while
@@ -5084,11 +5084,11 @@ const Build = (() => {
     g.className = 'refit-guide refit-door-picker';
     g.innerHTML = `
       <div class="refit-guide-card">
-        <h3>▮ AIRLOCK — ROOM SEAL</h3>
+        <h3>▮ ESCLUSA — SELLADO DE SALA</h3>
         <ul><li>A <b>SEALED</b> room is contained on the floor — its agent’s body can’t path in or out (a staging seal, the unmerged-branch look).</li>
         <li><b>OPEN</b> = connected to the trunk hub · <b>JAMMED</b> = a merge conflict (sealed).</li>
         <li>A spatial seal — it doesn’t change what the agent’s run can do; its tools &amp; permissions come from its BAY.</li>
-        ${isTrunk ? '<li><b>This is the trunk room</b> — it never seals (the integration hub).</li>' : ''}</ul>
+        ${isTrunk ? '<li><b>Esta es la sala principal</b> — nunca se sella (el hub de integración).</li>' : ''}</ul>
         <div class="refit-agents">${rows}</div>
         <div class="refit-actions">
           <button type="button" class="btn-sm" id="door-cancel">CANCEL</button>
@@ -5627,7 +5627,7 @@ const Build = (() => {
     const p=station&&station.propById(selectedPropId);host.hidden=!p;root.classList.toggle('has-selection',!!p);
     if(!p){host.replaceChildren();return;}
     host.innerHTML='<div class="refit-sel-head"><span class="refit-sel-art" aria-hidden="true"></span><span class="refit-sel-name"><b>'+esc(propLabel(p.t))+'</b><small>'+p.w+' × '+p.h+' tiles'+(canTurn(p.t)?' · facing '+FACE_WORD[(p.r|0)&3]:'')+(pressMovesSelection()?' · '+(CONNECT_TYPES[p.t]?'drag onto floor to move, onto a machine to belt':'arrástralo para moverlo')+' · las flechas ajustan':'')+'</small></span>'
-      +'<button class="bb sm refit-sel-x" type="button" aria-label="Deselect" data-tip="Deselect · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
+      +'<button class="bb sm refit-sel-x" type="button" aria-label="Deseleccionar" data-tip="Deseleccionar · Esc">\u2715</button></div><div class="refit-selection-actions"></div>';
     propArtInto(host.querySelector('.refit-sel-art'),p);
     host.querySelector('.refit-sel-x').onclick=()=>{selectedPropId=null;renderSelection();setHint();sfx('click');};
     const actions=host.querySelector('.refit-selection-actions');

@@ -463,8 +463,8 @@ const WorkflowsWindow = (() => {
     const r = LineEdit.placeBlueprint(st, pk.bp, near, { stamp: { briefs: pk.briefs } });
     if (!r || !r.ok) {
       sfx('bad');
-      S.made = { error: r && r.error === 'NO_ROOM' ? 'There is no clear floor big enough for this line' + (r.needs ? ' (it needs ' + r.needs.w + ' × ' + r.needs.h + ' tiles)' : '') + '.'
-        : 'This line could not be placed: ' + ((r && r.msg) || (r && r.error) || 'no clear floor for it') + '.' };
+      S.made = { error: r && r.error === 'NO_ROOM' ? 'No hay suelo libre lo bastante grande para esta línea' + (r.needs ? ' (necesita ' + r.needs.w + ' × ' + r.needs.h + ' casillas)' : '') + '.'
+        : 'Esta línea no se pudo colocar: ' + ((r && r.msg) || (r && r.error) || 'sin suelo libre para ella') + '.' };
       schedule(); return;
     }
     const ids = r.ids || [], bays = ids.map(id => st.propById(id)).filter(p => p && p.t === 'bay');
@@ -587,7 +587,7 @@ const WorkflowsWindow = (() => {
         + (crew.length ? '<span class="wfw-agents">' + crew.map(a => '<button type="button" class="wfw-agent' + (a.id === cur ? ' on' : '') + '" data-pick-agent="' + i + '" data-aid="' + esc(a.id) + '" aria-pressed="' + (a.id === cur) + '">'
           + thumb(a.id, 26, 32, 'wfw-av') + '<span>' + esc(String(a.name || a.id).toUpperCase()) + '</span></button>').join('') + '</span>'
           : '<span class="wfw-bad">Aún no hay agentes — recluta uno desde TRIPULACIÓN primero.</span>')
-        + (pk.briefs[role] && pk.briefs[role].does ? '<details class="wf-more wfw-pdoes"><summary>What it does</summary><div class="wf-io">' + esc(pk.briefs[role].does) + '</div></details>' : '')
+        + (pk.briefs[role] && pk.briefs[role].does ? '<details class="wf-more wfw-pdoes"><summary>Qué hace</summary><div class="wf-io">' + esc(pk.briefs[role].does) + '</div></details>' : '')
         + '</div>';
     }).join('');
     return '<section class="wfw-sec wfw-picked" id="wfw-picked"><h3>' + esc(plainName(pk.bp)) + (pk.drafted ? ' <span class="wf-tag">PREPARADO PARA TI</span>' : '') + '</h3>'
@@ -619,22 +619,22 @@ const WorkflowsWindow = (() => {
   function stepHTML(l, s) {
     const crew = roster();
     return '<section class="wfw-sec wfw-stepbox"><h3>Paso ' + s.n + ((s.label || s.role) ? ' · ' + esc(s.label || s.role) : '') + '</h3>'
-      + '<div class="wfw-k">Who does it?</div><div class="wfw-agents">' + crew.map(a => '<button type="button" class="wfw-agent' + (a.id === s.agentId ? ' on' : '') + '" data-assign="' + esc(s.id) + '" data-aid="' + esc(a.id) + '" aria-pressed="' + (a.id === s.agentId) + '">'
+      + '<div class="wfw-k">¿Quién lo hace?</div><div class="wfw-agents">' + crew.map(a => '<button type="button" class="wfw-agent' + (a.id === s.agentId ? ' on' : '') + '" data-assign="' + esc(s.id) + '" data-aid="' + esc(a.id) + '" aria-pressed="' + (a.id === s.agentId) + '">'
         + thumb(a.id, 26, 32, 'wfw-av') + '<span>' + esc(String(a.name || a.id).toUpperCase()) + '</span></button>').join('') + '</div>'
       + (s.agentId && !s.desk ? '<div class="wf-row"><span class="wfw-bad">' + esc(NAME(s.agentId)) + ' necesita un escritorio para trabajar este paso.</span><button type="button" class="bb sm refit-primary" data-desk="' + esc(s.id) + '">⊕ DA ' + esc(NAME(s.agentId)) + ' UN ESCRITORIO</button></div>' : '')
-      + '<div class="wfw-k">What it does</div><div class="wf-io wfw-does">' + esc(s.brief || '(no instructions — it does what the job asks)') + '</div>'
-      + '<div class="wf-row"><span class="wfw-note">Change a step’s instructions with NEEDS CHANGES under a result, or in</span><button type="button" class="wf-link" data-act="edit">EDITAR FLUJO</button></div></section>';
+      + '<div class="wfw-k">Qué hace</div><div class="wf-io wfw-does">' + esc(s.brief || '(sin instrucciones — hace lo que pide el trabajo)') + '</div>'
+      + '<div class="wf-row"><span class="wfw-note">Cambia las instrucciones de un paso con NECESITA CAMBIOS bajo un resultado, o en</span><button type="button" class="wf-link" data-act="edit">EDITAR FLUJO</button></div></section>';
   }
   function setupHTML(l) {
     const crew = roster(), items = [];
     const missing = l.steps.filter(s => !s.agentId);
-    for (const s of missing) items.push('<div class="wfw-fixrow"><div class="wfw-fixh">Who does step ' + s.n + ((s.label || s.role) ? ' · ' + esc(s.label || s.role) : '') + '?</div><div class="wfw-agents">'
+    for (const s of missing) items.push('<div class="wfw-fixrow"><div class="wfw-fixh">¿Quién hace el paso ' + s.n + ((s.label || s.role) ? ' · ' + esc(s.label || s.role) : '') + '?</div><div class="wfw-agents">'
       + (crew.length ? crew.map(a => '<button type="button" class="wfw-agent" data-assign="' + esc(s.id) + '" data-aid="' + esc(a.id) + '">' + thumb(a.id, 26, 32, 'wfw-av') + '<span>' + esc(String(a.name || a.id).toUpperCase()) + '</span></button>').join('')
         : '<span class="wfw-bad">Aún no hay agentes — recluta uno desde TRIPULACIÓN primero.</span>') + '</div></div>');
     for (const s of l.steps.filter(s => s.agentId && !s.desk)) items.push('<div class="wfw-fixrow"><div class="wfw-fixh">' + esc(NAME(s.agentId)) + ' necesita un escritorio para trabajar el paso ' + s.n + '.</div><div class="wf-row"><button type="button" class="bb sm refit-primary" data-desk="' + esc(s.id) + '">⊕ DA ' + esc(NAME(s.agentId)) + ' UN ESCRITORIO</button></div></div>');
     const handled = /necesita un agente|needs a workstation/;
-    for (const b of l.ready.blocking.filter(b => !handled.test(b.what))) items.push('<div class="wfw-fixrow"><div class="wfw-fixh">' + esc(b.what.charAt(0).toUpperCase() + b.what.slice(1)) + '</div><div class="wf-row"><button type="button" class="bb sm" data-act="edit">ARREGLO IT IN THE EDITOR</button></div></div>');
-    return '<section class="wfw-sec wfw-setup"><h3>Finish setting it up</h3><p class="wfw-note">' + (l.ready.blocking.length === 1 ? 'One thing' : l.ready.blocking.length + ' things') + ' before it can take a job:</p>'
+    for (const b of l.ready.blocking.filter(b => !handled.test(b.what))) items.push('<div class="wfw-fixrow"><div class="wfw-fixh">' + esc(b.what.charAt(0).toUpperCase() + b.what.slice(1)) + '</div><div class="wf-row"><button type="button" class="bb sm" data-act="edit">ARREGLARLO EN EL EDITOR</button></div></div>');
+    return '<section class="wfw-sec wfw-setup"><h3>Termina de configurarlo</h3><p class="wfw-note">' + (l.ready.blocking.length === 1 ? 'Una cosa' : l.ready.blocking.length + ' cosas') + ' antes de que pueda tomar un trabajo:</p>'
       + (missing.length > 1 && crew.length ? '<div class="wf-row">' + crew.slice(0, 4).map(a => '<button type="button" class="bb sm" data-assign-all="' + esc(a.id) + '">DA ' + esc(String(a.name || a.id).toUpperCase()) + ' CADA PASO</button>').join('') + '</div>' : '')
       + items.join('') + '</section>';
   }
@@ -649,19 +649,19 @@ const WorkflowsWindow = (() => {
     // a handed-on job reads as FROM LINE A · the job (its text is the job as it first arrived); a standing refusal says ×N
     // (an older record held the hand-off frame as its text: read the job back out of it)
     const jobOf = j => { const h = j.from && !j.handedIn && P() && P().parseHandoffInput ? P().parseHandoffInput(j.text) : null; return h && h.original ? h.original : String(j.text || ''); };
-    const said = j => (j.from ? 'FROM ' + lineWord(j.from) + ' · ' : '') + jobOf(j).replace(/\s+/g, ' ');
+    const said = j => (j.from ? 'DE ' + lineWord(j.from) + ' · ' : '') + jobOf(j).replace(/\s+/g, ' ');
     const markOf = j => j.repeats > 1 ? mark(j.status).replace('</span>', ' ×' + esc(j.repeats) + '</span>') : mark(j.status);
-    return '<div class="wfw-jobs">' + rows.map(j => '<button type="button" class="wfw-jobrow" data-job="' + esc(j.id) + '">' + markOf(j) + '<span class="wfw-jtext">' + esc(said(j).slice(0, 120) || '(no text)') + '</span><span class="wfw-jmeta">' + esc(ago(j.startedAt) + (j.usd ? ' · ' + usd(j.usd) : '')) + '</span></button>').join('') + '</div>';
+    return '<div class="wfw-jobs">' + rows.map(j => '<button type="button" class="wfw-jobrow" data-job="' + esc(j.id) + '">' + markOf(j) + '<span class="wfw-jtext">' + esc(said(j).slice(0, 120) || '(sin texto)') + '</span><span class="wfw-jmeta">' + esc(ago(j.startedAt) + (j.usd ? ' · ' + usd(j.usd) : '')) + '</span></button>').join('') + '</div>';
   }
   function composeHTML(l) {
     // one job runs at a time (the station's rule): the one this window sent counts before the server's list shows it
     const busy = runningJob() || (S.out ? { line: S.out.line, name: (lineOf(floor(), S.out.line) || {}).name } : null), other = busy && busy.line !== l.key;
-    return '<section class="wfw-sec wfw-send"><h3>Send a job</h3>'
-      + '<textarea id="wfw-job" class="wfw-field" rows="3" maxlength="2000" aria-label="The job for this workflow" placeholder="' + esc(exampleJob(l)) + '">' + esc(S.draft['job:' + l.key] || '') + '</textarea>'
+    return '<section class="wfw-sec wfw-send"><h3>Enviar un trabajo</h3>'
+      + '<textarea id="wfw-job" class="wfw-field" rows="3" maxlength="2000" aria-label="El trabajo para este workflow" placeholder="' + esc(exampleJob(l)) + '">' + esc(S.draft['job:' + l.key] || '') + '</textarea>'
       + '<div class="wf-row"><button type="button" class="bb refit-primary" data-act="send"' + (busy ? ' disabled' : '') + '>▶ ENVIAR TRABAJO</button>'
       + '<span class="wfw-note">' + (other ? 'Otro flujo (' + esc(busy.name || 'una línea') + ') está trabajando en un trabajo — a la vez corre uno.' : 'Agentes reales hacen el trabajo, a coste real. El resultado vuelve aquí, aterriza en el OUTBOX de esta línea y también se archiva en ENTREGABLES.' + ((l.sendNames || []).length ? ' Luego ' + (l.sendsAll ? 'sigue' : 'puede seguir') + ' a ' + esc(l.sendNames.join(' / ')) + ' — con su equipo, a su coste.' : '')) + '</span></div>'
       + (S.msg ? '<p class="' + (S.msg.bad ? 'wfw-bad' : 'wfw-okline') + '">' + (S.msg.bad ? '✕ ' : '') + esc(S.msg.text) + '</p>' : '')
-      + '</section>' + startsHTML(l) + '<section class="wfw-sec"><h3>Last jobs</h3>' + jobRows(l) + '</section>';
+      + '</section>' + startsHTML(l) + '<section class="wfw-sec"><h3>Últimos trabajos</h3>' + jobRows(l) + '</section>';
   }
   /* WHAT INICIOS IT (org P15, 2026-10-14): one read-only line — WorkflowLine.lineStarts over the server answers World's feed poll
      read (GET /api/cron, /api/routing/triggers, /api/channels/status): the same composition the Workflow panel, BUILD MODE's
@@ -678,17 +678,17 @@ const WorkflowsWindow = (() => {
     let st;
     try { st = Wl.lineStarts(l.flow, { lt: facts.lt, lineKey: l.key, cron: facts.cron, chans: facts.chans, agents: roster(), human }); } catch (e) { return null; }
     // another line's SEND TO starts this one too (the panel's '✓ FED — LINE A sends its finished work here'; BUILD's FED BY)
-    const fed = (l.senderNames || []).map(n => 'when ' + n + ' sends its finished work');
-    const auto = [].concat(st.schedules || [], (st.channels || []).map(c => 'when a ' + c + ' message arrives'), st.events || [], fed);
+    const fed = (l.senderNames || []).map(n => 'cuando ' + n + ' envía su trabajo terminado');
+    const auto = [].concat(st.schedules || [], (st.channels || []).map(c => 'cuando ' + c + ' recibe un mensaje'), st.events || [], fed);
     // a schedule the E-STOP holds is named as the E-STOP (the /cron line and the Workflow panel say 'stopped (E-STOP)'), never as an OFF switch
-    const offWhy = facts.cron && facts.cron.halted ? ' (stopped by E-STOP)' : ' (scheduling is off)';
+    const offWhy = facts.cron && facts.cron.halted ? ' (detenido por E-STOP)' : ' (la programación está apagada)';
     // …and a folder/webhook trigger or a channel the server holds back (E-STOP, the day cap, not connected) is a start, held, with its reason
     const off = (st.offSchedules || []).map(s => s + offWhy).concat(st.held || []);
     // World keeps a fact only once its endpoint has answered: a fact never read is UNKNOWN, so 'by hand only' would be a claim it can't prove
-    const unread = [facts.cron ? '' : 'schedules', facts.chans ? '' : 'channels', facts.lt ? '' : 'folder/webhook triggers'].filter(Boolean);
-    const unknown = unread.length ? ' · ' + unread.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' could not be read' : '';
-    if (!auto.length && !off.length) return unknown ? 'by hand' + unknown : 'by hand only';
-    return ['by hand'].concat(auto, off).join(' · ') + unknown;
+    const unread = [facts.cron ? '' : 'horarios', facts.chans ? '' : 'canales', facts.lt ? '' : 'carpeta/webhook'].filter(Boolean);
+    const unknown = unread.length ? ' · ' + unread.join(', ').replace(/, ([^,]*)$/, ' y $1') + ' no se pudo leer' : '';
+    if (!auto.length && !off.length) return unknown ? 'a mano' + unknown : 'solo a mano';
+    return ['a mano'].concat(auto, off).join(' · ') + unknown;
   }
   function startsHTML(l) {
     const t = startsText(l);
@@ -708,7 +708,7 @@ const WorkflowsWindow = (() => {
     const text = S.out ? S.out.text : (rec && rec.text) || '';
     const now = liveNow(l);
     const mine = !!S.out;
-    return '<section class="wfw-sec wfw-run"><h3>Working on it</h3><div class="wfw-you"><span class="wfw-k">You sent</span><div class="wfw-quote">' + esc(text) + '</div></div>'
+    return '<section class="wfw-sec wfw-run"><h3>Trabajando en ello</h3><div class="wfw-you"><span class="wfw-k">Enviaste</span><div class="wfw-quote">' + esc(text) + '</div></div>'
       + '<p class="wfw-live" id="wfw-live" role="status">' + esc(now.text) + '</p>'
       + '<div class="wf-row"><button type="button" class="bb" data-act="stop"' + ((mine && (S.out.phase !== 'run' || S.out.stopping)) ? ' disabled' : '') + '>' + (mine && S.out.stopping ? 'STOPPING…' : '■ STOP') + '</button>'
       + '<span class="wfw-note">The result shows here when the last step is done. You can close this window — the job keeps going.</span></div></section>';
@@ -718,8 +718,8 @@ const WorkflowsWindow = (() => {
   function handoffRunningHTML(l, rec) {
     return '<section class="wfw-sec wfw-run wfw-hrun"><h3>Working on a job from ' + esc(lineWord(rec.from)) + '</h3>'
       + '<p class="wfw-why wfw-from">' + esc(lineWord(rec.from)) + ' finished its part and sent its result on — this line’s crew is working on it now.'
-      + (rec.from.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(rec.from.jobId) + '">OPEN ITS JOB</button>' : '') + '</p>'
-      + '<div class="wfw-you"><span class="wfw-k">The job</span><div class="wfw-quote">' + esc(rec.text || '') + '</div></div>'
+      + (rec.from.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(rec.from.jobId) + '">ABRIR SU TRABAJO</button>' : '') + '</p>'
+      + '<div class="wfw-you"><span class="wfw-k">El trabajo</span><div class="wfw-quote">' + esc(rec.text || '') + '</div></div>'
       + '<p class="wfw-note">The result lands in ÚLTIMOS TRABAJOS and this line’s OUTBOX. E-STOP stops it.</p></section>';
   }
   function resultHTML(l, job) {
@@ -736,38 +736,38 @@ const WorkflowsWindow = (() => {
     // a stored reason is a bare clause ("the station hit an internal fault and stopped this job"): the card says it as a sentence
     // (wave 2 repair — the stopped and failed branches opened their paragraph in lowercase)
     const sentence = (t, empty) => { t = String(t == null ? '' : t).trim().replace(/[.\s]+$/, ''); return t ? t.charAt(0).toUpperCase() + t.slice(1) + '.' : empty; };
-    const refusedWhy = () => sentence(String(job.error).replace(/^not sent on:\s*/, ''), 'Nothing ran.');
-    const END ={ empty: 'gave no final answer', error: 'hit an error', max_iters: 'ran out of turns', budget: 'hit the spending cap', refusal: 'refused the work', interrupted: 'was interrupted', stopped: 'was stopped' };
+    const refusedWhy = () => sentence(String(job.error).replace(/^not sent on:\s*/, ''), 'Nada corrió.');
+    const END ={ empty: 'no dio respuesta final', error: 'falló', max_iters: 'se quedó sin turnos', budget: 'alcanzó el límite de gasto', refusal: 'rechazó el trabajo', interrupted: 'se interrumpió', stopped: 'se detuvo' };
     const head = ok ? '<b class="ok">✓ ENTREGADO</b>' : job.status === 'stopped' ? '<b>■ DETENIDO</b>' : job.status === 'interrupted' ? '<b class="warn">⚠ INTERRUMPIDO</b>' : job.status === 'failed' ? '<b class="warn">✕ NO SE EJECUTÓ</b>' : '<b class="warn">⚠ TERMINÓ CON UN PROBLEMA</b>';
     const meta = [runs.length + ' paso' + (runs.length === 1 ? '' : 's'), usd(job.usd), took].filter(Boolean).join(' · ');
     // a step goes by its NAME first, then its role — the map's word for it (conveyor-ui-15)
-    const why = ok ? '' : job.status === 'problem' && bad ? (() => { const p = bad.dockId && st ? st.propById(bad.dockId) : null, nm = p && (p.label || p.role); return 'The ' + (nm ? nm + ' paso' : 'paso') + ' (' + NAME(bad.agentId) + ') ' + (END[bad.reason] || String(bad.reason || 'did not finish').replace(/_/g, ' ')) + ', so this job did not finish cleanly. Sending it again often works.'; })()
+    const why = ok ? '' : job.status === 'problem' && bad ? (() => { const p = bad.dockId && st ? st.propById(bad.dockId) : null, nm = p && (p.label || p.role); return 'El ' + (nm ? nm + ' paso' : 'paso') + ' (' + NAME(bad.agentId) + ') ' + (END[bad.reason] || String(bad.reason || 'no terminó').replace(/_/g, ' ')) + ', así que este trabajo no terminó bien. Reenviarlo suele funcionar.'; })()
       // (a stopped record says WHO stopped it — "you stopped this job", E-STOP, or the station's own fault — never "You stopped" for all)
-      : job.status === 'stopped' ? sentence(job.error, 'You stopped this job.') + ' What already ran is counted.' : job.status === 'interrupted' ? 'The station stopped while this job was out. Send it again.'
-      : (wasRefused ? refusedWhy() : sentence(job.error, 'Nothing ran.')) + (job.repeats > 1 ? ' (' + job.repeats + ' hand-offs from ' + lineWord(job.from) + ' were refused like this — the last ' + ago(job.endedAt) + ')' : '');
+      : job.status === 'stopped' ? sentence(job.error, 'Detuviste este trabajo.') + ' Lo que ya corrió cuenta.' : job.status === 'interrupted' ? 'La estación se detuvo mientras este trabajo estaba fuera. Envíalo de nuevo.'
+      : (wasRefused ? refusedWhy() : sentence(job.error, 'Nada corrió.')) + (job.repeats > 1 ? ' (' + job.repeats + ' hand-offs from ' + lineWord(job.from) + ' were refused like this — the last ' + ago(job.endedAt) + ')' : '');
     const passes = {};
     const steps = runs.map((r, i) => {
       const p = r.dockId && st ? st.propById(r.dockId) : null, k = r.dockId || r.agentId, pass = passes[k] = (passes[k] || 0) + 1, got = S.stepOut[r.runId];
-      const txt = !got || got === 'loading' ? 'reading…' : got.err ? '⚠ ' + got.err : (got.output || 'this step replied with nothing');
-      return '<details class="wf-more wf-step-out"><summary><span>' + (i + 1) + ' · ' + esc(((p && (p.label || p.role)) ? (p.label || p.role) + ' · ' : '') + NAME(r.agentId) + (pass > 1 ? ' · pass ' + pass : '')) + '</span><span class="src' + (r.reason !== 'done' ? ' warn' : '') + '">' + (r.reason !== 'done' ? esc(END[r.reason] || r.reason) + ' · ' : '') + usd(r.usd) + '</span></summary>'
+      const txt = !got || got === 'loading' ? 'leyendo…' : got.err ? '⚠ ' + got.err : (got.output || 'este paso no respondió nada');
+      return '<details class="wf-more wf-step-out"><summary><span>' + (i + 1) + ' · ' + esc(((p && (p.label || p.role)) ? (p.label || p.role) + ' · ' : '') + NAME(r.agentId) + (pass > 1 ? ' · pasada ' + pass : '')) + '</span><span class="src' + (r.reason !== 'done' ? ' warn' : '') + '">' + (r.reason !== 'done' ? esc(END[r.reason] || r.reason) + ' · ' : '') + usd(r.usd) + '</span></summary>'
         + '<div class="wf-io"' + (got && got.output ? ' data-md data-md-src="' + esc(got.output) + '"' : '') + '>' + esc(txt) + '</div></details>';
     }).join('');
     const prev = S.prev[job.id];
     const kept = ok && styleKept(job);
-    const changes = (job.notes || []).map(n => '<li>' + esc(n.kind === 'fix' ? 'You changed the ' + (n.role || 'step') + ' step’s ' + (n.field === 'hands' ? 'hand-off' : 'instructions') + (n.why ? ' — ' + n.why : '')
-      : n.kind === 'example' ? 'You kept this result’s style for the ' + (n.role || 'último') + ' paso' : 'You put the ' + (n.role || 'step') + ' step back the way it was') + ' · ' + ago(n.at) + '</li>').join('');
+    const changes = (job.notes || []).map(n => '<li>' + esc(n.kind === 'fix' ? 'Cambió el ' + (n.field === 'hands' ? 'traspaso' : 'instrucciones') + ' del ' + (n.role || 'paso') + ' paso' + (n.why ? ' — ' + n.why : '')
+      : n.kind === 'example' ? 'Guardó el estilo de este resultado para el ' + (n.role || 'último') + ' paso' : 'Devolvió el ' + (n.role || 'paso') + ' paso a como estaba') + ' · ' + ago(n.at) + '</li>').join('');
     // SEND TO (2026-10-10): where this job came from / went on to — each line's result stays its own, the two records point at each other.
     // (10-11) A REFUSED hand-off is said as NOT sent on, with why — never "sent on" for work the station did not send. A handed-on
     // job's record keeps the job as it first arrived (`text`) and what the sending line handed in (`handedIn`) apart.
     const hin = !job.from ? null : (typeof job.handedIn === 'string' && job.handedIn) ? { original: job.text, output: job.handedIn }
       : (typeof Pipeline !== 'undefined' && Pipeline.parseHandoffInput) ? Pipeline.parseHandoffInput(job.text) : null;
-    const prov =(job.from ? '<p class="wfw-why wfw-from">' + (wasRefused ? esc(lineWord(job.from)) + ' tried to send its result on to this line — it was not sent on, so nothing ran here.' : 'From ' + esc(lineWord(job.from)) + ' — that line finished its part and sent its result on to this one.'
+    const prov =(job.from ? '<p class="wfw-why wfw-from">' + (wasRefused ? esc(lineWord(job.from)) + ' intentó enviar su resultado a esta línea — no se envió, así que nada corrió aquí.' : 'De ' + esc(lineWord(job.from)) + ' — esa línea terminó su parte y envió su resultado a esta.'
           // (GitHub #122) the work it handed in came out of a review loop that ran out of passes: nobody approved it
           + (job.from.unapproved ? ' ' + esc(sentence('on ' + lineWord(job.from) + ', ' + job.from.unapproved, '')) : ''))
-        + (job.from.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(job.from.jobId) + '">OPEN ITS JOB</button>' : '') + '</p>' : '')
-      + (job.sentTo ? (job.sentTo.refused ? '<p class="wfw-why wfw-sent warn">NOT sent on to ' + esc(lineWord(job.sentTo)) + ' — ' + esc(job.sentTo.refused) + '.'
-          : '<p class="wfw-why wfw-sent">Sent on to ' + esc(lineWord(job.sentTo)) + ' — that line works on this result next.')
-        + (job.sentTo.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(job.sentTo.jobId) + '">OPEN ITS JOB</button>' : '') + '</p>' : '');
+        + (job.from.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(job.from.jobId) + '">ABRIR SU TRABAJO</button>' : '') + '</p>' : '')
+      + (job.sentTo ? (job.sentTo.refused ? '<p class="wfw-why wfw-sent warn">NO enviado a ' + esc(lineWord(job.sentTo)) + ' — ' + esc(job.sentTo.refused) + '.'
+          : '<p class="wfw-why wfw-sent">Enviado a ' + esc(lineWord(job.sentTo)) + ' — esa línea trabajará este resultado a continuación.')
+        + (job.sentTo.jobId ? ' <button type="button" class="wf-link" data-job="' + esc(job.sentTo.jobId) + '">ABRIR SU TRABAJO</button>' : '') + '</p>' : '');
     /* (org P14, final round) a delivered job still waiting for its verdict is rated RIGHT HERE: the same rate control POR REVISAR mounts
        sits under the result, so rating it here clears it there too (Chat.awayRate + ReturnStore.resolve, exactly as windows/outbox.js
        does). This is the view a floor OUTBOX click opens, so it never links on to DELIVERABLES (Andrew 10-03: "the outbox should only
@@ -781,23 +781,23 @@ const WorkflowsWindow = (() => {
       // line, when the result itself carries no loop note (a step after the loop wrote it)
       + (ok && job.unapproved && !work.notes.length ? '<p class="wfw-why">⚠ ' + esc(sentence(job.unapproved, '')) + '</p>' : '')
       // a handed-on job: the job as it first arrived (what the Commander asked), and what the sending line handed in beside it
-      + (hin ? '<div class="wfw-you"><span class="wfw-k">The job</span><div class="wfw-quote">' + esc(hin.original || job.text) + '</div></div>'
-          + '<details class="wf-more wfw-handedin"><summary>What ' + esc(lineWord(job.from)) + ' handed in</summary><div class="wf-io" data-md data-md-src="' + esc(hin.output || '(nothing)') + '">' + esc(hin.output || '(nothing)') + '</div></details>'
-        : '<div class="wfw-you"><span class="wfw-k">You asked</span><div class="wfw-quote">' + esc(job.text) + '</div></div>')
-      + (ok || work.rest ? '<div class="wfw-k">' + (ok ? 'The result' : 'What came out') + '</div><div class="wf-io out wfw-out" data-md data-md-src="' + esc(work.rest || '(the line delivered an empty reply)') + '">' + esc(work.rest || '(the line delivered an empty reply)') + '</div>' : '')
+      + (hin ? '<div class="wfw-you"><span class="wfw-k">El trabajo</span><div class="wfw-quote">' + esc(hin.original || job.text) + '</div></div>'
+          + '<details class="wf-more wfw-handedin"><summary>Lo que ' + esc(lineWord(job.from)) + ' entregó</summary><div class="wf-io" data-md data-md-src="' + esc(hin.output || '(nothing)') + '">' + esc(hin.output || '(nothing)') + '</div></details>'
+        : '<div class="wfw-you"><span class="wfw-k">Pidió</span><div class="wfw-quote">' + esc(job.text) + '</div></div>')
+      + (ok || work.rest ? '<div class="wfw-k">' + (ok ? 'El resultado' : 'Lo que salió') + '</div><div class="wf-io out wfw-out" data-md data-md-src="' + esc(work.rest || '(la línea entregó una respuesta vacía)') + '">' + esc(work.rest || '(la línea entregó una respuesta vacía)') + '</div>' : '')
       + '<div class="wf-row wfw-acts">'
-      + (ok || work.rest ? '<button type="button" class="bb' + (S.fix && S.fix.jobId === job.id && S.fix.open ? ' active' : '') + '" data-act="needs" aria-expanded="' + !!(S.fix && S.fix.jobId === job.id && S.fix.open) + '">✎ NEEDS CHANGES</button>' : '')
-      + (ok ? (kept ? '<button type="button" class="bb" data-act="unkeep" data-tip="The last step stops copying this result’s format, length and tone, and the crew forgets its style.">★ STYLE KEPT · DEVOLVERLO</button>'
-        : '<button type="button" class="bb" data-act="keep" data-tip="The step that wrote this result will match its format, length and tone every time, and the whole crew matches its style in similar work.">★ MANTENER ESTE ESTILO</button>') : '')
+      + (ok || work.rest ? '<button type="button" class="bb' + (S.fix && S.fix.jobId === job.id && S.fix.open ? ' active' : '') + '" data-act="needs" aria-expanded="' + !!(S.fix && S.fix.jobId === job.id && S.fix.open) + '">✎ NECESITA CAMBIOS</button>' : '')
+      + (ok ? (kept ? '<button type="button" class="bb" data-act="unkeep" data-tip="El último paso deja de copiar el formato, la longitud y el tono de este resultado, y la tripulación olvida su estilo.">★ ESTILO MANTENIDO · DEVOLVERLO</button>'
+        : '<button type="button" class="bb" data-act="keep" data-tip="El paso que escribió este resultado igualará su formato, longitud y tono cada vez, y toda la tripulación igualará su estilo en trabajo similar.">★ MANTENER ESTE ESTILO</button>') : '')
       // a handed-on job is never re-sent from here: its input is what the sending line delivered, and only that line sends it on
       + (job.from ? '' : '<button type="button" class="bb refit-primary" data-act="again"' + (runningJob() ? ' disabled' : '') + '>↻ ENVIARLO OTRA VEZ</button>')
-      + '<button type="button" class="bb" data-act="newjob">+ NEW JOB</button>'
-      + (job.from ? '<span class="wfw-note">To run it again, send ' + esc(lineWord(job.from)) + '’s job again — it hands its result on to this line.</span>' : '') + '</div>'
+      + '<button type="button" class="bb" data-act="newjob">+ NUEVO TRABAJO</button>'
+      + (job.from ? '<span class="wfw-note">Para volver a ejecutarlo, envía ' + esc(lineWord(job.from)) + ' de nuevo — pasa su resultado a esta línea.</span>' : '') + '</div>'
       + (waits ? '<div class="wfw-rate" data-rate-for="' + esc(waitRow.runId) + '"></div>' : '')
       + (S.fix && S.fix.jobId === job.id && S.fix.open ? fixHTML(job, l) : '')
-      + (prev ? '<details class="wf-more wfw-last"><summary>' + ((prev.notes || []).some(n => n.kind === 'fix' || n.kind === 'example') ? 'Last time, before your change' : 'Last time') + '</summary><div class="wf-io" data-md data-md-src="' + esc(workOf(prev.output).rest || '(empty)') + '">' + esc(workOf(prev.output).rest || '(empty)') + '</div></details>' : '')
-      + (runs.length ? '<details class="wf-more wfw-steps"><summary>How each step did it</summary><div class="wf-steps">' + steps + '</div></details>' : '')
-      + (changes ? '<details class="wf-more"><summary>What you changed after this job</summary><ul class="wfw-changes">' + changes + '</ul></details>' : '')
+      + (prev ? '<details class="wf-more wfw-last"><summary>' + ((prev.notes || []).some(n => n.kind === 'fix' || n.kind === 'example') ? 'La vez pasada, antes de tu cambio' : 'La vez pasada') + '</summary><div class="wf-io" data-md data-md-src="' + esc(workOf(prev.output).rest || '(empty)') + '">' + esc(workOf(prev.output).rest || '(empty)') + '</div></details>' : '')
+      + (runs.length ? '<details class="wf-more wfw-steps"><summary>Cómo lo hizo cada paso</summary><div class="wf-steps">' + steps + '</div></details>' : '')
+      + (changes ? '<details class="wf-more"><summary>Lo que cambiaste después de este trabajo</summary><ul class="wfw-changes">' + changes + '</ul></details>' : '')
       + '</section>';
     return h;
   }
