@@ -132,8 +132,22 @@
 - 9b9ddb51: group-chat + consent + group-chat-picker + splitter-joiner + checkpoint
 
 ## Pendiente
-- [ ] Verificación visual de pantallas en ejecución (requiere entorno con servidor)
+- [x] Suite global de tests (30+ batches, todos PASS) ✅
+- [ ] Verificación visual de pantallas en ejecución — **BLOQUEADO**: no hay browser (Chrome/Chromium) en el host
 - [ ] Entrega final y cierre de MIS-23-9
+
+## Bloqueo actual (2026-10-27)
+
+**Causa:** La verificación visual requiere un browser con CDP (Chrome o Chromium) que no está instalado en este host. `which google-chrome chromium chromium-browser` → vacío. No hay playwright/puppeteer/selenium ni paquetes dpkg de browser.
+
+**Impacto:** No se pueden ejecutar `scripts/golden.mjs` ni `scripts/uiplay.mjs` para capturar y verificar visualmente las pantallas en funcionamiento.
+
+**Solución requerida del operador:**
+1. Instalar Chrome/Chromium en el host (o en un contenedor accesible)
+2. O autorizar una verificación alternativa (p. ej. screenshots en otro entorno)
+3. O declarar la verificación visual como cubierta por la suite de tests de aserción (30+ batches PASS)
+
+**No se marca MIS-23 done hasta que la verificación visual esté cubierta.**
 
 ## Reglas de oro
 - website-deploy/ está en .gitignore → usar git add -f
