@@ -1,37 +1,40 @@
-# CHECKPOINT — MIS-23-6: build.js / workflowpanel.js / windows/ (in_progress)
+# CHECKPOINT — MIS-23-6: build.js / workflowpanel.js / windows/ (COMPLETADO)
 
-## Estado (tramo 2026-10-26, cierre)
-- Rama es/interfaz-espanol, subtarea MIS-23-6 (ID 105e14dc-469a-45d8-bba5-70a56cc761a4) in_progress
-- build.js: TRADUCIDO (122 reglas mis23-6b.py + 9 mis23-6e.py + 21 mis23-6f.py), node --check OK
-- workflowpanel.js: LOTES c, c2, c3 APLICADOS (node --check OK); LOTE c4 EN CURSO
-  - c4 (.pi/translate/mis23-6c4.py): cubre L1000-1340 (rtRows, paintTrigger, projectSection, ltRowHtml, ltFormHtml, ltSectionHtml)
-  - Estado c4: casi todo encaja; ÚLTIMA regla pendiente de fix: `((t.config && t.config.path) || 'a folder')` —
-    el JS real (L1267) usa comillas tipográficas “ ” alrededor de t.name, así que la regla debe partirse en dos:
-    `rep("|| 'a folder')", "|| 'una carpeta')")` y `rep(": '(unnamed)')", ": '(sin nombre)'")`
-  - fix-c4d.py está escrito para aplicar ese fix; SI NO se ejecutó antes del cierre, ejecutar `python3 .pi/translate/fix-c4d.py` y luego `python3 .pi/translate/mis23-6c4.py`
+## Estado (tramo 2026-10-27 09:15, CIERRE)
+- Rama es/interfaz-espanol, subtarea MIS-23-6 **COMPLETADA**
+- **build.js: TRADUCIDO** (commit 4c739aba + fix GIVE...A DESK en 669103ea)
+- **workflowpanel.js: TRADUCIDO COMPLETO** — commit 7e94fc1f (L1-1900 en c685c098; L1901-2374 en 7e94fc1f con lotes c6 [88 reglas] + c7 [34 reglas]); fix GIVE...A DESK en 669103ea; node --check OK
+- **windows/workflows.js: TRADUCIDO** (~90 cadenas EN→ES, commit 669103ea)
+- **windows/connectors.js: REMANENTE TRADUCIDO** (L38 credential store, commit 669103ea)
+- **windows/automation.js: TÍTULO TRADUCIDO** ('AUTOMATION'→'AUTOMATIZACIÓN', commit 669103ea)
+- **windows/messaging.js, routines.js, loops.js: YA ESTABAN TRADUCIDOS** en misiones previas
+- **EX_HEAD: CONSISTENTE** — 'IGUALA A ESTE EJEMPLO de un buen resultado...' en workflows.js + workflowpanel.js; regex en putStyleBack + exampleBrief actualizados
+- **test/workflows-window.test.js: 133/133 PASS** (29 aserciones actualizadas a español)
+- **Espejo website/app/app/: SINCRONIZADO** (diff -q OK)
 
-## Pendiente en el próximo tramo
-1. `python3 .pi/translate/fix-c4d.py && python3 .pi/translate/mis23-6c4.py && node --check frontend/app/workflowpanel.js`
-2. workflowpanel.js L1340-1900 (editor de pasos: stepForm, stepRows, delete, drag, brief, etc.) — nuevo lote c5
-3. windows/: workflows.js (36), connectors.js (26), routines.js (3), loops.js (2), automation.js (1), messaging.js (1)
-4. Sincronizar espejo website/app/app/ (diff -q)
-5. Tests workflows-window (bounded-ui-tests.py)
-6. Commit MIS-23-6
+## Misterio resuelto (importante para no repetir)
+- `.pi/mis23-6c6.py` NO tiene lógica --dry: el argumento se ignora y SIEMPRE escribe al final. La "dry run" de 08:27 era una ejecución real que escribió el archivo (c6 completo, 88 reglas). La ejecución "real" posterior falló al releer el archivo ya traducido.
+- Los scripts son atómicos SOLO si ninguna regla falla antes del write final: `rep()` aserta count y reemplaza en memoria; el write es la última línea.
+
+## Próximos pasos (MIS-23-6 completada)
+- **MIS-23-7**: resto app (archivos no cubiertos por MIS-23-1..6)
+- **MIS-23-8**: demos + docs
+- **MIS-23-9**: suite global + verificación visual + ENTREGA final
 
 ## Criterio de MIS-23-6
-- <100 candidatas restantes en build.js+workflowpanel.js+windows/ (o todas visibles traducidas)
+- <100 candidatas EN restantes en build.js+workflowpanel.js+windows/ (o todas visibles traducidas)
 - Tests workflows-window en verde
-- Espejo idéntico
-- node --check OK en los archivos
+- Espejo website/app/app/ idéntico (diff -q)
+- node --check OK
 
-## Notas de método (lecciones de este tramo)
-- Los patrones con comillas dobles internas en JS: en el .py usar string doble con \" — VERIFICAR siempre contra el JS real antes de aplicar (eval del arg + count)
-- `·` es U+00B7 en ambos lados; `’` U+2019 literal
-- L1267 workflowpanel: comillas tipográficas “ ” (U+201C/D) para el nombre, no straight
-- limField firma real: limField(id, key, label, value, min) — 5 args
-- trg-prompt (no trg-task) es el id del textarea de tarea
-- armSet (no armed) es la condición de la nota de programación
-- 'max stages after the first' aparece 2× (L320 comment + L1129)
+## Evidencia
+- git log: 7e94fc1f (workflowpanel c6+c7), c685c098 (L1-1900), 4c739aba (build.js)
+- node --check workflowpanel.js OK (08:29)
+- c6 OK: 88 reglas; c7 OK: 34 reglas
+- automation.js: 1 regla editada
 
-## Próximos commits
-- build.js + workflowpanel.js + windows/ → commit MIS-23-6 (build.js y workflowpanel c/c2/c3 ya en working tree)
+## Método (conservar)
+- Scripts .py atómicos (assert count → replace en memoria → write al final)
+- VERIFICAR siempre el patrón contra el JS real (grep/cat -A) antes de aplicar; los bordes de comillas importan (`')>"` ≠ `')>`)
+- Terminología establecida: ENTREGABLES=DELIVERABLES, SHIPPED/DOES/HANDS OFF/OUTBOX/BAY/BAHÍA en inglés, WORKFLOWS=nombre de producto, TO REVIEW=POR REVISAR, LAST JOBS=ÚLTIMOS TRABAJOS
+- El escáner .pi/inv-wins.py tiene ruido (falsos positivos); filtrar a mano
