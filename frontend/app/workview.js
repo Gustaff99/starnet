@@ -15,22 +15,22 @@
       const channel = input.channels && input.channels[s.id];
       const files = artifacts.filter(a => a.streamId === s.id || (a.runId && rows(s.runIds).includes(a.runId)));
       files.forEach(a => linked.add(a.id));
-      let bucket = 'planned', status = 'Not started';
+      let bucket = 'planned', status = 'Sin empezar';
       if (channel && channel.busy) {
         bucket = channel.pending ? 'needs-you' : 'doing';
-        status = channel.pending ? 'Waiting for your decision' : channel.runId ? 'Working' : 'Connecting';
+        status = channel.pending ? 'Esperando tu decisión' : channel.runId ? 'Trabajando' : 'Conectando';
       } else if (s.lastRunOk === false) {
-        bucket = 'needs-you'; status = 'Run stopped or failed — review the conversation';
+        bucket = 'needs-you'; status = 'Ejecución detenida o fallida — revisa la conversación';
       } else if (files.some(a => a.status === 'failed' || a.status === 'pending')) {
-        bucket = 'needs-you'; status = files.some(a => a.status === 'failed') ? 'Output failed — review details' : 'Output waiting for your review';
+        bucket = 'needs-you'; status = files.some(a => a.status === 'failed') ? 'Salida fallida — revisa detalles' : 'Salida esperando tu revisión';
       } else if (s.lane === 'shipped') {
-        bucket = 'finished'; status = 'Marked shipped by you';
+        bucket = 'finished'; status = 'Marcado como enviado por ti';
       } else if (s.lastRunOk === true) {
-        bucket = 'finished'; status = 'Run completed — review result';
+        bucket = 'finished'; status = 'Ejecución completada — revisa el resultado';
       } else if (rows(s.runIds).length) {
-        bucket = 'needs-you'; status = 'Run outcome is unconfirmed';
+        bucket = 'needs-you'; status = 'Resultado de la ejecución no confirmado';
       }
-      return { id: 'stream:' + s.id, streamId: s.id, title: text(s.title) || 'Untitled work', agentId: s.agentId,
+      return { id: 'stream:' + s.id, streamId: s.id, title: text(s.title) || 'Trabajo sin título', agentId: s.agentId,
         bucket, status, at: Number(s.lastActiveAt) || 0, projectRoot: text(s.projectRoot), artifacts: files, stream: s };
     });
     for (const a of artifacts) {
@@ -51,7 +51,7 @@
     const state = typeof scheduler === 'object' && scheduler ? scheduler : {enabled:scheduler};
     const healthy = state.enabled === true && !state.halted && !state.degraded && (!state.health || state.health.healthy === true);
     return { id: text(job.id), title: text(job.name) || 'Recurring work',
-      status: job.inFlight === true ? 'Working' : state.halted ? 'Stopped by E-STOP' : state.degraded ? 'Scheduler storage needs recovery' : job.enabled === false ? 'Paused' : healthy ? 'Scheduled' : state.enabled ? 'Scheduler health unconfirmed' : 'Scheduler paused',
+      status: job.inFlight === true ? 'Trabajando' : state.halted ? 'Stopped by E-STOP' : state.degraded ? 'Scheduler storage needs recovery' : job.enabled === false ? 'Paused' : healthy ? 'Scheduled' : state.enabled ? 'Scheduler health unconfirmed' : 'Scheduler paused',
       next: job.enabled !== false && healthy ? text(job.nextRunAt) : '',
       last: job.lastRunAt ? (job.lastStatus === 'ok' ? 'Last run completed' : 'Last run: ' + (text(job.lastReason) || 'failed')) : 'Has not run yet',
       agentId: job.agentId, recipeId: job.meta && job.meta.recipeId || null };

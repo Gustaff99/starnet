@@ -11,17 +11,17 @@
     const summary = document.createElement('summary'); summary.textContent = 'WORLD II · DEVELOPMENT';
     summary.style.cursor = 'pointer'; host.appendChild(summary);
     const bar = document.createElement('div'); bar.style.cssText = 'display:flex;gap:8px;margin:10px 0';
-    const capture = document.createElement('button'); capture.type = 'button'; capture.textContent = 'CAPTURE LIVE STATE'; capture.id = 'world-lab-capture';
+    const capture = document.createElement('button'); capture.type = 'button'; capture.textContent = 'CAPTURAR ESTADO EN VIVO'; capture.id = 'world-lab-capture';
     capture.style.cssText = 'background:#19313b;color:#d1ecef;border:1px solid #426977;padding:7px;font:inherit;cursor:pointer';
     const compare = document.createElement('a');
     const u = new URL(location.href), isClassic = u.searchParams.get('world') === 'classic';
     if (isClassic) u.searchParams.delete('world'); else u.searchParams.set('world', 'classic');
-    compare.href = u.href; compare.textContent = isClassic ? 'VIEW WORLD II' : 'COMPARE CLASSIC';
+    compare.href = u.href; compare.textContent = isClassic ? 'VER WORLD II' : 'COMPARAR CLÁSICO';
     compare.style.cssText = 'color:#ffc882;padding:7px';
     bar.append(capture, compare); host.appendChild(bar);
     const output = document.createElement('pre'); output.id = 'world-lab-output';
     output.style.cssText = 'white-space:pre-wrap;max-height:50vh;overflow:auto;margin:0;font:12px VT323,monospace;color:#ccdde0';
-    output.textContent = 'Capture records the current frame, station, crew and real event history.';
+    output.textContent = 'La captura registra el cuadro actual, la estación, la tripulación y el historial real de eventos.';
     host.appendChild(output); document.body.appendChild(host);
     capture.addEventListener('click', () => {
       const cv = document.querySelector('#stage'), world = typeof World !== 'undefined' ? World : null;

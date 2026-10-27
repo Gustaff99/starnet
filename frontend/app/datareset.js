@@ -1,6 +1,6 @@
 /* STARNET — datareset.js : the two "make it clean again" doors in SETTINGS.
 
-   ERASE EVERYTHING (#65, Settings > APP & BACKUP). A Mac user deleted the app, reinstalled, and found every agent and
+   BORRAR TODO (#65, Settings > APP & BACKUP). A Mac user deleted the app, reinstalled, and found every agent and
    chat still there: uninstalling removes the program, not the per-user app-data folder, the window's own storage or
    the keychain. START FRESH (freshstart.js) keeps the old station in a quarantine on purpose. This door DELETES, through
    the desktop shell's `starnet_erase_everything` (src-tauri/src/erase_all.rs), behind a typed ERASE plus a second
@@ -83,7 +83,7 @@
     opts = opts || {};
     const w = opts.win || root;
     const core = opts.core || tauriCore(w);
-    if (!core) throw new Error('ERASE EVERYTHING runs in the StarNet desktop app');
+    if (!core) throw new Error('BORRAR TODO runs in the StarNet desktop app');
     // Best effort, BEFORE the freeze: end any orphaned station browser so its files are not held open (#61).
     try {
       if (typeof w.fetch === 'function') {
@@ -133,7 +133,7 @@
   function browserResetSummary(status, r) {
     r = r || {};
     if (r.driving) return 'An agent is driving the station browser right now. Stop that run, then reset.';
-    if (status !== 200 && !r.sweep) return 'The browser was not reset: ' + (r.error || ('the station answered ' + status)) + '.';
+    if (status !== 200 && !r.sweep) return 'El navegador no se restableció: ' + (r.error || ('the station answered ' + status)) + '.';
     const s = r.sweep;
     const bits = [r.closed ? 'Closed the station browser.' : 'The station browser was not open.'];
     if (!s) bits.push('No orphan check ran.');
@@ -170,12 +170,12 @@
     wrap.appendChild(msg);
     btn.addEventListener('click', async () => {
       sfx('click');
-      btn.disabled = true; msg.textContent = 'Resetting the station browser…';
+      btn.disabled = true; msg.textContent = 'Restableciendo el navegador de la estación…';
       try {
         const r = await resetStationBrowser();
         msg.textContent = browserResetSummary(r.status, r.body);
       } catch (e) {
-        msg.textContent = 'The browser was not reset: ' + String((e && e.message) || e) + '.';
+        msg.textContent = 'El navegador no se restableció: ' + String((e && e.message) || e) + '.';
       } finally { btn.disabled = false; }
     });
     host.appendChild(wrap);
@@ -185,24 +185,24 @@
     if (!host || typeof document === 'undefined') return;
     const core = tauriCore();
     const wrap = el('div', 'set-erase');
-    wrap.appendChild(el('h4', 'ms-h', 'ERASE EVERYTHING'));
+    wrap.appendChild(el('h4', 'ms-h', 'BORRAR TODO'));
     const about = el('p', 'set-about');
-    about.innerHTML = 'Deletes everything StarNet keeps on this computer and starts over at first run: your station, agents, chats, memory, routines and settings, saved browser sign-ins, files agents saved inside StarNet, logs, the voice-model download, StarNet\'s saved keys and tokens in the system keychain, and this window\'s stored data. <b>This cannot be undone.</b> Export a backup first if you might want it.';
+    about.innerHTML = 'Borra todo lo que StarNet guarda en esta computadora y empieza de cero como en la primera ejecución: tu estación, agentes, chats, memoria, rutinas y ajustes, sesiones guardadas del navegador, archivos que los agentes guardaron dentro de StarNet, logs, la descarga del modelo de voz, las claves y tokens guardados de StarNet en el keychain del sistema, y los datos almacenados de esta ventana. <b>Esto no se puede deshacer.</b> Exporta una copia de seguridad antes si podrías quererla.';
     wrap.appendChild(about);
-    wrap.appendChild(el('p', 'set-about dim', 'Not touched: project folders you let agents work in, files exported to "StarNet deliverables", your Downloads folder, your StarNet account and its credits (this computer is unlinked from it), and the StarNet app itself (uninstall it separately).'));
+    wrap.appendChild(el('p', 'set-about dim', 'No se toca: carpetas de proyecto donde dejaste trabajar a los agentes, archivos exportados a "Entregables de StarNet", tu carpeta de Descargas, tu cuenta de StarNet y sus créditos (esta computadora no está vinculada a ella), y la propia app de StarNet (desinstálala por separado).'));
     if (!core) {
-      wrap.appendChild(el('p', 'set-about dim', 'ERASE EVERYTHING runs in the StarNet desktop app. Running StarNet from source? Stop it, then delete the workspaces folder it was started with (the repo\'s workspaces/ folder, or the path in SKYNET_WORKSPACES).'));
+      wrap.appendChild(el('p', 'set-about dim', 'BORRAR TODO se ejecuta en la app de escritorio de StarNet. ¿Ejecutando StarNet desde código fuente? Deténlo y luego borra la carpeta de workspaces con la que se inició (la carpeta workspaces/ del repo, o la ruta en SKYNET_WORKSPACES).'));
       host.appendChild(wrap);
       return;
     }
     const row = el('div', 'set-save');
     const input = el('input', 'key-input'); input.type = 'text'; input.id = 'set-erase-word'; input.autocomplete = 'off'; input.spellcheck = false;
-    input.placeholder = 'type ERASE to confirm'; input.setAttribute('aria-label', 'Type ERASE to confirm');
-    const btn = el('button', 'bb sm danger', 'ERASE EVERYTHING'); btn.type = 'button'; btn.id = 'set-erase-btn'; btn.disabled = true;
+    input.placeholder = 'escribe BORRAR para confirmar'; input.setAttribute('aria-label', 'Escribe BORRAR para confirmar');
+    const btn = el('button', 'bb sm danger', 'BORRAR TODO'); btn.type = 'button'; btn.id = 'set-erase-btn'; btn.disabled = true;
     row.appendChild(input); row.appendChild(btn); wrap.appendChild(row);
     const msg = el('p', 'set-about', ''); msg.id = 'set-erase-msg'; msg.setAttribute('role', 'status');
     wrap.appendChild(msg);
-    const reloadBtn = el('button', 'bb sm', 'OPEN THE FRESH STATION'); reloadBtn.type = 'button'; reloadBtn.hidden = true;
+    const reloadBtn = el('button', 'bb sm', 'ABRIR LA ESTACIÓN NUEVA'); reloadBtn.type = 'button'; reloadBtn.hidden = true;
     reloadBtn.addEventListener('click', () => { try { location.reload(); } catch (_) {} });
     wrap.appendChild(reloadBtn);
     let busy = false;
@@ -211,7 +211,7 @@
     const run = async () => {
       if (busy || input.value.trim() !== CONFIRM_WORD) return;
       busy = true; sync(); input.disabled = true;
-      msg.textContent = 'Stopping StarNet and erasing… keep this window open.';
+      msg.textContent = 'Deteniendo StarNet y borrando… mantén esta ventana abierta.';
       try {
         const view = await eraseDesktop({ core });
         const sum = eraseSummary(view);
@@ -232,7 +232,7 @@
     } else {
       let armed = false;
       btn.addEventListener('click', () => {
-        if (!armed) { armed = true; btn.textContent = 'ERASE NOW - CANNOT BE UNDONE'; setTimeout(() => { armed = false; btn.textContent = 'ERASE EVERYTHING'; }, 6000); return; }
+        if (!armed) { armed = true; btn.textContent = 'ERASE NOW - CANNOT BE UNDONE'; setTimeout(() => { armed = false; btn.textContent = 'BORRAR TODO'; }, 6000); return; }
         armed = false; run();
       });
     }

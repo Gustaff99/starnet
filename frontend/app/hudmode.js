@@ -496,9 +496,9 @@
     const body = el('div', 'ph-card-body');
     const result = el('pre', 'ph-result'), tools = el('p', 'ph-tools'), outputs = el('p', 'ph-tools'), directions = el('pre', 'ph-directions');
     const controls = el('div', 'ph-controls');
-    const input = el('textarea'); input.rows = 2; input.placeholder = 'Give this agent a direction…'; input.setAttribute('aria-label', 'Direction for this work');
-    const send = el('button', 'btn', 'SEND DIRECTION'), stop = el('button', 'btn', 'STOP WORK');
-    const nav = el('div', 'ph-controls hud-card-nav'), open = el('button', 'btn', 'OPEN CONVERSATION');
+    const input = el('textarea'); input.rows = 2; input.placeholder = 'Dale a este agente una dirección…'; input.setAttribute('aria-label', 'Dirección para este trabajo');
+    const send = el('button', 'btn', 'ENVIAR DIRECCIÓN'), stop = el('button', 'btn', 'DETENER TRABAJO');
+    const nav = el('div', 'ph-controls hud-card-nav'), open = el('button', 'btn', 'ABRIR CONVERSACIÓN');
     const receipt = el('p', 'ph-receipt'); receipt.setAttribute('role', 'status');
     send.type = stop.type = open.type = 'button';
     summary.append(agent, status, task); controls.append(input, send, stop); nav.append(open);
@@ -684,7 +684,7 @@
     const g = gameScreen(); if (!g) return null;
     // the view: a click-catcher over the station view (a click on the world would otherwise open a dossier)
     const open = el('button', 'hud-wview'); open.type = 'button';
-    open.setAttribute('aria-label', 'Open activity'); open.title = 'Click to open activity · drag to move';
+    open.setAttribute('aria-label', 'Abrir actividad'); open.title = 'Clic para abrir actividad · arrastra para mover';
     const box = el('section', 'hud-widget');
     box.id = 'hud-widget';
     box.setAttribute('aria-label', 'StarNet HUD: your agents at work');
@@ -811,11 +811,11 @@
     // the HUD's hands live in the COMMS header, where the project feed keeps its CREW / ACTIVITY switch
     const ctl = el('span', 'ph-actions hud-ctl');
     const view = el('button', 'btn'); view.type = 'button'; view.id = 'hud-view';
-    const small = el('button', 'btn', 'AGENT CAM'); small.type = 'button'; small.id = 'hud-small';
-    small.title = 'Shrink the HUD to the agent cam';
-    const pin = el('button', 'btn', 'PIN'); pin.type = 'button'; pin.id = 'hud-pin'; pin.hidden = true;
-    const exitBtn = el('button', 'btn', 'STATION'); exitBtn.type = 'button'; exitBtn.id = 'hud-exit';
-    exitBtn.title = 'Back to the full station';
+    const small = el('button', 'btn', 'CAM DE AGENTE'); small.type = 'button'; small.id = 'hud-small';
+    small.title = 'Reducir el HUD a la cam del agente';
+    const pin = el('button', 'btn', 'FIJAR'); pin.type = 'button'; pin.id = 'hud-pin'; pin.hidden = true;
+    const exitBtn = el('button', 'btn', 'ESTACIÓN'); exitBtn.type = 'button'; exitBtn.id = 'hud-exit';
+    exitBtn.title = 'Volver a la estación completa';
     ctl.append(view, small, pin, exitBtn);
     const right = h3.querySelector('.h3-right') || h3;
     right.appendChild(ctl);

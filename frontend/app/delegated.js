@@ -249,11 +249,11 @@ const Delegated = (() => {
         ? '<button type="button" class="dg-key primary" data-dg-question="' + esc(st.pend.promptId) + '">Answer</button>'
         : st.cls === 'waiting'
         ? '<span class="dg-keys"><button type="button" class="dg-key primary" data-dg-consent="once" data-dg-ws="' + esc(id) + '" data-dg-prompt="' + esc(st.pend.promptId) + '"' + (answering.has(String(st.pend.promptId)) ? ' disabled' : '') + '>Approve once</button>'
-          + '<button type="button" class="dg-key deny" data-dg-consent="deny" data-dg-ws="' + esc(id) + '" data-dg-prompt="' + esc(st.pend.promptId) + '"' + (answering.has(String(st.pend.promptId)) ? ' disabled' : '') + '>Deny</button></span>'
+          + '<button type="button" class="dg-key deny" data-dg-consent="deny" data-dg-ws="' + esc(id) + '" data-dg-prompt="' + esc(st.pend.promptId) + '"' + (answering.has(String(st.pend.promptId)) ? ' disabled' : '') + '>Rechazar</button></span>'
         : st.stop
-          ? '<button type="button" class="dg-key deny" data-dg-stop="' + esc(st.worker.id) + '" data-tip="Stop ' + esc(who) + '"' + (stopping.has(st.worker.id) ? ' disabled' : '') + '>' + (stopping.has(st.worker.id) ? 'Stopping…' : 'Stop') + '</button>'
-          : '<button type="button" class="dg-key" data-dg-see="' + esc(id) + '" aria-expanded="' + shown + '">' + (shown ? 'Hide work' : 'See work') + '</button>';
-      return '<div class="dg-li ' + st.cls + '" data-dg-row="' + esc(id) + '" role="group" aria-label="' + esc(who + ': ' + task + ' — ' + (st.unread === 'checking' ? 'checking' : WORD[st.cls])) + '">'
+          ? '<button type="button" class="dg-key deny" data-dg-stop="' + esc(st.worker.id) + '" data-tip="Detener ' + esc(who) + '"' + (stopping.has(st.worker.id) ? ' disabled' : '') + '>' + (stopping.has(st.worker.id) ? 'Deteniendo…' : 'Detener') + '</button>'
+          : '<button type="button" class="dg-key" data-dg-see="' + esc(id) + '" aria-expanded="' + shown + '">' + (shown ? 'Ocultar trabajo' : 'Ver trabajo') + '</button>';
+      return '<div class="dg-li ' + st.cls + '" data-dg-row="' + esc(id) + '" role="group" aria-label="' + esc(who + ': ' + task + ' — ' + (st.unread === 'checking' ? 'comprobando' : WORD[st.cls])) + '">'
         + '<span class="dg-lamp ' + st.cls + '" aria-hidden="true"></span><span class="dg-li-who">' + esc(who) + '</span>'
         + '<span class="dg-li-task" data-tip="' + esc(task) + '">' + esc(task) + '</span><span class="dg-li-st"' + (st.tip ? ' data-tip="' + esc(st.tip) + '"' : '') + '>' + esc(status) + '<span data-dg-clock="' + esc(id) + '"></span></span>' + key
         + '</div>' + (st.pend && st.pend.tool !== 'brief.ask' ? '<div class="dg-inspect" data-dg-inspect="' + esc(id) + '" data-dg-prompt="' + esc(st.pend.promptId) + '"></div>' : '')

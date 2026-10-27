@@ -6,12 +6,12 @@
  let reviewManifest=null;
  if(projection){const response=await fetch('assets/industrial/projection-correction/manifest.json');if(!response.ok)throw Error('Projection manifest HTTP '+response.status);reviewManifest=await response.json();}
  const revised=new Set((reviewManifest?.revisedViews||[]).map(v=>v.id));
- if(projection){for(const a of document.querySelectorAll('nav a')){const url=new URL(a.href);url.searchParams.set('propSet','projection');a.href=url.href;}document.querySelector('#scope').textContent='Full catalog with projection corrections. Fixed 2× world scale; the crate and crew show physical size.';}
+ if(projection){for(const a of document.querySelectorAll('nav a')){const url=new URL(a.href);url.searchParams.set('propSet','projection');a.href=url.href;}document.querySelector('#scope').textContent='Catálogo completo con correcciones de proyección. Escala de mundo 2× fija; la caja y la tripulación muestran tamaño físico.';}
  const cards=[],main=document.querySelector('#catalog'),search=document.querySelector('#search'),family=document.querySelector('#family');let work=false,facing=0,placement=false;
  const cadet=(g,x,y,sitting,now)=>SPRITES.drawBody(g,{id:'review-cadet',skin:'station_minion',px:x,py:y,state:'idle',dir:sitting?'north':'south',sitting},now,{reducedMotion:true,skipGroundShadow:sitting});
  const probe=document.createElement('canvas');probe.width=64;probe.height=64;const cadetHeight=32-cadet(probe.getContext('2d'),32,32,false,0).top;
  search.value=query.get('search')||'';
- if(newOnly){main.style.gridTemplateColumns='minmax(0,1000px)';document.querySelector('#scope').textContent='Showing newly rebuilt props. Each is followed by the approved desk, crate, and agent at the same scale.';}
+ if(newOnly){main.style.gridTemplateColumns='minmax(0,1000px)';document.querySelector('#scope').textContent='Mostrando props reconstruidos. Cada uno va seguido por el escritorio, la caja y el agente aprobados a la misma escala.';}
  for(const cat of [...new Set(PropSprites.CATALOG.map(p=>p.cat))].sort()){const option=document.createElement('option');option.value=cat;option.textContent=cat;family.append(option);}
  for(const p of PropSprites.CATALOG){
   const article=document.createElement('article'),cv=document.createElement('canvas');cv.width=440;cv.height=newOnly?180:285;cv.setAttribute('aria-label',p.label+' at 2 display pixels per world pixel');
@@ -59,4 +59,4 @@
   requestAnimationFrame(frame);
  }
  document.body.dataset.ready='true';filter();requestAnimationFrame(frame);
-})().catch(e=>{document.querySelector('#count').textContent='Artwork could not load: '+e.message;console.error(e);});
+})().catch(e=>{document.querySelector('#count').textContent='No se pudo cargar el arte: '+e.message;console.error(e);});

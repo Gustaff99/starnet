@@ -309,11 +309,11 @@
 
     const note = document.createElement('div');
     note.style.cssText = 'margin-top:6px;font-size:10px;opacity:.55;line-height:1.25;';
-    note.textContent = 'live: scanlines/fade/glow · lighting re-bakes on release';
+    note.textContent = 'en vivo: scanlines/fade/glow · la iluminación se re-hornea en la publicación';
     body.appendChild(note);
 
     let flashT = 0;
-    function flash(msg) { note.textContent = msg; clearTimeout(flashT); flashT = setTimeout(() => note.textContent = 'live: scanlines/fade/glow · lighting re-bakes on release', 1200); }
+    function flash(msg) { note.textContent = msg; clearTimeout(flashT); flashT = setTimeout(() => note.textContent = 'en vivo: scanlines/fade/glow · la iluminación se re-hornea en la publicación', 1200); }
 
     document.body.appendChild(box);
     syncAll();

@@ -27,8 +27,8 @@
     const addAgents=document.querySelector('#gc-add-agents');if(!addAgents)return false;
     // Just the + (Andrew, 2026-09-30): the header's two doors are a pair of icons — + adds agents, the globe is the
     // BROWSER. The words live in the tooltip and the accessible name.
-    addAgents.setAttribute('aria-label','Add agents');
-    addAgents.title='Add agents to this chat';
+    addAgents.setAttribute('aria-label','Añadir agentes');
+    addAgents.title='Añadir agentes a este chat';
     addAgents.replaceChildren(icon('add'));return true;
   }
   // Group chat can attach its control after the demo has loaded.

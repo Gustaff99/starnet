@@ -1,80 +1,32 @@
 [
 {
-"file": "frontend/app/windows/workflows.js",
-"line": 561,
-"sink": "data-tip",
-"text": "+ esc(goal.quote) +"
-},
-{
-"file": "frontend/app/windows/workflows.js",
-"line": 562,
+"file": "website/docs/index.html",
+"line": 107,
 "sink": "aria-*",
-"text": "data-tip="
+"text": "guides/first-line.html"
 },
 {
-"file": "frontend/app/windows/workflows.js",
-"line": 611,
+"file": "website/docs/index.html",
+"line": 109,
 "sink": "aria-*",
-"text": "data-tip="
+"text": "connect-a-platform.html"
 },
 {
-"file": "frontend/app/windows/workflows.js",
-"line": 789,
+"file": "website/docs/guides/index.html",
+"line": 91,
 "sink": "aria-*",
-"text": "+ !!(S.fix && S.fix.jobId === job.id && S.fix.open) +"
+"text": "first-line.html"
 },
 {
-"file": "frontend/app/windows/loops.js",
-"line": 483,
+"file": "website/docs/guides/channels.html",
+"line": 118,
 "sink": "aria-*",
-"text": "data-tip="
+"text": "../connect-a-platform.html"
 },
 {
-"file": "frontend/app/windows/loops.js",
-"line": 588,
-"sink": "innerHTML",
-"text": "<label class="
-},
-{
-"file": "frontend/app/windows/connectors.js",
-"line": 264,
-"sink": "placeholder=",
-"text": "p. ej. node scripts/run-summary.js"
-},
-{
-"file": "frontend/app/windows/connectors.js",
-"line": 1171,
-"sink": "textContent",
-"text": "+ ((j.status && j.status.detail) || j.error ||"
-},
-{
-"file": "frontend/app/windows/connectors.js",
-"line": 1244,
-"sink": "textContent",
-"text": "+ ((j.status && j.status.detail) || ("
-},
-{
-"file": "frontend/app/windows/connectors.js",
-"line": 1503,
-"sink": "textContent",
-"text": "+ ((j.status && j.status.detail) || ("
-},
-{
-"file": "frontend/app/windows/automation.js",
-"line": 54,
-"sink": "innerHTML",
-"text": "><label for="
-},
-{
-"file": "frontend/app/windows/routines.js",
-"line": 180,
-"sink": "innerHTML",
-"text": ">✕</button></div><div class="
-},
-{
-"file": "frontend/app/windows/routines.js",
-"line": 889,
-"sink": "innerHTML",
-"text": "+ r.job.name +"
+"file": "website/docs/guides/conveyors.html",
+"line": 184,
+"sink": "aria-*",
+"text": "first-line.html"
 }
 ]

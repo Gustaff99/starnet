@@ -426,7 +426,7 @@ const Dialogue = (() => {
   function renderConversation(cfg, finishPick) {
     const wrap = document.createElement('div'); wrap.className = 'fnv-custom fnv-conversation';
     const inp = document.createElement('textarea'); inp.rows = 3; inp.className = 'fnv-custom-in';
-    inp.placeholder = cfg.customPlaceholder || 'type your answer…';
+    inp.placeholder = cfg.customPlaceholder || 'escribe tu respuesta…';
     inp.setAttribute('aria-label', 'Your answer');
     const send = document.createElement('button'); send.className = 'fnv-custom-send'; send.type = 'button';
     inp.value = cfg.customValue || '';
@@ -444,7 +444,7 @@ const Dialogue = (() => {
     const suggestions = (cfg.options || []).filter(o => !o.skip && !o.open && !o.help);
     if (suggestions.length) {
       const details = document.createElement('details'); details.className = 'fnv-suggestions';
-      const summary = document.createElement('summary'); summary.textContent = 'Need a starting point?';
+      const summary = document.createElement('summary'); summary.textContent = '¿Necesitas un punto de partida?';
       details.appendChild(summary);
       const hint = document.createElement('div'); hint.className = 'fnv-answer-hint'; hint.setAttribute('aria-live', 'polite');
       suggestions.forEach(o => {
@@ -472,10 +472,10 @@ const Dialogue = (() => {
     optsEl.innerHTML = '';
     const wrap = document.createElement('div'); wrap.className = 'fnv-custom';
     const inp = document.createElement('textarea'); inp.rows = 3; inp.className = 'fnv-custom-in';
-    inp.placeholder = cfg.customPlaceholder || 'type your answer…';
-    inp.setAttribute('aria-label', cfg.customPlaceholder || 'your answer');
-    const send = document.createElement('button'); send.className = 'fnv-custom-send'; send.type = 'button'; send.textContent = 'Send →'; send.setAttribute('aria-label', 'Send answer');
-    const back = document.createElement('button'); back.className = 'fnv-custom-back'; back.type = 'button'; back.textContent = '‹ back';
+    inp.placeholder = cfg.customPlaceholder || 'escribe tu respuesta…';
+    inp.setAttribute('aria-label', cfg.customPlaceholder || 'tu respuesta');
+    const send = document.createElement('button'); send.className = 'fnv-custom-send'; send.type = 'button'; send.textContent = 'Enviar →'; send.setAttribute('aria-label', 'Enviar respuesta');
+    const back = document.createElement('button'); back.className = 'fnv-custom-back'; back.type = 'button'; back.textContent = '‹ atrás';
     wrap.appendChild(back); wrap.appendChild(inp); wrap.appendChild(send);
     optsEl.appendChild(wrap);
     const submit = () => {

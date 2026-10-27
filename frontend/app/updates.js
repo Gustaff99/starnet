@@ -542,30 +542,30 @@ const Updates = (() => {
       const guardN = state.confirmRuns | 0;
       out += '<div class="up-card ' + (update.critical ? 'critical' : '') + '">' +
         '<div class="up-version"><span>AVAILABLE</span><b>v' + esc(update.version) + '</b></div>' +
-        (update.date ? '<div class="up-meta">published ' + esc(update.date) + '</div>' : '') +
-        (notes ? '<pre class="up-notes">' + esc(notes) + '</pre>' : '<div class="up-meta">No release notes were provided.</div>');
+        (update.date ? '<div class="up-meta">publicada ' + esc(update.date) + '</div>' : '') +
+        (notes ? '<pre class="up-notes">' + esc(notes) + '</pre>' : '<div class="up-meta">No se proporcionaron notas de la versión.</div>');
       if (guardN > 0) {
         // GB-4 guard card: install was clicked while agents are live. The count is
         // Channels-confirmed, and the choice is the Commander's, not a side effect.
         out += '<div class="up-guard">' +
-          esc(guardN === 1 ? '1 AGENT IS STILL WORKING' : guardN + ' AGENTS ARE STILL WORKING') +
-          ' - INSTALLING RESTARTS STARNET AND KILLS ' + (guardN === 1 ? 'ITS RUN' : 'THEIR RUNS') + '.</div>' +
+          esc(guardN === 1 ? '1 AGENTE SIGUE TRABAJANDO' : guardN + ' AGENTES SIGUEN TRABAJANDO') +
+          ' - INSTALAR REINICIA STARNET Y DETIENE ' + (guardN === 1 ? 'SU EJECUCIÓN' : 'SUS EJECUCIONES') + '.</div>' +
           '<div class="up-actions">' +
-          '<button class="bb sm" id="up-guard-wait">WAIT FOR AGENTS</button>' +
-          '<button class="bb sm danger" id="up-install-force" ' + (busy ? 'disabled' : '') + '>INSTALL ANYWAY</button>' +
+          '<button class="bb sm" id="up-guard-wait">ESPERAR A LOS AGENTES</button>' +
+          '<button class="bb sm danger" id="up-install-force" ' + (busy ? 'disabled' : '') + '>INSTAR DE TODAS FORMAS</button>' +
           '</div></div>';
       } else {
-        out += '<div class="up-actions"><button class="bb sm" id="up-install" ' + (busy ? 'disabled' : '') + '>INSTALL UPDATE</button>' +
-          '<button class="bb sm" id="up-remind">REMIND TOMORROW</button>' +
-          (update.critical ? '' : '<button class="bb sm danger" id="up-ignore">SKIP VERSION</button>') + '</div></div>';
+        out += '<div class="up-actions"><button class="bb sm" id="up-install" ' + (busy ? 'disabled' : '') + '>INSTALAR ACTUALIZACIÓN</button>' +
+          '<button class="bb sm" id="up-remind">AVISAR MAÑANA</button>' +
+          (update.critical ? '' : '<button class="bb sm danger" id="up-ignore">SALTAR VERSIÓN</button>') + '</div></div>';
       }
     } else if (state.phase === 'current') {
-      out += '<div class="up-empty">You have the latest StarNet (checked ' + esc(fmtTime(state.lastCheckedAt)) + ').</div>';
+      out += '<div class="up-empty">Tienes la última versión de StarNet (comprobado ' + esc(fmtTime(state.lastCheckedAt)) + ').</div>';
     } else if (state.phase === 'skipped') {
       // Never "latest": a newer release exists, the Commander chose to skip it.
-      out += '<div class="up-empty">v' + esc(prefs.ignoredVersion) + ' is skipped. Press CHECK NOW to see it again.</div>';
+      out += '<div class="up-empty">v' + esc(prefs.ignoredVersion) + ' está saltada. Pulsa COMPROBAR AHORA para verla de nuevo.</div>';
     } else if (state.phase === 'checking') {
-      out += '<div class="up-empty">Checking for a newer StarNet...</div>';
+      out += '<div class="up-empty">Comprobando una versión nueva de StarNet...</div>';
     } else if (state.phase === 'idle') {
       // Not checked this launch: say only what is known — when the last check ran and what it found.
       const known = prefs.availableVersion && prefs.availableVersion !== state.currentVersion && prefs.availableVersion !== prefs.ignoredVersion ? prefs.availableVersion : '';
@@ -575,7 +575,7 @@ const Updates = (() => {
         isNewerVersion(prefs.ignoredVersion, state.currentVersion) ? prefs.ignoredVersion : '';
       out += '<div class="up-empty">' + (known
         ? 'The last check found v' + esc(known) + '. Press CHECK NOW to get it ready to install.'
-        : skipped ? 'v' + esc(skipped) + ' is skipped. Press CHECK NOW to see it again.'
+        : skipped ? 'v' + esc(skipped) + ' está saltada. Pulsa COMPROBAR AHORA para verla de nuevo.'
         : (state.lastCheckedAt ? 'Not checked since ' + esc(fmtTime(state.lastCheckedAt)) + '.' : 'Never checked for updates.') +
           ' Press CHECK NOW to look for a newer StarNet.') + '</div>';
     }

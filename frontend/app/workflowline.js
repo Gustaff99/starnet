@@ -810,12 +810,12 @@
     const t = String(text == null ? '' : text); if (!t.trim()) return null;
     const has = k => INTENT[k].test(t);
     let s = null;
-    if (has('code') && has('test')) s = { id: 'build_test', why: 'a builder makes the change and a tester sends it back until it passes' };
-    else if (has('code') && has('review')) s = { id: 'code_foundry', why: 'an engineer builds it and a reviewer sends it back until it passes' };
-    else if (has('write') && has('review')) s = { id: 'revision_loop', why: 'a writer drafts it and a reviewer sends it back until it is approved' + (has('research') ? ' (add a RESEARCHER in front with + in its Workflow panel)' : '') };
-    else if (has('research') && has('write')) s = { id: 'research_line', why: 'one agent digs, the next writes it up' };
-    else if (has('compare')) s = { id: 'second_opinion', why: 'two agents take the same job on their own, and you get both answers' };
-    if (s && has('schedule')) s.why += '; its INBOX can run it on your schedule';
+    if (has('code') && has('test')) s = { id: 'build_test', why: 'un constructor hace el cambio y un probador lo devuelve hasta que pasa' };
+    else if (has('code') && has('review')) s = { id: 'code_foundry', why: 'un ingeniero lo construye y un revisor lo devuelve hasta que pasa' };
+    else if (has('write') && has('review')) s = { id: 'revision_loop', why: 'un escritor lo redacta y un revisor lo devuelve hasta que se aprueba' + (has('research') ? ' (añade un RESEARCHER al principio con + en su panel de Workflow)' : '') };
+    else if (has('research') && has('write')) s = { id: 'research_line', why: 'un agente investiga y el siguiente lo redacta' };
+    else if (has('compare')) s = { id: 'second_opinion', why: 'dos agentes toman el mismo job por su cuenta, y recibes ambas respuestas' };
+    if (s && has('schedule')) s.why += '; su INBOX puede ejecutarlo en tu programación';
     return s;
   }
   return { ROLE, GENERIC, roleInfo, starters, defaultBrief, lineFlow, physicalOrder, neighbours, howItRuns, readiness, pillText, tooLongText, tooLongFix,

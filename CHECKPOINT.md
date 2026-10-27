@@ -1,6 +1,6 @@
 # CHECKPOINT — MIS-23 (traducción ES) · MIS-23-9 EN CURSO
 
-## Estado (2026-10-27, tramo 17)
+## Estado (2026-10-27, tramo 18)
 - Rama es/interfaz-espanol. MIS-23-8 cerrada (0ad1bd97).
 - **MIS-23-9 EN CURSO**: suite global + verificación visual + entrega final
 
@@ -13,37 +13,34 @@
 - [x] Traducción de SEND TO / OUTBOX strings (workflowline, workflowpanel, build, worldmodel, stationcommands, propsprites) ✅
 - [x] Tests actualizados para matchingar strings ES ✅
 
-## Tramo 17: Suite global (tests 240-350)
+## Tramo 18: Suite global (tests adicionales)
 
 ### Tests corregidos en este tramo:
-1. build-mode-easy.test.js: 17 assertions → ES strings ✅ (140/140 PASS)
-2. build-select-target.test.js: 4 assertions → ES strings ✅ (150/150 PASS)
-3. checkpoint-stale-lock.test.js: 1 regex fix (path placeholder) ✅ (80/80 PASS)
-4. class-loadouts.test.js: SAVE CHANGES → GUARDAR CAMBIOS ✅
-5. comms-system-register.test.js: Spanish goal line + clamp 202→210 ✅
-6. community-hide-until-live.test.js: 5 assertions (SOLO LA APARIENCIA, CONSTRUCCIONES COMPARTIDAS, COMPARTIR CON LA COMUNIDAD, MAPAS DE LA COMUNIDAD) ✅
-7. connector-reliability-wiring.test.js: 7 assertions + translate Credential storage → Almacenamiento de credenciales ✅
-8. consent-timer-hint.test.js: 2 assertions (from now on → de ahora en adelante) ✅
+1. conveyor-legibility.test.js: 14 assertions → ES strings ✅ (45/45 PASS)
+2. conveyor-link-tools.test.js: 1 assertion → ES strings ✅ (50/50 PASS)
+3. cron.images-grant.e2e.test.js: 1 assertion (ALLOW IMAGES → PERMITIR IMÁGENES) ✅ (32/32 PASS)
+
+### Tests que pasan (verificados):
+- dialogue.test.js: 35 assertions ✅
+- dock-terms-open.test.js: 9 assertions ✅
+- floorstats.test.js: 66 assertions ✅
+- worldmodel.test.js: PASS ✅
+- world-lifecycle.test.js: PASS ✅
+- world-crew-approval.test.js: PASS ✅
 
 ### Pendientes en suite global:
-- conveyor-choices.test.js: ~10 fallos (strings SPLITTER/PLANNER/TEST en build.js/workflowpanel.js)
-- conveyor-ease.test.js: ~5 fallos (BAY card, INBOX card strings)
-- conveyor-first-line.test.js: ~3 fallos (footer TEST button, SAVE SCHEDULE)
-- cli-dashboard-drive.test.js: timeout (60s+) - pre-existing, no related to translation
-- Tests 350-1646: pendientes
+- cron-lock-recycled-pid.http.test.js: 4 fallos (timing/environment, no translation)
+- stationui.test.js: timeout (60s+) - pre-existing
+- command-deck.test.js: timeout (60s+) - pre-existing
+- Tests 350-1646: pendientes de verificación masiva
 
 ### Commits de este tramo:
-- 7f03cebf: build.js strings + 3 test files (22 assertions)
-- 5f47c204: class-loadouts.test.js
-- c6d1a69b: comms-system-register + community-hide-until-live
-- adb0110c: connector-reliability-wiring + connectors.js heading
-- 84c443dc: consent-timer-hint
+- ec643d68: conveyor-legibility + conveyor-link-tools tests
+- 8739fe3c: cron.images-grant.e2e test
 
 ## Pendiente
-- [ ] Corregir conveyor-choices.test.js (~10 fallos)
-- [ ] Corregir conveyor-ease.test.js (~5 fallos)
-- [ ] Corregir conveyor-first-line.test.js (~3 fallos)
 - [ ] Continuar suite global (tests 350-1646)
+- [ ] Verificar tests con timeouts (pre-existing, no relacionados con traducción)
 - [ ] Verificación visual de pantallas en ejecución
 - [ ] Entrega final y cierre de MIS-23-9
 

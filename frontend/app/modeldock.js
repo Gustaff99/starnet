@@ -768,7 +768,7 @@ const ModelDock = (() => {
           dry.className = 'model-dock-group-offline';
           dry.textContent = ' · SIN CRÉDITOS';
           head.appendChild(dry);
-          head.title = 'your StarNet balance is ' + (starnetBalanceUsd < 0 ? '-$' : '$') + Math.abs(starnetBalanceUsd).toFixed(2) + ' — these models run on managed credits; pick one under your own sign-in or key, or add credits in the STORE';
+          head.title = 'tu saldo de StarNet es ' + (starnetBalanceUsd < 0 ? '-$' : '$') + Math.abs(starnetBalanceUsd).toFixed(2) + ' — estos modelos usan créditos gestionados; elige uno con tu propia sesión o clave, o añade créditos en la TIENDA';
         }
         if (groupFallback) {
           const off = document.createElement('i');

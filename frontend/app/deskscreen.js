@@ -6,8 +6,8 @@
    is reading (web / browser), its reply as it writes it. ‹ › flips back through this job's earlier screens. At rest
    the screen holds the last job's last screen. Hands: a mid-run note (POST /api/run/steer), two-step STOP
    (POST /api/cancel), OPEN CHAT. The activity feed is COMMS — this window never repeats it.
-   Connected, when those windows exist: a web page it wrote opens in the BROWSER window (OPEN PAGE), and when it asks
-   for a human in its browser (STEP-IN: login / 2FA / CAPTCHA) the screen says so with a STEP IN door.
+   Connected, when those windows exist: a web page it wrote opens in the BROWSER window (ABRIR PÁGINA), and when it asks
+   for a human in its browser (STEP-IN: login / 2FA / CAPTCHA) the screen says so with a ENTRAR door.
 
    TRUTH (the product's core law): every row is either a real bus event this page observed (agent.run.start /
    tool_call / tool_result / token / cost / run.end / permission.* / deliverable) or a server row. Liveness is
@@ -337,10 +337,10 @@ const DeskScreen = (() => {
       ? '<p class="ds-dim ds-partial">' + (v.src && v.src.stream ? 'Loading this step…' : 'This run was started outside this window, so its full screen is available once it ends. For now the station reports only the tool name.') + '</p>' : '';
     return '<div class="ds-app" data-app="' + sc.app.toLowerCase() + '" data-s="' + (!s.done ? 'run' : s.held ? 'held' : s.isError ? 'bad' : 'ok') + '">'
       + '<div class="ds-bar"><span class="ds-appname">' + esc(sc.app) + '</span><span class="ds-target">' + esc(clip(sc.target, 120)) + '</span>'
-      + (canOpenPage(s, sc) ? '<button type="button" class="bb xs ds-openpage" data-a="page" data-path="' + esc(sc.target) + '">OPEN PAGE</button>' : '')
-      + '<span class="ds-pager"><button type="button" class="bb xs" data-a="prev"' + (idx <= 0 ? ' disabled' : '') + ' aria-label="Previous screen">‹</button>'
+      + (canOpenPage(s, sc) ? '<button type="button" class="bb xs ds-openpage" data-a="page" data-path="' + esc(sc.target) + '">ABRIR PÁGINA</button>' : '')
+      + '<span class="ds-pager"><button type="button" class="bb xs" data-a="prev"' + (idx <= 0 ? ' disabled' : '') + ' aria-label="Pantalla anterior">‹</button>'
       + '<span class="ds-pos">' + (idx + 1) + '/' + total + '</span>'
-      + '<button type="button" class="bb xs" data-a="next"' + (idx >= total - 1 ? ' disabled' : '') + ' aria-label="Next screen">›</button></span></div>'
+      + '<button type="button" class="bb xs" data-a="next"' + (idx >= total - 1 ? ' disabled' : '') + ' aria-label="Pantalla siguiente">›</button></span></div>'
       + (sc.note ? '<div class="ds-status">' + esc(sc.note) + '</div>' : '')
       + partial + '<div class="ds-view">' + body + '</div></div>';
   }
@@ -361,9 +361,9 @@ const DeskScreen = (() => {
   }
   function handoffHtml(h, name) {
     const canOpen = typeof StepIn !== 'undefined' && typeof StepIn.open === 'function';
-    return '<div class="ds-ask ds-handoff"><span>' + esc(name) + (h.state === 'taken' ? ' handed you its browser' : ' needs you in its browser')
+    return '<div class="ds-ask ds-handoff"><span>' + esc(name) + (h.state === 'taken' ? ' te ha pasado su navegador' : ' necesita que estés en su navegador')
       + (h.where ? ' · ' + esc(clip(h.where, 60)) : '') + (h.note ? '<small>' + esc(clip(h.note, 200)) + '</small>' : '') + '</span>'
-      + (canOpen ? '<button type="button" class="bb sm" data-a="stepin" data-id="' + esc(h.id) + '">' + (h.state === 'taken' ? 'OPEN STEP-IN' : 'STEP IN') + '</button>' : '') + '</div>';
+      + (canOpen ? '<button type="button" class="bb sm" data-a="stepin" data-id="' + esc(h.id) + '">' + (h.state === 'taken' ? 'ABRIR STEP-IN' : 'ENTRAR') + '</button>' : '') + '</div>';
   }
 
   function paint() {
@@ -462,11 +462,11 @@ const DeskScreen = (() => {
     body.innerHTML = '<div class="ds-screen" data-state="idle">'
       + '<div class="ds-strip"></div>'
       + '<div class="ds-main"></div>'
-      + '<form class="ds-steer" hidden><input class="ds-in" type="text" maxlength="2000" autocomplete="off" aria-label="Tell this agent something mid-run">'
-      + '<button type="submit" class="bb sm">SEND</button></form><p class="ds-note" role="status"></p>'
+      + '<form class="ds-steer" hidden><input class="ds-in" type="text" maxlength="2000" autocomplete="off" aria-label="Dile algo a este agente a mitad de ejecución">'
+      + '<button type="submit" class="bb sm">ENVIAR</button></form><p class="ds-note" role="status"></p>'
       + '<div class="ds-foot">'
-      + '<button type="button" class="bb sm ds-stop" data-a="stop" hidden>STOP</button>'
-      + '<button type="button" class="bb sm" data-a="chat">OPEN CHAT</button></div></div>';
+      + '<button type="button" class="bb sm ds-stop" data-a="stop" hidden>DETENER</button>'
+      + '<button type="button" class="bb sm" data-a="chat">ABRIR CHAT</button></div></div>';
     const aid = a.id;
     body.querySelector('.ds-main').addEventListener('click', e => {
       const b = e.target.closest('button[data-a]'); if (!b) return;

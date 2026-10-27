@@ -91,7 +91,7 @@ const CrateCard = (() => {
     const doorsHtml = (card.actions.transcript ? '<button type="button" class="bb sm" data-a="run">▸ LOGBOOK · TRANSCRIPT</button>' : '')
       + (card.actions.workflow ? '<button type="button" class="bb sm" data-a="wf">▸ WORKFLOW PANEL</button>' : '');
     el.setAttribute('data-state', card.state);
-    el.innerHTML = '<header class="lw-head"><span class="lw-kind">' + esc(card.kind) + '</span><span class="lw-st">' + esc(card.state === 'running' ? 'LIVE' : card.state === 'pending' ? 'QUEUED' : card.state.toUpperCase()) + '</span>'
+    el.innerHTML = '<header class="lw-head"><span class="lw-kind">' + esc(card.kind) + '</span><span class="lw-st">' + esc(card.state === 'running' ? 'EN VIVO' : card.state === 'pending' ? 'EN COLA' : card.state.toUpperCase()) + '</span>'
       + '<button type="button" class="bb xs lw-x" data-a="x" aria-label="Close">✕</button></header>'
       + '<dl class="lw-rows">' + rows + '</dl>'
       + (doorsHtml ? '<footer class="lw-foot">' + doorsHtml + '</footer>' : '');

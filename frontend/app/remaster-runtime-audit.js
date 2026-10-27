@@ -28,9 +28,9 @@
   for(const file of ['prop-catalog-data.js','prop-catalog-fixture.js'])await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='app/'+file;s.onload=resolve;s.onerror=reject;document.head.append(s);});
   const panel=document.createElement('aside');panel.id='runtime-audit';
   const css=document.createElement('style');css.textContent='#kepler-review,#skin-study-preview{display:none!important}#runtime-audit{position:fixed;z-index:99999;left:8px;top:50px;max-width:calc(100vw - 36px);background:#091214ed;color:#d7c89d;border:1px solid #746546;padding:8px;font:12px VT323,monospace}#runtime-audit button,#runtime-audit select{background:#172124;color:#d7c89d;border:1px solid #61716b;padding:4px;margin:2px;font:12px VT323,monospace}#runtime-audit output{display:block;white-space:pre-wrap;max-width:700px}#runtime-audit pre{max-height:200px;overflow:auto;font-size:10px}';document.head.append(css);
-  panel.innerHTML='<b>LOCAL RUNTIME AUDIT · disposable station</b><nav></nav><output id="runtime-summary">Waiting for World…</output><details><summary>Measured results</summary><pre id="runtime-results"></pre></details>';
+  panel.innerHTML='<b>AUDITORÍA DE RUNTIME LOCAL · estación desechable</b><nav></nav><output id="runtime-summary">Esperando World…</output><details><summary>Resultados medidos</summary><pre id="runtime-results"></pre></details>';
   document.body.append(panel);const nav=panel.querySelector('nav'),out=panel.querySelector('output'),raw=panel.querySelector('pre');
-  const pageSelect=document.createElement('select');pageSelect.setAttribute('aria-label','Catalog room');nav.append(pageSelect);
+  const pageSelect=document.createElement('select');pageSelect.setAttribute('aria-label','Sala del catálogo');nav.append(pageSelect);
   const subject=document.createElement('select');subject.setAttribute('aria-label','Audit subject');nav.append(subject);
   let page=0,fixture=null,original=null,busy=false,receipt={cases:[],performance:[]},last='';
   const walkLabel=document.createElement('label'),walkAll=document.createElement('input');walkAll.type='checkbox';walkAll.checked=true;walkLabel.append(walkAll,' Walk every case');nav.append(walkLabel);

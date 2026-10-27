@@ -1564,7 +1564,7 @@ const Build = (() => {
            quotes their words so it is clear why — one click arms it (MAKE ROOM FOR IT when the deck is too small) */
         const goal = goalLine();
         if (goal) {
-          grid.appendChild(lineGroupHd('FOR YOUR GOAL', 'refit-goalhd'));
+          grid.appendChild(lineGroupHd('PARA TU OBJETIVO', 'refit-goalhd'));
           addLineCell(grid, goal.bp, '“' + goal.quote + '” — ' + goal.why, true);
         }
         const groups = {};

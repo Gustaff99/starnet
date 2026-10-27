@@ -73,7 +73,7 @@
     const hud = $('#stage-wrap .cam-hud');
     if (hud && !hud.querySelector('.cam-cine')) {
       const b = document.createElement('button');
-      b.className = 'cam-cine'; b.textContent = '▣ CINEMA'; b.title = 'fill the frame with the station';
+      b.className = 'cam-cine'; b.textContent = '▣ CINE'; b.title = 'llenar el cuadro con la estación';
       b.addEventListener('click', toggleCinema); hud.appendChild(b);
     }
     if (!$('#wr-cine-hint')) {
@@ -108,7 +108,7 @@
     if (hud && !hud.querySelector('.cam-mode')) {
       const s = document.createElement('span');
       s.className = 'cam-mode'; s.style.display = 'none';
-      s.title = 'idle camera: auto-follows the crew after 2 min hands-off — grab the camera (drag/zoom) to take it back';
+      s.title = 'cámara en reposo: sigue automáticamente a la tripulación tras 2 min sin manos — toma la cámara (arrastra/zoom) para recuperarla';
       hud.appendChild(s);
     }
   }

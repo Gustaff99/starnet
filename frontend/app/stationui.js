@@ -9477,7 +9477,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         // switch — a flip that repainted only the card left the rows claiming "ASKS" under an ON override.
         paintCrew();
         if (permStatus) {
-          if (snap.error) permStatus.textContent = '⚠ ' + snap.error + (snap.loaded ? ' — showing the last confirmed approvals; changes were not applied.' : ' — standing approvals could not be verified; no changes are available.');
+          if (snap.error) permStatus.textContent = '⚠ ' + snap.error + (snap.loaded ? ' — mostrando las últimas aprobaciones confirmadas; los cambios no se aplicaron.' : ' — no se pudieron verificar las aprobaciones vigentes; no hay cambios disponibles.');
           else permStatus.textContent = snap.loaded ? '' : 'checking standing approvals…';
         }
         if (grantsWrap) {

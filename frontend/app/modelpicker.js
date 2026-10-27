@@ -30,8 +30,8 @@ const ModelPicker = (() => {
     h += '<option value="__loading" disabled>loading catalog…</option>';
     h += '</select>';
     if (opts.effort) {
-      h += '<select class="mp-effort" id="' + esc(id) + '-effort" aria-label="Reasoning effort" title="Reasoning effort — how hard this model thinks">';
-      h += '<option value="">effort: auto</option>';
+      h += '<select class="mp-effort" id="' + esc(id) + '-effort" aria-label="Esfuerzo de razonamiento" title="Esfuerzo de razonamiento — qué tan duro piensa este modelo">';
+      h += '<option value="">esfuerzo: auto</option>';
       h += '</select>';
     }
     h += '</span>';
@@ -53,7 +53,7 @@ const ModelPicker = (() => {
   // Fill the effort <select> with the efforts a given model supports, preselecting `selected` (clamped).
   function fillEfforts(sel, item, selected) {
     const M = md(); if (!sel) return;
-    sel.innerHTML = '<option value="">effort: auto</option>';
+    sel.innerHTML = '<option value="">esfuerzo: auto</option>';
     if (!M) return;
     const opts = M.efforts.optionsFor(item || {}) || [];
     for (const e of opts) { const o = document.createElement('option'); o.value = e; o.textContent = 'effort: ' + M.efforts.label(e); sel.appendChild(o); }
@@ -126,8 +126,8 @@ const ModelPicker = (() => {
       door = document.createElement('button');
       door.type = 'button';
       door.className = 'mp-none bb sm';
-      door.textContent = '🔑 add a provider key';
-      door.title = 'No models are available yet — connect a provider key to fill this list';
+      door.textContent = '🔑 añadir una clave de proveedor';
+      door.title = 'Aún no hay modelos disponibles — conecta una clave de proveedor para llenar esta lista';
       door.addEventListener('click', (ev) => { try { ev.preventDefault(); ev.stopPropagation(); } catch (_) {} openKeyEntry(); });
       host.appendChild(door);
     }

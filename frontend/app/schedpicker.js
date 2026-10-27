@@ -27,12 +27,12 @@
   const CH = typeof CronHuman !== 'undefined' ? CronHuman : null;
 
   const MODES = [
-    { id: 'daily', label: 'EVERY DAY' },
-    { id: 'weekly', label: 'CERTAIN DAYS' },
-    { id: 'monthly', label: 'MONTHLY' },
-    { id: 'interval', label: 'ON A TIMER' },
-    { id: 'once', label: 'ONCE' },
-    { id: 'advanced', label: 'CUSTOM' }
+    { id: 'daily', label: 'CADA DÍA' },
+    { id: 'weekly', label: 'CIERTOS DÍAS' },
+    { id: 'monthly', label: 'MENSUAL' },
+    { id: 'interval', label: 'CON TEMPORIZADOR' },
+    { id: 'once', label: 'UNA VEZ' },
+    { id: 'advanced', label: 'PERSONALIZADO' }
   ];
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const pad2 = n => (n < 10 ? '0' : '') + n;
@@ -85,29 +85,29 @@
         '<select data-f="hour" aria-label="hour">' + optionsHTML(hourOpts(), 9) + '</select>' +
         '<span class="sp-colon">:</span>' +
         '<select data-f="minute" aria-label="minutes">' + optionsHTML(minOpts(), 0) + '</select>' +
-        '<select data-f="ampm" aria-label="AM or PM">' + optionsHTML([{ v: 'AM', t: 'AM' }, { v: 'PM', t: 'PM' }], 'AM') + '</select>' +
-        (tz ? '<span class="sp-tz">your time · ' + esc(tz) + '</span>' : '') +
+        '<select data-f="ampm" aria-label="AM o PM">' + optionsHTML([{ v: 'AM', t: 'AM' }, { v: 'PM', t: 'PM' }], 'AM') + '</select>' +
+        (tz ? '<span class="sp-tz">tu hora · ' + esc(tz) + '</span>' : '') +
       '</div>';
     return '<div class="sp" data-sp data-mode="daily">' +
-      (opts.compact ? '<label class="sp-frequency">Repeat<select class="sp-mode-select" aria-label="Repeat">' +
-        MODES.map(m => '<option value="' + m.id + '">' + esc(({ daily: 'Every day', weekly: 'Selected days', monthly: 'Every month', interval: 'Every few hours or minutes', once: 'Just once', advanced: 'Custom schedule' })[m.id]) + '</option>').join('') + '</select></label>' :
-      '<div class="sp-modes" role="group" aria-label="how often it runs">' +
+      (opts.compact ? '<label class="sp-frequency">Repetir<select class="sp-mode-select" aria-label="Repetir">' +
+        MODES.map(m => '<option value="' + m.id + '">' + esc(({ daily: 'Cada día', weekly: 'Días seleccionados', monthly: 'Cada mes', interval: 'Cada pocas horas o minutos', once: 'Solo una vez', advanced: 'Programación personalizada' })[m.id]) + '</option>').join('') + '</select></label>' :
+      '<div class="sp-modes" role="group" aria-label="con qué frecuencia se ejecuta">' +
         MODES.map(m => '<button type="button" class="sp-mode' + (m.id === 'daily' ? ' active' : '') + '" data-mode="' +
           m.id + '" aria-pressed="' + (m.id === 'daily' ? 'true' : 'false') + '">' + esc(m.label) + '</button>').join('') +
       '</div>' ) +
-      '<div class="sp-pane" data-show="weekly"><span class="sp-lbl">on</span><div class="sp-days">' + dayChips + '</div></div>' +
-      '<div class="sp-pane" data-show="monthly"><span class="sp-lbl">on the</span>' +
-        '<select data-f="dom" aria-label="day of the month">' + optionsHTML(domOpts(), 1) + '</select>' +
-        '<span class="sp-lbl">of each month</span></div>' +
-      '<div class="sp-pane" data-show="interval"><span class="sp-lbl">run every</span>' +
-        '<input type="number" class="sp-num" data-f="every" min="1" max="999" step="1" value="2" aria-label="how often">' +
+      '<div class="sp-pane" data-show="weekly"><span class="sp-lbl">el</span><div class="sp-days">' + dayChips + '</div></div>' +
+      '<div class="sp-pane" data-show="monthly"><span class="sp-lbl">el día</span>' +
+        '<select data-f="dom" aria-label="día del mes">' + optionsHTML(domOpts(), 1) + '</select>' +
+        '<span class="sp-lbl">de cada mes</span></div>' +
+      '<div class="sp-pane" data-show="interval"><span class="sp-lbl">ejecutar cada</span>' +
+        '<input type="number" class="sp-num" data-f="every" min="1" max="999" step="1" value="2" aria-label="con qué frecuencia">' +
         // the UNIT is three visible keys, never a dropdown: "2" next to a closed select read as "every 2"
         // and the preview's "every 2 hours" surprised people (stranded-user sweep, 2026-08-22). A hidden
         // select still carries the value so f('unit') / setFromSpec keep one source of truth.
-        '<div class="sp-units" role="group" aria-label="unit">' + [{ v: 'm', t: 'minutes' }, { v: 'h', t: 'hours' }, { v: 'd', t: 'days' }].map(u =>
+        '<div class="sp-units" role="group" aria-label="unidad">' + [{ v: 'm', t: 'minutos' }, { v: 'h', t: 'horas' }, { v: 'd', t: 'días' }].map(u =>
           '<button type="button" class="sp-unit' + (u.v === 'h' ? ' on' : '') + '" data-unit="' + u.v + '" aria-pressed="' + (u.v === 'h' ? 'true' : 'false') + '">' + u.t + '</button>').join('') + '</div>' +
-        '<select data-f="unit" aria-label="unit" hidden>' + optionsHTML([{ v: 'm', t: 'minutes' }, { v: 'h', t: 'hours' }, { v: 'd', t: 'days' }], 'h') + '</select></div>' +
-      '<div class="sp-pane" data-show="once"><span class="sp-lbl">on</span>' +
+        '<select data-f="unit" aria-label="unidad" hidden>' + optionsHTML([{ v: 'm', t: 'minutos' }, { v: 'h', t: 'horas' }, { v: 'd', t: 'días' }], 'h') + '</select></div>' +
+      '<div class="sp-pane" data-show="once"><span class="sp-lbl">el</span>' +
         '<select data-f="date" aria-label="date">' + optionsHTML(dateOpts(now), dateOpts(now)[0].v) + '</select></div>' +
       timeRow +
       '<div class="sp-pane sp-adv" data-show="advanced">' +
