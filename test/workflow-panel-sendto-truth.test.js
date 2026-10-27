@@ -1,4 +1,4 @@
-/* test/workflow-panel-sendto-truth.test.js — what the Workflow panel promises about SEND TO and TOO LONG is what the station
+/* test/workflow-panel-sendto-truth.test.js - what the Workflow panel promises about SEND TO and TOO LONG is what the station
    does (release review 2026-10-12, wave 2, agent lane). The panel's OWN functions (sliced from frontend/app/workflowpanel.js
    with A.fnBody, run in a vm) over a REAL station (worldmodel + layout engine) and the REAL routing compiler:
      conveyor-ui-01  SEND IT DOWN THE LINE / RUN ONE REAL JOB say a SEND TO starts another line's paid job; the result card says
@@ -22,7 +22,7 @@ const panel = rd('frontend/app/workflowpanel.js'), build = rd('frontend/app/buil
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const strip = h => String(h).replace(/<[^>]+>/g, '');
 // the floor's own finding sentences (build.js VAL_LABEL / VAL_WHY → valWhy), the H.valLabel the real panel is wired with
-// (build.js `valLabel: valWhy`) — the OUTBOX card says PRIVATE FILES through it (floor lane M19 / M29)
+// (build.js `valLabel: valWhy`) - the OUTBOX card says PRIVATE FILES through it (floor lane M19 / M29)
 const valWhy = (() => {
   const a = build.indexOf('  const VAL_LABEL = {'), z = build.indexOf('  const valWhy = code => ');
   A.ok(a >= 0 && z > a && z - a < 20000, 'sliced the floor\'s VAL_LABEL / VAL_WHY tables');
@@ -54,7 +54,7 @@ function panelOn(st, opts) {
   };
   const headers = ['function sendChoices(outboxId)', 'function sendState(outboxId)', 'function sendTarget(outboxId)', 'function onwardNote()', 'function sendBlocked(outboxId, name)',
     'function paintOutbox(body, f, p)', 'function sendDynHTML(f)', 'function jobResultHTML(mine, f)', 'function loopNotes(text)', 'function notShippedNote(mine)'];
-  // the panel's one SEND TO chip namer (floor lane's one line-name rule: the chip carries worldmodel.lineName) — a const arrow,
+  // the panel's one SEND TO chip namer (floor lane's one line-name rule: the chip carries worldmodel.lineName) - a const arrow,
   // so it is sliced by its own line, not by fnBody
   const chipAt = panel.indexOf('  const sendChipName = c => ');
   A.ok(chipAt >= 0, 'the panel names its SEND TO chips with sendChipName');
@@ -64,7 +64,7 @@ function panelOn(st, opts) {
   const ctx = vm.createContext({ esc, H, Pipeline: P, World: o.world, WL: () => WL, JSON, Object, Array, String, Set, Map, Math,
     comp: () => o.comp || null, S: { testJob: {} }, $: () => null, note() {}, paint() {}, prop: id => st.propById(id), nameOf: a => String(a).toUpperCase(),
     stepText: () => 'reply', stepOut: {}, exampleKept: () => false, notRightHTML: () => '', runEnd: r => r, liveText: () => '' });
-  return vm.runInContext("const LOOP_NOTE = /^\\[LOOP — (exhausted|escalated): (\\d+) pass(?:es)? round the gate[^\\n]*\\]\\s*/gm;\n" + src + '\n({ ' + names.join(', ') + ' })', ctx);
+  return vm.runInContext("const LOOP_NOTE = /^\\[LOOP - (exhausted|escalated): (\\d+) pass(?:es)? round the gate[^\\n]*\\]\\s*/gm;\n" + src + '\n({ ' + names.join(', ') + ' })', ctx);
 }
 const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: () => null, querySelectorAll: () => [] }; fns.paintOutbox(b, null, st.propById(outboxId)); return b.innerHTML; };
 
@@ -75,37 +75,37 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   A.ok(st.setSendTo(a.outbox, b.intake).ok, 'LINE A sends to LINE B');
   let fns = panelOn(st);
   let html = card(fns, st, a.outbox), note = strip((/id="send-note">([\s\S]*?)<\/p>/.exec(html) || [])[1] || '');
-  A.ok(/^Every job that finishes cleanly here is sent on to LINE B — that line’s crew works it next, under its own budget\./.test(note), 'the SEND TO note promises only a cleanly finished job — ' + note);
-  A.ok(!/Every job that lands in this OUTBOX rides on/.test(html), '…never "every job that lands in this OUTBOX rides on"');
+  A.ok(/^Cada trabajo que termina limpio aquí se envía a LINE B — el equipo de esa línea lo trabaja a continuación, bajo su propio presupuesto\. El resultado de esta línea también queda aquí\./.test(note), 'the SEND TO note promises only a cleanly finished job — ' + note);
+  A.ok(!/Every job that lands in this OUTBOX rides on/.test(html), '...never "every job that lands in this OUTBOX rides on"');
   A.ok(!/id="send-blocked"/.test(html), 'a crewed target with no spent cap carries no warning');
   // the target's first BAY loses its agent: the hand-off runner would refuse ("routes work to no crewed dock")
   for (const id of b.bays) st.assignPropAgent(id, '');
   fns = panelOn(st);
   html = card(fns, st, a.outbox);
   const warn = strip((/id="send-blocked">([\s\S]*?)<\/p>/.exec(html) || [])[1] || '');
-  A.ok(/^LINE B has no agent on its first BAY yet — nothing is sent on until it has one\.$/.test(warn), 'an uncrewed target line is said on the card — ' + warn + ' :: ' + strip(html).slice(0, 400));
+  A.ok(/^LINE B aún no tiene agente en su primer BAY — nada se envía hasta que tenga uno\.$/.test(warn), 'an uncrewed target line is said on the card — ' + warn + ' :: ' + strip(html).slice(0, 400));
   for (const id of b.bays) st.assignPropAgent(id, 'ag_' + id);
   // the target line's daily limit is spent (the LINE BUDGET ledger the floor reads)
   const planB = P.compileRoutingPlan(st.projectGeometry()), toLine = planB.sendTo[a.outbox].toLine;
   const world = { lineStatsFor: id => id === toLine ? { usdToday: 1, capUsdPerDay: 1 } : null };
   html = card(panelOn(st, { world }), st, a.outbox);
-  A.ok(/LINE B has spent its \$1\.00 daily limit — nothing is sent on until tomorrow, or until its LINE BUDGET is raised\./.test(strip(html)), 'a target whose daily limit is spent is said on the card');
+  A.ok(/LINE B ha gastado su límite diario de \$1\.00 — nada se envía hasta mañana, o hasta que su LINE BUDGET sea aumentado\./.test(strip(html)), 'a target whose daily limit is spent is said on the card');
   html = card(panelOn(st, { world: { lineStatsFor: () => ({ usdToday: 0.4, capUsdPerDay: 1 }) } }), st, a.outbox);
-  A.ok(!/id="send-blocked"/.test(html), '…a target under its limit is not');
+  A.ok(!/id="send-blocked"/.test(html), '...a target under its limit is not');
   html = card(panelOn(st, { world: { lineStatsFor: () => null } }), st, a.outbox);
-  A.ok(!/id="send-blocked"/.test(html), '…and a spend the floor has not read says nothing (never a guess)');
+  A.ok(!/id="send-blocked"/.test(html), '...and a spend the floor has not read says nothing (never a guess)');
   // the strip tip and the lead's overview say the same
   const stripFn = A.fnBody(panel, 'function paintStrip(f)');
-  A.ok(/every job that finishes cleanly is sent on to ' \+ sendsTo\.name/.test(stripFn) && !/every job that lands in it rides on/.test(stripFn), 'the strip\'s OUTBOX tip says the same');
-  A.ok(/Then every job it finishes cleanly is sent on to /.test(commands) && !/Then every job it finishes is sent on/.test(commands), 'the lead\'s station.layout overview says the same');
-  // (wave-2 repair) the OUTBOX's Build Library card and the release notes draft say it too — never "every job … rides on"
+  A.ok(/cada trabajo que termina bien se envía a ' \+ sendsTo\.name/.test(stripFn) && !/every job that lands in it rides on/.test(stripFn), 'the strip\'s OUTBOX tip says the same');
+  A.ok(/Luego cada trabajo que termina limpio se envía a /.test(commands) && !/Then every job it finishes is sent on/.test(commands), 'the lead\'s station.layout overview says the same');
+  // (wave-2 repair) the OUTBOX's Build Library card and the release notes draft say it too - never "every job ... rides on"
   const outboxDesc = (/\{ id: "outbox", label: "OUTBOX"[^\n]*desc: "([^"]*)"/.exec(rd('frontend/app/propsprites.js')) || [])[1] || '';
-  A.ok(/Drag it onto another line's INBOX \(SEND TO\) and every job that finishes cleanly is sent on to that line \(its crew, its budget\)\./.test(outboxDesc) && !/rides on/.test(outboxDesc), 'the OUTBOX catalog card promises only a cleanly finished job — ' + outboxDesc);
+  A.ok(/Arrástralo sobre el INBOX de otra línea \(SEND TO\) y cada trabajo que termina limpio se envía a esa línea \(su equipo, su presupuesto\)\./.test(outboxDesc) && !/rides on/.test(outboxDesc), 'the OUTBOX catalog card promises only a cleanly finished job — ' + outboxDesc);
   const notes = rd('docs/releases/next/NOTES_DRAFT.md');
-  A.ok(/every job that finishes cleanly is sent on to it/.test(notes) && !/every finished job rides on/.test(notes), 'the release notes draft says the same');
-  // (docs-claims-08) the floor's own SEND TO tips — arming an OUTBOX and the SEND TO it set — say it too
-  A.ok(/'SEND TO — now click another line’s INBOX: each job that finishes cleanly here starts a job on it'/.test(build)
-    && /'SENDS TO ' \+ sendName\(ip\.id\) \+ ' — each job that finishes cleanly here starts a job on it'/.test(build)
+  A.ok(/cada trabajo que termina limpio se envía a él/.test(notes) && !/every finished job rides on/.test(notes), 'the release notes draft says the same');
+  // (docs-claims-08) the floor's own SEND TO tips - arming an OUTBOX and the SEND TO it set - say it too
+  A.ok(/'SEND TO — ahora haz clic en el INBOX de otra línea: cada trabajo que termina limpio aquí inicia un trabajo en ella'/.test(build)
+    && /'ENVÍA A ' \+ sendName\(ip\.id\) \+ ' — cada trabajo que termina limpio aquí inicia un trabajo en ella'/.test(build)
     && !/every job that lands in this OUTBOX rides on/.test(build), 'the build floor\'s SEND TO tips promise only a cleanly finished job');
 }
 
@@ -115,29 +115,29 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   st.setPropLabel(b.intake, 'B'); st.setPropLabel(c.intake, 'C');
   const lob = st.addProp({ t: 'outbox', x: 40, y: 34, w: 2, h: 2 }).id;
   let html = card(panelOn(st), st, lob);
-  A.ok(!/data-sendto="p/.test(html) && !/data-sendto="[^"]+"/.test(html), 'an OUTBOX on no line lists no line chips (each would be disabled for the same reason) — ' + strip(html).slice(0, 300));
-  A.eq((html.match(/ends no line yet/g) || []).length, 0, '…and no per-line copy of "ends no line yet"');
-  A.ok(/Once this OUTBOX ends a line, pick the line its finished work goes on to\./.test(html), 'it says once what to do first');
-  A.ok(!/data-sendto=""/.test(html), '…with no NOWHERE to press when it points nowhere');
-  A.ok(!/Or drag this OUTBOX onto another line’s INBOX/.test(html) && !/This line’s work stops here/.test(html), '…and no drag hint or "this line" sentence for an OUTBOX on no line');
+  A.ok(!/data-sendto="p/.test(html) && !/data-sendto="[^"]+"/.test(html), 'an OUTBOX on no line lists no line chips (each would be disabled for the same reason) - ' + strip(html).slice(0, 300));
+  A.eq((html.match(/ends no line yet/g) || []).length, 0, '...and no per-line copy of "ends no line yet"');
+  A.ok(/Una vez que este OUTBOX termine una línea, elige la línea a la que va su trabajo terminado\./.test(html), 'it says once what to do first');
+  A.ok(!/data-sendto=""/.test(html), '...with no NOWHERE to press when it points nowhere');
+  A.ok(!/O arrastra este OUTBOX sobre el INBOX de otra línea/.test(html) && !/El trabajo de esta línea se detiene aquí/.test(html), '…and no drag hint or "this line" sentence for an OUTBOX on no line');
   // a stale pointer on it: NOWHERE stays reachable and the note says why it is off
   const doc = JSON.parse(JSON.stringify(st.serialize()));
   for (const p of doc.props) if (p.id === lob) p.sendTo = b.intake;
   const st2 = WM.create(doc);
   html = card(panelOn(st2), st2, lob);
-  A.ok(/data-sendto="" aria-pressed="false">NOWHERE/.test(html), 'a stale pointer keeps NOWHERE to clear it');
-  A.ok(/Its SEND TO <b>LINE B<\/b> is off, so nothing is sent on/.test(html), '…and says it is off, and why');
-  // each line's own reason stays its own (a circle names the line that closes it)…
+  A.ok(/data-sendto="" aria-pressed="false">NINGUNA PARTE/.test(html), 'a stale pointer keeps NOWHERE to clear it');
+  A.ok(/Su SEND TO .*está apagada, así que nada se envía/.test(html), '…and says it is off, and why');
+  // each line's own reason stays its own (a circle names the line that closes it)...
   A.ok(st.setSendTo(b.outbox, c.intake).ok && st.setSendTo(c.outbox, a.intake).ok, 'B → C → A');
   html = card(panelOn(st), st, a.outbox);
   let whys = html.match(/class="wf-help dim wf-sendwhy">[^<]*/g) || [];
-  A.ok(whys.length === 2 && /LINE B — That would send work round in a circle — LINE B/.test(whys[0]) && /LINE C — That would send work round in a circle — LINE C/.test(whys[1]), 'two different reasons are two lines — ' + JSON.stringify(whys));
-  // …and one reason several lines share is said once, naming them
+  A.ok(whys.length === 2 && /LINE B — Eso enviaría el trabajo en un círculo — LINE B ya envía su trabajo, de vuelta a esta línea\./.test(whys[0]) && /LINE C — Eso enviaría el trabajo en un círculo — LINE C ya envía su trabajo, de vuelta a esta línea\./.test(whys[1]), 'two different reasons are two lines — ' + JSON.stringify(whys));
+  // ...and one reason several lines share is said once, naming them
   const shared = Object.create(st);
-  shared.sendToChoices = () => [{ intakeId: 'i1', name: 'LINE B', on: false, refusal: { msg: 'That INBOX is being rebuilt.' } }, { intakeId: 'i2', name: 'LINE C', on: false, refusal: { msg: 'That INBOX is being rebuilt.' } }];
+  shared.sendToChoices = () => [{ intakeId: 'i1', name: 'LINE B', on: false, refusal: { msg: 'Ese INBOX se está reconstruyendo.' } }, { intakeId: 'i2', name: 'LINE C', on: false, refusal: { msg: 'Ese INBOX se está reconstruyendo.' } }];
   html = card(panelOn(shared), shared, a.outbox);
   whys = html.match(/class="wf-help dim wf-sendwhy">[^<]*/g) || [];
-  A.ok(whys.length === 1 && /LINE B, LINE C — That INBOX is being rebuilt\./.test(whys[0]), 'a shared reason is said once, naming both lines — ' + JSON.stringify(whys));
+  A.ok(whys.length === 1 && /LINE B, LINE C — Ese INBOX se está reconstruyendo\./.test(whys[0]), 'a shared reason is said once, naming both lines — ' + JSON.stringify(whys));
 }
 
 /* ---------- conveyor-ui-01: a job sent on a SEND TO line says it starts another paid job ---------- */
@@ -151,20 +151,20 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   A.ok(st.setSendTo(a.outbox, b.intake).ok, 'A sends to B');
   fns = panelOn(st, { comp: compA });
   const say = strip(fns.onwardNote());
-  A.ok(/^ When it finishes cleanly it is sent on to LINE B: that line’s crew starts a job of its own on the result, at its own cost\.$/.test(say), 'the send box says the job goes on to LINE B, at that line\'s own cost — ' + say);
+  A.ok(/^ Cuando termina limpio se envía a LINE B: el equipo de esa línea inicia un trabajo propio con el resultado, a su propio costo\.$/.test(say), 'the send box says the job goes on to LINE B, at that line\'s own cost — ' + say);
   const box = strip(fns.sendDynHTML(null));
-  A.ok(/lands in this line’s OUTBOX and is also filed in DELIVERABLES\. When it finishes cleanly it is sent on to LINE B/.test(box), 'SEND IT DOWN THE LINE says it — ' + box);
-  A.ok(/body = '<p class="wf-help">Your test job runs through the line for real, end to end: real agents, real cost, and the result lands in this line’s <b>OUTBOX<\/b> and is also filed in <b>DELIVERABLES<\/b>, like any job\.' \+ onwardNote\(\) \+ '<\/p>'/.test(A.fnBody(panel, 'function testPickerHTML(s)')), 'RUN ONE REAL JOB says it too');
+  A.ok(/llega a la SALIDA de esta línea y también se archiva en ENTREGABLES\. Cuando termina limpio se envía a LINE B/.test(box), 'SEND IT DOWN THE LINE says it — ' + box);
+  A.ok(/body = '<p class="wf-help">Tu trabajo de prueba recorre la línea de verdad, de punta a punta: agentes reales, costo real, y el resultado llega a la <b>SALIDA<\/b> de esta línea y también se archiva en <b>ENTREGABLES<\/b>, como cualquier trabajo\.' \+ onwardNote\(\) \+ '<\/p>'/.test(A.fnBody(panel, 'function testPickerHTML(s)')), 'RUN ONE REAL JOB says it too');
   // the result card
   const key = compA.key, view = { ok: true, stages: ['AG'], usd: 0.01, reply: 'x' }, runs = [{ runId: 'r1', dockId: a.bays[1], agentId: 'ag', reason: 'done', usd: 0.01 }];
   const world = { lineName: id => (id === plan0.lineOfProp[b.intake] ? 'LINE B' : null) };
   const res = (mine, w) => strip(panelOn(st, { comp: compA, world: w || world }).jobResultHTML(Object.assign({ key, view, runs, output: 'The result', stamp: 1 }, mine), null));
-  A.ok(/Sent on to LINE B — that line works on this result next, at its own cost\. OPEN ITS JOB/.test(res({ sentTo: { line: plan0.lineOfProp[b.intake], jobId: 'job-2', name: '' } })), 'a job the record says was sent on says SENT ON TO, named by the floor, with its job');
-  A.ok(/NOT sent on to LINE B — LINE B reached its \$1\.00 daily limit\./.test(res({ sentTo: { line: 'x', name: 'B', refused: 'LINE B reached its $1.00 daily limit' } })), 'a refused hand-off says NOT sent on, with why');
+  A.ok(/Enviado a LINE B — esa línea trabaja sobre este resultado a continuación, a su propio coste\. ABRIR SU TRABAJO/.test(res({ sentTo: { line: plan0.lineOfProp[b.intake], jobId: 'job-2', name: '' } })), 'a job the record says was sent on says SENT ON TO, named by the floor, with its job');
+  A.ok(/NO se envió a LINE B — LINE B alcanzó su límite diario de \$1\.00\./.test(res({ sentTo: { line: 'x', name: 'B', refused: 'LINE B alcanzó su límite diario de $1.00' } })), 'a refused hand-off says NOT sent on, with why');
   const onlyPtr = res({ sentTo: null, onward: [{ lineId: plan0.lineOfProp[b.intake] }] });
-  A.ok(/This line sends its finished work on to LINE B \(SEND TO\) — WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent\./.test(onlyPtr) && !/Sent on to/.test(onlyPtr), 'with no record yet it says only that the line sends on — never "sent" — ' + onlyPtr);
-  A.ok(!/sent on/i.test(res({ sentTo: null, onward: [] })), 'a line that sends nowhere says nothing about it');
-  A.ok(!/sent on/i.test(strip(panelOn(st, { comp: compA, world }).jobResultHTML({ key, view: { ok: false, stages: [], usd: 0.01 }, runs, output: '', stamp: 1, sentTo: { line: 'x', name: 'B' } }, null))), 'a job that did not finish cleanly is never said to be sent on');
+  A.ok(/Esta línea envía su trabajo terminado a LINE B \(ENVIAR A\) — WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió\./.test(onlyPtr) && !/Enviado a/.test(onlyPtr), 'with no record yet it says only that the line sends on — never "sent" — ' + onlyPtr);
+  A.ok(!/enviado a/i.test(res({ sentTo: null, onward: [] })), 'a line that sends nowhere says nothing about it');
+  A.ok(!/enviado a/i.test(strip(panelOn(st, { comp: compA, world }).jobResultHTML({ key, view: { ok: false, stages: [], usd: 0.01 }, runs, output: '', stamp: 1, sentTo: { line: 'x', name: 'B' } }, null))), 'a job that did not finish cleanly is never said to be sent on');
   // build.js keeps what the sample answered
   const run = build.slice(build.indexOf('  function finRunSample(c, options = {}) {'), build.indexOf('  function finStopSample() {'));
   A.ok(run.length > 200 && run.length < 6000, 'sliced finRunSample (' + run.length + ' chars)');
@@ -183,21 +183,21 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   for (const id of b.bays) st.assignPropAgent(id, '');
   let fns = panelOn(st, { comp: compA });
   let say = strip(fns.onwardNote());
-  A.ok(/^ Its SEND TO LINE B is set, but nothing will be sent on: LINE B has no agent on its first BAY yet\.$/.test(say), 'an uncrewed target: the send box says nothing will be sent on, and why — ' + say);
-  A.ok(!/starts a job of its own/.test(say), '…never the promise of a paid job the station would refuse');
-  A.ok(/lands in this line’s OUTBOX and is also filed in DELIVERABLES\. Its SEND TO LINE B is set, but nothing will be sent on: LINE B has no agent on its first BAY yet\./.test(strip(fns.sendDynHTML(null))), 'SEND IT DOWN THE LINE says it too');
-  A.ok(/LINE B has no agent on its first BAY yet — nothing is sent on until it has one\./.test(strip(card(fns, st, a.outbox))), 'the OUTBOX card says the same refusal (one predicate)');
+  A.ok(/^ Su SEND TO LINE B está configurado, pero nada se enviará: LINE B aún no tiene agente en su primer BAY\.$/.test(say), 'an uncrewed target: the send box says nothing will be sent on, and why — ' + say);
+  A.ok(!/inicia un trabajo propio/.test(say), '…never the promise of a paid job the station would refuse');
+  A.ok(/llega a la SALIDA de esta línea y también se archiva en ENTREGABLES\. Su SEND TO LINE B está configurado, pero nada se enviará: LINE B aún no tiene agente en su primer BAY\./.test(strip(fns.sendDynHTML(null))), 'SEND IT DOWN THE LINE says it too');
+  A.ok(/LINE B aún no tiene agente en su primer BAY — nada se envía hasta que tenga uno\./.test(strip(card(fns, st, a.outbox))), 'the OUTBOX card says the same refusal (one predicate)');
   for (const id of b.bays) st.assignPropAgent(id, 'ag_' + id);
   // the target's daily limit is spent
   say = strip(panelOn(st, { comp: compA, world: { lineStatsFor: id => (id === toLine ? { usdToday: 2, capUsdPerDay: 1.5 } : null) } }).onwardNote());
-  A.ok(/^ Its SEND TO LINE B is set, but nothing will be sent on: LINE B has spent its \$1\.50 daily limit\.$/.test(say), 'a target whose daily limit is spent: nothing will be sent on — ' + say);
+  A.ok(/^ Su SEND TO LINE B está configurado, pero nada se enviará: LINE B ha gastado su límite diario de \$1\.50\.$/.test(say), 'a target whose daily limit is spent: nothing will be sent on — ' + say);
   say = strip(panelOn(st, { comp: compA, world: { lineStatsFor: () => ({ usdToday: 0.2, capUsdPerDay: 1.5 }) } }).onwardNote());
-  A.ok(/^ When it finishes cleanly it is sent on to LINE B: that line’s crew starts a job of its own on the result, at its own cost\.$/.test(say), 'under its limit the promise stands — ' + say);
+  A.ok(/^ Cuando termina limpio se envía a LINE B: el equipo de esa línea inicia un trabajo propio con el resultado, a su propio costo\.$/.test(say), 'under its limit the promise stands — ' + say);
   say = strip(panelOn(st, { comp: compA, world: { lineStatsFor: () => null } }).onwardNote());
-  A.ok(/When it finishes cleanly it is sent on to LINE B/.test(say), '…and a spend the floor has not read is never a refusal');
+  A.ok(/Cuando termina limpio se envía a LINE B/.test(say), '…and a spend the floor has not read is never a refusal');
 }
 {
-  // a SORTING OFFICE: two finished lanes, each into its OWN OUTBOX — only the first sends on
+  // a SORTING OFFICE: two finished lanes, each into its OWN OUTBOX - only the first sends on
   const d = WM.starterDoc();
   for (const id in d.rooms) for (const r of d.rooms[id].rects) { r.x2 = 60; r.y2 = 44; }
   const st = WM.create(d);
@@ -216,14 +216,14 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   const view = { ok: true, stages: ['AG'], usd: 0.01, reply: 'x' };
   // the route lists every SEND TO of the line (onwardDestinations): the card must not read that as THIS job's hand-off
   const res = dock => strip(fns.jobResultHTML({ key: compS.key, view, runs: [{ runId: 'r1', dockId: dock, agentId: 'ag', reason: 'done', usd: 0.01 }], output: 'R', stamp: 1, sentTo: null, onward: [{ lineId: toLine }] }, null));
-  A.ok(!/LINE B/.test(res(sb[1])) && !/sends? (its finished work )?on/.test(res(sb[1])), 'a job that landed in the OUTBOX that sends nowhere says nothing about a hand-off — ' + res(sb[1]).slice(0, 200));
-  A.ok(/This line sends its finished work on to LINE B \(SEND TO\) — WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent\./.test(res(sb[0])), 'a job that landed in the sending OUTBOX says the line sends it on');
-  A.ok(/An OUTBOX on this line sends on to LINE B \(SEND TO\) — if this job was handed on, WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent\./.test(res('p-gone')), 'where the job landed is not on the floor: said conditionally, never "sent" — ' + res('p-gone').slice(0, 200));
+  A.ok(!/LINE B/.test(res(sb[1])) && !/envía\?? (su trabajo terminado )?a/.test(res(sb[1])), 'a job that landed in the OUTBOX that sends nowhere says nothing about a hand-off — ' + res(sb[1]).slice(0, 200));
+  A.ok(/Esta línea envía su trabajo terminado a LINE B \(ENVIAR A\) — WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió\./.test(res(sb[0])), 'a job that landed in the sending OUTBOX says the line sends it on');
+  A.ok(/Un OUTBOX en esta línea envía a LINE B \(ENVIAR A\) — si este trabajo se pasó, WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió\./.test(res('p-gone')), 'where the job landed is not on the floor: said conditionally, never "sent" — ' + res('p-gone').slice(0, 200));
   // RUN ONE REAL JOB on a two-OUTBOX line says which jobs are sent on
-  A.ok(/^ When it finishes cleanly in an OUTBOX that sends on, it goes on to LINE B: that line’s crew starts a job of its own on the result, at its own cost\.$/.test(strip(fns.onwardNote())), 'the send box says only a job in the sending OUTBOX goes on — ' + strip(fns.onwardNote()));
+  A.ok(/^ Cuando termina limpio en un OUTBOX que envía, va a LINE B: el equipo de esa línea inicia un trabajo propio con el resultado, a su propio costo\.$/.test(strip(fns.onwardNote())), 'the send box says only a job in the sending OUTBOX goes on — ' + strip(fns.onwardNote()));
 }
 
-/* ---------- wave-2 repair: the floor FINISH card's ③ RUN ONE REAL JOB says what the panel's key says ---------- */
+/* ---------- wave-2 repair: the floor FINISH card's 3 RUN ONE REAL JOB says what the panel's key says ---------- */
 {
   const fin = ['  function finOnwardPromise(c) {', '  function finOnwardHTML(sr) {'].map(h => { const b = A.fnBody(build, h); A.ok(b.length > 50 && b.length < 6000, 'sliced ' + h.trim()); return b; }).join('\n');
   const { st, L: [a, b] } = lines(2);
@@ -235,37 +235,37 @@ const card = (fns, st, outboxId) => { const b = { innerHTML: '', querySelector: 
   };
   const lineB = () => P.compileRoutingPlan(st.projectGeometry()).lineOfProp[b.intake];
   const world = { lineName: id => (id === lineB() ? 'LINE B' : null), lineStatsFor: () => null };
-  A.eq(finOn(world).finOnwardPromise(compA()), '', 'a line with no SEND TO adds nothing to ③');
+  A.eq(finOn(world).finOnwardPromise(compA()), '', 'a line with no SEND TO adds nothing to 3');
   A.ok(st.setSendTo(a.outbox, b.intake).ok, 'A sends to B');
   let f = finOn(world);
-  A.eq(f.finOnwardPromise(compA()), 'When it finishes cleanly it is sent on to LINE B: that line’s crew starts a job of its own on the result, at its own cost.', '③ RUN ONE REAL JOB says the job starts LINE B\'s own paid job, in the panel\'s words');
+  A.eq(f.finOnwardPromise(compA()), 'Cuando termina limpio se envía a LINE B: el equipo de esa línea inicia un trabajo propio con el resultado, a su propio costo.', '③ RUN ONE REAL JOB says the job starts LINE B\'s own paid job, in the panel\'s words');
   for (const id of b.bays) st.assignPropAgent(id, '');
-  A.eq(finOn(world).finOnwardPromise(compA()), 'Its SEND TO LINE B is set, but nothing will be sent on: LINE B has no agent on its first BAY yet.', '…and a target that would refuse it says so instead');
+  A.eq(finOn(world).finOnwardPromise(compA()), 'Su SEND TO LINE B está configurado, pero nada se enviará: LINE B aún no tiene agente en su primer BAY.', '…and a target that would refuse it says so instead');
   for (const id of b.bays) st.assignPropAgent(id, 'ag_' + id);
   f = finOn(world);
   const key = compA().key, view = { ok: true, stages: ['AG'], usd: 0.01, reply: 'x' }, runs = [{ runId: 'r1', dockId: a.bays[1], agentId: 'ag', reason: 'done', usd: 0.01 }];
   const out = sr => strip(f.finOnwardHTML(Object.assign({ key, view, runs }, sr)));
-  A.ok(/^SENT ON to LINE B — its crew works this result next, at its own cost$/.test(out({ sentTo: { line: lineB(), jobId: 'job-2', name: '' } })), 'the FINISH card says SENT ON from the job\'s record — ' + out({ sentTo: { line: lineB(), jobId: 'job-2' } }));
-  A.ok(/^NOT SENT ON to LINE B — LINE B reached its \$1\.00 daily limit$/.test(out({ sentTo: { line: 'x', name: 'B', refused: 'LINE B reached its $1.00 daily limit' } })), '…NOT SENT ON with why');
-  A.ok(/^SEND TO this line sends its finished work on to LINE B — WORKFLOWS › LAST JOBS shows that line’s job, or why it was not sent$/.test(out({ sentTo: null, onward: [{ lineId: lineB() }] })), '…and with no record yet, only that the line sends on');
+  A.ok(/^ENVIADO EN a LINE B — su tripulación trabaja este resultado a continuación, a su propio costo$/.test(out({ sentTo: { line: lineB(), jobId: 'job-2', name: '' } })), 'the FINISH card says SENT ON from the job\'s record — ' + out({ sentTo: { line: lineB(), jobId: 'job-2' } }));
+  A.ok(/^NO ENVIADO EN a LINE B — LINE B alcanzó su límite diario de \$1\.00$/.test(out({ sentTo: { line: 'x', name: 'B', refused: 'LINE B alcanzó su límite diario de $1.00' } })), '…NOT SENT ON with why');
+  A.ok(/^ENVIAR A esta línea envía su trabajo terminado a LINE B — WORKFLOWS › ÚLTIMOS TRABAJOS muestra el trabajo de esa línea, o por qué no se envió$/.test(out({ sentTo: null, onward: [{ lineId: lineB() }] })), '…and with no record yet, only that the line sends on');
   A.eq(out({ sentTo: null, onward: [] }), '', 'a line that sends nowhere says nothing');
   A.eq(strip(f.finOnwardHTML({ key, view: { ok: false, stages: [], usd: 0 }, runs, sentTo: { line: 'x', name: 'B' } })), '', 'a job that did not finish cleanly is never said to be sent on');
-  // the card wires both: the promise in ③'s tip and under it (before a result), the outcome beside RAN / COST / SAID
+  // the card wires both: the promise in 3's tip and under it (before a result), the outcome beside RAN / COST / SAID
   const render = A.fnBody(build, '  function renderFinCard() {');
-  A.ok(/const onward = st\.crewLeft === 0 \? finOnwardPromise\(c\) : '';/.test(render) &&/'run ONE real job through the whole line \(your INBOX test job, if you wrote one\)' \+ \(onward \? '\. ' \+ onward : ''\)/.test(render), '③\'s tip carries the SEND TO promise');
-  A.ok(/\$\{sr && sr\.view \? finSampleHTML\(sr\.view\) \+ finOnwardHTML\(sr\) : onward \? '<div class="fl-result fl-onward"><span class="fl-result-k">SEND TO<\/span> ' \+ esc\(onward\) \+ '<\/div>' : ''\}/.test(render), '…and under the key until a result replaces it with SENT ON / NOT SENT ON');
+  A.ok(/const onward = st\.crewLeft === 0 \? finOnwardPromise\(c\) : '';/.test(render) &&/'ejecuta UN trabajo real por toda la línea \(tu trabajo de prueba de BANDA DE ENTRADA, si escribiste uno\)' \+ \(onward \? '\. ' \+ onward : ''\)/.test(render), '③\'s tip carries the SEND TO promise');
+  A.ok(/\$\{sr && sr\.view \? finSampleHTML\(sr\.view\) \+ finOnwardHTML\(sr\) : onward \? '<div class="fl-result fl-onward"><span class="fl-result-k">ENVIAR A<\/span> ' \+ esc\(onward\) \+ '<\/div>' : ''\}/.test(render), '...and under the key until a result replaces it with SENT ON / NOT SENT ON');
   A.ok(/const sig = \[[^\]]*\bonward\b[^\]]*\]\.join\('\|'\);/.test(render) && render.indexOf('finOnwardPromise(c)') < render.indexOf('const sig = '), 'the card repaints when the SEND TO (or its target\'s refusal) changes: the promise is in the card\'s signature');
 }
 
 /* ---------- conveyor-ui-06: TOO LONG says the longest way ---------- */
 {
   const t = WL.tooLongText({ stages: 8, maxHops: 6 });
-  A.ok(/^too long: the longest way runs 8 stages, the LINE BUDGET allows 7$/.test(t), 'readiness says the longest way — ' + t);
+  A.ok(/^demasiado largo: el camino más largo recorre 8 etapas, el LINE BUDGET permite 7$/.test(t), 'readiness says the longest way — ' + t);
   const row = A.fnBody(panel, 'function paintTooLong(f)');
-  A.ok(/the longest way through this line runs <b>/.test(row) && /so a job that goes that way would stop at stage/.test(row) && !/every job would stop/.test(row), 'the panel\'s TOO LONG row says the longest way, not every job');
+  A.ok(/el camino más largo de esta línea hace <b>/.test(row) && /así que un trabajo que vaya por ahí se detendría en la etapa/.test(row) && !/cada trabajo se detendrá/.test(row), 'the panel\'s TOO LONG row says the longest way, not every job');
   const why = A.fnBody(build, 'function findingWhy(e)');
-  A.ok(/the longest way through this line runs ' \+ e\.stages \+ ' stages/.test(why) && !/every job would stop/.test(why), 'the floor\'s hover card says it too');
-  A.ok(/LINE_TOO_LONG: 'Too long — the longest way through this line runs more stages than its LINE BUDGET allows, so a job that goes the longest way would stop part-way/.test(build), '…and the finding\'s plain sentence');
+  A.ok(/el camino más largo de esta línea lleva ' \+ e\.stages \+ ' etapas/.test(why) && !/cada trabajo se detendrá/.test(why), 'the floor\'s hover card says it too');
+  A.ok(/LINE_TOO_LONG: 'Muy larga — el camino más largo de esta línea supera las etapas que permite su PRESUPUESTO DE LÍNEA, así que un trabajo que tome ese camino se detendría a medias/.test(build), '…and the finding\'s plain sentence');
 }
 
 A.report('workflow-panel-sendto-truth.test');

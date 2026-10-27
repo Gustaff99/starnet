@@ -492,7 +492,7 @@
   }
   function sendRefusalText(name, r) {
     if (!r) return '';
-    return r.code === 'CAP' ? name + ' has spent its $' + (+r.cap).toFixed(2) + ' daily limit' : name + ' has no agent on its first BAY yet';
+    return r.code === 'CAP' ? name + ' ha gastado su límite diario de $' + (+r.cap).toFixed(2) : name + ' aún no tiene agente en su primer BAY';
   }
   function onwardPromise(plan, lineKey, nOutboxes, P, o) {
     o = o || {};
@@ -504,9 +504,9 @@
     const open = sends.filter(x => !x.no), shut = sends.filter(x => x.no);
     const list = xs => [...new Set(xs.map(x => x.name))].map(mark).join(' and ');
     let out = '';
-    if (open.length) out += (sends.length >= (nOutboxes | 0) ? ' When it finishes cleanly it is sent on to ' : ' When it finishes cleanly in an OUTBOX that sends on, it goes on to ')
-      + list(open) + ': that line’s crew starts a job of its own on the result, at its own cost.';
-    for (const x of shut) out += ' Its SEND TO ' + mark(x.name) + ' is set, but nothing will be sent on: ' + sendRefusalText(mark(x.name), x.no) + '.';
+    if (open.length) out += (sends.length >= (nOutboxes | 0) ? ' Cuando termina limpio se envía a ' : ' Cuando termina limpio en un OUTBOX que envía, va a ')
+      + list(open) + ': el equipo de esa línea inicia un trabajo propio con el resultado, a su propio costo.';
+    for (const x of shut) out += ' Su SEND TO ' + mark(x.name) + ' está configurado, pero nada se enviará: ' + sendRefusalText(mark(x.name), x.no) + '.';
     return out;
   }
   function onwardResult(sr, plan, P, lineName) {
@@ -599,7 +599,7 @@
   function tooLongFix(tl) { const need = Math.max(0, ((tl && tl.stages) | 0) - 1); return need <= HOPS_CEILING ? need : null; }
   function tooLongText(tl) {
     const s = (tl && tl.stages) | 0, m = (tl && tl.maxHops) | 0;
-    return 'too long: the longest way runs ' + s + ' stages, the LINE BUDGET allows ' + (m + 1) + (tooLongFix(tl) == null ? ' — shorten the line' : '');
+    return 'demasiado largo: el camino más largo recorre ' + s + ' etapas, el LINE BUDGET permite ' + (m + 1) + (tooLongFix(tl) == null ? ' — acorta la línea' : '');
   }
   function pillText(r) {
     if (r.ready) return 'READY TO RUN';

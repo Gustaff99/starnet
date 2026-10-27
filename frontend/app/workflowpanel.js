@@ -1628,7 +1628,7 @@ const WorkflowPanel = (() => {
     const W = WL(), r = W && W.sendRefusal ? W.sendRefusal((H.plan && H.plan()) || {}, outboxId, typeof Pipeline !== 'undefined' ? Pipeline : null, (typeof World !== 'undefined' && World.lineStatsFor ? id => World.lineStatsFor(id) : null)) : null;
     if (!r) return '';
     return '<p class="wf-warnline" id="send-blocked">' + esc(W.sendRefusalText(name, r))
-      + (r.code === 'CAP' ? ' — nothing is sent on until tomorrow, or until its LINE BUDGET is raised.' : ' — nothing is sent on until it has one.') + '</p>';
+      + (r.code === 'CAP' ? ' — nada se envía hasta mañana, o hasta que su LINE BUDGET sea aumentado.' : ' — nada se envía hasta que tenga uno.') + '</p>';
   }
   function paintOutbox(body, f, p) {
     const choices = sendChoices(p.id), on = choices.find(c => c.on), ss = sendState(p.id);
@@ -1651,12 +1651,12 @@ const WorkflowPanel = (() => {
     const fileAdv = ss && !ss.off && typeof Pipeline !== 'undefined' && Pipeline.sendToFileAdvice ? Pipeline.sendToFileAdvice(H.plan() || {}).find(a => a.propId === p.id) : null;
     const filesNote = fileAdv ? '<p class="wf-help dim wf-sendwhy" id="send-files">' + esc(H.valLabel('SEND_TO_PRIVATE_FILES')) + '</p>' : '';
     body.innerHTML = '<section class="wf-sec"><h3><span class="n">OUTBOX</span>Recoger el trabajo terminado</h3>'
-      + '<p class="wf-help">' + (f && f.outbox.reached ? 'This line’s finished work lands here — leave build mode and click it to read what came back.' : 'Drag the last BAY onto it to lay the belt (or BELT: click the BAY, then this OUTBOX).') + '</p>'
+      + '<p class="wf-help">' + (f && f.outbox.reached ? 'El trabajo terminado de esta línea llega aquí — sale del modo de construcción y haz clic para leer lo que volvió.' : 'Arrastra el último BAY sobre él para poner la cinta (o CINTA: haz clic en el BAY, luego en este OUTBOX).') + '</p>'
       + '<h4 class="wf-sub">SEND TO ›</h4>'
       + (oldBelts.length ? '<p class="wf-warnline">Una cinta vieja une estas líneas en una sola.</p><button type="button" class="bb sm" id="wf-convert-sendto">HÁZLO UN SEND TO</button>' : '')
       + (choices.length && endsNoLine
           ? (ss ? '<div class="wf-chips" role="group" aria-label="A dónde esta línea envía su trabajo terminado"><button type="button" class="wf-chip" data-sendto="" aria-pressed="false">NINGUNA PARTE</button></div>' : '')
-            + '<p class="wf-help dim" id="send-noline">Once this OUTBOX ends a line, pick the line its finished work goes on to.</p>'
+            + '<p class="wf-help dim" id="send-noline">Una vez que este OUTBOX termine una línea, elige la línea a la que va su trabajo terminado.</p>'
         : choices.length ? '<div class="wf-chips" role="group" aria-label="A dónde esta línea envía su trabajo terminado">' + chips + '</div>' + why
         : oldBelts.length ? '' : '<p class="wf-help dim">Todavía no hay otra línea en el piso. Constrúyela y elígela aquí para entregarle el trabajo terminado de esta línea.</p>')
       // (a job is handed on only when it finishes CLEAN — handoff-runner — and only while the target line can take it: sendBlocked)

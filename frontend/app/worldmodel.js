@@ -2681,7 +2681,7 @@ const WorldModel = (() => {
       if (a && b && a === b) return sendFail('SAME_LINE', 'That INBOX starts this same line — pick another line’s INBOX.', 'THAT INBOX STARTS THIS SAME LINE');
       if (a && b && sendReaches(g, b, a)) {
         const nm = lineWord(g, b);
-        return sendFail('SEND_LOOP', 'That would send work round in a circle — ' + (nm || 'that line') + ' already sends its work on, back to this line.', 'A LOOP — ' + (nm || 'THAT LINE') + ' ALREADY SENDS WORK BACK HERE');
+        return sendFail('SEND_LOOP', 'Eso enviaría el trabajo en un círculo — ' + (nm || 'esa línea') + ' ya envía su trabajo, de vuelta a esta línea.', 'UN CÍRCULO — ' + (nm || 'ESA LÍNEA') + ' YA ENVÍA EL TRABAJO DE VUELTA AQUÍ');
       }
       return null;
     }

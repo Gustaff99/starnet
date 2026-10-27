@@ -550,9 +550,9 @@ const StationCommands = (() => {
         // which steps ship into each sending OUTBOX: only THOSE jobs ride on (a line with two OUTBOXes hands on from the one that sends)
         const afterOf = k => flow.order.filter(pid => reachedOf(pid).indexOf(k) >= 0).map(pid => step[pid]).filter(Boolean);
         out.sendsWorkTo = outs.map(k => ({ lineId: st[k].toLine, name: lineName(st[k].toLine), outboxPropId: k, afterSteps: afterOf(k) }));
-        if (c.outboxes.length <= 1) out.howItRuns += ' Then every job it finishes cleanly is sent on to ' + out.sendsWorkTo.map(x => x.name).join(' and ') + ' (SEND TO), whose own crew works it next.';
-        else out.howItRuns += ' Then ' + out.sendsWorkTo.map(x => 'a job that lands in its OUTBOX ' + x.outboxPropId + (x.afterSteps.length ? ' (after step ' + x.afterSteps.join(' or ') + ')' : '') + ' is sent on to ' + x.name).join('; ')
-          + ' (SEND TO), whose own crew works it next' + (outs.length < c.outboxes.length ? '; a job that lands in another of its ' + c.outboxes.length + ' OUTBOXes stops there.' : '.');
+        if (c.outboxes.length <= 1) out.howItRuns += ' Luego cada trabajo que termina limpio se envía a ' + out.sendsWorkTo.map(x => x.name).join(' y ') + ' (SEND TO), cuyo equipo lo trabaja a continuación.';
+        else out.howItRuns += ' Luego ' + out.sendsWorkTo.map(x => 'un trabajo que llega a su OUTBOX ' + x.outboxPropId + (x.afterSteps.length ? ' (después del paso ' + x.afterSteps.join(' o ') + ')' : '') + ' se envía a ' + x.name).join('; ')
+          + ' (SEND TO), cuyo equipo lo trabaja a continuación' + (outs.length < c.outboxes.length ? '; un trabajo que llega a otro de sus ' + c.outboxes.length + ' OUTBOXes se detiene ahí.' : '.');
       }
       if (ins.length) out.getsWorkFromLines = ins.map(k => ({ lineId: st[k].fromLine, name: lineName(st[k].fromLine), intakePropId: st[k].intakeId }));
       if (unread.length) out.startsUnread = unread;
