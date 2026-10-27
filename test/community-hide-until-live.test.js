@@ -206,17 +206,17 @@ async function presetsCase(live, on) {
   const keys = texts(sheet, 'button'), heads = texts(sheet, 'h3');
   if (!on) {
     A.ok(share === null, label + 'no SHARE TO COMMUNITY key in the sheet');
-    A.ok(!keys.some(t => /SHARE TO COMMUNITY/i.test(t)), label + 'no key reads SHARE TO COMMUNITY: ' + JSON.stringify(keys));
+    A.ok(!keys.some(t => /COMPARTIR CON LA COMUNIDAD/i.test(t)), label + 'no key reads COMPARTIR CON LA COMUNIDAD: ' + JSON.stringify(keys));
     A.ok(gallery === null, label + 'no COMMUNITY MAPS section in the sheet');
-    A.eq(heads, ['BUILT FOR YOUR WORK', 'JUST THE LOOK', 'SHARED BUILDS'], label + 'the sheet\'s sections are the presets and SHARED BUILDS only');
+    A.eq(heads, ['BUILT FOR YOUR WORK', 'SOLO LA APARIENCIA', 'CONSTRUCCIONES COMPARTIDAS'], label + 'the sheet\'s sections are the presets and CONSTRUCCIONES COMPARTIDAS only');
     A.ok(!/COMMUNITY/i.test(sheet.textContent), label + 'nothing in the sheet says COMMUNITY');
     A.eq(galleryAsks(P.requests), [], label + 'opening PRESETS never asks for the community gallery');
     return;
   }
-  A.ok(!!share && share.textContent === 'SHARE TO COMMUNITY' && !share.disabled, label + 'SHARE TO COMMUNITY is in SHARED BUILDS, a live key');
-  A.ok(!!gallery && texts(gallery, 'h3')[0] === 'COMMUNITY MAPS', label + 'the COMMUNITY MAPS section is in the sheet');
+  A.ok(!!share && share.textContent === 'COMPARTIR CON LA COMUNIDAD' && !share.disabled, label + 'COMPARTIR CON LA COMUNIDAD is in CONSTRUCCIONES COMPARTIDAS, a live key');
+  A.ok(!!gallery && texts(gallery, 'h3')[0] === 'MAPAS DE LA COMUNIDAD', label + 'the MAPAS DE LA COMUNIDAD section is in the sheet');
   A.eq(galleryAsks(P.requests), ['/api/community-maps?refresh=1'], label + 'opening PRESETS reads the gallery fresh, once');
-  A.eq(gallery && gallery.querySelector('.station-build-community-note').textContent, 'No community maps yet. Be the first: SHARE TO COMMUNITY, above.', label + 'the empty gallery says so');
+  A.eq(gallery && gallery.querySelector('.station-build-community-note').textContent, 'Aún no hay mapas de la comunidad. Sé el primero: COMPARTIR CON LA COMUNIDAD, arriba.', label + 'the empty gallery says so');
   if (!share) return;
   await press(share); await settle();
   const panel = sheet.querySelector('[data-build-section="shared"] .station-build-sharepanel');

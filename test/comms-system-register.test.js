@@ -59,9 +59,9 @@ const mkRow = () => { const cls = new Set(); return { d: { classList: { add: c =
   A.eq(rows.length, 1, 'a goal step is ONE row');
   A.eq(rows[0].role, 'system', '…in the SYSTEM register, never the Commander\'s');
   A.ok(rows[0].d.cls.has('goal-step'), '…marked as a goal step');
-  A.eq(rows[0].body.textContent, '↻ Continuing toward your session goal — ship the landing page', 'it reads as one compact station line');
+  A.eq(rows[0].body.textContent, '↻ Siguiendo hacia el objetivo de tu sesión — ship the landing page', 'it reads as one compact station line');
   goalStepLine('line one\n\nline two ' + 'x'.repeat(300));
-  A.ok(rows[1].body.textContent.length <= 202 && /…$/.test(rows[1].body.textContent) && !/\n/.test(rows[1].body.textContent), 'a long goal is clamped to one tidy line');
+  A.ok(rows[1].body.textContent.length <= 210 && /…$/.test(rows[1].body.textContent) && !/\n/.test(rows[1].body.textContent), 'a long goal is clamped to one tidy line');
 }
 
 /* ---------- 3. replay: renderHistory shows a stored continuation as the station's line ---------- */
