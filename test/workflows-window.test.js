@@ -65,7 +65,7 @@ const tick = () => new Promise(r => setTimeout(r, 15));
   /* ---------- 2. status is the compiled plan's readiness ---------- */
   st.assignPropAgent(line.steps[1].id, '');
   const unready = WW._floor().lines[0];
-  A.ok(!unready.ready.ready && unready.ready.blocking.some(b => /BAY 2 \(WRITER\) needs an agent/.test(b.what)), 'un paso sin agente: NECESITA AJUSTES, y qué paso necesita a quién');
+  A.ok(!unready.ready.ready && unready.ready.blocking.some(b => /BAY 2 \(WRITER\) necesita un agente/.test(b.what)), 'un paso sin agente: NECESITA AJUSTES, y qué paso necesita a quién');
   st.assignPropAgent(line.steps[1].id, 'nova');
   A.ok(WW._floor().lines[0].ready.ready, 'crewed again: READY');
 

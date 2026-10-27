@@ -49,7 +49,7 @@ function playtestFloor() {
     A.eq(col && col.mode, 'turns', 'wired: a plain splitter reads TAKE TURNS');
     A.eq([W.neighbours(flow, Wd).next, W.neighbours(flow, Rd).prev], [[], []], 'wired: no hand-off between the siblings');
     const txt = sentence(flow);
-    A.ok(/WRITER works on it or RESEARCHER works on it \(taking turns\)/.test(txt) && !/ then /.test(txt), 'wired sentence: ' + txt);
+    A.ok(/WRITER trabaja en ello o RESEARCHER trabaja en ello \(por turnos\)/.test(txt) && !/ then /.test(txt), 'wired sentence: ' + txt);
   }
 
   // the playtest dragged the INBOX off the line and its belts stayed behind. Since conveyor links phase B (2026-09-28) a
@@ -76,9 +76,9 @@ function playtestFloor() {
   A.ok(flow.outbox.reached && plan.dockChains[Wd].outbox, 'the OUTBOX claim is the compiled one: both bays still ship there');
   const txt = sentence(flow);
   A.ok(!/ then /.test(txt), 'the sentence never sequences them (was "WRITER works on it then RESEARCHER"): ' + txt);
-  A.ok(/Not connected to an INBOX: WRITER, RESEARCHER/.test(txt), 'it names them as not connected: ' + txt);
+  A.ok(/No conectado a un INBOX: WRITER, RESEARCHER/.test(txt), 'it names them as not connected: ' + txt);
   const r = W.readiness(flow, comp, { hasCompute: () => true, errors: plan.errors, briefOf: () => 'x' });
-  A.ok(!r.ready && /add an INBOX/.test(r.blocking[0].what), 'readiness: add an INBOX first');
+  A.ok(!r.ready && /añade un INBOX/.test(r.blocking[0].what), 'readiness: add an INBOX first');
 }
 
 /* ---------- an INBOX on the line that never reaches a crewed bay: blocked, and not "fed by the INBOX" ---------- */
@@ -102,8 +102,8 @@ function playtestFloor() {
   A.ok(nb.detached && !nb.prev.length, 'the detached bay claims no upstream');
   A.eq(W.neighbours(flow, bay.id).next, [], 'the fed bay does not "hand off" to the detached one');
   const r = W.readiness(flow, comp, { hasCompute: () => true, errors: plan.errors, briefOf: () => 'x', triggers: { schedules: ['daily'] } });
-  A.ok(!r.ready && r.blocking.some(b => /BAY 2 is not connected to the INBOX/.test(b.what) && b.propId === b2.id), 'readiness blocks: ' + JSON.stringify(r.blocking));
-  A.ok(/NOVA .*; not connected to the INBOX: SCOUT/.test(sentence(flow)), 'sentence: ' + sentence(flow));
+  A.ok(!r.ready && r.blocking.some(b => /BAY 2 no está conectado al INBOX/.test(b.what) && b.propId === b2.id), 'readiness blocks: ' + JSON.stringify(r.blocking));
+  A.ok(/NOVA .*; no conectado a el INBOX: SCOUT/.test(sentence(flow)), 'sentence: ' + sentence(flow));
 }
 
 /* ---------- every starter line: a crewed dock's hand-offs are exactly its compiled edges ---------- */
