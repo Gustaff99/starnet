@@ -75,11 +75,11 @@ const nameOf = a => String(a).toUpperCase();
   const hands = { [flow.order[0]]: 'a 200-word draft' };
   const txt = W.howItRuns(flow, { nameOf, handsOf: pid => hands[pid] || null,
     triggers: { schedules: ['every Sunday at 9:00 AM'], channels: ['Telegram'] } }).map(x => x.s).join('');
-  A.ok(/^Every Sunday at 9:00 AM or when a Telegram message arrives, A1 writes it up, handing off a 200-word draft/.test(txt), 'triggers lead, then the first dock with its hand-off: ' + txt);
-  A.ok(/A2 reviews it and sends it back to A1 until it is approved \(3 tries max\)/.test(txt), 'the loop gate is said in its compiled words');
-  A.ok(/the result goes to the OUTBOX\.$/.test(txt), 'and it ends at the OUTBOX');
+  A.ok(/^Every Sunday at 9:00 AM o cuando llega un mensaje de Telegram, A1 lo redacta, entregando a 200-word draft/.test(txt), 'triggers lead, then the first dock with its hand-off: ' + txt);
+  A.ok(/A2 lo revisa y lo devuelve a A1 hasta que esté aprobado \(máx\. 3 intentos\)/.test(txt), 'the loop gate is said in its compiled words');
+  A.ok(/el resultado va al OUTBOX\.$/.test(txt), 'and it ends at the OUTBOX');
   const none = W.howItRuns(flow, { nameOf, triggers: { schedules: [], channels: [] } }).map(x => x.s).join('');
-  A.ok(/^It runs when you send it a job\. /.test(none), 'no trigger is said plainly, never invented');
+  A.ok(/^Corre cuando le envíes un trabajo\. /.test(none), 'no trigger is said plainly, never invented');
   // LINE TRIGGERS (2026-09-23): only server-armed folder/webhook triggers of THIS line join the sentence
   const L = 'line-x';
   const ev = W.lineEventTriggers([
@@ -90,14 +90,14 @@ const nameOf = a => String(a).toUpperCase();
     { id: 'trg_a5', lineId: 'other', kind: 'folder', enabled: true, blockedBy: null, config: { path: 'C:\\Elsewhere' } }
   ], L);
   A.eq(ev.mine.length, 4, 'lineEventTriggers keeps only this line\'s triggers');
-  A.eq(ev.sentences, ['when a file lands in C:\\Drops\\invoices', 'when its webhook "Orders" is called'], 'only enabled, unblocked triggers start the line: ' + JSON.stringify(ev.sentences));
+  A.eq(ev.sentences, ['cuando un archivo llega a C:\\Drops\\invoices', 'cuando se llama a su webhook "Orders"'], 'only enabled, unblocked triggers start the line: ' + JSON.stringify(ev.sentences));
   const withEv = W.howItRuns(flow, { nameOf, triggers: { schedules: [], channels: ['Telegram'], events: ev.sentences } }).map(x => x.s).join('');
-  A.ok(/^When a Telegram message arrives, when a file lands in C:\\Drops\\invoices or when its webhook "Orders" is called, A1/.test(withEv), 'the sentence names the folder and the webhook: ' + withEv);
+  A.ok(/^Cuando llega un mensaje de Telegram, cuando un archivo llega a C:\\Drops\\invoices o cuando se llama a su webhook "Orders", A1/.test(withEv), 'the sentence names the folder and the webhook: ' + withEv);
   const onlyEv = W.readiness(flow, { props: [] }, { triggers: { schedules: [], channels: [], events: ev.sentences } });
   A.ok(!onlyEv.hints.some(h => /nothing starts it/.test(h.what)), 'an armed folder/webhook trigger satisfies the "nothing starts it" hint');
   const un =read(stamp('research_line', false)).flow;
   const segs = W.howItRuns(un, { nameOf });
-  A.ok(segs.some(x => x.t === 'miss' && /pick a researcher/.test(x.s)), 'an uncrewed dock is a clickable gap, not a name');
+  A.ok(segs.some(x => x.t === 'miss' && /elige un researcher/.test(x.s)), 'an uncrewed dock is a clickable gap, not a name');
 }
 
 /* ---------- 3. readiness + cost ---------- */
@@ -105,19 +105,19 @@ const nameOf = a => String(a).toUpperCase();
   const s = stamp('research_line', false), { flow, comp, plan } = read(s);
   const r = W.readiness(flow, comp, { hasCompute: () => true, errors: plan.errors, briefOf: () => '' });
   A.ok(!r.ready, 'an uncrewed line is not ready');
-  A.ok(/needs an agent/.test(r.blocking[0].what), 'the pill names the first missing thing: ' + r.blocking[0].what);
-  A.ok(/^\d+ TO FIX · BAY 1/.test(W.pillText(r)), 'pill text: ' + W.pillText(r));
+  A.ok(/necesita un agente/.test(r.blocking[0].what), 'the pill names the first missing thing: ' + r.blocking[0].what);
+  A.ok(/^\d+ POR CORREGIR · BAY 1/.test(W.pillText(r)), 'pill text: ' + W.pillText(r));
   const s2 = stamp('research_line', true), x = read(s2);
   const r2 = W.readiness(x.flow, x.comp, { hasCompute: () => true, errors: x.plan.errors, briefOf: () => 'x', triggers: { schedules: ['daily'] } });
-  A.ok(r2.ready && W.pillText(r2) === 'READY TO RUN', 'crewed + computed + routed = READY TO RUN');
+  A.ok(r2.ready && W.pillText(r2) === 'LISTA PARA EJECUTAR', 'crewed + computed + routed = READY TO RUN');
   const r3 = W.readiness(x.flow, x.comp, { hasCompute: a => a !== 'a2', errors: [], briefOf: () => 'x' });
-  A.ok(!r3.ready && r3.blocking.some(b => /BAY 2 \(WRITER\) needs a workstation/.test(b.what)), 'a dock with no workstation blocks (the compute gate stays shut)');
+  A.ok(!r3.ready && r3.blocking.some(b => /BAY 2 \(WRITER\) necesita una estación de trabajo/.test(b.what)), 'a dock with no workstation blocks (the compute gate stays shut)');
   const c0 = W.costEstimate(x.flow, {});
   A.eq(c0.tested, 0, 'no tests, no estimate');
-  A.ok(/Test a step/.test(c0.text), 'and it says so');
+  A.ok(/Prueba un paso/.test(c0.text), 'and it says so');
   const c1 = W.costEstimate(x.flow, { [x.flow.order[0]]: { usd: 0.0112 } });
   A.eq([c1.tested, c1.untested], [1, 1], 'only tested steps count; untested ones are counted, not guessed');
-  A.ok(/≈ \$0\.011 a run · from 1 tested step, 1 untested/.test(c1.text), c1.text);
+  A.ok(/≈ \$0\.011 por ejecución · desde 1 paso probado, 1 sin probar/.test(c1.text), c1.text);
 }
 
 /* ---------- channels + routines ---------- */
@@ -152,19 +152,19 @@ const nameOf = a => String(a).toUpperCase();
   A.eq(s.routines.map(r => [r.id, r.startsLine]), [['j1', true], ['j2', false]], 'every routine of the line is listed, starting it or not');
   A.eq(s.channels, ['Telegram'], 'a connected channel answering as the entry agent starts the line; a disconnected one does not');
   A.eq(s.chanRows.length, 2, 'every configured channel row is kept for the reader');
-  A.eq(s.events, ['when a file lands in C:\\Drops'], 'only this line\'s armed folder/webhook triggers count');
+  A.eq(s.events, ['cuando un archivo llega a C:\\Drops'], 'only this line\'s armed folder/webhook triggers count');
   A.eq(W.lineStarts(f, Object.assign({}, facts, { cron: Object.assign({}, facts.cron, { halted: true }) })).schedules, [], 'a halted scheduler starts nothing');
   A.eq(W.lineStarts(f, Object.assign({}, facts, { cron: Object.assign({}, facts.cron, { enabled: false }) })).schedules, [], 'a disabled scheduler starts nothing');
-  A.eq(s.held, ['when a Slack message arrives (not connected)'], 'held: a disconnected channel that answers as the first step is a held start, in start words');
+  A.eq(s.held, ['cuando Slack recibe un mensaje (no conectado)'], 'held: a disconnected channel that answers as the first step is a held start, in start words');
   const heldT = W.lineStarts(f, Object.assign({}, facts, { chans: null, lt: { triggers: [{ id: 't3', lineId: key, kind: 'webhook', name: 'crm', enabled: true, blockedBy: 'the line reached its $2.00 daily limit — it fires again tomorrow' }] } }));
-  A.eq([heldT.events, heldT.held], [[], ['when its webhook "crm" is called (waiting: the line reached its $2.00 daily limit — it fires again tomorrow)']], 'held: a webhook the day cap holds is not a live start, but a held one with the server\'s reason');
-  A.ok(heldT.paused.length === 1 && /is waiting: the line reached/.test(heldT.paused[0]), '…and the panel\'s paused list keeps its own wording');
+  A.eq([heldT.events, heldT.held], [[], ['cuando se llama a su webhook "crm" (en espera: the line reached its $2.00 daily limit — it fires again tomorrow)']], 'held: a webhook the day cap holds is not a live start, but a held one with the server\'s reason');
+  A.ok(heldT.paused.length === 1 && /en espera: the line reached/.test(heldT.paused[0]), '…and the panel\'s paused list keeps its own wording');
   const bare = W.lineStarts(f, {});
   A.eq([bare.schedules, bare.channels, bare.events, bare.routines, bare.chanRows], [[], [], [], [], []], 'an unread fact contributes nothing (the caller says it is unread)');
   A.eq(W.lineStarts(null, facts).schedules, [], 'no flow, no starts');
   const segs = W.howItRuns(f, { nameOf, triggers: s });
   A.eq(W.sentenceText(segs), segs.map(v => v.s).join(''), 'sentenceText is the panel sentence as plain text');
-  A.ok(/^HUMAN\(daily 9\), when a Telegram message arrives or when a file lands in C:\\Drops, /.test(W.sentenceText(segs)), 'the starts lead the sentence: ' + W.sentenceText(segs));
+  A.ok(/^HUMAN\(daily 9\), cuando llega un mensaje de Telegram o cuando un archivo llega a C:\\Drops, /.test(W.sentenceText(segs)), 'the starts lead the sentence: ' + W.sentenceText(segs));
 }
 
 /* ---------- test inputs flow left to right ---------- */
@@ -180,7 +180,7 @@ const nameOf = a => String(a).toUpperCase();
 /* ---------- step-test readings ---------- */
 {
   const sess = { state: 'paused', paused: { afterHop: 0, text: 'x', next: { kind: 'agent', agentId: 'quill', back: true } } };
-  A.eq(W.pausedNext(sess, nameOf).label, 'QUILL (sent back)', 'paused next names the dock (and a loop re-entry)');
+  A.eq(W.pausedNext(sess, nameOf).label, 'QUILL (devuelto)', 'paused next names the dock (and a loop re-entry)');
   A.eq(W.pausedNext({ paused: { next: { kind: 'outbox' } } }).kind, 'outbox', 'or the OUTBOX');
   A.ok(W.isLive({ state: 'paused' }) && !W.isLive({ state: 'done' }), 'paused is live; done is terminal');
   A.eq(W.hopLabel({ agentId: 'vex', pass: 2, rerun: true, usd: 0.003, edited: true }, nameOf), 'VEX ×2 ↻ $0.003 ✎', 'hop label');
@@ -301,10 +301,10 @@ const nameOf = a => String(a).toUpperCase();
   A.eq(flow.outbox.reachedOnceCrewed, true, 'but the belts do reach it once every bay is crewed');
   const r = W.readiness(flow, comp, {});
   A.ok(!r.blocking.some(b => /connect the last step/.test(b.what)), 'no "connect the last step" blocker for a belt that exists: ' + JSON.stringify(r.blocking.map(b => b.what)));
-  A.ok(r.blocking.some(b => /needs an agent/.test(b.what)), 'the real missing piece (an agent) is what blocks');
+  A.ok(r.blocking.some(b => /necesita un agente/.test(b.what)), 'the real missing piece (an agent) is what blocks');
   A.eq(r.ready, false, 'and the line is still not ready');
   const txt = W.howItRuns(flow, { nameOf, triggers: {} }).map(x => x.s).join('');
-  A.ok(/\[the result reaches the OUTBOX once every step has an agent\]/.test(txt) && !/not connected to the OUTBOX/.test(txt), 'the sentence says what is missing: ' + txt);
+  A.ok(/\[el resultado llega al OUTBOX cuando cada paso tiene un agente\]/.test(txt) && !/no conectado al OUTBOX/.test(txt), 'the sentence says what is missing: ' + txt);
   // crew only the FIRST bay: its onward belt leads to an uncrewed bay — probeNext names it (never "connect a belt")
   const first = flow.order[0];
   s.assignPropAgent(first, 'a1');
@@ -318,7 +318,7 @@ const nameOf = a => String(a).toUpperCase();
   s3.removeProp(outbox.id);
   const r3 = read(s3);
   const rb = W.readiness(r3.flow, r3.comp, {});
-  A.ok(rb.blocking.some(b => /add an OUTBOX|connect the last step/.test(b.what)), 'a line that really does not reach an OUTBOX still blocks on it: ' + JSON.stringify(rb.blocking.map(b => b.what)));
+  A.ok(rb.blocking.some(b => /añade un OUTBOX|conecta el último paso/.test(b.what)), 'a line that really does not reach an OUTBOX still blocks on it: ' + JSON.stringify(rb.blocking.map(b => b.what)));
 }
 
 /* ---------- AUDIT 2026-09-28: truths the panel and the lead's station.layout were reading wrong ---------- */
@@ -332,31 +332,31 @@ const nameOf = a => String(a).toUpperCase();
     lt: { triggers: [{ id: 't1', lineId: key, kind: 'webhook', name: 'Orders', enabled: true, blockedBy: 'the line reached its $5.00 daily limit — it fires again tomorrow' }] } };
   const s = W.lineStarts(f, facts);
   A.eq([s.schedules, s.channels, s.events], [[], [], []], 'nothing live starts a line whose starts are all held');
-  A.eq(s.paused, ['its webhook "Orders" is waiting: the line reached its $5.00 daily limit — it fires again tomorrow',
-    'its routine "Morning run" (H(daily 9)) is saved but the scheduler is stopped (E-STOP)', 'its Telegram channel answers as its first step but is not connected'], 'each held start is named, with the server\'s reason');
-  A.eq(W.lineStarts(f, Object.assign({}, facts, { cron: { enabled: false, halted: false, jobs: [job] } })).paused.filter(p => /routine/.test(p)),
-    ['its routine "Morning run" (H(daily 9)) is saved but the scheduler is off'], 'a disabled scheduler is "off", not E-STOP');
+  A.eq(s.paused, ['su webhook "Orders" en espera: the line reached its $5.00 daily limit — it fires again tomorrow',
+    'su rutina "Morning run" (H(daily 9)) está guardada pero el programador está detenido (E-STOP)', 'su canal Telegram responde como su primer paso pero no está conectado'], 'each held start is named, with the server\'s reason');
+  A.eq(W.lineStarts(f, Object.assign({}, facts, { cron: { enabled: false, halted: false, jobs: [job] } })).paused.filter(p => /rutina/.test(p)),
+    ['su rutina "Morning run" (H(daily 9)) está guardada pero el programador está apagado'], 'a disabled scheduler is "off", not E-STOP');
   const txt = W.sentenceText(W.howItRuns(f, { nameOf, triggers: s }));
-  A.ok(/^Nothing starts it right now \(its webhook "Orders" is waiting: .*; its routine "Morning run" .*\(E-STOP\); its Telegram channel .*\); it runs when you send it a job\. /.test(txt), 'the sentence says WHY nothing starts it: ' + txt);
+  A.ok(/^Nada la inicia ahora \(su webhook "Orders" en espera: .*; su rutina "Morning run" .*\(E-STOP\); su canal Telegram .*\); corre cuando le envíes un trabajo\. /.test(txt), 'the sentence says WHY nothing starts it: ' + txt);
   const r = W.readiness(f, x.comp, { hasCompute: () => true, errors: [], briefOf: () => 'x', triggers: s });
-  A.ok(r.hints.some(h => /^nothing starts it right now: its webhook/.test(h.what)) && !r.hints.some(h => /no schedule, channel/.test(h.what)), 'the hint names the pause');
-  const both = W.readiness(f, x.comp, { hasCompute: () => true, errors: [], briefOf: () => 'x', triggers: { schedules: ['daily'], channels: [], events: [], paused: ['its webhook "Orders" is waiting: x'] } });
-  A.ok(both.hints.some(h => h.what === 'paused: its webhook "Orders" is waiting: x'), 'a live start plus a held one: the held one is still named');
+  A.ok(r.hints.some(h => /^nada la inicia ahora: su webhook/.test(h.what)) && !r.hints.some(h => /sin programación, canal/.test(h.what)), 'the hint names the pause');
+  const both = W.readiness(f, x.comp, { hasCompute: () => true, errors: [], briefOf: () => 'x', triggers: { schedules: ['daily'], channels: [], events: [], paused: ['su webhook "Orders" en espera: x'] } });
+  A.ok(both.hints.some(h => h.what === 'en pausa: su webhook "Orders" en espera: x'), 'a live start plus a held one: the held one is still named');
 }
 // readiness: a blocking finding ANYWHERE refuses the whole floor; compute is checked per BAY; crew membership
 {
   const x = read(stamp('research_line', true));
   const away = W.readiness(x.flow, x.comp, { hasCompute: () => true, briefOf: () => 'x', labelOf: c => 'L:' + c,
     errors: [{ code: 'CHAIN_CYCLE', agents: ['zz'], propId: 'p999' }, { code: 'CYCLE', tile: { x: 999, y: 999 } }] });
-  A.eq(away.blocking.slice(0, 2).map(b => b.what), ['routing is off for the whole station until this is fixed: L:CHAIN_CYCLE', 'routing is off for the whole station until this is fixed: L:CYCLE'],
+  A.eq(away.blocking.slice(0, 2).map(b => b.what), ['la enrutación está apagada para toda la estación hasta que esto se corrija: L:CHAIN_CYCLE', 'la enrutación está apagada para toda la estación hasta que esto se corrija: L:CYCLE'],
     'blocking findings elsewhere come FIRST: the router refuses every line while one stands');
-  A.ok(/^\d+ TO FIX · ROUTING IS OFF FOR THE WHOLE STATION/.test(W.pillText(away)), 'and the pill says so');
+  A.ok(/^\d+ POR CORREGIR · LA ENRUTACIÓN ESTÁ APAGADA PARA TODA LA ESTACIÓN/.test(W.pillText(away)), 'and the pill says so');
   const seen = [];
   const per = W.readiness(x.flow, x.comp, { hasCompute: (aid, pid) => { seen.push([aid, pid]); return pid !== x.flow.order[1]; }, errors: [], briefOf: () => 'x' });
   A.eq(seen.map(s => s[1]), x.flow.order, 'the compute gate is asked PER BAY (agent + dock), in run order');
-  A.eq(per.blocking.map(b => b.what), ['BAY 2 (WRITER) needs a workstation'], 'only the Bay whose run has no computer is blocked');
+  A.eq(per.blocking.map(b => b.what), ['BAY 2 (WRITER) necesita una estación de trabajo'], 'only the Bay whose run has no computer is blocked');
   const crew = W.readiness(x.flow, x.comp, { hasCompute: () => true, errors: [], briefOf: () => 'x', isCrew: aid => aid !== 'a2' });
-  A.ok(crew.hints.some(h => /^BAY 2 \(WRITER\)'s agent "a2" is not on the crew: its runs use the station's default identity/.test(h.what)), 'an agent off the crew is named, and what that means');
+  A.ok(crew.hints.some(h => /^el agente "a2" de BAY 2 \(WRITER\) no está en la tripulación: sus ejecuciones usan la identidad por defecto de la estación/.test(h.what)), 'an agent off the crew is named, and what that means');
   A.ok(crew.ready, 'it still runs (on the default identity), so it is a hint, not a blocker');
 }
 // the LOOP's ESCALATION lane: its own column, conditional in the sentence, dead without a pass condition
@@ -368,16 +368,16 @@ const nameOf = a => String(a).toUpperCase();
   const g = x.flow.gates.find(gg => gg.kind === 'loop');
   A.eq(x.flow.docks[g.escTo].role, 'FIXER', 'the gate names its escalation dock');
   const txt = W.sentenceText(W.howItRuns(x.flow, { nameOf }));
-  A.ok(/A2 reviews it and sends it back to A1 until it is approved \(3 tries max\); if it is still not approved after 3 tries, A3 fixes what the loop could not; the result goes to the OUTBOX\.$/.test(txt), 'escalation is conditional, never "then": ' + txt);
+  A.ok(/A2 lo revisa y lo devuelve a A1 hasta que esté aprobado \(máx\. 3 intentos\); si aún no está aprobado después de 3 intentos, A3 corrige lo que el bucle no pudo; el resultado va al OUTBOX\.$/.test(txt), 'escalation is conditional, never "then": ' + txt);
   const loop = s.props().find(p => p.t === 'loop');
   A.ok(s.configureJunction(loop.id, { done: 'E', esc: 'S', maxIter: 3 }).ok, 'fixture: the loop loses its pass condition');
   const y = read(s), dead = y.flow.cols.find(c => c.escalation);
   A.eq(dead.escalation.live, false, 'with no pass condition the escalation lane can never fire (chain.js loopDecision)');
   A.eq(dead.docks[0].routed, false, 'so its dock is not routed');
   const dtxt = W.sentenceText(W.howItRuns(y.flow, { nameOf }));
-  A.ok(/\[A3 on the escalation lane never runs: the LOOP has no pass condition\]/.test(dtxt), 'the sentence says it never runs: ' + dtxt);
+  A.ok(/\[A3 en la vía de escalada nunca corre: el LOOP no tiene condición de paso\]/.test(dtxt), 'the sentence says it never runs: ' + dtxt);
   const r = W.readiness(y.flow, y.comp, { hasCompute: () => true, errors: [], briefOf: () => 'x' });
-  A.ok(r.hints.some(h => /escalation lane never runs: give the LOOP a pass condition/.test(h.what)), 'and the hint says how to fix it');
+  A.ok(r.hints.some(h => /la vía de escalada del LOOP nunca corre: da al LOOP una condición de paso/.test(h.what)), 'and the hint says how to fix it');
 }
 // a belt CYCLE: reach is never computed, so nothing is "not connected" on the evidence; the loop is the finding
 {
@@ -389,8 +389,8 @@ const nameOf = a => String(a).toUpperCase();
   A.ok(x.flow.cyclic, 'the flow knows the floor has a belt CYCLE');
   A.ok(!x.flow.cols.some(c => c.detached) && x.flow.order.length === 1, 'its dock sits where the belts meet it, not "not connected"');
   const r = W.readiness(x.flow, x.comp, { hasCompute: () => true, errors: x.plan.errors, briefOf: () => 'x', labelOf: c => c });
-  A.eq(r.blocking.map(b => b.what), ['routing is off for the whole station until this is fixed: CYCLE'], 'the loop is the one blocker — no "not connected", no "connect the last step"');
-  A.ok(/^\[a belt LOOP on the floor stops all routing/.test(W.sentenceText(W.howItRuns(x.flow, { nameOf }))), 'and the sentence says it');
+  A.eq(r.blocking.map(b => b.what), ['la enrutación está apagada para toda la estación hasta que esto se corrija: CYCLE'], 'the loop is the one blocker — no "not connected", no "connect the last step"');
+  A.ok(/^\[un bucle LOOP en el suelo detiene toda la enrutación/.test(W.sentenceText(W.howItRuns(x.flow, { nameOf }))), 'and the sentence says it');
 }
 // the panel host checks compute PER BAY too (the Workflow panel + the REFIT NO-COMPUTE overlay)
 {

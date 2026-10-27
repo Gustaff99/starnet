@@ -27,42 +27,42 @@
      and HANDS OFF (the phrase composed into the brief the agent receives — Pipeline.composeStageBrief).
      A REVIEWER's starters end with the VERDICT line the loop gate parses (routing/verdict.js). */
   const ROLE = {
-    RESEARCHER: { verb: 'researches it', starters: [
-      ['Find sources', 'Find three credible, recent sources on the task. Only include claims you can back with a link.', 'bullet notes with links'],
-      ['Compare options', 'Compare the main options for the task in a short table: cost, pros, cons.', 'a comparison table'],
-      ['Pull key numbers', 'Pull the 5 most important numbers on the topic, each with its source.', '5 numbers with sources']] },
-    WRITER: { verb: 'writes it up', starters: [
-      ['Newsletter blurb', 'Turn the notes into a 200-word newsletter blurb. Warm, plain English, no jargon. Keep every link.', 'a 200-word draft'],
-      ['Bullet summary', 'Summarize the notes as 5 punchy bullets a busy reader can skim in 20 seconds.', '5 bullets'],
-      ['Email draft', 'Write a short email sharing the findings with my team. Friendly, under 150 words.', 'an email draft']] },
-    REVIEWER: { verb: 'reviews it', starters: [
-      ['Fact-check + verdict', 'Check every claim in the draft against the notes. End with VERDICT: approved, or VERDICT: revise and exactly what to fix.', 'the approved draft'],
-      ['Tone & clarity', 'Check the draft reads clearly for a non-expert. End with VERDICT: approved, or VERDICT: revise with the fixes.', 'the approved draft']] },
-    ENGINEER: { verb: 'builds it', starters: [
-      ['Build to the criteria', 'Build what the incoming request asks for. Restate the acceptance criteria, make the smallest complete change that meets them, and note how you checked it. If the tester sent it back, fix exactly what failed.', 'the change, your checks and the original request'],
-      ['Implement it', 'Make the change the task asks for. Keep it small, run the tests, and list the files you touched.', 'a summary of the change and files touched'],
-      ['Review code', 'Read the change for bugs and risky edge cases. List each problem with its file and line.', 'a list of issues']] },
+    RESEARCHER: { verb: 'investiga', starters: [
+      ['Buscar fuentes', 'Busca tres fuentes creíbles y recientes sobre la tarea. Solo incluye afirmaciones que puedas respaldar con un enlace.', 'notas con enlaces'],
+      ['Comparar opciones', 'Compara las principales opciones para la tarea en una tabla breve: costo, ventajas, desventajas.', 'una tabla comparativa'],
+      ['Extraer cifras clave', 'Extrae los 5 números más importantes sobre el tema, cada uno con su fuente.', '5 cifras con fuentes']] },
+    WRITER: { verb: 'lo redacta', starters: [
+      ['Resumen para boletín', 'Convierte las notas en un resumen de 200 palabras para boletín. Cálido, en lenguaje claro, sin jerga. Mantén cada enlace.', 'un borrador de 200 palabras'],
+      ['Resumen en viñetas', 'Resume las notas en 5 viñetas concisas que un lector ocupado puede escanear en 20 segundos.', '5 viñetas'],
+      ['Borrador de correo', 'Escribe un correo breve compartiendo los hallazgos con mi equipo. Amistoso, menos de 150 palabras.', 'un borrador de correo']] },
+    REVIEWER: { verb: 'lo revisa', starters: [
+      ['Verificación + veredicto', 'Revisa cada afirmación del borrador contra las notas. Termina con VEREDICTO: aprobado, o VEREDICTO: revisar y exactamente qué corregir.', 'el borrador aprobado'],
+      ['Tono y claridad', 'Verifica que el borrador se lea con claridad para un no experto. Termina con VEREDICTO: aprobado, o VEREDICTO: revisar con las correcciones.', 'el borrador aprobado']] },
+    ENGINEER: { verb: 'lo construye', starters: [
+      ['Construir según los criterios', 'Construye lo que la solicitud entrante pide. Repite los criterios de aceptación, haz el cambio mínimo completo que los cumpla, y anota cómo lo verificaste. Si el probador lo devolvió, corrige exactamente lo que falló.', 'el cambio, tus verificaciones y la solicitud original'],
+      ['Implementarlo', 'Haz el cambio que la tarea pide. Mantenlo pequeño, ejecuta las pruebas, y lista los archivos que tocaste.', 'un resumen del cambio y archivos modificados'],
+      ['Revisar código', 'Lee el cambio buscando bugs y casos límite arriesgados. Lista cada problema con su archivo y línea.', 'una lista de problemas']] },
     // TESTER (BUILD & TEST, from PR #47 by @mvanhorn): checks the change and calls the verdict the LOOP gate reads
-    TESTER: { verb: 'tests it', starters: [
-      ['Test + verdict', 'Test the incoming change against the original request. Check each acceptance criterion and edge case, and say which checks you actually ran. If everything passes, deliver the final change with a short test note and end with VERDICT: pass. If anything fails, say exactly what failed and end with VERDICT: revise.', 'the verified change'],
-      ['Quick check', 'Run the quickest checks that prove the change works. End with VERDICT: pass, or VERDICT: revise and what failed.', 'a pass, or what failed']] },
-    GENERALIST: { verb: 'handles it', starters: [
-      ['Do the task', 'Do what the task asks, then summarize what you did in plain words.', 'the finished result'],
-      ['Plan it', 'Break the task into 3 to 5 concrete steps and say what each one needs.', 'a short plan']] },
-    CREW: { verb: 'works its share', starters: [
-      ['Work your share', 'Handle your share of the incoming work and report the result plainly.', 'your part of the result']] },
-    SHIPPER: { verb: 'finishes and ships it', starters: [
-      ['Polish & ship', 'Turn the input into the final deliverable: clean formatting, a clear title, nothing missing.', 'the final deliverable']] },
-    ANALYST: { verb: 'analyzes it', starters: [
-      ['Combine branches', 'Combine the parts you receive into one answer. Note anywhere they disagree.', 'one combined answer']] },
-    PLANNER: { verb: 'divides it into parts', starters: [
-      ['Split into parts', 'Divide the task into independent parts, one per agent after you. Each part must be a complete task on its own; together they cover the whole job with no overlap.', 'a numbered list of parts']] },
-    FIXER: { verb: 'fixes what the loop could not', starters: [
-      ['Take over', 'The review loop gave up on this. Read the history, fix what is still wrong, and say what you changed.', 'the fixed result']] },
+    TESTER: { verb: 'lo prueba', starters: [
+      ['Probar + veredicto', 'Prueba el cambio entrante contra la solicitud original. Verifica cada criterio de aceptación y caso límite, y di qué verificaciones ejecutaste realmente. Si todo pasa, entrega el cambio final con una nota breve de prueba y termina con VEREDICTO: pasa. Si algo falla, di exactamente qué falló y termina con VEREDICTO: revisar.', 'el cambio verificado'],
+      ['Verificación rápida', 'Ejecuta las verificaciones más rápidas que prueben que el cambio funciona. Termina con VEREDICTO: pasa, o VEREDICTO: revisar y qué falló.', 'un pase, o qué falló']] },
+    GENERALIST: { verb: 'lo gestiona', starters: [
+      ['Hacer la tarea', 'Haz lo que la tarea pide, luego resume lo que hiciste en palabras claras.', 'el resultado terminado'],
+      ['Planearlo', 'Divide la tarea en 3 a 5 pasos concretos y di qué necesita cada uno.', 'un plan breve']] },
+    CREW: { verb: 'trabaja su parte', starters: [
+      ['Trabaja tu parte', 'Gestiona tu parte del trabajo entrante y reporta el resultado claramente.', 'tu parte del resultado']] },
+    SHIPPER: { verb: 'lo termina y lo envía', starters: [
+      ['Pulir y enviar', 'Convierte la entrada en el entregable final: formato limpio, título claro, nada faltante.', 'el entregable final']] },
+    ANALYST: { verb: 'lo analiza', starters: [
+      ['Combinar ramas', 'Combina las partes que recibes en una respuesta. Anota donde no coincidan.', 'una respuesta combinada']] },
+    PLANNER: { verb: 'lo divide en partes', starters: [
+      ['Dividir en partes', 'Divide la tarea en partes independientes, una por agente después de ti. Cada parte debe ser una tarea completa por sí sola; juntas cubren todo el trabajo sin solaparse.', 'una lista numerada de partes']] },
+    FIXER: { verb: 'corrige lo que el bucle no pudo', starters: [
+      ['Tomar el relevo', 'El bucle de revisión se rindió con esto. Lee el historial, corrige lo que sigue mal, y di qué cambiaste.', 'el resultado corregido']] },
   };
-  const GENERIC = { verb: 'works on it', starters: [
+  const GENERIC = { verb: 'trabaja en ello', starters: [
     ['Do the task', 'Do what the task asks, then summarize what you did in plain words.', 'the finished result'],
-    ['Summarize', 'Summarize what you receive in 5 short bullets.', '5 bullets']] };
+    ['Resumir', 'Resume lo que recibes en 5 viñetas breves.', '5 viñetas']] };
   const roleInfo = role => ROLE[role] || GENERIC;
   const starters = role => roleInfo(role).starters.map(s => ({ label: s[0], does: s[1], hands: s[2] }));
   /* A NEW LINE'S STEPS COME WITH INSTRUCTIONS (2026-09-30, found walking a fresh station): a line from the shelf used to land with
@@ -391,20 +391,20 @@
     /* UNDER A BELT CYCLE (station.layout audit 2026-09-28) reach is never computed and the router refuses the whole
        floor, so any "who hands to whom" or "not connected" line would be invented: say the one true thing. */
     if (flow && flow.cyclic) {
-      segs.push({ t: 'miss', s: '[a belt LOOP on the floor stops all routing: break the circle, then this line can run]', propId: null });
-      if (flow.order.length) T('. Its steps, where the belts meet them: ' + flow.order.map(pid => dockName(flow.docks[pid])).join(', ') + '.');
+      segs.push({ t: 'miss', s: '[un bucle LOOP en el suelo detiene toda la enrutación: rompe el círculo y entonces esta línea puede correr]', propId: null });
+      if (flow.order.length) T('. Sus pasos, donde las cintas los tocan: ' + flow.order.map(pid => dockName(flow.docks[pid])).join(', ') + '.');
       return segs;
     }
     const trig = o.triggers || { schedules: [], channels: [] };
-    const starts = [].concat((trig.schedules || []), (trig.channels || []).map(c => 'when a ' + c + ' message arrives'), (trig.events || []));
+    const starts = [].concat((trig.schedules || []), (trig.channels || []).map(c => 'cuando llega un mensaje de ' + c), (trig.events || []));
     // PAUSED starts (E-STOP, the scheduler off, a trigger waiting, a channel disconnected) never start the line: they
     // are named, so "nothing starts it" is never said about a line whose start is merely stopped
     const paused = trig.paused || [];
-    if (!flow || !flow.trigger.propId) T('This line has no INBOX yet, so nothing can start it. ');
-    else if (!starts.length && paused.length) T('Nothing starts it right now (' + paused.join('; ') + '); it runs when you send it a job. ');
-    else if (!starts.length) T('It runs when you send it a job. ');   // (2026-09-30: short — the INBOX card lists what could start it by itself)
+    if (!flow || !flow.trigger.propId) T('Esta línea aún no tiene INBOX, así que nada puede iniciarla. ');
+    else if (!starts.length && paused.length) T('Nada la inicia ahora (' + paused.join('; ') + '); corre cuando le envíes un trabajo. ');
+    else if (!starts.length) T('Corre cuando le envíes un trabajo. ');   // (2026-09-30: short — the INBOX card lists what could start it by itself)
     else T(cap(joinOr(starts)) + ', ');
-    if (!flow || !flow.cols.length) { T('there is no BAY on it yet.'); return segs; }
+    if (!flow || !flow.cols.length) { T('aún no hay BAY en ella.'); return segs; }
     const run = flow.cols.filter(c => !c.detached), apart = flow.cols.filter(c => c.detached);
     run.forEach((c, i) => {
       if (c.escalation) {
@@ -412,38 +412,38 @@
         const e = c.escalation;
         if (!e.live) {
           T('; ');
-          segs.push({ t: 'miss', s: '[' + c.docks.map(dockName).join(', ') + ' on the escalation lane never runs: the LOOP has no pass condition]', propId: e.propId });
+          segs.push({ t: 'miss', s: '[' + c.docks.map(dockName).join(', ') + ' en la vía de escalada nunca corre: el LOOP no tiene condición de paso]', propId: e.propId });
           return;
         }
-        const tries = ' after ' + (e.max || 5) + ' tries';
-        T('; ' + (e.when === 'approved' ? 'if it is still not approved' + tries : e.when === 'revise' ? 'if the verdict still does not say revise' + tries
-          : 'if it still reads as ' + e.when + ' work' + tries) + ', ');
+        const tries = ' después de ' + (e.max || 5) + ' intentos';
+        T('; ' + (e.when === 'approved' ? 'si aún no está aprobado' + tries : e.when === 'revise' ? 'si el veredicto aún no dice revisar' + tries
+          : 'si aún se lee como trabajo de ' + e.when + tries) + ', ');
       } else if (i > 0) T(i === run.length - 1 && !c.gate ? ' then ' : '; ');
       // a lone step in front of a LOOP gate says its hand-off AFTER the loop clause — "reviews it, handing off the approved
       // draft and sends it back to NOVA…" read as two sentences glued together (2026-09-28 retest)
       const loopHands = (c.gate && c.gate.kind === 'loop' && c.docks.length === 1 && o.handsOf) ? o.handsOf(c.docks[0].propId) : null;
       c.docks.forEach((d, j) => {
-        if (j > 0) T(c.mode === 'all' ? ' and ' : ' or ');
+        if (j > 0) T(c.mode === 'all' ? ' y ' : ' o ');
         if (d.agentId) segs.push({ t: 'agent', s: nameOf(d.agentId), propId: d.propId });
-        else segs.push({ t: 'miss', s: '[pick ' + (d.role ? 'a ' + d.role.toLowerCase() : 'an agent') + ']', propId: d.propId });
+        else segs.push({ t: 'miss', s: '[elige ' + (d.role ? 'un ' + d.role.toLowerCase() : 'agente') + ']', propId: d.propId });
         const hands = loopHands ? null : (o.handsOf ? o.handsOf(d.propId) : null);
-        T(' ' + roleInfo(d.role).verb + (hands ? ', handing off ' + hands : ''));
+        T(' ' + roleInfo(d.role).verb + (hands ? ', entregando ' + hands : ''));
       });
-      if (c.docks.length > 1) T(c.mode === 'all' ? ' (in parallel)' : c.mode === 'turns' ? ' (taking turns)' : ' (whichever the content routes to)');
+      if (c.docks.length > 1) T(c.mode === 'all' ? ' (en paralelo)' : c.mode === 'turns' ? ' (por turnos)' : ' (al que el contenido lo enrute)');
       const g = c.gate;
       if (g && g.kind === 'loop') {
         const back = g.backTo && flow.docks[g.backTo];
-        const who = back ? (back.agentId ? nameOf(back.agentId) : (back.role || 'the earlier bay')) : 'an earlier bay';
-        const until = g.when === 'approved' ? 'until it is approved' : g.when === 'revise' ? 'until the verdict says revise'
-          : g.when ? 'while it reads as ' + g.when + ' work' : 'every pass';
-        segs.push({ t: 'loop', s: ' and sends it back to ' + who + ' ' + until + ' (' + (g.max || 5) + ' tries max)' });
+        const who = back ? (back.agentId ? nameOf(back.agentId) : (back.role || 'la bay anterior')) : 'una bay anterior';
+        const until = g.when === 'approved' ? 'hasta que esté aprobado' : g.when === 'revise' ? 'hasta que el veredicto diga revisar'
+          : g.when ? 'mientras se lee como trabajo de ' + g.when : 'cada paso';
+        segs.push({ t: 'loop', s: ' y lo devuelve a ' + who + ' ' + until + ' (máx. ' + (g.max || 5) + ' intentos)' });
         if (loopHands) T(', then hands off ' + loopHands);
-      } else if (g && g.kind === 'join') T(' and the parts wait at the JOINER, then continue as one');
+      } else if (g && g.kind === 'join') T(' y las partes esperan en el JOINER, luego continúan como uno');
     });
     /* NOT CONNECTED (2026-09-23): a dock no INBOX reaches is named, never sequenced — the old walk chained such
        docks in bay order ("WRITER then RESEARCHER") though the plan held no hand-off between them. */
     for (const c of apart) {
-      T(run.length ? '; not connected to ' + (flow.trigger.propId ? 'the INBOX' : 'an INBOX') + ': ' : 'Not connected to ' + (flow.trigger.propId ? 'the INBOX' : 'an INBOX') + ': ');
+      T(run.length ? '; no conectado a ' + (flow.trigger.propId ? 'el INBOX' : 'un INBOX') + ': ' : 'No conectado a ' + (flow.trigger.propId ? 'el INBOX' : 'un INBOX') + ': ');
       c.docks.forEach((d, j) => {
         if (j > 0) T(', ');
         if (d.agentId) segs.push({ t: 'agent', s: nameOf(d.agentId), propId: d.propId });
@@ -451,16 +451,16 @@
       });
     }
     T('; ');
-    if (flow.outbox.reached) segs.push({ t: 'end', s: 'the result goes to the OUTBOX.' });
-    else if (flow.outbox.propId && flow.outbox.reachedOnceCrewed) segs.push({ t: 'miss', s: '[the result reaches the OUTBOX once every step has an agent]', propId: flow.outbox.propId });
-    else if (flow.outbox.propId) segs.push({ t: 'miss', s: '[the last step is not connected to the OUTBOX]', propId: flow.outbox.propId });
-    else segs.push({ t: 'miss', s: '[there is no OUTBOX, so the result goes nowhere]', propId: null });
+    if (flow.outbox.reached) segs.push({ t: 'end', s: 'el resultado va al OUTBOX.' });
+    else if (flow.outbox.propId && flow.outbox.reachedOnceCrewed) segs.push({ t: 'miss', s: '[el resultado llega al OUTBOX cuando cada paso tiene un agente]', propId: flow.outbox.propId });
+    else if (flow.outbox.propId) segs.push({ t: 'miss', s: '[el último paso no está conectado al OUTBOX]', propId: flow.outbox.propId });
+    else segs.push({ t: 'miss', s: '[no hay OUTBOX, así que el resultado no va a ningún lugar]', propId: null });
     return segs;
   }
   const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
   function joinOr(list) {
     if (list.length < 2) return list[0] || '';
-    return list.slice(0, -1).join(', ') + ' or ' + list[list.length - 1];
+    return list.slice(0, -1).join(', ') + ' o ' + list[list.length - 1];
   }
 
   /* ---------- SEND TO, said the same way wherever a job is sent and wherever its result is read (2026-10-12, wave-2 repair) ----------
@@ -544,7 +544,7 @@
      dead escalation lane, paused starts and the belt CYCLE were all read wrong or not at all.) */
   function readiness(flow, comp, facts) {
     const f = facts || {}, blocking = [], hints = [];
-    if (!comp) return { ready: false, blocking: [{ what: 'Connect this BAY to a line: drag a machine onto it (or use the BELT tool)', propId: null }], hints };
+    if (!comp) return { ready: false, blocking: [{ what: 'Conecta esta BAY a una línea: arrastra una máquina a ella (o usa la herramienta CINTA)', propId: null }], hints };
     const mine = {}; for (const id of (comp.props || [])) mine[id] = true;
     const onLine = e => (e.propId != null && mine[e.propId]) || !!(e.tile && comp.tiles && comp.tiles[key(e.tile.x, e.tile.y)]);
     const label = code => (f.labelOf ? f.labelOf(code) : code);
@@ -554,27 +554,27 @@
     for (const e of (f.errors || [])) {
       if (!e || e.warn || onLine(e) || away[e.code]) continue;
       away[e.code] = true;
-      blocking.push({ what: 'routing is off for the whole station until this is fixed: ' + label(e.code), propId: e.propId || null });
+      blocking.push({ what: 'la enrutación está apagada para toda la estación hasta que esto se corrija: ' + label(e.code), propId: e.propId || null });
     }
     const cyclic = !!flow.cyclic;
-    if (!flow.trigger.propId) blocking.push({ what: 'add an INBOX', propId: null });
+    if (!flow.trigger.propId) blocking.push({ what: 'añade un INBOX', propId: null });
     let n = 0;
     for (const pid of flow.order) {
       n++;
       const d = flow.docks[pid], nm = (f.stepName && f.stepName(pid)) || d.role, lbl = 'BAY ' + n + (nm ? ' (' + nm + ')' : '');
-      if (!d.agentId) { blocking.push({ what: lbl + ' needs an agent', propId: pid }); continue; }
+      if (!d.agentId) { blocking.push({ what: lbl + ' necesita un agente', propId: pid }); continue; }
       // an id that is not on the crew still RUNS — on the station's default identity (runOnce identityFallback)
-      if (f.isCrew && !f.isCrew(d.agentId)) hints.push({ what: lbl + '\'s agent "' + d.agentId + '" is not on the crew: its runs use the station\'s default identity. Assign a crew agent', propId: pid });
+      if (f.isCrew && !f.isCrew(d.agentId)) hints.push({ what: 'el agente "' + d.agentId + '" de ' + lbl + ' no está en la tripulación: sus ejecuciones usan la identidad por defecto de la estación. Asigna un agente de tripulación', propId: pid });
       // PER BAY: a run gets the tools of the dock it runs at (router.stationFor(agentId, dockId))
-      if (f.hasCompute && !f.hasCompute(d.agentId, pid)) blocking.push({ what: lbl + ' needs a workstation', propId: pid });
-      if (f.briefOf && !f.briefOf(pid)) hints.push({ what: lbl + ' has no instructions', propId: pid });
+      if (f.hasCompute && !f.hasCompute(d.agentId, pid)) blocking.push({ what: lbl + ' necesita una estación de trabajo', propId: pid });
+      if (f.briefOf && !f.briefOf(pid)) hints.push({ what: lbl + ' no tiene instrucciones', propId: pid });
     }
     // under a belt CYCLE reach is unknown: "not connected" and "no route to the OUTBOX" would be guesses
-    if (flow.trigger.propId && !cyclic) { let k = 0; for (const pid of flow.order) { k++; const d = flow.docks[pid]; if (d.detached && d.agentId) blocking.push({ what: 'BAY ' + k + ' is not connected to the INBOX', propId: pid }); } }
-    if (!flow.order.length) blocking.push({ what: 'add a BAY', propId: null });
+    if (flow.trigger.propId && !cyclic) { let k = 0; for (const pid of flow.order) { k++; const d = flow.docks[pid]; if (d.detached && d.agentId) blocking.push({ what: 'BAY ' + k + ' no está conectado al INBOX', propId: pid }); } }
+    if (!flow.order.length) blocking.push({ what: 'añade una BAY', propId: null });
     // belts that already reach the OUTBOX once every bay is crewed are not a belt problem: the uncrewed bays' own
     // "needs an agent" items above are what is missing (sweep 2026-09-25)
-    else if (!cyclic && !flow.outbox.reached && !(flow.outbox.reachedOnceCrewed && flow.order.some(pid => !flow.docks[pid].agentId))) blocking.push({ what: flow.outbox.propId ? 'connect the last step to the OUTBOX' : 'add an OUTBOX', propId: flow.outbox.propId });
+    else if (!cyclic && !flow.outbox.reached && !(flow.outbox.reachedOnceCrewed && flow.order.some(pid => !flow.docks[pid].agentId))) blocking.push({ what: flow.outbox.propId ? 'conecta el último paso al OUTBOX' : 'añade un OUTBOX', propId: flow.outbox.propId });
     // a line whose longest way runs past its stage ceiling stops a job that goes that way part-way (chain.js preHopRefusal): not
     // ready to run — one key raises the ceiling to fit (a FILTER / TAKE TURNS line's short ways would finish: the words say so)
     if (flow.tooLong && !cyclic) blocking.push({ what: tooLongText(flow.tooLong), propId: flow.tooLong.propId, code: 'LINE_TOO_LONG' });
@@ -582,14 +582,14 @@
     for (const e of (f.errors || [])) {
       if (!e || e.warn || !onLine(e) || seenCodes[e.code]) continue;
       seenCodes[e.code] = true;
-      blocking.push({ what: 'fix: ' + label(e.code), propId: e.propId || null });
+      blocking.push({ what: 'corrige: ' + label(e.code), propId: e.propId || null });
     }
     // a LOOP with an escalation lane but no pass condition never exhausts, so its escalation BAY never runs
-    for (const g of (flow.gates || [])) if (g.kind === 'loop' && g.escTo && !g.when) hints.push({ what: 'the LOOP\'s escalation lane never runs: give the LOOP a pass condition (for example, until approved)', propId: g.propId || null });
+    for (const g of (flow.gates || [])) if (g.kind === 'loop' && g.escTo && !g.when) hints.push({ what: 'la vía de escalada del LOOP nunca corre: da al LOOP una condición de paso (por ejemplo, hasta que esté aprobado)', propId: g.propId || null });
     const t = f.triggers || {}, paused = t.paused || [];
     const live = (t.schedules || []).length || (t.channels || []).length || (t.events || []).length;
-    if (flow.trigger.propId && !live) hints.push({ what: paused.length ? 'nothing starts it right now: ' + paused.join('; ') : 'nothing starts it yet (no schedule, channel, folder or webhook)', propId: flow.trigger.propId });
-    else if (paused.length) hints.push({ what: 'paused: ' + paused.join('; '), propId: flow.trigger.propId });
+    if (flow.trigger.propId && !live) hints.push({ what: paused.length ? 'nada la inicia ahora: ' + paused.join('; ') : 'nada la inicia aún (sin programación, canal, carpeta ni webhook)', propId: flow.trigger.propId });
+    else if (paused.length) hints.push({ what: 'en pausa: ' + paused.join('; '), propId: flow.trigger.propId });
     return { ready: !blocking.length, blocking, hints };
   }
   /* LINE_TOO_LONG in words, numbers first (the panel's blocking line and the floor hover card say the same): `tl` = a flow's
@@ -602,9 +602,9 @@
     return 'demasiado largo: el camino más largo recorre ' + s + ' etapas, el LINE BUDGET permite ' + (m + 1) + (tooLongFix(tl) == null ? ' — acorta la línea' : '');
   }
   function pillText(r) {
-    if (r.ready) return 'READY TO RUN';
+    if (r.ready) return 'LISTA PARA EJECUTAR';
     const n = r.blocking.length;
-    return n + ' TO FIX · ' + String(r.blocking[0].what).toUpperCase();
+    return n + ' POR CORREGIR · ' + String(r.blocking[0].what).toUpperCase();
   }
 
   /* ---------- cost estimate: ONLY from steps the Commander actually tested ----------
@@ -617,9 +617,9 @@
     }
     const loops = !!(flow && flow.gates.some(g => g.kind === 'loop'));
     return { usd, tested, untested, loops,
-      text: !tested ? 'Test a step to see its real cost'
-        : '≈ $' + usd.toFixed(3) + ' a run · from ' + tested + ' tested step' + (tested === 1 ? '' : 's')
-          + (untested ? ', ' + untested + ' untested' : '') + (loops ? ' · a loop can repeat steps' : '') };
+      text: !tested ? 'Prueba un paso para ver su costo real'
+        : '≈ $' + usd.toFixed(3) + ' por ejecución · desde ' + tested + ' paso probado' + (tested === 1 ? '' : 's')
+          + (untested ? ', ' + untested + ' sin probar' : '') + (loops ? ' · un bucle puede repetir pasos' : '') };
   }
 
   /* ---------- channels: which connected channels start THIS line ----------
@@ -762,7 +762,7 @@
      first dock. null = nothing honest to offer yet ("test <prev> first"). */
   function testInputFor(flow, propId, tests, job) {
     const nb = neighbours(flow, propId);
-    if (nb.first || !nb.prev.length) return job ? { text: job, from: 'the INBOX test job' } : null;
+    if (nb.first || !nb.prev.length) return job ? { text: job, from: 'el trabajo de prueba del INBOX' } : null;
     for (const p of nb.prev) { const t = tests && tests[p]; if (t && typeof t.output === 'string' && t.output) return { text: t.output, from: p }; }
     return null;
   }
@@ -771,9 +771,9 @@
   function pausedNext(session, nameOf) {
     const p = session && session.paused, nx = p && p.next;
     if (!nx) return null;
-    if (nx.kind === 'agent') return { kind: 'agent', agentId: nx.agentId, dockId: nx.dockId || null, back: !!nx.back, label: (nameOf ? nameOf(nx.agentId) : nx.agentId) + (nx.back ? ' (sent back)' : '') };
-    if (nx.kind === 'outbox') return { kind: 'outbox', label: 'the OUTBOX' };
-    return { kind: 'end', label: 'the end (' + (nx.reason || 'no next step') + ')' };
+    if (nx.kind === 'agent') return { kind: 'agent', agentId: nx.agentId, dockId: nx.dockId || null, back: !!nx.back, label: (nameOf ? nameOf(nx.agentId) : nx.agentId) + (nx.back ? ' (devuelto)' : '') };
+    if (nx.kind === 'outbox') return { kind: 'outbox', label: 'el OUTBOX' };
+    return { kind: 'end', label: 'el final (' + (nx.reason || 'no hay siguiente paso') + ')' };
   }
   function hopLabel(h, nameOf) {
     if (!h) return '';
