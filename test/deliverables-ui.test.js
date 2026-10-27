@@ -73,7 +73,7 @@ A.eq(D.rowsForRun(runRows, 'missing', '').length, 0, 'a missing run never falls 
   A.eq(D.savedLocation({ agentId: 'a' }, { path: '', openUrl: '' }, ''), null, 'no path = no key');
   const src = fs.readFileSync(require('path').join(__dirname, '..', 'frontend', 'app', 'deliverables.js'), 'utf8');
   // P24 polish: the name keeps the row — the keys are glyph-only and ride the row's END, after the size and the main marker
-  A.ok(/OPEN<\/a><span class="dlv-fname">' \+ esc\(f\.path\) \+ '<\/span><span class="dlv-fsize">[\s\S]{0,140}<span class="dlv-floc" data-floc="' \+ fi \+ '"><\/span><\/li>/.test(src), 'every openable FILES row carries a key slot at its end');
+  A.ok(/ABRIR<\/a><span class="dlv-fname">' \+ esc\(f\.path\) \+ '<\/span><span class="dlv-fsize">[\s\S]{0,140}<span class="dlv-floc" data-floc="' \+ fi \+ '"><\/span><\/li>/.test(src), 'every openable FILES row carries a key slot at its end');
   A.ok(/tauriCore\(\) \? Chat\.folderButton\(loc\.agentId, loc\.path\) : Chat\.copyPathButton\(loc\.agentId, loc\.path\)/.test(src) && /if \(tauriCore\(\)\) keys\.push\(Chat\.copyPathButton\(loc\.agentId, loc\.path\)\)/.test(src), 'desktop gets the folder key plus copy path; a browser gets the one copy-path key (its own glyph)');
   A.ok(/k\.removeAttribute\('title'\); k\.setAttribute\('data-tip-path', ''\); k\.setAttribute\('data-tip', \[verbs\[ki\], lead, breakable\(p\)\]/.test(src) && /let lead = sentence\(outsideNote\(loc, r\.project, agentLabel\(loc\.agentId\), ''\)\)/.test(src)
     && /Chat\.fullSavedPath\(loc\.agentId, ''\)\)\.then\(root => \{\s*const proven = sentence\(outsideNote\(loc, r\.project, agentLabel\(loc\.agentId\), root\)\)/.test(src), 'the full path rides a path data-tip (not title=): what the key does, the outside-the-project note, then the path');
@@ -83,7 +83,7 @@ A.eq(D.rowsForRun(runRows, 'missing', '').length, 0, 'a missing run never falls 
   // that really carries the key, never a folder key that is not on that surface, and only while that library card is drawn
   // (a cleared run stays in TO REVIEW with no library card: deliverables-open.test.js runs that case)
   A.ok(/slot \? slot\.querySelector\('\.deliverable-folder'\) : null, !slot && libraryShows\(link, r\.runId\)\)/.test(src) &&
-    /else if \(say && pointBelow\) say\('Could not open that file — open its run in the library below; the folder key on its file row shows where it is saved\.'/.test(src) &&
+    /else if \(say && pointBelow\) say\('No se pudo abrir ese archivo — abre su ejecución en la biblioteca de abajo; la tecla de carpeta de su fila de archivo muestra dónde está guardado\.'/.test(src) &&
     !/its folder key shows where it is saved/.test(src), 'a keyless TO REVIEW row points at the library row that has the folder key');
   const ob = fs.readFileSync(require('path').join(__dirname, '..', 'frontend', 'app', 'windows', 'outbox.js'), 'utf8');
   A.ok(/DLV\.handleOpenClick\(/.test(ob) && !/dlv-floc/.test(ob), 'TO REVIEW rows still route OPEN through the library seam without their own key slot');
