@@ -288,7 +288,7 @@ const frozen = s => JSON.stringify(s.serialize()) + '|' + s.getSeq() + '|' + s.c
   const art = fn('guideStepArt');
   A.ok(!/the clicks: one per machine/.test(art) && /the stroke, dragged to the BAY/.test(art), 'the quick guide\u2019s CONNECT picture draws a drag, never the old click-click');
   const tut = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'tutorial.js'), 'utf8'), qs = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'quests.js'), 'utf8');
-  A.ok(/In the <b>Conveyors<\/b> tab, <kbd>1<\/kbd>–<kbd>8<\/kbd> pick a conveyor piece from its hotbar instead/.test(tut) && !/press <kbd>1<\/kbd> and drag out a room\. Press <kbd>6<\/kbd>/.test(tut), 'the Field Manual says 1–8 pick hotbar pieces in the Conveyors tab (and its mission names tabs, not numbers)');
+  A.ok(/En la pestaña <b>Conveyors<\/b>, <kbd>1<\/kbd>–<kbd>8<\/kbd> eligen una pieza de cinta desde su hotbar/.test(tut) && !/pulsar <kbd>1<\/kbd> y arrastra una habitación\|Press <kbd>6<\/kbd>/.test(tut), 'the Field Manual says 1–8 pick hotbar pieces in the Conveyors tab (and its mission names tabs, not numbers)');
   A.ok(!/drag a BELT \(7\)/.test(qs) && /drag from the INBOX onto the BAY to lay a belt/.test(qs), 'the belt quest teaches the drag, not key 7');
   // the hand × SEND TO join (integration merge 10-11): dragging an OUTBOX onto another line's INBOX asks the ONE SEND TO verdict
   // (worldmodel sendToRefusal via sendToPv) before the ghost goes green — never green for a loop / no-line drop setSendTo refuses
@@ -305,7 +305,7 @@ const frozen = s => JSON.stringify(s.serialize()) + '|' + s.getSeq() + '|' + s.c
   for (const [a, b] of [[IA, BA], [BA, OA], [IB, BB], [BB, OB]]) A.ok(s.connectBelt(a, b).ok, 'line belt ' + a + '→' + b);
   A.ok(s.setSendTo(OA, IB).ok, 'LINE A sends to LINE B');
   const back = s.sendToRefusal(OB, IA);
-  A.ok(back && back.error === 'SEND_LOOP' && /LOOP/.test(back.short || ''), 'B → A is refused as a loop, with a floor caption the ghost shows');
+  A.ok(back && back.error === 'SEND_LOOP' && /CÍRCULO/.test(back.short || ''), 'B → A is refused as a loop, with a floor caption the ghost shows');
   A.ok(s.sendToRefusal(OB, IB) && s.sendToRefusal(OB, IB).error === 'SAME_LINE', 'an OUTBOX onto its own line’s INBOX is refused');
 }
 

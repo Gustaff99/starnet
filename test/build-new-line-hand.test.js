@@ -88,7 +88,7 @@ const verbOf = h => { const m = /<span class="refit-hint-verb">([^<]*)<\/span>/.
   A.eq(r.ctx.root.dataset.hand, 'intake', 'the floor knows a piece is held');
   A.ok(r.own.classList.contains('active') && r.own.attrs['aria-pressed'] === 'true', 'the BUILD YOUR OWN LINE key is lit (aria-pressed) while its INBOX is held');
   A.ok(r.slot.classList.contains('active'), '…and so is the hotbar\'s INBOX slot (it IS the hand)');
-  A.ok(/Click where your line starts/.test(verbOf(r.hint)) && /Esc cancels/.test(verbOf(r.hint)), 'the hint says what the click does and how to back out: ' + verbOf(r.hint));
+  A.ok(/Haz clic donde empieza tu línea/.test(verbOf(r.hint)) && /Esc cancela/.test(verbOf(r.hint)), 'the hint says what the click does and how to back out: ' + verbOf(r.hint));
   A.ok(verbOf(r.hint).length <= 45, 'the hint fits the dock\'s hint bar (≤ 45 characters, no ellipsis): ' + verbOf(r.hint).length);
 
   // putting it down (Esc / right-click both call setHand(null) with a piece held — locked below) places nothing

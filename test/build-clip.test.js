@@ -407,7 +407,7 @@ const lineOfIntake = (s, id) => plan(s).lines.find(l => l.intakes.includes(id));
   // (repair 2026-10-11: a whole line cuts through removeLine — the card's DELETE LINE, under a CUT undo slot)
   A.ok(/if \(cut && !\(whole \? deleteLine\(whole\.id, ev, 'CUT'\) : deleteGroup\(ev, 'CUT'\)\)\) return true;/.test(fn('copyClip')) && fn('copyClip').indexOf('clipOfSelection()') < fn('copyClip').indexOf("deleteGroup(ev, 'CUT')"), 'CUT copies first, then takes it up (one undo) — a refused cut holds nothing');
   const clb = fn('cutLeavesBehind');
-  A.ok(/cutLeavesBehind\(ps\)/.test(fn('copyClip')) && /NOT CARRIED: /.test(fn('copyClip')) && /THE PROJECT FOLDER/.test(clb) && /ANY SCHEDULE OR WEBHOOK ON /.test(clb) && /CONNECTOR \/ PLUGIN BINDS/.test(clb) && /DESK OWNERS/.test(clb), 'a CUT says what its paste cannot bring back (project folder, schedules / webhooks, binds, desk owners) — never silent');
+  A.ok(/cutLeavesBehind\(ps\)/.test(fn('copyClip')) && /NO LLEVADO: /.test(fn('copyClip')) && /LA CARPETA DEL PROYECTO/.test(clb) && /CUALQUIER PROGRAMACIÓN O WEBHOOK DE /.test(clb) && /VÍNCULOS DE CONECTOR \/ PLUGIN/.test(clb) && /PROPIETARIOS DE ESCRITORIO/.test(clb), 'a CUT says what its paste cannot bring back (project folder, schedules / webhooks, binds, desk owners) — never silent');
   const dg = fn('deleteGroup');
   A.ok(/station\.removeLinks\(liftIds, loose, \{ junctions: was\.filter\(p => JUNCTION_TAG_TYPES\[p\.t\]\)\.map\(p => p\.id\) \}\)/.test(dg), 'a selection DELETE / CUT takes the belt under each junction it removes');
   A.ok(/const liftIds = cut \? cutLinksOf\(was\.map\(p => p\.id\)\) : \(bs \? bs\.links : \[\]\), loose = cut \? \[\] : \(bs \? bs\.tiles : \[\]\);/.test(dg), 'a CUT takes up only the belts its clip carries — never a crossed belt it cannot bring back');
@@ -429,9 +429,9 @@ const lineOfIntake = (s, id) => plan(s).lines.find(l => l.intakes.includes(id));
   A.ok(/tool === 'dupe' && dupe && dupe\.type === 'lines' && !\(ev\.ctrlKey \|\| ev\.metaKey\)\) \{ ev\.preventDefault\(\); turnClip\(ev\.shiftKey \? 3 : 1, orientEv\(\)\); return; \}/.test(key) && key.indexOf('turnClip(') < key.indexOf('turnUnderCursor('), 'R turns a clip in hand (before R turns a prop)');
   A.ok(/\(ev\.key === 'x' \|\| ev\.key === 'X'\)\) \{ ev\.preventDefault\(\); cutSelected\(orientEv\(\)\); return; \}/.test(key) && /if \(held\.type === 'lines'\) \{ holdClip\(held, orientEv\(\)\); return; \}/.test(key), 'Ctrl+X cuts; Ctrl+V picks a clip up again');
   A.ok(/if \(selBelts\) \{ setSelection\(\[\]\); return; \}/.test(key), 'Esc lets go of a selection of belts alone');
-  A.ok(/\['Double-click', 'a whole line'\]/.test(build) && /\['Ctrl \+ C · X · V', 'copy · cut · paste'\]/.test(build), 'the Edit tab teaches the double-click and the clipboard');
+  A.ok(/\['Doble clic', 'una línea completa'\]/.test(build) && /\['Ctrl \+ C · X · V', 'copiar · cortar · pegar'\]/.test(build), 'the Edit tab teaches the double-click and the clipboard');
   const tut = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'tutorial.js'), 'utf8');
-  A.ok(/fmEntry\(null, 'Select, copy &amp; paste', /.test(tut) && /Double-click a conveyor piece to select its whole line/.test(tut), '…and so does the Field Manual');
+  A.ok(/fmEntry\(null, 'Seleccionar, copiar y pegar', /.test(tut) && /Doble clic en una pieza de cinta selecciona su línea completa/.test(tut), '…and so does the Field Manual');
 }
 
 A.report('build-clip.test');

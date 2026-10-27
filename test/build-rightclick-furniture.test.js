@@ -53,7 +53,7 @@ ctx.hand = null;
 
 const strip = /if \(tool === 'select' && buildGroup === 'workflow'\) verb = '([^']*)'/.exec(build);
 assert.ok(strip, 'the Conveyors strip is where the test reads it');
-assert.ok(!/right-click removes ·/.test(strip[1]) && /right-click removes a conveyor piece or belt/.test(strip[1]),
+assert.ok(!/right-click removes ·/.test(strip[1]) && /clic derecho quita una pieza o cinta de transporte/.test(strip[1]),
   'the Conveyors strip names what right-click removes');
 
 console.log('build-rightclick-furniture: furniture right-click says how it goes; conveyor right-click unchanged — PASS');

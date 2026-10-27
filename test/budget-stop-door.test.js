@@ -44,7 +44,7 @@ for (const [scope, cap, want] of [
     (items, cb) => { row = items; picked = cb; }, () => opened.push('retry'),
     { openTerm: (k, s) => opened.push(k + '/' + s) }, undefined);
   offer();
-  A.eq(row.map(i => i.label), ['$ OPEN SPENDING LIMITS', '↻ Try again'], 'the chip names SPENDING LIMITS, the section it opens');
+  A.eq(row.map(i => i.label), ['$ ABRIR LÍMITES DE GASTO', '↻ Try again'], 'the chip names SPENDING LIMITS, the section it opens');
   picked(row[0]);
   A.eq(opened, ['settings/budget'], 'and opens SETTINGS on the SPENDING LIMITS (budget) section');
 }
@@ -74,7 +74,7 @@ for (const [scope, cap, want] of [
     picked(row[0]);
     A.eq(opened, ['settings/providers'], 'which opens AI & MODELS, where the STORE + ADD CREDITS live');
     opened.length = 0; offer(false); picked(row[0]);
-    A.eq([row[0].label, opened[0]], ['$ OPEN SPENDING LIMITS', 'settings/budget'], 'a stop at a chosen cap keeps the SPENDING LIMITS door');
+    A.eq([row[0].label, opened[0]], ['$ ABRIR LÍMITES DE GASTO', 'settings/budget'], 'a stop at a chosen cap keeps the SPENDING LIMITS door');
   } finally { globalThis.StationUI = prevUI; }
   // the flag rides from the stream to the stop line and the door
   const harness = read('frontend/app/harness.js');
