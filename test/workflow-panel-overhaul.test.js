@@ -51,11 +51,11 @@ A.ok(/'WORKFLOW · ' \+ nSteps \+ ' STEP' \+ \(nSteps === 1 \? '' : 'S'\);/.test
 
 /* ---------- simpler: the INBOX card is one block per way to start the line ---------- */
 const trig = at(panel, '  function paintTrigger(body, f, p) {', '  /* WORKING FOLDER');
-A.ok(/startHead\('A schedule', !S\.cron \? 'reading…' : routines\.length \? '' : 'none yet', 'rt',/.test(trig) && /startHead\('A channel message', !S\.chans \? 'checking…' : tr\.chanRows\.length \? '' : 'none connected', 'ch',/.test(trig),
+A.ok(/startHead\('A schedule', !S\.cron \? 'reading…' : routines\.length \? '' : 'none yet', 'rt',/.test(trig) && /startHead\('Un mensaje de canal', !S\.chans \? 'comprobando…' : tr\.chanRows\.length \? '' : 'ninguno conectado', 'ch',/.test(trig),
   'a schedule and a channel are blocks whose header says what they have and carries their add key');
 const lts = at(panel, '  function ltSectionHtml() {', '  const ltSay');
-A.ok(/startHead\('A file lands in a folder', ltNote\('folder'\), 'fo',/.test(lts) && /startHead\('A webhook is called', ltNote\('webhook'\), 'wh',/.test(lts), '…and so are a watched folder and a webhook');
-A.ok(/\(hooked \? '<p class="wf-help dim">A webhook address lives on this computer/.test(lts), 'where a webhook can be reached from is said where a webhook IS (one on the line, or one being made)');
+A.ok(/startHead\('Un archivo llega a una carpeta', ltNote\('folder'\), 'fo',/.test(lts) && /startHead\('Se llama a un webhook', ltNote\('webhook'\), 'wh',/.test(lts), '…and so are a watched folder and a webhook');
+A.ok(/\(hooked \? '<p class="wf-help dim">La dirección del webhook vive en esta computadora/.test(lts), 'where a webhook can be reached from is said where a webhook IS (one on the line, or one being made)');
 A.ok(/return S\.lt \? ltMine\(\)\.filter\(t => t\.kind === kind\)\.map\(ltRowHtml\)\.join\(''\) : '';/.test(panel), 'an empty list shows nothing: its block\'s header says "none yet"');
 A.ok(/noteEl\.textContent = ltNote\(rowKind\);/.test(at(panel, '  function ltPatch() {', '  // the one thing that moves')), '…and the 5 s re-read keeps that header note true');
 A.ok(/const startHead = \(name, note, id, keys\) => '<div class="wf-start"><div class="wf-start-h"><h4>' \+ name \+ '<\/h4><span class="wf-start-n" id="wf-start-n-' \+ id \+ '">' \+ esc\(note\) \+ '<\/span>'/.test(panel), 'one builder makes every block\'s header row');
@@ -72,11 +72,11 @@ A.ok(/'<span class="wf-nart">' \+ mthumb\(o\.mach\) \+ \(o\.agent \|\| ''\) \+ '
 A.ok(/data-tip="' \+ esc\(o\.tip\) \+ '"/.test(tile) && /\(o\.lamp != null \? '<span class="dot' \+ \(o\.lamp \? ' ok' : ''\) \+ '"><\/span>' : ''\)/.test(tile), '…with its lamp, and its whole story as its hover tip');
 const node = at(panel, '  function nodeHTML(n, f) {', '  function drawArcs(');
 A.ok(/mach: n\.propId \? n\.mach : null, lamp: n\.ok, name: n\.name, meta: n\.meta/.test(node) && /mach: loop \? 'loop' : 'joiner'/.test(node)
-  && /mach: 'bay', agent: d\.agentId \? thumb\(d\.agentId, 26, 32, 'wf-nthumb'\) : '', lamp: ok, name: role, meta: who \|\| 'needs an agent', warn: !who/.test(node),
+  && /mach: 'bay', agent: d\.agentId \? thumb\(d\.agentId, 26, 32, 'wf-nthumb'\) : '', lamp: ok, name: role, meta: who \|\| 'necesita un agente', warn: !who/.test(node),
   'the INBOX, every BAY, a gate and the OUTBOX are all shown as their machine, with their lamp');
-A.ok(/'\\n' \+ \(brief \? '“' \+ brief\.slice\(0, 140\)/.test(node) && /: 'no instructions yet'\) \+ \(t \? '\\n✓ tested' : ''\);/.test(node) && !/<span class="s">|no agent yet<\/span>/.test(node),
+A.ok(/'\\n' \+ \(brief \? '“' \+ brief\.slice\(0, 140\)/.test(node) && /: 'sin instrucciones aún'\) \+ \(t \? '\\n✓ probado' : ''\);/.test(node) && !/<span class="s">|sin agente<\/span>/.test(node),
   'a step\'s instructions, its missing agent and its test live in the tip — no sentence is printed on a tile');
-A.ok(/meta: f\.outbox\.reached \? \(sendsTo \? 'sends to ' \+ sendsTo\.name \+ \(sendsTo\.off \? ' · OFF' : ''\) : 'the result'\) : f\.outbox\.reachedOnceCrewed \? 'needs crew' : 'not connected'/.test(panel) && /meta: !ip \? 'none yet' : kinds > 1/.test(panel), 'the INBOX and OUTBOX say one short thing each');
+A.ok(/meta: f\.outbox\.reached \? \(sendsTo \? 'envía a ' \+ sendsTo\.name \+ \(sendsTo\.off \? ' · APAGADO' : ''\) : 'el resultado'\) : f\.outbox\.reachedOnceCrewed \? 'necesita tripulación' : 'no conectado'/.test(panel) && /meta: !ip \? 'aún nada' : kinds > 1/.test(panel), 'the INBOX and OUTBOX say one short thing each');
 /* the joins are a clean line with a chevron — NEVER the floor's real conveyor art (2026-09-30, Andrew: "ew … that u put the
    actual conveyor there. terrible") — a shade brighter once a job entering the INBOX would reach the OUTBOX, never moving */
 A.ok(!/beltStill|wf-belt-cold|wf-belt-live|has-belt/.test(panel + build + css) && !/Conveyor\./.test(panel), 'the diagram never draws the real conveyor');
@@ -94,7 +94,7 @@ A.ok(/for \(const el of strip\.children\) if \(el\.offsetLeft < Math\.max\(ax, b
   'a loop\'s way back runs under everything between its ends (a branch group between them hangs lower)');
 A.ok(/head\.setAttribute\('class', 'head'\);/.test(arcs) && /\['stem', stem\]/.test(arcs) && /\.wf-arcs \.head \{ fill: var\(--wf-cyan\);/.test(css) && /\.wf-arcs path\.stem \{ stroke: var\(--wf-cyan\); stroke-width: 2;/.test(css),
   '…and ends in the joins\' arrowhead on a solid stem, up into the part it goes back to');
-A.ok(/meta: loop \? 'back to ' \+ who : 'waits for all'/.test(panel), 'the LOOP tile\'s one line fits the tile (the count is on the way back\'s label)');
+A.ok(/meta: loop \? 'volver a ' \+ who : 'espera a todos'/.test(panel), 'the LOOP tile\'s one line fits the tile (the count is on the way back\'s label)');
 A.ok(!/wf-belt \.rail[^{]*\{[^}]*animation/.test(css) && /\.wf-strip\.live \.wf-arcs path\.chev \{ animation:/.test(css), 'the joins never move; the loop\'s way back moves only on a line that can run');
 A.ok(/card\.classList\.toggle\('glass-tip', !!el\.closest\('\.refit-dock, \.wf-panel'\)\)/.test(rd('app/tooltip.js')), 'the panel\'s tips are the glass card that keeps its lines');
 A.ok(/mach: 'intake'/.test(panel) && /mach: 'outbox'/.test(panel), 'the INBOX and OUTBOX cards name their machines');

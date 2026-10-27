@@ -63,8 +63,8 @@ A.ok(/if \(\(id !== 'select' \|\| !wasSelect\) && !\(o && o\.keepKit\)\) toggleK
 // the real step-test backend's shape (2026-09-23 live run): an `ended` session did NOT reach the OUTBOX; the
 // total includes rewound spend (droppedUsd); a blocked next hop, a hop's error and its exact turn are shown
 A.ok(/const shipped = done && !s\.ended && typeof s\.final === 'string';/.test(panel), 'only a server `final` (no `ended`) is called Reached the OUTBOX');
-A.ok(/The line ended before the OUTBOX/.test(panel), 'an ended session says it stopped short, and why');
-A.ok(/s\.droppedUsd/.test(panel) && /from rewound steps/.test(panel), 'rewound spend is named inside the total');
+A.ok(/La línea terminó antes de la SALIDA/.test(panel), 'an ended session says it stopped short, and why');
+A.ok(/s\.droppedUsd/.test(panel) && /de pasos rebobinados/.test(panel), 'rewound spend is named inside the total');
 A.ok(/s\.paused\.next\.blocked/.test(panel) && /h\.turn/.test(panel) && /h\.error/.test(panel), 'blocked next hop, the exact turn and a hop error are shown');
 // a draft is only what was TYPED (an input painted empty before the INBOX had a test job must not clobber it)
 A.ok(/if \(n\.dataset\.typed === '1'\) S\.drafts\[n\.dataset\.keep\] = n\.value;/.test(panel), 'drafts keep typed text only');
@@ -95,18 +95,18 @@ A.ok(/afterFlush\(\(\) => sessionCall\('rewind', \{ hop: i \}\)\)/.test(panel), 
 A.ok(/if \(s && s\.state === 'paused'\) refreshPaused\(\);/.test(panel), 'returning to a paused test re-reads its preview after posting the floor');
 
 // (sweep 2026-09-25) a belted-but-uncrewed line never tells the owner to lay a belt that exists
-A.ok(/f\.outbox\.reachedOnceCrewed \? 'connected · waiting on agents' : 'not connected yet'/.test(panel), 'the OUTBOX node says "waiting on agents" when only crew is missing');
-A.ok(/else if \(f\.probeNext && f\.probeNext\[p\.id\]\) to = 'nowhere yet — ' \+ f\.probeNext\[p\.id\]\.map\(pid => dockLabel\(f, pid\)\)\.join\(' or '\) \+ ' needs an agent';/.test(panel), 'a crewed bay before an uncrewed one names the bay that needs an agent');
+A.ok(/f\.outbox\.reachedOnceCrewed \? 'conectado · esperando agentes' : 'aún no conectado'/.test(panel), 'the OUTBOX node says "waiting on agents" when only crew is missing');
+A.ok(/else if \(f\.probeNext && f\.probeNext\[p\.id\]\) to = 'aún a ninguna parte — ' \+ f\.probeNext\[p\.id\]\.map\(pid => dockLabel\(f, pid\)\)\.join\(' o '\) \+ ' necesita un agente';/.test(panel), 'a crewed bay before an uncrewed one names the bay that needs an agent');
 
 // (sweep 2026-09-25) one agent on two bays: the owner is told WHICH bay ("between NOVA and NOVA" / two "NOVA" chips)
-A.ok(/It is placed on the floor between ' \+ esc\(dockLabel\(f, pid\)\) \+ ' and ' \+ esc\(nextPid \? dockLabel\(f, nextPid\) : nx\.label\)/.test(panel), 'the mid-test insert names the two BAYS it sits between');
+A.ok(/Se coloca en el suelo entre ' \+ esc\(dockLabel\(f, pid\)\) \+ ' y ' \+ esc\(nextPid \? dockLabel\(f, nextPid\) : nx\.label\)/.test(panel), 'the mid-test insert names the two BAYS it sits between');
 A.ok(/thumb\(d\.agentId, 16, 20, 'wf-ithumb'\) \+ esc\(dockLabel\(f, d\.propId\)\) \+ '<\/button>'/.test(panel), 'a schedule\'s starting-step chips name the bay, not only the agent');
-A.ok(/'skips ' \+ order\.slice\(0, i\)\.map\(x => dockLabel\(f, x\)\)/.test(panel), 'the starting-step hint names bays too');
+A.ok(/'salta ' \+ order\.slice\(0, i\)\.map\(x => dockLabel\(f, x\)\)/.test(panel), 'the starting-step hint names bays too');
 
 // (sweep 2026-09-25) a closed panel stops polling a try-this-step run (it used to poll ~14 min after close)
 {
   const i = panel.indexOf('function waitDone(sess)'), body = panel.slice(i, panel.indexOf('\n  }\n', i));
-  A.ok(i > 0 && /if \(!el\) return reject\(new Error\('the panel was closed while this step ran/.test(body), 'waitDone stops when the panel closes, saying the run carries on');
+  A.ok(i > 0 && /if \(!el\) return reject\(new Error\('el panel se cerró mientras este paso corría/.test(body), 'waitDone stops when the panel closes, saying the run carries on');
   A.ok(body.indexOf('if (!el) return reject') < body.indexOf('setTimeout('), 'the closed check runs before the next poll is scheduled');
 }
 
