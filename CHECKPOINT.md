@@ -19,6 +19,15 @@
 1. conveyor-legibility.test.js: 14 assertions → ES strings ✅ (45/45 PASS)
 2. conveyor-link-tools.test.js: 1 assertion → ES strings ✅ (50/50 PASS)
 3. cron.images-grant.e2e.test.js: 1 assertion (ALLOW IMAGES → PERMITIR IMÁGENES) ✅ (32/32 PASS)
+4. workflow-line.test.js: EN CURSO - 3 fallos restantes (155 ok, 3 problem)
+
+### workflow-line.test.js - estado actual:
+- Corregidas ~20 assertions de inglés a español
+- 3 fallos restantes:
+  1. Line 95: `o cuando se llama` → debe ser `or cuando se llama` (joinOr usa 'or')
+  2. "panel's paused list keeps its own wording" - assertion pendiente de localizar y corregir
+  3. Lines 335-336: paused list aún en inglés (Python replace no funcionó - verificar)
+- Próximos pasos: corregir los 3 fallos restantes y re-ejecutar
 
 ### Tests que pasan (verificados):
 - dialogue.test.js: 35 assertions ✅
@@ -29,6 +38,7 @@
 - world-crew-approval.test.js: PASS ✅
 
 ### Pendientes en suite global:
+- workflow-line.test.js: 3 fallos (arriba)
 - cron-lock-recycled-pid.http.test.js: 4 fallos (timing/environment, no translation)
 - stationui.test.js: timeout (60s+) - pre-existing
 - command-deck.test.js: timeout (60s+) - pre-existing

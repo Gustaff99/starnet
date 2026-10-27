@@ -209,7 +209,7 @@ const group = (members, extra = {}) => ({ id: 'direct', title: 'Direct', members
   assert.equal(peerRow.attrs.title, 'Answers with every claim sourced', 'the description is the row\'s hover tip (adopted into the station tooltip)');
   assert.equal(peerRow.attrs['aria-description'], 'Answers with every claim sourced', 'and is still read to a screen reader');
   assert.equal(rowOf('third').attrs.title, undefined, 'no description, no tip (never an invented job title)');
-  assert.match(text(tipped.find('gc-picker')), /Talk to one agent with/, 'the how-to line is kept (simplify = organization, never removal)');
+  assert.match(text(tipped.find('gc-picker')), /Háblale a un agente con/, 'the how-to line is kept (simplify = organization, never removal)');
   await tipped.click('DONE');
   // the picker fills its window and never overflows it: the lists flex, the how-to line and the footer stay in the flow
   const pickerCss = (source.match(/\.gc-picker\{[^}]*\}/) || [''])[0];

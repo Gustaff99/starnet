@@ -666,7 +666,7 @@ const GroupChat = (() => {
         const said = '▣ ' + name(t.agentId) + ' quiere ' + (phrase || String(ask.tool || 'una acción')) + ' ';
         keep('ra:' + t.id, said, () => {
           const card = h('div', { class: 'cmsg agent tool consent gc-retired', role: 'note' }), body = h('div', { class: 'body' });
-          body.append(said, h('span', { class: 'consent-result err' }, '■ the run ended before an answer — nothing was approved'));
+          body.append(said, h('span', { class: 'consent-result err' }, '■ la ejecución terminó antes de la respuesta — nada se aprobó'));
           card.append(body);
           return card;
         });

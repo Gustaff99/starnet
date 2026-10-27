@@ -244,7 +244,7 @@ for (const [decision, expired, label] of [
   ['once', false, '✓ aprobado una vez desde tu teléfono'],
   ['session', false, '✓ aprobado para esta sesión desde tu teléfono'],
   ['deny', false, '✕ denegado desde tu teléfono'],
-  ['deny', true, '✕ no answer in time — denied']
+  ['deny', true, '✕ sin respuesta a tiempo — denegada']
 ]) test('phone permission ' + (expired ? 'expiry' : decision) + ' settles one card and preserves sibling asks', () => {
   const f = permissionFixture(), response = f.listeners.get('permission.response');
   const pending = () => f.Channels.pendingAllOf(f.ws.id).map(p => p.promptId);
@@ -325,10 +325,10 @@ for (const [said, applied, label] of [
    downgraded on a fresh ask), so the card read "✓ always allowed by voice" and voice said "Always allowed." while the
    station granted this one call. Voice now answers these once, and the card settles any yes with its own yes receipt. */
 for (const [tool, said, sent, label, heard] of [
-  ['station.power', 'always allow', 'once', '✓ aprobado una vez por voz', 'This one can only be approved once. Approved once.'],
-  ['browser.login', 'always allow', 'once', '✓ ventana abierta por voz', 'This one can only be approved once. Approved once.'],
-  ['browser.login.done', 'always allow', 'once', '✓ listo por voz', 'This one can only be approved once. Approved once.'],
-  ['browser.login.done', 'deny', 'deny', '✕ cancelado por voz', 'Denied.']
+  ['station.power', 'always allow', 'once', '✓ aprobado una vez por voz', 'Esta solo se puede aprobar una vez. Aprobada una vez.'],
+  ['browser.login', 'always allow', 'once', '✓ ventana abierta por voz', 'Esta solo se puede aprobar una vez. Aprobada una vez.'],
+  ['browser.login.done', 'always allow', 'once', '✓ listo por voz', 'Esta solo se puede aprobar una vez. Aprobada una vez.'],
+  ['browser.login.done', 'deny', 'deny', '✕ cancelado por voz', 'Denegada.']
 ]) test('a spoken "' + said + '" on a ' + tool + ' card (no Always key) answers once and settles with the card\'s own receipt', async () => {
   const f = permissionFixture(tool), spoken = [], sentDecisions = [];
   f.Channels.clearPending(f.ws.id, 150, 'question-2'); f.Channels.clearPending(f.ws.id, 150, 'approval-3');
@@ -409,7 +409,7 @@ test('the end of a run retires its open approval card — no live key answers a 
   f.ctx.retireOpenConsents(f.ws.id, String(f.p.runId || ''));
   const body = f.nodes[0].body;
   const tag = body.children.find(n => n.className && n.className.indexOf('consent-result') >= 0);
-  assert.ok(tag && /the run ended before an answer/.test(tag.textContent), 'the card says the run ended and nothing was approved');
+  assert.ok(tag && /la ejecución terminó antes de la respuesta/.test(tag.textContent), 'the card says the run ended and nothing was approved');
   assert.ok(body.children.length >= before, 'the card stays as history');
   assert.equal(f.listeners.has('permission.response'), false, 'and it no longer listens for an answer');
 });
