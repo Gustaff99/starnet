@@ -44,7 +44,7 @@ const html = strip('af_heart');
 const row = html.split('data-goconfig="ag-voice"')[1].split('</button>')[0];
 A.match(row, /ag-setup-val">HEART</, 'MIRA\'s VOICE row reads HEART, the picker\'s word');
 A.doesNotMatch(row, /af_heart/, '…never the engine id');
-A.match(strip('').split('data-goconfig="ag-voice"')[1], /ag-setup-val dim">station default</, 'no choice still reads station default');
+A.match(strip('').split('data-goconfig="ag-voice"')[1], /ag-setup-val dim">por defecto de la estación/, 'no choice still reads station default');
 
 // VoiceLive.voices feeds the label memory from the same reply the picker paints
 const live = fs.readFileSync(require.resolve('../frontend/app/voice-live.js'), 'utf8');

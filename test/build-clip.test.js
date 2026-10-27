@@ -429,7 +429,7 @@ const lineOfIntake = (s, id) => plan(s).lines.find(l => l.intakes.includes(id));
   A.ok(/tool === 'dupe' && dupe && dupe\.type === 'lines' && !\(ev\.ctrlKey \|\| ev\.metaKey\)\) \{ ev\.preventDefault\(\); turnClip\(ev\.shiftKey \? 3 : 1, orientEv\(\)\); return; \}/.test(key) && key.indexOf('turnClip(') < key.indexOf('turnUnderCursor('), 'R turns a clip in hand (before R turns a prop)');
   A.ok(/\(ev\.key === 'x' \|\| ev\.key === 'X'\)\) \{ ev\.preventDefault\(\); cutSelected\(orientEv\(\)\); return; \}/.test(key) && /if \(held\.type === 'lines'\) \{ holdClip\(held, orientEv\(\)\); return; \}/.test(key), 'Ctrl+X cuts; Ctrl+V picks a clip up again');
   A.ok(/if \(selBelts\) \{ setSelection\(\[\]\); return; \}/.test(key), 'Esc lets go of a selection of belts alone');
-  A.ok(/\['Doble clic', 'una línea completa'\]/.test(build) && /\['Ctrl \+ C · X · V', 'copiar · cortar · pegar'\]/.test(build), 'the Edit tab teaches the double-click and the clipboard');
+  A.ok(/\['Doble clic', 'una línea entera'\]/.test(build) && /\['Ctrl \+ C · X · V', 'copiar · cortar · pegar'\]/.test(build), 'the Edit tab teaches the double-click and the clipboard');
   const tut = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app', 'tutorial.js'), 'utf8');
   A.ok(/fmEntry\(null, 'Seleccionar, copiar y pegar', /.test(tut) && /Doble clic en una pieza de cinta selecciona su línea completa/.test(tut), '…and so does the Field Manual');
 }

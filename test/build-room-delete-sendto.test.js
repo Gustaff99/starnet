@@ -46,7 +46,7 @@ function rig() {
   const R = rig(), { s, ctx, said } = R;
   ctx.selectedRoomId = R.rb;
   ctx.deleteSelectedRoom({}); R.tick(300);
-  A.ok(/press Delete again/.test(said[said.length - 1]), 'the first Delete arms');
+  A.ok(/pulsa Del de nuevo/.test(said[said.length - 1]), 'the first Delete arms');
   ctx.deleteSelectedRoom({}); R.tick(300);
   A.ok(/THIS CUTS 1 SEND TO/.test(said[said.length - 1]) && / — DELETE AGAIN TO CONTINUE · UNDO RESTORES THEM$/.test(said[said.length - 1]), 'the second warns that a SEND TO is cut — ' + said[said.length - 1]);
   A.ok(!!s.roomById(R.rb), '…the room still stands');
@@ -78,7 +78,7 @@ function rig() {
   const R2 = rig();
   R2.ctx.selectedRoomId = R2.rb;
   R2.ctx.deleteSelectedRoom({}); R2.tick(300); R2.ctx.deleteSelectedRoom({}); R2.tick(7000); R2.ctx.deleteSelectedRoom({});
-  A.ok(!!R2.s.roomById(R2.rb) && /press Delete again/.test(R2.said[R2.said.length - 1]), 'past the 6 s window the warning has lapsed: Delete arms afresh (never a silent delete)');
+  A.ok(!!R2.s.roomById(R2.rb) && /pulsa Del de nuevo/.test(R2.said[R2.said.length - 1]), 'past the 6 s window the warning has lapsed: Delete arms afresh (never a silent delete)');
 }
 {
   // REPAIR: the 6 s window belongs to the room the cut warning was FOR. An old, unconfirmed warning (a prop whose delete would cut
@@ -88,9 +88,9 @@ function rig() {
   A.ok(ctx.warnSendCuts([target.id], {}), 'a prop delete warns that it cuts a SEND TO — and is never confirmed');
   ctx.selectedRoomId = R.ra;   // room A: no SEND TO points into it
   R.tick(300); ctx.deleteSelectedRoom({});
-  A.ok(/press Delete again/.test(said[said.length - 1]), 'room A arms');
+  A.ok(/pulsa Del de nuevo/.test(said[said.length - 1]), 'room A arms');
   R.tick(4000); ctx.deleteSelectedRoom({});
-  A.ok(!!s.roomById(R.ra) && /press Delete again/.test(said[said.length - 1]), 'a Delete 4 s later re-arms room A (its own 2.5 s confirm) — never a delete on an unrelated warning\'s window — ' + said[said.length - 1]);
+  A.ok(!!s.roomById(R.ra) && /pulsa Del de nuevo/.test(said[said.length - 1]), 'a Delete 4 s later re-arms room A (its own 2.5 s confirm) — never a delete on an unrelated warning\'s window — ' + said[said.length - 1]);
   R.tick(500); ctx.deleteSelectedRoom({});
   A.ok(!s.roomById(R.ra), '…and the next quick Delete deletes it, as for any room');
 }
