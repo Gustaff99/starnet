@@ -44,16 +44,16 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
   }
   const div = splitter('divide'), copy = splitter('copy'), turns = splitter('turns');
   const tipOf = html => ((/data-edit="addArm" data-tip="([^"]*)"/.exec(html) || [])[1] || '');
-  A.ok(/one more step takes one more part of the job/.test(tipOf(div)) && !/copy of every job/.test(tipOf(div)), 'SPLIT THE JOB: ADD A BRANCH says the new step takes one more PART of the job — ' + tipOf(div));
-  A.ok(/gets a copy of every job/.test(tipOf(copy)), 'COPY TO EACH: ADD A BRANCH still says the new step gets a copy');
-  A.ok(/takes its turn with the others/.test(tipOf(turns)), 'TAKE TURNS: ADD A BRANCH still says it takes its turn');
+  A.ok(/un paso más toma una parte más del trabajo/.test(tipOf(div)) && !/copia de cada trabajo/.test(tipOf(div)), 'SPLIT THE JOB: ADD A BRANCH says the new step takes one more PART of the job — ' + tipOf(div));
+  A.ok(/recibe una copia de cada trabajo/.test(tipOf(copy)), 'COPY TO EACH: ADD A BRANCH still says the new step gets a copy');
+  A.ok(/toma su turno con los demás/.test(tipOf(turns)), 'TAKE TURNS: ADD A BRANCH still says it takes its turn');
   const note = html => ((/id="split-note">([^<]*)</.exec(html) || [])[1] || '');
-  A.ok(/TAKE TURNS swaps the JOINER or MERGER/.test(note(div)) && /COPY TO EACH and SPLIT THE JOB share the JOINER/.test(note(div)), 'the split note says only TAKE TURNS swaps the junction — ' + note(div));
+  A.ok(/TAKE TURNS cambia el JOINER o MERGER/.test(note(div)) && /COPY TO EACH y SPLIT THE JOB comparten el JOINER/.test(note(div)), 'the split note says only TAKE TURNS swaps the junction — ' + note(div));
   const plain = A.fnBody(panel, 'function paintPlain(body, f, p)');
   A.ok(plain.length > 0 && !/outbox: \['OUTBOX'/.test(plain) && !/browse delivered work in the Logbook/.test(plain), 'paintPlain carries no unreachable OUTBOX copy (conveyor-ui-08)');
   const b = body(), fns = load(panel, ['function paintPlain(body, f, p)', 'function laneName(f, l, arrow)'], { H: { junctionInfo: () => null, machineDiagram: () => '' }, paintFilter() {}, paintOutbox() {} });
   fns.paintPlain(b, null, { id: 'x', t: 'gizmo' });
-  A.ok(/GIZMO/.test(b.innerHTML) && /Part of the line/.test(b.innerHTML), 'any other machine still gets the plain card');
+  A.ok(/GIZMO/.test(b.innerHTML) && /Parte de la línea/.test(b.innerHTML), 'any other machine still gets the plain card');
 }
 
 /* ---------- conveyor-ui-11: an off-list role is a pressed chip ---------- */
@@ -97,7 +97,7 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
   A.ok(!S.note && tips.length === 1 && tips[0][1] === false, 'a name refused while the panel closes still says why (the floor tip) — it is never lost');
   const head = A.fnBody(panel, 'function paintHead(f)'), bay = A.fnBody(panel, 'function paintBay(body, f, p)');
   A.ok(/else \{ nameIn\.value = saved; said\(\(res && res\.msg\) \|\| 'name not saved', true, nameIn\); \}/.test(head), 'the line name\'s refusal goes through said() under #wf-name');
-  A.ok(/else \{ bayName\.value = savedName; said\(\(r && r\.msg\) \|\| 'name not saved', true, bayName\); \}/.test(bay), 'the step name\'s refusal goes through said() under #wf-bay-name');
+  A.ok(/else \{ bayName\.value = savedName; said\(\(r && r\.msg\) \|\| 'nombre no guardado', true, bayName\); \}/.test(bay), 'the step name\'s refusal goes through said() under #wf-bay-name');
   A.ok(!/H\.flashTip\([^;]*name not saved/.test(head + bay), 'no name refusal is a toast any more');
   const close = A.fnBody(panel, 'function close()');
   A.ok(/S\.closing = true;\s*try \{ saveOpenFields\(\); \} finally \{ S\.closing = false; \}/.test(close), 'close() marks the closing save so its answer reaches the floor tip');
@@ -161,18 +161,18 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
   (async () => {
     // the immediate toast says only the step's fact
     const kx = A.fnBody(panel, 'function keepExample(mine)');
-    A.ok(kx.length > 0 && !/the crew learns/.test(kx) && /will match this example · UNDO takes it back/.test(kx), 'KEEP AS THE EXAMPLE says only that the step will match it before the station answers');
+    A.ok(kx.length > 0 && !/el equipo aprende/.test(kx) && /seguirá este ejemplo · DESHACER lo revierte/.test(kx), 'KEEP AS THE EXAMPLE says only that the step will match it before the station answers');
     /* (wave-2 repair) the first cut of this table locked two wrong answers in: created:false ("already knew") is a record that
        existed — a 👎 on that run, say — gaining the kept flag, so the crew DID learn the style; and 'nothing to learn' is the
        station saying that run's style is ALREADY kept (FeedbackMemory.apply returns null for a kept=true on a record already
        feedbackKept), so it is true and calm, not a failure. The UNDO contract is unchanged: only a stored keep resolves true. */
     const cases = [
-      [{ status: 200, j: { ok: true, feedbackMemory: { stored: true, created: true } } }, /^the crew learned this style · UNDO takes it back$/, true, true],
-      [{ status: 200, j: { ok: true, feedbackMemory: { stored: true, created: false } } }, /^the crew learned this style · UNDO takes it back$/, true, true],
+      [{ status: 200, j: { ok: true, feedbackMemory: { stored: true, created: true } } }, /^el equipo aprendió este estilo · DESHACER lo revierte$/, true, true],
+      [{ status: 200, j: { ok: true, feedbackMemory: { stored: true, created: false } } }, /^el equipo aprendió este estilo · DESHACER lo revierte$/, true, true],
       [{ status: 200, j: { ok: true, feedbackMemory: { stored: false, reason: 'personalization-paused' } } }, /learning is paused/, false, false],
-      [{ status: 200, j: { ok: true, feedbackMemory: { stored: false, reason: 'could not save' } } }, /did not learn the style: could not save/, false, false],
-      [{ status: 200, j: { ok: true, feedbackMemory: { stored: false, reason: 'nothing to learn' } } }, /^kept for this step — the crew already keeps this style$/, false, true],
-      [{ status: 500, j: { ok: false, error: 'boom' } }, /could not learn the style: boom/, false, false]
+      [{ status: 200, j: { ok: true, feedbackMemory: { stored: false, reason: 'could not save' } } }, /no aprendió el estilo: could not save/, false, false],
+      [{ status: 200, j: { ok: true, feedbackMemory: { stored: false, reason: 'nothing to learn' } } }, /^guardado para este paso — el equipo ya mantiene este estilo$/, false, true],
+      [{ status: 500, j: { ok: false, error: 'boom' } }, /no pudo aprender el estilo: boom/, false, false]
     ];
     for (const [reply, said, stored, calm] of cases) {
       const tips = [];
@@ -205,12 +205,12 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
       const okFns = load(panel, ['function jobResultHTML(mine, f)', 'function loopNotes(text)'], {
         prop: id => st[id] || null, nameOf: a => a.toUpperCase(), stepText: () => 'reply', stepOut: {}, H: { sampleHTML: () => '', plan: () => ({}) }, WL: () => require('../frontend/app/workflowline.js'),
         S: {}, exampleKept: () => false, notRightHTML: () => '', Pipeline: undefined, runEnd: r => 'ran out of turns', ReturnStore: undefined,
-        notShippedNote: () => { nsCalls++; return ' · <span class="wf-noship">not counted in SHIPPED</span>'; }
+        notShippedNote: () => { nsCalls++; return ' · <span class="wf-noship">sin contar en SHIPPED</span>'; }
       }, "const LOOP_NOTE = /^\\[LOOP — (exhausted|escalated): (\\d+) pass(?:es)? round the gate[^\\n]*\\]\\s*/gm;");
       const okHtml = okFns.jobResultHTML({ view: { ok: true, usd: 0.02 }, runs: [{ runId: 'r1', dockId: 'b0', agentId: 'ada', reason: 'done', usd: 0.02 }], output: 'x', stamp: 2, shipped: false }, null);
-      A.ok(nsCalls === 1 && /✓ DELIVERED[^]*wf-job-where[^]*not counted in SHIPPED/.test(okHtml), 'a DELIVERED job still says it was not counted in SHIPPED (' + nsCalls + ' call)');
+      A.ok(nsCalls === 1 && /✓ ENTREGADO[^]*wf-job-where[^]*sin contar en SHIPPED/.test(okHtml), 'a DELIVERED job still says it was not counted in SHIPPED (' + nsCalls + ' call)');
       const live =A.fnBody(panel, 'function liveNow(f)');
-      A.ok(/w\.p\.label \|\| w\.p\.role \|\| 'STEP'/.test(live) && /q\.p\.label \|\| q\.p\.role \|\| 'STEP'/.test(live), 'the riding job\'s "Now: step n" names it the same way');
+      A.ok(/w\.p\.label \|\| w\.p\.role \|\| 'PASO'/.test(live) && /q\.p\.label \|\| q\.p\.role \|\| 'PASO'/.test(live), 'the riding job\'s "Now: step n" names it the same way');
       A.ok(/p\.label \|\| p\.role \|\| 'STEP'/.test(A.fnBody(panel, 'function fixCardHTML(x, i, f)')), 'a suggested fix names its step the same way');
     }
     {
@@ -222,12 +222,12 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
       const html = fns.resultHTML({ key: 'L', steps: [] }, { id: 'j1', status: 'problem', text: 'job', output: 'out', usd: 0.01,
         runs: [{ runId: 'r2', dockId: 'b1', agentId: 'nova', reason: 'max_iters', usd: 0.01 }],
         notes: [{ kind: 'fix', role: 'Fact checker', field: 'does', at: 1 }] });
-      A.ok(/The Fact checker step \(NOVA\) ran out of turns/.test(html), 'WORKFLOWS names the failing step by its NAME');
+      A.ok(/El Fact checker paso \(NOVA\) se quedó sin turnos/.test(html), 'WORKFLOWS names the failing step by its NAME');
       A.ok(/1 · Fact checker · NOVA/.test(html), 'WORKFLOWS lists each step by its NAME');
       const notes = ['function useFix(job, i, back)', 'function keepStyle(job)', 'function putStyleBack(job)'].map(h => A.fnBody(windowSrc, h)).join('\n');
       A.eq((notes.match(/role: p\.label \|\| p\.role \|\| ''/g) || []).length, 3, 'every job note (fix, example, put back) stores the step\'s NAME first');
       const map = A.fnBody(windowSrc, 'function mapHTML(l, workingId)'), step = A.fnBody(windowSrc, 'function stepHTML(l, s)'), setup = A.fnBody(windowSrc, 'function setupHTML(l)'), lv = A.fnBody(windowSrc, 'function liveNow(line)');
-      A.ok(/s\.label \|\| s\.role/.test(map) && /s\.label \|\| s\.role/.test(step) && /s\.label \|\| s\.role/.test(setup) && /st\.label \|\| st\.role \|\| 'STEP'/.test(lv), 'the map tip, the opened step, the setup rows and "Now: step n" all say the NAME first');
+      A.ok(/s\.label \|\| s\.role/.test(map) && /s\.label \|\| s\.role/.test(step) && /s\.label \|\| s\.role/.test(setup) && /st\.label \|\| st\.role \|\| 'PASO'/.test(lv), 'the map tip, the opened step, the setup rows and "Now: step n" all say the NAME first');
       A.ok(/p\.label \|\| p\.role \|\| 'STEP'/.test(A.fnBody(windowSrc, 'function fixHTML(job, l)')), 'a suggested change names its step the same way');
     }
     /* ---------- wave-2 repair (conveyor-ui-15 leftovers): the INBOX schedule form, STEP THROUGH, the crew picker, readiness and NOT
@@ -251,12 +251,12 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
       const trig = A.fnBody(panel, 'function paintTrigger(body, f, p)');
       A.ok(trig.length > 100 && trig.indexOf("const firstName = docks.length ? ((prop(docks[0].propId) || {}).label || docks[0].role) : '';") >= 0
         && trig.indexOf("'<b>' + esc((firstName ? firstName + ' · ' : '') + nameOf(docks[0].agentId)) + '</b> — this line’s first step") >= 0, 'the INBOX schedule form says "fires at" the first step by its NAME');
-      A.ok(/Rewrite ' \+ esc\(p\.label \|\| p\.role \|\| nameOf\(h\.agentId\)\) \+ '’s brief/.test(A.fnBody(panel, 'function pausedHTML(s, f)')), 'STEP THROUGH\'s paused card names the step by its NAME');
+      A.ok(/Reescribe el brief de ' \+ esc\(p\.label \|\| p\.role \|\| nameOf\(h\.agentId\)\) \+ ' y reejecuta/.test(A.fnBody(panel, 'function pausedHTML(s, f)')), 'STEP THROUGH\'s paused card names the step by its NAME');
       // the crew picker: an agent already on a named BAY says that BAY's NAME
       const ag = load(panel, ['function agentStatus(aid, bayId)'], { H: { station: () => ({ props: () => [{ id: 'b9', t: 'bay', agentId: 'nova', role: 'REVIEWER', label: 'Fact checker' }] }), lineOfProp: () => ({ key: 'L' }), lineNameOf: () => 'LINE A' } });
-      A.eq(ag.agentStatus('nova', 'b1').txt, 'also on LINE A · Fact checker', 'the crew picker says where else the agent works by that step\'s NAME');
+      A.eq(ag.agentStatus('nova', 'b1').txt, 'también en LINE A · Fact checker', 'the crew picker says where else the agent works by that step\'s NAME');
       const ag2 = load(panel, ['function agentStatus(aid, bayId)'], { H: { station: () => ({ props: () => [{ id: 'b9', t: 'bay', agentId: 'nova', role: 'REVIEWER', label: '' }] }), lineOfProp: () => ({ key: 'L' }), lineNameOf: () => 'LINE A' } });
-      A.eq(ag2.agentStatus('nova', 'b1').txt, 'also on LINE A REVIEWER bay', '…an unnamed one by its role, as before');
+      A.eq(ag2.agentStatus('nova', 'b1').txt, 'también en LINE A REVIEWER bay', '…an unnamed one by its role, as before');
       // NOT RIGHT?: the fix model is given the step's NAME beside its role (both askFixes)
       A.ok(/role: p\.role \|\| '', name: p\.label \|\| ''/.test(A.fnBody(panel, 'function askFixes(mine, complaint)')) && /role: p\.role \|\| '', name: p\.label \|\| ''/.test(A.fnBody(windowSrc, 'function askFixes(job, line, complaint)')), 'NOT RIGHT? sends each step\'s NAME with its role, in the panel and in WORKFLOWS');
     }

@@ -1417,8 +1417,8 @@ const WorkflowPanel = (() => {
           if (r && r.ok) {
             const nx = (Array.isArray(r.localNext) && r.localNext[0]) ? r.localNext[0] : (Array.isArray(r.next) && r.next[0] ? relFmt(r.next[0]) : '');
             const said = H.human(r.display);
-            pvEl.innerHTML = '✓ <span' + (said !== r.display ? ' data-tip="' + esc(r.display) + '"' : '') + '>' + esc(said) + '</span>' + (nx ? ' → next: ' + esc(nx) : '');
-          } else pvEl.innerHTML = '<span class="trg-warn">' + esc((r && r.error) || 'unrecognized schedule') + '</span>';
+            pvEl.innerHTML = '✓ <span' + (said !== r.display ? ' data-tip="' + esc(r.display) + '"' : '') + '>' + esc(said) + '</span>' + (nx ? ' → siguiente: ' + esc(nx) : '');
+          } else pvEl.innerHTML = '<span class="trg-warn">' + esc((r && r.error) || 'programación no reconocida') + '</span>';
         }).catch(() => {});
       }, 300);
     };
@@ -1717,7 +1717,7 @@ const WorkflowPanel = (() => {
         + '<div class="wf-mode">' + dia + '<p>' + MODE_TEXT[mode] + '</p></div>'
         + '<h4 class="wf-sub">Branches</h4>' + branches('Aún no hay ramas. Saca dos BELTs DEL divisor: arrastra desde el SPLITTER hasta la siguiente máquina, y de nuevo para la segunda rama.')
         // (COPY TO EACH and SPLIT THE JOB both meet at a JOINER: only TAKE TURNS swaps it for a MERGER)
-        + '<p class="wf-help" id="split-note">Switching to or from TAKE TURNS swaps the JOINER or MERGER where the branches meet; COPY TO EACH and SPLIT THE JOB share the JOINER. Same belts, one UNDO.</p></section>'
+        + '<p class="wf-help" id="split-note">Cambiando a o desde TAKE TURNS cambia el JOINER o MERGER donde las ramas se encuentran; COPY TO EACH y SPLIT THE JOB comparten el JOINER. Mismas cintas, un UNDO.</p></section>'
         + (H.lineEdit ? '<section class="wf-sec wf-shape"><h3>Dale forma a la línea</h3><div class="wf-chips">'
           + editBtn('addArm', p.id, { split: p.id }, '⑂ AÑADIR RAMA', mode === 'divide' ? 'un paso más toma una parte más del trabajo — el paso antes del divisor escribe una parte por rama, y el JOINER espera por ella también'
             : copies ? 'un paso más recibe una copia de cada trabajo — el JOINER espera por ella también' : 'un paso más toma su turno con los demás')
