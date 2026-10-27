@@ -1,40 +1,73 @@
-# CHECKPOINT — MIS-23-6: build.js / workflowpanel.js / windows/ (COMPLETADO)
+# CHECKPOINT — MIS-23 (traducción ES) · MIS-23-6 CERRADA (done)
 
-## Estado (tramo 2026-10-27 09:15, CIERRE)
-- Rama es/interfaz-espanol, subtarea MIS-23-6 **COMPLETADA**
-- **build.js: TRADUCIDO** (commit 4c739aba + fix GIVE...A DESK en 669103ea)
-- **workflowpanel.js: TRADUCIDO COMPLETO** — commit 7e94fc1f (L1-1900 en c685c098; L1901-2374 en 7e94fc1f con lotes c6 [88 reglas] + c7 [34 reglas]); fix GIVE...A DESK en 669103ea; node --check OK
-- **windows/workflows.js: TRADUCIDO** (~90 cadenas EN→ES, commit 669103ea)
-- **windows/connectors.js: REMANENTE TRADUCIDO** (L38 credential store, commit 669103ea)
-- **windows/automation.js: TÍTULO TRADUCIDO** ('AUTOMATION'→'AUTOMATIZACIÓN', commit 669103ea)
-- **windows/messaging.js, routines.js, loops.js: YA ESTABAN TRADUCIDOS** en misiones previas
-- **EX_HEAD: CONSISTENTE** — 'IGUALA A ESTE EJEMPLO de un buen resultado...' en workflows.js + workflowpanel.js; regex en putStyleBack + exampleBrief actualizados
-- **test/workflows-window.test.js: 133/133 PASS** (29 aserciones actualizadas a español)
-- **Espejo website/app/app/: SINCRONIZADO** (diff -q OK)
+## Estado final (2026-10-27, tramo 8 — verificación y cierre)
+- Rama es/interfaz-espanol. Commits: **aa1e061c** (traducción completa) + commit de cierre (tests + checkpoint + validación).
+- **MIS-23-6 CUMPLE SUS CRITERIOS (verificado en tramo 8, estado actual)**:
+  - Escáner (scan-en3.py) sobre el alcance: build.js 0, workflowpanel.js 0, windows/ 13 — TOTAL 13 < 100, todos fragmentos de escáner documentados (expresiones JS multilinea `+ esc(...)`, `data-tip=`, `<label class=`) o contenido técnico de ejemplo (`p. ej. node scripts/run-summary.js`)
+  - test/workflows-window.test.js: PASS 133 aserciones (bounded-ui-tests, log validation-logs/586a6e32336d38a6-1793098012839746920.log, 11:46:52; estado de archivos idéntico al actual: test mtime 11:20:25, fuentes 11:38-11:46)
+  - node --check OK en 8 fuentes + 8 espejo (re-ejecutado tramo 8)
+  - Espejo website/app/app/ idéntico (diff -q, re-ejecutado tramo 8)
+- Secuencia real de tests del tramo 7 (logs): 10:38 → 20 fallos (tests EN vs fuentes ES), 11:20 → 5 fallos, 11:30 → OK 133, 11:46 → OK 133. El PASS final cubre el estado commitado.
 
-## Misterio resuelto (importante para no repetir)
-- `.pi/mis23-6c6.py` NO tiene lógica --dry: el argumento se ignora y SIEMPRE escribe al final. La "dry run" de 08:27 era una ejecución real que escribió el archivo (c6 completo, 88 reglas). La ejecución "real" posterior falló al releer el archivo ya traducido.
-- Los scripts son atómicos SOLO si ninguna regla falla antes del write final: `rep()` aserta count y reemplaza en memoria; el write es la última línea.
+## Aplicado este tramo (commit aa1e061c, 16 archivos)
+- workflowpanel.js: 26 reglas res10 (PRUEBA, NOMBRE/Nombra este paso, El rol de este paso,
+  Entrada de prueba, brief de envío, AÑADIR UNA PROGRAMACIÓN/ADMINISTRAR, programación
+  DETENIDA/APAGADA, ¿Qué tarea debe iniciar cada ejecución?, GUARDAR PROGRAMACIÓN/CANCELAR,
+  Un mensaje de canal/ninguno conectado/CONECTAR UN CANAL, p. ej. rutas, Ejecutado por,
+  nota LOOP, OUTBOX Recoger el trabajo terminado, cinta vieja, HÁZLO UN SEND TO,
+  A dónde envía su trabajo, NINGUNA PARTE, Las ramas se turnan, splitter aria)
+- windows/connectors.js: 9 reglas (argumentos uno por línea, Ejecutar resumen,
+  AÑADIR Y CONECTAR, Contraseña de aplicación de Google / 16 caracteres,
+  IMAP·SMTP·contraseña de aplicación, Detalles de la conexión,
+  Usa un token de acceso personal en su lugar, CREAR TOKEN,
+  Permitir el uso sin supervisión de)
+- windows/workflows.js: ■ DETENER / DETENIENDO…
+- windows/messaging.js: TOKEN DE LA APP
+- windows/routines.js: Opciones avanzadas de programación
+- (del tramo 6, mismo commit): build.js 55 reglas res9 + 3 manuales, workflowpanel.js res6,
+  messaging.js 3, workflows.js 4
 
-## Próximos pasos (MIS-23-6 completada)
-- **MIS-23-7**: resto app (archivos no cubiertos por MIS-23-1..6)
-- **MIS-23-8**: demos + docs
-- **MIS-23-9**: suite global + verificación visual + ENTREGA final
+## Scripts de reglas (reutilizables)
+- .pi/inv/res9-build.py (55 reglas build.js)
+- .pi/inv/res10-panel.py (26 reglas workflowpanel.js)
+- .pi/inv/res11-final.py (12 reglas windows/*)
+- .pi/inventory/scan-en3.py <rutas> → .pi/inventory/en-strings3.json
 
-## Criterio de MIS-23-6
-- <100 candidatas EN restantes en build.js+workflowpanel.js+windows/ (o todas visibles traducidas)
-- Tests workflows-window en verde
-- Espejo website/app/app/ idéntico (diff -q)
-- node --check OK
+## Cifra escáner (canon, frontend/app)
+- TOTAL 320 cadenas en 54 archivos → MIS-23-6 deja ~28 fragmentos/falsos positivos documentados
+- MIS-23-7 (resto del app) concentra: marketplace.js 65, stationui.js 31, apps.js 20,
+  deliverables.js 19, outputbrowser.js 18, firstvalue.js 11, stepin.js 8, deskscreen.js 7,
+  workhub.js 6, group-chat.js 6, datareset.js 5, tutorial.js 5, workview.js 5,
+  taskconversation.js 4, modelpicker.js 4, hudmode.js 4, project-home.js 4,
+  remote-devices.js 4, app.js 4, chat.js 4, prop-atlas.js 4, warroom.js 3,
+  delegated.js 3, dialogue.js 2, workflowline.js (presets = contenido)
 
-## Evidencia
-- git log: 7e94fc1f (workflowpanel c6+c7), c685c098 (L1-1900), 4c739aba (build.js)
-- node --check workflowpanel.js OK (08:29)
-- c6 OK: 88 reglas; c7 OK: 34 reglas
-- automation.js: 1 regla editada
+## Pendiente (MIS-23-7)
+1. marketplace.js (65) — mayor bloque
+2. stationui.js (31) — resto no cubierto por MIS-23-2/3
+3. apps.js (20), deliverables.js (19), outputbrowser.js (18)
+4. firstvalue.js (11), stepin.js (8), deskscreen.js (7), workhub.js (6), group-chat.js (6)
+5. datareset.js (5), tutorial.js (5), workview.js (5)
+6. taskconversation.js (4), modelpicker.js (4), hudmode.js (4), project-home.js (4),
+   remote-devices.js (4), app.js (4), chat.js (4), prop-atlas.js (4), warroom.js (3),
+   delegated.js (3), dialogue.js (2)
+7. rsync espejo + diff -q + node --check + bounded-ui-tests relevantes
+8. Criterio misión: <100 visibles reales restantes O todo documentado
 
-## Método (conservar)
-- Scripts .py atómicos (assert count → replace en memoria → write al final)
-- VERIFICAR siempre el patrón contra el JS real (grep/cat -A) antes de aplicar; los bordes de comillas importan (`')>"` ≠ `')>`)
-- Terminología establecida: ENTREGABLES=DELIVERABLES, SHIPPED/DOES/HANDS OFF/OUTBOX/BAY/BAHÍA en inglés, WORKFLOWS=nombre de producto, TO REVIEW=POR REVISAR, LAST JOBS=ÚLTIMOS TRABAJOS
-- El escáner .pi/inv-wins.py tiene ruido (falsos positivos); filtrar a mano
+## Pruebas (tramo 8 — cierre)
+- Escáner: TOTAL 13 (workflows 4, connectors 4, loops 2, routines 2, automation 1); build.js 0, workflowpanel.js 0
+- bounded-ui-tests test/workflows-window.test.js: PASS 133 (log 1793098012839746920, estado idéntico)
+- node --check: 8 fuentes + 8 espejo OK
+- diff -q frontend/app ↔ website/app/app: OK
+
+## Cierre
+- MIS-38 (MIS-23-6) marcada **done** en Paperclip con evidencia.
+- Siguiente subtarea del padre MIS-23: **MIS-23-7** (resto del app: marketplace.js 65, stationui.js 31, apps.js 20, … según inventario arriba).
+
+## Lecciones acumuladas
+- Los scripts de reglas con texto JS que contiene `' + x + '` deben usar strings Python
+  entre comillas dobles con \" escapados; si no, Python evalúa el fragmento (NameError/SyntaxError).
+- El escáner canon (scan-en3.py) marca fragmentos de expresiones multilinea y falsos
+  positivos con palabras ES fuera de su lista (construir): filtrar a mano, no traducir ciegamente.
+- "STOP" como control multimedia se traduce a "DETENER" aquí (coherencia con la app ES).
+- Presets de workflowline.js L12-21 = contenido de ejemplo (instrucciones de agentes), residuo intencional.

@@ -126,11 +126,11 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const refused = { id: 'job-0123456789bb', line: line.key, name: 'B', text: 'the first job', status: 'failed', error: 'not sent on: automation is stopped (E-STOP)',
       from: { line: 'p998', jobId: null, name: 'A' }, runs: [], usd: 0, startedAt: 5, endedAt: 5, repeats: 3, notes: [], output: '' };
     const html = WW._resultHTML(line, refused), plain = html.replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ');
-    A.ok(plain.includes('LINE A tried to send its result on to this line — it was not sent on, so nothing ran here.'), 'the card says once that it was not sent on — ' + plain.slice(0, 240));
-    A.ok(plain.includes('Automation is stopped (E-STOP). (3 hand-offs from LINE A were refused like this'), '…then the bare reason, and how many were refused like this');
-    A.eq((plain.match(/not sent on/gi) || []).length, 1, '"not sent on" appears once on the card, not three times');
+    A.ok(plain.includes('LINE A intentó enviar su resultado a esta línea — no se envió, así que nada corrió aquí.'), 'the card says once that it was not sent on — ' + plain.slice(0, 240));
+    A.ok(plain.includes('Automation is stopped (E-STOP). (3 hand-offs de LINE A se rechazaron así'), '…then the bare reason, and how many were refused like this');
+    A.eq((plain.match(/no se envió/gi) || []).length, 1, '"no se envió" aparece una vez en la tarjeta, no tres');
     const old = WW._resultHTML(line, Object.assign({}, refused, { error: 'not sent on: automation is stopped (E-STOP) — nothing was sent on', repeats: 1 })).replace(/<[^>]+>/g, ' ');
-    A.ok(old.includes('Automation is stopped (E-STOP) — nothing was sent on.') && (old.match(/not sent on/gi) || []).length === 1, 'an older record keeps its own words, without the repeated prefix');
+    A.ok(old.includes('Automation is stopped (E-STOP) — nothing was sent on.') && (old.match(/no se envió/gi) || []).length === 1, 'an older record keeps its own words, without the repeated prefix');
   }
 
   /* ---------- every reason the card shows opens as a sentence (wave 2 repair): the stored reasons are bare clauses ("the station hit an
@@ -140,17 +140,17 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     const plainOf = j => WW._resultHTML(line, j).replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ');
     const base = { id: 'job-0123456789cc', line: line.key, name: 'B', text: 'the first job', runs: [], usd: 0, startedAt: 5, endedAt: 9, notes: [], output: '' };
     const fault = plainOf(Object.assign({}, base, { status: 'stopped', error: 'the station hit an internal fault and stopped this job', from: { line: 'p998', jobId: null, name: 'A' } }));
-    A.ok(fault.includes('The station hit an internal fault and stopped this job. What already ran is counted.'), 'a fault-stopped hand-off opens with a capital — ' + fault.slice(0, 260));
+    A.ok(fault.includes('The station hit an internal fault and stopped this job. Lo que ya corrió cuenta.'), 'a fault-stopped hand-off opens with a capital — ' + fault.slice(0, 260));
     const sampleFault = plainOf(Object.assign({}, base, { status: 'stopped', error: 'the station hit an internal fault and stopped this job' }));
-    A.ok(sampleFault.includes('The station hit an internal fault and stopped this job. What already ran is counted.') && !/You stopped this job/.test(sampleFault), 'a fault-stopped job of the line\'s own never says "You stopped this job" — ' + sampleFault.slice(0, 260));
+    A.ok(sampleFault.includes('The station hit an internal fault and stopped this job. Lo que ya corrió cuenta.') && !/You stopped this job/.test(sampleFault), 'a fault-stopped job of the line\'s own never says "You stopped this job" — ' + sampleFault.slice(0, 260));
     const mine = plainOf(Object.assign({}, base, { status: 'stopped', error: 'you stopped this job' }));
-    A.ok(mine.includes('You stopped this job. What already ran is counted.'), 'the Commander\'s own stop keeps its words');
+    A.ok(mine.includes('You stopped this job. Lo que ya corrió cuenta.'), 'the Commander\'s own stop keeps its words');
     const bare = plainOf(Object.assign({}, base, { status: 'stopped' }));
-    A.ok(bare.includes('You stopped this job. What already ran is counted.'), 'an older stopped record with no reason reads as before');
+    A.ok(bare.includes('Detuviste este trabajo. Lo que ya corrió cuenta.'), 'an older stopped record with no reason reads as before');
     const threw = plainOf(Object.assign({}, base, { status: 'failed', error: 'the hand-off could not start (hub down)', from: { line: 'p998', jobId: null, name: 'A' } }));
     A.ok(threw.includes('The hand-off could not start (hub down).'), 'a dispatch failure opens with a capital and ends as a sentence — ' + threw.slice(0, 260));
     const none = plainOf(Object.assign({}, base, { status: 'failed', error: '' }));
-    A.ok(none.includes('Nothing ran.'), 'no reason still reads "Nothing ran."');
+    A.ok(none.includes('Nada corrió.'), 'no reason still reads "Nada corrió."');
   }
 
   /* ---------- NEEDS CHANGES → USE THIS / PUT IT BACK: each field's note keeps its OWN before and after ---------- */
@@ -295,54 +295,54 @@ const tick = () => new Promise(r => setTimeout(r, 15));
     A.eq(WW._startsText(l0), null, 'no start facts read yet: nothing claimed (the line says checking…)');
     const job = { id: 'r1', name: 'Morning', agentId: 'nova', dockId: entry, runsLine: true, scheduleDisplay: 'every 6h', enabled: true };
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: false, jobs: [] }, lt: { triggers: [] }, chans: {} });
-    A.eq(WW._startsText(l0), 'by hand only', 'nothing automatic: by hand only');
+    A.eq(WW._startsText(l0), 'solo a mano', 'nothing automatic: solo a mano');
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: false, jobs: [job] }, chans: {},
       lt: { triggers: [{ id: 't1', lineId: l0.key, kind: 'folder', enabled: true, blockedBy: null, config: { path: 'C:/in' } }] } });
-    A.eq(WW._startsText(l0), 'by hand · every 6h · when a file lands in C:/in', 'a schedule and a folder trigger, composed by WorkflowLine.lineStarts');
+    A.eq(WW._startsText(l0), 'a mano · every 6h · cuando un archivo llega a C:/in', 'a schedule and a folder trigger, composed by WorkflowLine.lineStarts');
     ctx.World.startFacts = () => ({ cron: { enabled: false, halted: false, jobs: [job] }, lt: { triggers: [] }, chans: {} });
-    A.eq(WW._startsText(l0), 'by hand · every 6h (scheduling is off)', 'a schedule saved while scheduling is off is said as off, never as a start');
+    A.eq(WW._startsText(l0), 'a mano · every 6h (la programación está apagada)', 'a schedule saved while scheduling is off is said as off, never as a start');
     // an E-STOP is named as the E-STOP, never as the scheduling switch
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: true, jobs: [job] }, lt: { triggers: [] }, chans: {} });
-    A.eq(WW._startsText(l0), 'by hand · every 6h (stopped by E-STOP)', 'a schedule the E-STOP holds says stopped by E-STOP');
+    A.eq(WW._startsText(l0), 'a mano · every 6h (detenido por E-STOP)', 'a schedule the E-STOP holds says stopped by E-STOP');
     // a fact whose endpoint never answered is unknown: never 'by hand only'
     ctx.World.startFacts = () => ({ cron: null, lt: { triggers: [] }, chans: {} });
-    A.eq(WW._startsText(l0), 'by hand · schedules could not be read', 'unread schedules are said unread, never as by hand only');
+    A.eq(WW._startsText(l0), 'a mano · horarios no se pudo leer', 'unread schedules are said unread, never as by hand only');
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: false, jobs: [job] }, lt: null, chans: null });
-    A.eq(WW._startsText(l0), 'by hand · every 6h · channels and folder/webhook triggers could not be read', 'a known start still shows beside the facts that were not read');
+    A.eq(WW._startsText(l0), 'a mano · every 6h · canales y carpeta/webhook no se pudo leer', 'a known start still shows beside the facts that were not read');
     /* (org wire AUTO-P15-1) a start the server HOLDS is a start, held, with the server's reason — never 'by hand only' beside the panel's
        paused trigger; and another line's SEND TO into this one is a start (the panel's ✓ FED, BUILD's FED BY) */
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: true, jobs: [] }, chans: {},
       lt: { triggers: [{ id: 't2', lineId: l0.key, kind: 'folder', enabled: true, blockedBy: 'automation is stopped (E-STOP) — resume it and this trigger fires again', config: { path: 'C:/in' } }] } });
-    A.eq(WW._startsText(l0), 'by hand · when a file lands in C:/in (waiting: automation is stopped (E-STOP) — resume it and this trigger fires again)', 'a folder trigger the E-STOP holds is said as held, with the server\'s reason');
+    A.eq(WW._startsText(l0), 'a mano · cuando un archivo llega a C:/in (en espera: automation is stopped (E-STOP) — resume it and this trigger fires again)', 'a folder trigger the E-STOP holds is said as held, with the server\'s reason');
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: false, jobs: [] }, lt: { triggers: [] },
       chans: { telegram: { configured: true, connected: false, agentId: st.propById(entry).agentId, agentName: 'Nova' } } });
     const chanSaid = WW._startsText(l0);
-    A.ok(/^by hand · when a Telegram message arrives \(not connected\)$/.test(chanSaid), 'a channel that answers as the first step but is not connected is a held start: ' + chanSaid);
+    A.ok(/^a mano · cuando Telegram recibe un mensaje \(no conectado\)$/.test(chanSaid), 'a channel that answers as the first step but is not connected is a held start: ' + chanSaid);
     const digestOut = st.props().find(p => p.t === 'outbox' && P.lineComponents(st.projectGeometry()).some(c => c.intakes.includes(iidOf('Digest')) && (c.outboxes || []).includes(p.id)));
     function iidOf(label) { const p = st.props().find(x => x.t === 'intake' && x.label === label); return p && p.id; }
     A.ok(!!digestOut && st.setSendTo(digestOut.id, l0.intakeId).ok === true, 'fixture: LINE DIGEST sends its finished work to this line');
     ctx.World.startFacts = () => ({ cron: { enabled: true, halted: false, jobs: [] }, lt: { triggers: [] }, chans: {} });
     const fedL = WW._floor().lines.find(x => x.key === line.key);
-    A.eq(WW._startsText(fedL), 'by hand · when LINE DIGEST sends its finished work', 'a line fed by another line\'s SEND TO says so, never by hand only');
+    A.eq(WW._startsText(fedL), 'a mano · cuando LINE DIGEST envía su trabajo terminado', 'a line fed by another line\'s SEND TO says so, never by hand only');
     A.ok(st.setSendTo(digestOut.id, null).ok === true, 'fixture: the SEND TO is taken back');
-    A.eq(WW._startsText(WW._floor().lines.find(x => x.key === line.key)), 'by hand only', '…and without it the line is by hand only again');
+    A.eq(WW._startsText(WW._floor().lines.find(x => x.key === line.key)), 'solo a mano', '…and without it the line is solo a mano again');
     // (org wire AUTO-P15-2) a feed poll that came back with NOTHING answered never leaves STARTS on 'checking…' forever
     ctx.World.startFacts = () => null;
     const polledWas = S.startsPolled;
     S.startsPolled = false;
     A.eq(WW._startsText(l0), null, 'before any read has finished: checking…');
     S.startsPolled = true;
-    A.eq(WW._startsText(l0), 'by hand · schedules, channels and folder/webhook triggers could not be read', 'a read that came back empty says what could not be read');
+    A.eq(WW._startsText(l0), 'a mano · horarios, canales y carpeta/webhook no se pudo leer', 'a read that came back empty says what could not be read');
     S.startsPolled = polledWas;
     // org P16's RUN BY reads the same entry the INBOX form's schedule fires at
     const sl = WW.startLines().find(x => x.key === l0.key);
     A.ok(sl && sl.dockId === entry && sl.agentId === 'nova', 'startLines: the line\'s first routed step and its agent (HORARIOS › RUN BY)');
     // the page: STARTS sits between Send it a job and Last jobs; its key opens EDIT WORKFLOW at 'Or start it automatically'
-    A.ok(/\+ '<\/section>' \+ startsHTML\(l\) \+ '<section class="wfw-sec"><h3>Last jobs<\/h3>'/.test(src), 'INICIOS: está entre la caja de trabajo y ÚLTIMOS TRABAJOS');
-    A.ok(/data-act="automatic" data-tip="[^"]+">⊕ HACERLO AUTOMÁTICO<\/button>/.test(src) && /data-act="automatic" data-tip="[^"]+">⊕ CHANGE INICIOS<\/button>/.test(src)
-      && /const started = !!t && t\.split\(' · '\)\.slice\(1\)\.some\(p => !\/could not be read\$\/\.test\(p\)\);/.test(src) && /B\(\)\.editLine\(l\.intakeId\)\)\) return;\s*\n\s*if \(typeof WorkflowPanel !== 'undefined' && WorkflowPanel\.revealStarts\)/.test(src), '⊕ HACERLO AUTOMÁTICO abre el editor en la BANDEJA y revela sus inicios');
+    A.ok(/\+ '<\/section>' \+ startsHTML\(l\) \+ '<section class="wfw-sec"><h3>Últimos trabajos<\/h3>'/.test(src), 'INICIOS: está entre la caja de trabajo y ÚLTIMOS TRABAJOS');
+    A.ok(/data-act="automatic" data-tip="[^"]+">⊕ HACERLO AUTOMÁTICO<\/button>/.test(src) && /data-act="automatic" data-tip="[^"]+">⊕ CAMBIAR INICIOS<\/button>/.test(src)
+      && /const started = !!t && t\.split\(' · '\)\.slice\(1\)\.some\(p => !\/no se pudo leer\$\/\.test\(p\)\);/.test(src) && /B\(\)\.editLine\(l\.intakeId\)\)\) return;\s*\n\s*if \(typeof WorkflowPanel !== 'undefined' && WorkflowPanel\.revealStarts\)/.test(src), '⊕ HACERLO AUTOMÁTICO abre el editor en la BANDEJA y revela sus inicios');
     const panelSrc = rd('frontend/app/workflowpanel.js');
-    A.ok(/<section class="wf-sec" id="wf-starts"><h3>Or start it automatically<\/h3>/.test(panelSrc) && /selectFromFloor, revealStarts, showTest,/.test(panelSrc), 'the panel names that section and exports revealStarts');
+    A.ok(/<section class="wf-sec" id="wf-starts"><h3>O inicia automáticamente<\/h3>/.test(panelSrc) && /selectFromFloor, revealStarts, showTest,/.test(panelSrc), 'the panel names that section and exports revealStarts');
     // (live walk 10-14) the section lands BELOW the pinned line map (sticky at top:0), never under it
     const WP = require('../frontend/app/workflowpanel.js');
     A.eq(WP._startsScrollBy(400, 68, 183, 1), 400 - 68 - 183 - 8, 'a pinned map: the section heading lands just below the map\'s bottom edge');

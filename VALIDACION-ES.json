@@ -12,10 +12,13 @@
     },
     "test/workflows-window.test.js": {
       "exitCode": 0,
-      "seconds": 1.954,
-      "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
-      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
-      "log": "validation-logs/586a6e32336d38a6.log"
+      "seconds": 1.946,
+      "sha256": "9b515b431093864fd6e6025c60635e8e57274025dc081e1d3e133e558f60b92a",
+      "sourceSha256": "74cf52e71f421bb3544ce5b612e855d29d5c48ece94a595c0883e16fc412ddba",
+      "inputsSha256": "e0674ecc18f08cf165c71be71462d116cc282126af53010644039bef0ae705a2",
+      "log": "validation-logs/586a6e32336d38a6-1793098012839746920.log",
+      "purpose": "targeted",
+      "retryReason": null
     },
     "test/autonomy-ui.test.js": {
       "exitCode": 0,
@@ -489,6 +492,146 @@
       "log": "validation-logs/d4c0a0cf1df91e4c-1793035167155459483.log",
       "purpose": "targeted",
       "retryReason": "L141 actualizada a la cadena ES real de retireConsentCard"
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 0,
+      "seconds": 1.954,
+      "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
+      "sourceSha256": "cb45d0f8d3dcbbfeaa2552d983a1329a67b9b2bf4e1e5e4e667028772f237216",
+      "log": "validation-logs/586a6e32336d38a6.log"
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.947,
+      "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
+      "sourceSha256": "680bb3fa0e0608b9ca00ae9c890a0d28fca834215353a2ffd8d5a8e5ffe065a6",
+      "inputsSha256": "78872d00459a9c4af8571e97f10a4e9dc5bba6784c11e8c87f958cde65c07253",
+      "log": "validation-logs/586a6e32336d38a6-1793051925547078662.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.956,
+      "sha256": "9ad40ef60935184c0f24c208b9f8f5dda85516087d8b1681a9c00d8547e9dc31",
+      "sourceSha256": "9ae13cf9608fb1cd4004c1f65d58600b7f20e2a1a7a3956511403bf712320ab0",
+      "inputsSha256": "72f82c937e7f1beaa5753034994af401e94d0d17ed75ff1c00f13b58531da3d2",
+      "log": "validation-logs/586a6e32336d38a6-1793087624521504489.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.317,
+      "sha256": "f57f76da50aa73444c4dfa1ea2c184abb293a8204bd18f74d83ba3b380d05c57",
+      "sourceSha256": "826fd6e645019766764c6460e70a2ff4047a1c33b988c5873b32efbaf8207183",
+      "inputsSha256": "54ca4ed713dfa3785d7f5c55ded78e90546b4b78af0dd5d57125c64358e2dba2",
+      "log": "validation-logs/586a6e32336d38a6-1793088919784687697.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.957,
+      "sha256": "f57f76da50aa73444c4dfa1ea2c184abb293a8204bd18f74d83ba3b380d05c57",
+      "sourceSha256": "860f8b8edc12caa0f0fe2aee30c888d688df8f1fdf5ed730d86fb6790a299a43",
+      "inputsSha256": "247c0989481d3d7226ff096246a14550083da5ab3c3260a28169897af3ec7a65",
+      "log": "validation-logs/586a6e32336d38a6-1793088955613326287.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.962,
+      "sha256": "f1b9c71fee4d6b2f737d207afc32efb2c1a7026c17e5f50929c9c2aed7eade8f",
+      "sourceSha256": "860f8b8edc12caa0f0fe2aee30c888d688df8f1fdf5ed730d86fb6790a299a43",
+      "inputsSha256": "247c0989481d3d7226ff096246a14550083da5ab3c3260a28169897af3ec7a65",
+      "log": "validation-logs/586a6e32336d38a6-1793089011675467375.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.958,
+      "sha256": "b7a3a6ab09ed479efba99a2c78ac980e9fd08b5bf49b9b74476199dedd946856",
+      "sourceSha256": "8e01827c195a731b63eb21e8bebf1267c0aeb293c9676ce06660d2ddb4ee1d00",
+      "inputsSha256": "391849837d142cfa3127495366a78ceabcada6b4d61fe11f16bce9fa2b1db09f",
+      "log": "validation-logs/586a6e32336d38a6-1793089082713419889.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.955,
+      "sha256": "be1550c283780a867bc012e9be31655a35a196a869dbf12f576a93b14cf85248",
+      "sourceSha256": "95a1e2402eddcce6b9707ed8e6e50775b0d26bbd1c53a46289ee08d6b75af6ad",
+      "inputsSha256": "63ecfe73b8ece6afaac6331d43eaeaa7c727ffe3ba2ef16cefb3db91beea2b27",
+      "log": "validation-logs/586a6e32336d38a6-1793089311657343219.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 0,
+      "seconds": 1.947,
+      "sha256": "be1550c283780a867bc012e9be31655a35a196a869dbf12f576a93b14cf85248",
+      "sourceSha256": "eff14d5385056e99e9806b497ced275ec7752b6803b1aedd514fe683466e4754",
+      "inputsSha256": "f1235fbc9776cb81a88041806004ba85a098dc2072a2fd06979239467a609558",
+      "log": "validation-logs/586a6e32336d38a6-1793089326245492139.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.96,
+      "sha256": "a3643f28d67619bd7a8c4f20527cb93da2a4107202a22f302c3d81b786879f0d",
+      "sourceSha256": "9af266d8f9f3bdaa09443a1bcce6c5f35cbc70b0977f1da7c01e770b55caaace",
+      "inputsSha256": "251134823afaebcd47ec703afe764053508481d605a41f87724685ba39d4a2c5",
+      "log": "validation-logs/586a6e32336d38a6-1793093938831139756.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 1,
+      "seconds": 1.954,
+      "sha256": "a822b7132b9c19d2fdd14e7573ba6f771680e3daa06b1329514b4a4c14793788",
+      "sourceSha256": "4f959297a3e78795ad4c1c1136fa4b590b6a4395f5a05fd009bc49edf084a655",
+      "inputsSha256": "008aa77adf7d29d9fa2577a90f3b51ab6f712dcebef4e1108bfb6605c2551e04",
+      "log": "validation-logs/586a6e32336d38a6-1793096400831537180.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 0,
+      "seconds": 1.946,
+      "sha256": "9b515b431093864fd6e6025c60635e8e57274025dc081e1d3e133e558f60b92a",
+      "sourceSha256": "4f959297a3e78795ad4c1c1136fa4b590b6a4395f5a05fd009bc49edf084a655",
+      "inputsSha256": "008aa77adf7d29d9fa2577a90f3b51ab6f712dcebef4e1108bfb6605c2551e04",
+      "log": "validation-logs/586a6e32336d38a6-1793096430615793931.log",
+      "purpose": "targeted",
+      "retryReason": null
+    },
+    {
+      "test": "test/workflows-window.test.js",
+      "exitCode": 0,
+      "seconds": 1.955,
+      "sha256": "9b515b431093864fd6e6025c60635e8e57274025dc081e1d3e133e558f60b92a",
+      "sourceSha256": "e9467e7ee04a820458d88a32e70ffe471ef4229f3fd21a13cea76beafa51fc5d",
+      "inputsSha256": "0d0b2c396b2faf6c9a7a3d328648f4c77fab1189e620d16a3c18b83b6ea99143",
+      "log": "validation-logs/586a6e32336d38a6-1793097023083453985.log",
+      "purpose": "targeted",
+      "retryReason": null
     }
   ]
 }
