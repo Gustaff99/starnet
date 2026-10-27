@@ -68,7 +68,7 @@ try {
   const l = s.links().find(q => q.from.prop === B1);
   const d = { mode: 'beltreshape', linkId: l.id, moved: true, cur: { tx: 50, ty: 10 } };
   n = 0; const r1 = ctx.handPlan(d);
-  A.ok(r1 && r1.checking === true && r1.why === 'CHECKING THE ROUTE' && n === 0, 'a reshape crossing a tile says CHECKING THE ROUTE and compiles nothing — ' + JSON.stringify(r1));
+  A.ok(r1 && r1.checking === true && r1.why === 'COMPROBANDO LA RUTA' && n === 0, 'a reshape crossing a tile says CHECKING THE ROUTE and compiles nothing — ' + JSON.stringify(r1));
   const forced = ctx.handPlan(d, true);
   A.ok(forced && !forced.checking && forced.kind === 'reshape' && forced.ok === s.canReshapeLink(l.id, 50, 10).ok, 'the release (force) judges for real');
   ctx.geoVer++; const d2 = { mode: 'beltreshape', linkId: l.id, moved: true, cur: { tx: 50, ty: 11 } };

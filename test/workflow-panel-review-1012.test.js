@@ -243,8 +243,8 @@ const body = () => ({ innerHTML: '', querySelector: () => null, querySelectorAll
       const flow = WLm.lineFlow(plan, comp, P, geo.props);
       const ready = WLm.readiness(flow, comp, { errors: plan.errors || [], stepName: pid => (st.propById(pid) || {}).label });
       const whats = ready.blocking.map(b => b.what);
-      A.ok(whats.indexOf('BAY 1 (Fact checker) needs an agent') >= 0 && whats.some(w => /^BAY 2 \(\w+\) needs an agent$/.test(w)), 'readiness names a named BAY by its NAME, an unnamed one by its role — ' + JSON.stringify(whats));
-      A.ok(WLm.readiness(flow, comp, { errors: plan.errors || [] }).blocking.some(b => /^BAY 1 \(RESEARCHER\) needs an agent$/.test(b.what)), '…and a caller with no names keeps the role');
+      A.ok(whats.indexOf('BAY 1 (Fact checker) necesita un agente') >= 0 && whats.some(w => /^BAY 2 \(\w+\) necesita un agente$/.test(w)), 'readiness names a named BAY by its NAME, an unnamed one by its role — ' + JSON.stringify(whats));
+      A.ok(WLm.readiness(flow, comp, { errors: plan.errors || [] }).blocking.some(b => /^BAY 1 \(RESEARCHER\) necesita un agente$/.test(b.what)), '…and a caller with no names keeps the role');
       const head = A.fnBody(panel, 'function paintHead(f)'), cmds = rd('frontend/app/stationcommands.js');
       A.ok(/stepName: pid => \{ const p = prop\(pid\); return p && p\.label; \}/.test(head), 'the panel\'s pill asks readiness with the step names');
       A.ok(/stepName: pid => \{ const p = propOf\(pid\); return p && p\.label; \}/.test(cmds), '…and station.layout with the same facts');

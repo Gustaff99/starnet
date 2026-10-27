@@ -701,7 +701,7 @@ const WorkflowPanel = (() => {
     const armed = c.ok && S.armTidy && S.armTidy.key === armKey(op, id, args) && Date.now() - S.armTidy.t < ARM_MS;
     return '<button type="button" class="' + (cls || 'wf-chip') + (c.ok ? '' : ' off') + (armed ? ' armed' : '') + '" data-edit="' + esc(op) + '" data-edit-id="' + esc(id) + '" data-edit-args="' + esc(JSON.stringify(args)) + '"'
       + (c.ok ? '' : ' aria-disabled="true"') + (armed ? ' data-tidy-armed="1" data-rest="' + esc(label) + '"' : '')
-      + ' data-tip="' + esc(armed ? 'the line where it stands has no room for this: a second click lays the whole line out afresh with it (its INBOX stays put) — one UNDO' : c.ok ? tip : (c.msg || tip)) + '">' + esc(armed ? '⌗ TIDY LINE TO FIT IT?' : label) + '</button>';
+      + ' data-tip="' + esc(armed ? 'la línea donde está no tiene sitio para esto: un segundo clic la redibuja entera con la pieza (su ENTRADA se queda) — un UNDO' : c.ok ? tip : (c.msg || tip)) + '">' + esc(armed ? '⌗ ¿ORDENAR LÍNEA PARA AJUSTARLA?' : label) + '</button>';
   }
   function wireEdits(scope) {
     if (!scope) return;
