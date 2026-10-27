@@ -276,6 +276,8 @@ body.glass-demo:not(.hud-mode) .term .kb-col {
   border: 1px solid rgba(var(--ph-rgb), .2); border-radius: 8px; box-shadow: inset 0 1px 0 var(--gd-light);
 }
 body.glass-demo:not(.hud-mode) .term .kb-col h4 { border-bottom-color: rgba(var(--ph-rgb), .16); }
+/* the lane is a boxed card here, but tasks.css laid it out borderless (a 2px inset): TO DO and its note sat on the border */
+body.glass-demo:not(.hud-mode) .tasks-win .kb-col { padding: 0 12px 12px; }
 body.glass-demo:not(.hud-mode) .term:not(.pw) .term-foot { display: none; }
 /* the window shell matches the panels' shape and phosphor title */
 body.glass-demo:not(.hud-mode) .term:not(.pw) { border-radius: 10px; }
@@ -800,6 +802,11 @@ body.glass-demo:not(.hud-mode) .term.sn-menu .con-rail-item:not(.con-toptab):is(
   box-shadow: 0 0 12px rgba(var(--ph-rgb), .16); text-shadow: var(--pg-glow-soft);
 }
 body.glass-demo:not(.hud-mode) .term.sn-menu .con-rail-item:not(.con-toptab):is(.active, [aria-selected="true"]) .con-rail-glyph { opacity: 1; }
+/* the sweep 10-25: ABILITIES' rail (the one with INSTALLED / DISCOVER / CREATE) wrapped SAVED API CONNECTIONS, BUILT-IN
+   ABILITIES and CONNECTED SERVICES onto two lines at the 16px floor — 32px more rail holds every label on one; and a
+   scrolled rail sliced its top row on the divider: the list's top 8px (its padding at rest) now fades the row away */
+body.glass-demo:not(.hud-mode) .term.sn-menu .con-rail:has(.con-intents) { flex-basis: 222px; }
+body.glass-demo:not(.hud-mode) .term.sn-menu .con-rail-list { -webkit-mask-image: linear-gradient(transparent, #000 8px); mask-image: linear-gradient(transparent, #000 8px); }
 
 /* --- weak spots found by the live audit (10-02): tiny type, square boxes, black fields, glyph headers --- */
 /* catalog bays (RECRUIT / RECIPES): one glass search field, readable intro, glass filter keys, one-line tile copy */
@@ -1159,6 +1166,11 @@ body.glass-demo:not(.hud-mode) #screen-game #left .ws-head { container: pip-tabs
 body.glass-demo:not(.hud-mode) #screen-game #left .ws-head :is(#ws-new, #ws-addproject)[hidden] { display: none !important; }
 body.glass-demo:not(.hud-mode) #screen-game #left .ws-head .ws-tab { transition: none; }
 body.glass-demo:not(.hud-mode) #screen-game #left .ws-head #ws-addproject { font-size: 16px; }
+/* the + key over PROJECTS (Andrew 10-25 circled it): the tabs never shrank, so whenever their spacing outran the strip they
+   ran on under the key. Now a tab gives way (clipped at its own edge, never under the key), and leftrail.js marks the strip
+   .tabs-tight when its tabs don't fit at their spacing, which drops them to the narrowest rail's */
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-head .ws-tab { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: clip; }
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-head.tabs-tight .ws-tab { padding: 0 5px 1px; letter-spacing: .2px; }
 
 /* ---- ONE RAIL GUTTER (Andrew 10-21: "my only complaint is that some of it is misaligned like this"). Every block in the
    CREW rail spans one column, its edges 10px in from the rail's at every TEXT SIZE: the crew cards, the SESSIONS / PROJECTS
@@ -1610,21 +1622,25 @@ body.glass-demo:not(.hud-mode) #screen-game #chat-panel #gc-states .gc-state.bad
        legible — 15px in the muted text colour, the drawn caret for its fold, bright while open
      · the fold's run record was 11px dim phosphor: it reads at 14px (its lead line now names who ran it and tells the
        footer's time — chat.js telemetryRun / hydrateRunTelemetry)
+   QUIET AGAIN (Andrew 10-25: "make the RUN COMPLETE footer and step rows quiet again like 0.13.5"): the 10-18/10-19 sizes
+   put the machinery at the speech's volume (16px bright caps under 18px speech), so a reply no longer stood apart from its
+   run. Back to 0.13.5's register — dim phosphor, lowercase tool names, the footer at half strength — at 14px (0.13.5 had
+   12.5/11px, under the 10-19 "text not too small" ask). Kept: the steady glyph, the drawn carets, the honest lead line.
    ============================================================ */
-/* the step rail: the indented phosphor line the run's steps hang from */
-body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-rail { gap: 4px; border-left-color: rgba(var(--ph-rgb), .28); }
-/* a step: the 2px box, matte, no entrance glow */
+/* the step rail: the indented line the run's steps hang from (0.13.5's dark rule) */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-rail { gap: 3px; }
+/* a step: a 2px box, matte, no entrance glow */
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip {
-  border: 1px solid rgba(var(--ph-rgb), .2); border-radius: 2px; background: rgba(0, 0, 0, .25); box-shadow: none;
+  border: 1px solid rgba(var(--ph-rgb), .2); border-radius: 2px; box-shadow: none;
 }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip:hover { border-color: rgba(var(--ph-rgb), .45); background: rgba(var(--ph-rgb), .06); }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-head {
-  align-items: center; gap: 8px; min-height: 30px; padding: 4px 10px; font-size: var(--sn-type-meta); line-height: 1.2; letter-spacing: .3px; color: var(--text);
+  align-items: center; gap: 6px; padding: 3px 8px; font-size: 14px; line-height: 1.35; letter-spacing: .3px; color: var(--ph-dim);
 }
-/* the tool's name reads as the terminal's opcode: tracked caps in the bright phosphor */
-body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-name { color: var(--ph-bright); letter-spacing: 1.4px; text-transform: uppercase; }
-body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-args { color: var(--text); opacity: .8; }
-body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-stat { font-size: 15px; color: var(--cg-mute, var(--text)); opacity: 1; }
+/* the tool's name: plain lowercase phosphor, one step above its args */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-name { color: var(--ph); letter-spacing: .4px; text-transform: none; }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-args { color: var(--ph-dim); opacity: .85; }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-stat { font-size: 13px; color: var(--ph-dim); opacity: .85; }
 /* the state glyph: steady (a running step no longer blinks — the working line's meter already says the run is live) */
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-glyph { flex: 0 0 auto; width: 1.1em; text-align: center; text-shadow: none; animation: none; opacity: 1; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip.pending .tc-glyph { color: var(--ph-bright); }
@@ -1633,8 +1649,8 @@ body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip.err :is(.tc-g
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip.held :is(.tc-glyph, .tc-stat) { color: var(--ph-dim); }
 /* "open me" is a drawn caret (DELEGATED's), never the same ▸ the running state shows at the row's start */
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-exp {
-  flex: 0 0 auto; width: 7px; height: 7px; margin: 0 3px 2px 2px; font-size: 0; opacity: 1;
-  border-right: 2px solid rgba(var(--ph-rgb), .7); border-bottom: 2px solid rgba(var(--ph-rgb), .7); transform: rotate(-45deg);
+  flex: 0 0 auto; width: 6px; height: 6px; margin: 0 3px 2px 2px; font-size: 0; opacity: .8;
+  border-right: 2px solid rgba(var(--ph-rgb), .5); border-bottom: 2px solid rgba(var(--ph-rgb), .5); transform: rotate(-45deg);
 }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip.open .tc-exp { transform: translateY(-2px) rotate(45deg); border-color: var(--ph-bright); }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-detail {
@@ -1645,26 +1661,26 @@ body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-d-res { c
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-d-res.err { color: var(--bad); }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip .tc-d-res.held { color: var(--ph-dim); }
 
-/* RUN COMPLETE: still the reply's quiet footer (Andrew 10-03), legible: 15px in the muted text colour at full strength
-   (it was 14px at half opacity), its fold key the same drawn caret */
+/* RUN COMPLETE: the reply's quiet footer (Andrew 10-03) — 0.13.5's 14px at half strength again (10-25), bright on hover
+   or open; its fold key the same drawn caret */
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved {
-  font-size: var(--sn-type-meta); letter-spacing: 1px; line-height: 1.35; color: var(--cg-mute, var(--text)); opacity: .9; padding: 2px 0;
+  font-size: 14px; letter-spacing: .6px; line-height: 1.4; color: var(--text); opacity: .5; padding: 1px 0;
 }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved.has-fold:is(:hover, :focus-visible),
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved.open { color: var(--ph-bright); opacity: 1; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved.err { color: var(--bad); opacity: 1; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved.stopped { color: var(--gold); opacity: 1; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved .cp-chev {
-  display: inline-block; width: 7px; height: 7px; margin: 0 0 2px 10px; font-size: 0; opacity: 1; vertical-align: middle;
+  display: inline-block; width: 6px; height: 6px; margin: 0 0 2px 8px; font-size: 0; opacity: .8; vertical-align: middle;
   border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform var(--t-fast, .12s) ease;
 }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .comms-presence.resolved.open .cp-chev { transform: translateY(-2px) rotate(45deg); }
-/* the fold's run record: the steps' size, one line per run, its head in the bright phosphor */
+/* the fold's run record: the steps' size, one line per run, dim phosphor with its head one step up (0.13.5's register) */
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry {
-  margin: 6px 0 8px; padding: 6px 10px; border-left: 1px solid rgba(var(--ph-rgb), .28);
-  font-size: 14px; line-height: 1.4; letter-spacing: .5px; color: var(--cg-mute, var(--text));
+  margin: 4px 0 7px; padding: 6px 9px; border-left: 1px solid color-mix(in srgb, var(--ph-dim) 55%, transparent);
+  font-size: 14px; line-height: 1.35; letter-spacing: .45px; color: var(--ph-dim);
 }
-body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry .rt-run-head { color: var(--ph-bright); letter-spacing: .6px; }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry .rt-run-head { color: var(--ph); letter-spacing: .45px; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry .rt-tool { margin: 3px 0 0 12px; opacity: 1; }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry .rt-tool.err { color: var(--bad); }
 body.glass-demo:not(.hud-mode) #screen-game #chat-panel .run-telemetry .rt-tool.held { color: var(--ph-dim); }
@@ -1710,49 +1726,44 @@ body.glass-demo:not(.hud-mode) #screen-game #bottombar .ctx-gauge { border-radiu
 body.glass-demo:not(.hud-mode) #screen-game .widget-rail { border-radius: 2px; }
 
 /* ============================================================
-   PIP-BOY MESH (Andrew 10-19: "fix the glow … a different type", then "can we try the mesh look that we had at one point
-   … it made it look way better", "it was just the mesh with no glow", and of the 10-01 mesh re-rendered beside a finer one,
-   "lets try finer"). The dashboard's lit material is the 10-01 PIP-GLASS ▒ mesh again — a checker of phosphor cells at its
-   10-01 strength (.30, gold .32), no gradient — and NOTHING glows: no glow or colour fringe on the type (it was one red 6px
-   haze on every heading and name, a blue name included, deaf to the GLOW slider), no halo on a waiting card, a selection,
-   a lamp or the dock's open tab. The mesh alone says lit: a waiting CREW card, the selected crew card and session row,
-   the open SESSIONS tab, the dock's open group, each NEEDS YOU kind's strip. The cells are two SCREEN pixels at every
-   TEXT SIZE and display scale (the 10-01 shots were taken at 150%, three pixels a cell: "finer" is two), so the checker
-   stays crisp and never beats against the zoom. The windows keep their own material (Andrew 10-18: "keep UI menus as is").
+   THE WINDOWS' GLASS ON THE DASHBOARD (Andrew 10-26, of the CONNECT window's side menu: "thats the perfect glass").
+   The road here: 10-19 the dashboard's lit material became the 10-01 PIP-GLASS ▒ mesh with nothing glowing; 10-26 a
+   scanline raster was tried and dropped ("the crt lines are not going to do well on the monitor"), then the mesh went too —
+   any fine repeating pattern beats against the device grid when the view is zoomed out ("a strange effect when i zoom out
+   and we cant have that") — and a corner-lit gradient read as the old glossy glow. What fits is the material the WINDOWS
+   still wear (the station's body-level --pg-dither): a 120° tint .20 → .07 in the lit colour, a .5 frame, a faint 12px halo
+   and a soft 3px bloom on the lit type. No pattern, so it resamples cleanly at any zoom; nothing at rest glows.
    ============================================================ */
 body.glass-demo:not(.hud-mode) #screen-game :is(#left, #chat-panel, #topbar, #bottombar) {
-  --mesh-cell: calc(2px * var(--sn-unzoom, 1));
-  --pg-dither: repeating-conic-gradient(rgba(var(--ph-rgb), .3) 0 25%, transparent 0 50%) 0 0 / var(--mesh-cell) var(--mesh-cell);
-  --pg-dither-gold: repeating-conic-gradient(rgba(var(--gold-rgb), .32) 0 25%, transparent 0 50%) 0 0 / var(--mesh-cell) var(--mesh-cell);
+  --pg-dither: linear-gradient(120deg, rgba(var(--ph-rgb), .2), rgba(var(--ph-rgb), .07));
+  --pg-dither-gold: linear-gradient(120deg, rgba(var(--gold-rgb), .22), rgba(var(--gold-rgb), .07));
+  --pg-lit-glow: 0 0 3px rgba(var(--ph-rgb), .33);
   --pg-glow: none;
   --pg-glow-soft: none;
 }
-@media (min-resolution: 1.5dppx) { body.glass-demo:not(.hud-mode) #screen-game :is(#left, #chat-panel, #topbar, #bottombar) { --mesh-cell: calc(1.3333px * var(--sn-unzoom, 1)); } }
-@media (min-resolution: 2dppx) { body.glass-demo:not(.hud-mode) #screen-game :is(#left, #chat-panel, #topbar, #bottombar) { --mesh-cell: calc(1px * var(--sn-unzoom, 1)); } }
-/* the head of the SESSIONS view is counter-zoomed (it keeps its size at every TEXT SIZE): its cells are plain pixels. The
-   mesh is re-declared there, since a custom property resolves its var() where it is declared (the rail's zoomed cell
-   would ride in) */
-body.glass-demo:not(.hud-mode) #screen-game #left .ws-head {
-  --mesh-cell: 2px;
-  --pg-dither: repeating-conic-gradient(rgba(var(--ph-rgb), .3) 0 25%, transparent 0 50%) 0 0 / var(--mesh-cell) var(--mesh-cell);
-}
-@media (min-resolution: 1.5dppx) { body.glass-demo:not(.hud-mode) #screen-game #left .ws-head { --mesh-cell: 1.3333px; } }
-@media (min-resolution: 2dppx) { body.glass-demo:not(.hud-mode) #screen-game #left .ws-head { --mesh-cell: 1px; } }
-/* the selection (fill only, Andrew 10-18) is the mesh; a wait's selection keeps its gold */
-body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row, #left #workstreams .ws-row) { --pip-fill: var(--pg-dither), rgba(var(--ph-rgb), .06); }
-body.glass-demo:not(.hud-mode) #screen-game #left #workstreams .ws-row:not(.attn) { --pip-fill: var(--pg-dither), rgba(var(--ph-rgb), .05); }
-body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row.asking, #left #workstreams .ws-row.attn) { --pip-fill: var(--pg-dither-gold), rgba(var(--gold-rgb), .06); }
-/* a card that waits on you: the gold mesh in its frame, no halo */
-body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.asking { background: var(--pg-dither-gold), rgba(var(--gold-rgb), .06); box-shadow: none; }
+/* the selection (fill only, Andrew 10-18) is the glass; a wait's selection keeps its gold */
+body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row, #left #workstreams .ws-row) { --pip-fill: var(--pg-dither); }
+body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row.asking, #left #workstreams .ws-row.attn) { --pip-fill: var(--pg-dither-gold); }
+/* a card that waits on you: the gold glass in its frame */
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.asking { background: var(--pg-dither-gold); }
 /* the open tab */
-body.glass-demo:not(.hud-mode) #screen-game #left .ws-head .ws-tab.on { background: var(--pg-dither), rgba(var(--ph-rgb), .08); }
-/* NEEDS YOU: each kind's strip is a mesh band in its colour */
-body.glass-demo:not(.hud-mode) #screen-game #left .ws-needs .ny-grp {
-  background: repeating-conic-gradient(rgba(var(--ny-k), .24) 0 25%, transparent 0 50%) 0 0 / var(--mesh-cell) var(--mesh-cell), rgba(var(--ny-k), .06);
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-head .ws-tab.on { background: var(--pg-dither); }
+/* NEEDS YOU: each kind's strip is the glass in its colour */
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-needs .ny-grp { background: linear-gradient(120deg, rgba(var(--ny-k), .2), rgba(var(--ny-k), .06)); }
+/* at rest nothing glows: a resting row, a closed dock group, the first-run starter cards */
+body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row:not(.selected):not(.asking), #left #workstreams .ws-row:not(.sel), #bottombar .bb-group:not(.open) > .bb-grp, #chat-panel .cmsg-empty .cmsg-starter) { box-shadow: none; }
+/* a lit pane wears the window item's frame and halo, and its type the window item's soft bloom (the type rules read
+   --pg-glow / --pg-glow-soft, so the bloom lives only inside the lit pane) */
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.selected:not(.asking),
+body.glass-demo:not(.hud-mode) #screen-game #left #workstreams .ws-row.sel:not(.attn),
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-head .ws-tab.on,
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-group.open > .bb-grp {
+  border-color: rgba(var(--ph-rgb), .5); box-shadow: 0 0 12px rgba(var(--ph-rgb), .16); --pg-glow: var(--pg-lit-glow); --pg-glow-soft: var(--pg-lit-glow);
 }
-/* no halo anywhere on the dashboard: a lit or selected row, the dock's open group (its open-window underline stays), the
-   first-run starter cards, the UPLINK lamp (a housed lamp, like the crew's) */
-body.glass-demo:not(.hud-mode) #screen-game :is(#crew .crew-row, #left #workstreams .ws-row, #bottombar .bb-group > .bb-grp, #chat-panel .cmsg-empty .cmsg-starter) { box-shadow: none; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.asking,
+body.glass-demo:not(.hud-mode) #screen-game #left #workstreams .ws-row.sel.attn {
+  border-color: rgba(var(--gold-rgb), .5); box-shadow: 0 0 12px rgba(var(--gold-rgb), .16); --pg-glow: var(--pg-lit-glow); --pg-glow-soft: var(--pg-lit-glow);
+}
 body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-group.has-active > .bb-grp { box-shadow: inset 0 -2px 0 var(--ph); }
 body.glass-demo:not(.hud-mode) #screen-game #topbar #status-pill::before { box-shadow: 0 0 0 1px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .3); }
 body.glass-demo:not(.hud-mode) #screen-game #topbar #status-pill:is(.standby, .down)::before { box-shadow: 0 0 0 1px rgba(0, 0, 0, .55); }
@@ -2032,3 +2043,131 @@ body.glass-demo:not(.hud-mode) #terms .term.dlv-win .cfg.dlv .dlv-tools > summar
 body.glass-demo:not(.hud-mode) #terms .term.dlv-win .cfg.dlv .dlv-tools:not([open]) { flex: 0 0 auto; gap: 0; }   /* closed, the hidden keys' box still took the flex gap */
 body.glass-demo:not(.hud-mode) #terms .term.dossier .con-toptab { padding-top: 10px; padding-bottom: 10px; }
 body.glass-demo:not(.hud-mode) #terms .term.dossier .con-toptab .con-rail-label { line-height: 24px; }
+
+/* ============================================================
+   THE CURVED DASHBOARD (Andrew 10-25: "bring back the more curved edges … we can still keep our style, just with the more
+   curved edges without the sharp pointiness … it looks really inconsistent with everything else. we dont want to restore it
+   we want to upgrade our current version"). The 10-17 Pip-Boy pass squared everything ON the panels to the 2px terminal box
+   while the panels' shells (10px) and every window (8px keys, 6-8px cards) stayed curved. One radius scale now runs the
+   dashboard so it reads as the same app as its windows; the Pip-Boy register (1px lines, matte fills, the mesh, tracked caps,
+   tint-only selection) is unchanged. Not touched on purpose: the speech rails (no bubbles in COMMS), the lamps and meters
+   (square pixel cells), the cam corners on the world view.
+     card 10 — crew cards, NEEDS YOU, COMMS cards, the composer, dock menus, toasts, the first-run hint
+     key   8 — every key, field and search box; tabs round only the corners that leave their rule
+     row   6 — session rows, step rows, portraits and icon wells
+     chip  4 — badges, chips, inline code
+   ============================================================ */
+body.glass-demo:not(.hud-mode) { --sn-r-card: 10px; --sn-r-key: 8px; --sn-r-row: 6px; --sn-r-chip: 4px; }
+
+/* -- the rail -- */
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row { border-radius: var(--sn-r-card); }
+body.glass-demo:not(.hud-mode) #screen-game #crew :is(.crew-portrait, .crew-dossier) { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #left > h3 .crew-hide,
+body.glass-demo:not(.hud-mode) #screen-game #left :is(#crew-search, #crew-search-close, #ws-search, .ws-agent-filter) { border-radius: var(--sn-r-key); }
+/* the tabs and + NEW stand on the strip's rule: only their top corners round */
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-head :is(.ws-tab, #ws-new, #ws-addproject) { border-radius: var(--sn-r-key) var(--sn-r-key) 0 0; }
+body.glass-demo:not(.hud-mode) #screen-game #left :is(#workstreams, #projects) > .ws-row { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #left .ws-meta { border-radius: var(--sn-r-chip); }
+body.glass-demo:not(.hud-mode) #left .ws-needs .ny-panel { border-radius: var(--sn-r-card); }
+body.glass-demo:not(.hud-mode) #left .ws-needs .ny-face { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #left .ws-needs :is(.ny-key, .ny-more) { border-radius: var(--sn-r-key); }
+
+/* -- the top bar and the dock -- */
+body.glass-demo:not(.hud-mode) #screen-game :is(#topbar, #bottombar) .widget-rail .wg-add { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game .widget-rail { border-radius: var(--sn-r-key); }
+/* the open group hangs from the dock's rule: only its bottom corners round */
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-group { border-radius: 0 0 var(--sn-r-key) var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-group > .bb-grp { border-radius: 0 0 var(--sn-r-key) var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-menu { border-radius: var(--sn-r-card); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-menu .bb { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .bb-menu .bb-i { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar :is(.bb-menu .bb > .badge, .bb-grp-badge) { border-radius: var(--sn-r-chip); }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar .ctx-gauge { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #stage-wrap .cam-cine { border-radius: var(--sn-r-key); }
+
+/* -- COMMS chrome -- */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .comms-portrait { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#comms-browser, #gc-add-agents, #chat-send, #chat-stop, #chat-attach, #model-dock-toggle, .voice-toggle, #chat-mic, .cmsg-copy) { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #chat-inputrow { border-radius: var(--sn-r-card); }
+/* -- COMMS cards and their keys -- */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .cmsg.tb-read,
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(.cmsg.turnin, .cmsg.nudge, .cmsg.consent, #chat-log > .dg-line, #gc-questions .gc-question, #gc-states .gc-state) { border-radius: var(--sn-r-card); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #comms-presence:not(.resolved),
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #comms-presence.paused:not(.resolved),
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #gc-states .gc-state:is(.hold, :not(.hold)) { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .task-conversation :is(.tc-answer, .tc-sample, .tc-understanding),
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(.cmsg.turnin, .cmsg.nudge, .cmsg.consent, .dg-inspect) .consent-btn:not(.thumb),
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #chat-log .dg-line .dg-key,
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #gc-states .gc-state :is(.gc-ok, .gc-copy),
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #gc-questions .gc-question .gc-q-choice,
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(.consent-btn, .dg-key, .deliverable-folder) { border-radius: var(--sn-r-key); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) > .cmsg.work-rate.rate-inline .consent-btn.thumb { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel .tool-chip { border-radius: var(--sn-r-row); }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel :is(#chat-log, #gc-log) .md-code { border-radius: var(--sn-r-chip); }
+
+/* -- what floats over the dashboard -- */
+body.glass-demo:not(.hud-mode) #toast-stack .toast,
+body.glass-demo:not(.hud-mode) .nav-coach { border-radius: var(--sn-r-card); }
+body.glass-demo:not(.hud-mode) .nav-coach-x,
+body.glass-demo:not(.hud-mode) .station-tip,
+body.glass-demo:not(.hud-mode) > .hint-bubble.dock-tip { border-radius: var(--sn-r-key); }
+/* the last two pointed ends: COMMS's heading rule and the dock's rule drop their end ticks, as the CREW head's did (10-23) —
+   each is now one plain line */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel > h3 { background: linear-gradient(var(--pg-line), var(--pg-line)) left 10px bottom 0 / calc(100% - 20px) 1px no-repeat; }
+body.glass-demo:not(.hud-mode) #screen-game #bottombar > .bb-group:is([data-group="crew"], [data-group="system"]) { background: none; }
+
+/* ============================================================
+   THE DASHBOARD PASS (Andrew 10-26: "no solid organization like there used to be" → one composed pass, shot whole and
+   tested on his test tab: "this looks great right now"). Organization only — no new controls; nothing hidden that another
+   place doesn't already say.
+   ============================================================ */
+/* the rail reads in two weights: the name carries the card; status, clock and the crew count drop to the quiet line */
+body.glass-demo:not(.hud-mode) #screen-game #crew :is(.crew-status, .crew-step, .crew-clock) { --sn-type-meta: 14px; --sn-type-compact: 14px; letter-spacing: 1px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row:not(.asking) :is(.crew-status, .crew-step) { color: var(--cg-mute, var(--text)); }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.working:not(.asking) .crew-status { color: var(--ph); }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row:not(.asking) .crew-clock { color: var(--cg-mute, var(--text)); }
+body.glass-demo:not(.hud-mode) #screen-game #left > h3 #crew-sum { --sn-type-meta: 14px; --sn-type-compact: 14px; color: var(--cg-mute, var(--text)); }
+/* the crew card, a little shorter (67 → 62px: "a bit taller than that", "go 62") — the same two lines, a 46×55 well (62 measured at TEXT SIZE 90), the working meter tucked so a working card is the same height */
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row { padding-top: 6px; padding-bottom: 6px; margin-top: 3px; margin-bottom: 3px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-portrait { width: 46px; height: 55px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-portrait img { width: 38px; height: 48px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-main { row-gap: 2px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.working .crew-prog { margin-top: 2px; }
+/* gold only where it waits: a waiting session row says so with its icon (NEEDS YOU above tells the rest), so its
+   "Approval needed" / "Reply needed" chip no longer doubles the row */
+body.glass-demo:not(.hud-mode) #screen-game #left #workstreams .ws-row.attn > .ws-meta { display: none; }
+/* the search fields: the windows' search box */
+body.glass-demo:not(.hud-mode) #screen-game #left :is(#ws-search, #crew-search) { border: 1px solid rgba(var(--ph-rgb), .24); border-radius: var(--sn-r-key); background: rgba(0, 0, 0, .2); box-shadow: inset 0 1px 3px rgba(0, 0, 0, .15); }
+/* NEEDS YOU: a row with no key keeps only the caret's width, so its ask is not cut at the key column */
+body.glass-demo:not(.hud-mode) #left .ws-needs .ny-item:not(:has(> .ny-keys)) { grid-template-columns: 34px minmax(0, 1fr) 14px; }
+@container (max-width: 300px) { body.glass-demo:not(.hud-mode) #left .ws-needs .ny-item:not(:has(> .ny-keys)) { grid-template-columns: minmax(0, 1fr) 14px; } }
+/* COMMS: the working / waiting line is a rail (speech's language), never a second framed box under a card */
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #comms-presence:not(.resolved) { border: 0; border-radius: 0; background: none; box-shadow: inset 3px 0 0 rgba(var(--ph-rgb), .55); padding-left: 14px; }
+body.glass-demo:not(.hud-mode) #screen-game #chat-panel #comms-presence.paused:not(.resolved) { border: 0; border-radius: 0; background: none; box-shadow: inset 3px 0 0 rgba(var(--gold-rgb), .8); padding-left: 14px; }
+/* COMMS: the stamps and the delegated status lines sit a step under the speech */
+body.glass-demo:not(.hud-mode) #chat-panel :is(#chat-log, #gc-log) .cmsg:is(.agent, .user) .cmsg-ts { --sn-type-meta: 14px; --sn-type-compact: 14px; }
+body.glass-demo:not(.hud-mode) #chat-panel #chat-log > .dg-line .dg-li-st { font-size: 14px; }
+/* the CREW panel keeps its older SQUARE row (Andrew 10-26, from his screenshot of the earlier crew: "remove the mesh and give
+   it the glass vibe, except … the same shape as this one", then "square + glass flat"): 2px corners across the rail's
+   width (on the rail's one 10px gutter), the windows' glass as a flat block — no frame, no halo — under the lit type's soft bloom */
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row { border-radius: 2px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-portrait { border-radius: 2px; }
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.selected:not(.asking),
+body.glass-demo:not(.hud-mode) #screen-game #crew .crew-row.asking { border-color: transparent; box-shadow: none; }
+
+/* ---- the cosmetic sweep 10-25 (every window shot at Andrew's settings, 1366x768 · TEXT SIZE 90) ----
+   · the trophy case: the kind tag (DOSSIER) stood beside the name and squeezed it to three lines; it is the card's
+     overline now, the name takes the card's width, and the date has its own line instead of orphaning a word
+   · one case per row of keys: the settings jump keys and its group headings, the notification filters and AUTOMATE's
+     section heads and rail read in the capitals every other key and rail uses (the words are unchanged) */
+body.glass-demo:not(.hud-mode) #terms .gx-tro .tro-hd { flex-wrap: wrap; row-gap: 4px; }
+body.glass-demo:not(.hud-mode) #terms .gx-tro .tro-hd .gx-tag { order: -1; flex-basis: 100%; margin-left: 0; }
+body.glass-demo:not(.hud-mode) #terms .gx-tro .sub > span { display: block; }
+body.glass-demo:not(.hud-mode) #terms .settings-pane :is(.settings-jumps button, h4.ms-h) { text-transform: uppercase; }
+body.glass-demo:not(.hud-mode) #terms .settings-pane h4.ms-h .dim { text-transform: none; }
+body.glass-demo:not(.hud-mode) #terms .utility-tabs button { text-transform: uppercase; }
+body.glass-demo:not(.hud-mode) #terms .automation-win :is(.sec-l, .con-rail-label) { text-transform: uppercase; }
+/* · inline code in a window (the messaging setup guides' /newbot, the Signal docker command) fell to the browser's
+     monospace — a bigger, smooth face inside VT323 lines: it is the station face, set apart by colour */
+body.glass-demo:not(.hud-mode) #terms code { font-family: inherit; }
+body.glass-demo:not(.hud-mode) #terms .ch-steps code { color: var(--ph-bright); }

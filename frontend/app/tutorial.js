@@ -792,7 +792,7 @@ const Tutorial = (() => {
     const ids = connectOffers(goalTexts());
     const items = ids.map(id => ({ label: '⧉ ' + (CONNECT_LABEL[id] || id), value: id }))
       .concat([{ label: 'Show me how to connect platforms', value: 'guide' }, { label: 'not now', value: 'skip', skip: true, quiet: true }]);
-    say([seg('want to connect an app you already use? choose one below, or open the connection guide. you can find apps in BUILD › CONNECT › ABILITIES › CATALOG, and messaging platforms in BUILD › CONNECT › CHANNELS.', 44, 0)], () => {
+    say([seg('want to connect an app you already use? choose one below, or open the connection guide. you can find apps in BUILD › CONNECT › ABILITIES › APPS, and messaging platforms in BUILD › CONNECT › CHANNELS.', 44, 0)], () => {
       const row = Chat.choices(items, item => {
         if (!item || item.skip) return done();
         if (item.value === 'guide') { showPlatformConnections(); return; }
@@ -977,7 +977,7 @@ const Tutorial = (() => {
     tickBrief('build');
     watchConnectors(1);
     showCoach('connector', '#refit-palette',
-      'that’s a connector portal. connect the service in BUILD › CONNECT › ABILITIES › CATALOG first; placing a portal does not sign you in. the connection guide is in SYSTEM › FIELD MANUAL › CONNECT PLATFORMS.');
+      'that’s a connector portal. connect the service in BUILD › CONNECT › ABILITIES › APPS first; placing a portal does not sign you in. the connection guide is in SYSTEM › FIELD MANUAL › CONNECT PLATFORMS.');
   }
   function onLevelUp() {
     tickBrief('level');

@@ -28,6 +28,7 @@ const sixel = require('./sixel.js');
 const camfeed = require('./camfeed.js');
 const folderLib = require('./folder.js');
 const mouse = require('./mouse.js');
+const theme = require('./theme.js');
 
 function runDashboard(station, opts) {
   const o = opts || {};
@@ -37,6 +38,10 @@ function runDashboard(station, opts) {
   const client = station.client;
   const model = makeStation();
   const level = tui.colorLevel(env, !!out.isTTY);
+  // the color theme: the app's presets or the terminal's red (STARNET_THEME, else the last /theme pick)
+  const themeFile = o.themeFile || theme.configFile(env);
+  const themeTargets = { palette: tui.PALETTE, bg: tui.BG, logoRamp: sixel.RAMP, camfeed };
+  let themeName = theme.apply(theme.load(env, themeFile), themeTargets);
   const ui = {
     focus: '', input: '', overlay: null, picker: null, streams: {}, history: [], histAt: null, histDraft: '', pasting: false, flash: null, scroll: 0, keyFlash: null, quitArmed: 0, quitNote: '',
     // which station this is, in words: the desktop app's own, a private one this terminal booted, or one at an address
@@ -467,9 +472,10 @@ function runDashboard(station, opts) {
     { name: 'crew', desc: 'the CREW page: every agent on one line' },
     { name: 'work', desc: 'the WORK page: workflows, routines, the away shift' },
     { name: 'comms', desc: 'back to the conversation' },
+    { name: 'theme', aliases: ['themes'], desc: 'the terminal colors: ' + theme.NAMES.join(' · '), argsHint: '[' + theme.NAMES.join('|') + ']' },
     { name: 'quit', aliases: ['exit'], desc: 'quit starnet' }
   ].map(c => Object.assign({ source: 'terminal', aliases: [], argsHint: '', here: true }, c));
-  const HANDLED_HERE = ['help', 'quit', 'exit', 'stat', 'crew', 'work', 'comms', 'model', 'new', 'clear', 'resume', 'stop', 'flow', 'retry', 'status', 'whoami', 'version', 'skills', 'history', 'cron',
+  const HANDLED_HERE = ['help', 'quit', 'exit', 'stat', 'crew', 'work', 'comms', 'theme', 'themes', 'model', 'new', 'clear', 'resume', 'stop', 'flow', 'retry', 'status', 'whoami', 'version', 'skills', 'history', 'cron',
     'agents', 'insights', 'memory', 'bundles', 'blueprint', 'reload-mcp', 'reload-skills', 'steer', 'copy', 'compress', 'reasoning', 'fast', 'debug', 'queue', 'background', 'loop', 'save', 'goal', 'subgoal', 'yolo', 'personality'];
   async function loadCatalog() {
     const id = ui.focus || 'agent';
@@ -706,6 +712,7 @@ function runDashboard(station, opts) {
     if (cmd === '/help' || cmd === '/?') { ui.overlay = { title: 'COMMANDS', items: tui.HELP, foot: 'any key closes this' }; return paint(); }
     if (cmd === '/quit' || cmd === '/exit') return quit(true);
     if (cmd === '/stat' || cmd === '/crew' || cmd === '/work' || cmd === '/comms') return openPage(cmd.slice(1));
+    if (cmd === '/theme' || cmd === '/themes') return themeCommand(parts[1] || '');
     // the app's own commands, done here (above: what each does and which station route it uses)
     const rest = text.slice(parts[0].length).trim();
     if (cmd === '/agents' || cmd === '/tasks') return openPage('crew');
@@ -816,6 +823,20 @@ function runDashboard(station, opts) {
      command. A read that failed says so — never "none". */
   const sayHere = (cmd, lines, ok, title) => { model.noteSaid(ui.focus || 'agent', cmd, title || '', lines, ok !== false, now()); ui.scroll = 0; ui.overlay = null; paint(); };
   const usd2 = n => '$' + (Number(n) || 0).toFixed(2);
+  /* /theme: the app's color presets (amber, green, blue, purple, white) or the terminal's own neon red. The pick recolors
+     the whole screen at once — the accent, the logo, the camera feed — and is kept for the next starnet (cli.json). */
+  function themeCommand(arg) {
+    const want = String(arg || '').toLowerCase().trim();
+    const list = () => theme.NAMES.map(n => (n === themeName ? '▸ ' : '  ') + n + ' — ' + theme.BLURB[n]);
+    if (!want) return sayHere('/theme', ['Theme: ' + themeName + (env.STARNET_THEME ? ' (STARNET_THEME)' : '') + '. /theme <name> picks one:'].concat(list()), true, 'THEME');
+    if (!theme.known(want)) return sayHere('/theme', ['No theme named ' + want + '. Pick one of: ' + theme.NAMES.join(', ') + '.'], false, 'THEME');
+    themeName = theme.apply(want, themeTargets);
+    let kept = '';
+    try { theme.save(themeName, env, themeFile); kept = ' — kept for the next starnet'; } catch (e) { kept = ' — for this session only (it could not be saved: ' + e.message + ')'; }
+    if (env.STARNET_THEME && env.STARNET_THEME.toLowerCase().trim() !== themeName) kept += '; STARNET_THEME=' + env.STARNET_THEME + ' still wins at the next start';
+    redrawAll();
+    sayHere('/theme', ['Theme: ' + themeName + ', ' + theme.BLURB[themeName] + kept + '.'], true, 'THEME');
+  }
   async function insightsCommand() {
     const id = ui.focus || 'agent';
     const r = await get('/api/insights?agent=' + encodeURIComponent(id), 15000);
@@ -1460,9 +1481,11 @@ function runDashboard(station, opts) {
     if (a && !((a.onboarded === undefined) ? !a.purpose : !a.onboarded)) return false;   // the app's own needsAwakening
     ui.wake = { log: [], ask: null, stage: { title: 'THE AWAKENING', detail: '' }, speaker: 'STARNET', feedKey: null, note: '', typing: false, ff: false };
     paint();
-    // one setup at a time: the app open on this station is mid-setup itself, and a prior install's station is the app's to recover
+    /* one setup at a time: the app runs this station (open, or in the background for a terminal) and its page holds the
+       setup it started — a save written from here would leave that page stale. Quitting it never helps now: `starnet`
+       starts it again. A prior install's station is the app's to recover. */
     if (station.mode === 'attached' && station.workspace) {
-      await wakeIO.say([{ text: 'the StarNet app is open on this station and its setup isn’t finished. finish creating your Overseer in the StarNet window — or quit the app and run starnet again to do it here.', cps: 60 }], { who: 'STARNET' });
+      await wakeIO.say([{ text: 'StarNet’s setup isn’t finished on this station. open StarNet — it’s already running — and finish creating your Overseer in its window, then come back here.', cps: 60 }], { who: 'STARNET' });
       return true;
     }
     if (!a && !boot && r.json.lineage && r.json.lineage.priorInstallEvidence) {

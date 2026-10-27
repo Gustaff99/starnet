@@ -1198,7 +1198,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // the opener did not name its window: find the menu window that just appeared and seat it where the old one was
     if (!toKey) {
       const k = Object.keys(open).find(x => !before.has(x) && familyOf(x) === fam);
-      if (k && open[k] && termPos[fromKey]) { carry(k); placeTerm(open[k], k); }
+      // the sheet was already seated from ITS OWN dock state when it mounted: re-seat it from the carried one
+      if (k && open[k] && termPos[fromKey]) { carry(k); placeTerm(open[k], k); if (typeof open[k]._reseatDock === 'function') open[k]._reseatDock(); }
     }
   }
   // the dock button of a menu: open its last-used tab — or, like every dock button, raise / close what is showing.
@@ -1331,6 +1332,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     open[key] = w;
     placeTerm(w, key);   // land in a cascaded slot (or its remembered spot) — never dead-center pile-up
     mountFamilyTabs(w, key);   // ONE MENU: a window that belongs to MY WORK / AUTOMATE / CONNECT carries that menu's tabs
+    // SEAT BEFORE BUILD (10-26 window-open lag): the dock seats a sheet from its own MutationObserver, which runs after this
+    // function returns — after the builder filled the window and w.focus() had laid all of it out at the CSS default width,
+    // so the dock's width then laid it all out a second time. Seated now, while the window is still an empty frame, its
+    // first full layout is at the docked width. (The rAF fit after the first paint re-seats a sheet that sizes to its content.)
+    { const host = $('#terms'); if (host && typeof host._seatSheet === 'function') { try { host._seatSheet(w); } catch (_) {} } }
+    // UI FIRST (world.js): the floor stands aside while this window builds, lays out and rises, so its first paint is not
+    // queued behind a station draw (median click → window on screen 168 → 102 ms on a 26-agent station)
+    if (typeof World !== 'undefined' && typeof World.yieldToUi === 'function') { try { World.yieldToUi(); } catch (_) {} }
     w.addEventListener('mousedown', ev => {
       w.style.zIndex = U.zTop();
       // pull focus into the dialog on a background click so the window-level Esc/Tab handlers keep working —
@@ -1531,6 +1540,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     let activeId = consoleSection[key];
     if (key === 'settings' && activeId === 'nightshift') activeId = 'autonomy';   // folded into AUTONOMY (ONE WORD: AUTONOMY)
     if (key === 'settings' && (activeId === 'models' || activeId === 'livevoice')) activeId = activeId === 'models' ? 'providers' : 'appearance';   // the same aliases openTerm applies (a remembered LIVE VOICE reopened on AI & MODELS)
+    const retired = SECTION_ALIAS[key] && SECTION_ALIAS[key][activeId];   // a remembered section that became a block (ONE FLAT LIST)
+    if (retired) activeId = retired[0];
     if (!sections.some(s => s.id === activeId)) activeId = sections[0] && sections[0].id;
 
     // ---- left: optional rail-top slot (e.g. the dossier roster) + optional search + the section rail (role=tablist) ----
@@ -1712,9 +1723,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
     // ---- search: filter rows across every section, dim empty sections, group matches ----
     if (searchInput) {
+      let lastQuery = '';
       const doFilter = () => {
         const q = (searchInput.value || '').trim().toLowerCase();
         body.classList.toggle('con-searching', !!q);
+        // new results start at the top: the pane kept the scroll of whatever was read before, so the first hit sat
+        // cut off above the fold ("gmail" in CONNECT, UX night 10-25)
+        if (q !== lastQuery) { lastQuery = q; if (q) host.scrollTop = 0; }
         if (!q) {
           if (searchEmpty) searchEmpty.hidden = true;
           // restore: show the active section only, clear all row dimming + section flags
@@ -3802,6 +3817,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       ? '<label class="mc-hint" for="sk-agent-pick">Habilidades de</label><select id="sk-agent-pick" class="ab-agent-pick" aria-label="Mostrar las habilidades del agente">' +
         present.map(x => '<option value="' + esc(x.id) + '"' + (x.id === agentId ? ' selected' : '') + '>' + esc(x.name || x.id) + '</option>').join('') + '</select>'
       : '';
+    // "recipes" here collided with the ❒ RECIPES dock feature (audit finding 2) — these are PROCEDURES: how-to
+    // guides an agent follows mid-task, not launchable jobs. The intro that restated the desc folded into it (UX night 10-25).
     const secLibrary =
       // "recipes" here collided with the ❒ RECIPES dock feature (audit finding 2) — these are PROCEDURES: how-to
       // guides an agent follows mid-task, not launchable jobs.
@@ -3831,6 +3848,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
 
     // SKILL MARKET (2026-09-29): the curated StarNet catalog, browsed as the same glass card grid the connectors
     // CATALOG uses. The catalog is fetched when this section loads, never in the background.
+    // the second intro paragraph restated the desc and the shelves' own notes; its one new fact moved into the desc
     const secMarket =
       '<p class="set-about"><b>Añade habilidades a toda tu tripulación.</b> Los Originals de StarNet están escritos por StarNet para tu estación; las selecciones de la comunidad llevan crédito a sus autores. Al instalar se añade la habilidad a tu BIBLIOTECA DE HABILIDADES y se activa.</p>' +
       '<div class="cc-filters" id="skm-filters" role="group" aria-label="Filtrar el mercado de habilidades">' +
@@ -3845,6 +3863,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       '<div id="skm-list" class="cc-list"><span class="loading pulse">loading the skill market…</span></div>';
 
     const frag = html => (el => { el.innerHTML = html; });
+    // ONE FLAT LIST (UX night 10-26, Andrew: "more like the settings menu where u can see all the different options"):
+    // SKILL EXCHANGE is SKILL MARKET's FROM A LINK block and AGENT SKILLS is the LEARNED block of SKILLS. Every element id
+    // is unchanged, so wire() below runs as before, and the retired section ids land here via SECTION_ALIAS.
+    const block = (id, label) => '<div class="sec" id="' + id + '"><span class="sec-l">' + label + '</span><span class="sec-r"></span><span class="sec-nd"></span></div>';
     const sections = [
       { id: 'market', label: 'MERCADO DE HABILIDADES', glyph: '▦', desc: 'Explora StarNet Originals y habilidades de la comunidad con crédito, e instala una para toda la tripulación con un clic.', build: frag(secMarket) },
       { id: 'library', label: 'BIBLIOTECA DE HABILIDADES', glyph: '▤', desc: 'Los procedimientos que siguen tus agentes cuando una tarea coincide: los integrados en StarNet y los que instalaste del mercado.', build: frag(secLibrary) },
@@ -3880,6 +3902,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // names an object the Commander can't find
   const skmGear = g => SK_OBJ_NAME[g] || String(g).toUpperCase();
   let skmFilter = 'all';
+  // CATEGORY FOLDS (UX night 10-25): each shelf lists its categories as one-line folds (102 cards were one ~20,000px
+  // scroll). A fold the Commander opens stays open across the market's re-renders (an install repaints every card).
+  const skmFoldOpen = new Set();
   const skmBusy = new Map();   // slug -> 'install' | 'uninstall' while a request is in flight (survives re-renders)
   let skmResult = null;        // { slug, text, ok } — the last install/remove result, shown on that card
   let skmFocus = '';           // slug whose action button takes focus after the next render
@@ -3966,6 +3991,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // ones with a newer version waiting. A pulled or tampered skill shows under INSTALLED with its warning.
   function skmApplyFilter(list) {
     if (!list || list.dataset.skmOk !== '1') return;   // a failed/refused load has no cards: no filter claims about it
+    const searching = !!list.closest('.con-searching');   // while searching, the console search owns the folds
     list.querySelectorAll('.cc-group').forEach(g => {
       let vis = 0;
       g.querySelectorAll('.cc-card').forEach(c => {
@@ -3977,6 +4003,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       });
       g.hidden = vis === 0;
       const tag = g.querySelector('.sec-tag'); if (tag) tag.textContent = String(vis);
+      // INSTALLED / UPDATES are already the short list: their categories show their cards; ALL is the index again
+      if (!searching && g.matches('details')) g.open = (skmFilter === 'installed' || skmFilter === 'update') || skmFoldOpen.has(g.dataset.fold);
+    });
+    list.querySelectorAll('.skm-shelf').forEach(s => {
+      const n = s.querySelectorAll('.cc-card:not([hidden])').length;
+      s.hidden = n === 0;
+      const tag = s.querySelector(':scope > .sec .sec-tag'); if (tag) tag.textContent = String(n);
     });
     let none = list.querySelector('.cc-nores');
     const shown = list.querySelectorAll('.cc-card:not([hidden])').length;
@@ -4008,8 +4041,14 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const html = shelves.map(([id, label, note]) => {
       const rows = d.entries.filter(e => e.shelf === id);
       if (!rows.length) return '';
-      return '<div class="cc-group"><div class="sec"><span class="sec-l">' + esc(label) + '</span><span class="sec-tag">' + rows.length + '</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
-        '<p class="mc-hint">' + esc(note) + '</p><div class="cc-grid">' + rows.map(skmCard).join('') + '</div></div>';
+      const cats = [...new Set(rows.map(e => String(e.category || 'Other')))].sort((a, b) => a.localeCompare(b));
+      return '<div class="skm-shelf" data-shelf="' + esc(id) + '"><div class="sec"><span class="sec-l">' + esc(label) + '</span><span class="sec-tag">' + rows.length + '</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+        '<p class="mc-hint">' + esc(note) + '</p>' + cats.map(cat => {
+          const inCat = rows.filter(e => String(e.category || 'Other') === cat), key = id + '/' + cat;
+          return '<details class="cc-group" data-fold="' + esc(key) + '"' + (skmFoldOpen.has(key) ? ' open' : '') + '>' +
+            '<summary class="sec"><span class="sec-l">' + esc(cat) + '</span><span class="sec-tag">' + inCat.length + '</span><span class="sec-r"></span><span class="sec-nd"></span></summary>' +
+            '<div class="cc-grid">' + inCat.map(skmCard).join('') + '</div></details>';
+        }).join('') + '</div>';
     }).join('');
     const pulled = d.entries.filter(e => e.status === 'pulled');
     const banner = pulled.length
@@ -4022,7 +4061,13 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     if (skmFocus) {
       const f = host.querySelector('[data-skm="' + CSS.escape(skmFocus) + '"] .cc-acts button:not([disabled])') || host.querySelector('[data-skm="' + CSS.escape(skmFocus) + '"] .cc-acts');
       skmFocus = '';
-      if (f && f.focus) { if (!f.matches('button')) f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: false }); }
+      // the card's category may have folded in this repaint (a search opened it): open it again before focusing, as the
+      // search's own fold when searching, else as the Commander's (they just acted inside it)
+      const fold = f && f.closest('details.cc-group');
+      if (fold && !fold.open) { fold.open = true; if (host.closest('.con-searching')) fold.dataset.searchOpened = '1'; else skmFoldOpen.add(fold.dataset.fold); }
+      // focus a tick later: while searching, a repainted card's group stays display:none until the caller re-applies the
+      // search (loadSkillMarket, right after this render), and focusing a hidden button silently drops to <body>
+      if (f && f.focus) setTimeout(() => { if (!f.isConnected) return; if (!f.matches('button')) f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: false }); }, 0);
     }
   }
   function loadSkillMarket(agentId, refresh) {
@@ -4049,6 +4094,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       skmApplyFilter($('#skm-list'));
     });
     host.addEventListener('click', async ev => {
+      // the Commander's own fold choice (the click lands before the fold toggles)
+      const head = ev.target.closest('summary'), fold = head && head.parentElement;
+      if (fold && fold.matches('details.cc-group') && fold.dataset.fold) { if (fold.open) skmFoldOpen.delete(fold.dataset.fold); else skmFoldOpen.add(fold.dataset.fold); return; }
       const place = ev.target.closest('[data-place]');
       const shownId = host.dataset.agent || agentId;
       if (place) { sfx('click'); placeGearForSkill(place.dataset.place, (typeof App !== 'undefined' && App.agentName) ? App.agentName(shownId) : ''); return; }
@@ -4191,6 +4239,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return { ready: ready, needsGear: needsGear, off: off };
   }
 
+  let skLibOffOpen = false;   // the TURNED OFF fold, as the Commander last left it
   function renderSkillLibrary(host, skills, agentId, placed) {
     if (!skills.length) { host.innerHTML = '<div class="sk-loading">Aún no hay habilidades en la biblioteca.</div>'; return; }
     const placedSet = {}; (placed || []).forEach(p => placedSet[p] = true);
@@ -4247,6 +4296,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     html += section('FALTA EQUIPO', groups.needsGear);
     html += section('DESACTIVADAS', groups.off);
     host.innerHTML = html;
+    const offFold = host.querySelector('details.sk-fold');
+    if (offFold) offFold.querySelector('summary').addEventListener('click', () => { skLibOffOpen = !offFold.open; });
     host.querySelectorAll('[data-toggle]').forEach(btn => btn.addEventListener('click', () => {
       const slug = btn.dataset.toggle, next = btn.dataset.enabled !== 'true';
       btn.classList.add('busy');
@@ -4349,7 +4400,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     input.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); inspect(); } });
     if (importer && Harness.skillExchangeImport) importer.addEventListener('change', async () => {
       const file = importer.files && importer.files[0]; if (!file) return;
-      host.innerHTML = '<div class="sk-loading"><span class="loading pulse">verifying exported package bytes…</span></div>';
+      host.innerHTML = '<div class="sk-loading"><span class="loading pulse">checking the package file…</span></div>';
       let envelope = ''; try { envelope = await file.text(); } catch (_) {}
       const r = envelope ? await Harness.skillExchangeImport(envelope) : { ok: false, error: 'Ese archivo no se pudo leer.' };
       importer.value = '';
@@ -5099,8 +5150,8 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
         const items = streams.filter(s => s.lane === lane);
         return '<div class="kb-col"><h4>' + label + ' <i>' + items.length + '</i>' +
           (lane === 'active' ? activeAggregate(items) : '') + '</h4>' +
-          '<p class="kb-lane-note">' + ({todo:'Planned tasks, ready when you are.',active:'Ongoing work and results to open.',shipped:'Tasks you marked complete.'}[lane]) + '</p>' +
-          (items.length ? items.map(card).join('') : kbEmpty(lane)) + '</div>';
+          // an empty lane's own empty card already says what goes there; the note above it said it twice (UX night 10-25)
+          (items.length ? '<p class="kb-lane-note">' + ({todo:'Planned tasks, ready when you are.',active:'Ongoing work and results to open.',shipped:'Tasks you marked complete.'}[lane]) + '</p>' + items.map(card).join('') : kbEmpty(lane)) + '</div>';
       }).join('') +
       '</div>' +
       // the dead-end this footnote kills (2026-07-16): "a run finished while you were away" sent users
@@ -5560,8 +5611,11 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     const st = oauthAcctState(pid);
     if (st.pending || (!force && st.list !== undefined && Date.now() - st.at < 5000)) return;
     st.pending = true;
+    // repaint only on a REAL change (10-26 window-open lag): every reopen of SETTINGS past the 5s mark re-reads the three
+    // lists, and an unchanged answer rebuilt the whole window anyway — the one data repaint left on a second open
+    const was = st.list === undefined ? undefined : JSON.stringify(st.list);
     OAuthAccounts.for(pid).accounts().then(j => { st.list = j; }).catch(() => { st.list = null; })
-      .finally(() => { st.pending = false; st.at = Date.now(); scheduleSettingsRepaint(); });
+      .finally(() => { st.pending = false; st.at = Date.now(); if (JSON.stringify(st.list) !== was) scheduleSettingsRepaint(); });
   }
   if (typeof U !== 'undefined' && U.bus && U.bus.on) U.bus.on('provider.fallback', p => { if (p && p.toAccount) STACKABLE_OAUTH.forEach(pid => refreshOAuthAccounts(pid, true)); });
   function stackClock(ms) { try { return new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); } catch (_) { return ''; } }
@@ -5774,9 +5828,34 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     return '<span class="prov-logo' + (id === 'starnet' ? ' prov-logo-starnet' : '') + '" aria-hidden="true" style="--provider-icon:url(&quot;' + esc(new URL('assets/brand/' + asset, document.baseURI).href) + '&quot;)"></span>';
   }
 
+  /* AI & MODELS IN FOUR PLAIN GROUPS (UX night 10-26, Andrew: "pretend these users are like 5"). Nineteen cards stood in
+     one column, each led by an API address ("generativelanguage.googleapis.com/v1beta"). They are the same cards, every
+     one still drawn (the visibleProviders law) and in PROVIDERS order inside its group, under the one question a newcomer
+     can answer: do you have StarNet credits, a subscription, an API key, or your own model server? A card leads with
+     what you need; its address rides the tip. The group with no id list takes every provider the others do not name. */
+  const PROVIDER_GROUPS = [
+    { id: 'credits', label: 'STARNET CREDITS', note: 'link this station once, nothing to paste', ids: ['starnet'] },
+    { id: 'subscription', label: 'A SUBSCRIPTION YOU HAVE', note: 'sign in, no API key', ids: ['codex', 'grok', 'kimi', 'claude-cli'] },
+    { id: 'key', label: 'AN API KEY', note: 'paste a key from the service’s website' },
+    { id: 'own', label: 'YOUR OWN MODELS', note: 'on this computer, or a server you run', ids: ['ollama', 'custom'] }
+  ];
+  const providerGroupOf = id => PROVIDER_GROUPS.find(g => g.ids && g.ids.indexOf(id) >= 0) || PROVIDER_GROUPS.find(g => !g.ids);
+  function groupedProviders() {
+    const shown = visibleProviders();
+    return PROVIDER_GROUPS.reduce((out, g) => out.concat(shown.filter(p => providerGroupOf(p.id) === g)), []);
+  }
+  function providerGroupHead(cards, i) {
+    const g = providerGroupOf(cards[i].id);
+    if (i > 0 && providerGroupOf(cards[i - 1].id) === g) return '';
+    return '<div class="set-sub prov-group" data-group="' + esc(g.id) + '"><span class="set-sub-k">' + esc(g.label) + '</span><span class="set-sub-d">' + esc(g.note) + '</span></div>';
+  }
+  // what the card says under its name: the subscription for a sign-in provider ("ChatGPT subscription"), else the blurb
+  const providerNeed = p => /^OAuth · /.test(p.endpoint) ? p.endpoint.slice('OAuth · '.length) : p.blurb;
   function providersHtml() {
     const active = activeProv();
-    return visibleProviders().map((p, pi) => {
+    const cards = groupedProviders();
+    return cards.map((p, pi) => providerGroupHead(cards, pi) + providerCardHtml(p, pi)).join('');
+    function providerCardHtml(p, pi) {
       // The credits provider has its own card: no key to paste, no sign-in, and a status line that
       // states the BALANCE, because a paid provider reading "connected" at $0.00 would be a lie of
       // exactly the kind this panel exists to avoid.
@@ -5874,7 +5953,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
             '</div>'
           : '') +
         '</div>';
-    }).join('');
+    }
   }
   // The STARNET MANAGED card. Same shape as every other provider row so it reads as one of them, but its
   // action routes to the STORE rather than owning a second copy of the pairing flow.
@@ -8318,7 +8397,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     (() => {
       const was = creditsProv.state + ':' + creditsProv.balanceUsd + ':' + creditsProv.tier;
       refreshCreditsProvider().then(() => {
-        if (was !== creditsProv.state + ':' + creditsProv.balanceUsd + ':' + creditsProv.tier) rerender('settings');
+        // through the coalescer (10-26): two builds in flight (the open + a status repaint) both saw the old balance and
+        // each rebuilt the whole window when the one shared answer landed — twice, 70 ms apart, at the reader's scroll 0
+        if (was !== creditsProv.state + ':' + creditsProv.balanceUsd + ':' + creditsProv.tier) scheduleSettingsRepaint();
       }).catch(() => {});
     })();
     wireCredits(host);
@@ -10095,7 +10176,9 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
       offer = list.find(c => c && c.file && Number(c.restorable) > 0) || null;
       if (!list.more) break;
     }
-    if (!offer || document.getElementById('save-conflict-notice') || document.getElementById('save-preserved-notice')) return;
+    // a live conflict is offered on its own banner (Restore this window's sessions), even before that banner is drawn
+    const live = (() => { try { const h = CloudSave.health && CloudSave.health(); return !!(h && h.conflict); } catch (_) { return false; } })();
+    if (!offer || live || document.getElementById('save-conflict-notice') || document.getElementById('save-preserved-notice')) return;
     const n = Number(offer.restorable);
     const when = offer.savedAt ? new Date(offer.savedAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'earlier';
     const banner = document.createElement('div'); banner.id = 'save-preserved-notice'; banner.setAttribute('role', 'alert');
@@ -12085,6 +12168,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     get present() { return present; },
     get sel() { return sel; },
     skillsAgentId,   // ORG P21: the agent the ABILITIES skills lane shows — the BUILT-IN ABILITIES picker opens on the same one
+    agentPostureOf,  // a pure read (no state): the ONE ACCESS posture an agent's saved answer matches — TOOLS names it in those words
     get deskAgentId() { return deskAgentId; },
     get store() { return store; }
   };
@@ -12152,11 +12236,35 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     logbook:  { term: 'agents',     section: 'record', map: { runs: 'record', slag: 'record', insights: 'record' } },
     rewind:   { term: 'agents',     section: 'record', map: { restore: 'record' } }
   };
+  /* ONE FLAT LIST (UX night 10-26): CONNECT › ABILITIES lost its INSTALLED / DISCOVER / CREATE switch and four
+     sections became blocks of their neighbours. Their ids are named all over the app (places, error doors, the
+     dossier, SETTINGS), so each retired id still opens: on the section that absorbed it, scrolled to its block. */
+  const SECTION_ALIAS = {
+    connectors: { keys: ['mcp', '#ab-keys'], computer: ['toolsets', '#ab-computer'], agent: ['library', '#ab-agent-skills'], exchange: ['market', '#ab-exchange'] }
+  };
+  // a door to a merged block lands ON it: opens every fold on the way down, then scrolls (setTimeout, never rAF — a
+  // hidden or non-compositing tab never fires rAF). The window may still be swapping in, so it waits for the block;
+  // rows that load late above it (the services list) push it down, so it lands once more unless the Commander scrolled.
+  function revealInTerm(key, anchor) {
+    let tries = 0, landed = -1, pane = null;
+    const land = () => {
+      const w = open[key], el = w && w.querySelector(anchor);
+      if (!el) { if (++tries < 25) setTimeout(land, 60); return; }
+      for (let p = el.parentElement; p && p !== w; p = p.parentElement) if (p.tagName === 'DETAILS') p.open = true;
+      pane = el.closest('.con-pane');
+      if (!pane) { try { el.scrollIntoView({ block: 'start' }); } catch (_) {} return; }
+      pane.scrollTop = Math.max(0, el.offsetTop - pane.offsetTop - 8); landed = pane.scrollTop;
+    };
+    setTimeout(land, 0);
+    setTimeout(() => { if (pane && pane.isConnected && pane.scrollTop === landed) land(); }, 700);
+  }
   function openTerm(key, section) {
     if (key === 'work') key = 'tasks'; // compatibility for old saved links; the station remains home
     const al = TERM_ALIAS[key];
     if (al) { section = (section && al.map[section]) || al.section; key = al.term; }
     const def = BUILDERS[key]; if (!def) return;
+    const sal = section && SECTION_ALIAS[key] && SECTION_ALIAS[key][section];
+    if (sal) { section = sal[0]; revealInTerm(key, sal[1]); }   // the scroll runs after this open/rerender below
     // the old NIGHT SHIFT settings section is part of AUTONOMY now (ONE WORD: AUTONOMY) — an old link still lands.
     if (key === 'settings' && section === 'nightshift') section = 'autonomy';
     // ONE PLAIN LIST (10-02): MODEL DEFAULTS lives on AI & MODELS, LIVE VOICE on LOOK & SOUND
@@ -12171,7 +12279,10 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
     // CHANNELS, a schedule draft while WORKFLOWS is up) switches that window's tab in place — never a second window
     const fam = familyOf(key);
     const sib = fam && Object.keys(open).find(k => k !== key && open[k] && !minimized[k] && !open[k]._closing && familyOf(k) === fam);
-    if (sib && !windowDirty(open[sib])) { swapInPlace(sib, () => toggleTerm(key, def[0], def[1], def[2])); return; }
+    // name the window (toKey): the sheet is seated the moment its frame mounts (SEAT BEFORE BUILD), so the source's spot,
+    // size and docked height must be carried BEFORE it opens — carried after, a deep link (TASKS' ▸ DELIVERABLES) opened
+    // at the sibling's own dock height and the tab switch snapped (0.14.1 review)
+    if (sib && !windowDirty(open[sib])) { swapInPlace(sib, () => toggleTerm(key, def[0], def[1], def[2]), key); return; }
     toggleTerm(key, def[0], def[1], def[2]);
   }
   /* org P03 — an error door lands ON the provider's card, not at the top of a long AI & MODELS page. Opens the

@@ -156,7 +156,7 @@ for (const o of [undefined, { cancelSource: 'estop_by_run' }]) {
   // (live walk 10-14) the STORE under the key keeps the section's spacing, never flush against the key
   const setCss = rd('frontend/css/settings.css');
   A.ok(/\.settings-console \.mc-acts \+ #credits-store:not\(:empty\) \{ margin-top: 18px; \}/.test(setCss) && /'<div id="credits-store"><\/div>';/.test(ui), 'the STORE sits 18px below the API KEYS key row');
-  // the named examples really are SIGN IN catalog connectors (the reason the door is CATALOG, not SAVED API CONNECTIONS)
+  // the named examples really are SIGN IN catalog connectors (the reason the door is APPS, not API KEYS)
   const cat = rd('sidecar/mcp/catalog.js');
   for (const id of ['gmail', 'notion']) A.ok(new RegExp("\\{ id: '" + id + "', [^\\n]*authType: 'oauth'").test(cat), id + ' is an oauth CATALOG connector');
   // the public "Connect a service" guide walks the same paths the app shows (P05 review): no retired window or tab name

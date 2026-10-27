@@ -123,7 +123,7 @@ const CONNECTING =
   '2. CONEXIONES API GUARDADAS — no connector exists, but the platform has a REST API. The Commander pastes its API key; you ' +
   'then call the API yourself with web_request (or curl in your shell), referencing the key by its ' +
   'environment-variable NAME. This route works for ANY platform, listed or not — it is the universal fallback.\n' +
-  '3. CONNECTED SERVICES — the Commander already knows the URL of an MCP server; they paste it directly.\n' +
+  '3. CONNECTED, by address — the Commander already knows the URL of an MCP server; they paste it directly.\n' +
   'Some platforms are reached THROUGH another connector rather than directly (their card says so and offers ' +
   'a “VIA …” jump) — Jira/Confluence remains on its verified Zapier route until StarNet proves an authenticated ' +
   'tool call through Atlassian\'s newer direct OAuth endpoint; discovery alone is not connection proof. Google ' +

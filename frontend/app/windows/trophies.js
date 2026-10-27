@@ -33,7 +33,7 @@
       '<div class="gx-tro on">'
       + '<div class="tro-hd"><span class="gl">&#9733;</span><span class="nm">' + esc(t.title) + '</span>'
       + '<span class="gx-tag">' + esc(KIND[t.kind] || 'HONOUR') + '</span></div>'
-      + '<div class="sub">' + (t.reward ? '&#9656; ' + esc(t.reward) + ' &middot; ' : '')
+      + '<div class="sub">' + (t.reward ? '<span class="tro-rw">&#9656; ' + esc(t.reward) + '</span>' : '')
       + '<span style="opacity:' + (t.dateKnown ? '1' : '.6') + ';">' + esc(fmtDate(t.completedAt)) + '</span></div></div>';
 
     const toolRow = tl =>

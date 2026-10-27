@@ -98,6 +98,7 @@ const Todo = require('./tools/builtin/todo.js');
 const DeliverableTool = require('./tools/builtin/deliverable.js');   // deliverable_note — the agent NAMES its finished work (prose only; never status/crew)
 const { makeImageTools } = require('./tools/builtin/image.js');           // STUDIO: image_generate / image_analyze (OpenRouter multimodal)
 const { makeConnectorTools } = require('./tools/builtin/connectors.js');  // WEB: connectors.list — what the station HAS wired, and what it could (read-only, no secrets)
+const KeyTools = require('./tools/builtin/keys.js');  // WEB: keys.save — a key pasted into chat becomes a KEYS entry, spent by name
 const { makeVoiceTools } = require('./tools/builtin/voice.js');           // STUDIO: voice_generate — speech saved into the workspace as a playable clip
 const { makeResolveTools } = require('./tools/builtin/resolve.js');       // STUDIO: DaVinci Resolve — FCPXML timelines (free) + live Studio control (Hermes-plugin port)
 const { makeSpotifyTools } = require('./tools/builtin/spotify.js');       // JUKEBOX: control/query the user's Spotify
@@ -296,8 +297,8 @@ const googleClientConfig = require('./mcp/google-client.js');
 const { makeStdioTransport } = require('./mcp/transport.stdio.js');
 const mcpSchemaCache = require('./mcp/schema-cache.js');
 const connectorCatalog = require('./mcp/catalog.js');       // curated one-click MCP connector catalog (pure data + selectors)
-const serviceKeysMod = require('./servicekeys.js');         // ABILITIES › SAVED API CONNECTIONS: custom service API keys (pure core — env injection + masked list)
-const serviceKeysCatalog = require('./servicekeys-catalog.js');   // SAVED API CONNECTIONS: the curated PLATFORM directory (pure data)
+const serviceKeysMod = require('./servicekeys.js');         // ABILITIES › CONNECTED › API KEYS: custom service API keys (pure core — env injection + masked list)
+const serviceKeysCatalog = require('./servicekeys-catalog.js');   // API KEYS: the curated PLATFORM directory (pure data)
 const onePassword = require('./onepassword.js');             // KEYS: op:// references read with the 1Password CLI, held in memory only
 const mcpOauth = require('./mcp/oauth.js');                 // generic OAuth 2.1 client for MCP connectors (discover/DCR/PKCE/refresh)
 const { sameEndpoint, resolveConnectorOauthTarget, catalogSignInAvailable, signedInConfig } = require('./mcp/oauth-target.js');
@@ -12390,6 +12391,7 @@ const ROUTES = [
   { m: 'GET', exact: '/api/servicekeys', h: handleServiceKeysList },
   { m: 'POST', exact: '/api/servicekeys', h: handleServiceKeyUpsert },
   { m: 'POST', exact: '/api/servicekeys/toggle', h: handleServiceKeyToggle },
+  { m: 'POST', exact: '/api/servicekeys/scrub', h: handleServiceKeyScrub },
   { m: 'GET', exact: '/api/servicekeys/catalog', h: handleServiceKeysCatalog },
   { m: 'POST', exact: '/api/servicekeys/autonomy', h: handleServiceKeyAutonomy },
   { m: 'POST', exact: '/api/servicekeys/remove', h: handleServiceKeyRemove },
@@ -12583,6 +12585,7 @@ const ROUTES = [
   { m: 'POST', exact: '/api/save/recovery-ack', h: handleSaveRecoveryAck },
   { m: 'GET', qsplit: '/api/save/conflicts', h: serveSaveConflicts },   // qsplit, not exact: the boot offer sends ?after=<ms> (an exact miss fell through to serveSaveLoad)
   { m: 'POST', exact: '/api/save/conflicts/restore', h: handleSaveConflictRestore },
+  { m: 'POST', exact: '/api/save/adopt', h: handleSaveAdopt },   // a reopening window's unprovable unsent save: merged, never refused
   { m: 'GET', prefix: '/api/save', h: serveSaveLoad },
   { m: 'POST', qsplit: '/api/save', h: handleSaveWrite },   // qsplit, not exact: the unload beacon carries ?ticket= (apiauth.ticketOk)
   { m: 'GET', prefix: '/api/insights', h: serveInsights },
@@ -15338,6 +15341,64 @@ async function handleServiceKeyUpsert(req, res) {
   if (record.ref) await serviceKeyRefs.refresh(record, { timeoutMs: 60000 });
   applyServiceKeysEnv();
   return json(saved ? 200 : 500, { ok: saved, saved, key: publicServiceKey(record), error: saved ? undefined : 'key is active for this session but could not be verified on disk' });
+}
+/* A KEY PASTED INTO CHAT (keys.save, 2026-10-25): the same upsert, catalog policy, env apply and verified persist as
+   POST /api/servicekeys, for a value the host found in the Commander's own message (tools/builtin/keys.js). A catalog
+   platform keeps its own name and docs. refuseReplace (a run that has read content the Commander did not write) may
+   add a key but never swap a saved one for a different value. */
+function saveServiceKeyFromChat(input) {
+  const asked = String((input && input.name) || '').trim();
+  const key = String((input && input.key) || '');
+  const catalog = serviceKeysCatalog.byId(serviceKeysMod.slug(asked));
+  const name = catalog ? catalog.name : asked;
+  const id = serviceKeysMod.slug(name);
+  const prev = serviceKeys.find(row => row && row.id === id) || null;
+  const prevLive = prev ? (liveServiceKeys().find(row => row && row.id === id) || null) : null;
+  const brief = (row) => ({ name: row.name, envVar: row.envVar, autonomous: row.autonomous === true, unattendedSupported: row.unattendedSupported !== false });
+  if (prevLive && prevLive.key === key) return { ok: true, record: brief(prev), existed: true, sameValue: true, saved: true };
+  if (prev && input && input.refuseReplace) {
+    return { ok: false, error: name + ' already has a saved key, and this run has read content the Commander did not write, so it cannot replace it. '
+      + 'Ask the Commander to paste the new key in a fresh message, or replace it in CONNECT › ABILITIES › CONNECTED › API KEYS.' };
+  }
+  const r = serviceKeysMod.upsert(serviceKeys, {
+    name, key, docsUrl: (input && input.docsUrl) || (catalog && catalog.docsUrl) || undefined,
+    unattendedSupported: !(catalog && catalog.unattendedSupported === false),
+    unattendedReason: catalog && catalog.unattendedReason
+  }, Date.now(), { reservedEnv: SERVICEKEYS_RESERVED_ENV });
+  if (r.error) return { ok: false, error: r.error };
+  const before = serviceKeys;
+  serviceKeys = r.list.map(applyServiceKeyCatalogPolicy);
+  const record = serviceKeys.find(row => row.id === r.record.id) || r.record;
+  applyServiceKeysEnv();
+  // ALL OR NOTHING (never destroy the last copy): a saved key is scrubbed out of the chat, the task brief and the
+  // transcript, so a key that is live but NOT proven on disk would leave no copy anywhere after a restart. Unlike the
+  // panel (where the Commander sees "not durable" and still holds the key), the chat path reverts and says so.
+  // A REPLACED key goes through the removal writer, as the panel's replace does (readiness review R11): saveResilient
+  // would snapshot the rotated-out key into .bak, where it outlives the replace and comes back if main is ever torn.
+  // The removal writer puts the new list in main AND .bak and reads both back, so the old key is gone only once both
+  // copies prove the new one; until then the revert below still holds it.
+  const replacesKey = !!(prev && prev.key && prev.key !== key);
+  if (!(replacesKey ? saveServiceKeyRemoval(serviceKeys) : saveServiceKeys())) {
+    serviceKeys = before;
+    applyServiceKeysEnv();
+    // the revert is a removal write too: an unproven new key must not survive in .bak while the tool says nothing changed
+    if (!saveServiceKeyRemoval(serviceKeys)) console.warn('[servicekeys] chat save reverted in memory; the store on disk could not be re-verified');
+    return { ok: false, error: 'the key could not be saved to disk, so nothing was changed — the key is still in the Commander\'s message. Ask them to add it in CONNECT › ABILITIES › CONNECTED › API KEYS.' };
+  }
+  serviceKeyRefs.drop(record.id);   // a pasted key replaced a 1Password reference: forget the value read for it
+  // the task brief captured the message, key and all, before the save: name it there too (async, failure noted)
+  taskBriefStore.scrubText(t => KeyTools.nameSavedKeys(t, liveServiceKeys())).catch(e => failNote('servicekeys.chat.brief-scrub', e));
+  return { ok: true, record: brief(record), existed: !!prev, sameValue: false, saved: true };
+}
+/* POST /api/servicekeys/scrub { texts:[...] } -> { texts } — each text with every saved service key's value replaced by
+   its placeholder (keys.keyPlaceholder). COMMS calls it on `servicekey.saved` so the Commander's bubble and the desk
+   save stop holding a key that now lives in KEYS. Returns only what it was sent, minus secrets; never a value. */
+async function handleServiceKeyScrub(req, res) {
+  const json = (code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(obj)); };
+  let body; try { body = JSON.parse(await readBody(req, 1 << 22)) || {}; } catch (e) { return json(400, { error: 'bad json' }); }
+  if (!Array.isArray(body.texts) || body.texts.length > 500) return json(400, { error: 'texts must be an array of at most 500 strings' });
+  const keys = liveServiceKeys();
+  return json(200, { texts: body.texts.map(t => (typeof t === 'string' ? KeyTools.nameSavedKeys(t, keys) : t)) });
 }
 async function handleServiceKeyToggle(req, res) {
   const json = (code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(obj)); };
@@ -20610,6 +20671,16 @@ function latestUserText(list) {
   }
   return '';
 }
+// The newest `n` user turns' text, newest first (keys.save looks for a pasted key in these).
+function recentUserTexts(list, n) {
+  const msgs = Array.isArray(list) ? list : [];
+  const out = [];
+  for (let i = msgs.length - 1; i >= 0 && out.length < n; i--) {
+    const t = userMsgText(msgs[i]);
+    if (t != null) out.push(t);
+  }
+  return out;
+}
 /* A FILE NAME IS NOT A HOST (soak 10-15): DomainTask.classify asks whether a dotted name ("about.me", "logo.ai") is a
    file that already exists where this run's relative paths land — its project folder when it has one, and the agent's
    own workspace — so naming that file never turns the run into a one-site check that withholds team.* and web_search.
@@ -21318,6 +21389,20 @@ async function runOnceCore(o) {
     connectorCatalog: connectorCatalog,
     keysCatalog: serviceKeysCatalog,
     signInUnavailable: connectorSignInUnavailable
+  }).register(registry);
+  // A KEY PASTED INTO CHAT (keys.save): the value is found only in the directive the COMMANDER typed for this run — the
+  // same origin facts as TrustedLearning.eligible (keys.js ownerRun). A group session, a recipe template, a work-line
+  // hop, self-talk, a trigger/forwarded entry, a paired phone or guest, a delegated/child run, a recovery or a routine
+  // has no owner text, so the tool is not offered and can save nothing there (release review F9).
+  const keyOwnerRun = KeyTools.ownerRun(Object.assign({}, o, { internal, hostPowerWithheld, untrustedEntry: untrustedEntryRun }),
+    { eligible: TrustedLearning.eligible, isHandoff: Pipeline.isHandoff, latestText: latestUserText(messages) });
+  const keyOwnerTexts = () => keyOwnerRun ? recentUserTexts(messages, KeyTools.OWNER_TURNS) : null;
+  let keySavedThisRun = false;   // releases the run transcript's hold (runTranscript below)
+  KeyTools.makeKeyTools({
+    ownerTexts: keyOwnerTexts,
+    save: saveServiceKeyFromChat,
+    tainted: () => !!execution.taintedBy(),
+    onSaved: () => { keySavedThisRun = true; }
   }).register(registry);
   // HARNESS SELF-KNOWLEDGE: always-present COMPUTER grant, local/read-only and secret-free. The reader
   // closes over this run's identity while every mutable section is collected fresh at call time from the
@@ -22131,6 +22216,16 @@ async function runOnceCore(o) {
          carry why and how to enable it. An unknown signal leaves the tool advertised.
      KILL SWITCH: SKYNET_TOOL_SEARCH=0 advertises everything, these included, exactly as before deferral. */
   const deferralOff = String((process.env && process.env.SKYNET_TOOL_SEARCH) || '').trim() === '0';
+  /* keys.save rides ONLY a task run whose Commander's own recent turns hold a key-shaped string. There it is ADVERTISED
+     (a model that must first think to search for it would never save the paste); on every other run it is not granted
+     at all, so the request, the deferred index and tool.search stay byte-identical to before. */
+  let keySaveOffered = false;
+  if (resolved.tools.indexOf('keys.save') >= 0) {
+    resolved.deferred = (resolved.deferred || []).filter(n => n !== 'keys.save');
+    const ownerTexts = keyOwnerTexts();
+    keySaveOffered = !!(isTask && ownerTexts && KeyTools.hasKeyCandidate(ownerTexts));
+    if (!keySaveOffered) resolved.tools = resolved.tools.filter(n => n !== 'keys.save');
+  }
   /* DIRECT-DOMAIN WITHHOLDING — what a bounded one-host check may not even see: delegation and open web search, the
      two typo-cascade routes. web_request (issue #58) and the browser stay ADVERTISED; the dispatch guards below
      confine their URL-taking calls to the named host + subdomains (DomainTask.isTargetRequest / isTargetNavigate).
@@ -22644,12 +22739,20 @@ async function runOnceCore(o) {
      first model call), each loop durable boundary (onCheckpoint below: the assistant tool-call turn before tools
      dispatch, the results after), the compaction tiers' strict drain, and run end — which then appends only what
      is left. Directive text is captured pre-loop (runTranscript.setDirective below). */
+  // A run that offers keys.save holds its rows until keys.save succeeds or the run ends (transcript-run.js o.hold), and
+  // its directive row names a saved key ([NAME saved in KEYS]) where the store's redaction would only say [redacted-secret].
+  const runTranscriptStore = keySaveOffered ? Object.assign({}, transcriptStore, {
+    appendStrict: (e) => transcriptStore.appendStrict(Object.assign({}, e, {
+      content: e && e.role === 'user' && typeof e.content === 'string' ? KeyTools.nameSavedKeys(e.content, liveServiceKeys()) : (e && e.content),
+      taint: e ? e.taint : null   // runTranscript's own stamp (taintNow()), forwarded unchanged
+    }))
+  }) : transcriptStore;
   /* SELF-TALK IS FILED AS SELF-TALK (bug 4dee26ba). A reason-only internal run with no workstream (the quiet title, the goal
      judge, pitch, autopilot, …) lands in the shared 'global' stream; its rows are stamped 'internal' so recall never quotes
      them as the Commander's words (transcriptstore selfTalk). A dispatch envelope's own state wins. */
   const transcriptState = (o.dispatchDelivery && o.dispatchDelivery.state) || (internal && !o.streamId ? 'internal' : undefined);
   const runTranscript = makeRunTranscript({
-    store: transcriptStore, streamId: o.streamId, agentId, runId, from: o.delegatedBy || '', dispatchState: transcriptState,
+    store: runTranscriptStore, hold: keySaveOffered ? () => !keySavedThisRun : null, streamId: o.streamId, agentId, runId, from: o.delegatedBy || '', dispatchState: transcriptState,
     // rows written after untrusted content entered this run carry its taint source (sec-taint 09-25)
     taint: () => execution.taintedBy() || (typeof o.connectorAuthority?.taintedBy === 'function' ? o.connectorAuthority.taintedBy() : null),
     // mid-run write failures never kill the run or reorder dialogue: the rows stay pending (and in the run journal)
@@ -23024,6 +23127,9 @@ async function runOnceCore(o) {
     // A name no registered tool answers to: the registry's "unknown tool" reply names the closest tools THIS run can
     // call (advertised + deferred wire names), never an ungranted one (loop-breaker.js counts these as strikes).
     if (!liveTool) dctx = Object.assign({}, dctx, { toolNames: Array.from(fromWire.keys()) });
+    // FILES BEFORE THE SHELL (2026-10-25): a shell.exec path refusal names fs_read / fs_list / fs_search as the way in only
+    // when THIS run carries them — an agent without an INTEL CAB is never sent to a tool it does not have
+    if (c.name === 'shell.exec' && fromWire.has('fs_read')) dctx = Object.assign({}, dctx, { fileToolsOnWire: true });
     // CREW SEATED MID-TASK START FROM THE ANSWERS (review 10-14): station.control hands group.add what the Commander already
     // answered in this run's Task Brief (host-composed, their own words), so the kickoff in the group never re-asks it
     if (/^station[._]control$/.test(String(c.name || '')) && taskBriefState && taskBriefState.brief) {
@@ -23289,9 +23395,18 @@ async function runOnceCore(o) {
     + 'After any action that changes the world, VERIFY it took effect with a read-back tool (e.g. now-playing after play, a listing after a write, a probe after a start) before reporting done. '
     + 'A tool error is information: read it and change strategy — never repeat the identical failing call. Escalate automatically through safe authorized routes, and disclose a more visible or consequential route when its own consent boundary requires it. '
     + 'Blocked sites, dead links and throttled engines are ordinary web weather: route around them, and mention an obstacle in your reply only if it changed the outcome — never narrate routine obstacles as failures, and never apologize for them. ';
+  /* FILES BEFORE THE SHELL (2026-10-25, a v0.14.0 report on gpt-5.6-luna): this block used to OPEN with "when the Commander
+     names a local project folder, first anchor shell_exec.cwd", and the file tools came up only as "inspect before editing" —
+     so with an INTEL CAB and a WORKBENCH both on the wire a Codex-trained model listed and read files with dir / Select-String /
+     type: an approval card per read, and a C:\ path refused AFTER its card read as "the files are inaccessible". Reading is
+     the file tools' job (they take a full path); the shell runs things. Paid for in place (payload.budget had ~20 chars of
+     headroom): the shell-listing diagnostic is gone from both lines, and the "no Bash-style /c paths" sentence that sat
+     further down rides the cwd rule it was about. */
   const workDisciplineNote = ''
-    + (hasShellExec ? 'When the Commander names a local project folder, first anchor shell_exec.cwd to that exact folder, then keep later shell paths relative to it. After a path or cwd failure, run one small working-directory diagnostic plus a listing, and change strategy instead of retrying the same bad path. ' : '')
-    + (hasReadTools ? 'Inspect before editing with fs_search/fs_list/fs_read, or one small shell diagnostic when the file tools cannot see the project; do not guess file contents or shotgun failed paths. ' : '')
+    + (hasReadTools ? 'Read, list and search files with fs_read / fs_list / fs_search, full paths the Commander names included'
+      + (hasShellExec ? ', not shell_exec (dir, type, cat, Get-Content, Select-String): the shell is for running tests, builds, git and scripts' : '') + '. ' : '')
+    + (hasShellExec ? 'To run commands in a folder the Commander names, anchor shell_exec.cwd to that exact folder as given (never a guessed Bash-style /c path) and use relative paths; after a path or cwd failure, change strategy instead of retrying the same bad path. ' : '')
+    + (hasReadTools ? 'Inspect before editing with fs_search/fs_list/fs_read; do not guess file contents or shotgun failed paths. ' : '')
     + (hasWriteTools ? (hasPatchTool
       ? 'For source changes, prefer fs_patch for multi-line edits and fs_edit only for small exact replacements. Avoid temporary patch scripts, giant quoted shell rewrites, or minified/quoting-mangled edits unless the normal file tools cannot do the job; leave code readable. '
       : 'For source changes, prefer fs_edit/fs_write over giant quoted shell rewrites, and leave code readable. ') : '')
@@ -23339,7 +23454,6 @@ async function runOnceCore(o) {
       + (hasWriteTools ? 'Save substantive deliverables (reports, code, notes) to your workspace with fs_write / fs_append. ' : '')
       + (hasNotebookWrite ? 'Save explicit preferences, corrections, and approved reusable design requirements with notebook_write before claiming they are remembered. Read an existing memory before correcting it; use replaceId and previousBody to update it rather than appending an opposite fact. Pin approved requirements within their intended scope, retain artifact/reference paths, and re-read approved artifacts before making variants. Current user instructions override recalled context. ' : '')
       + workDisciplineNote
-      + (hasShellExec ? 'Do not guess Bash-style /c paths for Windows when the Commander gave you a real Windows path. ' : '')
       + (hasWriteTools ? 'Saving a file shows the Commander a quick one-click approval prompt — so just CALL the write tool when you are ready; do not ask permission in chat or claim you cannot save. If they decline, carry on without it. ' : '')
       + 'Keep working across as many tool calls as the task needs; when it is fully done, give the Commander a clear '
       + 'final report of what you found/did' + (hasWriteTools ? ' and which files you saved.' : '.')
@@ -24331,7 +24445,8 @@ async function runOnceCore(o) {
     if (billed) { try { credits.finishRun({ runId, agentId, usd: finalUsd, tokens: finalTokens, turns: finalTurns, reason: (result && result.reason) || 'done' }); } catch (_) {} }
     // record the run OUTCOME (durable history) — reason + a short title from the triggering user message. Fail-open.
     try {
-      const title = o.syntheticTrigger ? String(o.sessionPrompt || '') : latestUserText(msgs);   // synthetic reviews are not Commander messages
+      // synthetic reviews are not Commander messages; a key saved from the message (keys.save) is named, never kept
+      const title = KeyTools.nameSavedKeys(o.syntheticTrigger ? String(o.sessionPrompt || '') : latestUserText(msgs), liveServiceKeys());
       let deliveryText = '';
       if (o.sessionTitle && result && Array.isArray(result.messages)) {
         for (let i = result.messages.length - 1; i >= 0; i--) {
@@ -27642,7 +27757,10 @@ function serveSaveLoad(req, res) {
     // path can disclose a damaged/restored save instead of silently presenting the pristine first-run ceremony.
     // EL-11 FIX 1 (GB-9): also surface workspaceDegraded at boot-read time, not only on the first refused write.
     const recovery = (typeof saveStore.recoveryNotice === 'function') ? (saveStore.recoveryNotice(agent) || null) : null;
-    json(200, { save: doc || null, recovery: recovery, lineage: publicWorkspaceLineage(), degraded: workspaceDegraded ? true : undefined });
+    // head: the window that wrote this save and its request time, when the store can prove it (savestore vouchedHead) — a
+    // reopening page compares its own cached save against it (cloudsave reconcile)
+    json(200, { save: doc || null, head: state.head ? { client: state.head.client, requestUpdatedAt: state.head.at, revision: state.head.revision } : undefined,
+      recovery: recovery, lineage: publicWorkspaceLineage(), degraded: workspaceDegraded ? true : undefined });
   } catch (e) { json(503, { error: 'Could not read the saved station. Retry to recover it.', unreadable: true }); }
 }
 // POST /api/save/recovery-ack { agent? } — the frontend has SHOWN the honest quarantine/recovery notice; clear
@@ -27685,7 +27803,12 @@ function serveSaveConflicts(req, res) {
     for (const f of files) {
       if (read && Date.now() - started > 30) { more = !!state.doc; break; }   // no station = nothing settles: never "more"
       read++;
-      const doc = saveStore.readConflict('agent', f.name);
+      const got = saveStore.readConflictState('agent', f.name);
+      // a copy that could not be READ this instant (locked, EBUSY/EACCES) may still hold lost work: never settled — settling it
+      // hid it from every later boot while it stayed unchanged — and never `more` either (a copy that stays unreadable made
+      // the page ask 25 times, each ask re-reading the whole station: re-review N2). A later boot reads it again.
+      if (got.status === 'unreadable') continue;
+      const doc = got.doc;
       if (!doc) { if (state.doc) settle.push(f); continue; }   // gone, or does not parse: nothing it could offer
       // a copy from before a station RESET, while the station is from after it, is erased work: listed, never offered back
       const predatesReset = saveStore.predatesReset(doc, state.doc);
@@ -27731,6 +27854,91 @@ async function handleSaveConflictRestore(req, res) {
     settle();
     json(200, { ok: true, added: r.added.length, extended: r.extended.length, copied: r.copied.length, revision: result.revision, backup });
   } catch (e) { json(200, { ok: false, error: (e && e.message) || 'restore failed' }); }
+}
+/* POST /api/save/adopt { ...envelope, _saveAdoptBy } — a reopening window's unsent save that cannot land as it is (support
+   reports 10-15…10-25: one window, the station "went back", every save refused as another window's). The window's browser
+   cache held work on another revision than the station file: from a build that never named the window that wrote it
+   (0.14.0 and earlier), behind a head another window or a terminal wrote, or reading older than its own window's head.
+   Refusing it froze the station file for the whole session. Instead, at boot only, before the window resumes:
+     • THE BASE is the station file whenever the store can name its writer (savestore vouchedHead) — unless that writer is
+       this very window and its cached save is newer than that write (its own later work). Only a station file that cannot
+       name its writer (written before 0.14.1) gives the base to whichever side was saved last. A stale second tab is never
+       the base over a live one (hostile review 10-25 #2);
+     • every session of the other side comes back into the base (save-restore.js: additive — a session deleted on purpose
+       stays deleted, a diverged conversation is kept beside as a restored copy);
+     • the station file is copied aside first (<agent>.save-before-adopt-<ms>.json) and, when it is the base, the window's
+       whole save is kept beside it under its own name (agent.save-conflict-kept-<ms>-<window>.json), so nothing either
+       side held is lost;
+     • the station's growth projection never goes back (its rating watermark is kept when it is ahead), and a terminal's
+       approval change (the head written by `approval-…`) keeps its approval modes;
+     • a merge that would bring nothing into the station file writes nothing (a second window booting on the same old
+       cache must not move the station under the first), and one too big for POST /api/save to take is refused;
+     • the merge is written as `adopt-<the asking page's id>` (_saveAdoptBy, a wire field only): never as that page or the
+       cached window, so no later save of either can pass for the merge's own writer (review #1), and a page whose answer
+       never came can tell its own merge landed;
+     • a copy of another station (another founding) or from before this computer's station was reset is refused.
+   Answers { ok, revision, updatedAt, doc, base, added, extended, copied, backup, kept }: the window resumes `doc`. Any
+   refusal ({ ok:false, … }) leaves the station file untouched; the window then takes the ordinary path (its save is preserved
+   as a conflict copy). */
+function keepStationGrowth(doc, station) {
+  const mark = d => Math.max(0, Number(d && d.stationStats && d.stationStats.ratingSyncAt) || 0);
+  if (!(mark(station) > mark(doc))) return;
+  doc.stationStats = station.stationStats;
+  const rows = d => [d && d.agent].concat(Array.isArray(d && d.agents) ? d.agents : []).filter(x => x && typeof x === 'object');
+  const theirs = new Map(rows(station).map(x => [String(x.id || ''), x]));
+  for (const row of rows(doc)) { const s = theirs.get(String(row.id || '')); if (s && Object.prototype.hasOwnProperty.call(s, 'stats')) row.stats = s.stats; }
+}
+function keepTerminalApprovals(doc, station) {
+  if (!/^approval-/.test(String(station && station._saveClient || ''))) return;
+  const rows = d => [d && d.agent].concat(Array.isArray(d && d.agents) ? d.agents : []).filter(x => x && typeof x === 'object');
+  const theirs = new Map(rows(station).map(x => [String(x.id || ''), x]));
+  for (const row of rows(doc)) { const s = theirs.get(String(row.id || '')); if (s && (s.approvalMode === 'full' || s.approvalMode === 'ask')) row.approvalMode = s.approvalMode; }
+}
+async function handleSaveAdopt(req, res) {
+  const json = (code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(obj)); };
+  let body; try { body = JSON.parse(await readBody(req, 16 << 20)) || {}; } catch (e) { return json(400, { error: 'bad json' }); }
+  if (!body || typeof body !== 'object' || Array.isArray(body) || body.schema !== 'starnet.save' || !body.agent || typeof body.agent !== 'object') return json(400, { error: 'a save envelope object is required' });
+  const by = /^[A-Za-z0-9_-]{1,72}$/.test(String(body._saveAdoptBy || '')) ? body._saveAdoptBy : null;
+  if (Object.prototype.hasOwnProperty.call(body, '_saveAdoptBy')) { body = Object.assign({}, body); delete body._saveAdoptBy; }
+  if (workspaceDegraded) return json(200, { ok: false, error: 'workspace written by newer StarNet', degraded: true });
+  try {
+    const state = saveStore.loadState('agent');
+    if (state.status === 'unreadable') return json(200, { ok: false, error: 'the station file is unreadable right now', unreadable: true });
+    const station = state.doc;
+    if (!station) return json(200, { ok: false, error: 'there is no station file to merge into', absent: true });   // the ordinary save seeds it
+    if (Number(station.version) > Number(body.version)) return json(200, { ok: false, error: 'the station file is a newer save format' });
+    if (saveStore.predatesReset(body, station)) return json(200, { ok: false, error: 'that copy is from before this computer’s station was reset', predatesReset: true });
+    // a copy of ANOTHER station (a different founding) is never merged into this one
+    const founded = d => Number(d && d.agent && d.agent.createdAt);
+    if (!(founded(body) === founded(station) || (Number.isNaN(founded(body)) && Number.isNaN(founded(station))))) return json(200, { ok: false, error: 'that copy is of another station', otherStation: true });
+    const writer = /^[A-Za-z0-9_-]{1,80}$/.test(String(body._saveClient || '')) ? body._saveClient : null;   // the cached save's window (none: before 0.14.1)
+    const head = state.head || null;   // the station file's writer, when the store can prove it
+    const windowBase = head ? (!!writer && writer === head.client && Number(body.updatedAt) > Number(head.at)) : Number(body.updatedAt) > Number(station.updatedAt);
+    const base = windowBase ? Object.assign({}, body) : station, other = windowBase ? station : body;
+    const tombs = (typeof sessionTombstones !== 'undefined' && sessionTombstones && typeof sessionTombstones.forgotten === 'function') ? sessionTombstones : null;
+    const r = require('./save-restore.js').plan(base, other, { forgotten: tombs ? ((id, ts) => tombs.forgotten(id, ts)) : null });
+    const doc = r.doc;
+    if (windowBase) { keepStationGrowth(doc, station); keepTerminalApprovals(doc, station); }
+    const at = Date.now();
+    const added = r.added.length + r.extended.length + r.copied.length;
+    // too big for POST /api/save to take: refused BEFORE anything is written (the window's save is then preserved once, by the
+    // ordinary path — never a kept copy too, on every boot)
+    if ((windowBase || added) && Buffer.byteLength(JSON.stringify(doc)) > (16 << 20) - (64 << 10)) return json(200, { ok: false, error: 'the merged station would be too large to save', tooLarge: true });
+    // the station file is the base: the window's crew, floor and settings changes are not in the merge, so its whole save is
+    // kept beside the station under a name of its own (restorable and downloadable, like a refused save's copy)
+    const kept = windowBase ? null : saveStore.preserve('agent', Object.assign({}, body, { _saveClient: ('kept-' + at + (writer ? '-' + writer : '')).slice(0, 80) }));
+    if (!windowBase && !added) return json(200, { ok: true, revision: Number(station._saveRevision) || 0, updatedAt: Number(station.updatedAt) || 0, doc: station,
+      base: 'station', added: 0, extended: 0, copied: 0, backup: null, ...(kept ? { kept } : {}) });
+    const backup = saveStore.backup('agent', 'adopt-' + at);
+    Object.assign(doc, { updatedAt: Math.max(at, (Number(station.updatedAt) || 0) + 1, (Number(body.updatedAt) || 0) + 1),
+      _saveRevision: Number(station._saveRevision) || 0, _saveClient: 'adopt-' + (by || at), _saveDirty: false });
+    const result = saveStore.save('agent', doc, { compareRevision: true });
+    if (!result || result.ok !== true) return json(200, { ok: false, error: result && result.conflict ? 'the station changed during the merge; try again' : 'the station refused the merge', backup, ...(kept ? { kept } : {}) });
+    try { seedSaveMemos('agent', doc); } catch (e) { failNote('save.adopt.seed-memos', e); }
+    observeDeletedSessions(doc);
+    json(200, { ok: true, revision: result.revision, updatedAt: result.updatedAt, doc: Object.assign({}, doc, { updatedAt: result.updatedAt, _saveRevision: result.revision }),
+      base: windowBase ? 'window' : 'station', added: r.added.length, extended: r.extended.length, copied: r.copied.length, backup, ...(kept ? { kept } : {}) });
+  } catch (e) { json(200, { ok: false, error: (e && e.message) || 'merge failed' }); }
 }
 // POST /api/save { agent?, ...envelope } — write through the localStorage save to durable disk. The body IS the
 // save envelope (with its schema/version/updatedAt); `agent` selects the record (defaults to 'agent'). The

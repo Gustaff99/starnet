@@ -128,6 +128,24 @@
     const id = String(model || '');
     if (numCtx > (m.get(id) || 0)) m.set(id, numCtx);
   }
+  // ...except when holding that window is what is hurting: a model /api/ps shows spilling to the CPU is let back down
+  // to a smaller window (a 4B model kept at 64k for 16 h sat 50% on the CPU and timed out on a 17k prompt, 10-25).
+  function lowerOllamaWindow(endpoint, model, numCtx) {
+    const m = ollamaWindows.get(endpoint);
+    const id = String(model || '');
+    if (m && numCtx < (m.get(id) || 0)) m.set(id, numCtx);
+  }
+  // The window Ollama's own exceed_context_size refusal proved a task needs, per model (endpoint -> model -> num_ctx).
+  // The step-down sizes from the chars/4 estimate, which a dense prompt (digit-heavy logs, CJK) beats: without this
+  // record every task turn stepped down, was refused and resized back up — two reloads and a lost KV cache a turn.
+  const ollamaProven = new Map();
+  function provenOllamaWindow(endpoint, model) { const m = ollamaProven.get(endpoint); return (m && m.get(String(model || ''))) || 0; }
+  function noteProvenOllamaWindow(endpoint, model, numCtx) {
+    let m = ollamaProven.get(endpoint);
+    if (!m) { m = new Map(); ollamaProven.set(endpoint, m); }
+    const id = String(model || '');
+    if (numCtx > (m.get(id) || 0)) m.set(id, numCtx);
+  }
   /* The native Ollama calls this PROCESS has open, per server (native root -> Set of { background }): open from the moment
      a stream starts until it ends. A local Ollama often serves one request at a time, and the host's own background calls
      (quest refresh at boot, post-task reflection) run with no Commander watching; a Commander turn's wait note says how
@@ -742,9 +760,23 @@
         const need = ollamaNative.estimateTokens(body) + (Number(body.max_tokens) || 0);
         // First use of this model in this process: if Ollama already holds it loaded at a usable window (StarNet was
         // restarted inside the keep-alive, or the Commander loaded it larger), keep that window rather than reload.
-        if (!pinnedCtx && !ollamaWindow(nativeBase, req.model)) {
-          const loaded = ollamaNative.loadedWindow(await ollamaStatus(), req.model);
-          if (loaded > 0 && loaded <= (usableWindow(modelMax) || ctxCeiling)) noteOllamaWindow(nativeBase, req.model, loaded);
+        // A TASK (it carries tools: the long prompt that times out) keeps a window bigger than it needs only while the model
+        // fits the GPU: one /api/ps shows spilling to the CPU is not adopted, and a held one steps back down to the
+        // smallest rung that holds the prompt. A greeting or background call rides what is held (its prompt is short, so a
+        // spill costs it little, and stepping down for it would reload the model twice: down now, up for the next task).
+        if (!pinnedCtx) {
+          const held = ollamaWindow(nativeBase, req.model);
+          const task = !!(req.tools && req.tools.length);
+          // ...never below a window Ollama has already refused to fit a task in (it counts tokens; the estimate guesses)
+          const fits = task ? Math.max(ollamaNative.pickNumCtx(need, { ceiling: ctxCeiling, modelMax }), provenOllamaWindow(nativeBase, req.model)) : Infinity;
+          if (!held) {
+            const ps = await ollamaStatus();
+            const loaded = ollamaNative.loadedWindow(ps, req.model);
+            if (loaded > 0 && loaded <= (usableWindow(modelMax) || ctxCeiling)
+              && !(loaded > fits && ollamaNative.spillsToCpu(ps, req.model))) noteOllamaWindow(nativeBase, req.model, loaded);
+          } else if (held > fits && ollamaNative.spillsToCpu(await ollamaStatus(), req.model)) {
+            lowerOllamaWindow(nativeBase, req.model, fits);
+          }
         }
         /* BACKGROUND CALLS DO NOT THINK (measured on qwen3:8b, 2026-09-30). After a task the host fires its own
            housekeeping calls (reflection, profile update): no tools, and not a Commander turn (isTask is unset; a
@@ -756,7 +788,11 @@
         // A background call that chose no effort of its own must not inherit the run's default (a CUSTOM endpoint on
         // Ollama carries CUSTOM's 'medium', which maps to think:true). An explicit aux effort still rides.
         if (background && !req.reasoningEffort && facts && facts.supportsReasoning === true) delete body.reasoning_effort;
-        const think =(background && facts && facts.supportsReasoning === true) ? false : undefined;
+        /* REASONING OFF IS SAID OUT LOUD (#116). wireEffort folds 'none' to "send nothing" (the /v1 wire's off), so with
+           Reasoning OFF — Ollama's own default — the native body carried no `think` and qwen3 thought on every Commander
+           turn and task (slow on a CPU). Native Ollama's off is think:false, told only to a model that can think. */
+        const reasoningOff = canonicalEffort(requestedEffort) === 'none';
+        const think =((background || reasoningOff) && facts && facts.supportsReasoning === true) ? false : undefined;
         wire = { native: true, modelMax, think, openCall: openCalls.get(req) || null, numCtx: ollamaNative.pickNumCtx(need, { pinned: pinnedCtx, ceiling: ctxCeiling, modelMax, floor: ollamaWindow(nativeBase, req.model) }) };
       }
       // WAIT TRUTH (#99): while the native request is unanswered, its probe's notes are yielded as { type:'waiting' }
@@ -1025,7 +1061,7 @@
           const over = ollamaNative.exceedFrom(detail);
           if (over && !pinnedCtx) {
             const next = ollamaNative.pickNumCtx(over.promptTokens + (Number(body.max_tokens) || 0), { ceiling: ctxCeiling, modelMax: wire.modelMax, floor: wire.numCtx + 1 });
-            if (next > wire.numCtx) { wire.numCtx = next; attempt--; continue; }
+            if (next > wire.numCtx) { noteProvenOllamaWindow(nativeBase, body.model, next); wire.numCtx = next; attempt--; continue; }
           }
           // A model without a thinking mode refuses `think`; the request means the same without it.
           if (body.reasoning_effort !== undefined && /does not support thinking/i.test(String(detail))) {

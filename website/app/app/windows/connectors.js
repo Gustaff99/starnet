@@ -71,6 +71,9 @@
     // form/list handlers) resolves against the mounted panes with no rewrite.
     // ---- TOOLSETS pane: rendered async from GET /api/toolsets; the Spotify flow markup is embedded in-line so
     //      the JUKEBOX row can host it (kept verbatim from the old SPOTIFY section, ids unchanged). ----
+    // FOLDED, NOT REMOVED (UX night 10-26, "pretend these users are like 5"): the developer-app setup stood open in the
+    // middle of the TOOLS list ("Redirect URI to whitelist", "OAuth PKCE"). The status line stays in sight; the steps
+    // and fields are one click away, numbered, every sp-* id unchanged so setupSpotify() is untouched.
     const spotifyInline =
       '<div class="ts-spotify" id="ts-spotify">' +
         '<p class="set-about">Configuración única: crea una app gratis en <span class="dim">developer.spotify.com/dashboard</span>, añade la URI de redirección de abajo, pega el Client ID y conecta. ' +
@@ -83,7 +86,7 @@
             '<button class="bb sm" id="sp-connect">▶ CONECTAR SPOTIFY</button>' +
             '<button class="bb xs danger" id="sp-disconnect" style="display:none">✕ DESCONECTAR</button>' +
           '</div>' +
-        '</div>' +
+        '</div></details>' +
         '<div id="sp-msg" class="msg" role="status" aria-live="polite"></div>' +
       '</div>';
     // NO LEAD PARAGRAPH HERE. mountConsole already prints this section's `desc` as `.con-sec-desc`
@@ -164,16 +167,15 @@
           '<button class="bb sm" id="mc-add">+ AÑADIR &amp; CONECTAR</button>' +
           '<button class="bb xs" id="mc-cancel" style="display:none">CANCELAR EDICIÓN</button>' +
         '</div>' +
-      '</div>' +
+      '</div></details>' +
       '<div id="mc-msg" class="msg" role="status" aria-live="polite"></div>';
     // ---- CATALOG pane markup: one-click, vetted MCP servers and platform APIs. Cards render async from
     //      both catalog endpoints and route through the existing connector/key setup flows. ----
-    // The pane copy is JUST the setup-type legend now — the "browse vetted MCP servers and add them" sentence lived
-    // here AND verbatim in the section desc below (mountConsole), so it read twice. CRT glyphs, not emoji.
-    // The legend doubles as the FILTER: it already taught the three setup tiers, so making those same
-    // words the control costs no new vocabulary. "What can I add without any setup right now?" is the
-    // first question a newcomer has and 39 cards in one scroll could not answer it; "which of these am
-    // I already on?" was equally unanswerable without reading every card.
+    // The setup tiers are the FILTER: "What can I add without any setup right now?" is the first question a newcomer
+    // has, and "which of these am I already on?" was unanswerable without reading every card. CRT glyphs, not emoji.
+    // LEAD WITH THE SERVICES (UX night 10-25): a second intro paragraph and a legend line restated the section desc
+    // and the chips' own words, and in the docked window they pushed the first service below the fold. What each
+    // tier means now rides its chip as the hover tip, so the pane opens on the catalog itself.
     const secCatalog =
       '<p class="set-about"><b>Conecta una app que ya usas.</b> Elige una plataforma de abajo. INICIAR SESIÓN abre tu navegador; la configuración de API key te guía para añadir una clave desde tu cuenta.</p>' +
       (typeof Tutorial !== 'undefined' && Tutorial.platformGuideHTML ? Tutorial.platformGuideHTML('apps') : '') +
@@ -299,13 +301,31 @@
     // onto window.AbilityLanes ((body)=>({sections,wire}), the windows/automation.js shape); the
     // lanes' sections mount in THIS console and their wire() runs after ours, against the same body.
     const lanes = (window.AbilityLanes || []).map(fn => { try { return fn(body); } catch (_) { return null; } }).filter(l => l && Array.isArray(l.sections));
-    // TOOLSETS first (audit finding 5): the dock button says TOOLSETS, so the panel must open on the tab it's
-    // named for — a first click used to land on the CATALOG storefront, which read as "TOOLSETS = connectors".
-    /* ---- THE FRONT DOOR ----
-       This console's five tabs are five MECHANISMS (curated MCP server · platform API key · MCP server by
-       URL · hook/plugin · built-in toolset), and picking the right one is a question a newcomer cannot
-       answer — they know the NAME of the thing they want, not which of six subsystems implements it.
-       Landing on TOOLSETS and reading a rail of jargon is where that user stops.
+    /* ONE FLAT LIST (UX night 10-26, Andrew: "more like the settings menu where u can see all the different options …
+       better off perfectly organizing every category, and condensing those that need it"). The rail was three intent
+       keys (INSTALLED / DISCOVER / CREATE) that each swapped in a different set of sections, so most of the window was
+       always out of sight, and above every section an ADD AN ABILITY fold asked "what are you adding?" all over again.
+       Now every place shows at once, like SETTINGS, in the order a newcomer needs them: find an app, see what is
+       connected, get skills, the skills you have, the built-in tools, your own code. Four sections became blocks of the
+       neighbour that already held the same kind of thing (API keys under CONNECTED, COMPUTER CONTROL under TOOLS, and in
+       the skills lane SKILL EXCHANGE under SKILL MARKET, AGENT SKILLS under SKILLS); every element id is unchanged and
+       every old section id still opens on its block (stationui SECTION_ALIAS). Chat apps stay the CHANNELS tab. */
+    const secComputer =
+      '<div class="sec" id="ab-computer"><span class="sec-l">COMPUTER CONTROL</span><span class="sec-r"></span><span class="sec-nd"></span></div>' +
+      // plain first (UX night 10-26): what it does and when it works; how the drivers work is one click away
+      '<div class="set-about">Let agents use the apps on your computer: open windows, click and type. It works for an agent on FULL POWER, or when you ask from your paired Telegram chat.</div>' +
+      '<div id="cu-status" class="set-about" role="status" aria-live="polite">Checking computer control…</div>' +
+      '<div class="mc-acts" role="group" aria-label="Computer control backend">' +
+      '<button type="button" class="bb sm" data-cu-backend="cua" data-tip="Finds buttons and fields by name, and can work in the background where Windows allows it. Install it first.">CUA · ACCESSIBILITY</button>' +
+      '<button type="button" class="bb sm" data-cu-backend="win32" data-tip="The Windows driver StarNet already has: nothing to install">WINDOWS · CLASSIC</button>' +
+      '<button type="button" class="bb sm" data-cu-backend="off" data-tip="Agents cannot use the apps on your computer">OFF</button></div>' +
+      '<div class="mc-acts"><button type="button" class="bb sm" id="cu-install">INSTALL CUA</button>' +
+      '<button type="button" class="bb sm" id="cu-check">CHECK DRIVER</button></div>' +
+      '<details class="mc-adv"><summary>How it works</summary>' +
+        '<div class="set-about">CUA targets windows and accessibility elements, works in the background where supported, and reports evidence for each action. Foreground input can move focus when needed.</div>' +
+        '<p class="dim">Install downloads the verified Windows x64 driver from CUA’s official release. Reinstall and backend changes close current CUA sessions; start a new task afterward.</p>' +
+      '</details>' +
+      '<div id="cu-message" class="msg" role="status" aria-live="polite"></div>';
 
        So the console opens with the question they CAN answer ("what are you trying to connect?") and each
        answer is a real jump to the tab that handles it. Two of the answers leave this window entirely —
@@ -380,15 +400,7 @@
     lanes.forEach(l => { try { if (typeof l.wire === 'function') l.wire(); } catch (_) {} });
     if (typeof Tutorial !== 'undefined' && Tutorial.wirePlatformGuide) Tutorial.wirePlatformGuide(body);
 
-    /* Mount the front door ABOVE the panes, inside the scrolling content column: it is the first thing
-       read on every tab, and it scrolls away once you are working — permanent chrome for a question you
-       only ask once would be worse than no answer. It hides itself while the search box is active
-       (`.con-searching`), because then the Commander has already named the thing and the results ARE the
-       answer. */
-    const routerEl = document.createElement('div');
-    routerEl.innerHTML = secRouter;
-    const routerNode = routerEl.firstChild;
-    if (host && routerNode) host.insertBefore(routerNode, host.firstChild);
+    // a task waiting on a connection says so above every section, with the way back to that task
     const handoffEl = document.createElement('div');
     handoffEl.className = 'mc-hint'; handoffEl.setAttribute('aria-live', 'polite');
     if (host) host.insertBefore(handoffEl, host.firstChild);
@@ -430,7 +442,7 @@
       const to = btn.dataset.abTo;
       if (to) {
         const tab = body.querySelector('#con-tab-connectors-' + to);
-        if (tab) { tab.click(); routerNode.open = false; host.scrollTop = 0; }
+        if (tab) { tab.click(); host.scrollTop = 0; }
         return;
       }
       // cross-window jump: openTerm is idempotent (restores a minimized window rather than duplicating).
@@ -797,7 +809,9 @@
             (t.object ? '<button class="bb xs ts-place" type="button" data-ts-place="' + esc(t.object) + '">⚒ PLACE ONE</button>' : '') +
           '</span>'
         : '';
-      const consent = '<span class="ts-tag">' + (t.available ? esc(t.grantSource || 'granted') : 'not granted') + '</span>' + (t.consentGated ? '<span class="ts-tag">risky actions may ask</span>' : '');
+      // the sidecar names an unrestricted grant 'Full Access'; on screen that is the FULL POWER posture (ONE ACCESS words)
+      const source = t.grantSource === 'Full Access' ? 'FULL POWER' : t.grantSource;
+      const consent = '<span class="ts-tag">' + (t.available ? esc(source || 'granted') : 'not granted') + '</span>' + (t.consentGated ? '<span class="ts-tag">risky actions may ask</span>' : '');
       const status = '<span class="ts-availability' + (t.available ? ' available' : '') + '">' + availability + '</span>';
       const isJuke = t.id === 'jukebox';
       const all = (t.tools && t.tools.length) ? t.tools : [];
@@ -826,6 +840,29 @@
     // ORG P21: open on the same agent the skills lane in this console shows (sent from a dossier, or the dossier's own)
     const openOn = typeof H.skillsAgentId === 'function' ? H.skillsAgentId() : (agents[H.sel] && agents[H.sel].id);
     if (openOn && agents.some(a => a.id === openOn)) tsAgentEl.value = openOn; else if (agents[H.sel]) tsAgentEl.value = agents[H.sel].id;
+    /* THE ACCESS LINE (UX night 10-26, Andrew: "pretend these users are like 5"). It read "NOVA · ASK — standing grants
+       apply · Trusted project folders. Revoke standing grants in Settings → Permissions. Capability grants shown here;
+       the current task, service connection and operating system can still limit execution." Now it says what this agent
+       may do in the ONE ACCESS words the dossier uses, gated the same way (ORG P21): FULL POWER only when the live
+       authority is unrestricted, else the agent's saved asking posture, else its own mix. The sidecar's exact how-to-undo
+       rides the tip. */
+    function tsAccessLine(a) {
+      const agent = agents.find(x => x && x.id === a.agentId);
+      const P = agent && typeof H.agentPostureOf === 'function' ? H.agentPostureOf(agent) : null;
+      const who = '<b>' + esc(a.name) + '</b>';
+      let html;
+      if (a.unrestricted) {
+        const from = a.source === 'environment' ? 'StarNet was started in full-access mode'
+          : a.source === 'station' ? 'FULL POWER is on for every agent in SETTINGS › PERMISSIONS' : 'set in its dossier, CONFIG › ACCESS';
+        html = who + ' is on <b>FULL POWER</b>: it never asks first and can use your whole computer. The switches below do not limit it <span class="dim">(' + esc(from) + ')</span>.';
+      } else if (P && P.approval === 'ask') {
+        html = who + ' is on <b>' + esc(P.label) + '</b>: ' + esc(P.agentBlurb) + ' <span class="dim">Change it in its dossier, CONFIG › ACCESS.</span>';
+      } else {
+        html = who + ' asks before risky steps, with its own mix of reach. <span class="dim">Change it in its dossier, CONFIG › ACCESS.</span>';
+      }
+      tsAuthorityEl.innerHTML = html;
+      tsAuthorityEl.dataset.tip = a.approvalLabel + ' · ' + a.filesystemLabel + '. ' + a.revoke;
+    }
     let tsRequest = 0;
     const tsLabels = {};
     tsAgentEl.addEventListener('change', tsRefresh);
@@ -979,6 +1016,7 @@
         const adv = body.querySelector('#mc-form .mc-adv');
         if (adv) adv.open = hKeys.length > 0 || !!(c.timeoutMs && c.timeoutMs !== 30000);
       }
+      const addFold = body.querySelector('#mc-add-fold'); if (addFold) addFold.open = true;   // the form is folded by default
       formH.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       idInput.focus();
       sfx('click');
@@ -1085,6 +1123,7 @@
           listEl.querySelectorAll('.mc-inspect').forEach(el => { el.open = expanded.has(el.closest('.mc-row').dataset.id); });
         }
         else {
+          // the way in for almost everyone is an app from APPS; a service by its own address is the fold below
           listEl.innerHTML = '<div class="empty-state"><span class="es-glyph">⧉</span>' +
             '<b>SIN CONECTORES AÚN</b><span>Añade un servidor MCP para dar a tus agentes herramientas externas — GitHub, Slack, una base de datos.</span>' +
             '<button class="es-cta" id="mc-empty-cta" type="button">+ ADD A CONNECTOR</button></div>';
@@ -1256,6 +1295,11 @@
     const ccMsgEl = body.querySelector('#cc-msg');
     let ccCache = [];   // flat catalog entries, so a click reads the authoritative id/url/name (never re-typed)
     let ccAlternatives = new Map();
+    // CATEGORY FOLDS (UX night 10-25): eighteen categories as one ~23,000px wall was the catalog a newcomer met. Popular
+    // stays open; every other category is a one-line fold with its count, so the whole catalog reads as an index.
+    // A fold the Commander opens or closes stays that way while the window lives (refreshes re-render every card).
+    const ccFoldOpen = new Map();
+    const ccDefaultOpen = cat => ccFoldOpen.has(cat) ? ccFoldOpen.get(cat) : cat === 'Popular';
     const ccEntry = id => ccCache.find(x => (x.catalogId || x.id) === id);
     const ccPending = new Set();   // connector ids with an in-flight OAuth sign-in (guards duplicate popups/pollers)
     const ccTimers = new Map();    // id -> live poll interval, so a CANCEL / panel-close can clear it (EL-11 #13)
@@ -1364,7 +1408,7 @@
         '<div class="cc-grid">' + g.connectors.map((e, i) => {
           const alternate = ccAlternatives.get(e.catalogId || e.id);
           return alternate ? '<div class="cc-service">' + ccCard(e, i) + '<details class="cc-alternatives"><summary>Advanced: ' + esc(e.name) + ' API connection</summary>' + ccCard(alternate, i) + '</details></div>' : ccCard(e, i);
-        }).join('') + '</div></div>';
+        }).join('') + '</div></details>';
     }
     // Editorial picks, not a claim about measured customer usage. Move rather than duplicate
     // cards so sign-in progress, search results and saved-service counts have one owner.
@@ -1451,6 +1495,9 @@
         const tag = g.querySelector('.sec-tag');
         if (tag) tag.textContent = String(vis);
         shown += vis;
+        // a picked tier is already the short list, so every category it leaves shows its cards; ALL is the index again.
+        // While searching, the console search owns the folds (it opens the ones holding a hit and closes them after).
+        if (!body.classList.contains('con-searching')) g.open = ccFilter !== 'all' || ccDefaultOpen(g.dataset.cat);
       });
       // An empty result is a real answer and must say which filter produced it — never a blank pane.
       let none = ccListEl.querySelector('.cc-nores');
@@ -1478,6 +1525,12 @@
     if (ccFiltersEl) ccFiltersEl.addEventListener('click', ev => {
       const b = ev.target.closest('button[data-cc-filter]'); if (!b) return;
       ccSetFilter(b.dataset.ccFilter); sfx('tick');
+    });
+    // remember the Commander's own fold choice (a click on the category line; Enter/Space on it clicks too). The click
+    // lands before the fold toggles, so the choice is the opposite of its state now.
+    if (ccListEl) ccListEl.addEventListener('click', ev => {
+      const head = ev.target.closest('summary'); const g = head && head.parentElement;
+      if (g && g.matches('details.cc-group')) ccFoldOpen.set(g.dataset.cat, !g.open);
     });
     // SEARCH BEATS THE TIER FILTER. The console search (stationui doFilter) marks a matching card
     // `.con-hit`, but a card this filter set `hidden` stays display:none — so searching "stripe" with
@@ -1679,9 +1732,9 @@
       if (act === 'manage') {
         const entry = ccEntry(id);
         if (!entry) return;
-        const tab = body.querySelector('#con-tab-connectors-' + (entry.platformApi ? 'keys' : 'mcp'));
+        const tab = body.querySelector('#con-tab-connectors-mcp');   // CONNECTED holds both services and API keys
         if (tab) tab.click();
-        if (entry.platformApi) { await kyRefresh(); await kyPlatformsRefresh(); }
+        if (entry.platformApi) { await kyRefresh(); await kyPlatformsRefresh(); const keysH = body.querySelector('#ab-keys'); if (keysH && host) host.scrollTop = Math.max(0, keysH.offsetTop - host.offsetTop - 8); }
         else {
           await refresh();
           const target = Array.from(listEl.querySelectorAll('.mc-row')).find(r => r.dataset.id === entry.id);
@@ -1745,8 +1798,9 @@
     // CATALOG owns discovery; KEYS owns the credential. A platform card lands on the real add form and
     // carries only public setup metadata from /api/servicekeys/catalog — never a secret or invented state.
     function ccPrefillPlatform(p) {
-      const tab = body.querySelector('#con-tab-connectors-keys');
+      const tab = body.querySelector('#con-tab-connectors-mcp');   // the key form lives in CONNECTED › API KEYS
       if (tab) tab.click();
+      const keyFold = body.querySelector('#ky-add-fold'); if (keyFold) keyFold.open = true;
       kyNameEl.value = p.name;
       kyKeyEl.value = '';
       kyDocsEl.value = p.docsUrl || '';
@@ -1768,6 +1822,12 @@
     // TOP: platforms whose credential is a saved key/token on a live connector config. Read-only here — each is
     // managed where it was added (its CATALOG card / MCP CONNECTORS row). hasToken/hasHeaders are the backend's honest flags;
     // we never see (or show) the value. OAuth connectors are keyless by design and stay off this list.
+    // the keyed-platform group (and the label that tells the two groups apart) shows only when it has something to say
+    function kyPlatShown(on) {
+      kyPlatEl.hidden = !on;
+      const head = body.querySelector('#ky-plat-head'); if (head) head.hidden = !on;
+      const mine = body.querySelector('#ky-mine-head'); if (mine) mine.hidden = !on;
+    }
     async function kyPlatformsRefresh() {
       try {
         const [cRes, gRes] = await Promise.all([readJSON('/api/connectors'), readJSON('/api/connectors/catalog')]);
@@ -1914,7 +1974,7 @@
     kyRefresh();
     // panes mount once and tab clicks only toggle visibility — re-poll both lists when the Commander
     // lands on KEYS, so a connector keyed on the CATALOG tab moments ago shows up without a window reopen.
-    const kyTab = body.querySelector('#con-tab-connectors-keys');
+    const kyTab = body.querySelector('#con-tab-connectors-mcp');   // CONNECTED shows the API keys too
     if (kyTab) kyTab.addEventListener('click', () => { kyPlatformsRefresh(); kyRefresh(); });
     const ccTab = body.querySelector('#con-tab-connectors-catalog');
     if (ccTab) ccTab.addEventListener('click', ccRefresh);
@@ -1934,6 +1994,9 @@
       try {
         const j = await Harness.api.get('/api/spotify/status');
         if (redirEl && j.redirectUri) redirEl.textContent = j.redirectUri;
+        // the setup fold holds RECONNECT / DISCONNECT once connected, so its name follows the state
+        const foldName = body.querySelector('#sp-setup-fold > summary');
+        if (foldName) foldName.textContent = j.connected ? 'Spotify connection' : 'Connect your Spotify';
         if (j.connected) {
           statusEl.innerHTML = '<span style="color:var(--ok)">● conectado</span>' + (j.scope ? ' <span class="dim">· ' + esc(j.scope) + '</span>' : '');
           connectBtn.textContent = '↻ RECONECTAR';
