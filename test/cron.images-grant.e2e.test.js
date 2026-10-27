@@ -118,7 +118,7 @@ async function startModel() {
     A.eq(model.imageRequests.length, before, 'no image request reached the provider');
     const refused = toolResultFor('IMG_PLAIN');
     A.ok(/consent denied/i.test(refused), 'image_generate was refused (got: ' + refused.slice(0, 160) + ')');
-    A.ok(/▣ ALLOW IMAGES on this routine in AUTOMATE › SCHEDULES/.test(refused), 'the refusal names the switch that exists');
+    A.ok(/▣ PERMITIR IMÁGENES on this routine in AUTOMATIZAR › HORARIOS/.test(refused), 'the refusal names the switch that exists');
 
     /* ---- 3. the row grant adds to what the routine holds NOW, and survives a restart ---- */
     const conn = await sidecar.json('POST', '/api/cron/update', { id: plain.id, patch: { unattendedGrants: ['connectors'] } });
