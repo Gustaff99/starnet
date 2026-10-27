@@ -140,7 +140,7 @@ const audio = () => Array.from({length:8}, () => new Float32Array(1000).fill(0.1
     h.frame(.1); h.frame(.1); h.frame(.1);
     assert.equal(h.sent.length, 0);
     assert.equal(h.api.inspect().recording, false);
-    assert.equal(h.node('lv-state').textContent, 'PAUSED');
+    assert.equal(h.node('lv-state').textContent, 'EN PAUSA');
     h.api.togglePause(); h.frame(.1); h.frame(.1); h.frame(.1);
     assert.equal(h.api.inspect().recording, true, 'resume accepts a fresh utterance');
   }

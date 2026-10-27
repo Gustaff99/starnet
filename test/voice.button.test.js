@@ -256,7 +256,7 @@ async function opensWithin(t, ms) {
     await tick(80); // longer than the former compressed silence endpoint: the take must remain open
     A.eq(t.Voice.isListening(), true, 'Windows standard voice remains recording across a pause');
     A.eq(t.sandbox.__sent.length, 0, 'the first click never auto-submits a standard voice take');
-    A.ok(/click again to finish and send/i.test(t.nodes['chat-mic'].title), 'the active mic names the second-click action');
+    A.ok(/clic de nuevo para terminar y enviar/i.test(t.nodes['chat-mic'].title), 'the active mic names the second-click action');
     t.nodes['chat-mic'].onclick();
     await until(() => t.sandbox.__sent.length === 1, 1000);
     A.eq(t.Voice.sttEngine(), 'recorder', 'Windows standard voice captures the bounded take before native transcription');

@@ -32,7 +32,7 @@ const renderMarkdown = new Function(
 const html = renderMarkdown('Before\n```js\nconst one = "<one>";\n```\nBetween\n```\nsecond();\n```\nAfter');
 A.eq((html.match(/class="md-pre-wrap"/g) || []).length, 2, 'each fenced section gets its own wrapper');
 A.eq((html.match(/class="md-copy"/g) || []).length, 2, 'each fenced section gets its own copy button');
-A.eq((html.match(/aria-label="Copy code block"/g) || []).length, 2, 'each block copy control has an accessible name');
+A.eq((html.match(/aria-label="Copiar bloque de código"/g) || []).length, 2, 'each block copy control has an accessible name');
 A.ok(/<span class="md-pre">const one = &quot;&lt;one&gt;&quot;;<\/span>/.test(html), 'code remains escaped inside its exact block');
 A.ok(/<span class="md-pre">second\(\);<\/span>/.test(html), 'neighboring code stays in a separate exact block');
 A.ok(!/>js<\/span>/.test(html), 'the fence language marker is not copied as code');
