@@ -30,11 +30,11 @@
 
   var heads=Array.from(main.querySelectorAll('h2[id]'));
   main.querySelectorAll('h2[id],h3[id]').forEach(function(h){
-    var a=d.createElement('a'); a.className='h-anchor'; a.href='#'+h.id; a.textContent='#'; a.setAttribute('aria-label','Link to '+h.textContent.trim()); h.append(a);
+    var a=d.createElement('a'); a.className='h-anchor'; a.href='#'+h.id; a.textContent='#'; a.setAttribute('aria-label','Enlace a '+h.textContent.trim()); h.append(a);
   });
   if(heads.length>=3 && !overview){
     var toc=d.createElement('aside'); toc.className='docs-toc'; toc.setAttribute('aria-label','On this page');
-    toc.innerHTML='<div class="toc-title">On this page</div><ol>'+heads.map(function(h){return '<li><a href="#'+esc(h.id)+'">'+esc(h.textContent.replace(/#$/,'').replace(/^\d+[.\s]*/,'').trim())+'</a></li>';}).join('')+'</ol><a class="toc-top" href="#main-content">Back to top ↑</a>';
+    toc.innerHTML='<div class="toc-title">En esta página</div><ol>'+heads.map(function(h){return '<li><a href="#'+esc(h.id)+'">'+esc(h.textContent.replace(/#$/,'').replace(/^\d+[.\s]*/,'').trim())+'</a></li>';}).join('')+'</ol><a class="toc-top" href="#main-content">Volver arriba ↑</a>';
     main.parentNode.append(toc); main.parentNode.classList.add('has-toc');
     var tocLinks=Array.from(toc.querySelectorAll('ol a'));
     function spy(){
@@ -60,7 +60,7 @@
     });wrap.append(b);
   });
   var side=d.getElementById('docs-side'),toggle=side.querySelector('.side-toggle');
-  toggle.addEventListener('click',function(){var open=side.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Close documentation menu':'Browse documentation';});
+  toggle.addEventListener('click',function(){var open=side.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Close documentation menu':'Explorar documentación';});
 
   var input=d.getElementById('docs-search'),results=d.getElementById('docs-results'),status=d.getElementById('docs-search-status');
   function closeSearch(){results.hidden=true;input.setAttribute('aria-expanded','false');}
