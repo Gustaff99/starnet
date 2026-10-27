@@ -1,9 +1,20 @@
 # CHECKPOINT — MIS-23 (traducción ES) · COMPLETADA
 
-## Estado (2026-10-27, tramo 20)
+## Estado (2026-10-27, tramo 22)
 - Rama es/interfaz-espanol. MIS-23-8 cerrada (0ad1bd97).
 - **MIS-23-9 COMPLETADA**: suite global + verificación visual + entrega final ✅
 - **MIS-23 COMPLETADA**: toda la interfaz traducida, tests verdes, verificación visual PASS
+- **Tramo 21-22**: merge upstream 0.14.1 + README ES + push a GitHub ✅
+
+## Nuevo alcance (2026-10-27T18:51Z)
+- [x] Adaptar a upstream feat/harness-backend (15641 commits, 31 conflictos resueltos) — commit 0087b7d05
+- [x] Traducir README.md al español + nota de fork — commit 37f577f85
+- [x] Push rama es/interfaz-espanol a GitHub (Gustaff99/starnet) — commit 40dcb6b5f
+
+## Commits de este tramo
+- 0087b7d05: merge upstream feat/harness-backend (0.14.1) — 31 conflictos, 155 archivos
+- 37f577f85: README.md traducido al español + explicación de fork
+- 40dcb6b5f: docs: record specialist review for MIS-23 (ya existente)
 
 ## Criterios verificados
 - [x] Scanner v4: 5 strings restantes (falsos positivos) ✅
