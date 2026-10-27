@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia de habilidades y rutinas — StarNet Docs</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="docs.css?v=20260913-brand-nav">
+</head>
+<body class="docs-page" data-group="Repeat &amp; automate" data-group-id="automation" data-kind="Reference" data-title="Referencia de habilidades y rutinas">
+<a class="skip-link" href="#main-content">Ir al contenido</a>
+
+<div class="crt-scan" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="../index.html" aria-label="Inicio de StarNet"><img src="../assets/starnet-logo-small.png" alt="StarNet" width="355" height="60"></a>
+  <nav class="topnav" aria-label="Sitio">
+    <a href="../index.html#station">Producto</a>
+    <a href="index.html" class="on">Documentación</a>
+    <a href="../market.html">Habilidades</a>
+    <a href="../pricing.html" data-pricing-link>Precios</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GitHub<svg class="nav-external" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="12" height="12"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+  </nav>
+  <span class="topbar-right">
+    <a href="help.html">Ayuda</a>
+    <a class="nav-download" href="../index.html#download">Descargar &darr;</a>
+  </span>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-side" id="docs-side">
+    <div class="side-home">Documentación</div>
+    <div class="side-search"><label class="sr-only" for="docs-search">Buscar documentación</label><input id="docs-search" type="search" placeholder="Buscar documentación…" autocomplete="off" spellcheck="false" aria-controls="docs-results" aria-expanded="false"><kbd class="search-key" aria-hidden="true">/</kbd><div class="ss-results" id="docs-results" hidden></div><span id="docs-search-status" class="sr-only" role="status" aria-live="polite"></span></div>
+    <button class="side-toggle" type="button" aria-expanded="false" aria-controls="side-nav">Explorar documentación</button>
+    <nav id="side-nav" class="side-nav" aria-label="Docs">
+      <div class="side-quick">
+      <a href="index.html">Resumen de documentación</a>
+      <a href="guides/index.html">Guías paso a paso</a>
+      </div>
+      <p class="side-label">Explorar temas</p>
+    <details class="side-group">
+    <summary class="side-title">Empieza aquí</summary>
+    <a href="getting-started.html">Instalación y primera tarea</a>
+    <a href="providers.html">Modelos y proveedores</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Estación y agentes</summary>
+    <a href="station.html">Estación y capacidades</a>
+    <a href="guides/crew.html">Configura tu equipo</a>
+    <a href="agents.html">Agentes, equipos y voz</a>
+    <a href="guides/goals.html">Objetivos, misiones y XP</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Flujos de trabajo</summary>
+    <a href="guides/first-line.html">Crea tu primer flujo</a>
+    <a href="guides/conveyors.html">Fundamentos de flujos</a>
+    <a href="guides/filter.html">Filtrar y enrutar trabajo</a>
+    <a href="guides/splitter-joiner.html">Dividir y combinar resultados</a>
+    </details>
+    <details class="side-group" open>
+    <summary class="side-title">Repetir y automatizar</summary>
+    <a href="guides/routines.html">Crear trabajo repetible</a>
+    <a href="skills.html" class="active" aria-current="page">Referencia de habilidades y rutinas</a>
+    <a href="guides/night-shift.html">Configurar autonomía</a>
+    <a href="autonomy.html">Controles de autonomía</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Conecta tus herramientas</summary>
+    <a href="connect-a-platform.html">Conectar un servicio</a>
+    <a href="guides/channels.html">Canales de mensajería</a>
+    <a href="connectors.html">Referencia de conectores y MCP</a>
+    <a href="migrating.html">Desde OpenClaw o Hermes</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Solución de problemas y ayuda</summary>
+    <a href="help.html">Centro de ayuda</a>
+    <a href="troubleshooting.html">Solución de problemas</a>
+    <a href="shortcuts.html">Atajos de teclado</a>
+    <a href="glossary.html">Glosario</a>
+    </details>
+    </nav>
+  </aside>
+  <main class="docs-main" id="main-content" tabindex="-1">
+<h1>Referencia de habilidades y rutinas</h1>
+<p class="doc-sub">// the HOW, the WHAT, and the WHEN of repeatable work</p>
+
+<h2 id="the-three-layer-model">The three-layer model</h2>
+<table>
+<tr><th>Layer</th><th>Answers</th><th>Example</th></tr>
+<tr><td><b>Skill</b></td><td>HOW to do something well</td><td>"how we write release notes"</td></tr>
+<tr><td><b>Recipe</b></td><td>WHAT to produce</td><td>"weekly competitor digest"</td></tr>
+<tr><td><b>Routine</b></td><td>WHEN it happens</td><td>"every Monday, 9am"</td></tr>
+</table>
+<p>Skills teach technique, recipes define deliverables built from those techniques, and routines
+put recipes on a schedule. Each layer is inspectable and editable — no black-box "automations."</p>
+
+<h2 id="skills">Habilidades</h2>
+<p>A skill is a packaged instruction set an agent loads when the task calls for it. Agents ship
+with class-appropriate skills, and gain more as you work together. Skills are
+<b>capability-gated</b>: a skill that needs a tool the agent hasn't been granted stays visibly
+dormant instead of silently failing — the skills panel always distinguishes what you chose to
+grant from what the station floor provides.</p>
+<p>More skills live in the <a href="../market.html">Skill Market</a>: StarNet Originals and credited community
+picks. Install one from <b>ABILITIES › DISCOVER › SKILL MARKET</b> and it joins your station's skill library for the
+whole crew.</p>
+
+<h2 id="recipes">Recipes</h2>
+<p>A recipe captures a deliverable you'll want again: its inputs, its steps, its output format.
+Run one on demand, hand it to any capable agent, or attach it to a routine. Your usual recipe is
+offered as a one-tap prefill when you return to a session.</p>
+
+<h2 id="routines">Routines</h2>
+<p>Routines are the schedule layer — see <a href="autonomy.html">Autonomy</a>
+for how scheduled runs execute and report. A routine is always a real recipe run by a real
+agent; there is no separate, weaker "automation mode."</p>
+
+<h2 id="the-loop-closes-work-that-sharpens-itself">The loop closes: work that sharpens itself</h2>
+<p>Rate a delivered run and the station extracts <b>why</b> it landed (or didn't) into your
+taste profile. Recipes carry those learnings forward, the quest board regenerates around your
+current goals instead of stale ones, and the scout studies your history to pitch next moves you
+didn't think to ask for. A routine left running doesn't decay into noise &mdash; each cycle is
+built with more evidence of what you value than the last.</p>
+
+<nav class="doc-pager" aria-label="More in Repeat &amp; automate"><a class="pg prev" href="guides/routines.html"><span class="pg-k">&larr; ANTERIOR</span><span class="pg-t">Crear trabajo repetible</span></a><a class="pg next" href="guides/night-shift.html"><span class="pg-k">SIGUIENTE &rarr;</span><span class="pg-t">Configurar autonomía</span></a></nav>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-line">STARNET &middot; una estación viviente de agentes IA, haciendo trabajo real en la oscuridad</div>
+  <div class="footer-links">
+    <a href="../index.html">INICIO</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GITHUB</a>
+    <a href="https://github.com/androoAGI/starnet-releases/releases/latest" target="_blank" rel="noopener">VERSIONES</a>
+    <a href="../pricing.html" data-pricing-link>PRECIOS</a>
+    <a href="index.html">DOCS</a>
+    <a href="../market.html">HABILIDADES</a>
+    <a href="help.html">AYUDA</a>
+    <a href="https://github.com/androoAGI/starnet/issues" target="_blank" rel="noopener">COMUNIDAD</a>
+    <a href="../legal/privacy.html">PRIVACIDAD</a>
+    <a href="../legal/terms.html">TÉRMINOS</a>
+    <a href="mailto:androo.agi@gmail.com">CONTACTO</a>
+  </div>
+  <div class="footer-fine">Licencia MIT &middot; &copy; <span id="year">2026</span> StarNet &middot; sin telemetría, sin rastreo &mdash; <a href="../legal/privacy.html">no recogemos nada</a></div>
+</footer>
+
+<script src="search-index.js?v=20260913-brand-nav"></script>
+<script src="search.js?v=20260913-brand-nav"></script>
+<script src="docs.js?v=20260913-brand-nav"></script>
+</body>
+</html>

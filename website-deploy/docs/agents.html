@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentes, equipos y voz — StarNet Docs</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="docs.css?v=20260913-brand-nav">
+</head>
+<body class="docs-page" data-group="Station &amp; agents" data-group-id="station" data-kind="Reference" data-title="Agentes, equipos y voz">
+<a class="skip-link" href="#main-content">Ir al contenido</a>
+
+<div class="crt-scan" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="../index.html" aria-label="Inicio de StarNet"><img src="../assets/starnet-logo-small.png" alt="StarNet" width="355" height="60"></a>
+  <nav class="topnav" aria-label="Sitio">
+    <a href="../index.html#station">Producto</a>
+    <a href="index.html" class="on">Documentación</a>
+    <a href="../market.html">Habilidades</a>
+    <a href="../pricing.html" data-pricing-link>Precios</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GitHub<svg class="nav-external" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="12" height="12"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+  </nav>
+  <span class="topbar-right">
+    <a href="help.html">Ayuda</a>
+    <a class="nav-download" href="../index.html#download">Descargar &darr;</a>
+  </span>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-side" id="docs-side">
+    <div class="side-home">Documentación</div>
+    <div class="side-search"><label class="sr-only" for="docs-search">Buscar documentación</label><input id="docs-search" type="search" placeholder="Buscar documentación…" autocomplete="off" spellcheck="false" aria-controls="docs-results" aria-expanded="false"><kbd class="search-key" aria-hidden="true">/</kbd><div class="ss-results" id="docs-results" hidden></div><span id="docs-search-status" class="sr-only" role="status" aria-live="polite"></span></div>
+    <button class="side-toggle" type="button" aria-expanded="false" aria-controls="side-nav">Explorar documentación</button>
+    <nav id="side-nav" class="side-nav" aria-label="Docs">
+      <div class="side-quick">
+      <a href="index.html">Resumen de documentación</a>
+      <a href="guides/index.html">Guías paso a paso</a>
+      </div>
+      <p class="side-label">Explorar temas</p>
+    <details class="side-group">
+    <summary class="side-title">Empieza aquí</summary>
+    <a href="getting-started.html">Instalación y primera tarea</a>
+    <a href="providers.html">Modelos y proveedores</a>
+    </details>
+    <details class="side-group" open>
+    <summary class="side-title">Estación y agentes</summary>
+    <a href="station.html">Estación y capacidades</a>
+    <a href="guides/crew.html">Configura tu equipo</a>
+    <a href="agents.html" class="active" aria-current="page">Agentes, equipos y voz</a>
+    <a href="guides/goals.html">Objetivos, misiones y XP</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Flujos de trabajo</summary>
+    <a href="guides/first-line.html">Crea tu primer flujo</a>
+    <a href="guides/conveyors.html">Fundamentos de flujos</a>
+    <a href="guides/filter.html">Filtrar y enrutar trabajo</a>
+    <a href="guides/splitter-joiner.html">Dividir y combinar resultados</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Repetir y automatizar</summary>
+    <a href="guides/routines.html">Crear trabajo repetible</a>
+    <a href="skills.html">Referencia de habilidades y rutinas</a>
+    <a href="guides/night-shift.html">Configurar autonomía</a>
+    <a href="autonomy.html">Controles de autonomía</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Conecta tus herramientas</summary>
+    <a href="connect-a-platform.html">Conectar un servicio</a>
+    <a href="guides/channels.html">Canales de mensajería</a>
+    <a href="connectors.html">Referencia de conectores y MCP</a>
+    <a href="migrating.html">Desde OpenClaw o Hermes</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Solución de problemas y ayuda</summary>
+    <a href="help.html">Centro de ayuda</a>
+    <a href="troubleshooting.html">Solución de problemas</a>
+    <a href="shortcuts.html">Atajos de teclado</a>
+    <a href="glossary.html">Glosario</a>
+    </details>
+    </nav>
+  </aside>
+  <main class="docs-main" id="main-content" tabindex="-1">
+<h1>Agentes, equipos y voz</h1>
+<p class="doc-sub">// recluta especialistas, ejecútalos en paralelo, mantén el mando</p>
+
+<h2 id="recruiting">Reclutamiento</h2>
+<p>Los nuevos agentes llegan a través de la Bahía de Reclutamiento. Cada recluta tiene un dossier — clase, equipo,
+personalidad y las habilidades que incluye. Una breve entrevista al crearlo define lo que el agente
+sabe sobre ti y tus objetivos; el dossier sigue creciendo mientras trabajáis juntos.</p>
+
+<h2 id="classes-and-archetypes">Clases y arquetipos</h2>
+<p>StarNet incluye un roster de clases integradas (investigador, ingeniero, marketing, analista y
+más), cada una con un equipo ajustado a su función. Ninguna está bloqueada — todos los arquetipos están
+disponibles desde el inicio, y cada agente se apoya del equipo colocado en su sala.</p>
+
+<h2 id="the-dossier-learns-you">El dossier te aprende</h2>
+<p>El dossier no es configuración estática &mdash; es un estudio vivo de su comandante. Los agentes notan
+patrones en cómo trabajas y qué apruebas, y <b>proponen</b> creencias ("prefiere una demo funcional
+a una spec escrita"); cada propuesta es tuya de aceptar o descartar, y el registro completo de
+lo que tu equipo cree sobre ti es legible y editable en cualquier momento. Las calificaciones que das
+al trabajo terminado alimentan un perfil de gustos, de modo que el estilo de entrega converge en lo que realmente valoras.
+Nada se aprende a tus espaldas: las propuestas son explícitas, y las creencias descartadas permanecen descartadas.</p>
+
+<h2 id="the-model-is-a-roster-property">El modelo es una propiedad del roster</h2>
+<p>Cada agente está fijado a un modelo en el roster — no por chat. Pon tu modelo de razonamiento pesado
+en el arquitecto y un modelo rápido y barato en el pasante, y enruta el trabajo en consecuencia. Cambia el
+modelo de un agente en cualquier momento desde su dossier.</p>
+
+<h2 id="concurrency">Concurrencia</h2>
+<p>Each additional bay or specialist you place can run <b>concurrently</b> — genuinely distinct,
+bounded agent runs, not one queue wearing costumes. The conveyor carries real work items
+between rooms.</p>
+
+<h2 id="delegation-agents-that-summon-agents">Delegation: agents that summon agents</h2>
+<p>An agent holding the <b>task delegation</b> capability can break a large job apart and hand
+the pieces out. Every worker it creates runs its <b>own real agent loop</b> — its own searching,
+reading, file writing and memory — and returns a result the lead folds back into the answer.
+There are three shapes:</p>
+<table>
+<tr><th>Move</th><th>What it does</th></tr>
+<tr><td><b>Dispatch</b></td><td>Hand subtasks to specialists already on your crew.</td></tr>
+<tr><td><b>Spawn</b></td><td>Create ephemeral clones of itself to work subtasks in parallel, then discard them.</td></tr>
+<tr><td><b>Summon</b></td><td>Recruit a genuinely new specialist onto the crew — the same thing you'd do in the Recruitment Bay, done live because the job needed it.</td></tr>
+</table>
+<p>Background workers are inspectable while they run: list them, look at one, <b>interrupt</b>
+one that's going the wrong way, or <b>resume</b> a stalled one — it restarts on the same prompt
+and appends to the same durable record, so nothing is silently lost. You watch the whole tree
+work on the station floor; a lit desk is a live worker, not a decoration.</p>
+
+<h2 id="live-voice-talking-to-the-station">Live Voice — hablar con la estación</h2>
+<p>Puedes soltar COMMS y simplemente hablar. <b>Live Voice</b> manos libres escucha, transcribe, ejecuta
+el trabajo y habla la respuesta, usando un motor de voz <b>integrado en la app</b> — Whisper
+para escuchar, Kokoro para hablar, ambos en tu CPU.</p>
+<p>Deliberadamente <b>no</b> usa una API de voz en tiempo real de un proveedor, aunque exista. Una ruta de proveedor daba turnos más suaves pero ataba la función a un solo proveedor, limitaba la
+persona tras las barreras de ese proveedor, y hacía que la estación se comportara diferente según
+qué proveedor conectaras. El motor integrado es un poco más lento por turno y
+gana en todo lo demás: sin clave, sin cuenta, idéntico en toda estación, y tu audio grabado
+nunca sale de la máquina. La primera sesión puede descargar los pesos del modelo abierto una vez. Después,
+la escucha es offline; la voz es offline mientras Kokoro esté disponible y de lo contrario puede usar el fallback sin clave
+Microsoft Edge Read Aloud para el texto de la respuesta.</p>
+
+<h2 id="comms">COMMS</h2>
+<p>La ventana COMMS es mando: habla con cualquier agente, mira su trabajo en vivo, aprueba acciones
+consecuenciales y responde la (rara, acotada) pregunta aclaratoria antes de que una tarea grande se comprometa. Cuando un
+agente necesita una decisión, pregunta una vez con opciones concretas — no puede preguntar y modificar
+las cosas en silencio al mismo tiempo; el harness bloquea las herramientas de escritura hasta que la pregunta se resuelve.</p>
+
+<nav class="doc-pager" aria-label="More in Station &amp; agents"><a class="pg prev" href="guides/crew.html"><span class="pg-k">&larr; ANTERIOR</span><span class="pg-t">Configura tu equipo</span></a><a class="pg next" href="guides/goals.html"><span class="pg-k">SIGUIENTE &rarr;</span><span class="pg-t">Objetivos, misiones y XP</span></a></nav>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-line">STARNET &middot; una estación viviente de agentes IA, haciendo trabajo real en la oscuridad</div>
+  <div class="footer-links">
+    <a href="../index.html">INICIO</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GITHUB</a>
+    <a href="https://github.com/androoAGI/starnet-releases/releases/latest" target="_blank" rel="noopener">VERSIONES</a>
+    <a href="../pricing.html" data-pricing-link>PRECIOS</a>
+    <a href="index.html">DOCS</a>
+    <a href="../market.html">HABILIDADES</a>
+    <a href="help.html">AYUDA</a>
+    <a href="https://github.com/androoAGI/starnet/issues" target="_blank" rel="noopener">COMUNIDAD</a>
+    <a href="../legal/privacy.html">PRIVACIDAD</a>
+    <a href="../legal/terms.html">TÉRMINOS</a>
+    <a href="mailto:androo.agi@gmail.com">CONTACTO</a>
+  </div>
+  <div class="footer-fine">Licencia MIT &middot; &copy; <span id="year">2026</span> StarNet &middot; sin telemetría, sin rastreo &mdash; <a href="../legal/privacy.html">no recogemos nada</a></div>
+</footer>
+
+<script src="search-index.js?v=20260913-brand-nav"></script>
+<script src="search.js?v=20260913-brand-nav"></script>
+<script src="docs.js?v=20260913-brand-nav"></script>
+</body>
+</html>

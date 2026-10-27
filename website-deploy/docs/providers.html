@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelos y proveedores — StarNet Docs</title>
+<meta name="description" content="Model providers supported by StarNet, including API-key, account sign-in, local, and custom OpenAI-compatible options.">
+<link rel="canonical" href="https://starnetos.com/docs/providers.html">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="docs.css?v=20260913-brand-nav">
+</head>
+<body class="docs-page" data-group="Start here" data-group-id="start" data-kind="Reference" data-title="Modelos y proveedores">
+<a class="skip-link" href="#main-content">Ir al contenido</a>
+
+<div class="crt-scan" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="../index.html" aria-label="Inicio de StarNet"><img src="../assets/starnet-logo-small.png" alt="StarNet" width="355" height="60"></a>
+  <nav class="topnav" aria-label="Sitio">
+    <a href="../index.html#station">Producto</a>
+    <a href="index.html" class="on">Documentación</a>
+    <a href="../market.html">Habilidades</a>
+    <a href="../pricing.html" data-pricing-link>Precios</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GitHub<svg class="nav-external" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="12" height="12"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+  </nav>
+  <span class="topbar-right">
+    <a href="help.html">Ayuda</a>
+    <a class="nav-download" href="../index.html#download">Descargar &darr;</a>
+  </span>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-side" id="docs-side">
+    <div class="side-home">Documentación</div>
+    <div class="side-search"><label class="sr-only" for="docs-search">Buscar documentación</label><input id="docs-search" type="search" placeholder="Buscar documentación…" autocomplete="off" spellcheck="false" aria-controls="docs-results" aria-expanded="false"><kbd class="search-key" aria-hidden="true">/</kbd><div class="ss-results" id="docs-results" hidden></div><span id="docs-search-status" class="sr-only" role="status" aria-live="polite"></span></div>
+    <button class="side-toggle" type="button" aria-expanded="false" aria-controls="side-nav">Explorar documentación</button>
+    <nav id="side-nav" class="side-nav" aria-label="Docs">
+      <div class="side-quick">
+      <a href="index.html">Resumen de documentación</a>
+      <a href="guides/index.html">Guías paso a paso</a>
+      </div>
+      <p class="side-label">Explorar temas</p>
+    <details class="side-group" open>
+    <summary class="side-title">Empieza aquí</summary>
+    <a href="getting-started.html">Instalación y primera tarea</a>
+    <a href="providers.html" class="active" aria-current="page">Modelos y proveedores</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Estación y agentes</summary>
+    <a href="station.html">Estación y capacidades</a>
+    <a href="guides/crew.html">Configura tu equipo</a>
+    <a href="agents.html">Agentes, equipos y voz</a>
+    <a href="guides/goals.html">Objetivos, misiones y XP</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Flujos de trabajo</summary>
+    <a href="guides/first-line.html">Crea tu primer flujo</a>
+    <a href="guides/conveyors.html">Fundamentos de flujos</a>
+    <a href="guides/filter.html">Filtrar y enrutar trabajo</a>
+    <a href="guides/splitter-joiner.html">Dividir y combinar resultados</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Repetir y automatizar</summary>
+    <a href="guides/routines.html">Crear trabajo repetible</a>
+    <a href="skills.html">Referencia de habilidades y rutinas</a>
+    <a href="guides/night-shift.html">Configurar autonomía</a>
+    <a href="autonomy.html">Controles de autonomía</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Conecta tus herramientas</summary>
+    <a href="connect-a-platform.html">Conectar un servicio</a>
+    <a href="guides/channels.html">Canales de mensajería</a>
+    <a href="connectors.html">Referencia de conectores y MCP</a>
+    <a href="migrating.html">Desde OpenClaw o Hermes</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Solución de problemas y ayuda</summary>
+    <a href="help.html">Centro de ayuda</a>
+    <a href="troubleshooting.html">Solución de problemas</a>
+    <a href="shortcuts.html">Atajos de teclado</a>
+    <a href="glossary.html">Glosario</a>
+    </details>
+    </nav>
+  </aside>
+  <main class="docs-main" id="main-content" tabindex="-1">
+<h1>Modelos y proveedores</h1>
+<p class="doc-sub">Connect a model account, API key, or local endpoint.</p>
+
+<h2 id="bring-your-own-key-byok">Bring your own key (BYOK)</h2>
+<p>StarNet talks to models through <b>your</b> credentials. The simplest path is an
+<a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a> API key: one key,
+hundreds of models, transparent per-token pricing. Paste it once in Settings and every agent can
+use any model you allow.</p>
+
+<h2 id="supported-providers">Supported providers</h2>
+<p>The provider picker is a first-class roster, not one generic endpoint wearing different labels:</p>
+<ul>
+<li><b>Account sign-in:</b> ChatGPT (Codex), Grok, Kimi for Coding, and Claude CLI. These use the provider's
+sign-in flow (for Claude CLI, your existing Claude Code sign-in) instead of asking you to paste an API key.</li>
+<li><b>Direct API keys:</b> OpenRouter, OpenAI, Anthropic, Google Gemini, xAI, Groq, Mistral,
+DeepSeek, Together AI, Fireworks AI, Perplexity, and Cerebras.</li>
+<li><b>Local and custom:</b> Ollama on your machine, or any custom endpoint that speaks the
+OpenAI-compatible wire format.</li>
+</ul>
+<div class="callout"><b>Release note:</b> these docs track current source. The stable installer linked
+from the site can lag while the next Windows and macOS builds pass signing and notarization.</div>
+
+<h2 id="starnet-account">StarNet account</h2>
+<p>If <b>STARNET</b> is offered on the first-run connection screen, select it and choose
+<b>CONNECT STARNET ACCOUNT</b>. Confirm the short code in your browser, then return to the
+app and check its connection status before continuing.</p>
+
+<h2 id="model-choice-and-account-plans">Model choice and account plans</h2>
+<p>Change an individual agent&rsquo;s model in <b>CREW &rsaquo; AGENTS</b>, in its dossier.
+Reasoning effort, when supported by that model, is a separate control; <b>MAX</b> is an effort
+setting, not a subscription plan. A model&rsquo;s tier badge is an editorial rating, not an account entitlement.</p>
+<p>The model picker&rsquo;s <b>STARNET SUBSCRIPTION</b> link opens the pricing page in your browser. In the
+app&rsquo;s <b>STORE</b>, <b>ADD CREDITS</b> and, when shown for an existing subscription,
+<b>MANAGE PLAN</b> also open your browser. These account actions are separate from model selection
+and from installing app updates through <b>Update Center</b>.</p>
+
+<h2 id="where-keys-live">Where keys live</h2>
+<p>Keys are stored locally in your OS keychain via the desktop shell — never in plain project
+files, never sent anywhere except the provider they belong to. Provider requests leave your
+machine only when an agent actually runs.</p>
+
+<h2 id="service-keys-the-keys-tab">Service keys (SAVED API CONNECTIONS)</h2>
+<p>Beyond model providers, agents sometimes need platform keys to do real work — a Stripe test
+key, a GitHub token, a search API key. <b>CONNECT &rsaquo; ABILITIES &rsaquo; SAVED API CONNECTIONS</b> lets you paste any service key;
+StarNet exposes it to agent runs as an environment variable and tells the agent only the
+<b>name</b> of what's available, never the value. The key itself never enters the model prompt. The key field also takes a 1Password reference
+(<code>op://vault/item/field</code>), read through the 1Password CLI and kept only in memory.</p>
+
+<h2 id="cost-honesty">Cost honesty</h2>
+<p>SETTINGS &rsaquo; SPENDING LIMITS shows what you have spent. Runs on StarNet credits and runs on your own provider key are billed separately. If a run stopped before StarNet recorded what it cost, it is listed there as <b>INTERRUPTED</b>. If StarNet also didn't record which account paid for it, the row says <b>BILLING SOURCE UNKNOWN</b>. StarNet never guesses the amount: enter the verified charge and press <b>SETTLE</b>. If you set a spending limit yourself, paid runs are refused until those runs are settled.</p>
+
+<nav class="doc-pager" aria-label="More in Start here"><a class="pg prev" href="getting-started.html"><span class="pg-k">&larr; ANTERIOR</span><span class="pg-t">Instalación y primera tarea</span></a><a class="pg next" href="index.html#start"><span class="pg-k">Explore this topic &rarr;</span><span class="pg-t">Empieza aquí</span></a></nav>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-line">STARNET &middot; una estación viviente de agentes IA, haciendo trabajo real en la oscuridad</div>
+  <div class="footer-links">
+    <a href="../index.html">INICIO</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GITHUB</a>
+    <a href="https://github.com/androoAGI/starnet-releases/releases/latest" target="_blank" rel="noopener">VERSIONES</a>
+    <a href="../pricing.html" data-pricing-link>PRECIOS</a>
+    <a href="index.html">DOCS</a>
+    <a href="../market.html">HABILIDADES</a>
+    <a href="help.html">AYUDA</a>
+    <a href="https://github.com/androoAGI/starnet/issues" target="_blank" rel="noopener">COMUNIDAD</a>
+    <a href="../legal/privacy.html">PRIVACIDAD</a>
+    <a href="../legal/terms.html">TÉRMINOS</a>
+    <a href="mailto:androo.agi@gmail.com">CONTACTO</a>
+  </div>
+  <div class="footer-fine">Licencia MIT &middot; &copy; <span id="year">2026</span> StarNet &middot; sin telemetría, sin rastreo &mdash; <a href="../legal/privacy.html">no recogemos nada</a></div>
+</footer>
+
+<script src="search-index.js?v=20260913-brand-nav"></script>
+<script src="search.js?v=20260913-brand-nav"></script>
+<script src="docs.js?v=20260913-brand-nav"></script>
+</body>
+</html>

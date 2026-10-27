@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentación — StarNet Docs</title>
+<meta name="description" content="Documentación para instalar, configurar y operar la estación local-first de agentes IA de StarNet: inicio, guías ilustradas del manual de campo, referencia y ayuda.">
+<link rel="canonical" href="https://starnetos.com/docs/index.html">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="docs.css?v=20260913-brand-nav">
+</head>
+<body class="docs-page docs-overview" data-group="Start here" data-group-id="start" data-kind="Overview" data-title="Documentación">
+<a class="skip-link" href="#main-content">Ir al contenido</a>
+
+<div class="crt-scan" aria-hidden="true"></div>
+<div class="crt-vignette" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="../index.html" aria-label="Inicio de StarNet"><img src="../assets/starnet-logo-small.png" alt="StarNet" width="355" height="60"></a>
+  <nav class="topnav" aria-label="Sitio">
+    <a href="../index.html#station">Producto</a>
+    <a href="index.html" class="on">Documentación</a>
+    <a href="../market.html">Habilidades</a>
+    <a href="../pricing.html" data-pricing-link>Precios</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GitHub<svg class="nav-external" aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="12" height="12"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+  </nav>
+  <span class="topbar-right">
+    <a href="help.html">Ayuda</a>
+    <a class="nav-download" href="../index.html#download">Descargar &darr;</a>
+  </span>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-side" id="docs-side">
+    <div class="side-home">Documentación</div>
+    <div class="side-search"><label class="sr-only" for="docs-search">Buscar documentación</label><input id="docs-search" type="search" placeholder="Buscar documentación…" autocomplete="off" spellcheck="false" aria-controls="docs-results" aria-expanded="false"><kbd class="search-key" aria-hidden="true">/</kbd><div class="ss-results" id="docs-results" hidden></div><span id="docs-search-status" class="sr-only" role="status" aria-live="polite"></span></div>
+    <button class="side-toggle" type="button" aria-expanded="false" aria-controls="side-nav">Explorar documentación</button>
+    <nav id="side-nav" class="side-nav" aria-label="Docs">
+      <div class="side-quick">
+      <a href="index.html" class="active" aria-current="page">Resumen de documentación</a>
+      <a href="guides/index.html">Guías paso a paso</a>
+      </div>
+      <p class="side-label">Explorar temas</p>
+    <details class="side-group">
+    <summary class="side-title">Empieza aquí</summary>
+    <a href="getting-started.html">Instalación y primera tarea</a>
+    <a href="providers.html">Modelos y proveedores</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Estación y agentes</summary>
+    <a href="station.html">Estación y capacidades</a>
+    <a href="guides/crew.html">Configura tu equipo</a>
+    <a href="agents.html">Agentes, equipos y voz</a>
+    <a href="guides/goals.html">Objetivos, misiones y XP</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Flujos de trabajo</summary>
+    <a href="guides/first-line.html">Crea tu primer flujo</a>
+    <a href="guides/conveyors.html">Fundamentos de flujos</a>
+    <a href="guides/filter.html">Filtrar y enrutar trabajo</a>
+    <a href="guides/splitter-joiner.html">Dividir y combinar resultados</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Repetir y automatizar</summary>
+    <a href="guides/routines.html">Crear trabajo repetible</a>
+    <a href="skills.html">Referencia de habilidades y rutinas</a>
+    <a href="guides/night-shift.html">Configurar autonomía</a>
+    <a href="autonomy.html">Controles de autonomía</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Conecta tus herramientas</summary>
+    <a href="connect-a-platform.html">Conectar un servicio</a>
+    <a href="guides/channels.html">Canales de mensajería</a>
+    <a href="connectors.html">Referencia de conectores y MCP</a>
+    <a href="migrating.html">Desde OpenClaw o Hermes</a>
+    </details>
+    <details class="side-group">
+    <summary class="side-title">Solución de problemas y ayuda</summary>
+    <a href="help.html">Centro de ayuda</a>
+    <a href="troubleshooting.html">Solución de problemas</a>
+    <a href="shortcuts.html">Atajos de teclado</a>
+    <a href="glossary.html">Glosario</a>
+    </details>
+    </nav>
+  </aside>
+  <main class="docs-main" id="main-content" tabindex="-1">
+
+<header class="doc-intro">
+  <p class="eyebrow">EL MANUAL DE STARNET</p>
+  <h1>Documentación</h1>
+  <p class="intro-text">Configura tu primer agente, aprende un flujo de trabajo o busca una configuración. Empieza aquí y encuentra tu siguiente paso.</p>
+</header>
+<section class="quickstart-block" aria-labelledby="first-task">
+  <div class="section-label"><h2 id="first-task">¿Nuevo en StarNet?</h2><span>Empieza con un agente. Construye desde ahí.</span></div>
+  <div class="learning-path">
+    <a class="start-step" href="getting-started.html#download-and-install"><span class="step-number">01 / INSTALAR</span><strong>Obtén StarNet</strong><span>Instala la app y abre tu estación.</span><b aria-hidden="true">Instalar StarNet &rarr;</b></a>
+    <a class="start-step" href="providers.html"><span class="step-number">02 / CONECTAR</span><strong>Conecta un modelo</strong><span>Usa una cuenta de proveedor, clave API o modelo local.</span><b aria-hidden="true">Elegir proveedor &rarr;</b></a>
+    <a class="start-step" href="getting-started.html#awaken-your-first-agent"><span class="step-number">03 / EJECUTAR</span><strong>Ejecuta tu primera tarea</strong><span>Conoce a tu agente y envía una solicitud.</span><b aria-hidden="true">Enviar primera tarea &rarr;</b></a>
+  </div>
+</section>
+<section aria-labelledby="browse-topics">
+  <div class="section-label"><h2 id="browse-topics">Explorar por tema</h2><a href="guides/index.html">¿Prefieres una guía? &rarr;</a></div>
+  <!-- docs-directory -->
+<div class="topic-grid">
+<section class="topic" id="start" aria-labelledby="start-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">01</span><div><h3 id="start-title">Empieza aquí</h3><p class="topic-desc">Install StarNet, choose a model, and give your first agent a task.</p></div></div><div class="topic-links"><a href="getting-started.html"><span>Instalación y primera tarea</span><small>Inicio</small></a><a href="providers.html"><span>Modelos y proveedores</span><small>Referencia</small></a></div></section>
+<section class="topic" id="station" aria-labelledby="station-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">02</span><div><h3 id="station-title">Estación y agentes</h3><p class="topic-desc">Build your station, recruit a crew, and give them the tools to work.</p></div></div><div class="topic-links"><a href="station.html"><span>Estación y capacidades</span><small>Referencia</small></a><a href="guides/crew.html"><span>Configura tu equipo</span><small>Guía</small></a><a href="agents.html"><span>Agentes, equipos y voz</span><small>Referencia</small></a><a href="guides/goals.html"><span>Objetivos, misiones y XP</span><small>Guía</small></a></div></section>
+<section class="topic" id="workflows" aria-labelledby="workflows-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">03</span><div><h3 id="workflows-title">Flujos de trabajo</h3><p class="topic-desc">Send work between agents, route different jobs, and combine results.</p></div></div><div class="topic-links"><a href="guides/first-line.html"><span>Crea tu primer flujo</span><small>Guía</small></a><a href="guides/conveyors.html"><span>Fundamentos de flujos</span><small>Guía</small></a><a href="guides/filter.html"><span>Filtrar y enrutar trabajo</span><small>Guía</small></a><a href="guides/splitter-joiner.html"><span>Dividir y combinar resultados</span><small>Guía</small></a></div></section>
+<section class="topic" id="automation" aria-labelledby="automation-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">04</span><div><h3 id="automation-title">Repetir y automatizar</h3><p class="topic-desc">Reuse good work, schedule routines, and configure unattended runs.</p></div></div><div class="topic-links"><a href="guides/routines.html"><span>Crear trabajo repetible</span><small>Guía</small></a><a href="skills.html"><span>Referencia de habilidades y rutinas</span><small>Referencia</small></a><a href="guides/night-shift.html"><span>Configurar autonomía</span><small>Guía</small></a><a href="autonomy.html"><span>Controles de autonomía</span><small>Referencia</small></a></div></section>
+<section class="topic" id="connections" aria-labelledby="connections-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">05</span><div><h3 id="connections-title">Conecta tus herramientas</h3><p class="topic-desc">Connect services, message your station, or work with another harness.</p></div></div><div class="topic-links"><a href="connect-a-platform.html"><span>Conectar un servicio</span><small>Guía</small></a><a href="guides/channels.html"><span>Canales de mensajería</span><small>Guía</small></a><a href="connectors.html"><span>Referencia de conectores y MCP</span><small>Referencia</small></a><a href="migrating.html"><span>Desde OpenClaw o Hermes</span><small>Guía</small></a></div></section>
+<section class="topic" id="help" aria-labelledby="help-title"><div class="topic-head"><span class="topic-number" aria-hidden="true">06</span><div><h3 id="help-title">Solución de problemas y ayuda</h3><p class="topic-desc">Fix a problem, look up a shortcut, or get help from a human.</p></div></div><div class="topic-links"><a href="help.html"><span>Centro de ayuda</span><small>Ayuda</small></a><a href="troubleshooting.html"><span>Solución de problemas</span><small>Ayuda</small></a><a href="shortcuts.html"><span>Atajos de teclado</span><small>Referencia</small></a><a href="glossary.html"><span>Glosario</span><small>Referencia</small></a></div></section>
+</div>
+<!-- /docs-directory -->
+</section>
+<aside class="support-strip"><div><strong>¿Algo no funciona?</strong><p>Empieza con el síntoma, o pide ayuda a un humano.</p></div><a href="troubleshooting.html">Solución de problemas &rarr;</a><a href="help.html#reach-a-human">Contactar soporte &nearr;</a></aside>
+<p class="docs-version-note">Estas docs siguen el código fuente actual. Tu versión instalada puede diferir. Revisa las <a href="https://github.com/androoAGI/starnet-releases/releases/latest" target="_blank" rel="noopener">notas de versión públicas</a> cuando un control se vea diferente.</p>
+
+
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-line">STARNET &middot; una estación viviente de agentes IA, haciendo trabajo real en la oscuridad</div>
+  <div class="footer-links">
+    <a href="../index.html">INICIO</a>
+    <a href="https://github.com/androoAGI/starnet" target="_blank" rel="noopener">GITHUB</a>
+    <a href="https://github.com/androoAGI/starnet-releases/releases/latest" target="_blank" rel="noopener">VERSIONES</a>
+    <a href="../pricing.html" data-pricing-link>PRECIOS</a>
+    <a href="index.html">DOCS</a>
+    <a href="../market.html">HABILIDADES</a>
+    <a href="help.html">AYUDA</a>
+    <a href="https://github.com/androoAGI/starnet/issues" target="_blank" rel="noopener">COMUNIDAD</a>
+    <a href="../legal/privacy.html">PRIVACIDAD</a>
+    <a href="../legal/terms.html">TÉRMINOS</a>
+    <a href="mailto:androo.agi@gmail.com">CONTACTO</a>
+  </div>
+  <div class="footer-fine">Licencia MIT &middot; &copy; <span id="year">2026</span> StarNet &middot; sin telemetría, sin rastreo &mdash; <a href="../legal/privacy.html">no recogemos nada</a></div>
+</footer>
+
+<script src="search-index.js?v=20260913-brand-nav"></script>
+<script src="search.js?v=20260913-brand-nav"></script>
+<script src="docs.js?v=20260913-brand-nav"></script>
+</body>
+</html>
