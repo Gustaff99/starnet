@@ -40,10 +40,10 @@ A.ok(/one step of a workflow/.test(cat('bay').desc), 'the BAY card calls a bay o
 
 /* P1 — the splitter says its mode */
 const plain = panel.slice(panel.indexOf('  function paintPlain(body, f, p) {'), panel.indexOf('  function paintFilter('));
-A.ok(/cfg\.fanout/.test(plain) && /Every branch gets a copy/.test(plain) && /Branches take turns/.test(plain), 'the splitter’s panel section reads the compiled mode and names it');
+A.ok(/cfg\.fanout/.test(plain) && /Cada rama recibe una copia/.test(plain) && /Las ramas se turnan/.test(plain), 'the splitter’s panel section reads the compiled mode and names it');
 // (2026-09-28: switching is now a button pair — COPY TO EACH / TAKE TURNS — that swaps the JOINER/MERGER; conveyor-choices.test.js)
-A.ok(/copy: 'COPY TO EACH', divide: 'SPLIT THE JOB', turns: 'TAKE TURNS'/.test(plain) && /pick\('turns',/.test(plain) && /Switching to or from TAKE TURNS swaps the JOINER or MERGER where the branches meet/.test(plain), '…and switching it is one click, which says what it does');
-A.ok(/Every branch gets a copy: a JOINER follows the branches\./.test(build) && /Jobs take turns between the branches/.test(build), 'the splitter’s hover card says its live mode');
+A.ok(/copy: 'COPIAR A CADA', divide: 'DIVIDIR EL JOB', turns: 'TOMAR TURNOS'/.test(plain) && /pick\('turns',/.test(plain) && /Cambiando a o desde TAKE TURNS cambia el JOINER o MERGER donde las ramas se encuentran/.test(plain), '…and switching it is one click, which says what it does');
+A.ok(/Every branch gets a copy: a JOINER follows the branches\./.test(build) && /Los trabajos se turnan entre las ramas/.test(build), 'the splitter’s hover card says its live mode');
 A.ok(/SPLITTER · COPY TO EACH/.test(build) && /SPLITTER · TAKES TURNS/.test(build), 'the splitter’s floor tag says its live mode');
 A.ok(/p\.id !== hoverPropId && p\.id !== selectedPropId/.test(build), 'junction tags speak only for the hovered or selected junction (one voice, no wall of text)');
 A.ok(/junctionTag: 0\.5/.test(build), 'the tag is the lowest voice in the arbiter');
@@ -60,16 +60,16 @@ A.ok(/b\.insertAdjacentHTML\('beforeend', machineDiagramSVG\(c\.id\)\)/.test(bui
 
 /* P3 — outcome names */
 const purpose = build.slice(build.indexOf('const PALETTE_PURPOSE = {'), build.indexOf('};', build.indexOf('const PALETTE_PURPOSE = {')));
-A.ok(/joiner: 'waits until every branch has finished, then sends ONE combined result on'/.test(purpose), 'JOINER: waits, one combined result');
-A.ok(/merger: '[^']*nothing waits and nothing is combined/.test(purpose), 'MERGER: nothing waits, nothing combined');
+A.ok(/joiner: 'espera a que termine cada rama y luego envía UN resultado combinado'/.test(purpose), 'JOINER: waits, one combined result');
+A.ok(/merger: '[^']*nada espera y nada se combina/.test(purpose), 'MERGER: nothing waits, nothing combined');
 A.ok(/use a JOINER instead/.test(cat('merger').desc), 'the MERGER card points at the JOINER for combining');
 
 /* P4 — the filter's honest scope, edited in the panel */
-A.ok(/filter: 'sorts by task type \(code, research or everything else\)/.test(purpose), 'the FILTER shelf line names its three types');
+A.ok(purpose.includes("filter: 'clasifica por tipo de tarea (código, investigación u otro)"), 'the FILTER shelf line names its three types');
 A.ok(/CODE, RESEARCH, or EVERYTHING ELSE/.test(cat('filter').desc), 'the FILTER card names its three types');
 A.ok(/if \(t === 'filter'\) return typeof WorkflowPanel !== 'undefined' \? openFlowCard\(p\.id\)/.test(build), 'a FILTER opens the docked panel (the modal is only a fallback)');
 const pf = panel.slice(panel.indexOf('  function paintFilter('), panel.indexOf('/* ===== THE STEP TEST'));
 A.ok(/configureJunction\(p\.id, \{ routes: cur\.routes, def: cur\.def \}\)/.test(pf), 'the panel saves routes through the validated model path');
-A.ok(/EVERYTHING ELSE so no task is left without a way out/.test(pf), 'the panel asks for the fallback belt');
+A.ok(/TODO LO DEMÁS para que ninguna tarea quede sin salida/.test(pf), 'the panel asks for the fallback belt');
 
 A.report('conveyor-legibility.test');
