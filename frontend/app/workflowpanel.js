@@ -1090,7 +1090,7 @@ const WorkflowPanel = (() => {
        RUN ONE REAL JOB sends (H.runSample → POST /api/routing/sample: real agents, real cost, delivered to the OUTBOX), its verdict
        read back from the server; the text is also this line's test job (TEST THIS STEP and the TEST view start from it). The
        automatic starts (schedule, channel, folder) follow it. */
-    const sendHTML = '<section class="wf-sec wf-send"><h3><span class="n">INBOX</span>Send a job</h3>'
+    const sendHTML = '<section class="wf-sec wf-send"><h3><span class="n">INBOX</span>Enviar un trabajo</h3>'
       + '<textarea id="wf-send-in" class="refit-input refit-brief" rows="3" maxlength="2000" aria-label="El trabajo que se envía por esta línea" placeholder="¿En qué debe trabajar la línea? p. ej. Busca la investigación más útil de esta semana sobre el sueño y la memoria.">'
       + esc(S.testJob[S.lineKey] || (routines.find(r => r.startsLine) || {}).prompt || '') + '</textarea>'
       + '<div data-live="send">' + sendDynHTML(f) + '</div></section>';
@@ -1115,9 +1115,9 @@ const WorkflowPanel = (() => {
            ever set turns it ON; after the Commander turned it OFF a save keeps it off and offers ▶ TURN SCHEDULING ON; an E-STOP is
            never lifted from here. One SAVE SCHEDULE key — the help line says which of the three this save will do (GET /api/cron armSet). */
         + ((S.cron && !S.cron.enabled && !S.cron.halted)
-          ? '<div class="wf-help dim">' + (S.cron.armSet ? 'Scheduling is off — you turned it off. Saving keeps it off; press ▶ TURN SCHEDULING ON when you want it to run.'
-            : 'Scheduling is off. Saving turns it on for the whole station, so every saved schedule runs at its time.') + '</div>'
-          : (S.cron && S.cron.halted) ? '<div class="wf-help dim">Scheduling is stopped (E-STOP). Saving keeps it stopped — turn scheduling on in AUTOMATE › SCHEDULES.</div>' : '')
+          ? '<div class="wf-help dim">' + (S.cron.armSet ? 'La programación está apagada — la apagaste. Guardar la mantiene apagada; pulsa ▶ ACTIVAR LA PROGRAMACIÓN cuando quieras que se ejecute.'
+            : 'La programación está apagada. Guardar la activa para toda la estación, así que cada programación guardada se ejecuta a su hora.') + '</div>'
+          : (S.cron && S.cron.halted) ? '<div class="wf-help dim">La programación está detenida (E-STOP). Guardar la mantiene detenida — activa la programación en AUTOMATE › SCHEDULES.</div>' : '')
         + '<div class="wf-row"><button type="button" class="bb sm refit-primary" id="trg-create"' + (docks.length ? '' : ' disabled') + '>▸ GUARDAR PROGRAMACIÓN</button><button type="button" class="bb sm" id="trg-cancel">CANCELAR</button></div>'
         + '</div><div class="wf-help trg-msg' + (S.trgMsg && S.trgMsg.bad ? ' bad' : '') + '" id="trg-msg"' + (S.trgMsg ? '' : ' hidden') + '>' + esc(S.trgMsg ? S.trgMsg.t : '') + '</div></div>'
       + startHead('Un mensaje de canal', !S.chans ? 'comprobando…' : tr.chanRows.length ? '' : 'ninguno conectado', 'ch', '<button type="button" class="bb sm" id="trg-chan">CONECTAR UN CANAL ▸</button>')
@@ -1472,12 +1472,12 @@ const WorkflowPanel = (() => {
         S.drafts['trgprompt:' + p.id] = ''; delete S.drafts[schedKey]; promptEl.dataset.typed = ''; schedEl.dataset.typed = '';
         S.trgOpen = false;
         H.pollFeed().then(() => paint(true), () => paint(true));
-        say(saved.state === 'completed' ? '✓ routine completed — see its result in AUTOMATION' : !saved.enabled ? '✓ saved — this routine is paused; manage it in AUTOMATION'
-          : armedHere ? '✓ saved · scheduling is now on — fires at ' + nameOf(agentId)
-          : armedNow ? '✓ schedule saved — fires at ' + nameOf(agentId)
-          : cur.halted ? '✓ saved — scheduling is stopped (E-STOP), so it will not run until you turn scheduling on in AUTOMATE › SCHEDULES'
-          : offByChoice ? '✓ saved — scheduling is off (you turned it off), so it will not run: press ▶ TURN SCHEDULING ON above'
-          : '✓ saved — scheduling is off for the whole station, so it will not run until you turn it on (above)', !saved.enabled || !armedNow);
+        say(saved.state === 'completed' ? '✓ rutina completada — ve su resultado en AUTOMATION' : !saved.enabled ? '✓ guardado — esta rutina está en pausa; gestiónala en AUTOMATION'
+          : armedHere ? '✓ guardado · la programación está ahora activa — se ejecuta en ' + nameOf(agentId)
+          : armedNow ? '✓ programación guardada — se ejecuta en ' + nameOf(agentId)
+          : cur.halted ? '✓ guardado — la programación está detenida (E-STOP), así que no se ejecutará hasta que la actives en AUTOMATE › SCHEDULES'
+          : offByChoice ? '✓ guardado — la programación está apagada (la apagaste), así que no se ejecutará: pulsa ▶ ACTIVAR LA PROGRAMACIÓN arriba'
+          : '✓ guardado — la programación está apagada para toda la estación, así que no se ejecutará hasta que la actives (arriba)', !saved.enabled || !armedNow);
         paint(true);
       }).catch(() => refuse('save not confirmed — check AUTOMATION before retrying'));
     };

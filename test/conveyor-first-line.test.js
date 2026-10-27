@@ -35,7 +35,7 @@ A.ok(/station\.roomSpots\(W, H, 'hab'\)/.test(mr) && /station\.addRoom\(\{ kind:
   const touches = r => { for (let y = r.y1; y <= r.y2; y++) if (st.roomAt(r.x1 - 1, y) || st.roomAt(r.x2 + 1, y)) return true; for (let x = r.x1; x <= r.x2; x++) if (st.roomAt(x, r.y1 - 1) || st.roomAt(x, r.y2 + 1)) return true; return false; };
   A.ok(spots.length > 0 && spots.every(touches), 'it only offers a room that touches the station (auto-doors join it)');
 }
-A.ok(/lineType = bp\.id; selectTool\('line'\)/.test(mr) && /UNDO removes the room/.test(mr), 'then arms the line over it and says how to take it back');
+A.ok(/lineType = bp\.id; selectTool\('line'\)/.test(mr) && /UNDO quita la sala/.test(mr), 'then arms the line over it and says how to take it back');
 // (phase E: a red ghost of a line that fits LAID OUT invites that click instead — never CLICK TO STAMP)
 A.ok(/\(ok \? ' — CLICK TO PLACE' : g\.laid \? ' — CLICK TO LAY IT OUT HERE' : ''\)/.test(build), 'a red line ghost never says CLICK TO PLACE');
 // the real model agrees: a room that touches the starter room is accepted and the blueprint then fits
@@ -55,7 +55,7 @@ A.ok(/\(ok \? ' — CLICK TO PLACE' : g\.laid \? ' — CLICK TO LAY IT OUT HERE'
 /* B2 — the panel opens on the first BAY after a stamp */
 const st = build.slice(build.indexOf('  function stampLine(w, ev) {'), build.indexOf('NO STANDALONE CANVAS INVITATION'));
 A.ok(/let firstBay = null;/.test(st) && /rebake\(\); openFlowCard\(firstBay\)/.test(st), 'a successful stamp compiles and docks the panel on the first BAY');
-A.ok(/pick who works each step in the panel/.test(st), '…and the tip points at the panel');
+A.ok(/elige quién hace cada paso en el panel/.test(st), '…and the tip points at the panel');
 
 /* T1 — a saved schedule with scheduling OFF is named, and the switch is right there */
 // a REAL compiled line (the panel reads lineFlow's output): a FRONT DESK with its one bay crewed
@@ -75,10 +75,10 @@ A.eq(on.schedules, ['every day at 9:00 AM'], 'scheduling ON: it starts the line'
 A.eq(on.offSchedules, [], '…and is not listed as off');
 const said = W.sentenceText(W.howItRuns(f, { triggers: off, nameOf: a => String(a).toUpperCase() }));
 // (the station.layout audit, 2026-09-28, folded this into ONE "paused starts" sentence — the fact it must carry is unchanged)
-A.ok(/^Nothing starts it right now \(its routine "news" \(every day at 9:00 AM\) is saved but the scheduler is off\)/.test(said), 'the sentence says it is scheduled but the scheduler is OFF (' + said.slice(0, 110) + ')');
+A.ok(/^Nothing starts it right now \(su rutina "news" \(every day at 9:00 AM\) está guardada pero el programador está apagado\)/.test(said), 'the sentence says it is scheduled but the scheduler is OFF (' + said.slice(0, 110) + ')');
 A.ok(!/no schedule/.test(said), '…never "no schedule"');
-A.ok(/'SCHEDULE · OFF'/.test(panel) && /scheduling is off' : 'no trigger yet(: it runs when you send it a job)?'/.test(panel), 'the INBOX node says SCHEDULE · OFF');
-A.ok(/id="trg-arm">▶ TURN SCHEDULING ON/.test(panel) && /api\('\/api\/cron\/arm', 'POST', \{ enabled: true \}\)/.test(panel), 'the panel carries the switch, on the same route AUTOMATION uses');
+A.ok(/' · la programación está apagada'/.test(panel) && /la programación está apagada' : 'aún sin disparador: corre cuando le mandas un trabajo'/.test(panel), 'the INBOX node says the schedule is off');
+A.ok(/id="trg-arm">▶ ACTIVAR LA PROGRAMACIÓN/.test(panel) && /api\('\/api\/cron\/arm', 'POST', \{ enabled: true \}\)/.test(panel), 'the panel carries the switch, on the same route AUTOMATION uses');
 A.ok(/refreshServerFacts\(\);\s*\}\)\.catch/.test(panel.slice(panel.indexOf('const wireArm'), panel.indexOf('const wireArm') + 900)), '…and re-reads the truth after pressing it');
 
 /* the once-crewed split mode */

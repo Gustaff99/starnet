@@ -60,9 +60,9 @@ const splitOf = plan => Object.keys(plan.junctions).find(k => plan.junctions[k].
   // the host + panel wiring
   A.ok(/function splitModeInfo\(splitId\)/.test(build) && /Pipeline\.rejoinOf\(plan, lk\)\.lanes/.test(build) && /const plan = probePlanOnceCrewed\(\);/.test(build), 'the switch reads the once-crewed plan (a fresh stamp answers like a crewed one)');
   A.ok(/meet && meet\.kind === 'merge' && propAt\(meet\.at\) \? \{ ok: true, swap: \[propAt\(meet\.at\)\] \}/.test(build), 'COPY swaps the one MERGER where every branch meets');
-  A.ok(/the branches never meet at one MERGER/.test(build), '…and says why when there is none');
+  A.ok(/the branches never meet at one MERGER|las ramas nunca se encuentran en un solo MERGER/.test(build), '…and says why when there is none');
   A.ok(/for \(const id of step\.swap\) \{ const r = station\.swapJoinerMerger\(id\)/.test(build) && /station\.setSplitDivide\(splitId, mode === 'divide'\)/.test(build) && /splitModeInfo: id => splitModeInfo\(id\)/.test(build) && /setSplitMode: \(id, mode\) => setSplitMode\(id, mode\)/.test(build), 'the panel reaches it through the host');
-  A.ok(/const LABEL = \{ copy: 'COPY TO EACH', divide: 'SPLIT THE JOB', turns: 'TAKE TURNS' \}/.test(panel) && /pick\('copy',/.test(panel) && /pick\('divide',/.test(panel) && /pick\('turns',/.test(panel) && /class="wf-why"/.test(panel) && /H\.setSplitMode\(p\.id, b\.dataset\.smode\)/.test(panel), 'the SPLITTER section carries the switch');
+  A.ok(/const LABEL = \{ copy: 'COPIAR A CADA', divide: 'DIVIDIR EL JOB', turns: 'TOMAR TURNOS' \}/.test(panel) && /pick\('copy',/.test(panel) && /pick\('divide',/.test(panel) && /pick\('turns',/.test(panel) && /class="wf-why"/.test(panel) && /H\.setSplitMode\(p\.id, b\.dataset\.smode\)/.test(panel), 'the SPLITTER section carries the switch');
   A.ok(/aria-disabled="true" data-tip="' \+ esc\(\(step && step\.msg\)/.test(panel), 'a choice the floor cannot make is greyed with its reason');
   // the public guide teaches the same choices by the panel's own labels (review docs-claims-03: it said the mode was no choice)
   const guide = read('website/docs/guides/splitter-joiner.html');
@@ -79,7 +79,7 @@ const splitOf = plan => Object.keys(plan.junctions).find(k => plan.junctions[k].
   const ot = build.slice(build.indexOf('  function openTest(e) {'), build.indexOf('  function sendTestBoxes(ev, auto, agentId) {'));
   A.ok(/WP\.showTest\('watch'\)/.test(ot) && /return sendTestBoxes\(e\);/.test(ot), 'TEST opens the TEST view AND plays the free walkthrough (one click, as before)');
   A.ok(/preview: \(\) => sendTestBoxes\(null\)/.test(build), 'WATCH IT drives the same walkthrough');
-  A.ok(/\['watch', 'WATCH IT · FREE'/.test(panel) && /\['step', 'STEP THROUGH · REAL'/.test(panel) && /\['real', 'SEND A REAL JOB'/.test(panel), 'three named modes');
+  A.ok(/\['watch', 'VERLO · FREE'|\['watch', 'VERLO · GRATIS'/.test(panel) && /\['step', 'PASO A PASO · REAL'/.test(panel) && /\['real', 'ENVIAR UN JOB REAL'/.test(panel), 'three named modes');
   // Exercise the production decision AND its render entry point. A source spelling
   // check missed a correct fallback helper hidden behind a seam-only panel guard.
   const headers = ['function stepTestUnavailable()', 'function testModeNow()', 'function testPickerHTML(s)', 'function paintBodyInner(body, f)', 'function onwardNote()'];   // (onwardNote: RUN ONE REAL JOB's SEND TO line — conveyor-ui-01; these lines send nowhere, so it adds nothing)
@@ -124,17 +124,17 @@ const splitOf = plan => Object.keys(plan.junctions).find(k => plan.junctions[k].
     A.ok(renderChoice(simple, seam, 'real', P).html.includes('id="wf-real"'), 'explicit RUN ONE REAL JOB remains selected: ' + seam);
   }
   A.eq(renderChoice(simple, true, 'step', undefined).mode, 'step', 'older compiler without refusal helper preserves supported step choice');
-  A.ok(/id="wf-test">' \+ \(s && W\.isLive\(s\) \? '▶ TEST · '/.test(panel) && !/id="wf-steptest"/.test(panel) && !/id="wf-sample"/.test(panel), 'the footer has ONE TEST button (the step-test and sample buttons are gone)');
+  A.ok(/id="wf-test">' \+ \(s && W\.isLive\(s\) \? '▶ PRUEBA · '/.test(panel) && !/id="wf-steptest"/.test(panel) && !/id="wf-sample"/.test(panel), 'the footer has ONE TEST button (the step-test and sample buttons are gone)');
   A.ok(/showTest, _state: S/.test(panel), 'the panel exposes showTest for the top bar');
-  A.ok(/'TEST IT AGAIN' : 'TEST THIS STEP'/.test(panel), 'the per-step button says what it tests');
+  A.ok(/'Pruébalo de nuevo' : '¿Cómo quieres probarlo?'/, 'the per-step button says what it tests');
 }
 
 /* ---------- 4a: start from intent ---------- */
 {
   const s = t => { const r = W.suggestLineFor(t); return r ? r.id : null; };
   A.eq(s('research the news every morning, write a draft, and have someone review it before I publish'), 'revision_loop', 'a draft someone reviews: REVISION LOOP');
-  A.ok(/RESEARCHER in front/.test(W.suggestLineFor('research the news, write a draft, and have it reviewed').why), '…with research named: add a RESEARCHER in front');
-  A.ok(/on your schedule/.test(W.suggestLineFor('write my weekly newsletter and have an editor check it').why), '…a cadence in the words points at the INBOX schedule');
+  A.ok(/RESEARCHER al principio|RESEARCHER in front/.test(W.suggestLineFor('research the news, write a draft, and have it reviewed').why), '…with research named: add a RESEARCHER in front');
+  A.ok(/en tu programación|on your schedule/.test(W.suggestLineFor('write my weekly newsletter and have an editor check it').why), '…a cadence in the words points at the INBOX schedule');
   A.eq(s('research competitors and write up a report'), 'research_line', 'research written up: RESEARCH LINE');
   A.eq(s('fix bugs in my repo and have them reviewed'), 'code_foundry', 'code that gets reviewed: CODE FOUNDRY');
   A.eq(s('ship features in my repo and test each change'), 'build_test', 'code that gets tested: BUILD & TEST');
@@ -149,17 +149,17 @@ const splitOf = plan => Object.keys(plan.junctions).find(k => plan.junctions[k].
   for (const id of ['revision_loop', 'research_line', 'code_foundry', 'build_test', 'second_opinion']) A.ok(WM.BLUEPRINTS.some(b => b.id === id), 'the suggested line exists in the catalog: ' + id);
   A.ok(/for \(const k of \['goals', 'ambition', 'pain'\]\)/.test(build) && /WorkflowLine\.suggestLineFor\(t\)/.test(build), 'the goal is the Commander\'s own dossier words');
   // (2026-09-30: the quote is the goal tile's hover tip and accessible description — no sentence under a tile)
-  A.ok(/FOR YOUR GOAL/.test(build) && /addLineCell\(grid, goal\.bp, '“' \+ goal\.quote \+ '” — ' \+ goal\.why, true\)/.test(build) && /b\.dataset\.tip = name [^\n]*\(why \? '\\n' \+ why : ''\)/.test(build), 'the card quotes them and is the same line card (fit + MAKE ROOM included)');
+  A.ok(/FOR YOUR GOAL|PARA TU OBJETIVO/.test(build) && /addLineCell\(grid, goal\.bp, '“' \+ goal\.quote \+ '” — ' \+ goal\.why, true\)/.test(build) && /b\.dataset\.tip = name [^\n]*\(why \? '\\n' \+ why : ''\)/.test(build), 'the card quotes them and is the same line card (fit + MAKE ROOM included)');
 }
 
 /* ---------- 4b: ONE ARM RULE (org P16, 2026-10-14): one SAVE SCHEDULE key; the server turns a never-set switch on ---------- */
 {
-  A.ok(!/id="trg-create-only"/.test(panel) && !/SAVE ONLY/.test(panel) && !/SAVE · TURN SCHEDULING ON/.test(panel), 'the INBOX pair collapsed: no SAVE ONLY, no second save key');
-  A.ok(/id="trg-create"[^\n]*>▸ SAVE SCHEDULE<\/button>/.test(panel), 'one SAVE SCHEDULE key');
-  A.ok(/S\.cron\.armSet \? 'Scheduling is off — you turned it off\. Saving keeps it off; press ▶ TURN SCHEDULING ON when you want it to run\.'/.test(panel)
-    && /'Scheduling is off\. Saving turns it on for the whole station, so every saved schedule runs at its time\.'/.test(panel), 'the help line says what this save will do: on when never set, off kept after an explicit OFF');
+  A.ok(!/id="trg-create-only"/.test(panel) && !/GUARDAR SOLO/.test(panel) && !/GUARDAR · ACTIVAR PROGRAMACIÓN/.test(panel), 'the INBOX pair collapsed: no SAVE ONLY, no second save key');
+  A.ok(/id="trg-create"[^\n]*>▸ GUARDAR PROGRAMACIÓN<\/button>/.test(panel), 'one SAVE SCHEDULE key');
+  A.ok(/S\.cron\.armSet \? 'La programación está apagada — la apagaste\. Guardar la mantiene apagada; pulsa ▶ ACTIVAR LA PROGRAMACIÓN cuando quieras que se ejecute\.'/.test(panel)
+    && /'La programación está apagada\. Guardar la activa para toda la estación, así que cada programación guardada se ejecuta a su hora\.'/.test(panel), 'the help line says what this save will do: on when never set, off kept after an explicit OFF');
   A.ok(/runsLine: true, arm: true \}\)/.test(panel) && !/api\('\/api\/cron\/arm', 'POST', \{ enabled: true \}\)\.catch/.test(panel), 'the save asks the server (arm:true, the SCHEDULES form\'s rule) — no second arm call from the form');
-  A.ok(/'✓ saved · scheduling is now on — fires at '/.test(panel) && /scheduling is off \(you turned it off\), so it will not run: press ▶ TURN SCHEDULING ON above/.test(panel), 'the result is said as it happened');
+  A.ok(/'✓ guardado · la programación está ahora activa — se ejecuta en '/.test(panel) && /la programación está apagada \(la apagaste\), así que no se ejecutará: pulsa ▶ ACTIVAR LA PROGRAMACIÓN arriba/.test(panel), 'the result is said as it happened');
   A.ok(/\$\('#trg-create'\)\.onclick = \(\) => create\(\);/.test(panel), 'one save path');
 }
 

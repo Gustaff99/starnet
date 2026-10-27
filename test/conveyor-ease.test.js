@@ -21,17 +21,17 @@ const at = (src, from, to) => { const a = src.indexOf(from); return a < 0 ? '' :
 
 /* ---------- a step's instructions are ADDED to the agent's own purpose ---------- */
 const adds = at(panel, '  function addsOnTopHTML(p) {', '  function paintBay(');
-A.ok(/typeof a\.purpose === 'string'/.test(adds) && /' keeps their own purpose' \+ q \+ ' and skills\. <b>DOES<\/b> is added on top, for every job at this step/.test(adds),
+A.ok(/typeof a\.purpose === 'string'/.test(adds) && /' mantiene su propio propósito' \+ q \+ ' y habilidades\. <b>DOES<\/b> se añade por encima, en cada trabajo de este paso/.test(adds),
   'the BAY card says the agent keeps its own purpose and skills, and DOES is added on top');
-A.ok(/should do everywhere in ' \+ \(a \? 'their' : 'the agent’s'\) \+ ' dossier\./.test(adds), '…and where each kind of instruction belongs (this step here, everywhere in the dossier)');
+A.ok(/debe hacer en todas partes en/.test(adds) && /el dossier del agente/.test(adds), '…and where each kind of instruction belongs (this step here, everywhere in the dossier)');
 A.ok(/'<p class="wf-help wf-adds">' \+ addsOnTopHTML\(p\) \+ '<\/p>'/.test(panel), '…right under the step\'s DOES / HANDS OFF');
 
 /* ---------- SEND IT A JOB ---------- */
 const trig = at(panel, '  function paintTrigger(body, f, p) {', '  // LINE BUDGET: one save');
-A.ok(/const sendHTML = '<section class="wf-sec wf-send"><h3><span class="n">INBOX<\/span>Send a job<\/h3>'/.test(trig) && /body\.innerHTML = sendHTML \+ '<section class="wf-sec" id="wf-starts"><h3>Or start it automatically<\/h3>'/.test(trig),
+A.ok(/const sendHTML = '<section class="wf-sec wf-send"><h3><span class="n">INBOX<\/span>Enviar un trabajo<\/h3>'/.test(trig) && /body\.innerHTML = sendHTML \+ '<section class="wf-sec" id="wf-starts"><h3>O inicia automáticamente<\/h3>'/.test(trig),
   'the INBOX card opens on SEND IT A JOB; the automatic starts follow it (#wf-starts: WORKFLOWS\' ⊕ MAKE IT AUTOMATIC lands there, org P15)');
 const sendDyn = at(panel, '  function sendDynHTML(f) {', '  function jobResultHTML(');
-A.ok(/'▶ SEND A JOB'/.test(sendDyn) && /H\.runSample\(cc, \{ text: t, onUpdate: jobUpdate \}\);/.test(sendDyn) && /if \(!t\) \{ refuse\('write the job first/.test(sendDyn),   // (refuse: said in the panel under the key — 2026-10-09)
+A.ok(/'▶ ENVIAR UN TRABAJO'/.test(sendDyn) && /H\.runSample\(cc, \{ text: t, onUpdate: jobUpdate \}\);/.test(sendDyn) && /if \(!t\) \{ refuse\('escribe primero el trabajo/.test(sendDyn),   // (refuse: said in the panel under the key — 2026-10-09)
   '…▶ SEND A JOB: the same real job as TEST › SEND A REAL JOB, with the typed text (an empty job is refused with the reason)');
 A.ok(/S\.testJob\[S\.lineKey\] = job\.value; saveTests\(\);/.test(trig) && !/id="wf-job"/.test(panel), '…and the typed job is the line\'s test job (one box, not two)');
 A.ok(/id="wf-send-stop"/.test(sendDyn) && /H\.stopSample\(\)/.test(sendDyn), '…and a job riding the line can be stopped from there');
@@ -45,47 +45,47 @@ A.ok(/job\.blur\(\);/.test(sendDyn) && /const nrIn = \$\('#wf-nr-in'\); if \(nrI
 
 /* ---------- the job, read back ---------- */
 const res = at(panel, '  function jobResultHTML(mine, f) {', '  function testModeNow() {');
-A.ok(/const runs = \(mine\.runs \|\| \[\]\)\.slice\(\)\.reverse\(\);/.test(res) && /THE RESULT/.test(res) && /HOW EACH STEP DID IT/.test(res), 'a job comes back as the whole result, then how each step did it, in line order');
+A.ok(/const runs = \(mine\.runs \|\| \[\]\)\.slice\(\)\.reverse\(\);/.test(res) && /EL RESULTADO/.test(res) && /CÓMO LO HIZO CADA PASO/.test(res), 'a job comes back as the whole result, then how each step did it, in line order');
 A.ok(/P\.stripVerdictLine\(out\)/.test(res) && !/slice\(0, 80\)/.test(res), '…the whole result (a reviewer\'s VERDICT line is the loop\'s signal, not the work) — never cut to 80 characters');
 A.ok(/const pr = r\.dockId \? prop\(r\.dockId\) : null, role = \(pr && \(pr\.label \|\| pr\.role\)\) \|\| null,/.test(res), '…each step named by the BAY it ran at (its NAME first, then its role — conveyor-ui-15)');
 const rd = at(panel, '  function readStep(r, streamId) {', '  function jobResultHTML(');
 A.ok(/api\('\/api\/transcript\?stream=' \+ encodeURIComponent\(streamId \|\| r\.streamId \|\| ''\) \+ '&agent=' \+ encodeURIComponent\(r\.agentId \|\| 'agent'\) \+ '&runId=' \+ encodeURIComponent\(r\.runId\) \+ '&limit=50'\)/.test(rd),
   'each step\'s reply is read from its own run (the transcript by runId — the OUTBOX window\'s read)');
-A.ok(/done\(\{ err: 'this step’s reply could not be read' \}\)/.test(rd), '…and a reply that cannot be read says so');
+A.ok(/done\(\{ err: 'la respuesta de esta etapa no se pudo leer' \}\)/.test(rd), '…and a reply that cannot be read says so');
 A.ok((panel.match(/\? jobResultHTML\(mine, /g) || []).length === 2 && (panel.match(/    wireJob\(\);/g) || []).length === 2, 'the SEND block and the TEST view both read the job back');
 
 /* ---------- NOT RIGHT? — say what's wrong, get exact changes, use them, run the same job again ---------- */
 const nr = at(panel, '  function notRightHTML(mine, f) {', '  function testModeNow() {');
-A.ok(/notRightHTML\(mine, f\) \+ '<\/div>';/.test(res) && /✎ NEEDS CHANGES/.test(nr) && /SUGGEST CHANGES/.test(nr) && !/NOT RIGHT\?<|SUGGEST FIXES'/.test(nr), 'under a delivered job: ✎ NEEDS CHANGES — a box to say what is wrong, then SUGGEST CHANGES (the WORKFLOWS words, org P17)');
+A.ok(/notRightHTML\(mine, f\) \+ '<\/div>';/.test(res) && /✎ NECESITA CAMBIOS/.test(nr) && /SUGERIR CAMBIOS/.test(nr) && !/NOT RIGHT\?<|SUGGEST FIXES'/.test(nr), 'under a delivered job: ✎ NECESITA CAMBIOS — a box to say what is wrong, then SUGERIR CAMBIOS (the WORKFLOWS words, org P17)');
 A.ok(/api\('\/api\/routing\/fix-suggest', 'POST', \{ complaint, job: mine\.text \|\| '', result: mine\.output \|\| '', steps \}\)/.test(nr), '…sent with the job, the result and every step (what it was told, what it produced)');
 A.ok(/for \(const r of \(mine\.runs \|\| \[\]\)\.slice\(\)\.reverse\(\)\) \{ if \(!r\.dockId\) continue; const got = stepOut\[r\.runId\]; byDock\.set\(r\.dockId/.test(nr), '…each BAY once, with its LAST reply (a looping line runs a BAY more than once)');
-A.ok(/const r = st\.setPropBrief\(x\.dockId, x\.does\);/.test(nr) && /st\.setPropHands\(x\.dockId, x\.hands\)/.test(nr) && /✓ USE THIS/.test(nr), 'USE THIS is the ordinary brief edit (saved, one UNDO) — nothing changes on its own');
-A.ok(/↻ SEND IT AGAIN/.test(nr) && /S\.prevJob = \{ text: mine\.text, output: mine\.output, stamp: mine\.stamp \};/.test(nr) && /H\.runSample\(cc, \{ text: mine\.text/.test(nr), '…then the same job runs again');
-A.ok(/const prev = S\.prevJob && S\.prevJob\.stamp !== mine\.stamp && S\.prevJob\.text === mine\.text \? S\.prevJob : null;/.test(res) && /Last time, before your fix/.test(res), '…and what it gave last time stays one click away beside the new result');
-A.ok(/Suggested by ' \+ esc\(fx\.model/.test(nr) && /\$' \+ \(\+fx\.usd\)\.toFixed\(4\)/.test(nr), 'the suggestion says which model made it and what it cost');
+A.ok(/const r = st\.setPropBrief\(x\.dockId, x\.does\);/.test(nr) && /st\.setPropHands\(x\.dockId, x\.hands\)/.test(nr) && /✓ USAR ESTO/.test(nr), 'USAR ESTO is the ordinary brief edit (saved, one UNDO) — nothing changes on its own');
+A.ok(/↻ ENVIARLO OTRA VEZ/.test(nr) && /S\.prevJob = \{ text: mine\.text, output: mine\.output, stamp: mine\.stamp \};/.test(nr) && /H\.runSample\(cc, \{ text: mine\.text/.test(nr), '…then the same job runs again');
+A.ok(/const prev = S\.prevJob && S\.prevJob\.stamp !== mine\.stamp && S\.prevJob\.text === mine\.text \? S\.prevJob : null;/.test(res) && /La última vez, antes de tu corrección/.test(res), '…and what it gave last time stays one click away beside the new result');
+A.ok(/Sugerido por ' \+ esc\(fx\.model/.test(nr) && /\$' \+ \(\+fx\.usd\)\.toFixed\(4\)/.test(nr), 'the suggestion says which model made it and what it cost');
 /* ---------- ★ KEEP AS THE EXAMPLE — consistency: the last step matches a result the Commander liked ---------- */
 const ex = at(panel, '  const EX_HEAD = ', '  // after a job\'s card is painted');
 A.ok(/const last = \(mine\.runs \|\| \[\]\)\[0\], dockId = last && last\.dockId/.test(ex) && /H\.station\(\)\.setPropBrief\(dockId, next\)/.test(ex),
   'KEEP AS THE EXAMPLE writes the result into the instructions of the step whose reply shipped (the delivered run), one UNDO');
-A.ok(/replace\(\/\\n\*MATCH THIS EXAMPLE of a good result\[\\s\\S\]\*\$\/, ''\)/.test(ex) && /Math\.min\(1200, room\)/.test(ex) && /if \(room < 300\) return null;/.test(ex),
+A.ok(/replace\(\/\\n\*IGUALA A ESTE EJEMPLO\[\\s\\S\]\*\$\/, ''\)/.test(ex) && /Math\.min\(1200, room\)/.test(ex) && /if \(room < 300\) return null;/.test(ex),
   '…as one marked block that replaces any earlier example, bounded to fit the 2000-character brief');
-A.ok(/★ KEEP THIS STYLE/.test(res) && /★ STYLE KEPT/.test(res) && !/KEEP AS THE EXAMPLE</.test(res), '…a key under the result (★ KEEP THIS STYLE, the WORKFLOWS word), then a tag saying the style is kept');
+A.ok(/★ MANTENER ESTE ESTILO/.test(res) && /★ ESTILO MANTENIDO/.test(res) && !/GUARDAR COMO EL EJEMPLO</.test(res), '…a key under the result (★ MANTENER ESTE ESTILO, the WORKFLOWS word), then a tag saying the style is kept');
 A.ok(/keepTaste\(mine, last\.runId\);/.test(ex) && /api\('\/api\/taste\/keep-style', 'POST', \{ runId \}\)/.test(ex),
   '…and the same approval becomes the Commander\'s station-wide taste, with the delivered run\'s real reference (DESIGN ANCHOR 10-11)');
 A.ok(/k\.sent\.then\(stored => stored && api\('\/api\/taste\/keep-style', 'POST', \{ runId: k\.runId, undo: true \}\)/.test(ex) && /unkeepTasteIfUndone\(mine\);/.test(panel),
   '…and the panel\'s UNDO takes the crew\'s copy back too, only after the keep itself landed (the two can never cross)');
 /* ---------- the loop's machine note, in words ---------- */
 const ln = at(panel, '  const LOOP_NOTE = ', '  function jobResultHTML(');
-A.ok(/The review loop used all ' \+ n \+ ' tries without an approval, so the last version shipped as it was\./.test(ln) && /const ln = loopNotes\(/.test(res) && /ln\.notes\.map\(t => '<div class="wf-warnline">⚠ '/.test(res),
+A.ok(/El loop de revisión usó sus ' \+ n \+ ' intentos sin una aprobación, así que la última versión salió tal cual\./.test(ln) && /const ln = loopNotes\(/.test(res) && /ln\.notes\.map\(t => '<div class="wf-warnline">⚠ '/.test(res),
   'a loop that ran out of tries is said in words over the result, and lifted out of the result box');
 A.ok(/text = loopNotes\(/.test(ex), '…and never becomes part of a kept example');
 A.ok(/\(pass > 1 \? ' · pass ' \+ pass : ''\)/.test(res), 'a looping line\'s repeated steps say which pass they were');
 /* ---------- where the job is now ---------- */
 const live = at(panel, '  let liveTimer = 0, liveSeen = false;', '  const LOOP_NOTE = ');
 const world = read('frontend/app/world.js');
-A.ok(/const w = at\('working'\);/.test(live) && /'Now: step ' \+ \(w\.i \+ 1\) \+ ' of ' \+ order\.length/.test(live) && /is working/.test(live), 'while a job rides, the send box names the step working it now — "Now: step 2 of 3 · REVIEWER · NOVA is working"');
+A.ok(/const w = at\('working'\);/.test(live) && /'Ahora: paso ' \+ \(w\.i \+ 1\) \+ ' de ' \+ order\.length/.test(live) && /está trabajando/.test(live), 'while a job rides, the send box names the step working it now — "Now: step 2 of 3 · REVIEWER · NOVA is working"');
 A.ok(/bayLive: id => \{ const w = lineWatch\(\);/.test(world) && /bayLive: id => \(opts\.world && opts\.world\.bayLive\) \? opts\.world\.bayLive\(id\) : null/.test(build), '…read from the floor\'s own bay lamps (LineWatch: WORKING only once the sidecar confirmed the run)');
-A.ok(/'Sending the job into the line…'/.test(live) && /'Handing the job on to the next step…'/.test(live), '…and between steps it says so — it never guesses a step');
+A.ok(/'Enviando el trabajo a la línea…'/.test(live) && /'Pasando el trabajo al siguiente paso…'/.test(live), '…and between steps it says so — it never guesses a step');
 A.ok(/function markWorking\(id\)/.test(live) && /n\.classList\.toggle\('working', !!id && n\.dataset\.node === id\)/.test(live) && /markWorking\(null\); return;/.test(live), 'the diagram\'s tile of the working step wears the working lamp, cleared when the job is back');
 A.ok(/\.wf-node\.working \.dot \{ background: #ffb23e;/.test(css) && !/\.wf-node\.working \{[^}]*var\(--gold\)/.test(css), '…the floor lamp\'s working amber on the tile\'s own lamp — never the selection\'s gold');
 /* ---------- nothing claims what an UNDO took back; the live lamp holds on every card ---------- */
@@ -101,36 +101,36 @@ const todayTip = vm.runInNewContext(tipSource + '\ntodayTip');
 A.ok(/'<span data-tip="' \+ esc\(todayTip\(c\[0\], c\[1\]\)\) \+ '">/.test(panel), 'each TODAY number renders its own escaped tooltip, from its label and its value');
 // (runtime audit 2026-10-12) an unreadable shipment history reads ? — its tip says the count is unknown, never that nothing shipped
 const unknownTip = todayTip('SHIPPED', '?');
-A.ok(/unknown right now/.test(unknownTip) && /shipment history can't be read/.test(unknownTip) && !/recorded jobs that reached the OUTBOX/.test(unknownTip), 'an unknown SHIPPED says why it is unknown');
+A.ok(/unknown right now/.test(unknownTip) && /shipment history can't be read/.test(unknownTip) && !/trabajos registrados que llegaron al OUTBOX/.test(unknownTip), 'an unknown SHIPPED says why it is unknown');
 A.eq(todayTip('SHIPPED', '3'), todayTip('SHIPPED'), 'a known SHIPPED keeps its meaning');
 // (runtime repair 2026-10-12) the ? tip promised "the number comes back" — a job that shipped while the history was unreadable is
 // held in memory only, so the tip names the restart that loses it; and a LOWER BOUND (N+) says the real number is higher
 A.ok(/counted once it can be read again, unless the station restarts first/.test(unknownTip) && !/the number comes back when/.test(unknownTip), 'the ? tip never promises the whole count back: ' + unknownTip);
 const atLeastTip = todayTip('SHIPPED', '5000+');
-A.ok(/^SHIPPED\nat least this many/.test(atLeastTip) && /the real number is higher/.test(atLeastTip) && !/recorded jobs that reached the OUTBOX/.test(atLeastTip), 'a lower-bound SHIPPED says it is at least that many: ' + atLeastTip);
-for (const key of ['RUNS', 'SHIPPED', 'FAILED', 'TESTS', 'MEDIAN', '$ TODAY (UTC)']) {
+A.ok(/^SHIPPED\nat least this many/.test(atLeastTip) && /the real number is higher/.test(atLeastTip) && !/trabajos registrados que llegaron al OUTBOX/.test(atLeastTip), 'a lower-bound SHIPPED says it is at least that many: ' + atLeastTip);
+for (const key of ['RUNS', 'SHIPPED', 'FAILED', 'TESTS', 'MEDIAN', '$ HOY']) {
   A.ok(todayTip(key).length > key.length, 'a meaning is available for the ' + key + ' number');
 }
 const shippedTip = todayTip('SHIPPED');
-A.ok(/step of this line ran today/.test(todayTip('RUNS')) && /one job through a 3-step line is 3 runs/.test(todayTip('RUNS')), 'RUNS counts step runs today, not whole jobs');
-A.ok(/recorded jobs that reached the OUTBOX/.test(shippedTip) && /tool succeeded or a file was saved/.test(shippedTip), 'SHIPPED requires recorded delivery plus productive proof');
-A.ok(/Earlier deliveries without a saved shipment record are not included/.test(shippedTip), 'SHIPPED explicitly excludes unrecorded history');
-A.ok(/Text-only answers still reach the OUTBOX, but do not count here/.test(shippedTip), 'plain answers are delivered but excluded from productive shipments');
-A.ok(/step run today/.test(todayTip('MEDIAN')) && /spent today, against its daily cap/.test(todayTip('$ TODAY (UTC)')), 'time and spending tips retain their daily scope');
+A.ok(/un paso de esta línea corrió hoy/.test(todayTip('RUNS')) && /un trabajo por una línea de 3 pasos son 3 runs/.test(todayTip('RUNS')), 'RUNS counts step runs today, not whole jobs');
+A.ok(/trabajos registrados que llegaron al OUTBOX/.test(shippedTip) && /triunfar una tool o guardarse un archivo/.test(shippedTip), 'SHIPPED requires recorded delivery plus productive proof');
+A.ok(/Entregas anteriores sin registro de envío no entran/.test(shippedTip), 'SHIPPED explicitly excludes unrecorded history');
+A.ok(/Las respuestas solo en texto llegan al OUTBOX pero no cuentan aquí/.test(shippedTip), 'plain answers are delivered but excluded from productive shipments');
+A.ok(/un run de paso hoy/.test(todayTip('MEDIAN')) && /gastó hoy, frente a su tope diario/.test(todayTip('$ HOY')), 'time and spending tips retain their daily scope');
 A.ok(/; it runs when you send it a job\. /.test(read('frontend/app/workflowline.js')) && !/runs when you test it/.test(read('frontend/app/workflowline.js') + panel),
   'a line nothing starts by itself "runs when you send it a job" (the INBOX card sends one), not only "when you test it"');
 /* ---------- a job whose steps ran but did not all finish clean (a real model: a RESEARCHER answered, then its model sent empty
    turns — "empty" — and the card said only "REFUSED — sample job did not complete cleanly", hiding a good delivered answer) ---------- */
 A.ok(/if \(v\.stopped \|\| \(!v\.ok && !runs\.length\)\) return '<div class="wf-sample-res">' \+ H\.sampleHTML\(v\) \+ '<\/div>';/.test(res), 'STOPPED, or REFUSED before any step ran, keeps the server\'s own verdict card');
-A.ok(/⚠ FINISHED WITH A PROBLEM/.test(res) && /const bad = v\.ok \? null : runs\.find\(r => r\.reason && r\.reason !== 'done'\);/.test(res) && /runEnd\(bad\.reason\) \+ ', so this job did not finish cleanly and was not put in the OUTBOX\. Sending it again often works\.'/.test(res),
+A.ok(/⚠ TERMINÓ CON UN PROBLEMA/.test(res) && /const bad = v\.ok \? null : runs\.find\(r => r\.reason && r\.reason !== 'done'\);/.test(res) && /runEnd\(bad\.reason\) \+ ', so this job did not finish cleanly and was not put in the OUTBOX\. Sending it again often works\.'/.test(res),
   'a job whose steps ran but did not finish clean names the step and what happened, in words — never just REFUSED');
-A.ok(/v\.ok \? 'THE RESULT' : 'WHAT CAME OUT'/.test(res) && /\(!v\.ok \? '' : '<div class="wf-row">'/.test(res), '…still shows what came out and every step (no KEEP AS THE EXAMPLE on a problem job)');
-A.ok(/empty: 'gave no final answer', error: 'hit an error', max_iters: 'ran out of turns'/.test(panel) && /esc\(runEnd\(r\.reason\)\)/.test(res), 'each step says how its run ended in words, never the raw reason code');
-A.ok(/placeholder="e\.g\. Find this week’s AI news and summarize the three biggest stories\.">' \+ esc\(S\.testJob\[S\.lineKey\] \|\| ''\) \+ '<\/textarea>'/.test(panel), 'a new schedule\'s task starts as the job this line was last sent ("do that every morning" is one click)');
+A.ok(/v\.ok \? 'EL RESULTADO' : 'LO QUE SALIÓ'/.test(res) && /\(!v\.ok \? '' : '<div class="wf-row">'/.test(res), '…still shows what came out and every step (no KEEP AS THE EXAMPLE on a problem job)');
+A.ok(/empty: 'no dio respuesta final', error: 'se topó con un error', max_iters: 'se quedaron sin turnos'/.test(panel) && /esc\(runEnd\(r\.reason\)\)/.test(res), 'each step says how its run ended in words, never the raw reason code');
+A.ok(/placeholder="p\. ej\. Busca las noticias de IA de esta semana y resume las tres historias más grandes\.">' \+ esc\(S\.testJob\[S\.lineKey\] \|\| ''\) \+ '<\/textarea>'/.test(panel), 'a new schedule\'s task starts as the job this line was last sent ("do that every morning" is one click)');
 /* ---------- a READY line says what to do next — and its pill keeps the station's word (station-layout.e2e: panel pill == the status an
    agent reads with station.layout) ---------- */
-A.ok(/<button type="button" class="bb sm refit-primary" id="wf-sendnow" hidden>▶ SEND A JOB<\/button>/.test(panel) && /sendNow\.hidden = !sendTo \|\| S\.sel === sendTo; sendNow\.onclick = toSend;/.test(panel),
-  'a READY line shows ▶ SEND A JOB beside its pill, taking you to the send box (hidden while the INBOX card is open)');
+A.ok(/<button type="button" class="bb sm refit-primary" id="wf-sendnow" hidden>▶ ENVIAR UN TRABAJO<\/button>/.test(panel) && /sendNow\.hidden = !sendTo \|\| S\.sel === sendTo; sendNow\.onclick = toSend;/.test(panel),
+  'a READY line shows ▶ ENVIAR UN TRABAJO beside its pill, taking you to the send box (hidden while the INBOX card is open)');
 A.ok(/if \(r\) \{ pill\.textContent = W\.pillText\(r\);/.test(panel) && !/READY · SEND IT A JOB ▸/.test(panel), '…and the pill itself says exactly what an agent reads: READY TO RUN');
 /* ---------- the LAST stage is told its reply IS the result (found on a real model: a WRITER asked for three short stories wrote an
    essay about "the upstream report", because every stage was told to produce output "for the next stage … build on it") ---------- */
